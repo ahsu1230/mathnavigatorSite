@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styl/index.css';
+import './styl/main.styl';
 import Home from './js/home.js';
 import * as serviceWorker from './serviceWorker';
 

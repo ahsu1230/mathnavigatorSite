@@ -1,9 +1,10 @@
 import React from 'react';
-import '../styl/home.css';
+import '../styl/home.styl';
+import Header from './header.js'
 
 function Home() {
   return (
-    <p>Math Navigator</p>
+    <Header/>
   );
 }
 
