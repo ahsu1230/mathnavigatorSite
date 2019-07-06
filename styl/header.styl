@@ -1,0 +1,67 @@
+@import "static"
+
+#view-header
+  background-color: colorBlackDark
+  border-bottom: 2px solid colorAccent2
+
+#view-header-container
+  position: relative
+  width: containerWidthPct
+  max-width: containerWidthPx
+  height: 100%
+  margin: 0 auto
+  padding: padding3x
+
+#header-logo
+  & .icon
+    width: 36px
+    height: 36px
+
+.header-menu-btn
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 140px
+  height: 40px
+  border: 0px solid colorWhite
+  outline: none
+  box-sizing: border-box
+  background-color: transparent
+  color: colorWhite
+  font-family: fontFamilyRoboto
+  font-size: fontSizeNormal
+  letter-spacing: letterSpacing
+  cursor: pointer
+
+  &:hover
+    border: 1px solid colorWhite
+
+  & .icon-arrow
+    display: inline-block
+    width: 18px
+    height: 10px
+    margin-left: padding1x
+    background-image: url('../assets/arrow_down_white.svg')
+    background-size: cover
+
+.header-menu-list
+  position: absolute
+  left: 50%
+  transform: translate(-50%, 12px)
+  box-shadow: 0px 2px 4px #000000
+
+  & ul
+    margin: 0px
+    padding: 0px
+    background-color: colorBlackDark
+
+  & li
+    padding: padding2x padding3x
+    list-style: none
+    font-size: fontSizeNormal
+    color: colorWhite
+
+    &:hover
+      color: colorAccent1
+      cursor: pointer
