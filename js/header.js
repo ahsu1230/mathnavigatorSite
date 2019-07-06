@@ -6,6 +6,7 @@ import {
   Link
 } from 'react-router-dom';
 import { NavLinks } from './constants.js';
+const classNames = require('classnames');
 const headerIcon = require('../assets/navigate_white.png');
 
 
@@ -33,14 +34,35 @@ class HeaderLogo extends React.Component {
 }
 
 class HeaderMenu extends React.Component {
+  constructor() {
+      super();
+      this.state = {
+        show: false
+      };
+      this.toggleMenu = this.toggleMenu.bind(this);
+  }
+
+  toggleMenu() {
+    this.setState({
+      show: !this.state.show
+    });
+  }
+
   render() {
+    const show = this.state.show;
+    var buttonClasses = classNames("header-menu-btn", {
+      "show": show
+    });
+    var iconClasses = classNames("icon-arrow", {
+      "show": show
+    });
     return (
       <div>
-        <button className="header-menu-btn">
+        <button className={buttonClasses} onClick={this.toggleMenu}>
           Menu
-          <div className="icon-arrow"></div>
+          <div className={iconClasses}></div>
         </button>
-        <HeaderMenuList/>
+        <HeaderMenuList showMenu={show}/>
       </div>
     );
   }
@@ -48,14 +70,18 @@ class HeaderMenu extends React.Component {
 
 class HeaderMenuList extends React.Component {
   render() {
+    const showMenu = this.props.showMenu;
     const numLinks = NavLinks.length;
     const items = NavLinks.map((link, i) =>
       <li key={link.id}>
         <MenuLink title={link.name} url={link.url}/>
       </li>
     );
+    const menuClasses = classNames("header-menu-list", {
+      "show": showMenu
+    });
     return (
-      <div className="header-menu-list">
+      <div className={menuClasses}>
         <ul>
           {items}
         </ul>

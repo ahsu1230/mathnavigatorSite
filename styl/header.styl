@@ -34,6 +34,7 @@
   letter-spacing: letterSpacing
   cursor: pointer
 
+  &.show
   &:hover
     border: 1px solid colorWhite
 
@@ -45,11 +46,23 @@
     background-image: url('../assets/arrow_down_white.svg')
     background-size: cover
 
+    &.show
+      background-image: url('../assets/arrow_up_white.svg')
+      background-size: cover
+
 .header-menu-list
   position: absolute
   left: 50%
-  transform: translate(-50%, 12px)
+  transform: translate(-50%, 0px)
   box-shadow: 0px 2px 4px #000000
+  opacity: 0
+  visibility: hidden
+  transition: all linear 0.2s
+
+  &.show
+    transform: translate(-50%, 16px)
+    visibility: visible
+    opacity: 1
 
   & ul
     margin: 0px
@@ -61,7 +74,16 @@
     list-style: none
     font-size: fontSizeNormal
     color: colorWhite
+    cursor: pointer
 
-    &:hover
+    & a
+      text-decoration: none
+
+    &:hover span
+      text-decoration: none
       color: colorAccent1
-      cursor: pointer
+
+    & a:active
+    & a:visited
+      color: colorWhite
+      text-decoration: none
