@@ -73,9 +73,7 @@ class HeaderMenuList extends React.Component {
     const showMenu = this.props.showMenu;
     const numLinks = NavLinks.length;
     const items = NavLinks.map((link, i) =>
-      <li key={link.id}>
-        <MenuLink title={link.name} url={link.url}/>
-      </li>
+      <MenuLink key={link.id} title={link.name} url={link.url}/>
     );
     const menuClasses = classNames("header-menu-list", {
       "show": showMenu
@@ -94,7 +92,9 @@ class MenuLink extends React.Component {
   render() {
     return (
     	<Link to={this.props.url}>
-    		<span>{this.props.title}</span>
+        <li>
+    		  <div>{this.props.title}</div>
+        </li>
     	</Link>
 		);
   }
