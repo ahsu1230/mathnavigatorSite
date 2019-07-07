@@ -23,8 +23,7 @@ You will need to download the following:
 1. Git clone this repository
 `$ git clone https://github.com/ahsu1230/mathnavigatorSite.git`
 
-2. Once node is installed, install parcel:
-
+2. Once node is installed, install parcel 
 `$ npm install -g parcel`
 
 3. Now try to build the project using the below scripts
