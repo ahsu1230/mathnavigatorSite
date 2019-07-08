@@ -3,11 +3,10 @@
 This website application uses ReactJs (https://reactjs.org/).
 
 Toolchain:
- - npm
- - Parcel
- - ReactJs
- - Stylus
- - jQuery
+ - npm (https://www.npmjs.com/)
+ - Parcel (https://parceljs.org/)
+ - ReactJs (https://reactjs.org/)
+ - Stylus (http://stylus-lang.com/
 
 
  ## Getting started
