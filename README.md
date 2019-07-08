@@ -7,6 +7,7 @@ Toolchain:
  - Parcel (https://parceljs.org/)
  - ReactJs (https://reactjs.org/)
  - Stylus (http://stylus-lang.com/
+ - Lodash (https://lodash.com/)
 
 
  ## Getting started
