@@ -27,7 +27,8 @@ class HeaderLogo extends React.Component {
   render() {
     return (
       <a id="header-logo" href="/">
-        <img className="icon" src={headerIcon}/>
+        <img src={headerIcon}/>
+        <h1>Math Navigator</h1>
       </a>
     );
   }
@@ -57,7 +58,7 @@ class HeaderMenu extends React.Component {
       "show": show
     });
     return (
-      <div>
+      <div className="header-menu-container">
         <button className={buttonClasses} onClick={this.toggleMenu}>
           Menu
           <div className={iconClasses}></div>
