@@ -6,25 +6,25 @@ import { Link } from 'react-router-dom';
 import { getNav } from './constants.js';
 
 const srcSat = require('../assets/cb_sat.jpg');
-const srcApCalc = require('../assets/Group 7.jpg');
+const srcApCalc = require('../assets/ap_calc.jpg');
 const srcAmc = require('../assets/amc.jpg');
 
 const programs = [
   {
     title: "SAT",
-    description: "Our most popular program. We teach both SAT Math Sections and SAT Subject Test (Mathematics Level 2)",
+    description: "Our most popular program. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).",
     imgSrc: srcSat,
     programId: ""
   },
   {
     title: "AP Calculus",
-    description: "Program is dedicated to both Calculus AB and BC students.",
+    description: "Get college credits early by acing the AP Calculus Exams. This program is dedicated to both Calculus AB and BC students.",
     imgSrc: srcApCalc,
     programId: ""
   },
   {
     title: "AMC",
-    description: "American Mathematics Competition. Join this program to train to represent your school and compete with other mathematics athletes.",
+    description: "The American Mathematics Competition administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
     imgSrc: srcAmc,
     programId: ""
   }
