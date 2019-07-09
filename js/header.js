@@ -28,7 +28,7 @@ class HeaderLogo extends React.Component {
     return (
       <a id="header-logo" href="/">
         <img src={headerIcon}/>
-        <h1>Math Navigator</h1>
+        <h1 className="logo"></h1>
       </a>
     );
   }

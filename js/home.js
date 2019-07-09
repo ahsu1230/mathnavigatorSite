@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const mnIcon = require('../assets/navigate_white.png');
-const mnLogo = require('../assets/logo_white.png');
 
 export class HomePage extends React.Component {
 	render() {
@@ -28,8 +27,6 @@ class HomeBanner extends React.Component {
 				<div id="banner-bg-img"></div>
 				<div id="banner-bg-overlay"></div>
 				<div id="banner-logo-wrapper">
-					<img src={mnIcon}/>
-					<img src={mnLogo}/>
 				</div>
 			</div>
 		);
