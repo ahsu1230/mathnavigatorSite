@@ -8,6 +8,13 @@ body
   font-size: fontSizeNormal
   letter-spacing: letterSpacing
 
+h1
+h2
+h3
+  margin: 0
+  font-family: fontFamilyArial
+  letter-spacing: letterSpacing
+
 p
   margin: padding2x 0
   font-family: fontFamilySourceSans
@@ -21,3 +28,21 @@ p
 
   &:before
     content: 'Math Navigator'
+
+button
+  padding: padding1x padding2x
+  outline: none
+  border: none
+  color: colorWhite
+  background-color: colorAccent1
+  font-family: fontFamilyArial
+  font-size: fontSizeSmall
+  letter-spacing: letterSpacing
+  cursor: pointer
+
+  &:hover
+    filter: brightness(110%)
+
+  &.inverted
+    color: colorAccent1
+    background-color: colorWhite

@@ -2,9 +2,7 @@
 require('./../styl/header.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { NavLinks } from './constants.js';
 const classNames = require('classnames');
 const headerIcon = require('../assets/navigate_white.png');
