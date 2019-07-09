@@ -7,7 +7,6 @@ import { NavLinks } from './constants.js';
 const classNames = require('classnames');
 const headerIcon = require('../assets/navigate_white.png');
 
-
 export class Header extends React.Component {
 	render() {
 		return (

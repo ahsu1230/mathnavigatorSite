@@ -43,14 +43,61 @@
     bottom: 20%
     padding: padding2x padding3x
 
-
-
-
-
-
-
 .section
   width: containerWidthPct
   max-width: containerWidthPx
   margin: 0 auto
   background-color: colorWhite
+
+  & h2
+    font-family: fontFamilyRockwell
+    font-size: fontSizeNormal
+    line-height: lineHeightNormal
+    margin: padding16x 0
+    text-align: center
+
+// Home Section - Programs
+.card-container
+  & + div
+    text-align: center
+    margin: padding12x
+
+.home-program-card
+  display: inline-block
+  width: calc(33% - 46px)
+  padding: 0 padding3x
+  vertical-align: top
+
+  &:first-child
+    margin-left: 0
+  &:last-child
+    margin-right: 0
+
+  & .img-container
+    position: relative
+    height: 180px
+
+    & img
+      position: relative
+      left: 50%
+      transform: translateX(-50%)
+      width: 100%
+      max-width: 180px
+
+  & h3
+    color: colorPrimary
+    margin: padding4x 0
+    text-align: center
+
+  & p
+    margin-bottom: padding4x
+    text-align: center
+
+  & button
+    position: relative
+    left: 50%
+    transform: translateX(-50%)
+
+
+// Home Section - Success
+// Home Section - Stories
