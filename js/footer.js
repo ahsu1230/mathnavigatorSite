@@ -1,5 +1,5 @@
 'use strict';
-// require('./../styl/footer.styl');
+require('./../styl/footer.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 

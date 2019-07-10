@@ -50,19 +50,21 @@
   background-color: colorWhite
 
   & h2
+    margin: spacing16x 0
     font-family: fontFamilyRockwell
     font-size: fontSizeNormal
     line-height: lineHeightNormal
-    margin: padding16x 0
     text-align: center
 
-// Home Section - Programs
+// Home Tile Cards
 .card-container
+
   & + div
     text-align: center
-    margin: padding12x
+    margin-top: spacing12x
+    margin-bottom: spacing16x
 
-.home-program-card
+.home-tile-card
   display: inline-block
   width: calc(33% - 46px)
   padding: 0 spacing3x
@@ -75,18 +77,20 @@
 
   & .img-container
     position: relative
-    height: 180px
+    height: propUnit6x
 
     & img
       position: relative
       left: 50%
       transform: translateX(-50%)
       width: 100%
-      max-width: 180px
+      max-width: propUnit6x
 
   & h3
     color: colorPrimary
     margin: spacing4x 0
+    font-size: fontSizeLarge
+    line-height: lineHeightNormal
     text-align: center
 
   & p
@@ -100,5 +104,73 @@
     transform: translateX(-50%)
 
 
+// Home Section - Programs
+
 // Home Section - Success
+.section.success
+  border-top: 1px solid colorGrayLight
+
+  & .img-container
+    background-color: colorPrimary
+    height: propUnit6x
+
+    & img
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: propUnit3x
+
+  & h3
+    margin: spacing6x 0
+
+
 // Home Section - Stories
+.section.stories
+  position: relative
+  width: 100%
+  max-width: 800px
+  margin: 0 auto
+  margin-bottom: spacing24x
+
+.profile-container
+  padding-bottom: propUnit4x
+  padding-left: spacing4x
+
+.profile-img-container
+  display: inline-block
+  width: propUnit6x
+  height: propUnit6x
+  margin-right: spacing6x
+  border-radius: 100%
+  overflow: hidden
+  border: 2px solid colorPrimary
+
+  & img
+    width: 100%
+    height: 100%
+
+.profile-text-container
+  display: inline-block
+  width: calc(100% - 244px)
+  vertical-align: top
+
+  & h2
+    margin-top: 0
+    margin-bottom: spacing2x
+    text-align: left
+    font-size: fontSizeNormal
+    color: colorPrimary
+
+  & h3
+    margin: 0
+    line-height: lineHeightSmall
+    font-size: fontSizeSmall
+    color: colorBlackDark
+
+  & p
+    color: colorBlackDark
+
+.section.stories .action-join
+  position: absolute
+  right: 0
+  bottom: 0

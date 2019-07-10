@@ -34,7 +34,7 @@ export class HomeSectionPrograms extends React.Component {
 	render() {
     var programsUrl = getNav('programs').url;
 		return (
-			<div className="section">
+			<div className="section programs">
 				<h2>Programs</h2>
         <div className="card-container">
           <ProgramCard program={programs[0]}/>
@@ -55,17 +55,14 @@ export class HomeSectionPrograms extends React.Component {
 class ProgramCard extends React.Component {
   render() {
     var program = this.props.program;
-    var title = program.title;
-    var imgSrc = program.imgSrc;
-    var description = program.description;
     // var url = getNav(this.props.programId).url;
     return (
-      <div className="home-program-card">
+      <div className="home-tile-card program">
         <div className="img-container">
-          <img src={imgSrc}/>
+          <img src={program.imgSrc}/>
         </div>
-        <h3>{title}</h3>
-        <p>{description}</p>
+        <h3>{program.title}</h3>
+        <p>{program.description}</p>
         <button className="inverted">Sign Up</button>
       </div>
     );
