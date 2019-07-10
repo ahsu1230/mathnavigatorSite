@@ -3,7 +3,7 @@ require('./../styl/header.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { NavLinks } from './constants.js';
+import { NavLinks, isPathAt } from './constants.js';
 const classNames = require('classnames');
 const headerIcon = require('../assets/navigate_white.png');
 
@@ -60,7 +60,7 @@ class HeaderMenu extends React.Component {
           Menu
           <div className={iconClasses}></div>
         </button>
-        <HeaderMenuList showMenu={show}/>
+        <HeaderMenuList showMenu={show} toggleMenu={this.toggleMenu}/>
       </div>
     );
   }
@@ -68,10 +68,11 @@ class HeaderMenu extends React.Component {
 
 class HeaderMenuList extends React.Component {
   render() {
+		const toggleMenu = this.props.toggleMenu
     const showMenu = this.props.showMenu;
     const numLinks = NavLinks.length;
     const items = NavLinks.map((link, i) =>
-      <MenuLink key={link.id} title={link.name} url={link.url}/>
+      <MenuLink key={link.id} title={link.name} url={link.url} onClick={toggleMenu}/>
     );
     const menuClasses = classNames("header-menu-list", {
       "show": showMenu
@@ -88,8 +89,12 @@ class HeaderMenuList extends React.Component {
 
 class MenuLink extends React.Component {
   render() {
+		var url = this.props.url;
+		const linkClasses = classNames("",
+			{"active": isPathAt(url)}
+		);
     return (
-    	<Link to={this.props.url}>
+    	<Link className={linkClasses} to={url} onClick={this.props.onClick}>
         <li>
     		  <div>{this.props.title}</div>
         </li>

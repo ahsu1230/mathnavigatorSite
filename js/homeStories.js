@@ -9,7 +9,7 @@ export class HomeSectionStories extends React.Component {
 	render() {
     var profiles = getAllProfiles();
     // For now, only grab one
-    var profile = profiles[1];
+    var profile = profiles[0];
 
 		return (
 			<div className="section stories">
