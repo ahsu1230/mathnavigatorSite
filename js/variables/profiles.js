@@ -9,14 +9,14 @@ export const profiles = [
     name: "Moosey",
     subtitle1: "University of Geniuses, College Park",
     subtitle2: "Chief Happiness Officer, Nextbit",
-    quote: "This human feeds me, which is nice. I like food. I like the other humans better, but he's cool. This human feeds me, which is nice. I like food. I like the other humans better, but he's cool."
+    quote: "Andy is probably the most amazing teacher I’ve ever met. He genuinely cares about his students and has a hilarious teaching style. This human feeds me, which is nice. I like food. I like the other humans better, but he's cool. "
   },
   {
     id: 'goosey',
     name: "Goosey",
     subtitle1: "Yale University",
     subtitle2: "Founder of GuudBoyz",
-    quote: "This human feeds me, which is nice. I like food. I like the other humans better, but he's cool."
+    quote: "Andy is probably the most amazing teacher I’ve ever met. He genuinely cares about his students and has a hilarious teaching style. This human feeds me, which is nice. I like food. I like the other humans better, but he's cool. "
   }
 ];
 
