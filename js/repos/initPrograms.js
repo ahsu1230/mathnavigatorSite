@@ -5,14 +5,14 @@ import jsons from './json/*.json';
 export var locationMap = {};
 export var preReqMap = {};
 export var programMap = {};
-export var classMap = {};
+export var classMapByKey = {};
 export var sessionMap = {};
 
 function init() {
   console.log('Initializing Programs...');
   locationMap = initLocations(jsons.locations);
   programMap = initPrograms(jsons.programs);
-  classMap = initClasses(jsons.classes);
+  classMapByKey = initClassesByKey(jsons.classes);
   sessionMap = initSessions(jsons.sessions);
   preReqMap = initPreReqs(jsons.prereqs);
   console.log('Programs done initializing.');
@@ -36,15 +36,19 @@ function initPrograms(arr) {
   return map;
 }
 
-function initClasses(arr) {
+function initClassesByKey(arr) {
   var map = {};
   _.forEach(arr, function(obj) {
     var id = obj.key;
-    obj.isAvailable = convertStrToBool(obj.isAvailable);
-    obj.times = convertStringArray(obj.times);
-    map[id] = obj;
+    map[id] = filterClassObj(obj);
   });
   return map;
+}
+
+function filterClassObj(obj) {
+  obj.isAvailable = convertStrToBool(obj.isAvailable);
+  obj.times = convertStringArray(obj.times);
+  return obj;
 }
 
 function initSessions(arr) {

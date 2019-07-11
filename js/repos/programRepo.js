@@ -1,12 +1,12 @@
 'use strict';
 var _ = require('lodash/core');
-import { classMap, programMap } from './initPrograms.js';
+import { programMap, classMapByKey } from './initPrograms.js';
 
 export function getAvailablePrograms() {
   var mapAvail = {};
   var mapSoon = {};
 
-  _.forEach(classMap, function(obj) {
+  _.forEach(classMapByKey, function(obj) {
     var programId = obj.programId;
     var program = programMap[programId];
 
@@ -25,4 +25,8 @@ export function getAvailablePrograms() {
     "available" : mapAvail,
     "soon" : mapSoon
   };
+}
+
+export function getClasses(programId) {
+  return [];
 }

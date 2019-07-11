@@ -3,7 +3,7 @@ require('./../styl/programs.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { programMap } from './repos/initPrograms.js';
-import { getAvailablePrograms } from './repos/programRepo.js';
+import { getAvailablePrograms, getClasses } from './repos/programRepo.js';
 
 export class ProgramsPage extends React.Component {
 	render() {
@@ -21,22 +21,27 @@ export class ProgramsPage extends React.Component {
 	}
 }
 
-
 class ProgramSection extends React.Component {
+	determineOnClick(programId, slug) {
+		var classes = getClasses(programId);
+		window.location.hash = "/class/" + programId + "_" + slug;
+	}
+
 	render() {
 		var title = this.props.title;
 		var programs = this.props.programs;
 
 		programs.forEach(function(program) {
 			program.gradesText = "Grades " + program.grade1 + " - " + program.grade2;
-			program.onClickFunc = undefined;
 		});
 
 		const cards = programs.map((program) =>
-      <ProgramCard key={program.programId}
+      <ProgramCard key={program.programId} // not exposed by reactJs
+				programId={program.programId}
 				title={program.title}
 				grades={program.gradesText}
-				onClick={program.onClickFunc}
+				slug={program.programId}
+				onClick={this.determineOnClick}
 			/>
     );
 
@@ -52,7 +57,9 @@ class ProgramSection extends React.Component {
 class ProgramCard extends React.Component {
 	render() {
 		return (
-			<div className="program-card">
+			<div className="program-card" onClick={() =>
+				this.props.onClick(this.props.programId, this.props.slug)
+			}>
 				<h2>{this.props.title}</h2>
 				<h3>{this.props.grades}</h3>
 					<button>View</button>
