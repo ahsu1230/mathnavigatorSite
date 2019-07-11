@@ -22,9 +22,10 @@ export class ProgramsPage extends React.Component {
 }
 
 class ProgramSection extends React.Component {
-	determineOnClick(programId, slug) {
+	determineOnClick(programId) {
 		var classes = getClasses(programId);
-		window.location.hash = "/class/" + programId + "_" + slug;
+		var slug = classes[0].key; // For now, just grab first class
+		window.location.hash = "/class/" + slug;
 	}
 
 	render() {
@@ -40,7 +41,6 @@ class ProgramSection extends React.Component {
 				programId={program.programId}
 				title={program.title}
 				grades={program.gradesText}
-				slug={program.programId}
 				onClick={this.determineOnClick}
 			/>
     );
@@ -58,7 +58,7 @@ class ProgramCard extends React.Component {
 	render() {
 		return (
 			<div className="program-card" onClick={() =>
-				this.props.onClick(this.props.programId, this.props.slug)
+				this.props.onClick(this.props.programId)
 			}>
 				<h2>{this.props.title}</h2>
 				<h3>{this.props.grades}</h3>

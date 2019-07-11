@@ -6,13 +6,18 @@ export var locationMap = {};
 export var preReqMap = {};
 export var programMap = {};
 export var classMapByKey = {};
+export var classMapByProgramId = {};
 export var sessionMap = {};
 
 function init() {
   console.log('Initializing Programs...');
   locationMap = initLocations(jsons.locations);
   programMap = initPrograms(jsons.programs);
-  classMapByKey = initClassesByKey(jsons.classes);
+
+  var classes = jsons.classes;
+  classMapByKey = initClassesByKey(classes);
+  classMapByProgramId = initClassesByProgramId(classes);
+
   sessionMap = initSessions(jsons.sessions);
   preReqMap = initPreReqs(jsons.prereqs);
   console.log('Programs done initializing.');
@@ -45,10 +50,18 @@ function initClassesByKey(arr) {
   return map;
 }
 
-function filterClassObj(obj) {
-  obj.isAvailable = convertStrToBool(obj.isAvailable);
-  obj.times = convertStringArray(obj.times);
-  return obj;
+function initClassesByProgramId(arr) {
+  var map = {};
+  _.forEach(arr, function(obj) {
+    var id = obj.programId;
+    obj = filterClassObj(obj);
+    if (!map[id] || map[id].length == 0) {
+      map[id] = [obj];
+    } else {
+      map[id].push(obj);
+    }
+  });
+  return map;
 }
 
 function initSessions(arr) {
@@ -77,8 +90,22 @@ function initPreReqs(arr) {
   return map;
 }
 
+/*
+ * Helper functions
+ */
+ function filterClassObj(obj) {
+   obj.isAvailable = convertStrToBool(obj.isAvailable);
+   obj.times = convertStringArray(obj.times);
+   return obj;
+ }
+
 function convertStrToBool(str) {
-  if (str.toLowerCase() === "true") {
+  var isBool = (typeof str == 'boolean');
+  var isString = (typeof str == 'string');
+
+  if (isBool) {
+    return str;
+  } else if (isString && str.toLowerCase() === "true") {
     return true;
   } else {
     return false;
