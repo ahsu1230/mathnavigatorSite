@@ -1,6 +1,5 @@
 'use strict';
 var _ = require('lodash/core');
-
 import jsons from './json/*.json';
 
 export var locationMap = {};
@@ -41,6 +40,7 @@ function initClasses(arr) {
   var map = {};
   _.forEach(arr, function(obj) {
     var id = obj.key;
+    obj.isAvailable = convertStrToBool(obj.isAvailable);
     obj.times = convertStringArray(obj.times);
     map[id] = obj;
   });
@@ -53,7 +53,7 @@ function initSessions(arr) {
     var id = obj.key;
     if (id == "_") { return; }
 
-    obj.canceled = convertToBool(obj.canceled);
+    obj.canceled = convertStrToBool(obj.canceled);
     if (map[id] && map[id].length > 0) {
       map[id].push(obj);
     } else {
@@ -67,14 +67,13 @@ function initPreReqs(arr) {
   var map = {};
   _.forEach(arr, function(obj) {
     var id = obj.programId;
-    console.log(obj.requiredProgramIds);
     obj.requiredProgramIds = convertStringArray(obj.requiredProgramIds);
     map[id] = obj;
   });
   return map;
 }
 
-function convertToBool(str) {
+function convertStrToBool(str) {
   if (str.toLowerCase() === "true") {
     return true;
   } else {

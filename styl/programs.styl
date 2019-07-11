@@ -1,4 +1,53 @@
 @import "static"
 
-p
-  color: red
+#view-program-container
+  width: containerWidthPct
+  max-width: containerWidthPx
+  margin: 0 auto
+
+#view-program-container .section
+  padding: spacing4x 0
+  margin-bottom: spacing8x
+
+  & h2.section-title
+    line-height: propUnit2x
+    margin-bottom: spacing8x
+    font-size: fontSize2
+    color: colorPrimary
+    border-bottom: 1px solid colorGrayLight
+
+  & h3
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorBlackDark
+
+#view-program-container .section .program-card
+  position: relative
+  display: inline-block
+  width: calc(33% - 48px)
+  max-width: 240px
+  height: 200px
+  margin: 0px spacing6x spacing6x 0
+  padding: spacing6x spacing3x spacing3x
+  box-sizing: border-box
+  background-color: colorPrimary
+  text-align: center
+  vertical-align: top
+  cursor: pointer
+
+  &:hover
+    filter: brightness(110%)
+
+  & h2
+    margin: 0
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorWhite
+
+  & h3
+    margin: 0
+    margin-top: spacing1x
+    margin-bottom: spacing4x
+    line-height: fontSize0
+    font-size: fontSize0
+    color: colorWhite

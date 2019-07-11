@@ -4,7 +4,7 @@ var _ = require('lodash/core');
 import profiles from './json/profiles.json';
 import imgHashes from './../../assets/profiles/*.jpg';
 
-function initAllProfiles() {
+function init() {
   console.log("Initializing Profiles...");
   var keys = _.keys(imgHashes);
   _.forEach(profiles, function(profile) {
@@ -23,4 +23,4 @@ export function getAllProfiles() {
   return profiles;
 }
 
-initAllProfiles();
+init();

@@ -3,7 +3,7 @@ require('./../styl/home.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { getAllProfiles } from './variables/initProfiles.js';
+import { getAllProfiles } from './repos/initProfiles.js';
 
 export class HomeSectionStories extends React.Component {
 	render() {
@@ -33,7 +33,7 @@ class StoryProfile extends React.Component {
           <img src={profile.imgSrc}/>
         </div>
         <div className="profile-text-container">
-          <h2>{profile.name}</h2>
+          <h2 className="title">{profile.name}</h2>
           <h3>{profile.subtitle1}</h3>
           <h3>{profile.subtitle2}</h3>
           <p>"{profile.quote}"</p>
