@@ -1,0 +1,200 @@
+[
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "6/3/2019",
+    "canceled": "",
+    "time": "Mon. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "6/10/2019",
+    "canceled": "",
+    "time": "Mon. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "6/17/2019",
+    "canceled": "",
+    "time": "Mon. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "6/24/2019",
+    "canceled": "",
+    "time": "Mon. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "7/1/2019",
+    "canceled": "",
+    "time": "Mon. 6:30pm - 8:30pm",
+    "notes": "Time change!"
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "7/8/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "date": "7/15/2019",
+    "canceled": "",
+    "time": "Mon. 6:30pm - 8:30pm",
+    "notes": "Location change to room 312!"
+  },
+  {
+    "programId": "",
+    "classId": "",
+    "key": "_",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_a",
+    "key": "sat1_summer_a",
+    "date": "6/1/2019",
+    "canceled": "",
+    "time": "Tues. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_a",
+    "key": "sat1_summer_a",
+    "date": "6/8/2019",
+    "canceled": "",
+    "time": "Tues. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_a",
+    "key": "sat1_summer_a",
+    "date": "6/15/2019",
+    "canceled": "",
+    "time": "Tues. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_a",
+    "key": "sat1_summer_a",
+    "date": "6/22/2019",
+    "canceled": "",
+    "time": "Tues. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "",
+    "classId": "",
+    "key": "_",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_b",
+    "key": "sat1_summer_b",
+    "date": "6/1/2019",
+    "canceled": "",
+    "time": "Wed. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_b",
+    "key": "sat1_summer_b",
+    "date": "6/8/2019",
+    "canceled": "",
+    "time": "Wed. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_b",
+    "key": "sat1_summer_b",
+    "date": "6/15/2019",
+    "canceled": "",
+    "time": "Wed. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_b",
+    "key": "sat1_summer_b",
+    "date": "6/22/2019",
+    "canceled": "",
+    "time": "Wed. 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "",
+    "classId": "",
+    "key": "_",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "date": "6/1/2019",
+    "canceled": "",
+    "time": "Fri. 6:30pm - 8:45pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "date": "6/8/2019",
+    "canceled": "",
+    "time": "Fri. 7:00pm - 9:00pm",
+    "notes": "Time change!"
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "date": "6/15/2019",
+    "canceled": "",
+    "time": "Fri. 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "date": "6/22/2019",
+    "canceled": "",
+    "time": "Fri. 7:00pm - 9:00pm",
+    "notes": ""
+  }
+]

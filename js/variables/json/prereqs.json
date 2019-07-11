@@ -1,0 +1,22 @@
+[
+  {
+    "programId": "geometry",
+    "requiredProgramIds": "[algebra]"
+  },
+  {
+    "programId": "sat1",
+    "requiredProgramIds": "[geometry, algebra, algebra2]"
+  },
+  {
+    "programId": "sat2",
+    "requiredProgramIds": "[sat1]"
+  },
+  {
+    "programId": "ap_calc",
+    "requiredProgramIds": "[geometry, algebra, algebra2, pre_calc]"
+  },
+  {
+    "programId": "logical_thinking",
+    "requiredProgramIds": []
+  }
+]

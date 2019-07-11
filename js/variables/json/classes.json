@@ -1,0 +1,101 @@
+[
+  {
+    "programId": "geometry",
+    "classId": "summer_a",
+    "key": "geometry_summer_a",
+    "isAvailable": "TRUE",
+    "locationId": "loc_wchs",
+    "times": "[Thurs. 7:00pm - 9:00pm]",
+    "startDate": "6/3/2019",
+    "endDate": "8/25/2019",
+    "pricePerSession": 45
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_a",
+    "key": "sat1_summer_a",
+    "isAvailable": "TRUE",
+    "locationId": "loc_wchs",
+    "times": "[Mon. 7:00pm - 9:00pm, Thurs. 6:00pm - 8:00pm]",
+    "startDate": "6/4/2019",
+    "endDate": "8/26/2019",
+    "pricePerSession": 55
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_b",
+    "key": "sat1_summer_b",
+    "isAvailable": "TRUE",
+    "locationId": "loc_wchs",
+    "times": "[Tues. 6:00pm - 8:45pm, Sat. 12:00pm - 2:00pm]",
+    "startDate": "6/5/2019",
+    "endDate": "8/27/2019",
+    "pricePerSession": 55
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "isAvailable": "TRUE",
+    "locationId": "loc_wchs",
+    "times": "[Wed. 6:30pm - 8:45pm, Fri. 7:00pm - 9:00pm]",
+    "startDate": "6/6/2019",
+    "endDate": "8/28/2019",
+    "pricePerSession": 55
+  },
+  {
+    "programId": "sat1",
+    "classId": "summer_c",
+    "key": "sat1_summer_c",
+    "isAvailable": "TRUE",
+    "locationId": "loc_wchs",
+    "times": "[Wed. 6:30pm - 8:45pm, Fri. 7:00pm - 9:00pm]",
+    "startDate": "6/6/2019",
+    "endDate": "8/28/2019",
+    "pricePerSession": 55
+  },
+  {
+    "programId": "sat2",
+    "classId": "fall_a",
+    "key": "sat2_fall_a",
+    "isAvailable": "FALSE",
+    "locationId": "loc_wchs",
+    "times": "[Sat. 1:00pm - 3:00pm]",
+    "startDate": "6/7/2019",
+    "endDate": "8/29/2019",
+    "pricePerSession": 60
+  },
+  {
+    "programId": "pre_calc",
+    "classId": "fall_a",
+    "key": "pre_calc_fall_a",
+    "isAvailable": "FALSE",
+    "locationId": "loc_wchs",
+    "times": "[Sat. 3:00pm - 5:00pm]",
+    "startDate": "6/8/2019",
+    "endDate": "8/30/2019",
+    "pricePerSession": 60
+  },
+  {
+    "programId": "ap_calc",
+    "classId": "fall_a",
+    "key": "ap_calc_fall_a",
+    "isAvailable": "FALSE",
+    "locationId": "loc_wchs",
+    "times": "[Sat. 5:00pm - 7:00pm]",
+    "startDate": "6/9/2019",
+    "endDate": "8/31/2019",
+    "pricePerSession": 60
+  },
+  {
+    "programId": "amc8",
+    "classId": "spring_a",
+    "key": "amc8_spring_a",
+    "isAvailable": "FALSE",
+    "locationId": "loc_wchs",
+    "times": "[Sun. 10:00am - 1:00pm]",
+    "startDate": "6/10/2019",
+    "endDate": "9/1/2019",
+    "pricePerSession": 60
+  }
+]
