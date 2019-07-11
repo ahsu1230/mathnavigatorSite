@@ -15,9 +15,7 @@ function init() {
   programMap = initPrograms(jsons.programs);
   classMap = initClasses(jsons.classes);
   sessionMap = initSessions(jsons.sessions);
-  console.log(jsons.prereqs);
   preReqMap = initPreReqs(jsons.prereqs);
-  console.log(JSON.stringify(preReqMap));
   console.log('Programs done initializing.');
 }
 
