@@ -5,16 +5,17 @@ import ReactDOM from 'react-dom';
 import { getProgramClass } from './repos/programRepo.js';
 import { getLocation } from './repos/locationRepo.js';
 import { getSessions } from './repos/sessionRepo.js';
+import { getPrereqs } from './repos/prereqRepo.js';
 
 export class ClassPage extends React.Component {
 	render() {
     const key = this.props.slug;
+
     const pair = getProgramClass(key);
     const programObj = pair.programObj;
     const classObj = pair.classObj;
     const locationObj = getLocation(classObj.locationId);
     const sessions = getSessions(key);
-    console.log(JSON.stringify(sessions));
 
     const schedules = sessions.map((session, index) =>
       <ScheduleSession
@@ -35,7 +36,7 @@ export class ClassPage extends React.Component {
           <p>{programObj.description}</p>
           <p>{programObj.grade1} - {programObj.grade2}</p>
           <p>{locationObj.name}</p>
-          <p>times: {classObj.times}</p>
+          <p>times: {JSON.stringify(classObj.times)}</p>
           <p>start: {classObj.startDate}</p>
           <p>end: {classObj.endDate}</p>
           <p>num sessions: {classObj.times.length} </p>

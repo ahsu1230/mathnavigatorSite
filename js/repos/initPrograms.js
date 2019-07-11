@@ -94,8 +94,11 @@ function initPreReqs(arr) {
  * Helper functions
  */
  function filterClassObj(obj) {
-   obj.isAvailable = convertStrToBool(obj.isAvailable);
-   obj.times = convertStringArray(obj.times);
+   if (!obj.filtered) {
+     obj.isAvailable = convertStrToBool(obj.isAvailable);
+     obj.times = convertStringArray(obj.times);
+     obj.filtered = true;
+   }
    return obj;
  }
 
@@ -113,12 +116,14 @@ function convertStrToBool(str) {
 }
 
 function convertStringArray(str) {
-  if (!str || typeof str != 'string') {
+  if (!str || (typeof str != 'string')) {
     return [];
   }
+
   // We assume the following format:
   // "[a, b, c]"
-  var newStr = str.substring(1, str.length - 1);
+  var newStr = str.slice(0);
+  var newStr = newStr.substring(1, newStr.length - 1);
   var arr = newStr.split(", ");
   return arr;
 }
