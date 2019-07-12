@@ -14,8 +14,7 @@ function generatePrereqs(prereqIds) {
   var prereqsNames = prereqsPrograms.map(function(program) {
     return program ? program.title : null;
   });
-  var prereqsText = prereqsNames.join(", ");
-  return prereqsText ? "Pre-requirements: " + prereqsText : "";
+  return prereqsNames.join(", ");
 }
 
 function generateLocation(locationObj) {
@@ -93,6 +92,10 @@ export class ClassPage extends React.Component {
     // Components
     const classFullName = programObj.title + " " + classObj.className;
     const prereqs = generatePrereqs(prereqIds);
+    let prereqsLine;
+    if (prereqs) {
+      prereqsLine = <div>{"Prequirements: " + prereqs}<br/></div>;
+    }
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
     const textPricing = generatePricing(classObj.pricePerSession, sessions.length);
@@ -106,11 +109,11 @@ export class ClassPage extends React.Component {
           </h1>
 
           <div id="class-info-container">
-            <p className="class-info-1">
+            <div className="class-info-1">
               Grades: {programObj.grade1} - {programObj.grade2}<br/>
-              {prereqs}
+              {prereqsLine}
               {programObj.description}
-            </p>
+            </div>
 
             <div className="class-info-2">
               <b>Location</b>
