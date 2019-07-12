@@ -2,68 +2,162 @@
 require('./../styl/class.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { getProgramClass } from './repos/programRepo.js';
+import { Link } from 'react-router-dom';
+const classNames = require('classnames');
+import { getProgramClass, getProgramByIds } from './repos/programRepo.js';
 import { getLocation } from './repos/locationRepo.js';
 import { getSessions } from './repos/sessionRepo.js';
 import { getPrereqs } from './repos/prereqRepo.js';
+
+function generatePrereqs(prereqIds) {
+  var prereqsPrograms = getProgramByIds(prereqIds);
+  var prereqsNames = prereqsPrograms.map(function(program) {
+    return program ? program.title : null;
+  });
+  var prereqsText = prereqsNames.join(", ");
+  return prereqsText ? "Pre-requirements: " + prereqsText : "";
+}
+
+function generateLocation(locationObj) {
+  return (
+    <p>
+      {locationObj.name}<br/>
+      {locationObj.address1}<br/>
+      {locationObj.address2}<br/>
+      {locationObj.address3}
+    </p>
+  );
+}
+
+function generateTimes(classObj) {
+  const times = classObj.times.map((time, index) =>
+    <p className="line-time" key={index}>{time}</p>
+  );
+  return (
+    <div>
+      {times}
+      <p>
+        First session: {classObj.startDate}<br/>
+        Last session: {classObj.endDate}
+      </p>
+    </div>
+  );
+}
+
+function generatePricing(pricePerSession, numSessions) {
+  return (
+    <p>
+      Number of sessions: {numSessions}<br/>
+      Price per session: ${pricePerSession}<br/>
+      Total: ${numSessions * pricePerSession}<br/>
+    </p>
+  );
+}
+
+function generateSchedules(sessions) {
+  return sessions.map(function(session, index) {
+    var text1 = "";
+    var text2 = ""
+    if (session.canceled) {
+      text1 = "Canceled";
+      text2 = "";
+    } else {
+      text1 = session.time;
+      text2 = session.notes;
+    }
+    return (
+      <SessionLine
+        key = {session.key + index}
+        sessionIndex = {index}
+        date = {session.date}
+        canceled = {session.canceled}
+        text1 = {text1}
+        text2 = {text2}
+      />
+    );
+  });
+}
 
 export class ClassPage extends React.Component {
 	render() {
     const key = this.props.slug;
 
+    // Variables
     const pair = getProgramClass(key);
     const programObj = pair.programObj;
     const classObj = pair.classObj;
     const locationObj = getLocation(classObj.locationId);
     const sessions = getSessions(key);
+    const prereqIds = getPrereqs(programObj.programId).requiredProgramIds;
 
-    const schedules = sessions.map((session, index) =>
-      <ScheduleSession
-        key = {session.key + "_" + index}
-        date = {session.date}
-        canceled = {session.canceled}
-        time = {session.time}
-        notes = {session.notes}
-      />
-    );
+    // Components
+    const classFullName = programObj.title + " " + classObj.className;
+    const prereqs = generatePrereqs(prereqIds);
+    const textLocation = generateLocation(locationObj);
+    const textTimes = generateTimes(classObj);
+    const textPricing = generatePricing(classObj.pricePerSession, sessions.length);
+    const schedules = generateSchedules(sessions);
 
 		return (
       <div id="view-class">
         <div id="view-class-container">
-          Class {key}
-          <p>{programObj.title}</p>
-          <p>{classObj.className}</p>
-          <p>{programObj.description}</p>
-          <p>{programObj.grade1} - {programObj.grade2}</p>
-          <p>{locationObj.name}</p>
-          <p>times: {JSON.stringify(classObj.times)}</p>
-          <p>start: {classObj.startDate}</p>
-          <p>end: {classObj.endDate}</p>
-          <p>num sessions: {classObj.times.length} </p>
-          <p>price per session: ${classObj.pricePerSession} </p>
-          <p>total: ${classObj.times.length * classObj.pricePerSession}</p>
+          <h1>
+            <Link to="/programs">Programs</Link> > {classFullName}
+          </h1>
+
+          <div id="class-info-container">
+            <p className="class-info-1">
+              Grades: {programObj.grade1} - {programObj.grade2}<br/>
+              {prereqs}
+              {programObj.description}
+            </p>
+
+            <div className="class-info-2">
+              <b>Location</b>
+              {textLocation}
+              <b>Times</b>
+              {textTimes}
+              <b>Pricing</b>
+              {textPricing}
+              <button className="inverted">Register</button>
+            </div>
+          </div>
 
           <div id="view-schedule">
-            {schedules}
+            <b>Schedule</b>
+            <ul>
+              {schedules}
+            </ul>
           </div>
+
+          <div id="view-questions">
+            Questions? <Link to="/contact">Contact Us</Link>
+          </div>
+          <Link to="/programs">
+            <button className="inverted">&#60; More Programs</button>
+          </Link>
         </div>
       </div>
 		);
 	}
 }
 
-class ScheduleSession extends React.Component {
+class SessionLine extends React.Component {
   render() {
+    const classText1 = classNames("", {
+      alert: this.props.canceled
+    });
     return (
-      <div>
-        Schedule:
-        <ul>
-          <li>{this.props.date}</li>
-          <li>{this.props.canceled.toString()}</li>
-          <li>{this.props.time}</li>
-          <li>{this.props.notes}</li>
-        </ul>
-      </div>
+      <li>
+        <div className="line-left">
+          <div className="line-index">{this.props.sessionIndex}</div>
+          <div className="line-date">{this.props.date}</div>
+        </div>
+        <div className="line-right">
+          <p className={classText1}>{this.props.text1}</p>
+          <p className="alert">{this.props.text2}</p>
+        </div>
+      </li>
     );
   }
 }

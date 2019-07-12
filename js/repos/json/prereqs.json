@@ -5,7 +5,7 @@
   },
   {
     "programId": "sat1",
-    "requiredProgramIds": "[geometry, algebra, algebra2]"
+    "requiredProgramIds": "[geometry, algebra1, algebra2]"
   },
   {
     "programId": "sat2",
@@ -13,7 +13,7 @@
   },
   {
     "programId": "ap_calc",
-    "requiredProgramIds": "[geometry, algebra, algebra2, pre_calc]"
+    "requiredProgramIds": "[geometry, algebra1, algebra2, pre_calc]"
   },
   {
     "programId": "logical_thinking",

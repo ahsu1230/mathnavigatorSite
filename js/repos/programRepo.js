@@ -31,6 +31,12 @@ export function getAvailablePrograms() {
   };
 }
 
+export function getProgramByIds(arr) {
+  return _.map(arr, function(programId) {
+    return programMap[programId];
+  });
+}
+
 export function getClasses(programId) {
   return classMapByProgramId[programId];
 }
