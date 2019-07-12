@@ -54,6 +54,7 @@ function generatePricing(pricePerSession, numSessions) {
 }
 
 function generateSchedules(sessions) {
+  var sessionCounter = 0;
   return sessions.map(function(session, index) {
     var text1 = "";
     var text2 = ""
@@ -63,11 +64,12 @@ function generateSchedules(sessions) {
     } else {
       text1 = session.time;
       text2 = session.notes;
+      sessionCounter++;
     }
     return (
       <SessionLine
         key = {session.key + index}
-        sessionIndex = {index}
+        sessionIndex = {sessionCounter}
         date = {session.date}
         canceled = {session.canceled}
         text1 = {text1}
@@ -147,18 +149,24 @@ export class ClassPage extends React.Component {
 
 class SessionLine extends React.Component {
   render() {
+    var sessionIndex = this.props.sessionIndex;
+    var date = this.props.date;
+    var canceled = this.props.canceled;
+    var text1 = this.props.text1;
+    var text2 = this.props.text2;
+
     const classText1 = classNames("", {
-      alert: this.props.canceled
+      alert: canceled
     });
     return (
       <li>
         <div className="line-left">
-          <div className="line-index">{this.props.sessionIndex}</div>
-          <div className="line-date">{this.props.date}</div>
+          <div className="line-index">{canceled ? "" : sessionIndex}</div>
+          <div className="line-date">{date}</div>
         </div>
         <div className="line-right">
-          <p className={classText1}>{this.props.text1}</p>
-          <p className="alert">{this.props.text2}</p>
+          <p className={classText1}>{text1}</p>
+          <p className="alert">{text2}</p>
         </div>
       </li>
     );
