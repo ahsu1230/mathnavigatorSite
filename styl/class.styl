@@ -15,21 +15,14 @@
       color: colorPrimary
 
   & .class-info-1
-    margin-bottom: spacing4x
-    line-height: lineHeight0
-    font-size: fontSize0
-    color: colorBlackDark
-
   & .class-info-2
-  & .class-info-2 p
-    margin: 0
     margin-bottom: spacing4x
     line-height: lineHeight0
     font-size: fontSize0
     color: colorBlackDark
 
-    & .line-time
-      margin: 0
+    & .class-lines
+      margin-bottom: spacing4x
 
   & .class-info-2
     position: relative
@@ -70,12 +63,13 @@
       &.line-right
         vertical-align: top
 
-        & p
+        & .class-line
+          display: block
           margin: 0
           color: colorBlackDark
 
-          &.alert
-            color: colorAccent
+        & .alert
+          color: colorAccent
 
 #view-class-container
   & #view-questions

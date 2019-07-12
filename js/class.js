@@ -19,43 +19,62 @@ function generatePrereqs(prereqIds) {
 
 function generateLocation(locationObj) {
   return (
-    <p>
+    <div className="class-lines">
       {locationObj.name}<br/>
       {locationObj.address1}<br/>
       {locationObj.address2}<br/>
       {locationObj.address3}
-    </p>
+    </div>
   );
 }
 
 function generateTimes(classObj) {
   const times = classObj.times.map((time, index) =>
-    <p className="line-time" key={index}>{time}</p>
+    <div key={index}>{time}</div>
   );
   return (
-    <div>
+    <div className="class-lines">
       {times}
-      <p>
+      <div>
         First session: {classObj.startDate}<br/>
         Last session: {classObj.endDate}
-      </p>
+      </div>
     </div>
   );
 }
 
 function generatePricing(pricePerSession, numSessions) {
+  let line1;
+  let line2;
+  let line3;
+  if (numSessions > 0) {
+    line1 = <div>{"Number of sessions: " + numSessions}</div>;
+    line3 = <div>{"Total: $" + numSessions * pricePerSession}</div>;
+  } else {
+
+  }
+  line2 = <div>{"Price per session: $" + pricePerSession}</div>;
   return (
-    <p>
-      Number of sessions: {numSessions}<br/>
-      Price per session: ${pricePerSession}<br/>
-      Total: ${numSessions * pricePerSession}<br/>
-    </p>
+    <div className="class-lines">
+      {line1}
+      {line2}
+      {line3}
+    </div>
   );
 }
 
 function generateSchedules(sessions) {
-  var sessionCounter = 0;
-  return sessions.map(function(session, index) {
+  if (!sessions || sessions.length == 0) {
+    return (
+      <div className="class-lines not-avail">
+        No schedule available at the moment. <br/>
+        Please check again later.
+      </div>
+    );
+  }
+
+  var sessionIndex = 0;
+  const sessionLines = sessions.map(function(session, index) {
     var text1 = "";
     var text2 = ""
     if (session.canceled) {
@@ -64,12 +83,12 @@ function generateSchedules(sessions) {
     } else {
       text1 = session.time;
       text2 = session.notes;
-      sessionCounter++;
+      sessionIndex++;
     }
     return (
       <SessionLine
         key = {session.key + index}
-        sessionIndex = {sessionCounter}
+        sessionIndex = {sessionIndex}
         date = {session.date}
         canceled = {session.canceled}
         text1 = {text1}
@@ -77,6 +96,11 @@ function generateSchedules(sessions) {
       />
     );
   });
+  return (
+    <ul>
+      {sessionLines}
+    </ul>
+  );
 }
 
 export class ClassPage extends React.Component {
@@ -88,8 +112,16 @@ export class ClassPage extends React.Component {
     const programObj = pair.programObj;
     const classObj = pair.classObj;
     const locationObj = getLocation(classObj.locationId);
-    const sessions = getSessions(key);
-    const prereqIds = getPrereqs(programObj.programId).requiredProgramIds;
+    let sessions = getSessions(key);
+    sessions = sessions ? sessions : [];
+    var sessionCounter = 0;
+    sessions.forEach(function(session) {
+      if (!session.canceled) {
+        sessionCounter++;
+      }
+    });
+    var programPrereqs = getPrereqs(programObj.programId);
+    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
 
     // Components
     const classFullName = programObj.title + " " + classObj.className;
@@ -100,7 +132,7 @@ export class ClassPage extends React.Component {
     }
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
-    const textPricing = generatePricing(classObj.pricePerSession, sessions.length);
+    const textPricing = generatePricing(classObj.pricePerSession, sessionCounter);
     const schedules = generateSchedules(sessions);
 
 		return (
@@ -130,9 +162,7 @@ export class ClassPage extends React.Component {
 
           <div id="view-schedule">
             <b>Schedule</b>
-            <ul>
-              {schedules}
-            </ul>
+            {schedules}
           </div>
 
           <div id="view-questions">
@@ -165,8 +195,8 @@ class SessionLine extends React.Component {
           <div className="line-date">{date}</div>
         </div>
         <div className="line-right">
-          <p className={classText1}>{text1}</p>
-          <p className="alert">{text2}</p>
+          <div className={classText1}>{text1}</div>
+          <div className="class-line alert">{text2}</div>
         </div>
       </li>
     );
