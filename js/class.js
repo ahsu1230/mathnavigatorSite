@@ -156,7 +156,9 @@ export class ClassPage extends React.Component {
               {textTimes}
               <b>Pricing</b>
               {textPricing}
-              <button className="inverted">Register</button>
+              <Link to={"/contact"}>
+                <button className="inverted">Register</button>
+              </Link>
             </div>
           </div>
 
