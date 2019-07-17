@@ -13,6 +13,7 @@
     text-align: center
 
   & .announce-card
+    position: relative
     margin: spacing8x 0
     padding: spacing2x 0
 
@@ -25,3 +26,20 @@
     & .card-author
       line-height: lineHeight0
       font-size: fontSize0
+
+    & .card-links a
+      display: block
+      margin: spacing2x 0
+
+    & .card-alert
+      display: none
+      position: absolute
+      top: spacing1x
+      right: 0
+      padding: spacing1x spacing2x
+      background-color: colorAlert
+      font-size: fontSize0
+      line-height: lineHeight0
+
+      &.show
+        display: inline-block

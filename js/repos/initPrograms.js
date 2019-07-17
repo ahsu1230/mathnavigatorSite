@@ -95,7 +95,7 @@ function initPreReqs(arr) {
 function initAnnounce(arr) {
   var list = [];
   _.forEach(arr, function(obj) {
-    obj.urgent = convertStrToBool(obj.urgent);
+    obj.important = convertStrToBool(obj.important);
     obj.classKeys = convertStringArray(obj.classKeys);
     list.push(obj);
   });
