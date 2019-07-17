@@ -8,6 +8,7 @@ export var programMap = {};
 export var classMapByKey = {};
 export var classMapByProgramId = {};
 export var sessionMap = {};
+export var announceList = [];
 
 function init() {
   console.log('Initializing Programs...');
@@ -20,6 +21,7 @@ function init() {
 
   sessionMap = initSessions(jsons.sessions);
   preReqMap = initPreReqs(jsons.prereqs);
+  announceList = initAnnounce(jsons.announcements);
   console.log('Programs done initializing.');
 }
 
@@ -88,6 +90,16 @@ function initPreReqs(arr) {
     map[id] = obj;
   });
   return map;
+}
+
+function initAnnounce(arr) {
+  var list = [];
+  _.forEach(arr, function(obj) {
+    obj.urgent = convertStrToBool(obj.urgent);
+    obj.classKeys = convertStringArray(obj.classKeys);
+    list.push(obj);
+  });
+  return list.reverse(); // Newest post to oldest
 }
 
 /*
