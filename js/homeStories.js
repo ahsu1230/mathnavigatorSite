@@ -3,7 +3,7 @@ require('./../styl/home.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { getAllProfiles } from './repos/initProfiles.js';
+import { getAllProfiles } from './repos/mainRepo.js';
 
 export class HomeSectionStories extends React.Component {
 	render() {

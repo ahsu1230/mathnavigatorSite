@@ -1,10 +1,32 @@
 'use strict';
 var _ = require('lodash/core');
 import {
-  programMap,
+  announceList,
   classMapByKey,
-  classMapByProgramId
+  classMapByProgramId,
+  locationMap,
+  preReqMap,
+  programMap,
+  sessionMap
 } from './initPrograms.js';
+import { profileList } from './initProfiles.js';
+
+export function getAnnounceList() {
+  return announceList;
+}
+
+export function getLocation(locationId) {
+  return locationMap[locationId];
+}
+
+export function getPrereqs(programId) {
+  return preReqMap[programId];
+}
+
+export function getSessions(programClassKey) {
+  return sessionMap[programClassKey];
+}
+
 
 export function getAvailablePrograms() {
   var mapAvail = {};
@@ -49,4 +71,12 @@ export function getProgramClass(key) {
     programObj: programMap[programId],
     classObj: classObj
   };
+}
+
+export function getProfileById(profileId) {
+  return _.find(profileList, {id: profileId});
+}
+
+export function getAllProfiles() {
+  return profileList;
 }

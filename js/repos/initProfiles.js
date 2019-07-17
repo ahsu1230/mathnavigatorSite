@@ -4,6 +4,8 @@ var _ = require('lodash/core');
 import profiles from './json/profiles.json';
 import imgHashes from './../../assets/profiles/*.jpg';
 
+export var profileList = [];
+
 function init() {
   console.log("Initializing Profiles...");
   var keys = _.keys(imgHashes);
@@ -11,16 +13,9 @@ function init() {
     var profileId = profile.id;
     var imgHash = imgHashes[profileId];
     profile.imgSrc = imgHash;
+    profileList.push(profile);
   });
   console.log("Profiles done initializing.");
-}
-
-export function getProfileById(profileId) {
-  return _.find(profiles, {id: profileId});
-}
-
-export function getAllProfiles() {
-  return profiles;
 }
 
 init();

@@ -2,7 +2,10 @@
 require('./../styl/programs.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { getAvailablePrograms, getClasses } from './repos/programRepo.js';
+import {
+	getAvailablePrograms,
+	getClasses 
+} from './repos/mainRepo.js';
 
 export class ProgramsPage extends React.Component {
 	render() {

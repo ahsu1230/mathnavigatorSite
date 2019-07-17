@@ -4,10 +4,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 const classNames = require('classnames');
-import { getProgramClass, getProgramByIds } from './repos/programRepo.js';
-import { getLocation } from './repos/locationRepo.js';
-import { getSessions } from './repos/sessionRepo.js';
-import { getPrereqs } from './repos/prereqRepo.js';
+import {
+  getLocation,
+  getPrereqs,
+  getProgramClass,
+  getProgramByIds,
+  getSessions
+} from './repos/mainRepo.js';
 
 function generatePrereqs(prereqIds) {
   var prereqsPrograms = getProgramByIds(prereqIds);

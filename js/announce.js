@@ -3,13 +3,12 @@ require('./../styl/announce.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { getList } from './repos/announceRepo.js';
-import { getProgramClass } from './repos/programRepo.js';
+import { getAnnounceList, getProgramClass } from './repos/mainRepo.js';
 const classnames = require('classnames');
 
 export class AnnouncePage extends React.Component {
 	render() {
-		const announcements = getList();
+		const announcements = getAnnounceList();
 
 		const cards = announcements.map((obj, index) =>
 			<AnnounceCard key={index} announcement={obj} />
