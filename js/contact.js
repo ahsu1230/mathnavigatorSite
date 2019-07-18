@@ -56,7 +56,7 @@ export class ContactPage extends React.Component {
 								Information will be sent to:<br/>
 								<a>andymathnavigator@gmail.com</a>
 							</p>
-							<button>Submit</button>
+							<button onClick={handleSubmit}>Submit</button>
 						</div>
 					</div>
         </div>
@@ -79,4 +79,33 @@ class ContactInput extends React.Component {
 			</div>
 		);
 	}
+}
+
+function handleSubmit(event) {
+	event.preventDefault()
+	const template = "mathnavigatorwebsitecontact";
+	const receiverEmail = "andymathnavigator@gmail.com";
+
+	console.log("Sending email...");
+  sendFeedback(
+    template,
+    "somebody@andymathnavigator.com",
+    receiverEmail,
+    "hello"
+	);
+	console.log("Email request sent");
+}
+
+function sendFeedback (templateId, senderEmail, receiverEmail, emailMessage) {
+  window.emailjs.send(
+    'mailgun',
+    templateId,
+    {
+      senderEmail,
+      receiverEmail,
+      emailMessage
+    }
+	).then(res => {
+    console.log("Email success!");
+  }).catch(err => console.error('Failed to send feedback. Error: ', err))
 }
