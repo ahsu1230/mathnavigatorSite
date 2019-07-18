@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {
 	getAvailablePrograms,
-	getClasses 
+	getClasses
 } from './repos/mainRepo.js';
 
 export class ProgramsPage extends React.Component {
@@ -58,13 +58,19 @@ class ProgramSection extends React.Component {
 
 class ProgramCard extends React.Component {
 	render() {
+		const programId = this.props.programId;
+		const onClickFn = this.props.onClick;
+		var onClick = function() {
+			onClickFn(programId);
+		};
+
 		return (
-			<div className="program-card" onClick={() =>
-				this.props.onClick(this.props.programId)
-			}>
-				<h2>{this.props.title}</h2>
-				<h3>{this.props.grades}</h3>
+			<div className="program-card" onClick={onClick}>
+				<div className="program-card-content">
+					<h2>{this.props.title}</h2>
+					<h3>{this.props.grades}</h3>
 					<button>View</button>
+				</div>
 			</div>
 		);
 	}

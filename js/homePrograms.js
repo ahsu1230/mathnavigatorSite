@@ -55,6 +55,7 @@ export class HomeSectionPrograms extends React.Component {
 class ProgramCard extends React.Component {
   render() {
     var program = this.props.program;
+    var url = getNav("programs").url;
     // var url = getNav(this.props.programId).url;
     return (
       <div className="home-tile-card program">
@@ -63,7 +64,9 @@ class ProgramCard extends React.Component {
         </div>
         <h3>{program.title}</h3>
         <p>{program.description}</p>
-        <button className="inverted">Sign Up</button>
+        <Link to={url}>
+          <button className="inverted">Sign Up</button>
+        </Link>
       </div>
     );
   }

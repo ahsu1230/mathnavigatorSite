@@ -53,7 +53,7 @@ export class ContactPage extends React.Component {
 					<div className="section input">
 						<h2>Student Information</h2>
 						<div className="contact-input-container">
-							<ContactInput addClasses="student-fname" title="First Name" onError="Not valid" propertyName="studentFirstName" updateCallback={this.updateCb}/>
+							<ContactInput addClasses="student-fname" title="First Name" propertyName="studentFirstName" updateCallback={this.updateCb}/>
 							<ContactInput addClasses="student-lname" title="Last Name" propertyName="studentLastName" updateCallback={this.updateCb}/>
 						</div>
 						<div className="contact-input-container">
@@ -146,7 +146,10 @@ export class ContactPage extends React.Component {
 class ContactInput extends React.Component {
 	constructor(props){
     super(props);
-		this.state = { inputValue: "" };
+		this.state = {
+			inputValue: "",
+			errorMsg: ""
+		};
 		this.updateInputValue = this.updateInputValue.bind(this);
   }
 
@@ -161,14 +164,14 @@ class ContactInput extends React.Component {
 		const classNames = classnames("contact-input", this.props.addClasses);
 		const title = this.props.title;
 		const placeholder = this.props.placeholder;
-		const onError = this.props.onError;
+		const onErrorFn = this.props.onError;
 		return (
 			<div className={classNames}>
 				<label>{title}</label>
 				<input placeholder={placeholder}
 							value={this.state.inputValue}
 							onChange={this.updateInputValue}/>
-				<label>{this.props.onError}</label>
+				<label>{this.state.errorMsg}</label>
 			</div>
 		);
 	}

@@ -10,17 +10,17 @@ const srcLibrary = require('../assets/library_white.svg');
 const cards = [
   {
     title: "Dedicated Professionalism",
-    description: "(Arial) Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
+    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
     imgSrc: srcUserCheck
   },
   {
     title: "Strategical Thinking",
-    description: "(Verdana) Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
+    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
     imgSrc: srcLightBulb
   },
   {
     title: "Abundant Resources",
-    description: "(Roboto) Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
+    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
     imgSrc: srcLibrary
   }
 ];

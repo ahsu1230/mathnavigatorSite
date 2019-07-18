@@ -25,11 +25,9 @@
 #view-program-container .section .program-card
   position: relative
   display: inline-block
-  width: calc(33% - 48px)
-  max-width: 240px
+  width: 220px
   height: 200px
   margin: 0px spacing6x spacing6x 0
-  padding: spacing6x spacing3x spacing3x
   box-sizing: border-box
   background-color: colorPrimary
   text-align: center
@@ -39,7 +37,14 @@
   &:hover
     filter: brightness(110%)
 
+  & .program-card-content
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
   & h2
+    width: propUnit6x
     margin: 0
     line-height: lineHeight1
     font-size: fontSize1
