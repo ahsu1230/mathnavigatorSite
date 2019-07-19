@@ -65,6 +65,8 @@ export function getClasses(programId) {
 
 export function getProgramClass(key) {
   var classObj = classMapByKey[key];
+  if (!classObj) { return {}; }
+  
   var programId = classObj.programId;
   var programObj = programMap[programId];
   return {

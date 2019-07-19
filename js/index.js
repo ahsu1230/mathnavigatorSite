@@ -14,13 +14,14 @@ import { ProgramsPage } from './programs.js';
 import { ContactPage } from './contact.js';
 import { Footer } from './footer.js';
 import { ClassPage } from './class.js';
+import { ErrorPage } from './error.js';
 
 const Home = () => <HomePage/>;
 const Announce = () => <AnnouncePage/>;
 const Programs = () => <ProgramsPage/>;
 const Contact = () => <ContactPage/>;
 const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
-
+const Error = () => <ErrorPage/>;
 
 class MainContainer extends React.Component {
 	render() {
@@ -29,11 +30,12 @@ class MainContainer extends React.Component {
         <div>
           <Header/>
           <Switch>
+            <Route path="/" exact component={Home}/>
             <Route path="/announcements" component={Announce}/>
             <Route path="/programs" component={Programs}/>
             <Route path="/contact" component={Contact}/>
             <Route path="/class/:slug" component={ClassPageWithSlug}/>
-            <Route path="/" component={Home}/>
+            <Route path="/" component={Error}/>
           </Switch>
           <Footer/>
         </div>

@@ -3,6 +3,7 @@ require('./../styl/class.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { ErrorPage } from './error.js';
 const classNames = require('classnames');
 import {
   getLocation,
@@ -107,15 +108,37 @@ function generateSchedules(sessions) {
 }
 
 export class ClassPage extends React.Component {
-	render() {
+  render () {
+    var valid = true;
     const key = this.props.slug;
+    const pair = getProgramClass(key);
+    valid = valid && Boolean(pair);
+    valid = valid && Boolean(pair.programObj);
+    valid = valid && Boolean(pair.classObj);
+
+    var content;
+    if (valid) {
+      content = <ClassContent classKey={key} pair={pair}/>;
+    } else {
+      content = <ErrorPage classDNE={key}/>;
+    }
+
+    return (
+      <div> {content} </div>
+    );
+  }
+}
+
+class ClassContent extends React.Component {
+	render() {
+    const classKey = this.props.classKey;
+    const pair = this.props.pair;
 
     // Variables
-    const pair = getProgramClass(key);
     const programObj = pair.programObj;
     const classObj = pair.classObj;
     const locationObj = getLocation(classObj.locationId);
-    let sessions = getSessions(key);
+    let sessions = getSessions(classKey);
     sessions = sessions ? sessions : [];
     var sessionCounter = 0;
     sessions.forEach(function(session) {
