@@ -2,6 +2,7 @@
 require('./../styl/contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ContactInterestModal } from './contactInterest.js';
 const classnames = require('classnames');
 
 
@@ -41,10 +42,6 @@ export class ContactPage extends React.Component {
 	}
 
 	render() {
-		var interestedPrograms = [];
-		const interestedButtonText =
-			interestedPrograms.length > 0 ? "Select More Programs..." : "Select Programs...";
-
 		return (
       <div id="view-contact">
         <div id="view-contact-container">
@@ -78,9 +75,7 @@ export class ContactPage extends React.Component {
 					</div>
 
 					<div className="section interested">
-						<h2>Interested Programs</h2>
-						<div className="list-interested">{interestedPrograms}</div>
-						<button className="inverted">{interestedButtonText}</button>
+						<ContactInterestModal/>
 					</div>
 
 					<div className="section additional">

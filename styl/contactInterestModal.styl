@@ -1,0 +1,105 @@
+@import "static"
+
+column1Width = propUnit4x
+column2Width = propUnit6x
+columnSpacing = spacing4x
+
+colorHighlight = colorTurquoiseLight
+
+#interest-modal
+  width: propUnit16x
+  height: propUnit12x
+  padding: spacing4x
+
+  & h1
+    margin: 0
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorPrimary
+
+  #interest-headers
+    margin-top: spacing2x
+    border-bottom: 1px solid colorGrayLight
+
+    & .header
+      display: inline-block
+      margin-right: columnSpacing
+      line-height: propUnit1x
+      font-size: fontSize0
+      color: colorPrimary
+
+      &.class-name
+        margin-left: (spacing2x + 5px)
+        width: column1Width
+      &.times
+        width: column2Width
+
+      &.start-date
+        margin: 0
+
+  #interest-view
+    position: relative
+    width: 100%
+    height: propUnit8x
+    overflow-y: scroll
+
+    &::-webkit-scrollbar
+      width: 6px
+    &::-webkit-scrollbar-track
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    &::-webkit-scrollbar-thumb
+      background-color: colorPrimary
+
+
+    & ul
+      margin: spacing2x 0
+      padding: 0
+
+      & h2
+        margin: spacing2x 0
+        font-size: fontSize0
+        font-weight: normal
+
+    & li
+      margin-bottom: spacing4x
+      list-style: none
+      font-size: fontSize0
+
+      &:last-child
+        margin-bottom: 0
+      &.highlight
+        color: colorHighlight
+
+      & div
+        display: inline-block
+        vertical-align: top
+        line-height: lineHeight0
+
+      & input
+        position: relative
+        top: 3px
+        display: inline-block
+        margin: 0 spacing1x 0 0
+        cursor: pointer
+
+      & .class-name
+        width: column1Width
+        margin-right: columnSpacing
+
+      & .times
+        width: column2Width
+        margin-right: columnSpacing
+
+
+  & .selected-line
+    float: left
+    margin-top: spacing2x
+    font-size: fontSize0
+    line-height: lineHeight0
+
+    &.highlight
+      color: colorHighlight
+
+  & button.btn-done
+    float: right
+    margin-top: spacing2x

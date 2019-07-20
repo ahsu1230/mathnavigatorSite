@@ -27,7 +27,6 @@ export function getSessions(programClassKey) {
   return sessionMap[programClassKey];
 }
 
-
 export function getAvailablePrograms() {
   var mapAvail = {};
   var mapSoon = {};
@@ -63,10 +62,42 @@ export function getClasses(programId) {
   return classMapByProgramId[programId];
 }
 
+export function getAvailableClasses() {
+  var pair = getAvailablePrograms();
+  var progsAvail = pair.available;
+  var progsSoon = pair.soon;
+
+  var classesAvail = [];
+  var classesSoon = [];
+
+  _.forEach(progsAvail, function(progObj) {
+    var programId = progObj.programId;
+    var classList = classMapByProgramId[programId];
+    var fullClassList = classList.map(classObj =>
+      createFullClassObj(classObj, progObj)
+    );
+    classesAvail = classesAvail.concat(fullClassList);
+  });
+
+  _.forEach(progsSoon, function(progObj) {
+    var programId = progObj.programId;
+    var classList = classMapByProgramId[programId];
+    var fullClassList = classList.map(classObj =>
+      createFullClassObj(classObj, progObj)
+    );
+    classesSoon = classesSoon.concat(fullClassList);
+  });
+
+  return {
+    "available": classesAvail,
+    "soon": classesSoon
+  }
+}
+
 export function getProgramClass(key) {
   var classObj = classMapByKey[key];
   if (!classObj) { return {}; }
-  
+
   var programId = classObj.programId;
   var programObj = programMap[programId];
   return {
@@ -81,4 +112,14 @@ export function getProfileById(profileId) {
 
 export function getAllProfiles() {
   return profileList;
+}
+
+function createFullClassObj(classObj, programObj) {
+  var className = classObj.className;
+  classObj.fullClassName = programObj.title + (className ? (" " + className) : "");
+  classObj.programTitle = programObj.title;
+  classObj.grade1 = programObj.grade1;
+  classObj.grade2 = programObj.grade2;
+  classObj.description = programObj.description;
+  return classObj;
 }
