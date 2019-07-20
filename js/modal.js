@@ -8,17 +8,10 @@ const srcClose = require('../assets/close_black.svg');
 export class Modal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      show: true
-    }
     this.handleDismiss = this.handleDismiss.bind(this);
   }
 
   handleDismiss() {
-    console.log("Dismissing modal...");
-    this.setState({
-      show: false
-    });
     if (this.props.onDismiss) {
       this.props.onDismiss();
     }
@@ -26,9 +19,12 @@ export class Modal extends React.Component {
 
   render() {
     const modalContent = this.props.content;
+    const modalViewClasses = classnames("", {
+      show: this.props.show
+    });
     var modalClasses = classnames("modal", this.props.modalClassName);
     return (
-      <div id="modal-view">
+      <div id="modal-view" className={modalViewClasses}>
         <div id="modal-overlay" onClick={this.handleDismiss}></div>
         <div className={modalClasses}>
           <button className="close-x" onClick={this.handleDismiss}>

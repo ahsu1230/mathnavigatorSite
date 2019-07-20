@@ -3,8 +3,9 @@ require('./../styl/contactInterestModal.styl');
 import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 import { Modal } from './modal.js';
-import { getAllClasses, getAvailableClasses } from './repos/mainRepo.js';
+import { getProgramClass, getAvailableClasses } from './repos/mainRepo.js';
 const classnames = require('classnames');
 
 export class ContactInterestModal extends React.Component {
@@ -16,6 +17,15 @@ export class ContactInterestModal extends React.Component {
     };
 
     this.onSelectProgram = this.onSelectProgram.bind(this);
+    this.onToggleShowModal = this.onToggleShowModal.bind(this);
+  }
+
+  onToggleShowModal() {
+    const show = this.state.showModal;
+    var newShow = !show;
+    this.setState({
+      showModal: newShow
+    });
   }
 
   onSelectProgram(classKey, selected) {
@@ -32,23 +42,19 @@ export class ContactInterestModal extends React.Component {
 
   render() {
     const interestedClasses = this.state.interested;
-    var interestedButtonText = "";
-    if (interestedClasses.length > 0) {
-      interestedButtonText = "Select More Programs...";
-    } else {
-      interestedButtonText = "Select Programs...";
-    }
-
+    const interestedSection = generateInterested(interestedClasses, this.onToggleShowModal);
     const interestModal = <InterestModal
                   onSelectProgram={this.onSelectProgram}
-                  interested={interestedClasses}/>;
-
+                  interested={interestedClasses}
+                  onDismiss={this.onToggleShowModal}/>;
     return (
       <div>
         <h2>Interested Programs</h2>
-        <div className="list-interested">{interestedClasses}</div>
-        <button className="inverted">{interestedButtonText}</button>
-        <Modal content={interestModal}></Modal>
+        {interestedSection}
+        <Modal content={interestModal}
+          show={this.state.showModal}
+          onDismiss={this.onToggleShowModal}>
+        </Modal>
       </div>
     );
   }
@@ -94,7 +100,7 @@ class InterestModal extends React.Component {
           </ul>
         </div>
         <div className={selectedLineClassNames}>{selectedLineText}</div>
-        <button className="btn-done">Done</button>
+        <button className="btn-done" onClick={this.props.onDismiss}>Done</button>
       </div>
     );
   }
@@ -141,6 +147,45 @@ class InterestList extends React.Component {
         <div className="times">{times}</div>
         <div className="start-date">{startingDate}</div>
       </li>
+    );
+  }
+}
+
+/* Helper Functions */
+function generateInterested(interestedList, onClick) {
+  var nonEmpty = interestedList.length > 0;
+  var interestedButtonText = nonEmpty ? "Select More Programs..." : "Select Programs...";
+  if (nonEmpty) {
+    var numClasses = interestedList.length;
+    var numClassText = numClasses == 1 ? numClasses + " class." : numClasses + " classes."
+
+    const selectedText = interestedList.map(function(classKey, index) {
+      var pair = getProgramClass(classKey);
+      var programTitle = pair.programObj.title;
+      var className = pair.classObj.className;
+      var fullName = className ? programTitle + " " + className : programTitle;
+      var url = "/class/" + classKey;
+      return (
+        <Link key={index} to={url}>{fullName}</Link>
+      );
+    });
+
+    return (
+      <div id="contact-section-interested">
+        <p>
+          You have selected {numClassText}<br/>
+          {selectedText}
+        </p>
+        <button className="inverted" onClick={onClick}>
+          {interestedButtonText}
+        </button>
+      </div>
+    );
+  } else {
+    return (
+      <button className="inverted" onClick={onClick}>
+        {interestedButtonText}
+      </button>
     );
   }
 }
