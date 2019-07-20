@@ -182,7 +182,7 @@ class ClassContent extends React.Component {
               {textTimes}
               <b>Pricing</b>
               {textPricing}
-              <Link to={"/contact"}>
+              <Link to={"/contact?interest=" + classKey}>
                 <button className="inverted">Register</button>
               </Link>
             </div>
@@ -194,7 +194,7 @@ class ClassContent extends React.Component {
           </div>
 
           <div id="view-questions">
-            Questions? <Link to="/contact">Contact Us</Link>
+            Questions? <Link to={"/contact?interest=" + classKey}>Contact Us</Link>
           </div>
           <Link to="/programs">
             <button className="inverted">&#60; More Programs</button>

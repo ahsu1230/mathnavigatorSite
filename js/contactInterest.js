@@ -7,13 +7,21 @@ import { Link } from 'react-router-dom';
 import { Modal } from './modal.js';
 import { getProgramClass, getAvailableClasses } from './repos/mainRepo.js';
 const classnames = require('classnames');
+const queryString = require('query-string');
 
-export class ContactInterestModal extends React.Component {
+export class ContactInterestSection extends React.Component {
   constructor(props) {
     super(props);
+    var interested = [];
+
+    var parsed = parseQuery();
+    if (parsed.interest) {
+      interested.push(parsed.interest);
+    }
+
     this.state = {
       showModal: false,
-      interested: []
+      interested: interested
     };
 
     this.onSelectProgram = this.onSelectProgram.bind(this);
@@ -41,7 +49,7 @@ export class ContactInterestModal extends React.Component {
   }
 
   render() {
-    const interestedClasses = this.state.interested;
+    const interestedClasses = this.state.interested || [];
     const interestedSection = generateInterested(interestedClasses, this.onToggleShowModal);
     const interestModal = <InterestModal
                   onSelectProgram={this.onSelectProgram}
@@ -62,7 +70,11 @@ export class ContactInterestModal extends React.Component {
 
 class InterestModal extends React.Component {
   render() {
-    const interestedClasses = this.props.interested;
+    const interestedClasses = this.props.interested || [];
+    var interestClassMap = {};
+    interestedClasses.forEach((classKey) => {
+      interestClassMap[classKey] = true;
+    });
     const numClasses = interestedClasses.length;
 
     var classesPair = getAvailableClasses();
@@ -76,12 +88,9 @@ class InterestModal extends React.Component {
     selectedLineText += (numClasses == 1 ? " class " : " classes ");
     selectedLineText += "selected";
 
-    const listAvail = classesAvail.map((classObj, index) =>
-      <InterestList key={index} classObj={classObj} onSelect={this.props.onSelectProgram}/>
-    );
-    const listSoon = classesSoon.map((classObj, index) =>
-      <InterestList key={index} classObj={classObj} onSelect={this.props.onSelectProgram}/>
-    );
+    const onSelectProgram = this.props.onSelectProgram;
+    const listAvail = createInterestItems(classesAvail, interestClassMap, onSelectProgram);
+    const listSoon = createInterestItems(classesSoon, interestClassMap, onSelectProgram);
 
     return (
       <div id="interest-modal">
@@ -106,11 +115,11 @@ class InterestModal extends React.Component {
   }
 }
 
-class InterestList extends React.Component {
+class InterestItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      highlighted: false
+      highlighted: this.props.selected || false
     }
     this.handleSelected = this.handleSelected.bind(this);
   }
@@ -142,7 +151,9 @@ class InterestList extends React.Component {
 
     return (
       <li className={liClassNames}>
-        <input type="checkbox" name="interest" value="program" onClick={this.handleSelected}/>
+        <input type="checkbox" name="interest" value="program"
+              onChange={this.handleSelected}
+              checked={this.props.selected}/>
         <div className="class-name">{className}</div>
         <div className="times">{times}</div>
         <div className="start-date">{startingDate}</div>
@@ -188,4 +199,27 @@ function generateInterested(interestedList, onClick) {
       </button>
     );
   }
+}
+
+function createInterestItems(listClasses, interestedMap, onSelect) {
+  return listClasses.map(function(classObj, index) {
+    var isSelected = interestedMap[classObj.key] || false;
+    return (
+      <InterestItem key={index}
+                classObj={classObj}
+                selected={isSelected}
+                onSelect={onSelect}/>
+    );
+  });
+}
+
+function parseQuery() {
+  var hash = window.location.hash;
+  var i = hash.indexOf("?");
+  var parsed = {};
+  if (i > 0) {
+    hash = hash.slice(i);
+    parsed = queryString.parse(hash);
+  }
+  return parsed;
 }

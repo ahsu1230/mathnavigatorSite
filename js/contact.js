@@ -2,7 +2,7 @@
 require('./../styl/contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ContactInterestModal } from './contactInterest.js';
+import { ContactInterestSection } from './contactInterest.js';
 const classnames = require('classnames');
 
 
@@ -75,7 +75,7 @@ export class ContactPage extends React.Component {
 					</div>
 
 					<div className="section interested">
-						<ContactInterestModal/>
+						<ContactInterestSection/>
 					</div>
 
 					<div className="section additional">
