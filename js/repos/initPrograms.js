@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash/core');
+import { forEach } from 'lodash';
 import jsons from './json/*.json';
 
 export var locationMap = {};
@@ -27,7 +27,7 @@ function init() {
 
 function initLocations(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.locationId;
     map[id] = obj;
   });
@@ -36,7 +36,7 @@ function initLocations(arr) {
 
 function initPrograms(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.programId;
     map[id] = obj;
   });
@@ -45,7 +45,7 @@ function initPrograms(arr) {
 
 function initClassesByKey(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.key;
     map[id] = filterClassObj(obj);
   });
@@ -54,7 +54,7 @@ function initClassesByKey(arr) {
 
 function initClassesByProgramId(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.programId;
     obj = filterClassObj(obj);
     if (!map[id] || map[id].length == 0) {
@@ -68,7 +68,7 @@ function initClassesByProgramId(arr) {
 
 function initSessions(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.key;
     if (id == "_") { return; }
 
@@ -84,7 +84,7 @@ function initSessions(arr) {
 
 function initPreReqs(arr) {
   var map = {};
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     var id = obj.programId;
     obj.requiredProgramIds = convertStringArray(obj.requiredProgramIds);
     map[id] = obj;
@@ -94,7 +94,7 @@ function initPreReqs(arr) {
 
 function initAnnounce(arr) {
   var list = [];
-  _.forEach(arr, function(obj) {
+  forEach(arr, function(obj) {
     obj.important = convertStrToBool(obj.important);
     obj.classKeys = convertStringArray(obj.classKeys);
     list.push(obj);

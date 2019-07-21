@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash/core');
+import { find } from 'lodash';
 
 export const NavLinks = [
   { id: "home", name: "Home", url: "/" },
@@ -9,7 +9,7 @@ export const NavLinks = [
 ];
 
 export function getNav(id) {
-  return _.find(NavLinks, {id: id});
+  return find(NavLinks, {id: id});
 }
 
 export function isPathAt(url) {

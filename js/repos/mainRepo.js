@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash/core');
+import { find, forEach, map } from 'lodash';
 import {
   announceList,
   classMapByKey,
@@ -31,7 +31,7 @@ export function getAvailablePrograms() {
   var mapAvail = {};
   var mapSoon = {};
 
-  _.forEach(classMapByKey, function(obj) {
+  forEach(classMapByKey, function(obj) {
     var programId = obj.programId;
     var program = programMap[programId];
 
@@ -53,7 +53,7 @@ export function getAvailablePrograms() {
 }
 
 export function getProgramByIds(arr) {
-  return _.map(arr, function(programId) {
+  return map(arr, function(programId) {
     return programMap[programId];
   });
 }
@@ -70,7 +70,7 @@ export function getAvailableClasses() {
   var classesAvail = [];
   var classesSoon = [];
 
-  _.forEach(progsAvail, function(progObj) {
+  forEach(progsAvail, function(progObj) {
     var programId = progObj.programId;
     var classList = classMapByProgramId[programId];
     var fullClassList = classList.map(classObj =>
@@ -79,7 +79,7 @@ export function getAvailableClasses() {
     classesAvail = classesAvail.concat(fullClassList);
   });
 
-  _.forEach(progsSoon, function(progObj) {
+  forEach(progsSoon, function(progObj) {
     var programId = progObj.programId;
     var classList = classMapByProgramId[programId];
     var fullClassList = classList.map(classObj =>
@@ -107,7 +107,7 @@ export function getProgramClass(key) {
 }
 
 export function getProfileById(profileId) {
-  return _.find(profileList, {id: profileId});
+  return find(profileList, {id: profileId});
 }
 
 export function getAllProfiles() {

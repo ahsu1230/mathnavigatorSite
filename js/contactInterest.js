@@ -1,6 +1,6 @@
 'use strict';
 require('./../styl/contactInterestModal.styl');
-import _ from 'lodash';
+import { pull } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -41,7 +41,7 @@ export class ContactInterestSection extends React.Component {
     if (selected) {
       interestedList.push(classKey);
     } else {
-      interestedList = _.pull(interestedList, classKey);
+      interestedList = pull(interestedList, classKey);
     }
     this.setState({
       interested: interestedList
