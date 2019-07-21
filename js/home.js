@@ -9,6 +9,9 @@ import { HomeSectionStories } from './homeStories.js';
 import { getNav } from './constants.js';
 
 export class HomePage extends React.Component {
+	componentDidMount() {
+	  window.scrollTo(0, 0);
+	}
 	render() {
 		return (
       <div id="view-home">

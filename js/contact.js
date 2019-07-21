@@ -31,6 +31,10 @@ export class ContactPage extends React.Component {
 		this.updateTextArea = this.updateTextArea.bind(this);
   }
 
+	componentDidMount() {
+	  window.scrollTo(0, 0);
+	}
+
 	updateCb(propertyName, newValue) {
 		var obj = {};
 		obj[propertyName] = newValue;

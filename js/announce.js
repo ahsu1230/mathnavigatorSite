@@ -7,6 +7,10 @@ import { getAnnounceList, getProgramClass } from './repos/mainRepo.js';
 const classnames = require('classnames');
 
 export class AnnouncePage extends React.Component {
+	componentDidMount() {
+	  window.scrollTo(0, 0);
+	}
+	
 	render() {
 		const announcements = getAnnounceList();
 

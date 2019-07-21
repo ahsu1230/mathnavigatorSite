@@ -10,6 +10,10 @@ import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from './modal.js';
 
 export class ProgramsPage extends React.Component {
+	componentDidMount() {
+	  window.scrollTo(0, 0);
+	}
+	
 	render() {
 		var programs = getAvailablePrograms();
 		var programsAvail = Object.values(programs.available);
