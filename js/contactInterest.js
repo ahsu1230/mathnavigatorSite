@@ -51,7 +51,7 @@ export class ContactInterestSection extends React.Component {
   render() {
     const interestedClasses = this.state.interested || [];
     const interestedSection = generateInterested(interestedClasses, this.onToggleShowModal);
-    const interestModal = <InterestModal
+    const modalContent = <InterestModal
                   onSelectProgram={this.onSelectProgram}
                   interested={interestedClasses}
                   onDismiss={this.onToggleShowModal}/>;
@@ -59,10 +59,9 @@ export class ContactInterestSection extends React.Component {
       <div>
         <h2>Interested Programs</h2>
         {interestedSection}
-        <Modal content={interestModal}
+        <Modal content={modalContent}
           show={this.state.showModal}
-          onDismiss={this.onToggleShowModal}>
-        </Modal>
+          onDismiss={this.onToggleShowModal}/>
       </div>
     );
   }

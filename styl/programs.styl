@@ -22,38 +22,42 @@
     font-size: fontSize1
     color: colorBlackDark
 
-#view-program-container .section .program-card
-  position: relative
-  display: inline-block
-  width: 220px
-  height: 200px
-  margin: 0px spacing6x spacing6x 0
-  box-sizing: border-box
-  background-color: colorPrimary
-  text-align: center
-  vertical-align: top
-  cursor: pointer
+#view-program-container .section
+  & .program-card-container
+    display: inline-block
 
-  &:hover
-    filter: brightness(110%)
+  & .program-card
+    position: relative
+    display: inline-block
+    width: 220px
+    height: 200px
+    margin: 0px spacing6x spacing6x 0
+    box-sizing: border-box
+    background-color: colorPrimary
+    text-align: center
+    vertical-align: top
+    cursor: pointer
 
-  & .program-card-content
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
+    &:hover
+      filter: brightness(110%)
 
-  & h2
-    width: propUnit6x
-    margin: 0
-    line-height: lineHeight1
-    font-size: fontSize1
-    color: colorWhite
+    & .program-card-content
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
 
-  & h3
-    margin: 0
-    margin-top: spacing1x
-    margin-bottom: spacing4x
-    line-height: fontSize0
-    font-size: fontSize0
-    color: colorWhite
+    & h2
+      width: propUnit6x
+      margin: 0
+      line-height: lineHeight1
+      font-size: fontSize1
+      color: colorWhite
+
+    & h3
+      margin: 0
+      margin-top: spacing1x
+      margin-bottom: spacing4x
+      line-height: fontSize0
+      font-size: fontSize0
+      color: colorWhite

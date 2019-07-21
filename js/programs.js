@@ -6,12 +6,15 @@ import {
 	getAvailablePrograms,
 	getClasses
 } from './repos/mainRepo.js';
+import { ProgramClassModal } from './programClassModal.js';
+import { Modal } from './modal.js';
 
 export class ProgramsPage extends React.Component {
 	render() {
 		var programs = getAvailablePrograms();
 		var programsAvail = Object.values(programs.available);
 		var programsSoon = Object.values(programs.soon);
+
 		return (
       <div id="view-program">
         <div id="view-program-container">
@@ -24,27 +27,12 @@ export class ProgramsPage extends React.Component {
 }
 
 class ProgramSection extends React.Component {
-	determineOnClick(programId) {
-		var classes = getClasses(programId);
-		var slug = classes[0].key; // For now, just grab first class
-		window.location.hash = "/class/" + slug;
-	}
-
 	render() {
 		var title = this.props.title;
 		var programs = this.props.programs;
 
-		programs.forEach(function(program) {
-			program.gradesText = "Grades " + program.grade1 + " - " + program.grade2;
-		});
-
-		const cards = programs.map((program) =>
-      <ProgramCard key={program.programId} // not exposed by reactJs
-				programId={program.programId}
-				title={program.title}
-				grades={program.gradesText}
-				onClick={this.determineOnClick}
-			/>
+		const cards = programs.map((program, index) =>
+      <ProgramCard key={index} program={program}/>
     );
 
 		return (
@@ -57,20 +45,70 @@ class ProgramSection extends React.Component {
 }
 
 class ProgramCard extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showModal: false
+		}
+		this.handleClick = this.handleClick.bind(this);
+		this.dismissModal = this.dismissModal.bind(this);
+	}
+
+	handleClick() {
+		var classes = this.classes;
+		var program = this.props.program;
+		var programId = program.programId;
+
+		if (classes.length > 1) {
+			this.setState({
+				showModal: true
+			});
+		} else {
+			var slug = classes[0].key;
+			window.location.hash = "/class/" + slug;
+		}
+	}
+
+	dismissModal() {
+		this.setState({
+			showModal: false
+		});
+	}
+
 	render() {
-		const programId = this.props.programId;
-		const onClickFn = this.props.onClick;
-		var onClick = function() {
-			onClickFn(programId);
-		};
+		const program = this.props.program;
+		const programId = program.programId;
+		this.classes = getClasses(programId);
+
+		const grades = "Grades " + program.grade1 + " - " + program.grade2;
+		var modalDiv;
+		if (this.classes.length > 1) {
+			const modalContent = <ProgramClassModal programObj={program}/>;
+			modalDiv = (
+				<Modal content={modalContent}
+								show={this.state.showModal}
+								onDismiss={this.dismissModal}/>
+			);
+		} else {
+			modalDiv = (
+				<div></div>
+			);
+		}
 
 		return (
-			<div className="program-card" onClick={onClick}>
-				<div className="program-card-content">
-					<h2>{this.props.title}</h2>
-					<h3>{this.props.grades}</h3>
-					<button>View</button>
+			<div className="program-card-container">
+				{/*
+					^We require an outer div `program-card-container` because
+					of modal styling conflicts?
+				*/}
+				<div className="program-card" onClick={this.handleClick}>
+					<div className="program-card-content">
+						<h2>{program.title}</h2>
+						<h3>{grades}</h3>
+						<button>View</button>
+					</div>
 				</div>
+				{modalDiv}
 			</div>
 		);
 	}

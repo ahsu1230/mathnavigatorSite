@@ -1,48 +1,17 @@
 @import "static"
 
-#program-class-modal-view
-  position: fixed
-  visibility: hidden
-  transition: 0.1s all linear
-  z-index: 1
-
-  &.show
-    visibility: visible
-
-#program-class-overlay
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  background-color: colorWhite
-  opacity: 0.5
-
-#program-class-modal
-  position: fixed
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
+.program-class-modal
   width: propUnit12x
   padding: spacing1x spacing6x spacing2x
   background-color: white
   box-shadow: 0px 2px 8px colorBlackDark
-
-  & button
-    position: absolute
-    top: spacing3x
-    right: spacing6x
-    padding: 0
-    background-color: colorWhite
-
-  & img
-    width: 24px
 
   & h1
     margin-bottom: spacing4x
     line-height: propUnit2x
     font-family: fontFamilyArial
     font-size: fontSize1
+    font-weight: 400
     color: colorBlackDark
     border-bottom: 1px solid colorBlackDark
 

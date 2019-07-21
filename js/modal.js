@@ -19,13 +19,13 @@ export class Modal extends React.Component {
 
   render() {
     const modalContent = this.props.content;
-    const modalViewClasses = classnames("", {
+    const modalViewClasses = classnames("modal-view", {
       show: this.props.show
     });
     var modalClasses = classnames("modal", this.props.modalClassName);
     return (
-      <div id="modal-view" className={modalViewClasses}>
-        <div id="modal-overlay" onClick={this.handleDismiss}></div>
+      <div className={modalViewClasses}>
+        <div className="modal-overlay" onClick={this.handleDismiss}></div>
         <div className={modalClasses}>
           <button className="close-x" onClick={this.handleDismiss}>
             <img src={srcClose}/>
