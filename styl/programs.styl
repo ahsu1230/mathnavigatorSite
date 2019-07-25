@@ -1,17 +1,19 @@
 @import "static"
 
+cardSpacing = spacing6x
+
 #view-program-container
   width: containerWidthPct
   max-width: containerWidthPx
   margin: 0 auto
+  padding: spacing1x 0 spacing12x
 
 #view-program-container .section
-  padding: spacing8x 0 spacing4x
-  margin-bottom: spacing8x
+  margin-bottom: cardSpacing
 
-  & h2.section-title
-    line-height: propUnit2x
-    margin-bottom: spacing8x
+  & h1.section-title
+    line-height: 88px
+    margin-bottom: cardSpacing
     font-family: fontFamilyRockwell
     font-size: fontSize2
     color: colorPrimary
@@ -31,7 +33,7 @@
     display: inline-block
     width: 220px
     height: 200px
-    margin: 0px spacing6x spacing6x 0
+    margin: 0px cardSpacing cardSpacing 0
     box-sizing: border-box
     background-color: colorPrimary
     text-align: center
