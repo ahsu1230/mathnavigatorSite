@@ -79,7 +79,6 @@ export class ContactInputForm extends React.Component {
     const showModal = submitState != STATE_NONE;
 
     const formCompleted = this.checkAllInputs();
-    const listRemainingClass = classnames("list-fields-remaining", {show: !formCompleted})
     const submitBtnClass = classnames({active: formCompleted});
     const onHandleSubmit = formCompleted ? this.handleSubmit : undefined;
 
@@ -144,11 +143,6 @@ export class ContactInputForm extends React.Component {
             <button className={submitBtnClass} onClick={onHandleSubmit}>
               Submit
             </button>
-          </div>
-          <div className={listRemainingClass}>
-            Fields still required to submit:
-            <ul>
-            </ul>
           </div>
         </div>
       </div>
