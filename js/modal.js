@@ -19,17 +19,30 @@ export class Modal extends React.Component {
 
   render() {
     const modalContent = this.props.content;
+    const persistent = this.props.persistent || false;
+    const withClose = this.props.withClose || false;
     const modalViewClasses = classnames("modal-view", {
       show: this.props.show
     });
+
+    const onClickOverlay = persistent ? undefined : this.handleDismiss;
+    var closeButton;
+    if (withClose) {
+      closeButton = (
+        <button className="close-x" onClick={this.handleDismiss}>
+          <img src={srcClose}/>
+        </button>
+      );
+    } else {
+      <div></div>
+    }
+
     var modalClasses = classnames("modal", this.props.modalClassName);
     return (
       <div className={modalViewClasses}>
-        <div className="modal-overlay" onClick={this.handleDismiss}></div>
+        <div className="modal-overlay" onClick={onClickOverlay}></div>
         <div className={modalClasses}>
-          <button className="close-x" onClick={this.handleDismiss}>
-            <img src={srcClose}/>
-          </button>
+          {closeButton}
           {modalContent}
         </div>
       </div>

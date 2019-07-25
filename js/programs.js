@@ -13,7 +13,7 @@ export class ProgramsPage extends React.Component {
 	componentDidMount() {
 	  window.scrollTo(0, 0);
 	}
-	
+
 	render() {
 		var programs = getAvailablePrograms();
 		var programsAvail = Object.values(programs.available);
@@ -91,6 +91,7 @@ class ProgramCard extends React.Component {
 			modalDiv = (
 				<Modal content={modalContent}
 								show={this.state.showModal}
+								withClose={true}
 								onDismiss={this.dismissModal}/>
 			);
 		} else {

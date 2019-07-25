@@ -61,6 +61,7 @@ export class ContactInterestSection extends React.Component {
         {interestedSection}
         <Modal content={modalContent}
           show={this.state.showModal}
+          withClose={true}
           onDismiss={this.onToggleShowModal}/>
       </div>
     );
