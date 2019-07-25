@@ -20,7 +20,7 @@ export const AgeCheck = {
 };
 
 export const SchoolCheck = {
-  errorMsg: "Required",
+  errorMsg: "Need a School Name",
   validate: function(input) {
     return !!input || false;
   }
