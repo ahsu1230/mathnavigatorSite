@@ -66,7 +66,7 @@
     &.student-grade input
       width: propUnit1x
     &.student-school input
-      width: propUnit8x
+      width: 270px
 
     &.student-phone input
       width: propUnit4x
@@ -91,29 +91,56 @@
     & h2
       margin-bottom: spacing2x
 
-    & .textarea-container
-      position: relative
+    & textarea
       width: propUnit16x
+      height: propUnit4x
+      padding: spacing2x
+      box-sizing: border-box
+      font-family: fontFamilyRoboto
+      font-size: fontSize0
+      line-height: lineHeight0
+      resize: none
+      outline: colorPrimary
 
-      & textarea
-        width: 100%
-        height: propUnit4x
-        padding: spacing2x
-        box-sizing: border-box
-        font-family: fontFamilyRoboto
-        font-size: fontSize0
-        line-height: lineHeight0
+      &:focus
+        outline-color: colorTurquoiseLight
 
-        &:focus
-          outline-color: colorTurquoiseLight
+  & .section.submit
+    position: relative
+    width: propUnit16x
 
-      & p
+    & p
+      margin: 0
+      line-height: lineHeight0
+      font-size: fontSize0
+      color: colorBlackDark
+
+    & .list-fields-remaining
+      margin-top: spacing2x
+      font-size: fontSize0
+      display: none
+
+      &.show
+        display: block
+
+      & ul
         margin: 0
-        line-height: lineHeight0
-        font-size: fontSize0
-        color: colorBlackDark
 
-      & button
-        position: absolute
-        right: 0
-        bottom: 0
+    & button
+      position: absolute
+      right: 0
+      top: 0
+      background-color: colorGrayLight
+      color: colorBlackDark
+      cursor: initial
+
+      &:hover
+        filter: none
+
+      &.active
+        background-color: colorAccent
+        color: colorWhite
+        cursor: pointer
+
+        &:hover
+          filter: brightness(110%)

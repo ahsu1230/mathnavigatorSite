@@ -8,8 +8,7 @@ export class ContactInput extends React.Component {
 	constructor(props){
     super(props);
 		this.state = {
-			inputValue: "",
-			errorMsg: ""
+			inputValue: ""
 		};
 		this.updateInputValue = this.updateInputValue.bind(this);
   }
@@ -22,6 +21,13 @@ export class ContactInput extends React.Component {
 	}
 
 	render() {
+		const inputValue = this.state.inputValue;
+		const validator = this.props.validator;
+
+		const isEmpty = !inputValue;
+		const isValid = validator ? validator.validate(inputValue) : true;
+		var errorMsg = isEmpty || isValid ? "" : validator.errorMsg;
+
 		const classNames = classnames("contact-input", this.props.addClasses);
 		const title = this.props.title;
 		const placeholder = this.props.placeholder;
@@ -30,9 +36,9 @@ export class ContactInput extends React.Component {
 			<div className={classNames}>
 				<label>{title}</label>
 				<input placeholder={placeholder}
-							value={this.state.inputValue}
+							value={inputValue}
 							onChange={this.updateInputValue}/>
-				<label>{this.state.errorMsg}</label>
+				<label>{errorMsg}</label>
 			</div>
 		);
 	}

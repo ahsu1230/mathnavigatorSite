@@ -46,6 +46,10 @@ export class ContactInterestSection extends React.Component {
     this.setState({
       interested: interestedList
     });
+
+    if (this.props.onUpdate) {
+      this.props.onUpdate(interestedList);
+    }
   }
 
   render() {
@@ -194,9 +198,14 @@ function generateInterested(interestedList, onClick) {
     );
   } else {
     return (
-      <button className="inverted" onClick={onClick}>
-        {interestedButtonText}
-      </button>
+      <div id="contact-section-interested">
+        <p>
+          Please select at least one Program.
+        </p>
+        <button className="inverted" onClick={onClick}>
+          {interestedButtonText}
+        </button>
+      </div>
     );
   }
 }

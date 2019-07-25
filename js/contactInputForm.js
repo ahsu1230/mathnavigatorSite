@@ -12,6 +12,14 @@ import {
   STATE_SUCCESS,
   STATE_FAIL
 } from './contactSubmitModal.js';
+import {
+  AgeCheck,
+  EmailCheck,
+  SchoolCheck,
+  GradeCheck,
+  NameCheck,
+  PhoneCheck
+} from './contactInputChecks.js';
 import { Modal } from './modal.js';
 const classnames = require('classnames');
 
@@ -43,7 +51,10 @@ export class ContactInputForm extends React.Component {
 
 		this.getInputInfo = this.getInputInfo.bind(this);
 		this.updateCb = this.updateCb.bind(this);
+    this.updateInterested = this.updateInterested.bind(this);
 		this.updateTextArea = this.updateTextArea.bind(this);
+
+    this.checkAllInputs = this.checkAllInputs.bind(this);
   }
 
 	updateCb(propertyName, newValue) {
@@ -51,6 +62,10 @@ export class ContactInputForm extends React.Component {
 		obj[propertyName] = newValue;
 		this.setState(obj);
 	}
+
+  updateInterested(interestedList) {
+    this.setState({ interestedPrograms: interestedList });
+  }
 
 	updateTextArea(event) {
 		this.updateCb("additionalText", event.target.value);
@@ -62,6 +77,12 @@ export class ContactInputForm extends React.Component {
                             loadingState={submitState}
                             failText={this.state.generatedEmail}/>;
     const showModal = submitState != STATE_NONE;
+
+    const formCompleted = this.checkAllInputs();
+    const listRemainingClass = classnames("list-fields-remaining", {show: !formCompleted})
+    const submitBtnClass = classnames({active: formCompleted});
+    const onHandleSubmit = formCompleted ? this.handleSubmit : undefined;
+
 		return (
       <div>
         <Modal content={modalContent}
@@ -71,44 +92,65 @@ export class ContactInputForm extends React.Component {
         <div className="section input">
           <h2>Student Information</h2>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-fname" title="First Name" propertyName="studentFirstName" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="student-lname" title="Last Name" propertyName="studentLastName" onUpdate={this.updateCb}/>
+            <ContactInput addClasses="student-fname" title="First Name" propertyName="studentFirstName"
+                  onUpdate={this.updateCb} validator={NameCheck}/>
+            <ContactInput addClasses="student-lname" title="Last Name" propertyName="studentLastName"
+                  onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-age" title="Age" propertyName="studentAge" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="student-grade" title="Grade" propertyName="studentGrade" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="student-school" title="School" propertyName="studentSchool" onUpdate={this.updateCb}/>
+            <ContactInput addClasses="student-age" title="Age" propertyName="studentAge"
+                  onUpdate={this.updateCb} validator={AgeCheck}/>
+            <ContactInput addClasses="student-grade" title="Grade" propertyName="studentGrade"
+                  onUpdate={this.updateCb} validator={GradeCheck}/>
+            <ContactInput addClasses="student-school" title="School" propertyName="studentSchool"
+                  onUpdate={this.updateCb} validator={SchoolCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-phone" title="Phone" propertyName="studentPhone" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="student-email" title="Email" propertyName="studentEmail" onUpdate={this.updateCb}/>
+            <ContactInput addClasses="student-phone" title="Phone" propertyName="studentPhone"
+                  onUpdate={this.updateCb} validator={PhoneCheck}/>
+            <ContactInput addClasses="student-email" title="Email" propertyName="studentEmail"
+                  onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
 
           <h2>Guardian Information</h2>
           <div className="contact-input-container">
-            <ContactInput addClasses="guard-fname" title="First Name" propertyName="guardFirstName" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="guard-lname" title="Last Name" propertyName="guardLastName" onUpdate={this.updateCb}/>
+            <ContactInput addClasses="guard-fname" title="First Name" propertyName="guardFirstName"
+                  onUpdate={this.updateCb} validator={NameCheck}/>
+            <ContactInput addClasses="guard-lname" title="Last Name" propertyName="guardLastName"
+                  onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="guard-phone" title="Phone" propertyName="guardPhone" onUpdate={this.updateCb}/>
-            <ContactInput addClasses="guard-email" title="Email" propertyName="guardEmail" onUpdate={this.updateCb}/>
+            <ContactInput addClasses="guard-phone" title="Phone" propertyName="guardPhone"
+                  onUpdate={this.updateCb} validator={PhoneCheck}/>
+            <ContactInput addClasses="guard-email" title="Email" propertyName="guardEmail"
+                  onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
         </div>
 				<div className="section interested">
-					<ContactInterestSection/>
+					<ContactInterestSection onUpdate={this.updateInterested}/>
 				</div>
 
 				<div className="section additional">
 					<h2>Additional Information</h2>
-					<div className="textarea-container">
-						<textarea onChange={this.updateTextArea}/>
-						<p>
-							Information will be sent to:<br/>
-							<a>andymathnavigator@gmail.com</a>
-						</p>
-						<button onClick={this.handleSubmit}>Submit</button>
-					</div>
-				</div>
+					<textarea onChange={this.updateTextArea} placeholder="(Optional)"/>
+        </div>
+
+        <div className="section submit">
+          <div className="submit-container">
+            <p>
+              Information will be sent to:<br/>
+              <a>andymathnavigator@gmail.com</a>
+            </p>
+            <button className={submitBtnClass} onClick={onHandleSubmit}>
+              Submit
+            </button>
+          </div>
+          <div className={listRemainingClass}>
+            Fields still required to submit:
+            <ul>
+            </ul>
+          </div>
+        </div>
       </div>
 		);
 	}
@@ -131,8 +173,24 @@ export class ContactInputForm extends React.Component {
 		};
 	}
 
+  checkAllInputs() {
+    return NameCheck.validate(this.state.studentFirstName)
+                    && NameCheck.validate(this.state.studentLastName)
+                    && AgeCheck.validate(this.state.studentAge)
+                    && GradeCheck.validate(this.state.studentGrade)
+                    && EmptyCheck.validate(this.state.studentSchool)
+                    && PhoneCheck.validate(this.state.studentPhone)
+                    && EmailCheck.validate(this.state.studentEmail)
+                    && NameCheck.validate(this.state.guardFirstName)
+                    && NameCheck.validate(this.state.guardLastName)
+                    && PhoneCheck.validate(this.state.guardPhone)
+                    && EmailCheck.validate(this.state.guardEmail)
+                    && this.state.interestedPrograms.length > 0;
+  }
+
 	handleSubmit(event) {
     event.preventDefault();
+
 		const template = "mathnavigatorwebsitecontact";
 		const receiverEmail = "andymathnavigator@gmail.com";
 		const senderEmail = "anonymous@andymathnavigator.com";
@@ -220,12 +278,12 @@ function sendEmail(templateId, senderEmail, receiverEmail, emailMessage,
       emailMessage
     }
 	).then(res => {
-    console.log("Email success!");
+    console.log("Email successfully sent!");
 		if (onSuccess) {
 			onSuccess();
 		}
   }).catch(err => {
-		console.error('Failed to send email. Error: ', err);
+		console.error("Failed to send email. Error: ", err);
 		if (onFail) {
 			onFail();
 		}
