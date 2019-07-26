@@ -181,7 +181,7 @@ function generateInterested(interestedList, onClick) {
       var fullName = className ? programTitle + " " + className : programTitle;
       var url = "/class/" + classKey;
       return (
-        <Link key={index} to={url}>{fullName}</Link>
+        <li key={index}><Link to={url}>{fullName}</Link></li>
       );
     });
 
