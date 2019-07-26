@@ -47,17 +47,20 @@ function generateTimes(classObj) {
   );
 }
 
-function generatePricing(pricePerSession, numSessions) {
+function generatePricing(priceLump, pricePerSession, numSessions) {
   let line1;
   let line2;
   let line3;
-  if (numSessions > 0) {
+  if (priceLump) {
+    line1 = <div>{"Total Price: $" + priceLump}</div>
+  } else if (numSessions > 0) {
     line1 = <div>{"Number of sessions: " + numSessions}</div>;
+    line2 = <div>{"Price per session: $" + pricePerSession}</div>;
     line3 = <div>{"Total: $" + numSessions * pricePerSession}</div>;
   } else {
-
+    line1 = <div>{"Price per session: $" + pricePerSession}</div>;
   }
-  line2 = <div>{"Price per session: $" + pricePerSession}</div>;
+
   return (
     <div className="class-lines">
       {line1}
@@ -111,7 +114,7 @@ export class ClassPage extends React.Component {
   componentDidMount() {
 	  window.scrollTo(0, 0);
 	}
-  
+
   render () {
     var valid = true;
     const key = this.props.slug;
@@ -162,7 +165,7 @@ class ClassContent extends React.Component {
     }
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
-    const textPricing = generatePricing(classObj.pricePerSession, sessionCounter);
+    const textPricing = generatePricing(classObj.priceLump, classObj.pricePerSession, sessionCounter);
     const schedules = generateSchedules(sessions);
 
 		return (

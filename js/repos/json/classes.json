@@ -105,6 +105,6 @@
     "times": "[Sun. 1:00pm - 3:00pm]",
     "startDate": "6/11/2019",
     "endDate": "9/2/2019",
-    "pricePerSession": 65
+    "priceLump": 900
   }
 ]
