@@ -11,17 +11,26 @@ export class ProgramClassModal extends React.Component {
   render() {
 		const programObj = this.props.programObj;
 		const programId = programObj.programId;
-		const programTitle = "Available classes for " + programObj.title;
-		const classes = getClasses(programId);
+		const classes = this.props.classList;
+		const avail = this.props.avail;
 
-    const classList = classes.map((c, index) =>
-      <ProgramClassLine key={index} classObj={c}/>
-    );
+		var programTitle;
+		if (avail) {
+			programTitle = "Available classes for " + programObj.title;
+		} else {
+			programTitle = "Future classes for " + programObj.title;
+		}
+
+    const classList = classes
+												.filter((c) => c.isAvailable == avail)
+												.map((c, index) =>
+										      <ProgramClassLine key={index} classObj={c}/>
+										    );
 
     return (
 			<div className="program-class-modal">
 				<h1>{programTitle}</h1>
-        <ul className="use-scrollbar">
+        <ul>
           {classList}
         </ul>
 			</div>

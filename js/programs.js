@@ -22,8 +22,8 @@ export class ProgramsPage extends React.Component {
 		return (
       <div id="view-program">
         <div id="view-program-container">
-					<ProgramSection title={"Available Programs"} programs={programsAvail}/>
-					<ProgramSection title={"Coming Soon"} programs={programsSoon}/>
+					<ProgramSection title={"Available Programs"} programs={programsAvail} avail={true}/>
+					<ProgramSection title={"Coming Soon"} programs={programsSoon} avail={false}/>
         </div>
       </div>
 		);
@@ -36,7 +36,7 @@ class ProgramSection extends React.Component {
 		var programs = this.props.programs;
 
 		const cards = programs.map((program, index) =>
-      <ProgramCard key={index} program={program}/>
+      <ProgramCard key={index} program={program} avail={this.props.avail}/>
     );
 
 		return (
@@ -64,9 +64,7 @@ class ProgramCard extends React.Component {
 		var programId = program.programId;
 
 		if (classes.length > 1) {
-			this.setState({
-				showModal: true
-			});
+			this.setState({ showModal: true });
 		} else {
 			var slug = classes[0].key;
 			window.location.hash = "/class/" + slug;
@@ -87,7 +85,9 @@ class ProgramCard extends React.Component {
 		const grades = "Grades " + program.grade1 + " - " + program.grade2;
 		var modalDiv;
 		if (this.classes.length > 1) {
-			const modalContent = <ProgramClassModal programObj={program}/>;
+			const modalContent = <ProgramClassModal programObj={program}
+															classList={this.classes} 
+															avail={this.props.avail}/>;
 			modalDiv = (
 				<Modal content={modalContent}
 								show={this.state.showModal}

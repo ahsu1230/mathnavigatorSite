@@ -16,10 +16,14 @@
     border-bottom: 1px solid colorBlackDark
 
   & ul
-    max-height: propUnit8x
-    margin-bottom: spacing3x
-    padding-right: spacing2x
-    overflow-y: scroll
+
+    margin-bottom: spacing4x
+
+    /* If need to use scrollbar */
+    &.use-scrollbar
+      max-height: propUnit2x
+      padding-right: spacing2x
+      overflow-y: scroll
 
   & li
     margin-bottom: spacing2x
