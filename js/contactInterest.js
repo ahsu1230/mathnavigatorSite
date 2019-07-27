@@ -104,7 +104,7 @@ class InterestModal extends React.Component {
           <div className="header times">Times</div>
           <div className="header start-date">Starting Date</div>
         </div>
-        <div id="interest-view">
+        <div id="interest-view" className="use-scrollbar">
           <ul>
             <h2>Classes Available</h2>
             {listAvail}

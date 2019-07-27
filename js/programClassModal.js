@@ -21,7 +21,7 @@ export class ProgramClassModal extends React.Component {
     return (
 			<div className="program-class-modal">
 				<h1>{programTitle}</h1>
-        <ul>
+        <ul className="use-scrollbar">
           {classList}
         </ul>
 			</div>
@@ -40,7 +40,10 @@ class ProgramClassLine extends React.Component {
     return (
       <li>
         <div className="class-name">{classObj.className}</div>
-        <div className="class-times">{times}</div>
+        <div className="class-times">
+					<div className="class-starts">{"Starts on: " + classObj.startDate}</div>
+					{times}
+				</div>
         <Link to={url}>Details &#62;</Link>
       </li>
     );
