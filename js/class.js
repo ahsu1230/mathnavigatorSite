@@ -94,7 +94,7 @@ function generateSchedules(sessions) {
     }
     return (
       <SessionLine
-        key = {session.key + index}
+        key = {index}
         sessionIndex = {sessionIndex}
         date = {session.date}
         canceled = {session.canceled}
@@ -157,7 +157,7 @@ class ClassContent extends React.Component {
     const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
 
     // Components
-    const classFullName = programObj.title + " " + classObj.className;
+    const classFullName = programObj.title + " " + (classObj.className || "");
     const prereqs = generatePrereqs(prereqIds);
     let prereqsLine;
     if (prereqs) {

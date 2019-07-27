@@ -1,200 +1,1426 @@
 [
   {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
-    "date": "6/3/2019",
-    "canceled": "",
-    "time": "Mon. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
-    "date": "6/10/2019",
-    "canceled": "",
-    "time": "Mon. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
+    "sessionId": 1,
+    "classKey": "sat1_summer_a",
     "date": "6/17/2019",
     "canceled": "",
-    "time": "Mon. 6:00pm - 8:00pm",
+    "time": "Monday 6:00pm - 8:00pm",
     "notes": ""
   },
   {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
+    "sessionId": 2,
+    "classKey": "sat1_summer_a",
+    "date": "6/20/2018",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 3,
+    "classKey": "sat1_summer_a",
     "date": "6/24/2019",
     "canceled": "",
-    "time": "Mon. 6:00pm - 8:00pm",
+    "time": "Monday 6:00pm - 8:00pm",
     "notes": ""
   },
   {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
-    "date": "7/1/2019",
+    "sessionId": 4,
+    "classKey": "sat1_summer_a",
+    "date": "6/26/2019",
     "canceled": "",
-    "time": "Mon. 6:30pm - 8:30pm",
-    "notes": "Time change!"
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
   },
   {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
+    "sessionId": 5,
+    "classKey": "sat1_summer_a",
+    "date": "7/1/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 6,
+    "classKey": "sat1_summer_a",
+    "date": "7/3/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 7,
+    "classKey": "sat1_summer_a",
     "date": "7/8/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 8,
+    "classKey": "sat1_summer_a",
+    "date": "7/10/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 9,
+    "classKey": "sat1_summer_a",
+    "date": "7/15/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 10,
+    "classKey": "sat1_summer_a",
+    "date": "7/17/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 11,
+    "classKey": "sat1_summer_a",
+    "date": "7/22/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 12,
+    "classKey": "sat1_summer_a",
+    "date": "7/24/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 13,
+    "classKey": "sat1_summer_a",
+    "date": "7/29/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 14,
+    "classKey": "sat1_summer_a",
+    "date": "7/31/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 15,
+    "classKey": "sat1_summer_a",
+    "date": "8/5/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 16,
+    "classKey": "sat1_summer_a",
+    "date": "8/7/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 17,
+    "classKey": "sat1_summer_a",
+    "date": "7/19/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 18,
+    "classKey": "sat1_summer_a",
+    "date": "7/26/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 19,
+    "classKey": "sat1_summer_a",
+    "date": "8/2/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 20,
+    "classKey": "sat1_summer_a",
+    "date": "8/9/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 21,
+    "classKey": "sat1_summer_a",
+    "date": "8/16/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 22,
+    "classKey": "sat1_summer_a",
+    "date": "8/23/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 23,
+    "classKey": "sat1_summer_a",
+    "date": "9/6/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 24,
+    "classKey": "sat1_summer_a",
+    "date": "9/13/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 25,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 26,
+    "classKey": "sat1_summer_b",
+    "date": "6/25/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 27,
+    "classKey": "sat1_summer_b",
+    "date": "6/27/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 28,
+    "classKey": "sat1_summer_b",
+    "date": "7/2/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 29,
+    "classKey": "sat1_summer_b",
+    "date": "7/6/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 30,
+    "classKey": "sat1_summer_b",
+    "date": "7/9/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 31,
+    "classKey": "sat1_summer_b",
+    "date": "7/11/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 32,
+    "classKey": "sat1_summer_b",
+    "date": "7/16/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 33,
+    "classKey": "sat1_summer_b",
+    "date": "7/18/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 34,
+    "classKey": "sat1_summer_b",
+    "date": "7/23/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 35,
+    "classKey": "sat1_summer_b",
+    "date": "7/25/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 36,
+    "classKey": "sat1_summer_b",
+    "date": "7/30/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 37,
+    "classKey": "sat1_summer_b",
+    "date": "8/1/2019",
+    "canceled": "TRUE",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 38,
+    "classKey": "sat1_summer_b",
+    "date": "8/6/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 39,
+    "classKey": "sat1_summer_b",
+    "date": "8/8/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 40,
+    "classKey": "sat1_summer_b",
+    "date": "8/13/2019",
+    "canceled": "",
+    "time": "Tuesday 8:00pm - 10:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 41,
+    "classKey": "sat1_summer_b",
+    "date": "8/15/2019",
+    "canceled": "",
+    "time": "Thursday 8:00pm - 10:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 42,
+    "classKey": "sat1_summer_b",
+    "date": "7/19/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 43,
+    "classKey": "sat1_summer_b",
+    "date": "7/26/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 44,
+    "classKey": "sat1_summer_b",
+    "date": "8/2/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 45,
+    "classKey": "sat1_summer_b",
+    "date": "8/9/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 46,
+    "classKey": "sat1_summer_b",
+    "date": "8/16/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 47,
+    "classKey": "sat1_summer_b",
+    "date": "8/23/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 48,
+    "classKey": "sat1_summer_b",
+    "date": "9/6/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 49,
+    "classKey": "sat1_summer_b",
+    "date": "9/13/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 50,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 51,
+    "classKey": "sat1_summer_c",
+    "date": "7/13/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 52,
+    "classKey": "sat1_summer_c",
+    "date": "7/20/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 53,
+    "classKey": "sat1_summer_c",
+    "date": "7/27/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 54,
+    "classKey": "sat1_summer_c",
+    "date": "8/3/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 55,
+    "classKey": "sat1_summer_c",
+    "date": "8/8/2019",
+    "canceled": "",
+    "time": "Thursday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 56,
+    "classKey": "sat1_summer_c",
+    "date": "8/10/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": "Location Change"
+  },
+  {
+    "sessionId": 57,
+    "classKey": "sat1_summer_c",
+    "date": "8/14/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 58,
+    "classKey": "sat1_summer_c",
+    "date": "8/17/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": "Location Change"
+  },
+  {
+    "sessionId": 59,
+    "classKey": "sat1_summer_c",
+    "date": "8/19/2019",
+    "canceled": "",
+    "time": "Monday 6:00pm - 8:00pm",
+    "notes": "Date and Time and Location Change"
+  },
+  {
+    "sessionId": 60,
+    "classKey": "sat1_summer_c",
+    "date": "8/21/2019",
+    "canceled": "",
+    "time": "Wednesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 61,
+    "classKey": "sat1_summer_c",
+    "date": "8/24/3019",
+    "canceled": "TRUE",
+    "time": "NO CLASS",
+    "notes": "NO Class"
+  },
+  {
+    "sessionId": 62,
+    "classKey": "sat1_summer_c",
+    "date": "9/6/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 63,
+    "classKey": "sat1_summer_c",
+    "date": "9/7/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 64,
+    "classKey": "sat1_summer_c",
+    "date": "9/13/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 65,
+    "classKey": "sat1_summer_c",
+    "date": "9/14/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 66,
+    "classKey": "sat1_summer_c",
+    "date": "9/21/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 67,
+    "classKey": "sat1_summer_c",
+    "date": "9/28/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm-4:00pm",
+    "notes": "For ACT"
+  },
+  {
+    "sessionId": 68,
+    "classKey": "sat1_summer_c",
+    "date": "8/23/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 69,
+    "classKey": "sat1_summer_c",
+    "date": "8/30/2019",
+    "canceled": "",
+    "time": "Email Practice",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 70,
+    "classKey": "sat1_summer_c",
+    "date": "9/6/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 71,
+    "classKey": "sat1_summer_c",
+    "date": "9/13/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 72,
+    "classKey": "sat1_summer_c",
+    "date": "9/20/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 73,
+    "classKey": "sat1_summer_c",
+    "date": "9/27/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 74,
+    "classKey": "sat1_summer_c",
+    "date": "10/4/2019",
+    "canceled": "",
+    "time": "Friday 8:00- 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 75,
+    "classKey": "sat1_summer_c",
+    "date": "10/11/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 76,
+    "classKey": "sat1_summer_c",
+    "date": "10/18/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 77,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 78,
+    "classKey": "sat1_fall_d",
+    "date": "9/8/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 79,
+    "classKey": "sat1_fall_d",
+    "date": "9/9/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 80,
+    "classKey": "sat1_fall_d",
+    "date": "9/10/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 81,
+    "classKey": "sat1_fall_d",
+    "date": "9/11/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 82,
+    "classKey": "sat1_fall_d",
+    "date": "9/12/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 83,
+    "classKey": "sat1_fall_d",
+    "date": "9/13/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 84,
+    "classKey": "sat1_fall_d",
+    "date": "9/14/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 85,
+    "classKey": "sat1_fall_d",
+    "date": "9/15/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 86,
+    "classKey": "sat1_fall_d",
+    "date": "9/16/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 87,
+    "classKey": "sat1_fall_d",
+    "date": "9/17/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 88,
+    "classKey": "sat1_fall_d",
+    "date": "9/18/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 89,
+    "classKey": "sat1_fall_d",
+    "date": "9/19/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 90,
+    "classKey": "sat1_fall_d",
+    "date": "9/20/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 91,
+    "classKey": "sat1_fall_d",
+    "date": "9/21/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 92,
+    "classKey": "sat1_fall_d",
+    "date": "11/24/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 93,
+    "classKey": "sat1_fall_d",
+    "date": "11/25/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 94,
+    "classKey": "sat1_fall_d",
+    "date": "11/26/2019",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 95,
+    "classKey": "sat1_fall_d",
+    "date": "11/27/2019",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 96,
+    "classKey": "sat1_fall_d",
+    "date": "11/28/2019",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 97,
+    "classKey": "sat1_fall_d",
+    "date": "11/29/2019",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 98,
+    "classKey": "sat1_fall_d",
+    "date": "11/30/2019",
+    "canceled": "",
+    "time": "Email Prep test to you",
+    "notes": ""
+  },
+  {
+    "sessionId": 99,
+    "classKey": "sat1_fall_d",
+    "date": "12/1/2019",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 100,
+    "classKey": "sat1_fall_d",
+    "date": "12/2/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 101,
+    "classKey": "sat1_fall_d",
+    "date": "12/3/2019",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 102,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 103,
+    "classKey": "sat2_summer_d",
+    "date": "6/23/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 104,
+    "classKey": "sat2_summer_d",
+    "date": "6/28/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 105,
+    "classKey": "sat2_summer_d",
+    "date": "6/30/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 106,
+    "classKey": "sat2_summer_d",
+    "date": "7/7/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 107,
+    "classKey": "sat2_summer_d",
+    "date": "7/12/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 108,
+    "classKey": "sat2_summer_d",
+    "date": "7/14/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 109,
+    "classKey": "sat2_summer_d",
+    "date": "7/19/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 110,
+    "classKey": "sat2_summer_d",
+    "date": "7/21/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 111,
+    "classKey": "sat2_summer_d",
+    "date": "7/26/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 112,
+    "classKey": "sat2_summer_d",
+    "date": "7/28/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 113,
+    "classKey": "sat2_summer_d",
+    "date": "8/2/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 114,
+    "classKey": "sat2_summer_d",
+    "date": "8/4/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 115,
+    "classKey": "sat2_summer_d",
+    "date": "8/9/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 116,
+    "classKey": "sat2_summer_d",
+    "date": "8/11/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 117,
+    "classKey": "sat2_summer_d",
+    "date": "8/16/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 118,
+    "classKey": "sat2_summer_d",
+    "date": "8/18/2019",
+    "canceled": "",
+    "time": "Sunday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 119,
+    "classKey": "sat2_summer_d",
+    "date": "8/23/2019",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 120,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 121,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 122,
+    "classKey": "amc8_summer_basic",
+    "date": "6/18/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 123,
+    "classKey": "amc8_summer_basic",
+    "date": "6/25/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 124,
+    "classKey": "amc8_summer_basic",
+    "date": "7/2/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 125,
+    "classKey": "amc8_summer_basic",
+    "date": "7/9/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 126,
+    "classKey": "amc8_summer_basic",
+    "date": "7/16/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 127,
+    "classKey": "amc8_summer_basic",
+    "date": "7/23/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 128,
+    "classKey": "amc8_summer_basic",
+    "date": "7/30/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 129,
+    "classKey": "amc8_summer_basic",
+    "date": "8/6/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 130,
+    "classKey": "amc8_summer_basic",
+    "date": "8/13/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 131,
+    "classKey": "amc8_summer_basic",
+    "date": "8/20/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 7:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 132,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 133,
+    "classKey": "amc8_summer_adv",
+    "date": "6/22/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 134,
+    "classKey": "amc8_summer_adv",
+    "date": "6/29/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 135,
+    "classKey": "amc8_summer_adv",
+    "date": "7/6/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 136,
+    "classKey": "amc8_summer_adv",
+    "date": "7/13/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 137,
+    "classKey": "amc8_summer_adv",
+    "date": "7/20/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 138,
+    "classKey": "amc8_summer_adv",
+    "date": "7/27/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 139,
+    "classKey": "amc8_summer_adv",
+    "date": "8/3/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 140,
+    "classKey": "amc8_summer_adv",
+    "date": "8/10/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 141,
+    "classKey": "amc8_summer_adv",
+    "date": "8/17/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 5:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 142,
+    "classKey": "amc8_summer_adv",
+    "date": "8/22/2019",
+    "canceled": "",
+    "time": "Thursday 7:45pm - 9:30pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 143,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 144,
+    "classKey": "pre_sat_summer_a",
+    "date": "6/17/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 145,
+    "classKey": "pre_sat_summer_a",
+    "date": "6/19/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 146,
+    "classKey": "pre_sat_summer_a",
+    "date": "6/24/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 147,
+    "classKey": "pre_sat_summer_a",
+    "date": "6/26/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 148,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/1/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 149,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/3/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 150,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/8/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 151,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/10/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 152,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/15/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 153,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/17/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 154,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/22/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 155,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/24/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 156,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/29/2019",
+    "canceled": "",
+    "time": "Monday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 157,
+    "classKey": "pre_sat_summer_a",
+    "date": "7/31/2019",
+    "canceled": "",
+    "time": "Wednesday 8:00pm - 9:45pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 158,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 159,
+    "classKey": "computer_web_design",
+    "date": "7/13/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 160,
+    "classKey": "computer_web_design",
+    "date": "7/16/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 161,
+    "classKey": "computer_web_design",
+    "date": "7/20/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 162,
+    "classKey": "computer_web_design",
+    "date": "7/23/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 163,
+    "classKey": "computer_web_design",
+    "date": "7/27/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 164,
+    "classKey": "computer_web_design",
+    "date": "7/30/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 165,
+    "classKey": "computer_web_design",
+    "date": "8/3/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 166,
+    "classKey": "computer_web_design",
+    "date": "8/6/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 167,
+    "classKey": "computer_web_design",
+    "date": "8/10/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 168,
+    "classKey": "computer_web_design",
+    "date": "8/13/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 169,
+    "classKey": "computer_web_design",
+    "date": "8/17/2019",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 170,
+    "classKey": "computer_web_design",
+    "date": "8/20/2019",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 171,
+    "classKey": "computer_web_design",
+    "date": "8/24-9/3",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
   },
   {
-    "programId": "geometry",
-    "classId": "summer_a",
-    "key": "geometry_summer_a",
-    "date": "7/15/2019",
+    "sessionId": 172,
+    "classKey": "computer_web_design",
+    "date": "9/7/2019",
     "canceled": "",
-    "time": "Mon. 6:30pm - 8:30pm",
-    "notes": "Location change to room 312!"
-  },
-  {
-    "programId": "",
-    "classId": "",
-    "key": "_",
-    "date": "",
-    "canceled": "",
-    "time": "",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "sat1",
-    "classId": "summer_a",
-    "key": "sat1_summer_a",
-    "date": "6/1/2019",
+    "sessionId": 173,
+    "classKey": "computer_web_design",
+    "date": "9/14/2019",
     "canceled": "",
-    "time": "Tues. 6:00pm - 8:00pm",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "sat1",
-    "classId": "summer_a",
-    "key": "sat1_summer_a",
-    "date": "6/8/2019",
+    "sessionId": 174,
+    "classKey": "computer_web_design",
+    "date": "9/21/2019",
     "canceled": "",
-    "time": "Tues. 6:00pm - 8:00pm",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "sat1",
-    "classId": "summer_a",
-    "key": "sat1_summer_a",
-    "date": "6/15/2019",
+    "sessionId": 175,
+    "classKey": "computer_web_design",
+    "date": "10/5/2019",
     "canceled": "",
-    "time": "Tues. 6:00pm - 8:00pm",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "sat1",
-    "classId": "summer_a",
-    "key": "sat1_summer_a",
-    "date": "6/22/2019",
+    "sessionId": 176,
+    "classKey": "computer_web_design",
+    "date": "10/12/2019",
     "canceled": "",
-    "time": "Tues. 6:00pm - 8:00pm",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "",
-    "classId": "",
-    "key": "_",
-    "date": "",
+    "sessionId": 177,
+    "classKey": "computer_web_design",
+    "date": "10/19/2019",
     "canceled": "",
-    "time": "",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
   {
-    "programId": "sat1",
-    "classId": "summer_b",
-    "key": "sat1_summer_b",
-    "date": "6/1/2019",
+    "sessionId": 178,
+    "classKey": "computer_web_design",
+    "date": "10/26/2019",
     "canceled": "",
-    "time": "Wed. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_b",
-    "key": "sat1_summer_b",
-    "date": "6/8/2019",
-    "canceled": "",
-    "time": "Wed. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_b",
-    "key": "sat1_summer_b",
-    "date": "6/15/2019",
-    "canceled": "",
-    "time": "Wed. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_b",
-    "key": "sat1_summer_b",
-    "date": "6/22/2019",
-    "canceled": "",
-    "time": "Wed. 6:00pm - 8:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "",
-    "classId": "",
-    "key": "_",
-    "date": "",
-    "canceled": "",
-    "time": "",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_c",
-    "key": "sat1_summer_c",
-    "date": "6/1/2019",
-    "canceled": "",
-    "time": "Fri. 6:30pm - 8:45pm",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_c",
-    "key": "sat1_summer_c",
-    "date": "6/8/2019",
-    "canceled": "",
-    "time": "Fri. 7:00pm - 9:00pm",
-    "notes": "Time change!"
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_c",
-    "key": "sat1_summer_c",
-    "date": "6/15/2019",
-    "canceled": "",
-    "time": "Fri. 7:00pm - 9:00pm",
-    "notes": ""
-  },
-  {
-    "programId": "sat1",
-    "classId": "summer_c",
-    "key": "sat1_summer_c",
-    "date": "6/22/2019",
-    "canceled": "",
-    "time": "Fri. 7:00pm - 9:00pm",
+    "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   }
 ]

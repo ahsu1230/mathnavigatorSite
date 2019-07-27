@@ -69,7 +69,7 @@ function initClassesByProgramId(arr) {
 function initSessions(arr) {
   var map = {};
   forEach(arr, function(obj) {
-    var id = obj.key;
+    var id = obj.classKey;
     if (id == "_") { return; }
 
     obj.canceled = convertStrToBool(obj.canceled);
