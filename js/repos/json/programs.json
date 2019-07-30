@@ -4,7 +4,7 @@
     "title": "SAT Math Section",
     "grade1": 8,
     "grade2": 12,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "SAT math class is for all students who plan to take SAT test. Teacher Andy will review and reteach algebra, geometry and algebar2 all topics to build up the strongly math skills and foundations.Also many prep tests will enhance the students' test skills."
   },
   {
     "programId": "sat2",
@@ -42,10 +42,10 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
   },
   {
-    "programId": "logical_thinking",
-    "title": "Logical Thinking",
-    "grade1": 6,
-    "grade2": 8,
+    "programId": "logical_amc8",
+    "title": "Logical Thinking & AMC8",
+    "grade1": 5,
+    "grade2": 7,
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
   },
   {
@@ -67,6 +67,13 @@
     "title": "Web Design",
     "grade1": 9,
     "grade2": 12,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "Web Design Class is for the students who are interested in Computer."
+  },
+  {
+    "programId": "ask_for_help",
+    "title": "Free Ask-For-Help",
+    "grade1": 6,
+    "grade2": 12,
+    "description": "Ask-For-Help for all students who are taking the class with teacher Andy. If you have any questions for the class materials, you can sign up to sign the class."
   }
 ]

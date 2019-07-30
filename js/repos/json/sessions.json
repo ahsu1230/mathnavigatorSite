@@ -620,21 +620,21 @@
     "classKey": "sat1_fall_d",
     "date": "9/8/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 79,
     "classKey": "sat1_fall_d",
-    "date": "9/9/2019",
+    "date": "9/15/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 80,
     "classKey": "sat1_fall_d",
-    "date": "9/10/2019",
+    "date": "9/20/2019",
     "canceled": "",
     "time": "Friday 6:00pm - 8:00pm",
     "notes": ""
@@ -642,15 +642,15 @@
   {
     "sessionId": 81,
     "classKey": "sat1_fall_d",
-    "date": "9/11/2019",
+    "date": "9/22/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 82,
     "classKey": "sat1_fall_d",
-    "date": "9/12/2019",
+    "date": "9/27/2019",
     "canceled": "",
     "time": "Friday 6:00pm - 8:00pm",
     "notes": ""
@@ -658,15 +658,15 @@
   {
     "sessionId": 83,
     "classKey": "sat1_fall_d",
-    "date": "9/13/2019",
+    "date": "9/29/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 84,
     "classKey": "sat1_fall_d",
-    "date": "9/14/2019",
+    "date": "10/4/2019",
     "canceled": "",
     "time": "Friday 6:00pm - 8:00pm",
     "notes": ""
@@ -674,57 +674,57 @@
   {
     "sessionId": 85,
     "classKey": "sat1_fall_d",
-    "date": "9/15/2019",
+    "date": "10/6/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 86,
     "classKey": "sat1_fall_d",
-    "date": "9/16/2019",
+    "date": "10/13/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 87,
     "classKey": "sat1_fall_d",
-    "date": "9/17/2019",
+    "date": "10/20/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 88,
     "classKey": "sat1_fall_d",
-    "date": "9/18/2019",
+    "date": "10/27/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 89,
     "classKey": "sat1_fall_d",
-    "date": "9/19/2019",
+    "date": "11/3/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 90,
     "classKey": "sat1_fall_d",
-    "date": "9/20/2019",
+    "date": "11/10/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 91,
     "classKey": "sat1_fall_d",
-    "date": "9/21/2019",
+    "date": "11/17/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
@@ -732,21 +732,21 @@
     "classKey": "sat1_fall_d",
     "date": "11/24/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 93,
     "classKey": "sat1_fall_d",
-    "date": "11/25/2019",
+    "date": "12/1/2019",
     "canceled": "",
-    "time": "Sunday 4:00pm - 6:00pm",
+    "time": "Sunday 4:20pm - 6:20pm",
     "notes": ""
   },
   {
     "sessionId": 94,
     "classKey": "sat1_fall_d",
-    "date": "11/26/2019",
+    "date": "10/25/2019",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
     "notes": "SAT Prep Test"
@@ -754,7 +754,7 @@
   {
     "sessionId": 95,
     "classKey": "sat1_fall_d",
-    "date": "11/27/2019",
+    "date": "11/1/2019",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
     "notes": "SAT Prep Test"
@@ -762,7 +762,7 @@
   {
     "sessionId": 96,
     "classKey": "sat1_fall_d",
-    "date": "11/28/2019",
+    "date": "11/8/2019",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
     "notes": "SAT Prep Test"
@@ -770,7 +770,7 @@
   {
     "sessionId": 97,
     "classKey": "sat1_fall_d",
-    "date": "11/29/2019",
+    "date": "11/15/2019",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
     "notes": "SAT Prep Test"
@@ -778,34 +778,34 @@
   {
     "sessionId": 98,
     "classKey": "sat1_fall_d",
-    "date": "11/30/2019",
-    "canceled": "",
-    "time": "Email Prep test to you",
-    "notes": ""
-  },
-  {
-    "sessionId": 99,
-    "classKey": "sat1_fall_d",
-    "date": "12/1/2019",
+    "date": "11/22/2019",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
     "notes": "SAT Prep Test"
   },
   {
+    "sessionId": 99,
+    "classKey": "sat1_fall_d",
+    "date": "11/29/2019",
+    "canceled": "",
+    "time": "Email Prep test to you",
+    "notes": "SAT Prep Test"
+  },
+  {
     "sessionId": 100,
     "classKey": "sat1_fall_d",
-    "date": "12/2/2019",
+    "date": "12/6/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT/ACT Prep Test"
   },
   {
     "sessionId": 101,
     "classKey": "sat1_fall_d",
-    "date": "12/3/2019",
+    "date": "12/13/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT/ACT Prep Test"
   },
   {
     "sessionId": 102,
@@ -1347,7 +1347,7 @@
     "sessionId": 169,
     "classKey": "computer_web_design",
     "date": "8/17/2019",
-    "canceled": "",
+    "canceled": "TRUE",
     "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
@@ -1421,6 +1421,1734 @@
     "date": "10/26/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 179,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 180,
+    "classKey": "sat1_fall_e",
+    "date": "11/2/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 181,
+    "classKey": "sat1_fall_e",
+    "date": "11/9/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 182,
+    "classKey": "sat1_fall_e",
+    "date": "11/16/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 183,
+    "classKey": "sat1_fall_e",
+    "date": "11/23/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 184,
+    "classKey": "sat1_fall_e",
+    "date": "11/30/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 185,
+    "classKey": "sat1_fall_e",
+    "date": "12/7/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 186,
+    "classKey": "sat1_fall_e",
+    "date": "12/14/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 187,
+    "classKey": "sat1_fall_e",
+    "date": "12/21/2019",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 188,
+    "classKey": "sat1_fall_e",
+    "date": "12/29/2018",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 189,
+    "classKey": "sat1_fall_e",
+    "date": "1/4/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 190,
+    "classKey": "sat1_fall_e",
+    "date": "1/11/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 191,
+    "classKey": "sat1_fall_e",
+    "date": "1/18/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 192,
+    "classKey": "sat1_fall_e",
+    "date": "1/25/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 193,
+    "classKey": "sat1_fall_e",
+    "date": "2/1/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 194,
+    "classKey": "sat1_fall_e",
+    "date": "2/8/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 195,
+    "classKey": "sat1_fall_e",
+    "date": "2/15/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 196,
+    "classKey": "sat1_fall_e",
+    "date": "2/22/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 197,
+    "classKey": "sat1_fall_e",
+    "date": "2/29/2020",
+    "canceled": "",
+    "time": "Saturday 2:00pm - 4:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 198,
+    "classKey": "sat1_fall_e",
+    "date": "1/31/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 199,
+    "classKey": "sat1_fall_e",
+    "date": "2/7/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 200,
+    "classKey": "sat1_fall_e",
+    "date": "2/14/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 201,
+    "classKey": "sat1_fall_e",
+    "date": "2/21/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 202,
+    "classKey": "sat1_fall_e",
+    "date": "2/28/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 203,
+    "classKey": "sat1_fall_e",
+    "date": "3/6/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 204,
+    "classKey": "sat1_fall_e",
+    "date": "3/13/2020",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 205,
+    "classKey": "sat1_fall_e",
+    "date": "3/20/2020",
+    "canceled": "",
+    "time": "Friday 8:10pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 206,
+    "classKey": "sat1_fall_e",
+    "date": "3/27/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 207,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 208,
+    "classKey": "sat1_spring_f",
+    "date": "2/1/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 209,
+    "classKey": "sat1_spring_f",
+    "date": "2/8/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 210,
+    "classKey": "sat1_spring_f",
+    "date": "2/15/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 211,
+    "classKey": "sat1_spring_f",
+    "date": "2/22/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 212,
+    "classKey": "sat1_spring_f",
+    "date": "2/29/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 213,
+    "classKey": "sat1_spring_f",
+    "date": "3/7/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 214,
+    "classKey": "sat1_spring_f",
+    "date": "3/14/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 215,
+    "classKey": "sat1_spring_f",
+    "date": "3/21/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 216,
+    "classKey": "sat1_spring_f",
+    "date": "3/28/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 217,
+    "classKey": "sat1_spring_f",
+    "date": "4/4/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 218,
+    "classKey": "sat1_spring_f",
+    "date": "4/11/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 219,
+    "classKey": "sat1_spring_f",
+    "date": "4/18/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 220,
+    "classKey": "sat1_spring_f",
+    "date": "4/25/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 221,
+    "classKey": "sat1_spring_f",
+    "date": "5/2/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 222,
+    "classKey": "sat1_spring_f",
+    "date": "5/9/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 223,
+    "classKey": "sat1_spring_f",
+    "date": "5/16/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 224,
+    "classKey": "sat1_spring_f",
+    "date": "5/23/2020",
+    "canceled": "",
+    "time": "Saturday 10:00am - 12:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 225,
+    "classKey": "sat1_spring_f",
+    "date": "4/17/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 226,
+    "classKey": "sat1_spring_f",
+    "date": "4/24/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 227,
+    "classKey": "sat1_spring_f",
+    "date": "5/1/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 228,
+    "classKey": "sat1_spring_f",
+    "date": "5/8/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 229,
+    "classKey": "sat1_spring_f",
+    "date": "5/15/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT Prep Test"
+  },
+  {
+    "sessionId": 230,
+    "classKey": "sat1_spring_f",
+    "date": "5/22/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT/ACT Prep Test"
+  },
+  {
+    "sessionId": 231,
+    "classKey": "sat1_spring_f",
+    "date": "5/29/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "SAT/ACT Prep Test"
+  },
+  {
+    "sessionId": 232,
+    "classKey": "sat1_spring_f",
+    "date": "6/7/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 233,
+    "classKey": "sat1_spring_f",
+    "date": "6/12/2020",
+    "canceled": "",
+    "time": "Friday 8:00pm - 9:40pm",
+    "notes": "ACT Prep Test"
+  },
+  {
+    "sessionId": 234,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 235,
+    "classKey": "sat2_spring_a",
+    "date": "1/17/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 236,
+    "classKey": "sat2_spring_a",
+    "date": "1/24/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 237,
+    "classKey": "sat2_spring_a",
+    "date": "1/31/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 238,
+    "classKey": "sat2_spring_a",
+    "date": "2/7/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 239,
+    "classKey": "sat2_spring_a",
+    "date": "2/14/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 240,
+    "classKey": "sat2_spring_a",
+    "date": "2/21/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 241,
+    "classKey": "sat2_spring_a",
+    "date": "2/28/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 242,
+    "classKey": "sat2_spring_a",
+    "date": "3/3/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 243,
+    "classKey": "sat2_spring_a",
+    "date": "3/6/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 244,
+    "classKey": "sat2_spring_a",
+    "date": "3/10/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 245,
+    "classKey": "sat2_spring_a",
+    "date": "3/13/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 246,
+    "classKey": "sat2_spring_a",
+    "date": "3/17/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 247,
+    "classKey": "sat2_spring_a",
+    "date": "3/20/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 248,
+    "classKey": "sat2_spring_a",
+    "date": "3/24/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 249,
+    "classKey": "sat2_spring_a",
+    "date": "3/27/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 250,
+    "classKey": "sat2_spring_a",
+    "date": "3/31/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 251,
+    "classKey": "sat2_spring_a",
+    "date": "4/3/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 252,
+    "classKey": "sat2_spring_a",
+    "date": "4/7/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 253,
+    "classKey": "sat2_spring_a",
+    "date": "4/10/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 254,
+    "classKey": "sat2_spring_a",
+    "date": "4/14/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 255,
+    "classKey": "sat2_spring_a",
+    "date": "4/17/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 256,
+    "classKey": "sat2_spring_a",
+    "date": "4/21/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 257,
+    "classKey": "sat2_spring_a",
+    "date": "4/24/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 258,
+    "classKey": "sat2_spring_a",
+    "date": "4/28/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 259,
+    "classKey": "sat2_spring_a",
+    "date": "5/1/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 260,
+    "classKey": "sat2_spring_a",
+    "date": "5/5/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 261,
+    "classKey": "sat2_spring_a",
+    "date": "5/8/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 262,
+    "classKey": "sat2_spring_a",
+    "date": "5/12/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 263,
+    "classKey": "sat2_spring_a",
+    "date": "5/15/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 264,
+    "classKey": "sat2_spring_a",
+    "date": "5/19/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 265,
+    "classKey": "sat2_spring_a",
+    "date": "5/22/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 266,
+    "classKey": "sat2_spring_a",
+    "date": "5/26/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 267,
+    "classKey": "sat2_spring_a",
+    "date": "5/29/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 268,
+    "classKey": "sat2_spring_a",
+    "date": "6/2/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 269,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 270,
+    "classKey": "sat2_spring_b",
+    "date": "1/18/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 271,
+    "classKey": "sat2_spring_b",
+    "date": "1/25/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 272,
+    "classKey": "sat2_spring_b",
+    "date": "2/1/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 273,
+    "classKey": "sat2_spring_b",
+    "date": "2/8/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 274,
+    "classKey": "sat2_spring_b",
+    "date": "2/15/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 275,
+    "classKey": "sat2_spring_b",
+    "date": "2/22/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 276,
+    "classKey": "sat2_spring_b",
+    "date": "2/29/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 277,
+    "classKey": "sat2_spring_b",
+    "date": "3/3/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 278,
+    "classKey": "sat2_spring_b",
+    "date": "3/7/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 279,
+    "classKey": "sat2_spring_b",
+    "date": "3/10/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 280,
+    "classKey": "sat2_spring_b",
+    "date": "3/14/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 281,
+    "classKey": "sat2_spring_b",
+    "date": "3/17/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 282,
+    "classKey": "sat2_spring_b",
+    "date": "3/21/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 283,
+    "classKey": "sat2_spring_b",
+    "date": "3/24/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 284,
+    "classKey": "sat2_spring_b",
+    "date": "3/28/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 285,
+    "classKey": "sat2_spring_b",
+    "date": "3/31/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 286,
+    "classKey": "sat2_spring_b",
+    "date": "4/4/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 287,
+    "classKey": "sat2_spring_b",
+    "date": "4/7/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 288,
+    "classKey": "sat2_spring_b",
+    "date": "4/11/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 289,
+    "classKey": "sat2_spring_b",
+    "date": "4/14/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 290,
+    "classKey": "sat2_spring_b",
+    "date": "4/18/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 291,
+    "classKey": "sat2_spring_b",
+    "date": "4/21/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 292,
+    "classKey": "sat2_spring_b",
+    "date": "4/25/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 293,
+    "classKey": "sat2_spring_b",
+    "date": "4/28/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 294,
+    "classKey": "sat2_spring_b",
+    "date": "5/2/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 295,
+    "classKey": "sat2_spring_b",
+    "date": "5/5/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 296,
+    "classKey": "sat2_spring_b",
+    "date": "5/9/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 297,
+    "classKey": "sat2_spring_b",
+    "date": "5/12/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 298,
+    "classKey": "sat2_spring_b",
+    "date": "5/16/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 299,
+    "classKey": "sat2_spring_b",
+    "date": "5/19/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 300,
+    "classKey": "sat2_spring_b",
+    "date": "5/23/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 301,
+    "classKey": "sat2_spring_b",
+    "date": "5/26/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 302,
+    "classKey": "sat2_spring_b",
+    "date": "5/30/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 303,
+    "classKey": "sat2_spring_b",
+    "date": "6/2/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 304,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 305,
+    "classKey": "sat2_spring_c",
+    "date": "1/19/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 306,
+    "classKey": "sat2_spring_c",
+    "date": "1/26/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 307,
+    "classKey": "sat2_spring_c",
+    "date": "2/2/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 308,
+    "classKey": "sat2_spring_c",
+    "date": "2/9/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 309,
+    "classKey": "sat2_spring_c",
+    "date": "2/16/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 310,
+    "classKey": "sat2_spring_c",
+    "date": "2/23/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 311,
+    "classKey": "sat2_spring_c",
+    "date": "2/29/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 312,
+    "classKey": "sat2_spring_c",
+    "date": "3/3/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 313,
+    "classKey": "sat2_spring_c",
+    "date": "3/8/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 314,
+    "classKey": "sat2_spring_c",
+    "date": "3/10/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 315,
+    "classKey": "sat2_spring_c",
+    "date": "3/15/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 316,
+    "classKey": "sat2_spring_c",
+    "date": "3/17/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 317,
+    "classKey": "sat2_spring_c",
+    "date": "3/22/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 318,
+    "classKey": "sat2_spring_c",
+    "date": "3/24/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Make Up/Ask-for-Help"
+  },
+  {
+    "sessionId": 319,
+    "classKey": "sat2_spring_c",
+    "date": "3/29/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 320,
+    "classKey": "sat2_spring_c",
+    "date": "3/31/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 321,
+    "classKey": "sat2_spring_c",
+    "date": "4/5/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 322,
+    "classKey": "sat2_spring_c",
+    "date": "4/7/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 323,
+    "classKey": "sat2_spring_c",
+    "date": "4/12/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 324,
+    "classKey": "sat2_spring_c",
+    "date": "4/14/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 325,
+    "classKey": "sat2_spring_c",
+    "date": "4/19/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 326,
+    "classKey": "sat2_spring_c",
+    "date": "4/21/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 327,
+    "classKey": "sat2_spring_c",
+    "date": "4/26/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 328,
+    "classKey": "sat2_spring_c",
+    "date": "4/28/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 329,
+    "classKey": "sat2_spring_c",
+    "date": "5/3/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 330,
+    "classKey": "sat2_spring_c",
+    "date": "5/5/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 331,
+    "classKey": "sat2_spring_c",
+    "date": "5/10/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 332,
+    "classKey": "sat2_spring_c",
+    "date": "5/12/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 333,
+    "classKey": "sat2_spring_c",
+    "date": "5/17/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 334,
+    "classKey": "sat2_spring_c",
+    "date": "5/19/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practce"
+  },
+  {
+    "sessionId": 335,
+    "classKey": "sat2_spring_c",
+    "date": "5/24/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 336,
+    "classKey": "sat2_spring_c",
+    "date": "5/26/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 337,
+    "classKey": "sat2_spring_c",
+    "date": "5/31/2020",
+    "canceled": "",
+    "time": "Sunday 4:20pm - 6:20pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 338,
+    "classKey": "sat2_spring_c",
+    "date": "6/2/2020",
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
+  },
+  {
+    "sessionId": 339,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 340,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "2/23/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 341,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "3/1/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 342,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "3/8/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 343,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "3/15/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 344,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "3/22/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 345,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "3/29/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 346,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "4/5/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 347,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "4/12/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 348,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "4/19/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 349,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "4/26/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 350,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "5/3/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 351,
+    "classKey": "ap_calc_spring_finalreview",
+    "date": "5/10/2020",
+    "canceled": "",
+    "time": "Sunday 2:15pm - 4:15pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 352,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 353,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 354,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 355,
+    "classKey": "geometry_fall_a",
+    "date": "10/31/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 356,
+    "classKey": "geometry_fall_a",
+    "date": "11/28/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 357,
+    "classKey": "geometry_fall_a",
+    "date": "12/26/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 358,
+    "classKey": "geometry_fall_a",
+    "date": "1/2/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 359,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 360,
+    "classKey": "amc8_fall_advance_a",
+    "date": "12/23/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 361,
+    "classKey": "amc8_fall_advance_a",
+    "date": "12/30/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 362,
+    "classKey": "amc8_fall_advance_b",
+    "date": "12/26/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 363,
+    "classKey": "amc8_fall_advance_b",
+    "date": "1/2/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 364,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 365,
+    "classKey": "algebra2_fall_a",
+    "date": "12/1/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 366,
+    "classKey": "algebra2_fall_a",
+    "date": "12/22/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 367,
+    "classKey": "algebra2_fall_a",
+    "date": "12/29/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 368,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 369,
+    "classKey": "pre_calc_fall_a",
+    "date": "12/24/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 370,
+    "classKey": "pre_calc_fall_a",
+    "date": "12/31/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 371,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 372,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 373,
+    "classKey": "ap_cal_fall_a",
+    "date": "12/22/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 374,
+    "classKey": "ap_cal_fall_a",
+    "date": "12/29/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 375,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 376,
+    "classKey": "logical_amc8_fall_a",
+    "date": "12/23/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 377,
+    "classKey": "logical_amc8_fall_a",
+    "date": "12/30/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 378,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 379,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 380,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 381,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 382,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 383,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 384,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 385,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 386,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 387,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 388,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 389,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 390,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 391,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 392,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 393,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 394,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
     "notes": ""
   }
 ]
