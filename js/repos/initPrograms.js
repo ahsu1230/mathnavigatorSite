@@ -109,6 +109,7 @@ function initAnnounce(arr) {
    if (!obj.filtered) {
      obj.isAvailable = convertStrToBool(obj.isAvailable);
      obj.times = convertStringArray(obj.times);
+     obj.allYear = convertStrToBool(obj.allYear);
      obj.filtered = true;
    }
    return obj;

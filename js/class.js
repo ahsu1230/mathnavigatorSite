@@ -47,18 +47,23 @@ function generateTimes(classObj) {
   );
 }
 
-function generatePricing(priceLump, pricePerSession, numSessions) {
+function generatePricing(priceLump, pricePerSession, numSessions, paymentNotes) {
   let line1;
   let line2;
   let line3;
+  let line4;
   if (priceLump) {
-    line1 = <div>{"Total Price: $" + priceLump}</div>
+    line1 = <div>{"Price: $" + priceLump}</div>
   } else if (numSessions > 0) {
     line1 = <div>{"Number of sessions: " + numSessions}</div>;
     line2 = <div>{"Price per session: $" + pricePerSession}</div>;
     line3 = <div>{"Total: $" + numSessions * pricePerSession}</div>;
-  } else {
+  } else if (pricePerSession > 0) {
     line1 = <div>{"Price per session: $" + pricePerSession}</div>;
+  }
+
+  if (paymentNotes) {
+    line4 = <div>{"Payment Due: " + paymentNotes}</div>;
   }
 
   return (
@@ -66,11 +71,12 @@ function generatePricing(priceLump, pricePerSession, numSessions) {
       {line1}
       {line2}
       {line3}
+      {line4}
     </div>
   );
 }
 
-function generateSchedules(sessions) {
+function generateSchedules(sessions, allYear, classTimes) {
   if (!sessions || sessions.length == 0) {
     return (
       <div className="class-lines not-avail">
@@ -103,10 +109,29 @@ function generateSchedules(sessions) {
       />
     );
   });
+
+  var allYearText = "";
+  if (allYear && classTimes.length > 0) {
+    allYearText = "Classes are held every week on ";
+    const timesText = classTimes.map((c, i) => {
+      return (<div key={i}>{c}</div>);
+    });
+    allYearText = (
+      <div>
+        {allYearText}
+        {timesText}
+        <h3>Except the following times:</h3>
+      </div>
+    );
+  }
+
   return (
-    <ul>
-      {sessionLines}
-    </ul>
+    <div>
+      {allYearText}
+      <ul>
+        {sessionLines}
+      </ul>
+    </div>
   );
 }
 
@@ -165,8 +190,9 @@ class ClassContent extends React.Component {
     }
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
-    const textPricing = generatePricing(classObj.priceLump, classObj.pricePerSession, sessionCounter);
-    const schedules = generateSchedules(sessions);
+    const textPricing = generatePricing(classObj.priceLump,
+        classObj.pricePerSession, sessionCounter, classObj.paymentNotes);
+    const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
 
 		return (
       <div id="view-class">
