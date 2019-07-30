@@ -12,18 +12,11 @@ export class ProgramClassModal extends React.Component {
 		const programObj = this.props.programObj;
 		const programId = programObj.programId;
 		const classes = this.props.classList;
-		const avail = this.props.avail;
+		const semester = this.props.semester;
 
-		var programTitle;
-		if (avail) {
-			programTitle = "Available classes for " + programObj.title;
-		} else {
-			programTitle = "Future classes for " + programObj.title;
-		}
+		var programTitle = semester.title + " Classes";
 
-    const classList = classes
-												.filter((c) => c.isAvailable == avail)
-												.map((c, index) =>
+    const classList = classes.map((c, index) =>
 										      <ProgramClassLine key={index} classObj={c}/>
 										    );
 

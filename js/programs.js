@@ -3,8 +3,11 @@ require('./../styl/programs.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-	getAvailablePrograms,
-	getClasses
+	getClassesBySemester,
+	getClassesByProgramAndSemester,
+	getProgramsBySemester,
+	getSemester,
+	getSemesterIds
 } from './repos/mainRepo.js';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from './modal.js';
@@ -15,15 +18,20 @@ export class ProgramsPage extends React.Component {
 	}
 
 	render() {
-		var programs = getAvailablePrograms();
-		var programsAvail = Object.values(programs.available);
-		var programsSoon = Object.values(programs.soon);
+		const semesterIds = getSemesterIds();
+		const programsBySemesterId = getProgramsBySemester();
+		const sections = semesterIds.map(function(semesterId, index) {
+			var semester = getSemester(semesterId);
+			var programs = programsBySemesterId[semesterId];
+			return (
+				<ProgramSection key={index} semester={semester} programs={programs}/>
+			);
+		});
 
 		return (
       <div id="view-program">
         <div id="view-program-container">
-					<ProgramSection title={"Available Programs"} programs={programsAvail} avail={true}/>
-					<ProgramSection title={"Coming Soon"} programs={programsSoon} avail={false}/>
+					{sections}
         </div>
       </div>
 		);
@@ -32,11 +40,12 @@ export class ProgramsPage extends React.Component {
 
 class ProgramSection extends React.Component {
 	render() {
-		var title = this.props.title;
-		var programs = this.props.programs;
+		const semester = this.props.semester;
+		const title = semester.title;
+		const programs = this.props.programs;
 
 		const cards = programs.map((program, index) =>
-      <ProgramCard key={index} program={program} avail={this.props.avail}/>
+      <ProgramCard key={index} semester={this.props.semester} program={program}/>
     );
 
 		return (
@@ -79,15 +88,16 @@ class ProgramCard extends React.Component {
 
 	render() {
 		const program = this.props.program;
-		const programId = program.programId;
-		this.classes = getClasses(programId);
+		const semester = this.props.semester;
+		this.classes = getClassesByProgramAndSemester(program.programId,
+			semester.semesterId);
 
 		const grades = "Grades " + program.grade1 + " - " + program.grade2;
 		var modalDiv;
 		if (this.classes.length > 1) {
 			const modalContent = <ProgramClassModal programObj={program}
-															classList={this.classes} 
-															avail={this.props.avail}/>;
+															classList={this.classes}
+															semester={semester}/>;
 			modalDiv = (
 				<Modal content={modalContent}
 								show={this.state.showModal}

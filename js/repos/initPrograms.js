@@ -7,21 +7,29 @@ export var preReqMap = {};
 export var programMap = {};
 export var classMapByKey = {};
 export var classMapByProgramId = {};
+export var classMapBySemesterId = {};
 export var sessionMap = {};
 export var announceList = [];
+export var semesterMap = {};
+export var semesterIds = [];
 
 function init() {
   console.log('Initializing Programs...');
   locationMap = initLocations(jsons.locations);
   programMap = initPrograms(jsons.programs);
 
-  var classes = jsons.classes;
+  const classes = jsons.classes;
   classMapByKey = initClassesByKey(classes);
   classMapByProgramId = initClassesByProgramId(classes);
+  classMapBySemesterId = initClassesBySemesterId(classes);
 
   sessionMap = initSessions(jsons.sessions);
   preReqMap = initPreReqs(jsons.prereqs);
   announceList = initAnnounce(jsons.announcements);
+
+  const semesters = jsons.semesters;
+  semesterMap = initSemesterMap(semesters);
+  semesterIds = initSemesterIds(semesters);
   console.log('Programs done initializing.');
 }
 
@@ -66,6 +74,20 @@ function initClassesByProgramId(arr) {
   return map;
 }
 
+function initClassesBySemesterId(arr) {
+  var map = {};
+  forEach(arr, function(obj) {
+    var id = obj.semesterId;
+    obj = filterClassObj(obj);
+    if (!map[id] || map[id].length == 0) {
+      map[id] = [obj];
+    } else {
+      map[id].push(obj);
+    }
+  });
+  return map;
+}
+
 function initSessions(arr) {
   var map = {};
   forEach(arr, function(obj) {
@@ -100,6 +122,24 @@ function initAnnounce(arr) {
     list.push(obj);
   });
   return list.reverse(); // Newest post to oldest
+}
+
+function initSemesterMap(arr) {
+  var map = {};
+  forEach(arr, function(obj) {
+    var id = obj.semesterId;
+    map[id] = obj;
+  });
+  return map;
+}
+
+function initSemesterIds(arr) {
+  var list = [];
+  forEach(arr, function(obj) {
+    console.log(obj);
+    list.push(obj.semesterId);
+  });
+  return list;
 }
 
 /*
