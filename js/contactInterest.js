@@ -5,7 +5,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Modal } from './modal.js';
-import { getProgramClass, getAvailableClasses } from './repos/mainRepo.js';
+import {
+  createFullClassObj,
+  getProgramClass,
+  getClassesBySemester,
+  getSemester,
+	getSemesterIds
+} from './repos/mainRepo.js';
 const classnames = require('classnames');
 const queryString = require('query-string');
 
@@ -80,10 +86,22 @@ class InterestModal extends React.Component {
       interestClassMap[classKey] = true;
     });
     const numClasses = interestedClasses.length;
+    const onSelectProgram = this.props.onSelectProgram;
 
-    var classesPair = getAvailableClasses();
-    var classesAvail = classesPair.available;
-    var classesSoon = classesPair.soon;
+    const semesterIds = getSemesterIds();
+		const sections = semesterIds.map(function(semesterId, index) {
+      var semester = getSemester(semesterId);
+			var classes = getClassesBySemester(semesterId);
+      const list = createInterestItems(classes, interestClassMap, onSelectProgram);
+			return (
+        <div key={index}>
+          <h2>{semester.title}</h2>
+          <ul>
+            {list}
+          </ul>
+        </div>
+			);
+		});
 
     var selectedLineClassNames = classnames("selected-line", {
       highlight: numClasses > 0
@@ -91,10 +109,6 @@ class InterestModal extends React.Component {
     var selectedLineText = numClasses;
     selectedLineText += (numClasses == 1 ? " class " : " classes ");
     selectedLineText += "selected";
-
-    const onSelectProgram = this.props.onSelectProgram;
-    const listAvail = createInterestItems(classesAvail, interestClassMap, onSelectProgram);
-    const listSoon = createInterestItems(classesSoon, interestClassMap, onSelectProgram);
 
     return (
       <div id="interest-modal">
@@ -105,12 +119,7 @@ class InterestModal extends React.Component {
           <div className="header start-date">Starting Date</div>
         </div>
         <div id="interest-view" className="use-scrollbar">
-          <ul>
-            <h2>Classes Available</h2>
-            {listAvail}
-            <h2>Classes Coming Soon</h2>
-            {listSoon}
-          </ul>
+          {sections}
         </div>
         <div className={selectedLineClassNames}>{selectedLineText}</div>
         <button className="btn-done" onClick={this.props.onDismiss}>Done</button>
@@ -141,7 +150,7 @@ class InterestItem extends React.Component {
   }
 
   render() {
-    const classObj = this.props.classObj;
+    const classObj = createFullClassObj(this.props.classObj);
     const className = classObj.fullClassName;
     const startingDate = classObj.startDate;
 

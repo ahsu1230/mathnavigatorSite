@@ -1,5 +1,6 @@
 'use strict';
 import {
+  assign,
   find,
   filter,
   forEach,
@@ -36,9 +37,8 @@ export function getClassesBySemester(semesterId) {
 }
 
 export function getClassesByProgramAndSemester(programId, semesterId) {
-  return filter(classMapBySemesterId[semesterId], function (c) {
-    return c.programId === programId;
-  });
+  var programObj = programMap[programId];
+  return filter(classMapBySemesterId[semesterId], c => c.programId === programId);
 }
 
 export function getProgramClass(key) {
@@ -125,13 +125,12 @@ export function getSessions(programClassKey) {
 
 
 /* Helpers */
-
-function createFullClassObj(classObj, programObj) {
+export function createFullClassObj(classObj) {
+  var programId = classObj.programId;
+  var programObj = programMap[programId];
   var className = classObj.className;
+  classObj = assign({}, classObj, programObj);
   classObj.fullClassName = programObj.title + (className ? (" " + className) : "");
   classObj.programTitle = programObj.title;
-  classObj.grade1 = programObj.grade1;
-  classObj.grade2 = programObj.grade2;
-  classObj.description = programObj.description;
   return classObj;
 }

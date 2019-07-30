@@ -1,5 +1,7 @@
 'use strict';
-import { forEach } from 'lodash';
+import {
+  forEach
+} from 'lodash';
 import jsons from './json/*.json';
 
 export var locationMap = {};
@@ -136,7 +138,6 @@ function initSemesterMap(arr) {
 function initSemesterIds(arr) {
   var list = [];
   forEach(arr, function(obj) {
-    console.log(obj);
     list.push(obj.semesterId);
   });
   return list;
