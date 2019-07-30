@@ -93,13 +93,10 @@ export function getProgramsBySemester(semesterId) {
     var semesterId = classObj.semesterId;
     programObj.semesterId = semesterId;
 
+    map[semesterId] = map[semesterId] || [];
     var hasProgram = find(map[semesterId], {programId: programId, semesterId: semesterId});
-    if (map[semesterId]) {
-      if (!hasProgram) {
-        map[semesterId].push(programObj);
-      }
-    } else {
-      map[semesterId] = [programObj];
+    if (!hasProgram) {
+      map[semesterId].push(programObj);
     }
   });
   return map;

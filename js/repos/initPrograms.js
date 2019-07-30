@@ -67,11 +67,8 @@ function initClassesByProgramId(arr) {
   forEach(arr, function(obj) {
     var id = obj.programId;
     obj = filterClassObj(obj);
-    if (!map[id] || map[id].length == 0) {
-      map[id] = [obj];
-    } else {
-      map[id].push(obj);
-    }
+    map[id] = map[id] || [];
+    map[id].push(obj);
   });
   return map;
 }
@@ -81,11 +78,8 @@ function initClassesBySemesterId(arr) {
   forEach(arr, function(obj) {
     var id = obj.semesterId;
     obj = filterClassObj(obj);
-    if (!map[id] || map[id].length == 0) {
-      map[id] = [obj];
-    } else {
-      map[id].push(obj);
-    }
+    map[id] = map[id] || [];
+    map[id].push(obj);
   });
   return map;
 }
@@ -97,11 +91,8 @@ function initSessions(arr) {
     if (id == "_") { return; }
 
     obj.canceled = convertStrToBool(obj.canceled);
-    if (map[id] && map[id].length > 0) {
-      map[id].push(obj);
-    } else {
-      map[id] = [obj];
-    }
+    map[id] = map[id] || [];
+    map[id].push(obj);
   });
   return map;
 }
