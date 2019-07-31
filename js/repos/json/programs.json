@@ -4,76 +4,69 @@
     "title": "SAT Math Section",
     "grade1": 8,
     "grade2": 12,
-    "description": "SAT math class is for all students who plan to take SAT test. Teacher Andy will review and reteach algebra, geometry and algebar2 all topics to build up the strongly math skills and foundations.Also many prep tests will enhance the students' test skills."
+    "description": "Our most popular program. Register for this class if you are planning to take the SAT1 exam. Teacher Andy will cover all topics on the SAT Math Section, including topics from Algebra, Algebra 2, and Geometry to build strong mathematical foundations. Not only will students get a review on important topics, but also a wide range of problem solving strategies to successfully achieve high scores on the SAT. Take this program and get into your dream college!"
   },
   {
     "programId": "sat2",
     "title": "SAT Subject Math 2",
     "grade1": 9,
     "grade2": 12,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "Our strongest Program. Students applying to colleges will be more noticed if they also succeed on the SAT Subject Tests. We provide a strong training course in the SAT Subject Math Level 2 Test designed for determined students who want to build stronger college applications. More than 90% of our students receive a score of at least 700 out of 800, of which around 50% receive the full score of 800. Sign up for this program to be one of them!"
   },
   {
     "programId": "geometry",
     "title": "Geometry",
     "grade1": 6,
     "grade2": 8,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "Register for our Geometry class to review any topics you may have from school, but also to get a basic training for important high school math courses. We cover all subjects in Geometry as well as provide students foundational skills to succeed in their high school math classes and the SAT 1 & 2."
   },
   {
     "programId": "algebra2",
     "title": "Algebra 2",
     "grade1": 7,
     "grade2": 10,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "For students who currently take an Algebra II course at school, sign up for this program to participate in group lessons on advanced algebra. In addition to Algebra II material, we also train students for future tests in mathematics such as the SAT Math or SAT Subject Math exams."
   },
   {
     "programId": "ap_calc",
     "title": "AP Calculus",
     "grade1": 9,
     "grade2": 12,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "Whether you take AP Calculus AB or BC at school, Teacher Andy will summarize all AP Calculus topics into easily applicable knowledge for students to use in their practice exams. In the Spring semester of the school year, we provide \"Final Review\" classes for students to go over any topics they need before aiming to get the top score of 5 on the AP Exam."
   },
   {
     "programId": "pre_calc",
     "title": "Pre-Calculus",
     "grade1": 9,
     "grade2": 12,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "For students who currently take a Pre-Calculus course at their school, sign up for this program to participate in group lessons and reviews on basic Calculus concepts. In addition to Pre-Calculus material, we also train students for future tests in mathematics such as AP Calculus or the SAT 1 & 2."
   },
   {
     "programId": "logical_amc8",
     "title": "Logical Thinking & AMC8",
     "grade1": 5,
     "grade2": 7,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "For our younger middle school students who want an introduction to the American Mathematics Competition (AMC). With our basics and fundamental training, students will develop their logical thinking and problem solving skills to solve challenging mathematical questions. In addition to better problem solving techniques, concepts in algebra, geometry, and probabilities will be covered."
   },
   {
     "programId": "amc8",
     "title": "AMC 8",
     "grade1": 6,
     "grade2": 8,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "For middle schoolers who are looking to take their mathematical skills to a whole new level. With out training for the American Mathematics Competition (AMC), students will train their logical thinking and analytical abilities to problem solve challenging math questions. Train with us and earn awards for your school!"
   },
   {
     "programId": "pre_sat",
-    "title": "PRE-SAT",
+    "title": "Pre-SAT",
     "grade1": 8,
     "grade2": 10,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "description": "Targeted for the rising 9th graders who have completed Geometry, this class will focus on basic and medium leveled SAT topics. We will also introduce Algebra II concepts to give students a preview of their upcoming semester."
   },
   {
     "programId": "computer",
     "title": "Web Design",
     "grade1": 9,
     "grade2": 12,
-    "description": "Web Design Class is for the students who are interested in Computer."
-  },
-  {
-    "programId": "ask_for_help",
-    "title": "Free Ask-For-Help",
-    "grade1": 6,
-    "grade2": 12,
-    "description": "Ask-For-Help for all students who are taking the class with teacher Andy. If you have any questions for the class materials, you can sign up to sign the class."
+    "description": "Develop your own websites with this program. Students will learn the fundamentals of HTML, CSS, and Javascript. In addition to encouraging students to create their own personal website, we will also be re-creating parts of popular websites such as Facebook, Instagram, Youtube, AirBnb etc. as exercises. We recommend this project if you want to see a creative approach to programming."
   }
 ]
