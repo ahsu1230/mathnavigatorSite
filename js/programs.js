@@ -110,6 +110,15 @@ class ProgramCard extends React.Component {
 			);
 		}
 
+		var star = <div></div>;
+		if (isImportantProgram(program.programId)) {
+			star = (
+				<div className="star-container">
+					<div className="star-img"></div>
+				</div>
+			);
+		}
+
 		return (
 			<div className="program-card-container">
 				{/*
@@ -117,6 +126,7 @@ class ProgramCard extends React.Component {
 					of modal styling conflicts?
 				*/}
 				<div className="program-card" onClick={this.handleClick}>
+					{star}
 					<div className="program-card-content">
 						<h2>{program.title}</h2>
 						<h3>{grades}</h3>
@@ -127,4 +137,11 @@ class ProgramCard extends React.Component {
 			</div>
 		);
 	}
+}
+
+function isImportantProgram(programId) {
+	return programId === "sat1" ||
+			programId === "sat2" ||
+			programId === "amc8" ||
+			programId === "ap_calc";
 }
