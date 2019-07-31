@@ -4,16 +4,17 @@ import {
 } from 'lodash';
 import jsons from './json/*.json';
 
-export var locationMap = {};
-export var preReqMap = {};
-export var programMap = {};
+export var achievementMap = {};
+export var announceList = [];
 export var classMapByKey = {};
 export var classMapByProgramId = {};
 export var classMapBySemesterId = {};
-export var sessionMap = {};
-export var announceList = [];
+export var locationMap = {};
+export var preReqMap = {};
+export var programMap = {};
 export var semesterMap = {};
 export var semesterIds = [];
+export var sessionMap = {};
 
 function init() {
   console.log('Initializing Programs...');
@@ -32,27 +33,40 @@ function init() {
   const semesters = jsons.semesters;
   semesterMap = initSemesterMap(semesters);
   semesterIds = initSemesterIds(semesters);
+
+  achievementMap = initAchievements(jsons.achievements);
+
   console.log('Programs done initializing.');
 }
 
-function initLocations(arr) {
+
+/* Achievements */
+function initAchievements(arr) {
   var map = {};
   forEach(arr, function(obj) {
-    var id = obj.locationId;
-    map[id] = obj;
+    var key = obj.year;
+    obj.highlight = convertStrToBool(obj.highlight);
+    obj.classKeys = convertStringArray(obj.classKeys);
+    map[key] = map[key] || [];
+    map[key].push(obj);
   });
   return map;
 }
 
-function initPrograms(arr) {
-  var map = {};
+
+/* Announcements */
+function initAnnounce(arr) {
+  var list = [];
   forEach(arr, function(obj) {
-    var id = obj.programId;
-    map[id] = obj;
+    obj.important = convertStrToBool(obj.important);
+    obj.classKeys = convertStringArray(obj.classKeys);
+    list.push(obj);
   });
-  return map;
+  return list.reverse(); // Newest post to oldest
 }
 
+
+/* Classes */
 function initClassesByKey(arr) {
   var map = {};
   forEach(arr, function(obj) {
@@ -84,19 +98,19 @@ function initClassesBySemesterId(arr) {
   return map;
 }
 
-function initSessions(arr) {
+
+/* Locations */
+function initLocations(arr) {
   var map = {};
   forEach(arr, function(obj) {
-    var id = obj.classKey;
-    if (id == "_") { return; }
-
-    obj.canceled = convertStrToBool(obj.canceled);
-    map[id] = map[id] || [];
-    map[id].push(obj);
+    var id = obj.locationId;
+    map[id] = obj;
   });
   return map;
 }
 
+
+/* PreReqs */
 function initPreReqs(arr) {
   var map = {};
   forEach(arr, function(obj) {
@@ -107,16 +121,19 @@ function initPreReqs(arr) {
   return map;
 }
 
-function initAnnounce(arr) {
-  var list = [];
+
+/* Programs */
+function initPrograms(arr) {
+  var map = {};
   forEach(arr, function(obj) {
-    obj.important = convertStrToBool(obj.important);
-    obj.classKeys = convertStringArray(obj.classKeys);
-    list.push(obj);
+    var id = obj.programId;
+    map[id] = obj;
   });
-  return list.reverse(); // Newest post to oldest
+  return map;
 }
 
+
+/* Semesters */
 function initSemesterMap(arr) {
   var map = {};
   forEach(arr, function(obj) {
@@ -133,6 +150,23 @@ function initSemesterIds(arr) {
   });
   return list;
 }
+
+
+/* Sessions */
+function initSessions(arr) {
+  var map = {};
+  forEach(arr, function(obj) {
+    var id = obj.classKey;
+    if (id == "_") { return; }
+
+    obj.canceled = convertStrToBool(obj.canceled);
+    map[id] = map[id] || [];
+    map[id].push(obj);
+  });
+  return map;
+}
+
+
 
 /*
  * Helper functions

@@ -4,9 +4,11 @@ import {
   find,
   filter,
   forEach,
+  keys,
   map
 } from 'lodash';
 import {
+  achievementMap,
   announceList,
   classMapByKey,
   classMapByProgramId,
@@ -20,8 +22,16 @@ import {
 } from './initPrograms.js';
 import { profileList } from './initProfiles.js';
 
-/* Announcements */
+/* Achievements */
+export function getAchievementKeys() {
+  return keys(achievementMap);
+}
 
+export function getAchievements(yearKey) {
+  return achievementMap[yearKey];
+}
+
+/* Announcements */
 export function getAnnounceList() {
   return announceList;
 }
@@ -54,21 +64,18 @@ export function getProgramClass(key) {
 }
 
 /* Locations */
-
 export function getLocation(locationId) {
   return locationMap[locationId];
 }
 
 
 /* Prereqs */
-
 export function getPrereqs(programId) {
   return preReqMap[programId];
 }
 
 
 /* Profiles */
-
 export function getProfileById(profileId) {
   return find(profileList, {id: profileId});
 }
@@ -77,8 +84,8 @@ export function getAllProfiles() {
   return profileList;
 }
 
-/* Programs */
 
+/* Programs */
 export function getProgramByIds(arr) {
   return map(arr, function(programId) {
     return programMap[programId];
@@ -104,7 +111,6 @@ export function getProgramsBySemester(semesterId) {
 
 
 /* Semesters */
-
 export function getSemesterIds() {
   return semesterIds;
 }
@@ -115,7 +121,6 @@ export function getSemester(semesterId) {
 
 
 /* Sessions */
-
 export function getSessions(programClassKey) {
   return sessionMap[programClassKey];
 }
