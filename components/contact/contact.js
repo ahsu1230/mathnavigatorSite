@@ -2,7 +2,7 @@
 require('./contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ContactInputForm } from './contactInputForm.js';
+import { ContactForm } from './contactForm.js';
 const classnames = require('classnames');
 
 
@@ -20,7 +20,7 @@ export class ContactPage extends React.Component {
 						Please fill the following form.<br/>
 						All fields are required.
 					</h3>
-					<ContactInputForm/>
+					<ContactForm/>
         </div>
       </div>
 		);

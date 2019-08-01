@@ -92,7 +92,7 @@ export function getProgramByIds(arr) {
   });
 }
 
-export function getProgramsBySemester(semesterId) {
+export function getProgramsBySemester() {
   var map = {};
   forEach(classMapByKey, function(classObj) {
     var programId = classObj.programId;

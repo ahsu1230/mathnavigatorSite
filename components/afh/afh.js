@@ -3,10 +3,11 @@ require('./afh.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-const classnames = require('classnames');
+import { AfhForm } from './afhForm.js';
 import {
   getLocation
 } from '../repos/mainRepo.js';
+const classnames = require('classnames');
 
 export class AFHPage extends React.Component {
 	componentDidMount() {
@@ -33,7 +34,7 @@ export class AFHPage extends React.Component {
 					<div className="location">{textLocation}</div>
 					<div className="times">{textTimes}</div>
 
-					<h2>Student Information</h2>
+					<AfhForm/>
 
 					<Link className="back-programs" to="/programs">&#60; Back to Programs</Link>
         </div>

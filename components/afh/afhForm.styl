@@ -1,0 +1,84 @@
+@import "../static.styl"
+
+#afh-form
+  margin-top: spacing6x
+
+  & .afh-input-container
+    margin-bottom: spacing2x
+
+  & .section
+    margin-bottom: spacing4x
+
+    & h2
+      margin-bottom: spacing2x
+
+    & textarea
+      width: propUnit16x
+      height: propUnit4x
+      padding: spacing2x
+      box-sizing: border-box
+      font-family: fontFamilyRoboto
+      font-size: fontSize0
+      line-height: lineHeight0
+      resize: none
+      outline: colorPrimary
+
+      &:focus
+        outline-color: colorTurquoiseLight
+
+  & .section.programs
+    & p
+      margin: spacing2x 0
+
+    & input
+      margin-right: spacing1x
+      vertical-align: middle
+      cursor: pointer
+
+    & li
+      margin: spacing1x 0
+      line-height: lineHeight0
+      font-size: fontSize0
+
+      &.highlight
+        color: colorTurquoiseLight
+
+  & .section.submit
+    position: relative
+    width: propUnit16x
+
+    & p
+      margin: 0
+      line-height: lineHeight0
+      font-size: fontSize0
+      color: colorBlackDark
+
+    & .list-fields-remaining
+      margin-top: spacing2x
+      font-size: fontSize0
+      display: none
+
+      &.show
+        display: block
+
+      & ul
+        margin: 0
+
+    & button
+      position: absolute
+      right: 0
+      top: 0
+      background-color: colorGrayLight
+      color: colorBlackDark
+      cursor: initial
+
+      &:hover
+        filter: none
+
+      &.active
+        background-color: colorAccent
+        color: colorWhite
+        cursor: pointer
+
+        &:hover
+          filter: brightness(110%)
