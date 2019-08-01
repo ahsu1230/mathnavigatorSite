@@ -1,6 +1,70 @@
 @import "../static.styl"
 
+mediaWidth = 600px
+
+
 #view-footer
   width: 100%
-  height: propUnit10x
+  min-height: propUnit6x
+  padding: propUnit2x 0
   background-color: colorPrimary
+
+  #view-footer-container
+    width: containerWidthPct
+    max-width: containerWidthPx
+    margin: 0 auto
+
+    & a, p, h1, h2
+      color: colorWhite
+
+#view-footer-container ul
+  float: left
+
+  & li
+    margin: spacing2x 0
+
+  & a:hover
+    color: colorOrange !important
+    text-decoration: none
+
+  @media screen and (max-width: mediaWidth)
+    float: none
+    margin-bottom: spacing4x
+    text-align: center
+
+
+#view-footer-container .logo-container
+  float: right
+  width: 280px
+  text-align: right
+
+  & img
+    width: 28px
+    margin-right: 12px
+
+    @media screen and (max-width: mediaWidth)
+      display: block
+      margin: spacing4x auto spacing2x
+
+  & h1
+    display: inline-block
+    vertical-align: top
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+
+    @media screen and (max-width: mediaWidth)
+      text-align: center
+
+  & h2
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & p
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  @media screen and (max-width: mediaWidth)
+    float: none
+    margin: 0 auto
+    text-align: center
