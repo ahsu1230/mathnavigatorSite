@@ -10,6 +10,7 @@ import {
 import { Header } from './header.js';
 import { HomePage } from './home.js';
 import { AchievementPage } from './achievements.js';
+import { AFHPage } from './afh.js';
 import { AnnouncePage } from './announce.js';
 import { ProgramsPage } from './programs.js';
 import { ContactPage } from './contact.js';
@@ -23,6 +24,7 @@ const Programs = () => <ProgramsPage/>;
 const Contact = () => <ContactPage/>;
 const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 const Achievements = () => <AchievementPage/>;
+const AFH = () => <AFHPage/>;
 const Error = () => <ErrorPage/>;
 
 class MainContainer extends React.Component {
@@ -37,6 +39,7 @@ class MainContainer extends React.Component {
             <Route path="/programs" component={Programs}/>
             <Route path="/contact" component={Contact}/>
             <Route path="/class/:slug" component={ClassPageWithSlug}/>
+            <Route path="/askforhelp" component={AFH}/>
             <Route path="/student-achievements" component={Achievements}/>
             <Route path="/" component={Error}/>
           </Switch>

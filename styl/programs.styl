@@ -85,3 +85,25 @@ cardSpacing = spacing6x
       background: url("../assets/star_white.svg")
       background-size: cover
       background-position: center
+
+#view-program-container .program-card
+  &.afh
+    background-color: colorWhite
+    border: 2px dashed colorPrimary
+    & h2
+    & h3
+      color: colorPrimary
+
+    &:hover
+      border: 2px dashed colorTurquoiseLight
+      & h2,h3
+        color: colorTurquoiseLight
+
+    & button
+      border: 1px solid colorAccent
+      background-color: colorWhite
+      color: colorAccent
+
+      &:hover
+        background-color: colorAccent
+        color: colorWhite

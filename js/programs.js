@@ -23,8 +23,9 @@ export class ProgramsPage extends React.Component {
 		const sections = semesterIds.map(function(semesterId, index) {
 			var semester = getSemester(semesterId);
 			var programs = programsBySemesterId[semesterId];
+			var hasAFH = index === 0;
 			return (
-				<ProgramSection key={index} semester={semester} programs={programs}/>
+				<ProgramSection key={index} semester={semester} programs={programs} hasAFH={hasAFH}/>
 			);
 		});
 
@@ -40,18 +41,23 @@ export class ProgramsPage extends React.Component {
 
 class ProgramSection extends React.Component {
 	render() {
+		const programs = this.props.programs;
 		const semester = this.props.semester;
 		const title = semester.title;
-		const programs = this.props.programs;
 
 		const cards = programs.map((program, index) =>
-      <ProgramCard key={index} semester={this.props.semester} program={program}/>
+      <ProgramCard key={index} semester={semester} program={program}/>
     );
+		var afhCard;
+		if (this.props.hasAFH) {
+			afhCard = <AFHCard/>;
+		}
 
 		return (
 			<div className="section">
 				<h1 className="section-title">{title}</h1>
 				{cards}
+				{afhCard}
 			</div>
 		);
 	}
@@ -139,6 +145,33 @@ class ProgramCard extends React.Component {
 	}
 }
 
+class AFHCard extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick() {
+		window.location.hash = "/askforhelp"
+	}
+
+	render() {
+		return (
+			<div className="program-card-container">
+				<div className="program-card afh" onClick={this.handleClick}>
+					<div className="program-card-content">
+						<h2>Ask For Help</h2>
+						<h3>Free</h3>
+						<button>Ask</button>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
+
+
+/* Helper functions */
 function isImportantProgram(programId) {
 	return programId === "sat1" ||
 			programId === "sat2" ||
