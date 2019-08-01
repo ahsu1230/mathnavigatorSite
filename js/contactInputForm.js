@@ -2,7 +2,6 @@
 require('./../styl/contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ContactInput } from './contactInput.js';
 import { ContactInterestSection } from './contactInterest.js';
 import {
   EmailModal,
@@ -19,7 +18,8 @@ import {
   GradeCheck,
   NameCheck,
   PhoneCheck
-} from './contactInputChecks.js';
+} from './formInputChecks.js';
+import { FormInput } from './formInput.js';
 import { Modal } from './modal.js';
 const classnames = require('classnames');
 
@@ -91,37 +91,37 @@ export class ContactInputForm extends React.Component {
         <div className="section input">
           <h2>Student Information</h2>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-fname" title="First Name" propertyName="studentFirstName"
+            <FormInput addClasses="student-fname" title="First Name" propertyName="studentFirstName"
                   onUpdate={this.updateCb} validator={NameCheck}/>
-            <ContactInput addClasses="student-lname" title="Last Name" propertyName="studentLastName"
+            <FormInput addClasses="student-lname" title="Last Name" propertyName="studentLastName"
                   onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-age" title="Age" propertyName="studentAge"
+            <FormInput addClasses="student-age" title="Age" propertyName="studentAge"
                   onUpdate={this.updateCb} validator={AgeCheck}/>
-            <ContactInput addClasses="student-grade" title="Grade" propertyName="studentGrade"
+            <FormInput addClasses="student-grade" title="Grade" propertyName="studentGrade"
                   onUpdate={this.updateCb} validator={GradeCheck}/>
-            <ContactInput addClasses="student-school" title="School" propertyName="studentSchool"
+            <FormInput addClasses="student-school" title="School" propertyName="studentSchool"
                   onUpdate={this.updateCb} validator={SchoolCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="student-phone" title="Phone" propertyName="studentPhone"
+            <FormInput addClasses="student-phone" title="Phone" propertyName="studentPhone"
                   onUpdate={this.updateCb} validator={PhoneCheck}/>
-            <ContactInput addClasses="student-email" title="Email" propertyName="studentEmail"
+            <FormInput addClasses="student-email" title="Email" propertyName="studentEmail"
                   onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
 
           <h2>Guardian Information</h2>
           <div className="contact-input-container">
-            <ContactInput addClasses="guard-fname" title="First Name" propertyName="guardFirstName"
+            <FormInput addClasses="guard-fname" title="First Name" propertyName="guardFirstName"
                   onUpdate={this.updateCb} validator={NameCheck}/>
-            <ContactInput addClasses="guard-lname" title="Last Name" propertyName="guardLastName"
+            <FormInput addClasses="guard-lname" title="Last Name" propertyName="guardLastName"
                   onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
           <div className="contact-input-container">
-            <ContactInput addClasses="guard-phone" title="Phone" propertyName="guardPhone"
+            <FormInput addClasses="guard-phone" title="Phone" propertyName="guardPhone"
                   onUpdate={this.updateCb} validator={PhoneCheck}/>
-            <ContactInput addClasses="guard-email" title="Email" propertyName="guardEmail"
+            <FormInput addClasses="guard-email" title="Email" propertyName="guardEmail"
                   onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
         </div>

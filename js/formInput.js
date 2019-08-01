@@ -1,10 +1,10 @@
 'use strict';
-require('./../styl/contact.styl');
+require('./../styl/formInput.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 const classnames = require('classnames');
 
-export class ContactInput extends React.Component {
+export class FormInput extends React.Component {
 	constructor(props){
     super(props);
 		this.state = {
@@ -28,7 +28,7 @@ export class ContactInput extends React.Component {
 		const isValid = validator ? validator.validate(inputValue) : true;
 		var errorMsg = isEmpty || isValid ? "" : validator.errorMsg;
 
-		const classNames = classnames("contact-input", this.props.addClasses);
+		const classNames = classnames("form-input", this.props.addClasses);
 		const title = this.props.title;
 		const placeholder = this.props.placeholder;
 		const onErrorFn = this.props.onError;
