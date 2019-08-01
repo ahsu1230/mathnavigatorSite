@@ -5,13 +5,13 @@ import ReactDOM from 'react-dom';
 import { ContactInput } from './contactInput.js';
 import { ContactInterestSection } from './contactInterest.js';
 import {
-  ContactSubmitModal,
+  EmailModal,
   STATE_NONE,
   STATE_EMPTY,
   STATE_LOADING,
   STATE_SUCCESS,
   STATE_FAIL
-} from './contactSubmitModal.js';
+} from './emailModal.js';
 import {
   AgeCheck,
   EmailCheck,
@@ -73,7 +73,7 @@ export class ContactInputForm extends React.Component {
 
 	render() {
     const submitState = this.state.submitState;
-    const modalContent = <ContactSubmitModal
+    const modalContent = <EmailModal
                             loadingState={submitState}
                             failText={this.state.generatedEmail}/>;
     const showModal = submitState != STATE_NONE;
@@ -172,7 +172,7 @@ export class ContactInputForm extends React.Component {
                     && NameCheck.validate(this.state.studentLastName)
                     && AgeCheck.validate(this.state.studentAge)
                     && GradeCheck.validate(this.state.studentGrade)
-                    && EmptyCheck.validate(this.state.studentSchool)
+                    && SchoolCheck.validate(this.state.studentSchool)
                     && PhoneCheck.validate(this.state.studentPhone)
                     && EmailCheck.validate(this.state.studentEmail)
                     && NameCheck.validate(this.state.guardFirstName)

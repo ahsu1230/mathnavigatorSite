@@ -1,5 +1,5 @@
 'use strict';
-require('./../styl/contactSubmitModal.styl');
+require('./../styl/emailModal.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,7 @@ export const STATE_LOADING = 2;
 export const STATE_SUCCESS = 3;
 
 
-export class ContactSubmitModal extends React.Component {
+export class EmailModal extends React.Component {
   render() {
     const loadingState = this.props.loadingState || STATE_EMPTY;
 
@@ -40,7 +40,7 @@ export class ContactSubmitModal extends React.Component {
         break;
     }
     return (
-      <div id="contact-submit-modal" className={modalClassName}>
+      <div id="email-modal" className={modalClassName}>
         <SubmitLoading show={showLoading}/>
         <SubmitSuccess show={showSuccess}/>
         <SubmitFail show={showFail} failText={this.props.failText}/>
