@@ -50,24 +50,28 @@
 
   & ul
     padding: 0
+    width: propUnit24x
 
   & li
-    margin: spacing2x 0
+    margin: 0
+    line-height: propUnit2x
+    border-bottom: 1px solid colorGrayLight
     list-style: none
 
     & div
       display: inline-block
 
       &.line-index
-        width: propUnit1x
+        width: propUnit2x
       &.line-date
         width: propUnit4x
 
       &.line-right
         vertical-align: top
 
-        & .class-line
-          display: block
+        & .text-1
+          display: inline-block
+          width: propUnit8x
           margin: 0
           color: colorBlackDark
 

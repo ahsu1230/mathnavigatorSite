@@ -246,7 +246,7 @@ class SessionLine extends React.Component {
     var text1 = this.props.text1;
     var text2 = this.props.text2;
 
-    const classText1 = classNames("", {
+    const classText1 = classNames("text-1", {
       alert: canceled
     });
     return (
@@ -256,8 +256,8 @@ class SessionLine extends React.Component {
           <div className="line-date">{date}</div>
         </div>
         <div className="line-right">
-          <div className={classText1}>{text1}</div>
-          <div className="class-line alert">{text2}</div>
+          <span className={classText1}>{text1}</span>
+          <span className="text-2 alert">{text2}</span>
         </div>
       </li>
     );

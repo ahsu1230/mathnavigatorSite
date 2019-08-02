@@ -64,7 +64,9 @@ cardSpacing = spacing6x
       font-size: fontSize0
       color: colorWhite
 
-#view-program-container .program-card
+#view-program-container
+  position: relative
+
   & .star-container
     position: absolute
     top: 0
@@ -86,24 +88,20 @@ cardSpacing = spacing6x
       background-size: cover
       background-position: center
 
+  & #star-legend
+    display: inline-block
+    position: absolute
+    top: spacing4x
+    right: 0
+    font-size: fontSize0
+
+    & .star-container
+      display: inline-block
+      position: relative
+      transform: none
+      margin-right: spacing1x
+      vertical-align: middle
+
 #view-program-container .program-card
   &.afh
-    background-color: colorWhite
-    border: 2px dashed colorPrimary
-    & h2
-    & h3
-      color: colorPrimary
-
-    &:hover
-      border: 2px dashed colorTurquoiseLight
-      & h2,h3
-        color: colorTurquoiseLight
-
-      & button
-        background-color: colorOrange
-        color: colorWhite
-
-    & button
-      border: 1px solid colorOrange
-      background-color: colorWhite
-      color: colorOrange
+    background-color: colorPurple

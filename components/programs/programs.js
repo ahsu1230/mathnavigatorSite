@@ -32,6 +32,12 @@ export class ProgramsPage extends React.Component {
 		return (
       <div id="view-program">
         <div id="view-program-container">
+					<div id="star-legend">
+						<div className="star-container">
+							<div className="star-img"></div>
+						</div>
+					  = Featured Programs
+					</div>
 					{sections}
         </div>
       </div>
