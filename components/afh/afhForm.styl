@@ -7,7 +7,7 @@
     margin-bottom: spacing2x
 
   & .section
-    margin-bottom: spacing4x
+    margin-bottom: spacing8x
 
     & h2
       margin-bottom: spacing2x
@@ -26,22 +26,34 @@
       &:focus
         outline-color: colorTurquoiseLight
 
-  & .section.programs
-    & p
-      margin: spacing2x 0
-
-    & input
-      margin-right: spacing1x
-      vertical-align: middle
-      cursor: pointer
-
-    & li
-      margin: spacing1x 0
+  & .section.sessions
+    & .afh-session
+      margin-bottom: spacing4x
       line-height: lineHeight0
       font-size: fontSize0
 
+    & h4
+      line-height: lineHeight1
+      font-size: fontSize1
+      color: colorPurple
+
+    & input
+      position: relative
+      top: 4px
+      margin-right: spacing2x
+      vertical-align: top
+      cursor: pointer
+
+    & .afh-session-text
+      display: inline-block
+
       &.highlight
         color: colorTurquoiseLight
+        & h4
+          color: colorTurquoiseLight
+
+  & .section.additional
+    margin-bottom: spacing2x
 
   & .section.submit
     position: relative

@@ -9,7 +9,7 @@ import {
 } from 'lodash';
 import {
   achievementMap,
-  afhMap,
+  afhList,
   announceList,
   classMapByKey,
   classMapByProgramId,
@@ -40,7 +40,7 @@ export function getAnnounceList() {
 
 /* AskForHelp */
 export function getAFH() {
-  return afhMap;
+  return afhList;
 }
 
 /* Classes */

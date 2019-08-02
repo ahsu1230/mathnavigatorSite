@@ -4,6 +4,13 @@
     "date": "8/3/2019",
     "time": "Sat. 2:30pm - 4:00pm",
     "locationId": "loc_home",
-    "notes": "Dedicated to Computer Web Dev students. Come get extra review on topics we covered or to work on your personal projects!"
+    "notes": "Website Development students only"
+  },
+  {
+    "afhId": 2,
+    "date": "8/4/2019",
+    "time": "Sunday 3:00pm - 4:00pm",
+    "locationId": "loc_hhms",
+    "notes": ""
   }
 ]

@@ -13,17 +13,16 @@ import {
 import { sendEmail, sendTestEmail } from '../repos/emailRepo.js';
 import { FormInput } from '../forms/formInput.js';
 import {
-  EmailCheck,
   NameCheck,
-  PhoneCheck
 } from '../forms/formInputChecks.js';
 import {
-  getKeyValue,
+  getAFH,
+  getLocation,
   getProgramsBySemester
 } from '../repos/mainRepo.js';
 import { Modal } from '../modals/modal.js';
 
-import { keys, remove } from 'lodash';
+import { find, remove } from 'lodash';
 const classnames = require('classnames');
 
 export class AfhForm extends React.Component {
@@ -33,15 +32,13 @@ export class AfhForm extends React.Component {
       submitState: STATE_NONE,
 			studentFirstName: "",
 			studentLastName: "",
-			studentPhone: "",
-			studentEmail: "",
-			programs: {},
+      targetSessions: [],
 			additionalText: "",
       generatedEmail: null
 		};
 
-    var currentSemester = getKeyValue("current_semester_id");
-    this.semesterPrograms = getProgramsBySemester()[currentSemester];
+    this.afh = getAFH();
+    this.afh.map((afh) => afh.location = getLocation(afh.locationId));
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSubmitSuccess = this.onSubmitSuccess.bind(this);
@@ -50,7 +47,7 @@ export class AfhForm extends React.Component {
 		this.getInputInfo = this.getInputInfo.bind(this);
     this.checkAllInputs = this.checkAllInputs.bind(this);
 		this.updateCb = this.updateCb.bind(this);
-    this.updatePrograms = this.updatePrograms.bind(this);
+    this.updateSessions = this.updateSessions.bind(this);
 		this.updateTextArea = this.updateTextArea.bind(this);
   }
 
@@ -60,17 +57,17 @@ export class AfhForm extends React.Component {
 		this.setState(obj);
 	}
 
-  updatePrograms(event) {
-    var programId = event.target.value;
+  updateSessions(event) {
+    var afhId = parseInt(event.target.value, 10) || -1;
     var checked = event.target.checked;
 
-    var newPrograms = this.state.programs || {};
+    var sessions = this.state.targetSessions || [];
     if (checked) {
-      newPrograms[programId] = true;
+      sessions.push(afhId);
     } else {
-      newPrograms[programId] = undefined;
+      remove(sessions, function(a) { return a === afhId;});
     }
-    this.setState({programs: newPrograms});
+    this.setState({targetSessions: sessions});
   }
 
 	updateTextArea(event) {
@@ -84,30 +81,26 @@ export class AfhForm extends React.Component {
                             failText={this.state.generatedEmail}/>;
     const showModal = submitState != STATE_NONE;
 
+    const onSessionCheck = this.updateSessions;
+    const sessions = this.afh.map((afh, index) =>
+      <AfhSession key={index} afh={afh} onSelect={onSessionCheck}/>
+    );
+
     const formCompleted = this.checkAllInputs();
     const submitBtnClass = classnames({active: formCompleted});
     const onHandleSubmit = formCompleted ? this.handleSubmit : undefined;
-
-    const programs = this.state.programs;
-    const onChange = this.updatePrograms;
-    const list = this.semesterPrograms.map(function(p, index) {
-      var inputClasses = classnames({
-        highlight: programs[p.programId]
-      });
-      return (
-        <li key={index} className={inputClasses}>
-          <input type="checkbox" name="program" value={p.programId}
-            onChange={onChange}/>
-            {p.title}
-        </li>
-      );
-    });
 
 		return (
       <div id="afh-form">
         <Modal content={modalContent}
                 show={showModal}
                 persistent={true}/>
+
+        <div className="section sessions">
+			    <h2>Which session(s) would you like to attend?</h2>
+          {sessions}
+        </div>
+
         <div className="section input">
           <h2>Student Information</h2>
           <div className="afh-input-container">
@@ -116,18 +109,6 @@ export class AfhForm extends React.Component {
             <FormInput addClasses="student-lname" title="Last Name" propertyName="studentLastName"
                   onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
-          <div className="afh-input-container">
-            <FormInput addClasses="student-phone" title="Phone" propertyName="studentPhone"
-                  onUpdate={this.updateCb} validator={PhoneCheck}/>
-            <FormInput addClasses="student-email" title="Email" propertyName="studentEmail"
-                  onUpdate={this.updateCb} validator={EmailCheck}/>
-          </div>
-        </div>
-
-        <div className="section programs">
-					<h2>Program</h2>
-          <p>What programs do you need assistance with?</p>
-          <ul>{list}</ul>
         </div>
 
 				<div className="section additional">
@@ -155,9 +136,7 @@ export class AfhForm extends React.Component {
 		return {
 			studentFirstName: this.state.studentFirstName,
 			studentLastName: this.state.studentLastName,
-			studentPhone: this.state.studentPhone,
-			studentEmail: this.state.studentEmail,
-			programs: this.state.programs,
+      targetSessions: this.state.targetSessions,
 			additionalText: this.state.additionalText
 		};
 	}
@@ -165,9 +144,7 @@ export class AfhForm extends React.Component {
   checkAllInputs() {
     return NameCheck.validate(this.state.studentFirstName)
                     && NameCheck.validate(this.state.studentLastName)
-                    && PhoneCheck.validate(this.state.studentPhone)
-                    && EmailCheck.validate(this.state.studentEmail)
-                    && keys(this.state.programs).length > 0;
+                    && this.state.targetSessions.length > 0;
   }
 
 	handleSubmit(event) {
@@ -207,21 +184,65 @@ export class AfhForm extends React.Component {
 }
 
 
+class AfhSession extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: this.props.checked || false
+    }
+    this.handleSelected = this.handleSelected.bind(this);
+  }
+
+  handleSelected(event) {
+    this.setState({ checked: !this.state.checked});
+    if (this.props.onSelect) {
+      this.props.onSelect(event);
+    }
+  }
+
+  render() {
+    const afh = this.props.afh;
+    const location = afh.location;
+    const textClasses = classnames("afh-session-text", {
+      highlight: this.state.checked
+    });
+    const title = afh.notes || "All math topics";
+
+    return (
+      <div className="afh-session">
+        <input type="checkbox" value={afh.afhId}
+            onChange={this.handleSelected}/>
+        <div className={textClasses}>
+          <h4>{title}</h4>
+          <div>{afh.date} {afh.time}</div>
+          <div>{location.name}</div>
+          <div>{location.address3}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
 /* Helper functions */
 
 function generateEmailMessage(info) {
 	if (!info) {
 		return null;
 	}
+  var afhList = getAFH();
+  const sessions = info.targetSessions.map(function(afhId) {
+    var afhObj = find(afhList, {afhId: afhId});
+    return { session: afhObj.date + " " + afhObj.time };
+  });
+
   return [
     "<html>",
     "<body>",
     "<h1>To Math Navigator,</h1>",
     "<h2>Ask For Help!</h2>",
     "<h3>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h3>",
-    "<h3>Phone: " + info.studentPhone + "</h3>",
-    "<h3>Email: " + info.studentEmail + "</h3>",
-    "<p>Programs: " + JSON.stringify(info.programs) + "</p>",
+    "<p>Coming to: " + JSON.stringify(sessions) + "</p>",
     "<p>Additional Info: " + info.additionalText + "</p>",
     "</body>",
     "</html>"

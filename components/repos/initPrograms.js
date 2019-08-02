@@ -5,7 +5,7 @@ import {
 import jsons from './json/*.json';
 
 export var achievementMap = {};
-export var afhMap = {};
+export var afhList = [];
 export var announceList = [];
 export var classMapByKey = {};
 export var classMapByProgramId = {};
@@ -37,7 +37,7 @@ function init() {
   semesterMap = initSemesterMap(semesters);
   semesterIds = initSemesterIds(semesters);
 
-  afhMap = initAfh(jsons.askforhelp);
+  afhList = initAfh(jsons.askforhelp);
   achievementMap = initAchievements(jsons.achievements);
   keyValuesMap = initKeyValues(jsons.keyvalues);
 
@@ -74,11 +74,7 @@ function initAnnounce(arr) {
 
 /* AskForHelp */
 function initAfh(arr) {
-  var map = {};
-  forEach(arr, function(obj) {
-    map = obj;
-  });
-  return map;
+  return arr; // No changes needed
 }
 
 
