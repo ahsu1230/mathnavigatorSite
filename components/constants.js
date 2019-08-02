@@ -3,8 +3,9 @@ import { find } from 'lodash';
 
 export const NavLinks = [
   { id: "home", name: "Home", url: "/" },
-  { id: "announce", name: "Announcements", url: "/announcements" },
   { id: "programs", name: "Programs", url: "/programs" },
+  { id: "announce", name: "Announcements", url: "/announcements" },
+  { id: "achieve", name: "Achievements", url: "/student-achievements"},
   { id: "contact", name: "Contact", url: "/contact" }
 ];
 
