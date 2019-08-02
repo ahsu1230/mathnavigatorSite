@@ -42,6 +42,7 @@ function init() {
   keyValuesMap = initKeyValues(jsons.keyvalues);
 
   console.log('Programs done initializing.');
+  mixpanel.track("init");
 }
 
 
