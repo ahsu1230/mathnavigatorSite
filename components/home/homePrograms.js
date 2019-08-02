@@ -4,31 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { getNav } from '../constants.js';
-
-const srcSat = require('../../assets/cb_sat.jpg');
-const srcApCalc = require('../../assets/ap_calc.jpg');
-const srcAmc = require('../../assets/amc.jpg');
-
-const programs = [
-  {
-    title: "SAT",
-    description: "Our most popular program. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).",
-    imgSrc: srcSat,
-    programId: ""
-  },
-  {
-    title: "AP Calculus",
-    description: "Get college credits early by acing the AP Calculus Exams. This program is dedicated to both Calculus AB and BC students.",
-    imgSrc: srcApCalc,
-    programId: ""
-  },
-  {
-    title: "AMC",
-    description: "The American Mathematics Competition administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
-    imgSrc: srcAmc,
-    programId: ""
-  }
-];
+import { programsText } from './homeText.js';
 
 export class HomeSectionPrograms extends React.Component {
 	render() {
@@ -37,9 +13,9 @@ export class HomeSectionPrograms extends React.Component {
 			<div className="section programs">
 				<h2>Programs</h2>
         <div className="card-container">
-          <ProgramCard program={programs[0]}/>
-          <ProgramCard program={programs[1]}/>
-          <ProgramCard program={programs[2]}/>
+          <ProgramCard program={programsText[0]}/>
+          <ProgramCard program={programsText[1]}/>
+          <ProgramCard program={programsText[2]}/>
         </div>
 
         <div>

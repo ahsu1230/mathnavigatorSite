@@ -2,28 +2,7 @@
 require('./home.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-const srcUserCheck = require('../../assets/user_check_white.svg');
-const srcLightBulb = require('../../assets/lightbulb_white.svg');
-const srcLibrary = require('../../assets/library_white.svg');
-
-const cards = [
-  {
-    title: "Dedicated Professionalism",
-    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
-    imgSrc: srcUserCheck
-  },
-  {
-    title: "Strategical Thinking",
-    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
-    imgSrc: srcLightBulb
-  },
-  {
-    title: "Abundant Resources",
-    description: "Professional and responsible. Andy cares about each of his students and will not fail to point out their strengths and weaknesses.",
-    imgSrc: srcLibrary
-  }
-];
+import { successText } from './homeText.js';
 
 export class HomeSectionSuccess extends React.Component {
 	render() {
@@ -31,9 +10,9 @@ export class HomeSectionSuccess extends React.Component {
 			<div className="section success">
 				<h2>Navigate to Success</h2>
         <div className="card-container">
-          <Card card={cards[0]}/>
-          <Card card={cards[1]}/>
-          <Card card={cards[2]}/>
+          <Card card={successText[0]}/>
+          <Card card={successText[1]}/>
+          <Card card={successText[2]}/>
         </div>
 			</div>
 		)

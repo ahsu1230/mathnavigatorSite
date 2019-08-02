@@ -8,16 +8,16 @@ const headerIcon = require('../../assets/navigate_white.png');
 
 export class Footer extends React.Component {
 	render() {
-		const links1 = NavLinks.map((link, index) =>
-			<li>
-				<Link key={link.id} to={link.url}>{link.name}</Link>
+		const links = NavLinks.map((link, index) =>
+			<li key={link.id}>
+				<Link to={link.url}>{link.name}</Link>
 			</li>
 		);
 
 		return (
       <div id="view-footer">
         <div id="view-footer-container">
-					<ul>{links1}</ul>
+					<ul>{links}</ul>
 					<div className="logo-container">
 						<Link id="footer-logo" to="/">
 			        <img src={headerIcon}/>
