@@ -216,7 +216,7 @@ class ClassContent extends React.Component {
               <b>Pricing</b>
               {textPricing}
               <Link to={"/contact?interest=" + classKey}>
-                <button className="inverted">Register</button>
+                <button>Register</button>
               </Link>
             </div>
           </div>
