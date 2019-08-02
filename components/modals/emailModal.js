@@ -114,7 +114,7 @@ class SubmitFail extends React.Component {
             and send it to <b>andymathnavigator@gmail.com</b>.<br/>
             We apologize for any inconveniences.
           </p>
-          <textarea value={textAreaValue} onChange={handleOnChange}/>
+          <textarea className="use-scrollbar" value={textAreaValue} onChange={handleOnChange}/>
           <Link to="/">Back to Home</Link>
         </div>
       </div>
