@@ -5,6 +5,7 @@ import {
 import jsons from './json/*.json';
 
 export var achievementMap = {};
+export var afhMap = {};
 export var announceList = [];
 export var classMapByKey = {};
 export var classMapByProgramId = {};
@@ -36,6 +37,7 @@ function init() {
   semesterMap = initSemesterMap(semesters);
   semesterIds = initSemesterIds(semesters);
 
+  afhMap = initAfh(jsons.askforhelp);
   achievementMap = initAchievements(jsons.achievements);
   keyValuesMap = initKeyValues(jsons.keyvalues);
 
@@ -69,12 +71,24 @@ function initAnnounce(arr) {
 }
 
 
+/* AskForHelp */
+function initAfh(arr) {
+  var map = {};
+  forEach(arr, function(obj) {
+    map = obj;
+  });
+  return map;
+}
+
+
 /* Classes */
 function initClassesByKey(arr) {
   var map = {};
   forEach(arr, function(obj) {
     var id = obj.key;
-    map[id] = filterClassObj(obj);
+    if (id) {
+      map[id] = filterClassObj(obj);
+    }
   });
   return map;
 }
@@ -83,9 +97,11 @@ function initClassesByProgramId(arr) {
   var map = {};
   forEach(arr, function(obj) {
     var id = obj.programId;
-    obj = filterClassObj(obj);
-    map[id] = map[id] || [];
-    map[id].push(obj);
+    if (id) {
+      obj = filterClassObj(obj);
+      map[id] = map[id] || [];
+      map[id].push(obj);
+    }
   });
   return map;
 }
@@ -94,9 +110,11 @@ function initClassesBySemesterId(arr) {
   var map = {};
   forEach(arr, function(obj) {
     var id = obj.semesterId;
-    obj = filterClassObj(obj);
-    map[id] = map[id] || [];
-    map[id].push(obj);
+    if (id) {
+      obj = filterClassObj(obj);
+      map[id] = map[id] || [];
+      map[id].push(obj);
+    }
   });
   return map;
 }
@@ -107,7 +125,7 @@ function initKeyValues(arr) {
   var map = {};
   forEach(arr, function(obj) {
     var id = obj.key;
-    map[id] = obj;
+    map[id] = obj.value;
   });
   return map;
 }
@@ -171,7 +189,7 @@ function initSessions(arr) {
   var map = {};
   forEach(arr, function(obj) {
     var id = obj.classKey;
-    if (id == "_") { return; }
+    if (!id || id === "_") { return; }
 
     obj.canceled = convertStrToBool(obj.canceled);
     map[id] = map[id] || [];

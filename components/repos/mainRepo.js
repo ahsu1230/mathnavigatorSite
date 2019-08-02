@@ -9,6 +9,7 @@ import {
 } from 'lodash';
 import {
   achievementMap,
+  afhMap,
   announceList,
   classMapByKey,
   classMapByProgramId,
@@ -35,6 +36,11 @@ export function getAchievements(yearKey) {
 /* Announcements */
 export function getAnnounceList() {
   return announceList;
+}
+
+/* AskForHelp */
+export function getAFH() {
+  return afhMap;
 }
 
 /* Classes */
