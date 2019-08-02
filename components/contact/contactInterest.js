@@ -1,5 +1,5 @@
 'use strict';
-require('./contactInterestModal.styl');
+require('./contactInterest.styl');
 import { pull } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
