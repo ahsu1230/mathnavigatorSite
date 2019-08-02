@@ -13,6 +13,7 @@ import {
   classMapByKey,
   classMapByProgramId,
   classMapBySemesterId,
+  keyValuesMap,
   locationMap,
   preReqMap,
   programMap,
@@ -35,7 +36,6 @@ export function getAchievements(yearKey) {
 export function getAnnounceList() {
   return announceList;
 }
-
 
 /* Classes */
 export function getClasses(programId) {
@@ -63,11 +63,15 @@ export function getProgramClass(key) {
   };
 }
 
+/* Key Values */
+export function getKeyValue(key) {
+  return keyValuesMap[key];
+}
+
 /* Locations */
 export function getLocation(locationId) {
   return locationMap[locationId];
 }
-
 
 /* Prereqs */
 export function getPrereqs(programId) {

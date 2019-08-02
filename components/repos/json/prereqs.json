@@ -1,22 +1,42 @@
 [
   {
-    "programId": "geometry",
-    "requiredProgramIds": "[algebra]"
-  },
-  {
     "programId": "sat1",
-    "requiredProgramIds": "[geometry, algebra1, algebra2]"
+    "requiredProgramIds": "[algebra1, geometry]"
   },
   {
     "programId": "sat2",
-    "requiredProgramIds": "[sat1]"
+    "requiredProgramIds": "[geometry, algebra1, algebra2]"
+  },
+  {
+    "programId": "geometry",
+    "requiredProgramIds": "[algebra1]"
+  },
+  {
+    "programId": "algebra2",
+    "requiredProgramIds": "[geometry, algebra1]"
   },
   {
     "programId": "ap_calc",
-    "requiredProgramIds": "[geometry, algebra1, algebra2, pre_calc]"
+    "requiredProgramIds": "[pre_calc]"
   },
   {
-    "programId": "logical_thinking",
+    "programId": "pre_calc",
     "requiredProgramIds": []
+  },
+  {
+    "programId": "logical_amc8",
+    "requiredProgramIds": []
+  },
+  {
+    "programId": "amc8",
+    "requiredProgramIds": []
+  },
+  {
+    "programId": "pre_sat",
+    "requiredProgramIds": []
+  },
+  {
+    "programId": "computer",
+    "requiredProgramIds": ""
   }
 ]

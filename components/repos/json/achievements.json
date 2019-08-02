@@ -26,12 +26,6 @@
   {
     "year": 2018,
     "highlight": "",
-    "classKeys": "[ap_calc_fall_a, ap_calc_spring_finalreview]",
-    "message": "In AP Calculus, 11 out of 12 students received the top score of 5."
-  },
-  {
-    "year": 2018,
-    "highlight": "",
     "classKeys": "",
     "message": "AMC8 students. 6th Grader received national 99 percentile."
   },
@@ -52,5 +46,5 @@
     "highlight": "TRUE",
     "classKeys": "[sat1_summer_a, sat1_summer_b, sat1_summer_c]",
     "message": "Average score for SAT Math is 770."
-  },
+  }
 ]

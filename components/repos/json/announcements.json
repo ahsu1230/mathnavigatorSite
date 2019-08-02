@@ -1,34 +1,10 @@
 [
   {
-    "timestamp": 1563323934,
-    "date": "7/3/2019",
+    "timestamp": 1564704364,
+    "date": "8/1/2019",
     "important": "",
     "classKeys": [],
-    "author": "Aaron",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    "timestamp": 1563353934,
-    "date": "7/4/2019",
-    "important": "TRUE",
-    "classKeys": [],
-    "author": "Aaron",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    "timestamp": 1563383934,
-    "date": "7/5/2019",
-    "important": "",
-    "classKeys": "[sat1_summer_a, sat1_summer_b, sat1_summer_c]",
-    "author": "Aaron",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    "timestamp": 1563393934,
-    "date": "7/6/2019",
-    "important": "",
-    "classKeys": [],
-    "author": "Aaron",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    "author": "The Math Navigator Family",
+    "message": "Welcome! We are pleased to announce that our Math Navigator website is ready for use! With this website, you can check what available programs we have and even upcoming programs in the near future. To check out program details such as schedules and price, check out our classes by clicking on a Program in our Programs page. If you have any questions or any feedback (this website is still in beta-release), please contact us by using our Contact page. Thank you for being part of our community!"
   }
 ]

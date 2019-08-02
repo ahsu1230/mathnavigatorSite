@@ -9,12 +9,14 @@ export var announceList = [];
 export var classMapByKey = {};
 export var classMapByProgramId = {};
 export var classMapBySemesterId = {};
+export var keyValuesMap = {};
 export var locationMap = {};
 export var preReqMap = {};
 export var programMap = {};
 export var semesterMap = {};
 export var semesterIds = [];
 export var sessionMap = {};
+
 
 function init() {
   console.log('Initializing Programs...');
@@ -35,6 +37,7 @@ function init() {
   semesterIds = initSemesterIds(semesters);
 
   achievementMap = initAchievements(jsons.achievements);
+  keyValuesMap = initKeyValues(jsons.keyvalues);
 
   console.log('Programs done initializing.');
 }
@@ -94,6 +97,17 @@ function initClassesBySemesterId(arr) {
     obj = filterClassObj(obj);
     map[id] = map[id] || [];
     map[id].push(obj);
+  });
+  return map;
+}
+
+
+/* Key Values */
+function initKeyValues(arr) {
+  var map = {};
+  forEach(arr, function(obj) {
+    var id = obj.key;
+    map[id] = obj;
   });
   return map;
 }

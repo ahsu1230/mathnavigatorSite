@@ -10,16 +10,20 @@ import {
   STATE_SUCCESS,
   STATE_FAIL
 } from '../modals/emailModal.js';
+import { sendEmail, sendTestEmail } from '../repos/emailRepo.js';
+import { FormInput } from '../forms/formInput.js';
 import {
   EmailCheck,
   NameCheck,
   PhoneCheck
 } from '../forms/formInputChecks.js';
-import { FormInput } from '../forms/formInput.js';
+import {
+  getKeyValue,
+  getProgramsBySemester
+} from '../repos/mainRepo.js';
 import { Modal } from '../modals/modal.js';
+
 import { keys, remove } from 'lodash';
-import { sendEmail, sendTestEmail } from '../repos/emailRepo.js';
-import { getProgramsBySemester } from '../repos/mainRepo.js';
 const classnames = require('classnames');
 
 export class AfhForm extends React.Component {
@@ -36,7 +40,8 @@ export class AfhForm extends React.Component {
       generatedEmail: null
 		};
 
-    this.semesterPrograms = getProgramsBySemester()["2019_summer"];
+    var currentSemester = getKeyValue("current_semester_id");
+    this.semesterPrograms = getProgramsBySemester()[currentSemester];
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSubmitSuccess = this.onSubmitSuccess.bind(this);
