@@ -733,7 +733,7 @@
     "date": "11/24/2019",
     "canceled": "",
     "time": "Sunday 4:20pm - 6:20pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 93,
@@ -741,7 +741,7 @@
     "date": "12/1/2019",
     "canceled": "",
     "time": "Sunday 4:20pm - 6:20pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 94,
@@ -1573,7 +1573,7 @@
     "date": "2/22/2020",
     "canceled": "",
     "time": "Saturday 2:00pm - 4:00pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 198,
@@ -1581,7 +1581,7 @@
     "date": "2/29/2020",
     "canceled": "",
     "time": "Saturday 2:00pm - 4:00pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 199,
@@ -1789,7 +1789,7 @@
     "date": "5/16/2020",
     "canceled": "",
     "time": "Saturday 10:00am - 12:00pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 225,
@@ -1797,7 +1797,7 @@
     "date": "5/23/2020",
     "canceled": "",
     "time": "Saturday 10:00am - 12:00pm",
-    "notes": ""
+    "notes": "For ACT"
   },
   {
     "sessionId": 226,
@@ -2985,7 +2985,7 @@
   },
   {
     "sessionId": 374,
-    "classKey": "ap_cal_fall_a",
+    "classKey": "ap_calc_fall_a",
     "date": "12/22/2019",
     "canceled": "TRUE",
     "time": "",
@@ -2993,7 +2993,7 @@
   },
   {
     "sessionId": 375,
-    "classKey": "ap_cal_fall_a",
+    "classKey": "ap_calc_fall_a",
     "date": "12/29/2019",
     "canceled": "TRUE",
     "time": "",

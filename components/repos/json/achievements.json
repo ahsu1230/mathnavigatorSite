@@ -3,48 +3,96 @@
     "year": 2019,
     "highlight": "TRUE",
     "classKeys": "",
-    "message": "On May and June, 43 out of 73 students received full 800 scores on SAT Subject Math 2"
+    "message": "On May and June, 37 out of 60 students received full 800 scores on SAT Subject Math 2"
   },
   {
     "year": 2019,
     "highlight": "",
     "classKeys": "",
-    "message": "Average score for SAT Math is 770."
+    "message": "Average score for SAT Math is 770+"
   },
   {
     "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "In AP Calculus, 92% of the students received the top score of 5."
+  },
+  {
+    "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "AMC10 Math Competition got 101 for test A and 96 for test B"
+  },
+  {
+    "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "Math Olympiad 4th grader received 2nd place."
+  },
+  {
+    "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "Math Olympiad 5th grader received 1st place and honorable mentioned."
+  },
+  {
+    "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "Math Olympiad 5th grader group team received the 2nd place."
+  },
+  {
+    "year": 2019,
+    "highlight": "",
+    "classKeys": "",
+    "message": "AMC8 Math Competition 6th grader received score of 22"
+  },
+  {
+    "year": 2018,
+    "highlight": "",
+    "classKeys": "",
+    "message": "Total 43 out of 73 students received full 800 scores on SAT Subject Math 2"
+  },
+  {
+    "year": 2018,
     "highlight": "",
     "classKeys": "",
     "message": "In AP Calculus, 11 out of 12 students received the top score of 5."
   },
   {
-    "year": 2019,
+    "year": 2018,
     "highlight": "",
     "classKeys": "",
-    "message": "AMC8 students. 6th Grader received national 99 percentile."
+    "message": "Average score for SAT Math is 770."
   },
   {
     "year": 2018,
     "highlight": "",
     "classKeys": "",
-    "message": "AMC8 students. 6th Grader received national 99 percentile."
-  },
-  {
-    "year": 2018,
-    "highlight": "",
-    "classKeys": "",
-    "message": "AMC8 students. 6th Grader received national 99 percentile."
+    "message": "AMC8 Math Competition, 4th grader got score 15,  5th grader got scores of 19 and 6th graders got scores of 22."
   },
   {
     "year": 2017,
     "highlight": "",
     "classKeys": "[sat2_summer_d]",
-    "message": "On May and June, 43 out of 73 students received full 800 scores on SAT Subject Math 2"
+    "message": "Total 24 of the 45 students received full 800 scores on SAT subject Math 2 test"
   },
   {
     "year": 2017,
     "highlight": "TRUE",
     "classKeys": "[sat1_summer_a, sat1_summer_b, sat1_summer_c]",
-    "message": "Average score for SAT Math is 770."
+    "message": "Average score for SAT Math is 780."
+  },
+  {
+    "year": 2016,
+    "highlight": "",
+    "classKeys": "",
+    "message": "Kangaroo Math Competition got Nationwide 2nd place for 4th grader"
+  },
+  {
+    "year": 2016,
+    "highlight": "",
+    "classKeys": "",
+    "message": "All of the AP Calculus class students received top score of 5."
   }
 ]

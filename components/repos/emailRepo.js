@@ -1,15 +1,17 @@
 'use strict';
 
-export function sendEmail(templateId, senderEmail, receiverEmail, message,
-	onSuccess, onFail) {
+export function sendEmail(message, onSuccess, onFail) {
+	const templateId = "mathnavigatorwebsitecontact";
+	const receiverEmail = "andymathnavigator@gmail.com";
+	const senderEmail = "anonymous@andymathnavigator.com";
+	var templateParams = {
+		emailMessage: message
+	};
+
   window.emailjs.send(
     'mailgun',
     templateId,
-    {
-      senderEmail,
-      receiverEmail,
-      message
-    }
+		templateParams
 	).then(res => {
     console.log("Email successfully sent!");
 		if (onSuccess) {

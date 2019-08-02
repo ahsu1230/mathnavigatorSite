@@ -186,10 +186,6 @@ export class ContactForm extends React.Component {
 	handleSubmit(event) {
     event.preventDefault();
 
-		const template = "mathnavigatorwebsitecontact";
-		const receiverEmail = "andymathnavigator@gmail.com";
-		const senderEmail = "anonymous@andymathnavigator.com";
-
 		var inputInfo = this.getInputInfo();
 		const emailMessage = generateEmailMessage(inputInfo);
 
@@ -199,13 +195,8 @@ export class ContactForm extends React.Component {
       generatedEmail: emailMessage
     });
 
-		sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
-    // sendEmail(
-    // 	template,
-    // 	senderEmail,
-    // 	receiverEmail,
-    // 	emailMessage
-    // );
+		// sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
+    sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
 	}
 
 	onSubmitSuccess() {
@@ -244,20 +235,24 @@ function generateEmailMessage(info) {
 		return null;
 	}
 	return [
-    "To Math Navigator,",
-    "",
-		"Student: " + info.studentFirstName + " " + info.studentLastName,
-		"Age: " + info.studentAge,
-		"Grade: " + info.studentGrade,
-		"School: " + info.studentSchool,
-		"Phone: " + info.studentPhone,
-		"Email: " + info.studentEmail,
-		"",
-		"Guardian: " + info.guardFirstName + " " + info.guardLastName,
-		"Phone: " + info.guardPhone,
-		"Email: " + info.guardEmail,
-    "",
-		"Interested Programs: " + JSON.stringify(info.interestedPrograms),
-		"Additional Info: " + info.additionalText
+    "<html>",
+    "<body>",
+    "<h1>To Math Navigator,</h1>",
+    "<h2>Contact Us Page</h2>",
+    "<h3>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h3>",
+    "<h3>Age:" + info.studentAge + "</h3>",
+    "<h3>Grade:" + info.studentGrade + "</h3>",
+    "<h3>School: " + info.studentSchool + "</h3>",
+    "<h3>Phone: " + info.studentPhone + "</h3>",
+    "<h3>Email: " + info.studentEmail + "</h3>",
+    "<br/>",
+    "<h3>Guardian: " + info.guardFirstName + "	&nbsp; " + info.guardLastName + "</h3>",
+    "<h3>Phone: " + info.guardPhone + "</h3>",
+    "<h3>Email: " + info.guardEmail + "</h3>",
+    "<br/>",
+    "<p>Interested Programs: " + JSON.stringify(info.interestedPrograms) + "</p>",
+    "<p>Additional Info: " + info.additionalText + "</p>",
+    "</body>",
+    "</html>"
 	].join("\n");
 }

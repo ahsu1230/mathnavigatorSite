@@ -173,10 +173,6 @@ export class AfhForm extends React.Component {
 	handleSubmit(event) {
     event.preventDefault();
 
-		const template = "mathnavigatorwebsitecontact";
-		const receiverEmail = "andymathnavigator@gmail.com";
-		const senderEmail = "anonymous@andymathnavigator.com";
-
 		const emailMessage = generateEmailMessage(this.getInputInfo());
     console.log("Sending email... " + emailMessage);
     this.setState({
@@ -184,13 +180,8 @@ export class AfhForm extends React.Component {
       generatedEmail: emailMessage
     });
 
-		sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
-    // sendEmail(
-    // 	template,
-    // 	senderEmail,
-    // 	receiverEmail,
-    // 	emailMessage
-    // );
+		// sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
+    sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
 	}
 
 	onSubmitSuccess() {
@@ -222,14 +213,17 @@ function generateEmailMessage(info) {
 	if (!info) {
 		return null;
 	}
-	return [
-    "To Math Navigator,",
-    "",
-		"Student: " + info.studentFirstName + " " + info.studentLastName,
-		"Phone: " + info.studentPhone,
-		"Email: " + info.studentEmail,
-    "",
-		"Programs: " + JSON.stringify(info.programs),
-		"Additional Info: " + info.additionalText
+  return [
+    "<html>",
+    "<body>",
+    "<h1>To Math Navigator,</h1>",
+    "<h2>Ask For Help!</h2>",
+    "<h3>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h3>",
+    "<h3>Phone: " + info.studentPhone + "</h3>",
+    "<h3>Email: " + info.studentEmail + "</h3>",
+    "<p>Programs: " + JSON.stringify(info.programs) + "</p>",
+    "<p>Additional Info: " + info.additionalText + "</p>",
+    "</body>",
+    "</html>"
 	].join("\n");
 }
