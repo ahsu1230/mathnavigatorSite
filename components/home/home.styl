@@ -31,11 +31,16 @@
       color: colorWhite
       font-size: fontSize4
       line-height: lineHeight4
+
+      @media screen and (max-width: mediaWidth1)
+        font-size: fontSize2
+
     & h2
       margin-bottom: spacing2x
       color: colorTurquoiseLight
       font-size: fontSize0
       line-height: lineHeight0
+
 
   & button
     position: absolute
@@ -56,6 +61,7 @@
     line-height: lineHeight2
     letter-spacing: letterSpacingRoboto
     text-align: center
+
 
 // Home Tile Cards
 .card-container
@@ -106,6 +112,21 @@
 
 
 // Home Section - Programs
+#view-home .section.programs
+  & .home-tile-card
+    @media screen and (max-width: mediaWidth2)
+      display: block
+      width: 100%
+      margin-bottom: spacing8x
+      box-sizing: border-box
+
+      & p
+        width: propUnit8x
+        margin: 0 auto spacing4x
+
+      & .img-container
+        max-height: propUnit4x
+
 
 // Home Section - Success
 #view-home .section.success
@@ -125,6 +146,21 @@
     padding: spacing2x 0
     max-height: propUnit2x
     box-sizing: border-box
+
+  & .home-tile-card
+    @media screen and (max-width: mediaWidth2)
+      display: block
+      width: 60%
+      margin: 0 auto spacing8x
+      box-sizing: border-box
+
+      & p
+        width: propUnit8x
+        margin: 0 auto spacing4x
+
+      & .img-container
+        width: propUnit8x
+        margin: 0 auto
 
 
 // Home Section - Stories
