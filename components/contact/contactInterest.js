@@ -13,7 +13,6 @@ import {
 	getSemesterIds
 } from '../repos/mainRepo.js';
 const classnames = require('classnames');
-const queryString = require('query-string');
 
 export class ContactInterestSection extends React.Component {
   constructor(props) {
@@ -236,8 +235,16 @@ function parseQuery() {
   var i = hash.indexOf("?");
   var parsed = {};
   if (i > 0) {
-    hash = hash.slice(i);
-    parsed = queryString.parse(hash);
+    hash = hash.slice(i + 1);
+
+    // parse Query String
+    var params = hash.split("&");
+    for (var i = 0; i < params.length; i++) {
+      var pair = params[i].split("=");
+      var pairKey = decodeURIComponent(pair[0]);
+      var pairValue = decodeURIComponent(pair[1]);
+      parsed[pairKey] = pairValue;
+    }
   }
   return parsed;
 }

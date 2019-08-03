@@ -28,7 +28,6 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.11",
     "parcel": "^1.12.3",
-    "query-string": "^6.8.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
     "react-dom": "^16.8.6",
