@@ -132,8 +132,38 @@
   position: relative
   width: 100%
   max-width: 800px
-  margin: 0 auto
-  margin-bottom: spacing24x
+  margin: spacing12x auto spacing24x
+
+  & .story-banner-container
+    position: relative
+
+    & .story-banner-img
+      width: 100%
+      height: propUnit12x
+      background: url('../../assets/classroom1.jpg')
+      background-position: center
+      background-size: cover
+
+    & .story-banner-overlay
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background: colorTurquoiseDark
+      opacity: 0.2
+
+    & .text-container
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      padding: spacing4x spacing8x
+      background: rgba(0, 0, 0, 0.7)
+
+      & h2
+        margin: 0 0 spacing4x
+        color: colorWhite
 
 #view-home .profile-container
   padding-bottom: propUnit4x

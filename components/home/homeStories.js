@@ -7,6 +7,25 @@ import { getAllProfiles } from '../repos/mainRepo.js';
 
 export class HomeSectionStories extends React.Component {
 	render() {
+		return (
+			<div className="section stories">
+				<div className="story-banner-container">
+					<div className="story-banner-overlay"></div>
+					<div className="story-banner-img"></div>
+					<div className="text-container">
+						<h2>Succeeding Together</h2>
+						<Link to="/student-achievements">
+							<button>View our Student Achievements</button>
+						</Link>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
+
+export class HomeSectionStories1 extends React.Component {
+	render() {
     var profiles = getAllProfiles();
     // For now, only grab one
     var profile = profiles[0];

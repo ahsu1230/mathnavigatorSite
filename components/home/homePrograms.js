@@ -20,7 +20,7 @@ export class HomeSectionPrograms extends React.Component {
 
         <div>
           <Link to={programsUrl}>
-            <button className="inverted">View More Programs</button>
+            <button>View More Programs</button>
           </Link>
         </div>
 			</div>
