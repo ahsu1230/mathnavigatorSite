@@ -42,7 +42,10 @@ function init() {
   keyValuesMap = initKeyValues(jsons.keyvalues);
 
   console.log('Programs done initializing.');
-  mixpanel.track("init");
+
+  if (process.env.NODE_ENV === 'production') {
+    mixpanel.track("init");
+  }
 }
 
 

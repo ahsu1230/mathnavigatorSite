@@ -156,8 +156,6 @@ export class AfhForm extends React.Component {
       submitState: STATE_LOADING,
       generatedEmail: emailMessage
     });
-
-		// sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
     sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
 	}
 

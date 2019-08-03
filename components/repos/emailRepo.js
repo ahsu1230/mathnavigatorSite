@@ -1,6 +1,15 @@
 'use strict';
 
 export function sendEmail(message, onSuccess, onFail) {
+	if (process.env.NODE_ENV === 'development') {
+		sendTestEmail(true, onSuccess, onFail);
+	} else {
+		sendProdEmail(message, onSuccess, onFail);
+	}
+}
+
+function sendProdEmail(message, onSuccess, onFail) {
+	console.log("Sending prod email...");
 	const templateId = "mathnavigatorwebsitecontact";
 	const receiverEmail = "andymathnavigator@gmail.com";
 	const senderEmail = "anonymous@andymathnavigator.com";
@@ -25,7 +34,8 @@ export function sendEmail(message, onSuccess, onFail) {
 	});
 }
 
-export function sendTestEmail(onSuccess, onFail, success) {
+function sendTestEmail(success, onSuccess, onFail) {
+	console.log("Sending test email...");
   if (success && onSuccess) {
     onSuccess();
   } else if (onFail) {

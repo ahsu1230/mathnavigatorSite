@@ -195,7 +195,6 @@ export class ContactForm extends React.Component {
       generatedEmail: emailMessage
     });
 
-		// sendTestEmail(this.onSubmitSuccess, this.onSubmitFail, true);
     sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
 	}
 

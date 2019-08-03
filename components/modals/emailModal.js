@@ -105,16 +105,15 @@ class SubmitFail extends React.Component {
 
     return (
       <div className={containerClassNames}>
-        <h1>Email request failed...</h1>
+        <h1>Email request failed</h1>
         <div className="content">
           <img src={srcError}/>
           <p>
-            Please copy the following text,<br/>
-            paste it into a new email message,<br/>
-            and send it to <b>andymathnavigator@gmail.com</b>.<br/>
+            Unfortunately, our email servers are not working at the moment.<br/>
+            Please try again later or<br/>
+            send your message to <b>andymathnavigator@gmail.com</b>.<br/>
             We apologize for any inconveniences.
           </p>
-          <textarea className="use-scrollbar" value={textAreaValue} onChange={handleOnChange}/>
           <Link to="/">Back to Home</Link>
         </div>
       </div>
