@@ -17,16 +17,10 @@ const classnames = require('classnames');
 export class ContactInterestSection extends React.Component {
   constructor(props) {
     super(props);
-    var interested = [];
-
-    var parsed = parseQuery();
-    if (parsed.interest) {
-      interested.push(parsed.interest);
-    }
 
     this.state = {
       showModal: false,
-      interested: interested
+      interested: this.props.interested || []
     };
 
     this.onSelectProgram = this.onSelectProgram.bind(this);
@@ -228,23 +222,4 @@ function createInterestItems(listClasses, interestedMap, onSelect) {
                 onSelect={onSelect}/>
     );
   });
-}
-
-function parseQuery() {
-  var hash = window.location.hash;
-  var i = hash.indexOf("?");
-  var parsed = {};
-  if (i > 0) {
-    hash = hash.slice(i + 1);
-
-    // parse Query String
-    var params = hash.split("&");
-    for (var i = 0; i < params.length; i++) {
-      var pair = params[i].split("=");
-      var pairKey = decodeURIComponent(pair[0]);
-      var pairValue = decodeURIComponent(pair[1]);
-      parsed[pairKey] = pairValue;
-    }
-  }
-  return parsed;
 }

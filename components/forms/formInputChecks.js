@@ -12,13 +12,6 @@ export const NameCheck = {
   }
 };
 
-export const AgeCheck = {
-  errorMsg: "Must be number",
-  validate: function(input) {
-    return input >= 0;
-  }
-};
-
 export const SchoolCheck = {
   errorMsg: "Need a School Name",
   validate: function(input) {

@@ -12,7 +12,6 @@ import {
   STATE_FAIL
 } from '../modals/emailModal.js';
 import {
-  AgeCheck,
   EmailCheck,
   SchoolCheck,
   GradeCheck,
@@ -27,11 +26,17 @@ const classnames = require('classnames');
 export class ContactForm extends React.Component {
 	constructor(props) {
     super(props);
+
+    var interested = [];
+    var parsed = parseQuery();
+    if (parsed && parsed.interest) {
+      interested.push(parsed.interest);
+    }
+
 		this.state = {
       submitState: STATE_NONE,
 			studentFirstName: "",
 			studentLastName: "",
-			studentAge: 0,
 			studentGrade: 0,
 			studentSchool: "",
 			studentPhone: "",
@@ -40,7 +45,7 @@ export class ContactForm extends React.Component {
 			guardLastName: "",
 			guardPhone: "",
 			guardEmail: "",
-			interestedPrograms: [],
+			interestedPrograms: interested,
 			additionalText: "",
       generatedEmail: null
 		};
@@ -98,8 +103,6 @@ export class ContactForm extends React.Component {
                   onUpdate={this.updateCb} validator={NameCheck}/>
           </div>
           <div className="contact-input-container">
-            <FormInput addClasses="student-age" title="Age" propertyName="studentAge"
-                  onUpdate={this.updateCb} validator={AgeCheck}/>
             <FormInput addClasses="student-grade" title="Grade" propertyName="studentGrade"
                   onUpdate={this.updateCb} validator={GradeCheck}/>
             <FormInput addClasses="student-school" title="School" propertyName="studentSchool"
@@ -127,7 +130,8 @@ export class ContactForm extends React.Component {
           </div>
         </div>
 				<div className="section interested">
-					<ContactInterestSection onUpdate={this.updateInterested}/>
+					<ContactInterestSection interested={this.state.interestedPrograms}
+                                  onUpdate={this.updateInterested}/>
 				</div>
 
 				<div className="section additional">
@@ -154,7 +158,6 @@ export class ContactForm extends React.Component {
 		return {
 			studentFirstName: this.state.studentFirstName,
 			studentLastName: this.state.studentLastName,
-			studentAge: this.state.studentAge,
 			studentGrade: this.state.studentGrade,
 			studentSchool: this.state.studentSchool,
 			studentPhone: this.state.studentPhone,
@@ -171,7 +174,6 @@ export class ContactForm extends React.Component {
   checkAllInputs() {
     return NameCheck.validate(this.state.studentFirstName)
                     && NameCheck.validate(this.state.studentLastName)
-                    && AgeCheck.validate(this.state.studentAge)
                     && GradeCheck.validate(this.state.studentGrade)
                     && SchoolCheck.validate(this.state.studentSchool)
                     && PhoneCheck.validate(this.state.studentPhone)
@@ -229,6 +231,25 @@ export class ContactForm extends React.Component {
 
 /* Helper functions */
 
+function parseQuery() {
+  var hash = window.location.hash;
+  var i = hash.indexOf("?");
+  var parsed = {};
+  if (i > 0) {
+    hash = hash.slice(i + 1);
+
+    // parse Query String
+    var params = hash.split("&");
+    for (var i = 0; i < params.length; i++) {
+      var pair = params[i].split("=");
+      var pairKey = decodeURIComponent(pair[0]);
+      var pairValue = decodeURIComponent(pair[1]);
+      parsed[pairKey] = pairValue;
+    }
+  }
+  return parsed;
+}
+
 function generateEmailMessage(info) {
 	if (!info) {
 		return null;
@@ -239,7 +260,6 @@ function generateEmailMessage(info) {
     "<h1>To Math Navigator,</h1>",
     "<h2>Contact Us Page</h2>",
     "<h3>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h3>",
-    "<h3>Age:" + info.studentAge + "</h3>",
     "<h3>Grade:" + info.studentGrade + "</h3>",
     "<h3>School: " + info.studentSchool + "</h3>",
     "<h3>Phone: " + info.studentPhone + "</h3>",
