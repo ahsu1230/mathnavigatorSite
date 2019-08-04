@@ -11,6 +11,7 @@ import {
   STATE_SUCCESS,
   STATE_FAIL
 } from '../modals/emailModal.js';
+import { sendEmail, sendTestEmail } from '../repos/emailRepo.js';
 import {
   EmailCheck,
   SchoolCheck,
@@ -19,8 +20,8 @@ import {
   PhoneCheck
 } from '../forms/formInputChecks.js';
 import { FormInput } from '../forms/formInput.js';
+import { pull } from 'lodash';
 import { Modal } from '../modals/modal.js';
-import { sendEmail, sendTestEmail } from '../repos/emailRepo.js';
 const classnames = require('classnames');
 
 export class ContactForm extends React.Component {
@@ -69,8 +70,16 @@ export class ContactForm extends React.Component {
 		this.setState(obj);
 	}
 
-  updateInterested(interestedList) {
-    this.setState({ interestedPrograms: interestedList });
+  updateInterested(classKey, selected) {
+    var interestedList = this.state.interestedPrograms;
+    if (selected) {
+      interestedList.push(classKey);
+    } else {
+      interestedList = pull(interestedList, classKey);
+    }
+    this.setState({
+      interestedPrograms: interestedList
+    });
   }
 
 	updateTextArea(event) {
@@ -173,15 +182,15 @@ export class ContactForm extends React.Component {
 
   checkAllInputs() {
     return NameCheck.validate(this.state.studentFirstName)
-                    && NameCheck.validate(this.state.studentLastName)
-                    && GradeCheck.validate(this.state.studentGrade)
-                    && SchoolCheck.validate(this.state.studentSchool)
-                    && PhoneCheck.validate(this.state.studentPhone)
-                    && EmailCheck.validate(this.state.studentEmail)
-                    && NameCheck.validate(this.state.guardFirstName)
-                    && NameCheck.validate(this.state.guardLastName)
-                    && PhoneCheck.validate(this.state.guardPhone)
-                    && EmailCheck.validate(this.state.guardEmail)
+                    // && NameCheck.validate(this.state.studentLastName)
+                    // && GradeCheck.validate(this.state.studentGrade)
+                    // && SchoolCheck.validate(this.state.studentSchool)
+                    // && PhoneCheck.validate(this.state.studentPhone)
+                    // && EmailCheck.validate(this.state.studentEmail)
+                    // && NameCheck.validate(this.state.guardFirstName)
+                    // && NameCheck.validate(this.state.guardLastName)
+                    // && PhoneCheck.validate(this.state.guardPhone)
+                    // && EmailCheck.validate(this.state.guardEmail)
                     && this.state.interestedPrograms.length > 0;
   }
 

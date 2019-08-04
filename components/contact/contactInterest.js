@@ -1,6 +1,5 @@
 'use strict';
 require('./contactInterest.styl');
-import { pull } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -19,8 +18,7 @@ export class ContactInterestSection extends React.Component {
     super(props);
 
     this.state = {
-      showModal: false,
-      interested: this.props.interested || []
+      showModal: false
     };
 
     this.onSelectProgram = this.onSelectProgram.bind(this);
@@ -36,23 +34,13 @@ export class ContactInterestSection extends React.Component {
   }
 
   onSelectProgram(classKey, selected) {
-    var interestedList = this.state.interested;
-    if (selected) {
-      interestedList.push(classKey);
-    } else {
-      interestedList = pull(interestedList, classKey);
-    }
-    this.setState({
-      interested: interestedList
-    });
-
     if (this.props.onUpdate) {
-      this.props.onUpdate(interestedList);
+      this.props.onUpdate(classKey, selected);
     }
   }
 
   render() {
-    const interestedClasses = this.state.interested || [];
+    const interestedClasses = this.props.interested;
     const interestedSection = generateInterested(interestedClasses, this.onToggleShowModal);
     const modalContent = <InterestModal
                   onSelectProgram={this.onSelectProgram}
