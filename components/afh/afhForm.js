@@ -128,6 +128,10 @@ export class AfhForm extends React.Component {
             </button>
           </div>
         </div>
+
+        <div className="section errors">
+          <AfhErrorReminder formState={this.state}/>
+        </div>
       </div>
 		);
 	}
@@ -142,9 +146,8 @@ export class AfhForm extends React.Component {
 	}
 
   checkAllInputs() {
-    return NameCheck.validate(this.state.studentFirstName)
-                    && NameCheck.validate(this.state.studentLastName)
-                    && this.state.targetSessions.length > 0;
+    return validateName(this.state.studentFirstName, this.state.studentLastName) &&
+            validateSessions(this.state.targetSessions);
   }
 
 	handleSubmit(event) {
@@ -221,8 +224,41 @@ class AfhSession extends React.Component {
   }
 }
 
+class AfhErrorReminder extends React.Component {
+  render() {
+    const formState = this.props.formState;
+    var errorNotif;
+    var errorName;
+    var errorSessions;
+
+    if (!validateName(formState.studentFirstName, formState.studentLastName)) {
+      errorName = <li>Please fill your name.</li>;
+    }
+    if (!validateSessions(formState.targetSessions)) {
+      errorSessions = <li>Pick at least one session to attend.</li>;
+    }
+    if (errorName || errorSessions) {
+      errorNotif = <li>Please correctly fill the form in order to submit!</li>;
+    }
+
+    return (
+      <ul>
+        {errorNotif}
+        {errorSessions}
+        {errorName}
+      </ul>
+    );
+  }
+}
 
 /* Helper functions */
+function validateName(firstName, lastName) {
+  return NameCheck.validate(firstName) && NameCheck.validate(lastName);
+}
+
+function validateSessions(sessions) {
+  return sessions.length > 0;
+}
 
 function generateEmailMessage(info) {
 	if (!info) {
