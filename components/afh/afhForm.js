@@ -273,10 +273,9 @@ function generateEmailMessage(info) {
   return [
     "<html>",
     "<body>",
-    "<h1>To Math Navigator,</h1>",
-    "<h2>Ask For Help!</h2>",
-    "<h3>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h3>",
-    "<p>Coming to: " + JSON.stringify(sessions) + "</p>",
+    "<h1>Ask For Help!</h1>",
+    "<h2>Student: " + info.studentFirstName + "	&nbsp; " + info.studentLastName + "</h2>",
+    "<h3>Coming to: " + JSON.stringify(sessions) + "</h3>",
     "<p>Additional Info: " + info.additionalText + "</p>",
     "</body>",
     "</html>"
