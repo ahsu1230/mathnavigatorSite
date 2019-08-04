@@ -159,6 +159,10 @@ export class ContactForm extends React.Component {
             </button>
           </div>
         </div>
+
+        <div className="section errors">
+          <ContactErrorReminder formState={this.state}/>
+        </div>
       </div>
 		);
 	}
@@ -181,17 +185,9 @@ export class ContactForm extends React.Component {
 	}
 
   checkAllInputs() {
-    return NameCheck.validate(this.state.studentFirstName)
-                    && NameCheck.validate(this.state.studentLastName)
-                    && GradeCheck.validate(this.state.studentGrade)
-                    && SchoolCheck.validate(this.state.studentSchool)
-                    && PhoneCheck.validate(this.state.studentPhone)
-                    && EmailCheck.validate(this.state.studentEmail)
-                    && NameCheck.validate(this.state.guardFirstName)
-                    && NameCheck.validate(this.state.guardLastName)
-                    && PhoneCheck.validate(this.state.guardPhone)
-                    && EmailCheck.validate(this.state.guardEmail)
-                    && this.state.interestedPrograms.length > 0;
+    return validateStudent(this.state) &&
+            validateGuardian(this.state) &&
+            validatePrograms(this.state.interestedPrograms);
   }
 
 	handleSubmit(event) {
@@ -238,7 +234,59 @@ export class ContactForm extends React.Component {
   }
 }
 
+class ContactErrorReminder extends React.Component {
+  render() {
+    const formState = this.props.formState;
+    var errorNotif;
+    var errorStudent;
+    var errorGuardian;
+    var errorPrograms;
+
+    if (!validateStudent(formState)) {
+      errorStudent = <li>Please completely fill your student information.</li>;
+    }
+    if (!validateGuardian(formState)) {
+      errorGuardian = <li>Please completely fill your guardian information.</li>;
+    }
+    if (!validatePrograms(formState.interestedPrograms)) {
+      errorPrograms = <li>Pick at least one program.</li>;
+    }
+    if (errorStudent || errorGuardian || errorPrograms) {
+      errorNotif = <li>Please correctly fill the form in order to submit!</li>;
+    }
+
+    return (
+      <ul>
+        {errorNotif}
+        {errorStudent}
+        {errorGuardian}
+        {errorPrograms}
+      </ul>
+    );
+  }
+}
+
+
 /* Helper functions */
+function validateStudent(state) {
+  return NameCheck.validate(state.studentFirstName)
+          && NameCheck.validate(state.studentLastName)
+          && GradeCheck.validate(state.studentGrade)
+          && SchoolCheck.validate(state.studentSchool)
+          && PhoneCheck.validate(state.studentPhone)
+          && EmailCheck.validate(state.studentEmail);
+}
+
+function validateGuardian(state) {
+  return NameCheck.validate(state.guardFirstName)
+          && NameCheck.validate(state.guardLastName)
+          && PhoneCheck.validate(state.guardPhone)
+          && EmailCheck.validate(state.guardEmail);
+}
+
+function validatePrograms(programs) {
+  return programs.length > 0;
+}
 
 function parseQuery() {
   var hash = window.location.hash;
