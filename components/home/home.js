@@ -3,19 +3,23 @@ require('./home.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { HomeAnnounce } from './homeAnnounce.js';
 import { HomeSectionPrograms } from './homePrograms.js';
-import { HomeSectionSuccess } from './homeSuccess.js';
 import { HomeSectionStories } from './homeStories.js';
+import { HomeSectionSuccess } from './homeSuccess.js';
 import { getNav } from '../constants.js';
 
 export class HomePage extends React.Component {
+
 	componentDidMount() {
 	  window.scrollTo(0, 0);
 	}
+
 	render() {
 		return (
       <div id="view-home">
         <div id="view-home-container">
+					<HomeAnnounce/>
           <HomeBanner/>
 					<HomeSectionPrograms/>
 					<HomeSectionSuccess/>

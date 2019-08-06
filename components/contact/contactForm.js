@@ -213,7 +213,6 @@ export class ContactForm extends React.Component {
         this.setState({ submitState: STATE_SUCCESS });
       }, 400);
     }, 3600);
-
 	}
 
 	onSubmitFail() {

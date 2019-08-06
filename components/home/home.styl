@@ -244,3 +244,59 @@
   position: absolute
   right: 0
   bottom: 0
+
+#home-announce
+  position: fixed
+  bottom: spacing4x
+  left: spacing4x
+  transform: translate(-10%, 10%) scale(0.8)
+  width: propUnit12x
+  padding: spacing2x spacing4x
+  box-sizing: border-box
+  background-color: colorYellow
+  opacity: 0.0
+  visibility: hidden
+  z-index: 10
+  transition: all linear 0.15s
+
+  &.show
+    opacity: 1.0
+    visibility: visible
+    transform: translate(0, 0) scale(1.0)
+
+  & button
+    position: absolute
+    top: spacing2x
+    right: spacing2x
+    background-color: colorYellow
+    line-height: 0
+    padding: 0
+
+    &:hover
+      filter: none
+
+    & img
+      width: 24px
+      height: 24px
+
+  & h3
+    line-height: lineHeight0
+    margin: spacing1x 0
+    font-size: fontSize0
+    font-weight: bold
+
+  & .text-container
+    position: relative
+    height: propUnit3x
+    overflow: hidden
+    box-shadow: inset 0px -11px 8px 8px colorYellow
+
+  & p
+    margin: 0
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & a
+    display: block
+    float: right
+    margin: spacing2x 0
