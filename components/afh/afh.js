@@ -6,10 +6,6 @@ import { Link } from 'react-router-dom';
 import { AfhForm } from './afhForm.js';
 
 export class AFHPage extends React.Component {
-	componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
 	render() {
 		return (
       <div id="view-afh">

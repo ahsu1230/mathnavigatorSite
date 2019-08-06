@@ -13,10 +13,6 @@ import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
 
 export class ProgramsPage extends React.Component {
-	componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
 	render() {
 		const semesterIds = getSemesterIds();
 		const programsBySemesterId = getProgramsBySemester();

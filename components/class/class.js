@@ -28,10 +28,6 @@ export class ClassPage extends React.Component {
     });
   }
 
-  componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
   render () {
     var valid = true;
     const key = this.classKey;

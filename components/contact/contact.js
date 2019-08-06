@@ -7,10 +7,6 @@ const classnames = require('classnames');
 
 
 export class ContactPage extends React.Component {
-	componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
 	render() {
 		return (
       <div id="view-contact">

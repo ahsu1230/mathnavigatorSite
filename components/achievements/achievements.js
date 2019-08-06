@@ -17,10 +17,6 @@ export class AchievementPage extends React.Component {
     this.achievementYears = getAchievementKeys().sort().reverse();
   }
 
-	componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
 	render() {
     const cards = this.achievementYears.map(function(year, index) {
       const achievements = getAchievements(year);
