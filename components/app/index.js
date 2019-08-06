@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import { history } from './history.js';
 import { createPageTitle, getNavByUrl } from '../constants.js';
+import ScrollMemory from 'react-router-scroll-memory';
 
 import { Header } from '../header/header.js';
 import { HomePage } from '../home/home.js';
@@ -30,7 +31,7 @@ const Achievements = () => <AchievementPage/>;
 const AFH = () => <AFHPage/>;
 const Error = () => <ErrorPage/>;
 
-
+// On change path listener
 history.listen((location, action) => {
   var nav = getNavByUrl(location.pathname);
   if (nav) {
@@ -42,6 +43,7 @@ class AppContainer extends React.Component {
 	render() {
 		return (
       <Router history={history}>
+        <ScrollMemory/>
         <App/>
       </Router>
 		);
