@@ -3,10 +3,13 @@ require('./app.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  HashRouter as Router,
+  Router,
   Route,
   Switch
 } from 'react-router-dom';
+import { history } from './history.js';
+import { createPageTitle, getNavByUrl } from '../constants.js';
+
 import { Header } from '../header/header.js';
 import { HomePage } from '../home/home.js';
 import { AchievementPage } from '../achievements/achievements.js';
@@ -27,30 +30,46 @@ const Achievements = () => <AchievementPage/>;
 const AFH = () => <AFHPage/>;
 const Error = () => <ErrorPage/>;
 
-class MainContainer extends React.Component {
+
+history.listen((location, action) => {
+  var nav = getNavByUrl(location.pathname);
+  if (nav) {
+    document.title = createPageTitle(nav.name);
+  } // if not in Nav, component must set it's own title!
+});
+
+class AppContainer extends React.Component {
 	render() {
 		return (
-      <Router onUpdate={() => window.scrollTo(0, 0)}>
-        <div>
-          <Header/>
-          <Switch>
-            <Route path="/" exact component={Home}/>
-            <Route path="/announcements" component={Announce}/>
-            <Route path="/programs" component={Programs}/>
-            <Route path="/contact" component={Contact}/>
-            <Route path="/class/:slug" component={ClassPageWithSlug}/>
-            <Route path="/askforhelp" component={AFH}/>
-            <Route path="/student-achievements" component={Achievements}/>
-            <Route path="/" component={Error}/>
-          </Switch>
-          <Footer/>
-        </div>
+      <Router history={history}>
+        <App/>
       </Router>
 		);
 	}
 }
 
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Header/>
+        <Switch>
+          <Route path="/" exact component={Home}/>
+          <Route path="/announcements" component={Announce}/>
+          <Route path="/programs" component={Programs}/>
+          <Route path="/contact" component={Contact}/>
+          <Route path="/class/:slug" component={ClassPageWithSlug}/>
+          <Route path="/askforhelp" component={AFH}/>
+          <Route path="/student-achievements" component={Achievements}/>
+          <Route path="/" component={Error}/>
+        </Switch>
+        <Footer/>
+      </div>
+    );
+  }
+}
+
 ReactDOM.render(
-  <MainContainer/>,
+  <AppContainer/>,
   document.getElementById('root')
 );

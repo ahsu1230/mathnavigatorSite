@@ -11,6 +11,7 @@ import {
 } from '../repos/mainRepo.js';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
+import { history } from '../app/history.js';
 
 export class ProgramsPage extends React.Component {
 	render() {
@@ -84,7 +85,7 @@ class ProgramCard extends React.Component {
 			this.setState({ showModal: true });
 		} else {
 			var slug = classes[0].key;
-			window.location.hash = "/class/" + slug;
+			history.push("/class/" + slug);
 		}
 	}
 
@@ -154,7 +155,7 @@ class AFHCard extends React.Component {
 	}
 
 	handleClick() {
-		window.location.hash = "/askforhelp"
+		history.push("/askforhelp");
 	}
 
 	render() {

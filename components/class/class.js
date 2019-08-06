@@ -12,8 +12,9 @@ import {
   getProgramByIds,
   getSessions
 } from '../repos/mainRepo.js';
-const classnames = require('classnames');
+import { createPageTitle } from '../constants.js';
 import { find, isEmpty } from 'lodash';
+const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');
 
 export class ClassPage extends React.Component {
@@ -58,6 +59,12 @@ class ClassContent extends React.Component {
     this.handleDismissAnnounce = this.handleDismissAnnounce.bind(this);
   }
 
+  componentDidMount() {
+    const pair = this.props.pair;
+    const fullClassName = generateFullClassName(pair.programObj, pair.classObj);
+    document.title = createPageTitle(fullClassName);
+  }
+
   handleDismissAnnounce() {
     this.setState({showAnnounce: false});
   }
@@ -87,8 +94,8 @@ class ClassContent extends React.Component {
         announce = generateAnnouncement(this.props.announce,
           this.state.showAnnounce, this.handleDismissAnnounce);
     }
+    const classFullName = generateFullClassName(programObj, classObj);
 
-    const classFullName = programObj.title + " " + (classObj.className || "");
     const prereqs = generatePrereqs(prereqIds);
     let prereqsLine;
     if (prereqs) {
@@ -172,6 +179,10 @@ class SessionLine extends React.Component {
 }
 
 /* Helper Methods */
+function generateFullClassName(programObj, classObj) {
+  return programObj.title + " " + (classObj.className || "");
+}
+
 function generatePrereqs(prereqIds) {
   var prereqsPrograms = getProgramByIds(prereqIds);
   var prereqsNames = prereqsPrograms.map(function(program) {

@@ -4,8 +4,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { AfhForm } from './afhForm.js';
+import { createPageTitle } from '../constants.js';
 
 export class AFHPage extends React.Component {
+	componentDidMount() {
+    document.title = createPageTitle("Ask For Help");
+  }
+
 	render() {
 		return (
       <div id="view-afh">

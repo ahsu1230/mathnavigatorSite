@@ -8,7 +8,6 @@ import { programsText } from './homeText.js';
 
 export class HomeSectionPrograms extends React.Component {
 	render() {
-    var programsUrl = getNav('programs').url;
 		return (
 			<div className="section programs">
 				<h2>Programs</h2>
@@ -19,7 +18,7 @@ export class HomeSectionPrograms extends React.Component {
         </div>
 
         <div>
-          <Link to={programsUrl}>
+          <Link to="/programs">
             <button>View More Programs</button>
           </Link>
         </div>
@@ -31,8 +30,6 @@ export class HomeSectionPrograms extends React.Component {
 class ProgramCard extends React.Component {
   render() {
     var program = this.props.program;
-    var url = getNav("programs").url;
-    // var url = getNav(this.props.programId).url;
     return (
       <div className="home-tile-card program">
         <div className="img-container">
@@ -40,7 +37,7 @@ class ProgramCard extends React.Component {
         </div>
         <h3>{program.title}</h3>
         <p>{program.description}</p>
-        <Link to={url}>
+        <Link to="/programs">
           <button className="inverted">Sign Up</button>
         </Link>
       </div>

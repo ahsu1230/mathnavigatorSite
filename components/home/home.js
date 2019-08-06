@@ -28,7 +28,6 @@ export class HomePage extends React.Component {
 
 class HomeBanner extends React.Component {
 	render() {
-		var link = getNav('programs');
 		return (
 			<div id="home-banner-container">
 				<div id="banner-bg-img"></div>
@@ -40,7 +39,7 @@ class HomeBanner extends React.Component {
 						to thousands of students for 15 years.
 					</h1>
 				</div>
-				<Link to={link.url}><button>Join a Program today</button></Link>
+				<Link to="/programs"><button>Join a Program today</button></Link>
 			</div>
 		);
 	}
