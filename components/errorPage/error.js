@@ -4,12 +4,12 @@ require('./error.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { createTitle } from '../constants.js';
+import { createPageTitle } from '../constants.js';
 const srcBroken = require('../../assets/compass_broken.png');
 
 export class ErrorPage extends React.Component {
 	componentDidMount() {
-		document.title = creatTitle("Error");
+		document.title = createPageTitle("Error");
 	}
 
 	render() {
