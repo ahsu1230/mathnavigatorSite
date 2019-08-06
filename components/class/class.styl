@@ -82,3 +82,41 @@
 #view-class-container
   & #view-questions
     margin: spacing12x 0 spacing4x
+
+#view-class-announce
+  max-height: 400px
+  overflow: hidden
+  background-color: colorYellow
+  transition: 0.25s linear max-height
+
+  &.dismiss
+    max-height: 0
+
+  & .announce-container
+    position: relative
+    width: containerWidthPx
+    max-width: containerWidthPct
+    margin: 0 auto
+    padding: spacing6x 0 spacing2x
+
+  & p
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & button
+    position: absolute
+    top: spacing5x
+    right: 0
+    color: colorBlackDark
+    background-color: transparent
+    border: 1px solid colorBlackDark
+
+    & span
+      margin-right: spacing1x
+      vertical-align: middle
+
+    & img
+      position: relative
+      top: 5px
+      width: 18px
+      height: 18px

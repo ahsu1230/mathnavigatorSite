@@ -4,15 +4,178 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { ErrorPage } from '../errorPage/error.js';
-const classNames = require('classnames');
 import {
+  getAnnounceList,
   getLocation,
   getPrereqs,
   getProgramClass,
   getProgramByIds,
   getSessions
 } from '../repos/mainRepo.js';
+const classnames = require('classnames');
+import { find, isEmpty } from 'lodash';
+const srcClose = require('../../assets/close_black.svg');
 
+export class ClassPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const classKey = this.props.slug;
+    this.classKey = classKey;
+    var announcements = getAnnounceList();
+    this.classAnnounce = find(announcements, function(o) {
+      return find(o.classKeys, cKey => (classKey === cKey));
+    });
+  }
+
+  componentDidMount() {
+	  window.scrollTo(0, 0);
+	}
+
+  render () {
+    var valid = true;
+    const key = this.classKey;
+    const pair = getProgramClass(key);
+    valid = valid && Boolean(pair);
+    valid = valid && Boolean(pair.programObj);
+    valid = valid && Boolean(pair.classObj);
+
+    var content;
+    if (valid) {
+      content = <ClassContent classKey={key} pair={pair} announce={this.classAnnounce}/>;
+    } else {
+      content = <ErrorPage classDNE={key}/>;
+    }
+
+    return (
+      <div> {content} </div>
+    );
+  }
+}
+
+class ClassContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showAnnounce: true
+    }
+    this.handleDismissAnnounce = this.handleDismissAnnounce.bind(this);
+  }
+
+  handleDismissAnnounce() {
+    this.setState({showAnnounce: false});
+  }
+
+	render() {
+    const classKey = this.props.classKey;
+    const pair = this.props.pair;
+
+    // Variables
+    const programObj = pair.programObj;
+    const classObj = pair.classObj;
+    const locationObj = getLocation(classObj.locationId);
+    let sessions = getSessions(classKey);
+    sessions = sessions ? sessions : [];
+    var sessionCounter = 0;
+    sessions.forEach(function(session) {
+      if (!session.canceled) {
+        sessionCounter++;
+      }
+    });
+    var programPrereqs = getPrereqs(programObj.programId);
+    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
+
+    // Components
+    var announce;
+    if(!isEmpty(this.props.announce)) {
+        announce = generateAnnouncement(this.props.announce,
+          this.state.showAnnounce, this.handleDismissAnnounce);
+    }
+
+    const classFullName = programObj.title + " " + (classObj.className || "");
+    const prereqs = generatePrereqs(prereqIds);
+    let prereqsLine;
+    if (prereqs) {
+      prereqsLine = <div>{"Prequirements: " + prereqs}<br/></div>;
+    }
+    const textLocation = generateLocation(locationObj);
+    const textTimes = generateTimes(classObj);
+    const textPricing = generatePricing(classObj.priceLump,
+        classObj.pricePerSession, sessionCounter, classObj.paymentNotes);
+    const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
+
+		return (
+      <div id="view-class">
+        {announce}
+        <div id="view-class-container">
+          <h1>
+            <Link to="/programs">Programs</Link> > {classFullName}
+          </h1>
+
+          <div id="class-info-container">
+            <div className="class-info-1">
+              Grades: {programObj.grade1} - {programObj.grade2}<br/>
+              {prereqsLine}
+              {programObj.description}
+            </div>
+
+            <div className="class-info-2">
+              <b>Location</b>
+              {textLocation}
+              <b>Times</b>
+              {textTimes}
+              <b>Pricing</b>
+              {textPricing}
+              <Link to={"/contact?interest=" + classKey}>
+                <button>Register</button>
+              </Link>
+            </div>
+          </div>
+
+          <div id="view-schedule">
+            <b>Schedule</b>
+            {schedules}
+          </div>
+
+          <div id="view-questions">
+            Questions? <Link to={"/contact?interest=" + classKey}>Contact Us</Link>
+          </div>
+          <Link to="/programs">
+            <button className="inverted">&#60; More Programs</button>
+          </Link>
+        </div>
+      </div>
+		);
+	}
+}
+
+class SessionLine extends React.Component {
+  render() {
+    var sessionIndex = this.props.sessionIndex;
+    var date = this.props.date;
+    var canceled = this.props.canceled;
+    var text1 = this.props.text1;
+    var text2 = this.props.text2;
+
+    const classText1 = classnames("text-1", {
+      alert: canceled
+    });
+    return (
+      <li>
+        <div className="line-left">
+          <div className="line-index">{canceled ? "" : sessionIndex}</div>
+          <div className="line-date">{date}</div>
+        </div>
+        <div className="line-right">
+          <span className={classText1}>{text1}</span>
+          <span className="text-2 alert">{text2}</span>
+        </div>
+      </li>
+    );
+  }
+}
+
+/* Helper Methods */
 function generatePrereqs(prereqIds) {
   var prereqsPrograms = getProgramByIds(prereqIds);
   var prereqsNames = prereqsPrograms.map(function(program) {
@@ -135,131 +298,19 @@ function generateSchedules(sessions, allYear, classTimes) {
   );
 }
 
-export class ClassPage extends React.Component {
-  componentDidMount() {
-	  window.scrollTo(0, 0);
-	}
-
-  render () {
-    var valid = true;
-    const key = this.props.slug;
-    const pair = getProgramClass(key);
-    valid = valid && Boolean(pair);
-    valid = valid && Boolean(pair.programObj);
-    valid = valid && Boolean(pair.classObj);
-
-    var content;
-    if (valid) {
-      content = <ClassContent classKey={key} pair={pair}/>;
-    } else {
-      content = <ErrorPage classDNE={key}/>;
-    }
-
-    return (
-      <div> {content} </div>
-    );
-  }
-}
-
-class ClassContent extends React.Component {
-	render() {
-    const classKey = this.props.classKey;
-    const pair = this.props.pair;
-
-    // Variables
-    const programObj = pair.programObj;
-    const classObj = pair.classObj;
-    const locationObj = getLocation(classObj.locationId);
-    let sessions = getSessions(classKey);
-    sessions = sessions ? sessions : [];
-    var sessionCounter = 0;
-    sessions.forEach(function(session) {
-      if (!session.canceled) {
-        sessionCounter++;
-      }
-    });
-    var programPrereqs = getPrereqs(programObj.programId);
-    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
-
-    // Components
-    const classFullName = programObj.title + " " + (classObj.className || "");
-    const prereqs = generatePrereqs(prereqIds);
-    let prereqsLine;
-    if (prereqs) {
-      prereqsLine = <div>{"Prequirements: " + prereqs}<br/></div>;
-    }
-    const textLocation = generateLocation(locationObj);
-    const textTimes = generateTimes(classObj);
-    const textPricing = generatePricing(classObj.priceLump,
-        classObj.pricePerSession, sessionCounter, classObj.paymentNotes);
-    const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
-
-		return (
-      <div id="view-class">
-        <div id="view-class-container">
-          <h1>
-            <Link to="/programs">Programs</Link> > {classFullName}
-          </h1>
-
-          <div id="class-info-container">
-            <div className="class-info-1">
-              Grades: {programObj.grade1} - {programObj.grade2}<br/>
-              {prereqsLine}
-              {programObj.description}
-            </div>
-
-            <div className="class-info-2">
-              <b>Location</b>
-              {textLocation}
-              <b>Times</b>
-              {textTimes}
-              <b>Pricing</b>
-              {textPricing}
-              <Link to={"/contact?interest=" + classKey}>
-                <button>Register</button>
-              </Link>
-            </div>
-          </div>
-
-          <div id="view-schedule">
-            <b>Schedule</b>
-            {schedules}
-          </div>
-
-          <div id="view-questions">
-            Questions? <Link to={"/contact?interest=" + classKey}>Contact Us</Link>
-          </div>
-          <Link to="/programs">
-            <button className="inverted">&#60; More Programs</button>
-          </Link>
-        </div>
+function generateAnnouncement(announce, showAnnounce, onDismiss) {
+  var classView = classnames({
+      dismiss: !showAnnounce
+  });
+  return (
+    <div id="view-class-announce" className={classView}>
+      <div className="announce-container">
+        <h2>Announcement</h2>
+        <p>{announce.message}</p>
+        <button className="close-x" onClick={onDismiss}>
+          <span>Dismiss</span><img src={srcClose}/>
+        </button>
       </div>
-		);
-	}
-}
-
-class SessionLine extends React.Component {
-  render() {
-    var sessionIndex = this.props.sessionIndex;
-    var date = this.props.date;
-    var canceled = this.props.canceled;
-    var text1 = this.props.text1;
-    var text2 = this.props.text2;
-
-    const classText1 = classNames("text-1", {
-      alert: canceled
-    });
-    return (
-      <li>
-        <div className="line-left">
-          <div className="line-index">{canceled ? "" : sessionIndex}</div>
-          <div className="line-date">{date}</div>
-        </div>
-        <div className="line-right">
-          <span className={classText1}>{text1}</span>
-          <span className="text-2 alert">{text2}</span>
-        </div>
-      </li>
-    );
-  }
+    </div>
+  );
 }
