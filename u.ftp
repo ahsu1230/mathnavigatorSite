@@ -1,0 +1,10 @@
+open 162.241.219.218
+%MATH_NAV_USER%
+%MATH_NAV_PW%
+
+cd public_html
+lcd dist
+mput *
+
+disconnect
+quit

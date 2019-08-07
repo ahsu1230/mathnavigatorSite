@@ -1,10 +1,5 @@
 set target=C:\Users\Amylin\Downloads\jsons\*
-
 dir %target%
-
-@echo off
-
-
 
 @echo off
 set count=0
