@@ -1346,6 +1346,14 @@
   {
     "sessionId": 169,
     "classKey": "computer_web_design",
+    "date": "8/15/2019",
+    "canceled": "",
+    "time": "Thursday 6:00pm - 8:00pm",
+    "notes": "Time Change from Saturday!"
+  },
+  {
+    "sessionId": 169,
+    "classKey": "computer_web_design",
     "date": "8/17/2019",
     "canceled": "TRUE",
     "time": "",
@@ -1419,7 +1427,7 @@
     "sessionId": 178,
     "classKey": "computer_web_design",
     "date": "10/19/2019",
-    "canceled": "",
+    "canceled": "TRUE",
     "time": "Saturday 4:00pm - 6:00pm",
     "notes": ""
   },
