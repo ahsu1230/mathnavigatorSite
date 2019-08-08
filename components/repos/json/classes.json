@@ -120,9 +120,9 @@
     "paymentNotes": "By First Session"
   },
   {
-    "programId": "computer",
-    "classId": "web_design",
-    "key": "computer_web_design",
+    "programId": "web_design",
+    "classId": "summer_a",
+    "key": "web_design_summer_a",
     "className": "",
     "semesterId": "2019_summer",
     "locationId": "loc_home",
@@ -195,19 +195,19 @@
     "paymentNotes": "First of every month"
   },
   {
-    "programId": "ap_calc",
-    "classId": "spring_finalreview",
-    "key": "ap_calc_spring_finalreview",
-    "className": "Final Review",
-    "semesterId": "2020_spring",
-    "locationId": "loc_wchs",
-    "times": "[Sunday 2:15pm - 4:15pm]",
-    "startDate": "2/23/2020",
-    "endDate": "5/10/2020",
+    "programId": "",
+    "classId": "",
+    "key": "",
+    "className": "",
+    "semesterId": "",
+    "locationId": "",
+    "times": "",
+    "startDate": "",
+    "endDate": "",
     "allYear": "",
     "pricePerSession": "",
-    "priceLump": 480,
-    "paymentNotes": "By First Session"
+    "priceLump": "",
+    "paymentNotes": ""
   },
   {
     "programId": "amc8",
@@ -300,6 +300,21 @@
     "paymentNotes": "First of every month"
   },
   {
+    "programId": "ap_java",
+    "classId": "fall_a",
+    "key": "ap_java_fall_a",
+    "className": "Fall",
+    "semesterId": "2019_fall",
+    "locationId": "loc_wchs",
+    "times": "[Friday 7:00pm - 9:00pm]",
+    "startDate": "10/5/2019",
+    "endDate": "2/15/2020",
+    "allYear": "TRUE",
+    "pricePerSession": 38,
+    "priceLump": "",
+    "paymentNotes": "First of every month"
+  },
+  {
     "programId": "",
     "classId": "",
     "key": "",
@@ -372,6 +387,36 @@
     "allYear": "",
     "pricePerSession": "",
     "priceLump": 800,
+    "paymentNotes": "By First Session"
+  },
+  {
+    "programId": "ap_calc",
+    "classId": "spring_finalreview",
+    "key": "ap_calc_spring_finalreview",
+    "className": "Final Review",
+    "semesterId": "2020_spring",
+    "locationId": "loc_wchs",
+    "times": "[Sunday 2:15pm - 4:15pm]",
+    "startDate": "2/23/2020",
+    "endDate": "5/10/2020",
+    "allYear": "",
+    "pricePerSession": "",
+    "priceLump": 480,
+    "paymentNotes": "By First Session"
+  },
+  {
+    "programId": "ap_java",
+    "classId": "spring_finalreview",
+    "key": "ap_java_spring_finalreview",
+    "className": "Final Review",
+    "semesterId": "2020_spring",
+    "locationId": "loc_wchs",
+    "times": "[Friday 7:00pm - 9:00pm]",
+    "startDate": "2/21/2020",
+    "endDate": "5/9/2020",
+    "allYear": "",
+    "pricePerSession": "",
+    "priceLump": 480,
     "paymentNotes": "By First Session"
   }
 ]
