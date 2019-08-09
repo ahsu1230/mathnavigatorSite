@@ -139,7 +139,7 @@ export class ContactForm extends React.Component {
                   onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
           <div className="contact-input-container">
-            <FormInput addClasses="guard-social-wechat" title="WeChat" propertyName="guardSocialWeChat"
+            <FormInput addClasses="guard-social-wechat" title="WeChat username" propertyName="guardSocialWeChat"
                   onUpdate={this.updateCb} placeholder={"(Optional)"}/>
           </div>
         </div>
