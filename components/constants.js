@@ -23,11 +23,10 @@ export function getNavByUrl(url) {
   return find(NavLinks, {url: url});
 }
 
-export function isPathAt(url) {
-  var path = location.hash;
+export function isPathAt(currentPath, url) {
   if (url == getNavById("home").url) {
-    return path == '#/';
+    return currentPath == '/';
   } else {
-    return path.indexOf(url) >= 0;
+    return currentPath.indexOf(url) >= 0;
   }
 }

@@ -1,5 +1,8 @@
 @import "../static.styl"
 
+media1 = mediaWidth3
+media2 = mediaWidth1
+
 #view-header
   position: relative
   background-color: colorPrimary
@@ -14,13 +17,26 @@
   margin: 0 auto
 
 #header-logo
+  display: inline-block
   position: absolute
   top: 50%
-  transform: translateY(-50%)
+  transform: translate(0, -50%)
+
+  @media screen and (max-width: media1)
+    position: relative
+    top: spacing2x
+    left: 50%
+    transform: translate(-50%)
+
   & img
     width: 36px
     height: 36px
     margin-right: spacing2x
+
+    @media screen and (max-width: media1)
+      width: 22px
+      height: 22px
+      margin-right: spacing1x
 
   & h1
     display: inline-block
@@ -30,26 +46,64 @@
     color: colorWhite
     text-decoration: none
 
-.header-menu-container
+    @media screen and (max-width: media1)
+      position: relative
+      top: -6px
+      font-size: 14px
+
+
+#view-header-container .header-menu-hlist
   position: absolute
   top: 50%
   right: 0
-  translateY(-50%)
+  transform: translate(0, -50%)
+
+  @media screen and (max-width: media1)
+    top: initial
+    bottom: spacing2x
+    left: 50%
+    right: initial
+    transform: translate(-50%, 0)
+
+  @media screen and (max-width: media2)
+    display: none
+
+  & li
+    display: inline
+    margin-left: spacing2x
+
+  & a
+    color: colorWhite
+    text-decoration: none
+
+    &.active
+    &:hover
+      color: colorOrange
+
+    @media screen and (max-width: media1)
+      font-size: 14px
+
+#view-header-container .header-menu-vlist
+  display: none
+
+  @media screen and (max-width: media2)
+    display: inline-block
+    position: absolute
+    bottom: spacing1x
+    left: 50%
+    transform: translateX(-50%)
 
 .header-menu-btn
-  position: absolute
-  top: 50%
-  right: 0
-  transform: translateY(-50%)
-  width: 140px
-  height: 40px
+  width: 120px
+  height: 32px
+  padding: 0
   border: 1px solid colorPrimary
   outline: none
   box-sizing: border-box
   background-color: transparent
   color: colorWhite
   font-family: fontFamilyRoboto
-  font-size: fontSize1
+  font-size: fontSize0
   letter-spacing: letterSpacingRoboto
   cursor: pointer
 
@@ -71,8 +125,9 @@
 
 .header-menu-list
   position: absolute
-  top: 16px
-  right: 0
+  top: 100%
+  left: 50%
+  transform: translate(-50%, 0)
   box-shadow: 0px 2px 4px #000000
   z-index: 10
   opacity: 0
@@ -80,7 +135,7 @@
   transition: all linear 0.2s
 
   &.show
-    transform: translate(0, 16px)
+    transform: translate(-50%, 8px)
     visibility: visible
     opacity: 1
 
@@ -94,7 +149,7 @@
     text-decoration: none
 
     &.active
-    &:hover div
+    &:hover
       color: colorOrange
 
   & li

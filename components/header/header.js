@@ -3,17 +3,30 @@ require('./header.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { NavLinks, isPathAt } from '../constants.js';
+import { NavLinks, getNavByUrl, isPathAt } from '../constants.js';
 const classNames = require('classnames');
 const headerIcon = require('../../assets/navigate_white.png');
 
 export class Header extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			currentUrl: window.location.pathname
+		};
+		this.updateCurrent = this.updateCurrent.bind(this);
+	}
+
+	updateCurrent() {
+		this.setState({currentUrl: window.location.pathname});
+	}
+
 	render() {
 		return (
       <div id="view-header">
         <div id="view-header-container">
           <HeaderLogo/>
-          <HeaderMenu/>
+          <HeaderNavHoriz onClick={this.updateCurrent}/>
+					<HeaderNavVert onClick={this.updateCurrent}/>
         </div>
       </div>
 		);
@@ -31,7 +44,19 @@ class HeaderLogo extends React.Component {
   }
 }
 
-class HeaderMenu extends React.Component {
+class HeaderNavHoriz extends React.Component {
+	render() {
+		const onClick = this.props.onClick;
+    const items = NavLinks.map((link, i) =>
+			<MenuLink key={link.id} title={link.name} url={link.url} onClick={onClick}/>
+		);
+		return (
+			<ul className="header-menu-hlist">{items}</ul>
+		);
+	}
+}
+
+class HeaderNavVert extends React.Component {
   constructor() {
       super();
       this.state = {
@@ -44,6 +69,10 @@ class HeaderMenu extends React.Component {
     this.setState({
       show: !this.state.show
     });
+		const onClick = this.props.onClick;
+		if (onClick) {
+			onClick();
+		}
   }
 
   render() {
@@ -55,7 +84,7 @@ class HeaderMenu extends React.Component {
       "show": show
     });
     return (
-      <div className="header-menu-container">
+      <div className="header-menu-vlist">
         <button className={buttonClasses} onClick={this.toggleMenu}>
           Menu
           <div className={iconClasses}></div>
@@ -89,15 +118,14 @@ class HeaderMenuList extends React.Component {
 
 class MenuLink extends React.Component {
   render() {
-		var url = this.props.url;
-		const linkClasses = classNames("",
-			{"active": isPathAt(url)}
-		);
+		const url = this.props.url;
+		const linkClasses = classNames({
+			"active": isPathAt(window.location.pathname, url)
+		});
+
     return (
     	<Link className={linkClasses} to={url} onClick={this.props.onClick}>
-        <li>
-    		  <div>{this.props.title}</div>
-        </li>
+        <li>{this.props.title}</li>
     	</Link>
 		);
   }
