@@ -13,8 +13,8 @@ export class ContactPage extends React.Component {
         <div id="view-contact-container">
           <h1>Contact Us</h1>
 					<h3>
-						Please fill the following form.<br/>
-						All fields are required.
+						Please fill the following form<br/>
+						to register for a program or to contact us.
 					</h3>
 					<ContactForm/>
         </div>

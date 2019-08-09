@@ -46,6 +46,7 @@ export class ContactForm extends React.Component {
 			guardLastName: "",
 			guardPhone: "",
 			guardEmail: "",
+      guardSocialWeChat: "",
 			interestedPrograms: interested,
 			additionalText: "",
       generatedEmail: null
@@ -137,6 +138,10 @@ export class ContactForm extends React.Component {
             <FormInput addClasses="guard-email" title="Email" propertyName="guardEmail"
                   onUpdate={this.updateCb} validator={EmailCheck}/>
           </div>
+          <div className="contact-input-container">
+            <FormInput addClasses="guard-social-wechat" title="WeChat" propertyName="guardSocialWeChat"
+                  onUpdate={this.updateCb} placeholder={"(Optional)"}/>
+          </div>
         </div>
 				<div className="section interested">
 					<ContactInterestSection interested={this.state.interestedPrograms}
@@ -179,6 +184,7 @@ export class ContactForm extends React.Component {
 			guardLastName: this.state.guardLastName,
 			guardPhone: this.state.guardPhone,
 			guardEmail: this.state.guardEmail,
+      guardSocialWeChat: this.state.guardSocialWeChat,
 			interestedPrograms: this.state.interestedPrograms,
 			additionalText: this.state.additionalText
 		};
@@ -324,6 +330,7 @@ function generateEmailMessage(info) {
     "<h2>Guardian: " + info.guardFirstName + "	&nbsp; " + info.guardLastName + "</h2>",
     "<h3>Phone: " + info.guardPhone + "</h3>",
     "<h3>Email: " + info.guardEmail + "</h3>",
+    "<h3>WeChat: " + info.guardSocialWeChat + "</h3>",
     "<br/>",
     "<p>Additional Info: " + info.additionalText + "</p>",
     "</body>",
