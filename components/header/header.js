@@ -2,12 +2,13 @@
 require('./header.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { NavLinks, getNavByUrl, isPathAt } from '../constants.js';
 const classNames = require('classnames');
 const headerIcon = require('../../assets/navigate_white.png');
 
-export class Header extends React.Component {
+class HeaderComponent extends React.Component {
 	render() {
 		const { match, location, history } = this.props;
 		return (
@@ -21,6 +22,7 @@ export class Header extends React.Component {
 		);
 	}
 }
+export const Header = withRouter(HeaderComponent);
 
 class HeaderLogo extends React.Component {
   render() {

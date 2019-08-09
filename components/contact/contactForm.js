@@ -2,6 +2,7 @@
 require('./contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router';
 import { ContactInterestSection } from './contactInterest.js';
 import {
   EmailModal,
@@ -24,12 +25,13 @@ import { pull } from 'lodash';
 import { Modal } from '../modals/modal.js';
 const classnames = require('classnames');
 
-export class ContactForm extends React.Component {
+class Form extends React.Component {
 	constructor(props) {
     super(props);
 
+    const { match, location, history } = this.props;
     var interested = [];
-    var parsed = parseQuery();
+    var parsed = parseQuery(location.search);
     if (parsed && parsed.interest) {
       interested.push(parsed.interest);
     }
@@ -271,6 +273,7 @@ class ContactErrorReminder extends React.Component {
   }
 }
 
+export const ContactForm = withRouter(Form);
 
 /* Helper functions */
 function validateStudent(state) {
@@ -293,11 +296,10 @@ function validatePrograms(programs) {
   return programs.length > 0;
 }
 
-function parseQuery() {
-  var hash = window.location.hash;
+function parseQuery(hash) {
   var i = hash.indexOf("?");
   var parsed = {};
-  if (i > 0) {
+  if (i >= 0) {
     hash = hash.slice(i + 1);
 
     // parse Query String
