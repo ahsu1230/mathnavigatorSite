@@ -1,7 +1,8 @@
 @import "../static.styl"
 
 #view-achievements-container
-  width: propUnit16x
+  width: containerWidthPct
+  max-width: containerWidthPx2
   margin: 0 auto spacing16x
 
 
@@ -21,24 +22,48 @@
     text-align: center
 
 .achieve-card
-  margin-bottom: spacing8x
+  margin-bottom: spacing12x
 
   & h2
-    margin-bottom: spacing3x
     line-height: lineHeight3
     font-size: fontSize1
     color: colorPrimary
-    border-bottom: 1px solid colorGrayLight
+    border-bottom: 1px solid colorBlackDark
 
   & a
-    margin-top: spacing1x
+    float: right
+    margin-top: spacing2x
     line-height: lineHeight0
     font-size: fontSize0
 
-  & .achieve-line
+  & li
+    position: relative
+    height: propUnit3x
     line-height: lineHeight0
+    border-bottom: 1px solid colorGrayLight
     font-size: fontSize0
-    margin-bottom: spacing2x
 
-    &.highlight
+    &:last-child
+      border-bottom: none
+
+    & .highlight
       color: colorPurple
+
+      & .bullet
+        background-color: colorPurple
+
+    & .bullet
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      width: 8px
+      height: 8px
+      border-radius: 100%
+      background-color: colorGrayLight
+
+    & p
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      margin: 0
+      margin-left: spacing4x

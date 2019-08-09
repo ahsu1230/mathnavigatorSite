@@ -66,12 +66,13 @@ class AchievementCard extends React.Component {
 class AchievementLine extends React.Component {
   render() {
     const achievement = this.props.achievement;
-    const lineClasses = classnames("achieve-line", {
+    const lineClasses = classnames({
       highlight: achievement.highlight
     });
     return (
       <div className={lineClasses}>
-        {achievement.message}
+        <div className="bullet"></div>
+        <p>{achievement.message}</p>
       </div>
     );
   }
