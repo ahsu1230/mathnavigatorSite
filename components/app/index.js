@@ -2,6 +2,7 @@
 require('./app.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router';
 import {
   Router,
   Route,
@@ -22,6 +23,7 @@ import { Footer } from '../footer/footer.js';
 import { ClassPage } from '../class/class.js';
 import { ErrorPage } from '../errorPage/error.js';
 
+const HeaderWithRouter = withRouter(Header);
 const Home = () => <HomePage/>;
 const Announce = () => <AnnouncePage/>;
 const Programs = () => <ProgramsPage/>;
@@ -54,7 +56,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header/>
+        <HeaderWithRouter/>
         <Switch>
           <Route path="/" exact component={Home}/>
           <Route path="/announcements" component={Announce}/>

@@ -8,25 +8,14 @@ const classNames = require('classnames');
 const headerIcon = require('../../assets/navigate_white.png');
 
 export class Header extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			currentUrl: window.location.pathname
-		};
-		this.updateCurrent = this.updateCurrent.bind(this);
-	}
-
-	updateCurrent() {
-		this.setState({currentUrl: window.location.pathname});
-	}
-
 	render() {
+		const { match, location, history } = this.props;
 		return (
       <div id="view-header">
         <div id="view-header-container">
           <HeaderLogo/>
-          <HeaderNavHoriz onClick={this.updateCurrent}/>
-					<HeaderNavVert onClick={this.updateCurrent}/>
+          <HeaderNavHoriz/>
+					<HeaderNavVert/>
         </div>
       </div>
 		);
@@ -48,7 +37,7 @@ class HeaderNavHoriz extends React.Component {
 	render() {
 		const onClick = this.props.onClick;
     const items = NavLinks.map((link, i) =>
-			<MenuLink key={link.id} title={link.name} url={link.url} onClick={onClick}/>
+			<MenuLink key={link.id} title={link.name} url={link.url}/>
 		);
 		return (
 			<ul className="header-menu-hlist">{items}</ul>
@@ -69,10 +58,6 @@ class HeaderNavVert extends React.Component {
     this.setState({
       show: !this.state.show
     });
-		const onClick = this.props.onClick;
-		if (onClick) {
-			onClick();
-		}
   }
 
   render() {
