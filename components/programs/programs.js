@@ -120,7 +120,7 @@ class ProgramCard extends React.Component {
 		}
 
 		var star = <div></div>;
-		if (isImportantProgram(program.programId)) {
+		if (isFeaturedProgram(program.programId)) {
 			star = (
 				<div className="star-container">
 					<div className="star-img"></div>
@@ -175,7 +175,7 @@ class AFHCard extends React.Component {
 
 
 /* Helper functions */
-function isImportantProgram(programId) {
+function isFeaturedProgram(programId) {
 	return programId === "sat1" ||
 			programId === "sat2" ||
 			programId === "amc8" ||

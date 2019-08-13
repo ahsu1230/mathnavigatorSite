@@ -5,7 +5,7 @@
   },
   {
     "programId": "sat2",
-    "requiredProgramIds": "[geometry, algebra1, algebra2]"
+    "requiredProgramIds": "[geometry, algebra1, algebra2, pre_calc]"
   },
   {
     "programId": "geometry",
@@ -13,7 +13,7 @@
   },
   {
     "programId": "algebra2",
-    "requiredProgramIds": "[geometry, algebra1]"
+    "requiredProgramIds": "[algebra1, geometry]"
   },
   {
     "programId": "ap_calc",
@@ -21,7 +21,7 @@
   },
   {
     "programId": "pre_calc",
-    "requiredProgramIds": []
+    "requiredProgramIds": "[geometry, algebra1, algebra2]"
   },
   {
     "programId": "logical_amc8",
@@ -33,10 +33,14 @@
   },
   {
     "programId": "pre_sat",
+    "requiredProgramIds": "[algebra1, geometry]"
+  },
+  {
+    "programId": "web_design",
     "requiredProgramIds": []
   },
   {
-    "programId": "computer",
-    "requiredProgramIds": ""
+    "programId": "ap_java",
+    "requiredProgramIds": []
   }
 ]

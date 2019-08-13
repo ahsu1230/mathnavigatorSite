@@ -29,7 +29,7 @@ export class ClassPage extends React.Component {
     });
 
     if (process.env.NODE_ENV === 'production') {
-      mixpanel.track("class", {"key", classKey});
+      mixpanel.track("class", {"key": classKey});
     }
   }
 

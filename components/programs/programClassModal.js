@@ -14,11 +14,12 @@ export class ProgramClassModal extends React.Component {
 		const classes = this.props.classList;
 		const semester = this.props.semester;
 
-		var programTitle = semester.title + " Classes";
+		var programTitle = semester.title ? semester.title : programObj.title;
+		programTitle += " Classes";
 
     const classList = classes.map((c, index) =>
-										      <ProgramClassLine key={index} classObj={c}/>
-										    );
+      <ProgramClassLine key={index} classObj={c}/>
+    );
 
     return (
 			<div className="program-class-modal">
