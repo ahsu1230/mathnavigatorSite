@@ -211,6 +211,9 @@ class Form extends React.Component {
     });
 
     sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("contactSubmit");
+    }
 	}
 
 	onSubmitSuccess() {
@@ -221,6 +224,10 @@ class Form extends React.Component {
         this.setState({ submitState: STATE_SUCCESS });
       }, 400);
     }, 3600);
+
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("contactSubmitSuccess");
+    }
 	}
 
 	onSubmitFail() {
@@ -231,6 +238,10 @@ class Form extends React.Component {
         this.setState({ submitState: STATE_FAIL });
       }, 400);
     }, 3600);
+
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("contactSubmitFail");
+    }
 	}
 
   dismissModal() {

@@ -160,6 +160,9 @@ export class AfhForm extends React.Component {
       generatedEmail: emailMessage
     });
     sendEmail(emailMessage, this.onSubmitSuccess, this.onSubmitFail);
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("afhSubmit");
+    }
 	}
 
 	onSubmitSuccess() {
@@ -170,7 +173,9 @@ export class AfhForm extends React.Component {
         this.setState({ submitState: STATE_SUCCESS });
       }, 400);
     }, 3600);
-
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("afhSubmit");
+    }
 	}
 
 	onSubmitFail() {
@@ -181,6 +186,9 @@ export class AfhForm extends React.Component {
         this.setState({ submitState: STATE_FAIL });
       }, 400);
     }, 3600);
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("afhSubmit");
+    }
 	}
 }
 

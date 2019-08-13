@@ -7,6 +7,14 @@ import { getAnnounceList, getProgramClass } from '../repos/mainRepo.js';
 const classnames = require('classnames');
 
 export class AnnouncePage extends React.Component {
+	constructor(props) {
+    super(props);
+
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("announce");
+    }
+  }
+
 	render() {
 		const announcements = getAnnounceList();
 		const cards = announcements.map((obj, index) =>
