@@ -10,9 +10,25 @@
   {
     "timestamp": 1564972571,
     "date": "8/4/2019",
-    "important": "true",
+    "important": "TRUE",
     "classKeys": [],
     "author": "Amy",
     "message": "Because Montgomery County Public Schools will close starting 8/10,  we will temporarily move our classroom location to Cathay Future Center at 9400 Key West Ave, Rockville MD 20850. Web Design & Development will still be held at our home basement. We will make another announcement when the Winston Churchill High School classroom is available again (probably when the school year starts)."
+  },
+  {
+    "timestamp": 1565555129,
+    "date": "8/14/2019",
+    "important": "",
+    "classKeys": "",
+    "author": "Amy",
+    "message": "SAT Class (C) will have the 7th session on Wednesday 6:00pm - 8:00pm at Cathay Future Center."
+  },
+  {
+    "timestamp": 1565555389,
+    "date": "8/13/2019",
+    "important": "",
+    "classKeys": "",
+    "author": "Aaron",
+    "message": "Web Design Class will Move 8/17's class to 8/15 6:00pm - 8:00pm. Same classroom at Home"
   }
 ]

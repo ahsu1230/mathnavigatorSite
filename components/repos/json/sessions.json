@@ -125,7 +125,7 @@
     "date": "8/7/2019",
     "canceled": "",
     "time": "Wednesday 6:00pm - 8:00pm",
-    "notes": "For ACT"
+    "notes": "Last Session!"
   },
   {
     "sessionId": 17,
@@ -165,7 +165,7 @@
     "date": "8/16/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "Prep Test At  Cathay Future Center room 116"
   },
   {
     "sessionId": 22,
@@ -173,7 +173,7 @@
     "date": "8/23/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "Prep Test At  Cathay Future Center room 116"
   },
   {
     "sessionId": 23,
@@ -181,7 +181,7 @@
     "date": "9/6/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT or ACT Prep Test /Churchill H.S. Room 110"
   },
   {
     "sessionId": 24,
@@ -189,7 +189,7 @@
     "date": "9/13/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT or ACT Prep Test /Churchill H.S. Room 110"
   },
   {
     "sessionId": 25,
@@ -291,7 +291,7 @@
     "sessionId": 37,
     "classKey": "sat1_summer_b",
     "date": "8/1/2019",
-    "canceled": "TRUE",
+    "canceled": "",
     "time": "Thursday 8:00pm - 10:00pm",
     "notes": ""
   },
@@ -317,7 +317,7 @@
     "date": "8/13/2019",
     "canceled": "",
     "time": "Tuesday 8:00pm - 10:00pm",
-    "notes": "For ACT"
+    "notes": "SAT/ACT class at Cathay Future Center room 116"
   },
   {
     "sessionId": 41,
@@ -325,7 +325,7 @@
     "date": "8/15/2019",
     "canceled": "",
     "time": "Thursday 8:00pm - 10:00pm",
-    "notes": "For ACT"
+    "notes": "Last Session at Cathay Future Center room 116"
   },
   {
     "sessionId": 42,
@@ -365,7 +365,7 @@
     "date": "8/16/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "Prep Test At  Cathay Future Center room 116"
   },
   {
     "sessionId": 47,
@@ -373,7 +373,7 @@
     "date": "8/23/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "Prep Test At  Cathay Future Center room 116"
   },
   {
     "sessionId": 48,
@@ -381,7 +381,7 @@
     "date": "9/6/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT or ACT Prep Test/Churchill H.S. Room 110"
   },
   {
     "sessionId": 49,
@@ -389,7 +389,7 @@
     "date": "9/13/2019",
     "canceled": "",
     "time": "Friday 8:10pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "notes": "SAT or ACT Prep Test/Churchill H.S. Room 110"
   },
   {
     "sessionId": 50,
@@ -437,7 +437,7 @@
     "date": "8/8/2019",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "Date and Time Change"
+    "notes": ""
   },
   {
     "sessionId": 56,
@@ -445,7 +445,7 @@
     "date": "8/10/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": "Location Change"
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 57,
@@ -453,7 +453,7 @@
     "date": "8/14/2019",
     "canceled": "",
     "time": "Wednesday 6:00pm - 8:00pm",
-    "notes": "Date and Time Change"
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 58,
@@ -461,7 +461,7 @@
     "date": "8/17/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": "Location Change"
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 59,
@@ -469,7 +469,7 @@
     "date": "8/19/2019",
     "canceled": "",
     "time": "Monday 6:00pm - 8:00pm",
-    "notes": "Date and Time and Location Change"
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 60,
@@ -477,7 +477,7 @@
     "date": "8/21/2019",
     "canceled": "",
     "time": "Wednesday 6:00pm - 8:00pm",
-    "notes": ""
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 61,
@@ -493,7 +493,7 @@
     "date": "9/6/2019",
     "canceled": "",
     "time": "Friday 6:00pm - 8:00pm",
-    "notes": "Date and Time Change"
+    "notes": "Churchill H.S room 110"
   },
   {
     "sessionId": 63,
@@ -501,7 +501,7 @@
     "date": "9/7/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": ""
+    "notes": "Churchill H.S room 110"
   },
   {
     "sessionId": 64,
@@ -509,7 +509,7 @@
     "date": "9/13/2019",
     "canceled": "",
     "time": "Friday 6:00pm - 8:00pm",
-    "notes": "Date and Time Change"
+    "notes": "Churchill H.S room 110"
   },
   {
     "sessionId": 65,
@@ -517,7 +517,7 @@
     "date": "9/14/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": ""
+    "notes": "Churchill H.S room 110"
   },
   {
     "sessionId": 66,
@@ -525,7 +525,7 @@
     "date": "9/21/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": "For ACT"
+    "notes": "SAT/ACT"
   },
   {
     "sessionId": 67,
@@ -533,7 +533,7 @@
     "date": "9/28/2019",
     "canceled": "",
     "time": "Saturday 2:00pm-4:00pm",
-    "notes": "For ACT"
+    "notes": "SAT/ACT Last Session!!"
   },
   {
     "sessionId": 68,
@@ -541,7 +541,7 @@
     "date": "8/23/2019",
     "canceled": "",
     "time": "Friday 8:00- 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "Cathay Future Center room 116"
   },
   {
     "sessionId": 69,
@@ -549,7 +549,7 @@
     "date": "8/30/2019",
     "canceled": "",
     "time": "Email Practice",
-    "notes": "SAT Prep Test"
+    "notes": "Do it by yourself"
   },
   {
     "sessionId": 70,
@@ -557,7 +557,7 @@
     "date": "9/6/2019",
     "canceled": "",
     "time": "Friday 8:00- 9:40pm",
-    "notes": "SAT Prep Test"
+    "notes": "SAT Prep Test/ Back to Churchill H.S. room 110"
   },
   {
     "sessionId": 71,
@@ -733,7 +733,7 @@
     "date": "11/24/2019",
     "canceled": "",
     "time": "Sunday 4:20pm - 6:20pm",
-    "notes": "For ACT"
+    "notes": "SAT/ACT"
   },
   {
     "sessionId": 93,
@@ -741,7 +741,7 @@
     "date": "12/1/2019",
     "canceled": "",
     "time": "Sunday 4:20pm - 6:20pm",
-    "notes": "For ACT"
+    "notes": "SAT/ACT Last Session!!"
   },
   {
     "sessionId": 94,
@@ -1037,7 +1037,7 @@
     "date": "8/13/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 7:45pm",
-    "notes": ""
+    "notes": "At Cathay Future Center Room 116"
   },
   {
     "sessionId": 131,
@@ -1045,7 +1045,7 @@
     "date": "8/20/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 7:45pm",
-    "notes": ""
+    "notes": "At Cathay Future Center Room 116"
   },
   {
     "sessionId": 132,
@@ -1125,15 +1125,15 @@
     "date": "8/17/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 5:45pm",
-    "notes": ""
+    "notes": "At Cathay Future Center Room 116"
   },
   {
     "sessionId": 142,
     "classKey": "amc8_summer_adv",
     "date": "8/22/2019",
     "canceled": "",
-    "time": "Thursday 7:45pm - 9:30pm",
-    "notes": "Date and Time Change"
+    "time": "Thursday 8:00pm - 9:45pm",
+    "notes": "At Cathay Future Center Room 116"
   },
   {
     "sessionId": 143,
@@ -1265,7 +1265,7 @@
   },
   {
     "sessionId": 159,
-    "classKey": "computer_web_design",
+    "classKey": "",
     "date": "7/13/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1273,7 +1273,7 @@
   },
   {
     "sessionId": 160,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "7/16/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1281,7 +1281,7 @@
   },
   {
     "sessionId": 161,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "7/20/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1289,7 +1289,7 @@
   },
   {
     "sessionId": 162,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "7/23/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1297,7 +1297,7 @@
   },
   {
     "sessionId": 163,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "7/27/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1305,7 +1305,7 @@
   },
   {
     "sessionId": 164,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "7/30/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1313,7 +1313,7 @@
   },
   {
     "sessionId": 165,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/3/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1321,7 +1321,7 @@
   },
   {
     "sessionId": 166,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/6/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1329,7 +1329,7 @@
   },
   {
     "sessionId": 167,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/10/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1337,7 +1337,7 @@
   },
   {
     "sessionId": 168,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/13/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1345,7 +1345,7 @@
   },
   {
     "sessionId": 169,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/15/2019",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
@@ -1353,7 +1353,7 @@
   },
   {
     "sessionId": 169,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/17/2019",
     "canceled": "TRUE",
     "time": "",
@@ -1361,7 +1361,7 @@
   },
   {
     "sessionId": 170,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/20/2019",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
@@ -1369,7 +1369,7 @@
   },
   {
     "sessionId": 171,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "8/24-9/3",
     "canceled": "TRUE",
     "time": "",
@@ -1377,7 +1377,7 @@
   },
   {
     "sessionId": 172,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "9/7/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1385,7 +1385,7 @@
   },
   {
     "sessionId": 173,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "9/14/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1393,7 +1393,7 @@
   },
   {
     "sessionId": 174,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "9/21/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1401,7 +1401,7 @@
   },
   {
     "sessionId": 175,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "9/28/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1409,7 +1409,7 @@
   },
   {
     "sessionId": 176,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "10/5/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1417,7 +1417,7 @@
   },
   {
     "sessionId": 177,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "10/12/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1425,7 +1425,7 @@
   },
   {
     "sessionId": 178,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "10/19/2019",
     "canceled": "TRUE",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -1433,7 +1433,7 @@
   },
   {
     "sessionId": 179,
-    "classKey": "computer_web_design",
+    "classKey": "web_design_summer_a",
     "date": "10/26/2019",
     "canceled": "",
     "time": "Saturday 4:00pm - 6:00pm",
@@ -2889,6 +2889,14 @@
   },
   {
     "sessionId": 361,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 362,
     "classKey": "amc8_fall_advance_a",
     "date": "12/23/2019",
     "canceled": "TRUE",
@@ -2896,17 +2904,9 @@
     "notes": ""
   },
   {
-    "sessionId": 362,
+    "sessionId": 363,
     "classKey": "amc8_fall_advance_a",
     "date": "12/30/2019",
-    "canceled": "TRUE",
-    "time": "",
-    "notes": ""
-  },
-  {
-    "sessionId": 363,
-    "classKey": "amc8_fall_advance_b",
-    "date": "12/26/2019",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
@@ -2914,13 +2914,29 @@
   {
     "sessionId": 364,
     "classKey": "amc8_fall_advance_b",
-    "date": "1/2/2020",
+    "date": "11/28/2019",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
   },
   {
     "sessionId": 365,
+    "classKey": "amc8_fall_advance_b",
+    "date": "12/26/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 366,
+    "classKey": "amc8_fall_advance_b",
+    "date": "1/2/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 367,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -2928,7 +2944,7 @@
     "notes": ""
   },
   {
-    "sessionId": 366,
+    "sessionId": 368,
     "classKey": "algebra2_fall_a",
     "date": "12/1/2019",
     "canceled": "TRUE",
@@ -2936,7 +2952,7 @@
     "notes": ""
   },
   {
-    "sessionId": 367,
+    "sessionId": 369,
     "classKey": "algebra2_fall_a",
     "date": "12/22/2019",
     "canceled": "TRUE",
@@ -2944,7 +2960,7 @@
     "notes": ""
   },
   {
-    "sessionId": 368,
+    "sessionId": 370,
     "classKey": "algebra2_fall_a",
     "date": "12/29/2019",
     "canceled": "TRUE",
@@ -2952,7 +2968,7 @@
     "notes": ""
   },
   {
-    "sessionId": 369,
+    "sessionId": 371,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -2960,7 +2976,7 @@
     "notes": ""
   },
   {
-    "sessionId": 370,
+    "sessionId": 372,
     "classKey": "pre_calc_fall_a",
     "date": "12/24/2019",
     "canceled": "TRUE",
@@ -2968,7 +2984,7 @@
     "notes": ""
   },
   {
-    "sessionId": 371,
+    "sessionId": 373,
     "classKey": "pre_calc_fall_a",
     "date": "12/31/2019",
     "canceled": "TRUE",
@@ -2976,23 +2992,15 @@
     "notes": ""
   },
   {
-    "sessionId": 372,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
-    "notes": ""
-  },
-  {
-    "sessionId": 373,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
-    "notes": ""
-  },
-  {
     "sessionId": 374,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 375,
     "classKey": "ap_calc_fall_a",
     "date": "12/22/2019",
     "canceled": "TRUE",
@@ -3000,7 +3008,7 @@
     "notes": ""
   },
   {
-    "sessionId": 375,
+    "sessionId": 376,
     "classKey": "ap_calc_fall_a",
     "date": "12/29/2019",
     "canceled": "TRUE",
@@ -3008,7 +3016,7 @@
     "notes": ""
   },
   {
-    "sessionId": 376,
+    "sessionId": 377,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -3016,7 +3024,7 @@
     "notes": ""
   },
   {
-    "sessionId": 377,
+    "sessionId": 378,
     "classKey": "logical_amc8_fall_a",
     "date": "12/23/2019",
     "canceled": "TRUE",
@@ -3024,18 +3032,10 @@
     "notes": ""
   },
   {
-    "sessionId": 378,
+    "sessionId": 379,
     "classKey": "logical_amc8_fall_a",
     "date": "12/30/2019",
     "canceled": "TRUE",
-    "time": "",
-    "notes": ""
-  },
-  {
-    "sessionId": 379,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
     "time": "",
     "notes": ""
   },
@@ -3049,25 +3049,25 @@
   },
   {
     "sessionId": 381,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
+    "classKey": "ap_java_fall_a",
+    "date": "11/29/2019",
+    "canceled": "TRUE",
     "time": "",
     "notes": ""
   },
   {
     "sessionId": 382,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
+    "classKey": "ap_java_fall_a",
+    "date": "12/20/2019",
+    "canceled": "TRUE",
     "time": "",
     "notes": ""
   },
   {
     "sessionId": 383,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
+    "classKey": "ap_java_fall_a",
+    "date": "12/27/2019",
+    "canceled": "TRUE",
     "time": "",
     "notes": ""
   },
