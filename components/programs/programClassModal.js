@@ -14,7 +14,7 @@ export class ProgramClassModal extends React.Component {
 		const classes = this.props.classList;
 		const semester = this.props.semester;
 
-		var programTitle = semester.title ? semester.title : programObj.title;
+		var programTitle = semester && semester.title ? semester.title : programObj.title;
 		programTitle += " Classes";
 
     const classList = classes.map((c, index) =>

@@ -19,7 +19,7 @@
     "timestamp": 1565555129,
     "date": "8/14/2019",
     "important": "",
-    "classKeys": "",
+    "classKeys": "[sat1_summer_c]",
     "author": "Amy",
     "message": "SAT Class (C) will have the 7th session on Wednesday 6:00pm - 8:00pm at Cathay Future Center."
   },
@@ -27,8 +27,24 @@
     "timestamp": 1565555389,
     "date": "8/13/2019",
     "important": "",
-    "classKeys": "",
+    "classKeys": "[web_design_summer_a]",
     "author": "Aaron",
-    "message": "Web Design Class will Move 8/17's class to 8/15 6:00pm - 8:00pm. Same classroom at Home"
+    "message": "Web Design Class will move 8/17's class to 8/15 6:00pm - 8:00pm. Same classroom at Home"
+  },
+  {
+    "timestamp": 1565557424,
+    "date": "8/19/2019",
+    "important": "",
+    "classKeys": "[sat1_summer_c]",
+    "author": "Amy",
+    "message": "SAT Class (C) will have the 9th session on Monday 6:00pm - 8:00pm at Cathay Future Center."
+  },
+  {
+    "timestamp": 1565557456,
+    "date": "8/21/2019",
+    "important": "",
+    "classKeys": "[sat1_summer_c]",
+    "author": "Amy",
+    "message": "SAT Class (C) will have the 10th session on Wednesday 6:00pm - 8:00pm at Cathay Future Center."
   }
 ]

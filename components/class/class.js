@@ -74,13 +74,20 @@ class ClassContent extends React.Component {
   }
 
 	render() {
+    // Variables
     const classKey = this.props.classKey;
     const pair = this.props.pair;
-
-    // Variables
     const programObj = pair.programObj;
     const classObj = pair.classObj;
+
+    // Location
     const locationObj = getLocation(classObj.locationId);
+
+    // PreReqs
+    var programPrereqs = getPrereqs(programObj.programId);
+    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
+
+    // Sessions
     let sessions = getSessions(classKey);
     sessions = sessions ? sessions : [];
     var sessionCounter = 0;
@@ -89,22 +96,12 @@ class ClassContent extends React.Component {
         sessionCounter++;
       }
     });
-    var programPrereqs = getPrereqs(programObj.programId);
-    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
 
-    // Components
-    var announce;
-    if(!isEmpty(this.props.announce)) {
-        announce = generateAnnouncement(this.props.announce,
-          this.state.showAnnounce, this.handleDismissAnnounce);
-    }
+    // All Components
+    const announce = generateAnnouncement(this.props.announce,
+      this.state.showAnnounce, this.handleDismissAnnounce);
     const classFullName = generateFullClassName(programObj, classObj);
-
-    const prereqs = generatePrereqs(prereqIds);
-    let prereqsLine;
-    if (prereqs) {
-      prereqsLine = <div>{"Prequirements: " + prereqs}<br/></div>;
-    }
+    const prereqsLine = generatePrereqs(prereqIds);
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
     const textPricing = generatePricing(classObj.priceLump,
@@ -189,10 +186,17 @@ function generateFullClassName(programObj, classObj) {
 
 function generatePrereqs(prereqIds) {
   var prereqsPrograms = getProgramByIds(prereqIds);
-  var prereqsNames = prereqsPrograms.map(function(program) {
-    return program ? program.title : null;
-  });
-  return prereqsNames.join(", ");
+  const validPrereqs = prereqsPrograms.filter(p => p && p.title);
+
+  let prereqsLine = <div></div>;
+  if (validPrereqs.length > 0) {
+    prereqsLine = <div>
+      {"Prerequirements: " + validPrereqs.map(p => p.title).join(", ")}
+    </div>;
+  } else {
+    return <div></div>;
+  }
+  return prereqsLine;
 }
 
 function generateLocation(locationObj) {
@@ -310,6 +314,10 @@ function generateSchedules(sessions, allYear, classTimes) {
 }
 
 function generateAnnouncement(announce, showAnnounce, onDismiss) {
+  if (isEmpty(announce)) {
+    return (<div></div>);
+  }
+
   var classView = classnames({
       dismiss: !showAnnounce
   });
