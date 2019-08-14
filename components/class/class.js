@@ -124,15 +124,15 @@ class ClassContent extends React.Component {
             </div>
 
             <div className="class-info-2">
+              <Link to={"/contact?interest=" + classKey}>
+                <button>Register</button>
+              </Link>
               <b>Location</b>
               {textLocation}
               <b>Times</b>
               {textTimes}
               <b>Pricing</b>
               {textPricing}
-              <Link to={"/contact?interest=" + classKey}>
-                <button>Register</button>
-              </Link>
             </div>
           </div>
 

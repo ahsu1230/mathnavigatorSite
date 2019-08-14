@@ -1,7 +1,7 @@
 @import "../static.styl"
 
 #view-class-container
-  width: containerWidthPx1
+  width: containerWidthPx3
   max-width: containerWidthPct
   margin: 0 auto spacing16x
 
@@ -10,6 +10,11 @@
     line-height: lineHeight3
     font-size: fontSize3
     color: colorPrimary
+
+    @media screen and (max-width: mediaWidth1)
+      margin: spacing6x 0
+      line-height: lineHeight2
+      font-size: fontSize2
 
     & a
       color: colorPrimary
@@ -32,6 +37,15 @@
       top: 0
       right: 0
 
+      @media screen and (max-width: mediaWidth1)
+        display: block
+        position: relative
+        width: 100%
+        margin-bottom: spacing4x
+        border: 1px solid colorOrange
+        background-color: colorWhite
+        color: colorOrange
+
   & #class-info-container
     & b
       color: colorPrimary
@@ -53,8 +67,9 @@
     width: 100%
 
   & li
+    line-height: lineHeight0
     margin: 0
-    line-height: propUnit2x
+    padding: spacing2x 0
     border-bottom: 1px solid colorGrayLight
     list-style: none
 
@@ -65,19 +80,26 @@
         width: propUnit2x
       &.line-date
         width: propUnit4x
+        @media screen and (max-width: mediaWidth1)
+          display: block
 
       &.line-right
         vertical-align: top
 
+        @media screen and (max-width: mediaWidth1)
+          display: block
+          width: 100%
+          line-height: lineHeight2
+
         & .text-1
-          display: inline-block
-          width: propUnit8x
           margin: 0
           color: colorBlackDark
 
         & .alert
+          display: block
           font-weight: bold
           color: colorBlue
+
 
 #view-class-container
   & #view-questions
