@@ -6,6 +6,10 @@
   background-color: white
   box-shadow: 0px 2px 8px colorBlackDark
 
+  @media screen and (max-width: mediaWidth1)
+    width: 100%
+    box-sizing: border-box
+
   & h1
     margin-bottom: spacing4x
     line-height: propUnit2x
@@ -14,6 +18,9 @@
     font-weight: 400
     color: colorBlackDark
     border-bottom: 1px solid colorBlackDark
+
+    @media screen and (max-width: mediaWidth1)
+      text-align: center
 
   & ul
     padding: 0
@@ -38,9 +45,25 @@
       margin-right: spacing2x
       color: colorPrimary
 
+      @media screen and (max-width: mediaWidth1)
+        display: block
+        width: auto
+        margin: 0
+        text-align: center
+
     & .class-times
       display: inline-block
       vertical-align: top
 
+      @media screen and (max-width: mediaWidth1)
+        display: block
+        text-align: center
+
     & a
       float: right
+
+      @media screen and (max-width: mediaWidth1)
+        float: none
+        display: block
+        margin: spacing1x 0 spacing4x
+        text-align: center
