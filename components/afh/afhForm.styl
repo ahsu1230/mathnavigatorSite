@@ -26,6 +26,10 @@
       &:focus
         outline-color: colorTurquoiseLight
 
+      @media screen and (max-width: mediaWidth1)
+        width: 100%
+        border: 1px solid colorGrayLight
+
   & .section.sessions
     & .afh-session
       margin-bottom: spacing4x
@@ -59,11 +63,18 @@
     position: relative
     width: propUnit16x
 
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
+
     & p
       margin: 0
       line-height: lineHeight0
       font-size: fontSize0
       color: colorBlackDark
+
+      @media screen and (max-width: mediaWidth1)
+        margin-top: spacing2x
+        text-align: center
 
     & .list-fields-remaining
       margin-top: spacing2x
@@ -83,6 +94,11 @@
       background-color: colorGrayLight
       color: colorBlackDark
       cursor: initial
+
+      @media screen and (max-width: mediaWidth1)
+        position: relative
+        width: 100%
+        margin-top: spacing2x
 
       &:hover
         filter: none
