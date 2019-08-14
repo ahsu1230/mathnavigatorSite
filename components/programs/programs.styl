@@ -19,6 +19,9 @@ cardSpacing = spacing6x
     color: colorPrimary
     border-bottom: 1px solid colorGrayLight
 
+    @media screen and (max-width: mediaWidth1)
+      text-align: center
+
   & h3
     line-height: lineHeight1
     font-size: fontSize1
@@ -27,14 +30,19 @@ cardSpacing = spacing6x
 #view-program-container .section
   & .program-card-container
     display: inline-block
-
-  & .program-card
     position: relative
-    display: inline-block
     width: 220px
     height: 200px
-    margin: 0px cardSpacing cardSpacing 0
+    margin: 0 cardSpacing cardSpacing 0
     box-sizing: border-box
+
+    @media screen and (max-width: mediaWidth1)
+      display: block
+      margin: 0 auto cardSpacing
+
+  & .program-card
+    width: 100%
+    height: 100%
     background-color: colorPrimary
     text-align: center
     vertical-align: top
@@ -91,9 +99,17 @@ cardSpacing = spacing6x
   & #star-legend
     display: inline-block
     position: absolute
-    top: spacing4x
+    top: spacing5x
     right: 0
     font-size: fontSize0
+
+    @media screen and (max-width: mediaWidth1)
+      position: relative
+      top: 0
+      left: 50%
+      transform: translateX(-50%)
+      margin: spacing5x 0 spacing1x
+      font-size: 14px
 
     & .star-container
       display: inline-block
@@ -104,9 +120,17 @@ cardSpacing = spacing6x
       margin-right: spacing1x
       vertical-align: middle
 
+      @media screen and (max-width: mediaWidth1)
+        width: 22px
+        height: 22px
+
       & .star-img
         width: 20px
         height: 20px
+
+        @media screen and (max-width: mediaWidth1)
+          width: 16px
+          height: 16px
 
 #view-program-container .program-card
   &.afh
