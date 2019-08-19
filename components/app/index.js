@@ -2,6 +2,7 @@
 require('./app.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router';
 import {
   Router,
   Route,
@@ -11,7 +12,7 @@ import { history } from './history.js';
 import { createPageTitle, getNavByUrl } from '../constants.js';
 import ScrollMemory from 'react-router-scroll-memory';
 
-import { Header } from '../header/header.js';
+import { Header as HeaderComponent} from '../header/header.js';
 import { HomePage } from '../home/home.js';
 import { AchievementPage } from '../achievements/achievements.js';
 import { AFHPage } from '../afh/afh.js';
@@ -22,10 +23,12 @@ import { Footer } from '../footer/footer.js';
 import { ClassPage } from '../class/class.js';
 import { ErrorPage } from '../errorPage/error.js';
 
+const Header = withRouter(HeaderComponent);
 const Home = () => <HomePage/>;
 const Announce = () => <AnnouncePage/>;
 const Programs = () => <ProgramsPage/>;
-const Contact = () => <ContactPage/>;
+const ContactPageRouter = withRouter(ContactPage);
+const Contact = () => <ContactPageRouter/>;
 const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 const Achievements = () => <AchievementPage/>;
 const AFH = () => <AFHPage/>;

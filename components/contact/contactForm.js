@@ -2,7 +2,6 @@
 require('./contact.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { withRouter } from 'react-router';
 import { ContactInterestSection } from './contactInterest.js';
 import {
   EmailModal,
@@ -25,16 +24,9 @@ import { pull } from 'lodash';
 import { Modal } from '../modals/modal.js';
 const classnames = require('classnames');
 
-class Form extends React.Component {
+export class ContactForm extends React.Component {
 	constructor(props) {
     super(props);
-
-    const { match, location, history } = this.props;
-    var interested = [];
-    var parsed = parseQuery(location.search);
-    if (parsed && parsed.interest) {
-      interested.push(parsed.interest);
-    }
 
 		this.state = {
       submitState: STATE_NONE,
@@ -49,7 +41,7 @@ class Form extends React.Component {
 			guardPhone: "",
 			guardEmail: "",
       guardSocialWeChat: "",
-			interestedPrograms: interested,
+			interestedPrograms: this.props.startingInterest,
 			additionalText: "",
       generatedEmail: null
 		};
@@ -284,8 +276,6 @@ class ContactErrorReminder extends React.Component {
   }
 }
 
-export const ContactForm = withRouter(Form);
-
 /* Helper functions */
 function validateStudent(state) {
   return NameCheck.validate(state.studentFirstName)
@@ -305,24 +295,6 @@ function validateGuardian(state) {
 
 function validatePrograms(programs) {
   return programs.length > 0;
-}
-
-function parseQuery(hash) {
-  var i = hash.indexOf("?");
-  var parsed = {};
-  if (i >= 0) {
-    hash = hash.slice(i + 1);
-
-    // parse Query String
-    var params = hash.split("&");
-    for (var i = 0; i < params.length; i++) {
-      var pair = params[i].split("=");
-      var pairKey = decodeURIComponent(pair[0]);
-      var pairValue = decodeURIComponent(pair[1]);
-      parsed[pairKey] = pairValue;
-    }
-  }
-  return parsed;
 }
 
 function generateEmailMessage(info) {
