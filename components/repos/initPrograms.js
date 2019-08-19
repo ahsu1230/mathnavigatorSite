@@ -68,6 +68,7 @@ function initAnnounce(arr) {
   var list = [];
   forEach(arr, function(obj) {
     obj.important = convertStrToBool(obj.important);
+    obj.onHomePage = convertStrToBool(obj.onHomePage);
     obj.classKeys = convertStringArray(obj.classKeys);
     list.push(obj);
   });

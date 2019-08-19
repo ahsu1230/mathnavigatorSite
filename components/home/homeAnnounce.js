@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { getAnnounceList } from '../repos/mainRepo.js';
+import { isEmpty, filter } from 'lodash';
 const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');
 
@@ -13,8 +14,8 @@ export class HomeAnnounce extends React.Component {
     this.state = {
       show: false
     }
-    this.announcements = getAnnounceList();
-
+    var valid = filter(getAnnounceList(), a => a.onHomePage);
+    this.targetAnnounce = valid.length > 0 ? valid[0] : undefined;
     this.handleDismiss = this.handleDismiss.bind(this);
   }
 
@@ -33,27 +34,34 @@ export class HomeAnnounce extends React.Component {
   }
 
 	render() {
-    const announce = this.announcements[0]; // take the first announcement
-    const show = this.state.show;
-    const announceClass = classnames({
-      show: this.state.show
-    });
-
-
-		return (
-			<div id="home-announce" className={announceClass}>
-        <h3>New Announcement!</h3>
-        <button className="close-x" onClick={this.handleDismiss}>
-          <img src={srcClose}/>
-        </button>
-        <div className="text-container">
-          <p>
-            {announce.message}
-          </p>
-        </div>
-        <span>...</span>
-        <Link to="/announcements">Read more &#62;</Link>
-			</div>
-		);
+    const announce = this.targetAnnounce;
+    var component;
+    if (!isEmpty(announce)) {
+      component = generateAnnounce(announce, this.state.show, this.handleDismiss);
+    } else {
+      component = <div></div>;
+    }
+    return component;
 	}
+}
+
+function generateAnnounce(announce, show, handleDismiss) {
+  const announceClass = classnames({
+    show: show
+  });
+  return (
+    <div id="home-announce" className={announceClass}>
+      <h3>New Announcement!</h3>
+      <button className="close-x" onClick={handleDismiss}>
+        <img src={srcClose}/>
+      </button>
+      <div className="text-container">
+        <p>
+          {announce.message}
+        </p>
+      </div>
+      <span>...</span>
+      <Link to="/announcements">Read more &#62;</Link>
+    </div>
+  );
 }
