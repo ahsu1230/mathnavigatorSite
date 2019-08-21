@@ -39,10 +39,10 @@
     "timestamp": 1565557424,
     "date": "8/19/2019",
     "important": "",
-    "onHomePage": "TRUE",
-    "classKeys": "[sat1_summer_c, sat2_summer_d]",
+    "onHomePage": "",
+    "classKeys": "[sat1_summer_c]",
     "author": "Amy",
-    "message": "SAT Class (C) will have the 9th session on Monday 8/19 6:00pm - 8:00pm at Cathay Future Center. SAT II class will add another practice on 8/19 8:00pm - 9:40pm at Cathay Future Center."
+    "message": "SAT Class (C) will have the 9th session on Monday 8/19 6:00pm - 8:00pm at Cathay Future Center."
   },
   {
     "timestamp": 1565557456,
@@ -66,9 +66,27 @@
     "timestamp": 1565992347,
     "date": "8/24/2019",
     "important": "TRUE",
-    "onHomePage": "",
+    "onHomePage": "TRUE",
     "classKeys": [],
     "author": "Amy",
     "message": "NO CLASSES between from 8/24 - 9/3."
+  },
+  {
+    "timestamp": 1565557425,
+    "date": "8/19/2019",
+    "important": "",
+    "onHomePage": "",
+    "classKeys": "[sat2_summer_d]",
+    "author": "Amy",
+    "message": "SAT II class will add another practice on 8/19 8:00pm - 9:40pm at Cathay Future"
+  },
+  {
+    "timestamp": 1566417778,
+    "date": "9/6/2019",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_summer_c]",
+    "author": "Amy",
+    "message": "SAT Class (C) 11th session, the classroom on 9/6 will be at Hoover M.S. Room 36"
   }
 ]

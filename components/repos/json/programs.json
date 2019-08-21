@@ -75,5 +75,12 @@
     "grade1": 9,
     "grade2": 12,
     "description": "For students who are learning Java for a school course or for the AP Programming exam. This program will be taught by tutor Aaron Hsu."
+  },
+  {
+    "programId": "amc10",
+    "title": "AMC 10",
+    "grade1": 8,
+    "grade2": 10,
+    "description": "For high schoolers who are looking to take their mathematical skills to a whole new level. With out training for the American Mathematics Competition (AMC), students will train their logical thinking and analytical abilities to problem solve challenging math questions. Train with us and earn awards for your school!"
   }
 ]
