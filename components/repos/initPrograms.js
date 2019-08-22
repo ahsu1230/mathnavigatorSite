@@ -67,6 +67,8 @@ function initAchievements(arr) {
 function initAnnounce(arr) {
   var list = [];
   forEach(arr, function(obj) {
+    obj.dateStr = obj.date;
+    obj.date = new Date(obj.date);
     obj.important = convertStrToBool(obj.important);
     obj.onHomePage = convertStrToBool(obj.onHomePage);
     obj.classKeys = convertStringArray(obj.classKeys);
