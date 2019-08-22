@@ -17,6 +17,12 @@ export class ContactPage extends React.Component {
 		}
 	}
 
+	componentDidMount() {
+		if (process.env.NODE_ENV === 'production') {
+			mixpanel.track("contact");
+		}
+	}
+
 	render() {
 		return (
       <div id="view-contact">

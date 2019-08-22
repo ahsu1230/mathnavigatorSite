@@ -9,6 +9,9 @@ import { createPageTitle } from '../constants.js';
 export class AFHPage extends React.Component {
 	componentDidMount() {
     document.title = createPageTitle("Ask For Help");
+		if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("afh");
+    }
   }
 
 	render() {

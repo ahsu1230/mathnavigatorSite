@@ -14,6 +14,12 @@ import { Modal } from '../modals/modal.js';
 import { history } from '../app/history.js';
 
 export class ProgramsPage extends React.Component {
+	componentDidMount() {
+		if (process.env.NODE_ENV === 'production') {
+			mixpanel.track("programs");
+		}
+	}
+
 	render() {
 		const semesterIds = getSemesterIds();
 		const programsBySemesterId = getProgramsBySemester();

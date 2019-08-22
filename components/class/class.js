@@ -27,7 +27,9 @@ export class ClassPage extends React.Component {
     this.classAnnounce = find(announcements, function(o) {
       return find(o.classKeys, cKey => (classKey === cKey));
     });
+  }
 
+  componentDidMount() {
     if (process.env.NODE_ENV === 'production') {
       mixpanel.track("class", {"key": classKey});
     }

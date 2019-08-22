@@ -17,6 +17,12 @@ export class AchievementPage extends React.Component {
     this.achievementYears = getAchievementKeys().sort().reverse();
   }
 
+  componentDidMount() {
+		if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("achievements");
+    }
+  }
+
 	render() {
     const cards = this.achievementYears.map(function(year, index) {
       const achievements = getAchievements(year);
