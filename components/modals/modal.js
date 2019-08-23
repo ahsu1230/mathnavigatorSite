@@ -24,6 +24,9 @@ export class Modal extends React.Component {
     const modalViewClasses = classnames("modal-view", {
       show: this.props.show
     });
+    const modalOverlayClasses = classnames("modal-overlay", {
+      show: this.props.show
+    });
 
     const onClickOverlay = persistent ? undefined : this.handleDismiss;
     var closeButton;
@@ -40,7 +43,7 @@ export class Modal extends React.Component {
     var modalClasses = classnames("modal", this.props.modalClassName);
     return (
       <div className={modalViewClasses}>
-        <div className="modal-overlay" onClick={onClickOverlay}></div>
+        <div className={modalOverlayClasses} onClick={onClickOverlay}></div>
         <div className={modalClasses}>
           {closeButton}
           {modalContent}
