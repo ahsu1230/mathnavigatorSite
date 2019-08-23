@@ -20,16 +20,26 @@ const srcClose = require('../../assets/close_black.svg');
 export class ClassPage extends React.Component {
   constructor(props) {
     super(props);
-
-    const classKey = this.props.slug;
-    this.classKey = classKey;
-    var announcements = getAnnounceList();
-    this.classAnnounce = find(announcements, function(o) {
-      return find(o.classKeys, cKey => (classKey === cKey));
-    });
+    this.state = {
+      announcements: [],
+      classKey: undefined,
+      classAnnounce: {}
+    };
   }
 
   componentDidMount() {
+    var announcements = getAnnounceList();
+    var classKey = this.props.slug;
+    var classAnnounce = find(announcements, function(o) {
+      return find(o.classKeys, cKey => (classKey === cKey));
+    });
+
+    this.setState({
+      announcements: announcements,
+      classKey: classKey,
+      classAnnounce: classAnnounce
+    });
+
     if (process.env.NODE_ENV === 'production') {
       mixpanel.track("class", {"key": classKey});
     }
@@ -37,7 +47,7 @@ export class ClassPage extends React.Component {
 
   render () {
     var valid = true;
-    const key = this.classKey;
+    const key = this.state.classKey;
     const pair = getProgramClass(key);
     valid = valid && Boolean(pair);
     valid = valid && Boolean(pair.programObj);
@@ -45,7 +55,7 @@ export class ClassPage extends React.Component {
 
     var content;
     if (valid) {
-      content = <ClassContent classKey={key} pair={pair} announce={this.classAnnounce}/>;
+      content = <ClassContent classKey={key} pair={pair} announce={this.state.classAnnounce}/>;
     } else {
       content = <ErrorPage classDNE={key}/>;
     }
