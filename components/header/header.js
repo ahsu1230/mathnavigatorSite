@@ -8,14 +8,32 @@ const classNames = require('classnames');
 const headerIcon = require('../../assets/navigate_white.png');
 
 export class Header extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			location: {}
+		};
+	}
+
+	componentDidMount() {
+		this.unlisten = this.props.history.listen((location, action) => {
+			this.setState({location: location});
+		});
+		this.setState({location: this.props.history.location});
+	}
+
+	componentWillUnmount() {
+		this.unlisten();
+	}
+
 	render() {
-		const { match, location, history } = this.props;
+		const location = this.state.location;
 		return (
       <div id="view-header">
         <div id="view-header-container">
           <HeaderLogo/>
-          <HeaderNavHoriz/>
-					<HeaderNavVert/>
+          <HeaderNavHoriz location={location}/>
+					<HeaderNavVert location={location}/>
         </div>
       </div>
 		);
@@ -35,9 +53,10 @@ class HeaderLogo extends React.Component {
 
 class HeaderNavHoriz extends React.Component {
 	render() {
+		const location = this.props.location;
 		const onClick = this.props.onClick;
     const items = NavLinks.map((link, i) =>
-			<MenuLink key={link.id} title={link.name} url={link.url}/>
+			<MenuLink key={link.id} title={link.name} url={link.url} location={location}/>
 		);
 		return (
 			<ul className="header-menu-hlist">{items}</ul>
@@ -61,6 +80,7 @@ class HeaderNavVert extends React.Component {
   }
 
   render() {
+		const location = this.props.location;
     const show = this.state.show;
     var buttonClasses = classNames("header-menu-btn", {
       "show": show
@@ -74,7 +94,7 @@ class HeaderNavVert extends React.Component {
           Menu
           <div className={iconClasses}></div>
         </button>
-        <HeaderMenuList showMenu={show} toggleMenu={this.toggleMenu}/>
+        <HeaderMenuList showMenu={show} toggleMenu={this.toggleMenu} location={location}/>
       </div>
     );
   }
@@ -82,11 +102,12 @@ class HeaderNavVert extends React.Component {
 
 class HeaderMenuList extends React.Component {
   render() {
-		const toggleMenu = this.props.toggleMenu
+		const location = this.props.location;
+		const toggleMenu = this.props.toggleMenu;
     const showMenu = this.props.showMenu;
     const numLinks = NavLinks.length;
     const items = NavLinks.map((link, i) =>
-      <MenuLink key={link.id} title={link.name} url={link.url} onClick={toggleMenu}/>
+      <MenuLink key={link.id} title={link.name} url={link.url} onClick={toggleMenu} location={location}/>
     );
     const menuClasses = classNames("header-menu-list", {
       "show": showMenu
@@ -103,9 +124,10 @@ class HeaderMenuList extends React.Component {
 
 class MenuLink extends React.Component {
   render() {
+		const location = this.props.location;
 		const url = this.props.url;
 		const linkClasses = classNames({
-			"active": isPathAt(window.location.pathname, url)
+			"active": isPathAt(location.pathname || "", url)
 		});
 
     return (

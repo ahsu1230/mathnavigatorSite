@@ -2,15 +2,16 @@
 require('./app.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { withRouter } from 'react-router';
+import { withRouter, hashHistory } from 'react-router';
 import {
-  Router,
+  HashRouter as Router,
+  // By switching back to HashRouter, we lose functionality (scrollMemory)
   Route,
   Switch
 } from 'react-router-dom';
 import { history } from './history.js';
 import { createPageTitle, getNavByUrl } from '../constants.js';
-import ScrollMemory from 'react-router-scroll-memory';
+import ScrollMemory from 'react-router-scroll-memory'; // Requires BrowserRouter
 
 import { Header as HeaderComponent} from '../header/header.js';
 import { HomePage } from '../home/home.js';
@@ -34,26 +35,28 @@ const Achievements = () => <AchievementPage/>;
 const AFH = () => <AFHPage/>;
 const Error = () => <ErrorPage/>;
 
-// On change path listener
-history.listen((location, action) => {
-  var nav = getNavByUrl(location.pathname);
-  if (nav) {
-    document.title = createPageTitle(nav.name);
-  } // if not in Nav, component must set it's own title!
-});
-
 class AppContainer extends React.Component {
 	render() {
 		return (
-      <Router history={history}>
+      <Router>
         <ScrollMemory/>
-        <App/>
+        <AppWithRouter/>
       </Router>
 		);
 	}
 }
 
 class App extends React.Component {
+  componentDidMount() {
+      this.props.history.listen((location, action) => {
+        var nav = getNavByUrl(location.pathname);
+        if (nav) {
+          document.title = createPageTitle(nav.name);
+        }
+        // if not in Nav, component must set it's own title!
+      });
+  }
+
   render() {
     return (
       <div>
@@ -73,6 +76,8 @@ class App extends React.Component {
     );
   }
 }
+
+const AppWithRouter = withRouter(App);
 
 ReactDOM.render(
   <AppContainer/>,

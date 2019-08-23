@@ -91,7 +91,8 @@ class ProgramCard extends React.Component {
 			this.setState({ showModal: true });
 		} else {
 			var slug = classes[0].key;
-			history.push("/class/" + slug);
+		//	history.push("/class/" + slug); // Use with BrowserRouter
+			window.location.hash = "/class/" + slug; // Use with HashRouter
 		}
 	}
 
@@ -161,7 +162,8 @@ class AFHCard extends React.Component {
 	}
 
 	handleClick() {
-		history.push("/askforhelp");
+		// history.push("/askforhelp"); // use with BrowserRouter
+		window.location.hash = "/askforhelp"; // use with HashRouter
 	}
 
 	render() {

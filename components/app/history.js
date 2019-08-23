@@ -1,3 +1,4 @@
 import { createBrowserHistory } from 'history';
 
-export const history = createBrowserHistory();
+// Use with BrowserRouter
+// export const history = createBrowserHistory();
