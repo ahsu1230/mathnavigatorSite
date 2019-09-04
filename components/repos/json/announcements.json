@@ -66,7 +66,7 @@
     "timestamp": 1565992347,
     "date": "8/24/2019",
     "important": "TRUE",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": [],
     "author": "Amy",
     "message": "NO CLASSES between from 8/24 - 9/3."
@@ -74,10 +74,28 @@
   {
     "timestamp": 1566417778,
     "date": "9/6/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[sat1_summer_c]",
+    "author": "Amy",
+    "message": "SAT Class (C) 11th session, the classroom on 9/6 will be at Hoover M.S. Room 36"
+  },
+  {
+    "timestamp": 1567569658,
+    "date": "9/6/2019",
     "important": "TRUE",
     "onHomePage": "",
     "classKeys": "[sat1_summer_c]",
     "author": "Amy",
-    "message": "SAT Class (C) 11th session, the classroom on 9/6 will be at Hoover M.S. Room 36"
+    "message": "SAT Class (C) Will have SAT prep test on 8/6 at 8:00pm - 9:40pm. Hoover M.S. Room 36"
+  },
+  {
+    "timestamp": 1567569766,
+    "date": "9/7/2019",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_summer_c]",
+    "author": "Amy",
+    "message": "SAT Class (C) 12th session, the classroom on 9/7 will be at Churchill H.S. Room 110."
   }
 ]
