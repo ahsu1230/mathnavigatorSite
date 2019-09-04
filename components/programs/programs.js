@@ -8,7 +8,7 @@ import {
 	getProgramsBySemester,
 	getSemester,
 	getSemesterIds
-} from '../repos/mainRepo.js';
+} from '../repos/apiRepo.js';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
 import { history } from '../app/history.js';

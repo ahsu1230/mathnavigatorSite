@@ -19,7 +19,7 @@ import {
   getAFH,
   getLocation,
   getProgramsBySemester
-} from '../repos/mainRepo.js';
+} from '../repos/apiRepo.js';
 import { Modal } from '../modals/modal.js';
 
 import { find, remove } from 'lodash';

@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { isEmpty, filter } from 'lodash';
-import { getAnnounceList } from '../repos/mainRepo.js';
+import { getAnnounceList } from '../repos/apiRepo.js';
 import { ANNOUNCE_LAST_DISMISS } from '../storage.js';
 const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');

@@ -11,7 +11,7 @@ import {
   getProgramClass,
   getProgramByIds,
   getSessions
-} from '../repos/mainRepo.js';
+} from '../repos/apiRepo.js';
 import { createPageTitle } from '../constants.js';
 import { find, isEmpty } from 'lodash';
 const classnames = require('classnames');

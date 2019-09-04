@@ -10,7 +10,7 @@ import {
   getClassesBySemester,
   getSemester,
 	getSemesterIds
-} from '../repos/mainRepo.js';
+} from '../repos/apiRepo.js';
 const classnames = require('classnames');
 
 export class ContactInterestSection extends React.Component {

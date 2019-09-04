@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
 	getClasses
-} from '../repos/mainRepo.js';
+} from '../repos/apiRepo.js';
 
 export class ProgramClassModal extends React.Component {
   render() {

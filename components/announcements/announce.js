@@ -3,7 +3,7 @@ require('./announce.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { getAnnounceList, getProgramClass } from '../repos/mainRepo.js';
+import { getAnnounceList, getProgramClass } from '../repos/apiRepo.js';
 import { groupBy, map, sortBy } from 'lodash';
 const classnames = require('classnames');
 const srcAttention = require('../../assets/attention_orange.svg');
