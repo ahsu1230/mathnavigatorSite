@@ -24,10 +24,15 @@ export var getProgramsByIds = function(programIds) {
   });
 }
 
+export const fetcher = {
+  getProgramById: getProgramById,
+  getProgramsByIds: getProgramsByIds
+};
+
 /* Helper Functions */
 function fetch() {
   if (!fetched) {
-    const arr = require('./json/classes.json');
+    const arr = require('./json/programs.json');
     data = arr;
     programMap = initPrograms(data);
     fetched = true;

@@ -6,23 +6,10 @@ import { convertStringArray, convertStringToBool } from './fetcherUtil.js';
 var fetched = false;
 var achieveYearMap;
 
-var getAchievementYears = function() {
+var getAchievementsByYears = function() {
   return new Promise(function(resolve, reject) {
     fetch();
-    resolve(keys(achieveYearMap));
-  });
-}
-
-var getAchievementsByYear = function(year) {
-  return new Promise(function(resolve, reject) {
-    fetch();
-    resolve(achieveYearMap[year]);
-  });
-}
-
-var getAchievementsByYears = function(years) {
-  return new Promise(function(resolve, reject) {
-    fetch();
+    var years = keys(achieveYearMap);
     var map = {};
     forEach(years, function(year) {
       map[year] = achieveYearMap[year];
@@ -32,8 +19,6 @@ var getAchievementsByYears = function(years) {
 }
 
 export const fetcher = {
-  getAchievementYears: getAchievementYears,
-  getAchievementsByYear: getAchievementsByYear,
   getAchievementsByYears: getAchievementsByYears
 }
 

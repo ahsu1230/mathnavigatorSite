@@ -16,6 +16,15 @@ export var getClassByKey = function(classKey) {
   });
 }
 
+export var getClassesByKeys = function(classKeys) {
+  return new Promise(function(resolve, reject) {
+    fetch();
+    resolve(classKeys.map(function(classKey) {
+      return classMap[classKey];
+    }));
+  });
+}
+
 export var getClassesByProgram = function(programId) {
   return new Promise(function(resolve, reject) {
     fetch();
@@ -32,6 +41,7 @@ export var getClassesBySemester = function(semesterId) {
 
 export const fetcher = {
   getClassByKey: getClassByKey,
+  getClassesByKeys: getClassesByKeys,
   getClassesByProgram: getClassesByProgram,
   getClassesBySemester: getClassesBySemester
 }

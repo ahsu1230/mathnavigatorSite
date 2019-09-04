@@ -12,16 +12,8 @@ import { fetcher as FetchPrograms } from './fetchers/fetchPrograms.js';
 import { fetcher as FetchSessions } from './fetchers/fetchSessions.js';
 
 /* Achievements */
-export function getAchievementYears() {
-  return FetchAchieve.getAchievementYears();
-}
-
-export function getAchievementsByYear(year) {
-  return FetchAchieve.getAchievementsByYear(year);
-}
-
-export function getAchievementsByYears(years) {
-  return FetchAchieve.getAchievementsByYears(years);
+export function getAchievementsByYears() {
+  return FetchAchieve.getAchievementsByYears();
 }
 
 /* Announcements */
@@ -35,6 +27,14 @@ export function getAFH() {
 }
 
 /* Classes */
+export function getClass(classKey) {
+  return FetchClasses.getClassByKey(classKey);
+}
+
+export function getClasses(classKeys) {
+  return FetchClasses.getClassesByKeys(classKeys);
+}
+
 export function getClassesByProgram(programId) {
   return FetchClasses.getClassesByProgram(programId);
 }
@@ -81,13 +81,19 @@ export function getProgramByIds(arr) {
   return FetchPrograms.getProgramsByIds(arr);
 }
 
-export function getProgramByClassKey(classKey) {
-  return new Promise(function(resolve, reject) {
+export function getProgramByClass(classKey) {
+  var targetClass;
+  return getClass(classKey).then(classObj => {
+    targetClass = classObj;
+    return classObj.programId;
+  })
+  .then(programId => { return getProgramById(programId) })
+  .then(programObj => {
+    return {
+      classObj: targetClass,
+      programObj: programObj
+    };
   });
-
-  // return getClassByKey(classKey).then(function() {
-    //
-  // });
 }
 
 export function getProgramsBySemester(semesterId) {

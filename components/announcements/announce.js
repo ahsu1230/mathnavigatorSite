@@ -3,8 +3,9 @@ require('./announce.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { getAnnounceList, getProgramClass } from '../repos/apiRepo.js';
+import { Promise } from 'bluebird';
 import { groupBy, map, sortBy } from 'lodash';
+import { getAnnouncements, getProgramByClass } from '../repos/apiRepo.js';
 const classnames = require('classnames');
 const srcAttention = require('../../assets/attention_orange.svg');
 
@@ -19,14 +20,14 @@ export class AnnouncePage extends React.Component {
   }
 
 	componentDidMount() {
-		var list = getAnnounceList();
-		var sorted = sortBy(list, ["date", "timestamp"]).reverse();
-		var groupByDate = groupBy(sorted, a => a.dateStr);
-
-		this.setState({
-			announcements: list,
-			groupByDate: groupByDate,
-			sorted: sorted
+		getAnnouncements().then(list => {
+			var sorted = sortBy(list, ["date", "timestamp"]).reverse();
+			var groupByDate = groupBy(sorted, a => a.dateStr);
+			this.setState({
+				announcements: list,
+				groupByDate: groupByDate,
+				sorted: sorted
+			});
 		});
 
 		if (process.env.NODE_ENV === 'production') {
@@ -82,20 +83,20 @@ class AnnounceItem extends React.Component {
 
 	componentDidMount() {
 		const announcement = this.props.announcement;
-		var links = announcement.classKeys.map(function(classKey, index) {
-			var pair = getProgramClass(classKey);
-			var programName = pair.programObj.title;
-			var className = pair.classObj.className || "";
-			var fullName = (programName + " " + className).trim();
-			const url = "/class/" + classKey;
-			return {
-				name: fullName,
-				url: url
-			};
+		var promiseList = announcement.classKeys.map(function(classKey) {
+			return getProgramByClass(classKey).then(function(pair) {
+				var programObj = pair.programObj || {};
+				var classObj = pair.classObj || {};
+				var fullName = (programObj.title + " " + classObj.className).trim();
+				const url = "/class/" + classKey;
+				return {
+					name: fullName,
+					url: url
+				};
+			});
 		});
-		this.setState({
-			links: links || []
-		});
+		Promise.all(promiseList, obj => {return obj; })
+			.then(result => {this.setState({links: result})});
 	}
 
 	render() {

@@ -4,11 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
-  getAchievementYears,
-  getAchievementsByYear,
   getAchievementsByYears
 } from '../repos/apiRepo.js';
 import { Promise } from 'bluebird';
+import { keys } from 'lodash';
 const classnames = require('classnames');
 
 export class AchievementPage extends React.Component {
@@ -25,12 +24,11 @@ export class AchievementPage extends React.Component {
       mixpanel.track("achievements");
     }
 
-    getAchievementYears().then(years => {
+    getAchievementsByYears().then(map => {
+      var years = keys(map);
       this.setState({
+        achievementsByYear: map,
         years: years.sort().reverse() // Guarantee from most recent year to latest
-      });
-      getAchievementsByYears(years).then(a => {
-        this.setState({ achievementsByYear: a })
       });
     });
   }
