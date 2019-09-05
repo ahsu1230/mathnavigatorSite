@@ -1,0 +1,71 @@
+@import "../static.styl"
+
+.afh-popup-container
+  position: fixed
+  bottom: spacing2x
+  right: spacing2x
+
+  & .afh-question
+    position: relative
+    width: 48px
+    height: 48px
+    background-color: colorPurple
+    border-radius: 100%
+
+    &:hover
+      filter: brightness(1.1)
+      transform: scale(1.1)
+      cursor: pointer
+
+    & img
+      position: absolute
+      top: 50%
+      left: calc(50% - 1px)
+      transform: translate(-50%, -50%)
+      width: 24px
+
+  & .afh-message
+    position: absolute
+    bottom: calc(100% + 8px)
+    right: 0
+    transform: translate(0, 5%)
+    padding: spacing2x spacing4x
+    background-color: colorPurple
+    opacity: 0.0
+    visibility: hidden
+    transition: 0.1s linear all
+
+    &.show
+      transform: translate(0, 0)
+      opacity: 1.0
+      visibility: visible
+
+    & .afh-dismiss-btn
+      position: absolute
+      top: spacing2x
+      right: spacing2x
+      padding: 0
+      outline: none
+      border: none
+      background-color: colorPurple
+
+      &:hover
+        filter: brightness(1.0)
+
+      & img
+        width: 16px
+        height: 16px
+
+    & p
+      width: propUnit9x
+      margin: 0
+      color: colorWhite
+      font-size: 14px
+      line-height: lineHeight0
+
+      @media screen and (max-width: mediaWidth1)
+        width: propUnit6x
+
+    & a
+      float: right
+      color: colorWhite

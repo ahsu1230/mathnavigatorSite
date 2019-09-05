@@ -9,6 +9,7 @@ import {
 	getSemester,
 	getSemesterIds
 } from '../repos/mainRepo.js';
+import { AfhPopup } from './afhPopup.js';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
 import { history } from '../app/history.js';
@@ -26,9 +27,8 @@ export class ProgramsPage extends React.Component {
 		const sections = semesterIds.map(function(semesterId, index) {
 			var semester = getSemester(semesterId);
 			var programs = programsBySemesterId[semesterId];
-			var hasAFH = index === 0;
 			return (
-				<ProgramSection key={index} semester={semester} programs={programs} hasAFH={hasAFH}/>
+				<ProgramSection key={index} semester={semester} programs={programs}/>
 			);
 		});
 
@@ -43,6 +43,7 @@ export class ProgramsPage extends React.Component {
 					</div>
 					{sections}
         </div>
+				<AfhPopup/>
       </div>
 		);
 	}
@@ -57,16 +58,11 @@ class ProgramSection extends React.Component {
 		const cards = programs.map((program, index) =>
       <ProgramCard key={index} semester={semester} program={program}/>
     );
-		var afhCard;
-		if (this.props.hasAFH) {
-			afhCard = <AFHCard/>;
-		}
 
 		return (
 			<div className="section">
 				<h1 className="section-title">{title}</h1>
 				{cards}
-				{afhCard}
 			</div>
 		);
 	}
@@ -154,33 +150,6 @@ class ProgramCard extends React.Component {
 		);
 	}
 }
-
-class AFHCard extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick() {
-		// history.push("/askforhelp"); // use with BrowserRouter
-		window.location.hash = "/askforhelp"; // use with HashRouter
-	}
-
-	render() {
-		return (
-			<div className="program-card-container">
-				<div className="program-card afh" onClick={this.handleClick}>
-					<div className="program-card-content">
-						<h2>Ask For Help</h2>
-						<h3>Free</h3>
-						<button>Ask</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-}
-
 
 /* Helper functions */
 function isFeaturedProgram(programId) {

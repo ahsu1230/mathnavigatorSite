@@ -67,7 +67,7 @@ class App extends React.Component {
           <Route path="/programs" component={Programs}/>
           <Route path="/contact" component={Contact}/>
           <Route path="/class/:slug" component={ClassPageWithSlug}/>
-          <Route path="/askforhelp" component={AFH}/>
+          <Route path="/ask-for-help" component={AFH}/>
           <Route path="/student-achievements" component={Achievements}/>
           <Route path="/" component={Error}/>
         </Switch>
