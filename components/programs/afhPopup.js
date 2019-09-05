@@ -50,9 +50,6 @@ export class AfhPopup extends React.Component {
 		});
 		return (
 			<div className="afh-popup-container">
-				<button className="afh-question" onClick={this.directToAfh}>
-					<img src={srcQuestion}/>
-				</button>
 				<div className={messageClasses}>
 					<button className="afh-dismiss-btn" onClick={this.dismissMessage}>
 						<img src={srcClose}/>
@@ -61,8 +58,10 @@ export class AfhPopup extends React.Component {
 						Need additional help on any topics?<br/>
 						Register for free sessions to ask your questions!
 					</p>
-          <Link to={"/ask-for-help"}>Details &#62;</Link>
 				</div>
+        <Link className="afh-link" to="/ask-for-help">
+          <div className="afh-link-text">Go to<br/>Ask For Help</div>
+        </Link>
 			</div>
 		);
 	}
