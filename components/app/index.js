@@ -13,25 +13,30 @@ import { history } from './history.js';
 import { createPageTitle, getNavByUrl } from '../constants.js';
 import ScrollMemory from 'react-router-scroll-memory'; // Requires BrowserRouter
 
-import { Header as HeaderComponent} from '../header/header.js';
-import { HomePage } from '../home/home.js';
 import { AchievementPage } from '../achievements/achievements.js';
 import { AFHPage } from '../afh/afh.js';
 import { AnnouncePage } from '../announcements/announce.js';
-import { ProgramsPage } from '../programs/programs.js';
-import { ContactPage } from '../contact/contact.js';
-import { Footer } from '../footer/footer.js';
 import { ClassPage } from '../class/class.js';
+import { ContactPage } from '../contact/contact.js';
 import { ErrorPage } from '../errorPage/error.js';
+import { Footer } from '../footer/footer.js';
+import { Header as HeaderComponent} from '../header/header.js';
+import { HomePage } from '../home/home.js';
+import { ProgramsPage } from '../programs/programs.js';
+import { StudentProjectsPage } from '../student/studentProjects.js';
+import { StudentWebDevPage } from '../student/studentWebDev.js';
 
+const Achievements = () => <AchievementPage/>;
+const Announce = () => <AnnouncePage/>;
+const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
+const Contact = () => <ContactPageRouter/>;
+const ContactPageRouter = withRouter(ContactPage);
 const Header = withRouter(HeaderComponent);
 const Home = () => <HomePage/>;
-const Announce = () => <AnnouncePage/>;
 const Programs = () => <ProgramsPage/>;
-const ContactPageRouter = withRouter(ContactPage);
-const Contact = () => <ContactPageRouter/>;
-const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
-const Achievements = () => <AchievementPage/>;
+const StudentWebDev = () => <StudentWebDevPage/>;
+const StudentProjects = () => <StudentProjectsPage/>;
+
 const AFH = () => <AFHPage/>;
 const Error = () => <ErrorPage/>;
 
@@ -69,6 +74,8 @@ class App extends React.Component {
           <Route path="/class/:slug" component={ClassPageWithSlug}/>
           <Route path="/ask-for-help" component={AFH}/>
           <Route path="/student-achievements" component={Achievements}/>
+          <Route path="/student-webdev" component={StudentWebDev}/>
+          <Route path="/student-projects" component={StudentProjects}/>
           <Route path="/" component={Error}/>
         </Switch>
         <Footer/>
