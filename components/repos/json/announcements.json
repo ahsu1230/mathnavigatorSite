@@ -92,10 +92,19 @@
   {
     "timestamp": 1567569766,
     "date": "9/7/2019",
-    "important": "",
-    "onHomePage": "TRUE",
+    "important": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_summer_c]",
     "author": "Amy",
     "message": "SAT Class (C) 12th session, the classroom on 9/7 will be at Churchill H.S. Room 110."
+  },
+  {
+    "timestamp": 1567901664,
+    "date": "9/8/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": [],
+    "author": "Amy",
+    "message": "We will start Algebra II, AP Calculus AB/BC and SAT class (D) three classes with different location. Please check the class detail information."
   }
 ]
