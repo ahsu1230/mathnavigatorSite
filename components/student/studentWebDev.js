@@ -72,10 +72,10 @@ export class StudentWebDevPage extends React.Component {
     if (!showPropzProfile1 && scrollY > 600) {
       showPropzProfile1 = true;
     }
-    if (!showPropzProfile2 && scrollY > 1100) {
+    if (!showPropzProfile2 && scrollY > 1200) {
       showPropzProfile2 = true;
     }
-    if (!showPropzYelp && scrollY > 1500) {
+    if (!showPropzYelp && scrollY > 1600) {
       showPropzYelp = true;
     }
 
@@ -99,10 +99,11 @@ export class StudentWebDevPage extends React.Component {
       <div id="view-students-wb">
         <div id="view-students-wb-container">
           <h1>
-            <Link to="/programs">Programs</Link> >
-            <Link to={this.state.webdevUrl}> Web Development</Link> >
-            Overview
+            Overview for Students
           </h1>
+          <h2>
+            Website Design & Development
+          </h2>
           <p> {this.state.description} </p>
 
           <SectionIG showPropz={this.state.showPropzIg}/>

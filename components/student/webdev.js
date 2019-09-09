@@ -5,7 +5,7 @@ const srcProfileWide = require('../../assets/students/gaoxing_profile_wide.png')
 const srcProfileSlim = require('../../assets/students/jessica_profile_slim2.png');
 const srcYelp = require('../../assets/students/daniel_yelp.png');
 
-export const description = "For the Website Design & Development Program, students will create multiple mini-projects as exercises to apply their knowledge in website development. These small projects will allow students to recreate popular website designs and to creatively design their own!";
+export const description = "When enrolled in our Website Development Program, students will create multiple mini-projects as exercises to apply their knowledge in website development. These small projects will allow students to recreate popular website designs and to creatively design their own!";
 
 export const sectionIg = {
   title: "Instagram Header",

@@ -85,7 +85,7 @@ function generateNavLinks(links, closeMenu) {
 class LinkRow extends React.Component {
   render() {
     const link = this.props.link;
-    const onClick = this.props.onClick
+    const onClick = this.props.onClick;
     return (
       <div className="link-row">
         <Link to={link.url} onClick={onClick}>{link.name}</Link>
