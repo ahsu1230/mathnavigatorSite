@@ -9,7 +9,6 @@ import {
 	getSemester,
 	getSemesterIds
 } from '../repos/mainRepo.js';
-import { AfhPopup } from './afhPopup.js';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
 import { history } from '../app/history.js';
@@ -43,7 +42,6 @@ export class ProgramsPage extends React.Component {
 					</div>
 					{sections}
         </div>
-				<AfhPopup/>
       </div>
 		);
 	}
