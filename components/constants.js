@@ -1,5 +1,5 @@
 'use strict';
-import { find } from 'lodash';
+import { concat, find } from 'lodash';
 
 export const websiteName = "Math Navigator";
 
@@ -26,17 +26,21 @@ export const NavLinks = [
   { id: "contact", name: "Contact", url: "/contact" }
 ];
 
+const AllNavLinks = concat(NavLinks, SubLinksPrograms, SubLinksAchieve);
+
 export function getNavById(id) {
-  return find(NavLinks, {id: id});
+  return find(AllNavLinks, {id: id});
 }
 
 export function getNavByUrl(url) {
-  return find(NavLinks, {url: url});
+  return find(AllNavLinks, {url: url});
 }
 
+/* not really used */
 export function isPathAt(currentPath, url) {
   if (url == getNavById("home").url) {
-    return currentPath == '/';
+    // return currentPath == '/'; // Use with BrowserRouter
+    return currentPath == '#/';
   } else {
     return currentPath.indexOf(url) >= 0;
   }

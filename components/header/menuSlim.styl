@@ -41,6 +41,9 @@ rowHeight = headerHeight / 2
     opacity: 1.0
     visibility: visible
 
+  @media screen and (min-width: media2)
+    display: none
+
 .header-slim-overlay
   position: fixed
   top: 0
@@ -81,17 +84,26 @@ rowHeight = headerHeight / 2
     & a
       color: colorBlackDark
 
+      &.active
+        color: colorPrimary
+
     &:hover
+      color: colorPrimary
       background-color: colorGray1
 
       & a
-        color: colorPrimary
         text-decoration: none
 
   & .submenu
     & .submenu-head
       position: relative
+      line-height: rowHeight
+      padding: 0 spacing4x
       cursor: pointer
+
+      &:hover
+        color: colorPrimary
+        background-color: colorGray1
 
       & img
         position: absolute
@@ -106,9 +118,14 @@ rowHeight = headerHeight / 2
       background-color: colorGray1
       overflow: hidden
 
+      & a:hover
+        color: colorPrimary
+
     &.show
       & .submenu-head
         background-color: colorGray2
+        &:hover
+          background-color: colorGray2 !important
 
       & .submenu-head img
         transform: translateY(-50%) rotate(180deg)

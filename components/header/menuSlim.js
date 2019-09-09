@@ -1,9 +1,9 @@
 'use strict';
-require('./headerSlim.styl');
+require('./menuSlim.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { NavLinks } from '../constants.js';
+import { NavLinks, isPathAt } from '../constants.js';
 const classnames = require('classnames');
 const srcArrowDown = require('../../assets/arrow_down_black.svg');
 const srcClose = require('../../assets/close_black.svg');
@@ -86,9 +86,10 @@ class LinkRow extends React.Component {
   render() {
     const link = this.props.link;
     const onClick = this.props.onClick;
+    const linkClass = classnames({active: isPathAt(window.location.hash, link.url)});
     return (
       <div className="link-row">
-        <Link to={link.url} onClick={onClick}>{link.name}</Link>
+        <Link className={linkClass} to={link.url} onClick={onClick}>{link.name}</Link>
       </div>
     );
   }
@@ -127,7 +128,7 @@ class SubMenu extends React.Component {
     return (
       <div className={submenuClasses}>
         <div className="submenu-head" onClick={this.toggleShow}>
-          <div className="link-row">{currentLink.name}</div>
+          {currentLink.name}
           <img src={srcArrowDown}/>
         </div>
         <ul>

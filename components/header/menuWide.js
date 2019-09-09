@@ -1,9 +1,10 @@
 'use strict';
-require('./headerWide.styl');
+require('./menuWide.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { NavLinks } from '../constants.js';
+import { NavLinks, isPathAt } from '../constants.js';
+const classnames = require('classnames');
 
 export default class MenuWide extends React.Component {
 	constructor(props) {
@@ -17,9 +18,12 @@ export default class MenuWide extends React.Component {
 		const onClick = this.props.onClick;
     const items = this.state.links.map((link, i) => {
 			if (link.subLinks && link.subLinks.length > 0) {
-				return (<SubMenu key={link.id} currentLink={link} subLinks={link.subLinks}/>);
+				return (<SubMenu key={link.id}
+									currentLink={link}
+									subLinks={link.subLinks}
+									location={location}/>);
 			} else {
-				return (<MenuLink key={link.id} link={link}/>);
+				return (<MenuLink key={link.id} link={link} location={location}/>);
 			}
 		});
 		return (
@@ -31,26 +35,34 @@ export default class MenuWide extends React.Component {
 class MenuLink extends React.Component {
 	render() {
 		const link = this.props.link;
+		var currentPath = window.location.hash;
+		// var currentPath = location.pathname || ""; // Use with BrowserRouter
+		const linkClass = classnames({
+			active: isPathAt(currentPath, link.url)
+		});
 		return (
 			<div className="menu-link-container">
-				<Link to={link.url}>{link.name}</Link>
+				<Link className={linkClass} to={link.url}>{link.name}</Link>
 			</div>
 		);
 	}
 }
 
 class SubMenu extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const currentLink = this.props.currentLink;
-		const subLinks = this.props.subLinks.map((subLink, i) => (
-			<li key={i}>
-				<Link to={subLink.url}>{subLink.name}</Link>
-			</li>
-		));
+		const currentPath = window.location.hash;
+		// var currentPath = location.pathname || ""; // Use with BrowserRouter
+		const subLinks = this.props.subLinks.map((subLink, i) => {
+			var linkClass = classnames({
+				active: isPathAt(currentPath, subLink.url)
+			});
+			return (
+				<li key={i}>
+					<Link className={linkClass} to={subLink.url}>{subLink.name}</Link>
+				</li>
+			);
+		});
 		return (
 			<div className="sub-menu">
 				<MenuLink link={currentLink}/>
