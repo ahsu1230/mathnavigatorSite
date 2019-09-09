@@ -7,11 +7,22 @@ export function createPageTitle(title) {
   return websiteName + " - " + title;
 }
 
+const SubLinksPrograms = [
+  { id: "program-catalog", name: "Program Catalog", url: "/programs" },
+  { id: "announcements", name: "Announcements", url: "/announcements" },
+  { id: "ask-for-help", name: "Ask For Help", url: "/ask-for-help" }
+];
+
+const SubLinksAchieve = [
+  { id: "student-achieve", name: "Student Achievements", url: "/student-achievements" },
+  { id: "student-webdev", name: "Website Development", url: "/student-webdev" },
+  { id: "student-portfolios", name: "Student Projects", url: "/student-projects" }
+];
+
 export const NavLinks = [
   { id: "home", name: "Home", url: "/" },
-  { id: "programs", name: "Programs", url: "/programs" },
-  { id: "announce", name: "Announcements", url: "/announcements" },
-  { id: "achieve", name: "Achievements", url: "/student-achievements"},
+  { id: "programs", name: "Programs", url: "/programs", subLinks: SubLinksPrograms },
+  { id: "achieve", name: "Achievements", url: "/student-achievements", subLinks: SubLinksAchieve },
   { id: "contact", name: "Contact", url: "/contact" }
 ];
 

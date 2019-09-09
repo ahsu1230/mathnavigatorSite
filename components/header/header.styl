@@ -13,7 +13,7 @@ media2 = mediaWidth1
   position: relative
   width: containerWidthPct
   max-width: containerWidthPx1
-  height: 88px
+  height: headerHeight
   margin: 0 auto
 
 #header-logo
@@ -50,110 +50,3 @@ media2 = mediaWidth1
       position: relative
       top: -6px
       font-size: 14px
-
-
-#view-header-container .header-menu-wide
-  position: absolute
-  top: 50%
-  right: 0
-  transform: translate(0, -50%)
-
-  @media screen and (max-width: media1)
-    top: initial
-    bottom: spacing2x
-    left: 50%
-    right: initial
-    transform: translate(-50%, 0)
-
-  @media screen and (max-width: media2)
-    display: none
-
-  & li
-    display: inline
-    margin-left: spacing2x
-
-  & a
-    color: colorWhite
-    text-decoration: none
-
-    &.active
-    &:hover
-      color: colorOrange
-
-    @media screen and (max-width: media1)
-      font-size: 14px
-
-#view-header-container .header-menu-slim
-  display: none
-
-  @media screen and (max-width: media2)
-    display: inline-block
-    position: absolute
-    bottom: spacing1x
-    left: 50%
-    transform: translateX(-50%)
-
-.header-menu-btn
-  width: 120px
-  height: 32px
-  padding: 0
-  border: 1px solid colorPrimary
-  outline: none
-  box-sizing: border-box
-  background-color: transparent
-  color: colorWhite
-  font-family: fontFamilyRoboto
-  font-size: fontSize0
-  letter-spacing: letterSpacingRoboto
-  cursor: pointer
-
-  &.show
-  &:hover
-    border: 1px solid colorWhite
-
-  & .icon-arrow
-    display: inline-block
-    width: 18px
-    height: 10px
-    margin-left: spacing1x
-    background-image: url('../../assets/arrow_down_white.svg')
-    background-size: cover
-
-    &.show
-      background-image: url('../../assets/arrow_up_white.svg')
-      background-size: cover
-
-.header-menu-list
-  position: absolute
-  top: 100%
-  left: 50%
-  transform: translate(-50%, 0)
-  box-shadow: 0px 2px 4px #000000
-  z-index: 10
-  opacity: 0
-  visibility: hidden
-  transition: all linear 0.2s
-
-  &.show
-    transform: translate(-50%, 8px)
-    visibility: visible
-    opacity: 1
-
-  & ul
-    margin: 0px
-    padding: 0px
-    background-color: colorPrimary
-
-  & a
-    color: colorWhite
-    text-decoration: none
-
-    &.active
-    &:hover
-      color: colorOrange
-
-  & li
-    padding: spacing2x spacing3x
-    list-style: none
-    font-size: fontSize1
-    cursor: pointer

@@ -1,0 +1,32 @@
+@import "./header.styl"
+
+#view-header-container .header-menu-wide
+  position: absolute
+  top: 50%
+  right: 0
+  transform: translate(0, -50%)
+
+  @media screen and (max-width: media1)
+    top: initial
+    bottom: spacing2x
+    left: 50%
+    right: initial
+    transform: translate(-50%, 0)
+
+  @media screen and (max-width: media2)
+    display: none
+
+  & li
+    display: inline
+    margin-left: spacing2x
+
+  & a
+    color: colorWhite
+    text-decoration: none
+
+    &.active
+    &:hover
+      color: colorOrange
+
+    @media screen and (max-width: media1)
+      font-size: 14px
