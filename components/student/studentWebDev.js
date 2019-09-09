@@ -26,6 +26,7 @@ export class StudentWebDevPage extends React.Component {
       showPropzYelp: false
     }
     this.handleScroll = this.handleScroll.bind(this);
+    this.debouncer = debounce(this.handleScroll, 200);
   }
 
   componentDidMount() {
@@ -33,7 +34,7 @@ export class StudentWebDevPage extends React.Component {
       this.setState({ showPropzIg: true });
     }.bind(this), 1500);
 
-    window.addEventListener('scroll', debounce(this.handleScroll, 200));
+    window.addEventListener('scroll', this.debouncer);
 
     if (process.env.NODE_ENV === 'production') {
       mixpanel.track("student-webdev");
@@ -41,10 +42,10 @@ export class StudentWebDevPage extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.debouncer);
     if (this.unbindTimeout) {
       clearTimeout(this.unbindTimeout);
     }
-    window.removeEventListener('scroll', debounce(this.handleScroll, 200));
   }
 
   handleScroll(event) {
