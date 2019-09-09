@@ -11,91 +11,37 @@
   {
     "timestamp": 1564972571,
     "date": "8/4/2019",
-    "important": "TRUE",
+    "important": "",
     "onHomePage": "",
     "classKeys": [],
     "author": "Amy",
     "message": "Because Montgomery County Public Schools will close starting 8/10,  we will temporarily move our classroom location to Cathay Future Center at 9400 Key West Ave, Rockville MD 20850. Web Design & Development will still be held at our home basement. We will make another announcement when the Winston Churchill High School classroom is available again (probably when the school year starts)."
   },
   {
-    "timestamp": 1565555129,
-    "date": "8/14/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "SAT Class (C) will have the 7th session on Wednesday 6:00pm - 8:00pm at Cathay Future Center."
-  },
-  {
-    "timestamp": 1565555389,
-    "date": "8/13/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[web_design_summer_a]",
-    "author": "Aaron",
-    "message": "Web Design Class will move 8/17's class to 8/15 6:00pm - 8:00pm. Same classroom at Home"
-  },
-  {
-    "timestamp": 1565557424,
-    "date": "8/19/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "SAT Class (C) will have the 9th session on Monday 8/19 6:00pm - 8:00pm at Cathay Future Center."
-  },
-  {
-    "timestamp": 1565557456,
-    "date": "8/21/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "SAT Class (C) will have the 10th session on 8/21 Wednesday 6:00pm - 8:00pm at Cathay Future Center."
-  },
-  {
-    "timestamp": 1565991983,
-    "date": "8/23/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "SAT Class (C) will have the 1st Prep Test on 8/23 at Cathay Future Center."
-  },
-  {
     "timestamp": 1565992347,
     "date": "8/24/2019",
-    "important": "TRUE",
+    "important": "",
     "onHomePage": "",
     "classKeys": [],
     "author": "Amy",
     "message": "NO CLASSES between from 8/24 - 9/3."
   },
   {
-    "timestamp": 1566417778,
-    "date": "9/6/2019",
+    "timestamp": 1567901664,
+    "date": "9/8/2019",
     "important": "",
     "onHomePage": "TRUE",
-    "classKeys": "[sat1_summer_c]",
+    "classKeys": [],
     "author": "Amy",
-    "message": "SAT Class (C) 11th session, the classroom on 9/6 will be at Hoover M.S. Room 36"
+    "message": "On 9/8, we will start Algebra II, AP Calculus AB/BC and SAT class (D) three classes with different location. Please check the class detail information."
   },
   {
-    "timestamp": 1567569658,
-    "date": "9/6/2019",
+    "timestamp": 1567902208,
+    "date": "9/8/2019",
     "important": "TRUE",
     "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
+    "classKeys": "[amc8_fall_advance_b]",
     "author": "Amy",
-    "message": "SAT Class (C) Will have SAT prep test on 8/6 at 8:00pm - 9:40pm. Hoover M.S. Room 36"
-  },
-  {
-    "timestamp": 1567569766,
-    "date": "9/7/2019",
-    "important": "TRUE",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "SAT Class (C) 12th session, the classroom on 9/7 will be at Churchill H.S. Room 110."
+    "message": "AMC8 Will open a new class on Saturday 10:00am - 11:30am from 9/14"
   }
 ]

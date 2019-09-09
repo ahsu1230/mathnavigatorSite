@@ -2946,7 +2946,7 @@
   {
     "sessionId": 366,
     "classKey": "amc8_fall_advance_b",
-    "date": "11/28/2019",
+    "date": "11/30/2019",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
@@ -2954,7 +2954,7 @@
   {
     "sessionId": 367,
     "classKey": "amc8_fall_advance_b",
-    "date": "12/26/2019",
+    "date": "12/28/2019",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
@@ -2962,7 +2962,7 @@
   {
     "sessionId": 368,
     "classKey": "amc8_fall_advance_b",
-    "date": "1/2/2020",
+    "date": "1/4/2020",
     "canceled": "TRUE",
     "time": "",
     "notes": ""
@@ -3177,10 +3177,10 @@
   },
   {
     "sessionId": 395,
-    "classKey": "",
-    "date": "",
+    "classKey": "college_fall_a",
+    "date": "11/9/2019",
     "canceled": "",
-    "time": "",
+    "time": "Saturday 2:00pm - 4:00pm",
     "notes": ""
   },
   {
