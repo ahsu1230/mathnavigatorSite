@@ -149,13 +149,13 @@ export class ContactForm extends React.Component {
 
         <div className="section submit">
           <div className="submit-container">
+            <button className={submitBtnClass} onClick={onHandleSubmit}>
+              Submit
+            </button>
             <p>
               Information will be sent to:<br/>
               <a>andymathnavigator@gmail.com</a>
             </p>
-            <button className={submitBtnClass} onClick={onHandleSubmit}>
-              Submit
-            </button>
           </div>
         </div>
 
