@@ -148,9 +148,11 @@ class InterestItem extends React.Component {
         <input type="checkbox" name="interest" value="program"
               onChange={this.handleSelected}
               checked={this.props.selected}/>
-        <div className="class-name">{className}</div>
-        <div className="times">{times}</div>
-        <div className="start-date">{startingDate}</div>
+        <div className="class-info">
+          <div className="class-name">{className}</div>
+          <div className="times">{times}</div>
+          <span>Starts on:</span><div className="start-date">{startingDate}</div>
+        </div>
       </li>
     );
   }
