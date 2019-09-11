@@ -4,12 +4,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
-  description,
+  SiteDescription,
   sectionIg,
   sectionTesla,
   sectionProfile,
   sectionYelp
-} from './webdev.js';
+} from './dataWebDev.js';
 import { debounce } from 'lodash';
 const classnames = require('classnames');
 
@@ -17,7 +17,7 @@ export class StudentWebDevPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: description,
+      description: SiteDescription,
       webdevUrl: "/class/web_design_summer_a",
       showPropzIg: false,
       showPropzTesla: false,
@@ -112,6 +112,8 @@ export class StudentWebDevPage extends React.Component {
           <SectionProfile showPropz1={this.state.showPropzProfile1}
             showPropz2={this.state.showPropzProfile2}/>
           <SectionYelp showPropz={this.state.showPropzYelp}/>
+
+          <h3>And more coming soon!</h3>
         </div>
       </div>
 		);

@@ -1,11 +1,11 @@
 'use strict';
-const srcIg = require('./../../assets/students/evelyn_ig.png');
-const srcTesla = require('../../assets/students/tesla.jpg');
-const srcProfileWide = require('../../assets/students/gaoxing_profile_wide.png');
-const srcProfileSlim = require('../../assets/students/jessica_profile_slim2.png');
-const srcYelp = require('../../assets/students/daniel_yelp.png');
+const srcIg = require('./../../assets/students/webdev/evelyn_ig.png');
+const srcTesla = require('../../assets/students/webdev/tesla.jpg');
+const srcProfileWide = require('../../assets/students/webdev/gaoxing_profile_wide.png');
+const srcProfileSlim = require('../../assets/students/webdev/jessica_profile_slim2.png');
+const srcYelp = require('../../assets/students/webdev/daniel_yelp.png');
 
-export const description = "When enrolled in our Website Development Program, students will create multiple mini-projects as exercises to apply their knowledge in website development. These small projects will allow students to recreate popular website designs and to creatively design their own!";
+export const SiteDescription = "When enrolled in our Website Development Program, students will create multiple mini-projects as exercises to apply their knowledge in website development. These small projects will allow students to recreate popular website designs and to creatively design their own!";
 
 export const sectionIg = {
   title: "Instagram Header",
