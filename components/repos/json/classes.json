@@ -135,21 +135,6 @@
     "paymentNotes": "First of every month"
   },
   {
-    "programId": "amc8",
-    "classId": "fall_advance_b",
-    "key": "amc8_fall_advance_b",
-    "className": "Fall Advanced",
-    "semesterId": "2019_fall",
-    "locationId": "loc_home",
-    "times": "[Saturday 10:00am - 11:30am]",
-    "startDate": "9/14/2019",
-    "endDate": "5/30/2020",
-    "allYear": "TRUE",
-    "pricePerSession": 38,
-    "priceLump": "",
-    "paymentNotes": "First of every month"
-  },
-  {
     "programId": "logical_amc8",
     "classId": "fall_a",
     "key": "logical_amc8_fall_a",
