@@ -130,7 +130,7 @@ class ClassContent extends React.Component {
     const classObj = info.classObj;
     const locationObj = info.location;
     const programObj = info.programObj;
-    const sessions = info.sessions;
+    const sessions = info.sessions || [];
     const prereqPrograms = info.prereqPrograms;
 
     var sessionCounter = 0;
@@ -336,7 +336,7 @@ function generateSchedules(sessions, allYear, classTimes) {
       <div>
         {allYearText}
         {timesText}
-        <h3>Except the following times:</h3>
+        <h4>Except the following times:</h4>
       </div>
     );
   }
