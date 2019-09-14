@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Promise } from 'bluebird';
 import { groupBy, map, sortBy } from 'lodash';
-import { getAnnouncements, getProgramByClass } from '../repos/apiRepo.js';
+import { getAnnouncements, getProgramAndClass } from '../repos/apiRepo.js';
 const classnames = require('classnames');
 const srcAttention = require('../../assets/attention_orange.svg');
 
@@ -84,7 +84,7 @@ class AnnounceItem extends React.Component {
 	componentDidMount() {
 		const announcement = this.props.announcement;
 		var promiseList = announcement.classKeys.map(function(classKey) {
-			return getProgramByClass(classKey).then(function(pair) {
+			return getProgramAndClass(classKey).then(function(pair) {
 				var programObj = pair.programObj || {};
 				var classObj = pair.classObj || {};
 				var fullName = (programObj.title + " " + classObj.className).trim();

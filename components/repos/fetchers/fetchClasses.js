@@ -1,5 +1,5 @@
 'use strict';
-import { forEach, keys } from 'lodash';
+import { filter, forEach, keys } from 'lodash';
 import { Promise } from 'bluebird';
 import { convertStringArray, convertStringToBool } from './fetcherUtil.js';
 
@@ -8,6 +8,13 @@ var data;
 var classMap;
 var classMapByProgram;
 var classMapBySemester;
+
+export var getAllClasses = function() {
+  return new Promise(function(resolve, reject) {
+    fetch();
+    resolve(classMap);
+  });
+}
 
 export var getClassByKey = function(classKey) {
   return new Promise(function(resolve, reject) {
@@ -39,11 +46,22 @@ export var getClassesBySemester = function(semesterId) {
   });
 }
 
+export var getClassesByProgramAndSemester = function(programId, semesterId) {
+  return new Promise(function(resolve, reject) {
+    fetch();
+    var classes = classMapByProgram[programId];
+    var targetClass = filter(classes, {semesterId: semesterId});
+    resolve(targetClass);
+  });
+}
+
 export const fetcher = {
+  getAllClasses: getAllClasses,
   getClassByKey: getClassByKey,
   getClassesByKeys: getClassesByKeys,
   getClassesByProgram: getClassesByProgram,
-  getClassesBySemester: getClassesBySemester
+  getClassesBySemester: getClassesBySemester,
+  getClassesByProgramAndSemester: getClassesByProgramAndSemester
 }
 
 /* Helper functions */

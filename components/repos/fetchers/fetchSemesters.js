@@ -8,6 +8,13 @@ var data;
 var semesterIds;
 var semesterMap;
 
+export var getAllSemesters = function() {
+  return new Promise(function(resolve, reject) {
+    fetch();
+    resolve(semesterMap);
+  });
+}
+
 export var getSemesterIds = function() {
   return new Promise(function(resolve, reject) {
     fetch();
@@ -23,6 +30,7 @@ export var getSemester = function(semesterId) {
 }
 
 export const fetcher = {
+  getAllSemesters: getAllSemesters,
   getSemesterIds: getSemesterIds,
   getSemester: getSemester
 }

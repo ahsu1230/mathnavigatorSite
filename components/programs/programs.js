@@ -2,33 +2,50 @@
 require('./programs.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Promise } from 'bluebird';
 import {
 	getClassesBySemester,
 	getClassesByProgramAndSemester,
-	getProgramsBySemester,
+	getProgramsBySemesters,
 	getSemester,
 	getSemesterIds
 } from '../repos/apiRepo.js';
+import { keys } from 'lodash';
 import { ProgramClassModal } from './programClassModal.js';
 import { Modal } from '../modals/modal.js';
 import { history } from '../app/history.js';
 
 export class ProgramsPage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			semesterIds: [], 				// list of semesterIds
+			semesters: {}, 					// semesterId => semesterObj
+			programsBySemester: {} 	// semesterId => list of programObjs
+		};
+	}
+
+
 	componentDidMount() {
+		getProgramsBySemesters().then(data => {
+			this.setState({
+				semesterIds: keys(data.semesterMap),
+				semesterMap: data.semesterMap,
+				programsBySemester: data.programSemesterMap
+			})
+		});
+
 		if (process.env.NODE_ENV === 'production') {
 			mixpanel.track("programs");
 		}
 	}
 
 	render() {
-		const semesterIds = getSemesterIds();
-		const programsBySemesterId = getProgramsBySemester();
-		const sections = semesterIds.map(function(semesterId, index) {
-			var semester = getSemester(semesterId);
-			var programs = programsBySemesterId[semesterId];
-			var hasAFH = index === 0;
+		const sections = this.state.semesterIds.map((semesterId, index) => {
+			var semester = this.state.semesterMap[semesterId];
+			var programs = this.state.programsBySemester[semesterId];
 			return (
-				<ProgramSection key={index} semester={semester} programs={programs} hasAFH={hasAFH}/>
+				<ProgramSection key={index} semester={semester} programs={programs}/>
 			);
 		});
 
@@ -57,16 +74,11 @@ class ProgramSection extends React.Component {
 		const cards = programs.map((program, index) =>
       <ProgramCard key={index} semester={semester} program={program}/>
     );
-		var afhCard;
-		if (this.props.hasAFH) {
-			afhCard = <AFHCard/>;
-		}
 
 		return (
 			<div className="section">
 				<h1 className="section-title">{title}</h1>
 				{cards}
-				{afhCard}
 			</div>
 		);
 	}
@@ -76,23 +88,35 @@ class ProgramCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			classes: [],
 			showModal: false
 		}
 		this.handleClick = this.handleClick.bind(this);
 		this.dismissModal = this.dismissModal.bind(this);
 	}
 
+	componentDidMount() {
+		var program = this.props.program;
+		var semester = this.props.semester;
+		var classes = getClassesByProgramAndSemester(program.programId,
+			semester.semesterId).then(classes => {
+				this.setState({ classes: classes });
+			});
+	}
+
 	handleClick() {
-		var classes = this.classes;
+		var classes = this.state.classes;
 		var program = this.props.program;
 		var programId = program.programId;
 
-		if (classes.length > 1) {
-			this.setState({ showModal: true });
-		} else {
+		if (classes.length == 0) {
+			return; // do nothing
+		} else if (classes.length == 1) {
 			var slug = classes[0].key;
-		//	history.push("/class/" + slug); // Use with BrowserRouter
+			// history.push("/class/" + slug); // Use with BrowserRouter
 			window.location.hash = "/class/" + slug; // Use with HashRouter
+		} else if (classes.length > 1) {
+			this.setState({ showModal: true });
 		}
 	}
 
@@ -105,14 +129,13 @@ class ProgramCard extends React.Component {
 	render() {
 		const program = this.props.program;
 		const semester = this.props.semester;
-		this.classes = getClassesByProgramAndSemester(program.programId,
-			semester.semesterId);
+		const classes = this.state.classes;
 
 		const grades = "Grades " + program.grade1 + " - " + program.grade2;
 		var modalDiv;
-		if (this.classes.length > 1) {
+		if (classes.length > 1) {
 			const modalContent = <ProgramClassModal programObj={program}
-															classList={this.classes}
+															classList={classes}
 															semester={semester}/>;
 			modalDiv = (
 				<Modal content={modalContent}
@@ -154,33 +177,6 @@ class ProgramCard extends React.Component {
 		);
 	}
 }
-
-class AFHCard extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick() {
-		// history.push("/askforhelp"); // use with BrowserRouter
-		window.location.hash = "/askforhelp"; // use with HashRouter
-	}
-
-	render() {
-		return (
-			<div className="program-card-container">
-				<div className="program-card afh" onClick={this.handleClick}>
-					<div className="program-card-content">
-						<h2>Ask For Help</h2>
-						<h3>Free</h3>
-						<button>Ask</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-}
-
 
 /* Helper functions */
 function isFeaturedProgram(programId) {

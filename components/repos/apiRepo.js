@@ -9,6 +9,7 @@ import { fetcher as FetchOther } from './fetchers/fetchOther.js';
 import { fetcher as FetchPrereqs } from './fetchers/fetchPrereqs.js';
 import { fetcher as FetchProfiles } from './fetchers/fetchProfiles.js';
 import { fetcher as FetchPrograms } from './fetchers/fetchPrograms.js';
+import { fetcher as FetchSemesters } from './fetchers/fetchSemesters.js';
 import { fetcher as FetchSessions } from './fetchers/fetchSessions.js';
 
 /* Achievements */
@@ -27,6 +28,10 @@ export function getAFH() {
 }
 
 /* Classes */
+export function getAllClasses() {
+  return FetchClasses.getAllClasses();
+}
+
 export function getClass(classKey) {
   return FetchClasses.getClassByKey(classKey);
 }
@@ -73,6 +78,10 @@ export function getAllProfiles() {
 
 
 /* Programs */
+export function getAllPrograms() {
+  return FetchPrograms.getAllPrograms();
+}
+
 export function getProgramById(programId) {
   return FetchPrograms.getProgramById(programId);
 }
@@ -96,9 +105,27 @@ export function getProgramAndClass(classKey) {
   });
 }
 
-export function getProgramsBySemester(semesterId) {
-  return new Promise(function(resolve, reject) {
-  });
+export function getProgramsBySemesters() {
+  return Promise.join(getAllSemesters(), getAllClasses(), getAllPrograms(),
+    function(semesterMap, classMap, programMap) {
+      var map = {};
+      forEach(classMap, function(classObj) {
+        var semesterId = classObj.semesterId;
+        var programId = classObj.programId;
+        var programObj = programMap[programId];
+        programObj.semesterId = semesterId;
+        map[semesterId] = map[semesterId] || [];
+        var hasProgram = find(map[semesterId], {programId: programId, semesterId: semesterId});
+        if (!hasProgram) {
+          map[semesterId].push(programObj);
+        }
+      });
+      return {
+        semesterMap: semesterMap,
+        programSemesterMap: map
+      };
+    }
+  );
 
   // var map = {};
   // forEach(classMapByKey, function(classObj) {
@@ -117,12 +144,16 @@ export function getProgramsBySemester(semesterId) {
 }
 
 /* Semesters */
-export function getSemesterIds() {
-  return FetchSemesters.getSemesterIds();
+export function getAllSemesters() {
+  return FetchSemesters.getAllSemesters();
 }
 
 export function getSemester(semesterId) {
   return FetchSemesters.getSemester(semesterId);
+}
+
+export function getSemesterIds() {
+  return FetchSemesters.getSemesterIds();
 }
 
 /* Sessions */

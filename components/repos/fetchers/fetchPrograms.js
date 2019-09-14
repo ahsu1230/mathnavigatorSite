@@ -7,6 +7,13 @@ var fetched = false;
 var data;
 var programMap;
 
+export var getAllPrograms = function() {
+  return new Promise(function(resolve, reject) {
+    fetch();
+    resolve(programMap);
+  });
+}
+
 export var getProgramById = function(programId) {
   return new Promise(function(resolve, reject) {
     fetch();
@@ -25,6 +32,7 @@ export var getProgramsByIds = function(programIds) {
 }
 
 export const fetcher = {
+  getAllPrograms: getAllPrograms,
   getProgramById: getProgramById,
   getProgramsByIds: getProgramsByIds
 };
