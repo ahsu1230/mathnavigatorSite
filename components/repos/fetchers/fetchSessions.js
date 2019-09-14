@@ -21,8 +21,7 @@ export const fetcher = {
 function fetch() {
   if (!fetched) {
     const arr = require('./json/sessions.json');
-    data = arr;
-    semesterMap = initSessionMap(data);
+    sessionMap = initSessionMap(arr);
     fetched = true;
   }
 }

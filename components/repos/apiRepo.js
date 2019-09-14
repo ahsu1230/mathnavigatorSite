@@ -81,7 +81,7 @@ export function getProgramByIds(arr) {
   return FetchPrograms.getProgramsByIds(arr);
 }
 
-export function getProgramByClass(classKey) {
+export function getProgramAndClass(classKey) {
   var targetClass;
   return getClass(classKey).then(classObj => {
     targetClass = classObj;
