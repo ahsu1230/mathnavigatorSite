@@ -12,9 +12,14 @@ colorHighlight = colorPurple
     list-style: none
 
 #interest-modal
-  width: propUnit16x
-  height: propUnit12x
+  width: propUnit16x + spacing8x
+  height: propUnit12x + spacing8x
   padding: spacing4x
+  box-sizing: border-box
+
+  @media screen and (max-width: mediaWidth1)
+    width: 100%
+    height: propUnit16x
 
   & h1
     margin: 0
@@ -25,6 +30,10 @@ colorHighlight = colorPurple
   #interest-headers
     margin-top: spacing2x
     border-bottom: 1px solid colorGrayLight
+
+    @media screen and (max-width: mediaWidth1)
+      height: 0px
+      overflow: hidden
 
     & .header
       display: inline-block
@@ -48,6 +57,9 @@ colorHighlight = colorPurple
     height: propUnit8x
     overflow-y: scroll
 
+    @media screen and (max-width: mediaWidth1)
+      height: propUnit10x
+
     & h2
       margin: spacing3x 0
       padding-left: 20px
@@ -70,15 +82,24 @@ colorHighlight = colorPurple
       &.highlight
         color: colorHighlight
 
-      & div
+      & .class-info
         display: inline-block
         vertical-align: top
-        line-height: lineHeight0
+
+        & div
+          display: inline-block
+          vertical-align: top
+          line-height: lineHeight0
+
+          @media screen and (max-width: mediaWidth1)
+            display: block
+            width: 100%
+            margin: 0
 
       & input
-        position: relative
-        top: 3px
         display: inline-block
+        position: relative
+        top: 1px
         margin: 0 spacing1x 0 0
         cursor: pointer
 
@@ -89,6 +110,18 @@ colorHighlight = colorPurple
       & .times
         width: column2Width
         margin-right: columnSpacing
+
+      & span
+        margin-right: spacing1x
+        vertical-align: middle
+
+        @media screen and (min-width: mediaWidth1)
+          display: none
+
+      & .start-date
+        @media screen and (max-width: mediaWidth1)
+          display: inline-block !important
+          width: unset !important
 
 
   & .selected-line

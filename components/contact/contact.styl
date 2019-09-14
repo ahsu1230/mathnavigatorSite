@@ -28,9 +28,11 @@
     color: colorBlackDark
 
 #view-contact-container
-
   & .contact-input-container
     margin: spacing2x 0
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
 
 #view-contact-container
   & .section.interested h2
@@ -56,9 +58,16 @@
       &:focus
         outline-color: colorTurquoiseLight
 
+      @media screen and (max-width: mediaWidth1)
+        width: 100%
+        border: 1px solid colorBlackDark
+
   & .section.submit
     position: relative
     width: propUnit16x
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
 
     & p
       margin: 0
@@ -95,6 +104,10 @@
 
         &:hover
           filter: brightness(110%)
+
+      @media screen and (max-width: mediaWidth1)
+        position: static
+        margin-bottom: spacing4x
 
   & .section.errors li
     line-height: lineHeight0

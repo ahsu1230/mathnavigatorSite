@@ -4,6 +4,10 @@
   margin-right: spacing4x
   vertical-align: top
 
+  @media screen and (max-width: mediaWidth1)
+    width: 100%
+    margin-right: 0
+
   & input
     height: 28px
     margin: spacing1x 0 0
@@ -14,6 +18,10 @@
 
     &:focus
       outline-color: colorTurquoiseLight
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
+      margin-bottom: spacing2x
 
   & label:first-child
     display: block

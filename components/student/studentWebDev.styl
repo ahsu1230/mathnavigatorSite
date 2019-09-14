@@ -1,0 +1,254 @@
+@import "../static.styl"
+
+#view-students-wb
+  width: containerWidthPct
+  max-width: containerWidthPx1
+  margin: spacing12x auto spacing16x
+
+  & h1
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+    color: colorPrimary
+
+  & h2
+    line-height: lineHeight2
+    font-family: fontFamilyRoboto
+    font-size: fontSize1
+
+  & a
+    color: colorPrimary
+
+  & p
+    margin: spacing4x 0 spacing12x
+    max-width: propUnit20x
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & h3
+    font-family: fontFamilyRoboto
+    font-size: fontSize0
+    color: colorPrimary
+    text-align: center
+
+#view-students-wb .section
+  margin-bottom: spacing12x
+
+  & h2
+    font-family: fontFamilyRoboto
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorPrimary
+
+    @media screen and (max-width: mediaWidth2)
+      text-align: center
+
+  & p
+    margin: 0
+    max-width: propUnit16x
+    color: colorBlackDark
+
+    @media screen and (max-width: mediaWidth2)
+      text-align: center
+
+  & .credit
+    display: none
+    margin-top: spacing1x
+    font-size: 12px
+    text-align: center
+
+    @media screen and (max-width: mediaWidth2)
+      display: block
+
+  & img
+    max-width: 100%
+
+  &.ig-header
+    & img
+      width: 100%
+      margin-top: spacing4x
+
+    & p
+      margin-top: spacing4x
+
+  &.tesla
+    & h2
+      margin-bottom: spacing4x
+
+    & .tesla-container
+      display: inline-block
+      margin-right: spacing8x
+      vertical-align: top
+
+      @media screen and (max-width: mediaWidth2)
+        display: block
+        width: 180px
+        margin: 0 auto
+
+    & img
+      width: 160px
+
+    & .social-links
+      display: block
+      margin-top: spacing2x
+
+    & .icon
+      display: inline-block
+      width: 28px
+      height: 28px
+      margin: 0 spacing2x
+      background-size: cover
+      background-position: center
+      background-repeat: no-repeat
+      cursor: pointer
+
+      &:first-child
+        margin-left: 0
+
+      &.social-fb
+        background-image: url("../../assets/students/webdev/fb_black.png")
+        &:hover
+          background-image: url("../../assets/students/webdev/fb_blue.png")
+      &.social-ig
+        background-image: url("../../assets/students/webdev/ig_black.png")
+        &:hover
+          background-image: url("../../assets/students/webdev/ig_blue.png")
+      &.social-tw
+        background-image: url("../../assets/students/webdev/tw_black.png")
+        &:hover
+          background-image: url("../../assets/students/webdev/tw_blue.png")
+      &.social-yt
+        width: 28px
+        height: 22px
+        margin-top: 4px
+        vertical-align: top
+        background-image: url("../../assets/students/webdev/yt_black.png")
+        &:hover
+          background-image: url("../../assets/students/webdev/yt_red.png")
+
+    & p
+      display: inline-block
+      width: 'calc(100% - 176px - %s)' % spacing8x
+
+      @media screen and (max-width: mediaWidth2)
+        display: block
+        margin: spacing2x auto 0
+        width: 100%
+
+  &.profiles
+    & .img1
+      height: 240px
+      margin: spacing4x 0
+
+      @media screen and (max-width: mediaWidth2)
+        display: block
+        width: 100%
+        height: initial
+        margin: spacing4x auto 0
+
+    & .img2
+      height: 360px
+
+    & .descriptions
+      display: inline-block
+      margin-bottom: spacing4x
+      width: 'calc(100% - 364px - %s)' % spacing4x
+      vertical-align: top
+
+      @media screen and (max-width: mediaWidth2)
+        width: 100%
+        margin-top: spacing4x
+        margin-bottom: spacing2x
+
+      & p
+        margin-bottom: spacing4x
+        @media screen and (max-width: mediaWidth2)
+          max-width: none
+
+      & + .propz-container
+        display: inline-block
+        width: 280px
+        margin-left: spacing4x
+
+        @media screen and (max-width: mediaWidth2)
+          display: block
+          margin: 0 auto
+
+        & img
+          height: auto
+
+  &.yelp
+    & p
+      margin: spacing4x 0
+
+#view-students-wb .propz-container
+  display: inline-block
+  position: relative
+
+  & .propz
+    position: absolute
+    line-height: 20px
+    width: 142px
+    height: 40px
+    padding: spacing1x spacing2x
+    border-radius: 8px
+    background-color: colorOrange
+    color: colorWhite
+    font-family: fontFamilyRoboto
+    font-size: 14px
+    opacity: 0.0
+    visibility: hidden
+    transition: 0.2s linear all
+
+    &.up
+      transform: translate(0, 10%)
+    &.down
+      transform: translate(0, -10%)
+    &.right
+      transform: translate(-10%, 0)
+    &.left
+      transform: translate(10%, 0)
+
+    &.show
+      transform: translate(0, 0)
+      opacity: 1.0
+      visibility: visible
+
+      @media screen and (max-width: mediaWidth2)
+        width: 0px
+        overflow: hidden
+        opacity: 0.0
+        visibility: hidden
+
+    & .tri
+      position: absolute
+      width: 0
+      height: 0
+
+    &.up .tri
+      top: 100%
+      left: 24px
+      border-left: 6px solid transparent
+      border-right: 6px solid transparent
+      border-top: 8px solid colorOrange
+
+    &.down .tri
+      bottom: 100%
+      right: 24px
+      border-left: 6px solid transparent
+      border-right: 6px solid transparent
+      border-bottom: 8px solid colorOrange
+
+    &.right .tri
+      bottom: 22px
+      right: 100%
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 8px solid colorOrange;
+
+    &.left .tri
+      bottom: 22px
+      left: 100%
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 8px solid colorOrange;
