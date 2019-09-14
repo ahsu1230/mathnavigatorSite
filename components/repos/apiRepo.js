@@ -83,6 +83,10 @@ export function getLocation(locationId) {
   return FetchOther.getLocation(locationId);
 }
 
+export function getAllLocations() {
+  return FetchOther.getAllLocations();
+}
+
 /* Prereqs */
 export function getPrereqs(programId) {
   return FetchPrereqs.getPrereqs(programId);

@@ -21,6 +21,17 @@ export var getLocation = function(locationId) {
   });
 }
 
+export var getAllLocations = function() {
+  return new Promise(function(resolve, reject) {
+    if (!fetchedLocation) {
+      dataLocation = fetchLocations();
+      locationMap = initLocations(dataLocation);
+      fetchedLocation = true;
+    }
+    resolve(locationMap);
+  });
+}
+
 export var getKeyValue = function(key) {
   return new Promise(function(resolve, reject) {
     if (!fetchedKeyValue) {
@@ -34,6 +45,7 @@ export var getKeyValue = function(key) {
 
 export const fetcher = {
   getLocation: getLocation,
+  getAllLocations: getAllLocations,
   getKeyValue: getKeyValue
 }
 

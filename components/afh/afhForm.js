@@ -2,6 +2,12 @@
 require('./afhForm.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Promise } from 'bluebird';
+import { find, remove } from 'lodash';
+import {
+  getAFH,
+  getAllLocations
+} from '../repos/apiRepo.js';
 import {
   EmailModal,
   STATE_NONE,
@@ -15,20 +21,15 @@ import { FormInput } from '../forms/formInput.js';
 import {
   NameCheck,
 } from '../forms/formInputChecks.js';
-import {
-  getAFH,
-  getLocation,
-  getProgramsBySemester
-} from '../repos/apiRepo.js';
 import { Modal } from '../modals/modal.js';
-
-import { find, remove } from 'lodash';
 const classnames = require('classnames');
 
 export class AfhForm extends React.Component {
 	constructor(props) {
     super(props);
 		this.state = {
+      afh: [],
+      locationMap: {},
       submitState: STATE_NONE,
 			studentFirstName: "",
 			studentLastName: "",
@@ -36,9 +37,6 @@ export class AfhForm extends React.Component {
 			additionalText: "",
       generatedEmail: null
 		};
-
-    this.afh = getAFH();
-    this.afh.map((afh) => afh.location = getLocation(afh.locationId));
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSubmitSuccess = this.onSubmitSuccess.bind(this);
@@ -49,6 +47,15 @@ export class AfhForm extends React.Component {
 		this.updateCb = this.updateCb.bind(this);
     this.updateSessions = this.updateSessions.bind(this);
 		this.updateTextArea = this.updateTextArea.bind(this);
+  }
+
+  componentDidMount() {
+    Promise.join(getAFH(), getAllLocations(), (afh, locations) => {
+      this.setState({
+        afh: afh,
+        locationMap: locations
+      });
+    });
   }
 
 	updateCb(propertyName, newValue) {
@@ -82,9 +89,10 @@ export class AfhForm extends React.Component {
     const showModal = submitState != STATE_NONE;
 
     const onSessionCheck = this.updateSessions;
-    const sessions = this.afh.map((afh, index) =>
-      <AfhSession key={index} afh={afh} onSelect={onSessionCheck}/>
-    );
+    const sessions = this.state.afh.map((afh, index) => {
+      var location = this.state.locationMap[afh.locationId];
+      return (<AfhSession key={index} afh={afh} location={location} onSelect={onSessionCheck}/>);
+    });
 
     const formCompleted = this.checkAllInputs();
     const submitBtnClass = classnames({active: formCompleted});
@@ -153,7 +161,7 @@ export class AfhForm extends React.Component {
 	handleSubmit(event) {
     event.preventDefault();
 
-		const emailMessage = generateEmailMessage(this.getInputInfo());
+		const emailMessage = generateEmailMessage(this.state.afh, this.getInputInfo());
     console.log("Sending email... " + emailMessage);
     this.setState({
       submitState: STATE_LOADING,
@@ -210,8 +218,8 @@ class AfhSession extends React.Component {
   }
 
   render() {
-    const afh = this.props.afh;
-    const location = afh.location;
+    const afh = this.props.afh || {};
+    const location = this.props.location || {};
     const textClasses = classnames("afh-session-text", {
       highlight: this.state.checked
     });
@@ -268,11 +276,10 @@ function validateSessions(sessions) {
   return sessions.length > 0;
 }
 
-function generateEmailMessage(info) {
+function generateEmailMessage(afhList, info) {
 	if (!info) {
 		return null;
 	}
-  var afhList = getAFH();
   const sessions = info.targetSessions.map(function(afhId) {
     var afhObj = find(afhList, {afhId: afhId});
     return { session: afhObj.date + " " + afhObj.time };
