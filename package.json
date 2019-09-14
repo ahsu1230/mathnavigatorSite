@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build index.html",
-    "run": "parcel index.html"
+    "run": "parcel index.html",
+    "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "prebuild": "rm -rf dist",
   "repository": {
@@ -34,10 +36,32 @@
     "react-router-scroll-memory": "^2.0.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
     "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "cssnano": "^4.1.10",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.3.0",
+    "jest": "^24.9.0",
+    "jest-svg-transformer": "^1.0.0",
+    "jest-transform-css": "^2.0.0",
     "stylus": "^0.54.5"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      ".+\\.(css|styl)$": "jest-transform-css",
+      "^.+\\.svg$": "jest-svg-transformer"
+    },
+    "setupFilesAfterEnv": [
+      "./tests/setupTestAdapter.js"
+    ]
   }
 }
