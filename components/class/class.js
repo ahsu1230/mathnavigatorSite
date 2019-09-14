@@ -14,7 +14,7 @@ import {
   getProgramAndClass,
   getSessions
 } from '../repos/apiRepo.js';
-import { createPageTitle } from '../constants.js';
+import { createFullClassName, createPageTitle } from '../constants.js';
 const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');
 
@@ -114,7 +114,7 @@ class ClassContent extends React.Component {
 
   componentDidUpdate() {
     const info = this.props.info;
-    const fullClassName = generateFullClassName(info.programObj, info.classObj);
+    const fullClassName = createFullClassName(info.programObj, info.classObj);
     document.title = createPageTitle(fullClassName);
   }
 
@@ -143,7 +143,7 @@ class ClassContent extends React.Component {
     // All Components
     const announce = generateAnnouncement(announcements,
       this.state.showAnnounce, this.handleDismissAnnounce);
-    const classFullName = generateFullClassName(programObj, classObj);
+    const classFullName = createFullClassName(programObj, classObj);
     const prereqsLine = generatePrereqs(prereqPrograms);
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
@@ -223,10 +223,6 @@ class SessionLine extends React.Component {
 }
 
 /* Helper Methods */
-function generateFullClassName(programObj, classObj) {
-  return programObj.title + " " + (classObj.className || "");
-}
-
 function generatePrereqs(prereqPrograms) {
   const validPrereqs = prereqPrograms.filter(p => p && p.title);
 

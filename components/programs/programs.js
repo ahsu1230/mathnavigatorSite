@@ -6,9 +6,7 @@ import { Promise } from 'bluebird';
 import {
 	getClassesBySemester,
 	getClassesByProgramAndSemester,
-	getProgramsBySemesters,
-	getSemester,
-	getSemesterIds
+	getProgramsBySemesters
 } from '../repos/apiRepo.js';
 import { keys } from 'lodash';
 import { ProgramClassModal } from './programClassModal.js';

@@ -52,6 +52,27 @@ export function getClassesByProgramAndSemester(programId, semesterId) {
   return FetchClasses.getClassesByProgramAndSemester(programId, semesterId);
 }
 
+export function getAllClassesBySemesters() {
+  return Promise.join(getAllSemesters(), getAllClasses(), getAllPrograms(),
+    function(semesterMap, classMap, programMap) {
+      var map = {};
+      forEach(classMap, function(classObj) {
+        var semesterId = classObj.semesterId;
+        var programId = classObj.programId;
+        var programObj = programMap[programId];
+        classObj.programObj = programObj;
+
+        map[semesterId] = map[semesterId] || [];
+        map[semesterId].push(classObj);
+      });
+      return {
+        semesterMap: semesterMap,
+        classSemesterMap: map
+      };
+    }
+  );
+}
+
 /* Key Values */
 export function getKeyValue(key) {
   return FetchOther.getKeyValue(key);
@@ -105,6 +126,22 @@ export function getProgramAndClass(classKey) {
   });
 }
 
+export function getAllProgramsAndClasses() {
+  return Promise.join(getAllClasses(), getAllPrograms(), (classes, programs) => {
+    var map = {};
+    forEach(classes, classObj => {
+      var classKey = classObj.key;
+      var programId = classObj.programId;
+      var programObj = programs[programId];
+      map[classKey] = {
+        classObj: classObj,
+        programObj: programObj
+      };
+    });
+    return map;
+  });
+}
+
 export function getProgramsBySemesters() {
   return Promise.join(getAllSemesters(), getAllClasses(), getAllPrograms(),
     function(semesterMap, classMap, programMap) {
@@ -126,21 +163,6 @@ export function getProgramsBySemesters() {
       };
     }
   );
-
-  // var map = {};
-  // forEach(classMapByKey, function(classObj) {
-  //   var programId = classObj.programId;
-  //   var programObj = programMap[programId];
-  //   var semesterId = classObj.semesterId;
-  //   programObj.semesterId = semesterId;
-  //
-  //   map[semesterId] = map[semesterId] || [];
-  //   var hasProgram = find(map[semesterId], {programId: programId, semesterId: semesterId});
-  //   if (!hasProgram) {
-  //     map[semesterId].push(programObj);
-  //   }
-  // });
-  // return map;
 }
 
 /* Semesters */

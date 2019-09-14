@@ -30,3 +30,9 @@ export function isPathAt(currentPath, url) {
     return currentPath.indexOf(url) >= 0;
   }
 }
+
+export function createFullClassName(programObj, classObj) {
+  var programTitle = (programObj || {}).title;
+  var className = (classObj.className || "");
+  return programTitle + " " + className;
+}

@@ -5,22 +5,19 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Modal } from '../modals/modal.js';
 import {
-  createFullClassObj,
-  getProgramClass,
-  getClassesBySemester,
-  getSemester,
-	getSemesterIds
+  getAllClassesBySemesters,
+  getAllProgramsAndClasses
 } from '../repos/apiRepo.js';
+import { createFullClassName } from '../constants.js';
+import { keys } from 'lodash';
 const classnames = require('classnames');
 
 export class ContactInterestSection extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       showModal: false
     };
-
     this.onSelectProgram = this.onSelectProgram.bind(this);
     this.onToggleShowModal = this.onToggleShowModal.bind(this);
   }
@@ -41,7 +38,6 @@ export class ContactInterestSection extends React.Component {
 
   render() {
     const interestedClasses = this.props.interested;
-    const interestedSection = generateInterested(interestedClasses, this.onToggleShowModal);
     const modalContent = <InterestModal
                   onSelectProgram={this.onSelectProgram}
                   interested={interestedClasses}
@@ -49,7 +45,7 @@ export class ContactInterestSection extends React.Component {
     return (
       <div>
         <h2>Interested Programs</h2>
-        {interestedSection}
+        <InterestSection interestedList={interestedClasses} onClick={this.onToggleShowModal}/>
         <Modal content={modalContent}
           show={this.state.showModal}
           withClose={true}
@@ -59,7 +55,100 @@ export class ContactInterestSection extends React.Component {
   }
 }
 
+class InterestSection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      classProgramMap: {}
+    }
+  }
+
+  componentDidMount() {
+    getAllProgramsAndClasses().then(data => {
+      this.setState({classProgramMap: data});
+    });
+  }
+
+  generateEmptyInterested(buttonText, onButtonClick) {
+    return (
+      <div id="contact-section-interested">
+        <p>
+          Please select at least one Program.
+        </p>
+        <button className="inverted" onClick={onButtonClick}>
+          {buttonText}
+        </button>
+      </div>
+    );
+  }
+
+  generateNonEmptyInterested(classMap, interestedList, buttonText, onButtonClick) {
+    var numClasses = interestedList.length;
+    var numClassText = numClasses == 1 ? numClasses + " class." : numClasses + " classes."
+
+    const selectedText = interestedList.map(function(classKey, index) {
+      var data = classMap[classKey];
+      if (data) {
+        var programObj = data.programObj;
+        var classObj = data.classObj;
+        var fullName = createFullClassName(programObj, classObj);
+        var url = "/class/" + classKey;
+        return (
+          <li key={index}><Link to={url}>{fullName}</Link></li>
+        );
+      }
+    });
+
+    return (
+      <div id="contact-section-interested">
+        <p>
+          You have selected {numClassText}<br/>
+          {selectedText}
+        </p>
+        <button className="inverted" onClick={onButtonClick}>
+          {buttonText}
+        </button>
+      </div>
+    );
+  }
+
+  render() {
+    const interestedList = this.props.interestedList;
+    const onClick = this.props.onClick;
+
+    var isEmpty = interestedList.length == 0;
+    var interestedButtonText = isEmpty ? "Select Programs..." : "Select More Programs...";
+    var comp;
+    if (isEmpty) {
+      comp = this.generateEmptyInterested(interestedButtonText, onClick);
+    } else {
+      comp = this.generateNonEmptyInterested(this.state.classProgramMap,
+        interestedList, interestedButtonText, onClick);
+    }
+    return comp;
+  }
+}
+
 class InterestModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      classesBySemester: {},
+      semesters: {},
+      semesterIds: []
+    };
+  }
+
+  componentDidMount() {
+    getAllClassesBySemesters().then(data => {
+      this.setState({
+        classesBySemester: data.classSemesterMap,
+        semesters: data.semesterMap,
+        semesterIds: keys(data.semesterMap)
+      });
+    });
+  }
+
   render() {
     const interestedClasses = this.props.interested || [];
     var interestClassMap = {};
@@ -69,10 +158,9 @@ class InterestModal extends React.Component {
     const numClasses = interestedClasses.length;
     const onSelectProgram = this.props.onSelectProgram;
 
-    const semesterIds = getSemesterIds();
-		const sections = semesterIds.map(function(semesterId, index) {
-      var semester = getSemester(semesterId);
-			var classes = getClassesBySemester(semesterId);
+		const sections = this.state.semesterIds.map((semesterId, index) => {
+      var semester = this.state.semesters[semesterId];
+			var classes = this.state.classesBySemester[semesterId];
       const list = createInterestItems(classes, interestClassMap, onSelectProgram);
 			return (
         <div key={index}>
@@ -131,8 +219,8 @@ class InterestItem extends React.Component {
   }
 
   render() {
-    const classObj = createFullClassObj(this.props.classObj);
-    const className = classObj.fullClassName;
+    const classObj = this.props.classObj;
+    const className = createFullClassName(classObj.programObj, classObj);
     const startingDate = classObj.startDate;
 
     const liClassNames = classnames("", {
@@ -157,49 +245,6 @@ class InterestItem extends React.Component {
 }
 
 /* Helper Functions */
-function generateInterested(interestedList, onClick) {
-  var nonEmpty = interestedList.length > 0;
-  var interestedButtonText = nonEmpty ? "Select More Programs..." : "Select Programs...";
-  if (nonEmpty) {
-    var numClasses = interestedList.length;
-    var numClassText = numClasses == 1 ? numClasses + " class." : numClasses + " classes."
-
-    const selectedText = interestedList.map(function(classKey, index) {
-      var pair = getProgramClass(classKey);
-      var programTitle = pair.programObj.title;
-      var className = pair.classObj.className;
-      var fullName = className ? programTitle + " " + className : programTitle;
-      var url = "/class/" + classKey;
-      return (
-        <li key={index}><Link to={url}>{fullName}</Link></li>
-      );
-    });
-
-    return (
-      <div id="contact-section-interested">
-        <p>
-          You have selected {numClassText}<br/>
-          {selectedText}
-        </p>
-        <button className="inverted" onClick={onClick}>
-          {interestedButtonText}
-        </button>
-      </div>
-    );
-  } else {
-    return (
-      <div id="contact-section-interested">
-        <p>
-          Please select at least one Program.
-        </p>
-        <button className="inverted" onClick={onClick}>
-          {interestedButtonText}
-        </button>
-      </div>
-    );
-  }
-}
-
 function createInterestItems(listClasses, interestedMap, onSelect) {
   return listClasses.map(function(classObj, index) {
     var isSelected = interestedMap[classObj.key] || false;
