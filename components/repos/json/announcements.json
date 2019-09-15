@@ -39,9 +39,18 @@
     "timestamp": 1568081913,
     "date": "9/13/2019",
     "important": "",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_summer_c]",
     "author": "Amy",
     "message": "On 9/13, SAT Class (C)  will have Friday Class 6:00pm - 8:00pm and prep test again at Churchill room 110"
+  },
+  {
+    "timestamp": 1568507835,
+    "date": "9/20/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[sat1_fall_d]",
+    "author": "Amy",
+    "message": "On 9/20, SAT class (D) will have 3rd session on Friday Class 6:00pm - 8:00pm at Churchill H.S. room 110."
   }
 ]
