@@ -60,8 +60,15 @@
       ".+\\.(css|styl)$": "jest-transform-css",
       "^.+\\.svg$": "jest-svg-transformer"
     },
+    "moduleNameMapper": {
+      "\\.(png|jpg|gif|ttf|eot|svg)$": "<rootDir>/tests/fileMock.js"
+    },
     "setupFilesAfterEnv": [
       "./tests/setupTestAdapter.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
     ]
   }
 }

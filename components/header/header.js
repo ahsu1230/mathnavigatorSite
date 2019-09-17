@@ -3,7 +3,7 @@ require('./header.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import MenuSlim from './menuSlim.js';
+import { MenuSlim } from './menuSlim.js';
 import MenuWide from './menuWide.js';
 const headerIcon = require('../../assets/navigate_white.png');
 
@@ -11,7 +11,7 @@ export class Header extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			location: {}
+			location: {},
 		};
 	}
 

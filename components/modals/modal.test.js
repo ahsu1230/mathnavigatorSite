@@ -6,5 +6,6 @@ describe("test", () => {
   test("renders", () => {
     const component = shallow(<Modal/>);
     expect(component.exists()).toBe(true);
+    expect(component.hasClass("modal-view")).toBe(true);
   });
 });

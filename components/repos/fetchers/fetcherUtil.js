@@ -1,11 +1,5 @@
 'use strict';
 
-export var init = function() {
-  if (process.env.NODE_ENV === 'production') {
-    mixpanel.track("init");
-  }
-}
-
 export var convertStringToBool = function(str) {
   var isBool = (typeof str == 'boolean');
   var isString = (typeof str == 'string');

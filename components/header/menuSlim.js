@@ -8,7 +8,7 @@ const classnames = require('classnames');
 const srcArrowDown = require('../../assets/arrow_down_black.svg');
 const srcClose = require('../../assets/close_black.svg');
 
-export default class MenuSlim extends React.Component {
+export class MenuSlim extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -27,22 +27,22 @@ export default class MenuSlim extends React.Component {
 		const location = this.props.location;
     const show = this.state.show;
     return (
-      [
+      <div>
         <div className="header-menu-slim" key="header-button">
           <button className="header-menu-btn" onClick={this.toggleMenu}>
             Menu
           </button>
-        </div>,
+        </div>
         <OverlayMenu key="overlay-menu"
             show={show}
             closeMenu={this.toggleMenu}
             location={location}/>
-      ]
+      </div>
     );
   }
 }
 
-class OverlayMenu extends React.Component {
+export class OverlayMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,7 +55,7 @@ class OverlayMenu extends React.Component {
     const containerClasses = classnames("header-slim-overlay-container", {
       show: this.props.show
     })
-    const links = generateNavLinks(NavLinks, closeMenu);
+    const links = generateNavLinks(this.state.links, closeMenu);
     return (
       <div className={containerClasses}>
         <div className="header-slim-overlay"/>
