@@ -1,6 +1,8 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
+import { HashRouter as Router } from 'react-router-dom';
 import { Header} from "./header.js";
+import renderer from 'react-test-renderer';
 
 describe("test", () => {
   var fakeHistory = {
@@ -14,5 +16,14 @@ describe("test", () => {
     expect(component.exists("#view-header")).toBe(true);
 
     expect(component.state().location).toBe("/home");
+  });
+
+  test("snapshot", () => {
+    const tree = renderer.create(
+      <Router>
+        <Header history={fakeHistory}/>
+      </Router>
+    ).toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });
