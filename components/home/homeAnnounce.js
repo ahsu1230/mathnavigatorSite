@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { isEmpty, filter } from 'lodash';
-import { getAnnounceList } from '../repos/mainRepo.js';
+import { getAnnouncements } from '../repos/apiRepo.js';
 import { ANNOUNCE_LAST_DISMISS } from '../storage.js';
 const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');
@@ -21,20 +21,22 @@ export class HomeAnnounce extends React.Component {
   }
 
   componentDidMount() {
-    var valid = filter(getAnnounceList(), a => a.onHomePage);
-    var targetAnnounce = valid.length > 0 ? valid[0] : undefined;
-    targetAnnounce.shortMessage = shortenMessage(targetAnnounce.message);
+    getAnnouncements().then(announcements => {
+      var valid = filter(announcements, a => a.onHomePage);
+      var targetAnnounce = valid.length > 0 ? valid[0] : undefined;
+      targetAnnounce.shortMessage = shortenMessage(targetAnnounce.message);
 
-    var localLastDismiss = localStorage.getItem(ANNOUNCE_LAST_DISMISS);
-    var lastDismissed = parseInt(localLastDismiss, 10) || 0;
+      var localLastDismiss = localStorage.getItem(ANNOUNCE_LAST_DISMISS);
+      var lastDismissed = parseInt(localLastDismiss, 10) || 0;
 
-    this.unbindTimeout = setTimeout(function() {
-      this.setState({ show: true });
-    }.bind(this), 2500);
+      this.unbindTimeout = setTimeout(function() {
+        this.setState({ show: true });
+      }.bind(this), 2500);
 
-    this.setState({
-      targetAnnounce: targetAnnounce,
-      lastDismissed: lastDismissed
+      this.setState({
+        targetAnnounce: targetAnnounce,
+        lastDismissed: lastDismissed
+      });
     });
   }
 

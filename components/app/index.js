@@ -19,7 +19,7 @@ import { AnnouncePage } from '../announcements/announce.js';
 import { ClassPage } from '../class/class.js';
 import { ContactPage } from '../contact/contact.js';
 import { ErrorPage } from '../errorPage/error.js';
-import { Footer } from '../footer/footer.js';
+import Footer from '../footer/footer.js';
 import { Header as HeaderComponent} from '../header/header.js';
 import { HomePage } from '../home/home.js';
 import { ProgramsPage } from '../programs/programs.js';

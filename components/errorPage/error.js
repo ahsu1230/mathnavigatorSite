@@ -21,7 +21,7 @@ export class ErrorPage extends React.Component {
 
     return (
       <div id="view-error">
-        <h1> Page Not Found </h1>
+        <h1>Page Not Found</h1>
         <img src={srcBroken}/>
         <p>
           <Link to="/programs">View our Programs</Link>

@@ -6,7 +6,15 @@ import { Link } from 'react-router-dom';
 import { NavLinks } from '../constants.js';
 const headerIcon = require('../../assets/navigate_white.png');
 
-export class Footer extends React.Component {
+export default class Footer extends React.Component {
+	componentDidMount() {
+		if (process.env.NODE_ENV === 'production') {
+			mixpanel.track("init");
+		} else {
+			console.log("Website loaded");
+		}
+	}
+
 	render() {
 		const links = NavLinks.map((link, index) =>
 			<li key={link.id}>

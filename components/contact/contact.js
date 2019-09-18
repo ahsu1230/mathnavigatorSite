@@ -11,7 +11,7 @@ export class ContactPage extends React.Component {
 
 		const { match, location, history } = this.props;
 		this.interested = [];
-		var parsed = parseQuery(location.search);
+		var parsed = parseQuery((location || {}).search);
 		if (parsed && parsed.interest) {
 			this.interested.push(parsed.interest);
 		}
@@ -40,6 +40,9 @@ export class ContactPage extends React.Component {
 }
 
 function parseQuery(hash) {
+	if (!hash) {
+		return "";
+	}
   var i = hash.indexOf("?");
   var parsed = {};
   if (i >= 0) {

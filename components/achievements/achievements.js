@@ -4,28 +4,38 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
-  getAchievementKeys,
-  getAchievements
-} from '../repos/mainRepo.js';
+  getAchievementsByYears
+} from '../repos/apiRepo.js';
+import { Promise } from 'bluebird';
+import { keys } from 'lodash';
 const classnames = require('classnames');
 
 export class AchievementPage extends React.Component {
   constructor(props) {
     super(props);
-
-    // Guarantee from most recent year to latest
-    this.achievementYears = getAchievementKeys().sort().reverse();
-  }
-
-  componentDidMount() {
-		if (process.env.NODE_ENV === 'production') {
-      mixpanel.track("achievements");
+    this.state = {
+      achievementsByYear: {},
+      years: []
     }
   }
 
+  componentDidMount() {
+    if (process.env.NODE_ENV === 'production') {
+      mixpanel.track("achievements");
+    }
+
+    getAchievementsByYears().then(map => {
+      var years = keys(map);
+      this.setState({
+        achievementsByYear: map,
+        years: years.sort().reverse() // Guarantee from most recent year to latest
+      });
+    });
+  }
+
 	render() {
-    const cards = this.achievementYears.map(function(year, index) {
-      const achievements = getAchievements(year);
+    const cards = this.state.years.map((year, index) => {
+      var achievements = this.state.achievementsByYear[year];
       return (
         <AchievementCard key={index} year={year} achievements={achievements}/>
       );
@@ -51,7 +61,7 @@ export class AchievementPage extends React.Component {
 class AchievementCard extends React.Component {
   render() {
     const year = this.props.year;
-    const achievements = this.props.achievements;
+    const achievements = this.props.achievements || [];
     const lines = achievements.map((a, index) =>
       <li key={index}>
         <AchievementLine achievement={a}/>

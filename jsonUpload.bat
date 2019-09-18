@@ -1,6 +1,6 @@
-git add components/repos/json/*.json
+git add components/repos/fetchers/json/*.json
 git commit -m "json update"
-git push origin master 
+git push origin master
 
 echo creating ftp file...
 call createFtp.bat

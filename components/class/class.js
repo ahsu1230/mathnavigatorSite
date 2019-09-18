@@ -3,17 +3,18 @@ require('./class.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { Promise } from 'bluebird';
+import { find, isEmpty, pick } from 'lodash';
 import { ErrorPage } from '../errorPage/error.js';
 import {
-  getAnnounceList,
+  getAnnouncements,
   getLocation,
   getPrereqs,
-  getProgramClass,
   getProgramByIds,
+  getProgramAndClass,
   getSessions
-} from '../repos/mainRepo.js';
-import { createPageTitle } from '../constants.js';
-import { find, isEmpty } from 'lodash';
+} from '../repos/apiRepo.js';
+import { createFullClassName, createPageTitle } from '../constants.js';
 const classnames = require('classnames');
 const srcClose = require('../../assets/close_black.svg');
 
@@ -23,21 +24,54 @@ export class ClassPage extends React.Component {
     this.state = {
       announcements: [],
       classKey: undefined,
-      classAnnounce: {}
+      classAnnounce: {},
+      classObj: {},
+      location: {},
+      prereqPrograms: [],
+      programObj: {},
+      sessions: []
     };
   }
 
   componentDidMount() {
-    var announcements = getAnnounceList();
-    var classKey = this.props.slug;
-    var classAnnounce = find(announcements, function(o) {
-      return find(o.classKeys, cKey => (classKey === cKey));
-    });
+    const classKey = this.props.slug;
+
+    Promise.join(
+      getAnnouncements(),
+      getProgramAndClass(classKey), // -> get prereqs(programId) -> getProgramByIds(arr)
+      getSessions(classKey),
+      (announcements, programClassObj, sessions) => {
+        var classObj = programClassObj.classObj;
+        var programObj = programClassObj.programObj;
+        var classAnnounce = find(announcements, function(o) {
+          return find(o.classKeys, cKey => (classKey === cKey));
+        });
+        this.setState({
+          announcements: announcements,
+          classAnnounce: classAnnounce,
+          classObj: classObj,
+          programObj: programObj,
+          sessions: sessions
+        });
+
+        getLocation(classObj.locationId).then(location => {
+          this.setState({ location: location });
+        });
+
+        getPrereqs(programObj.programId).then(prereqObj => {
+          if (prereqObj) {
+            getProgramByIds(prereqObj.requiredProgramIds).then(prereqPrograms => {
+              if (prereqPrograms) {
+                this.setState({ prereqPrograms: prereqPrograms });
+              }
+            });
+          }
+        });
+      }
+    );
 
     this.setState({
-      announcements: announcements,
-      classKey: classKey,
-      classAnnounce: classAnnounce
+      classKey: classKey
     });
 
     if (process.env.NODE_ENV === 'production') {
@@ -46,18 +80,21 @@ export class ClassPage extends React.Component {
   }
 
   render () {
-    var valid = true;
-    const key = this.state.classKey;
-    const pair = getProgramClass(key);
-    valid = valid && Boolean(pair);
-    valid = valid && Boolean(pair.programObj);
-    valid = valid && Boolean(pair.classObj);
-
+    const classKey = this.state.classKey;
     var content;
-    if (valid) {
-      content = <ClassContent classKey={key} pair={pair} announce={this.state.classAnnounce}/>;
+    if (isEmpty(this.state.classObj)) {
+      content = <ErrorPage classDNE={this.state.classKey}/>;
     } else {
-      content = <ErrorPage classDNE={key}/>;
+      const classInfo = pick(this.state, [
+        'classKey',
+        'classAnnounce',
+        'classObj',
+        'programObj',
+        'location',
+        'prereqPrograms',
+        'sessions'
+      ]);
+      content = <ClassContent info={classInfo}/>
     }
 
     return (
@@ -66,7 +103,7 @@ export class ClassPage extends React.Component {
   }
 }
 
-class ClassContent extends React.Component {
+export class ClassContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,9 +112,9 @@ class ClassContent extends React.Component {
     this.handleDismissAnnounce = this.handleDismissAnnounce.bind(this);
   }
 
-  componentDidMount() {
-    const pair = this.props.pair;
-    const fullClassName = generateFullClassName(pair.programObj, pair.classObj);
+  componentDidUpdate() {
+    const info = this.props.info;
+    const fullClassName = createFullClassName(info.programObj, info.classObj);
     document.title = createPageTitle(fullClassName);
   }
 
@@ -87,37 +124,24 @@ class ClassContent extends React.Component {
 
 	render() {
     // Variables
-    const classKey = this.props.classKey;
-    const pair = this.props.pair;
-    const programObj = pair.programObj;
-    const classObj = pair.classObj;
-
-    // Location
-    const locationObj = getLocation(classObj.locationId);
-
-    // PreReqs
-    var programPrereqs = getPrereqs(programObj.programId);
-    const prereqIds = programPrereqs ? programPrereqs.requiredProgramIds : [];
-
-    // Sessions
-    let sessions = getSessions(classKey);
-    sessions = sessions ? sessions : [];
-    var sessionCounter = 0;
-    sessions.forEach(function(session) {
-      if (!session.canceled) {
-        sessionCounter++;
-      }
-    });
+    const info = this.props.info || {};
+    const announcements = info.classAnnounce;
+    const classKey = info.classKey;
+    const classObj = info.classObj;
+    const locationObj = info.location;
+    const programObj = info.programObj;
+    const sessions = info.sessions || [];
+    const prereqPrograms = info.prereqPrograms || [];
 
     // All Components
-    const announce = generateAnnouncement(this.props.announce,
+    const announce = generateAnnouncement(announcements,
       this.state.showAnnounce, this.handleDismissAnnounce);
-    const classFullName = generateFullClassName(programObj, classObj);
-    const prereqsLine = generatePrereqs(prereqIds);
+    const classFullName = createFullClassName(programObj, classObj);
+    const prereqsLine = generatePrereqs(prereqPrograms);
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
     const textPricing = generatePricing(classObj.priceLump,
-        classObj.pricePerSession, sessionCounter, classObj.paymentNotes);
+        classObj.pricePerSession, sessions, classObj.paymentNotes);
     const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
 
 		return (
@@ -192,18 +216,13 @@ class SessionLine extends React.Component {
 }
 
 /* Helper Methods */
-function generateFullClassName(programObj, classObj) {
-  return programObj.title + " " + (classObj.className || "");
-}
-
-function generatePrereqs(prereqIds) {
-  var prereqsPrograms = getProgramByIds(prereqIds);
-  const validPrereqs = prereqsPrograms.filter(p => p && p.title);
+function generatePrereqs(prereqPrograms) {
+  const validPrereqs = prereqPrograms.filter(p => p && p.title);
 
   let prereqsLine = <div></div>;
   if (validPrereqs.length > 0) {
     prereqsLine = <div>
-      {"Prerequirements: " + validPrereqs.map(p => p.title).join(", ")}
+      {"Pre-requirements: " + validPrereqs.map(p => p.title).join(", ")}
     </div>;
   } else {
     return <div></div>;
@@ -237,7 +256,14 @@ function generateTimes(classObj) {
   );
 }
 
-function generatePricing(priceLump, pricePerSession, numSessions, paymentNotes) {
+function generatePricing(priceLump, pricePerSession, sessions, paymentNotes) {
+  var numSessions = 0;
+  sessions.forEach(function(session) {
+    if (!session.canceled) {
+      numSessions++;
+    }
+  });
+
   let line1;
   let line2;
   let line3;
@@ -310,7 +336,7 @@ function generateSchedules(sessions, allYear, classTimes) {
       <div>
         {allYearText}
         {timesText}
-        <h3>Except the following times:</h3>
+        <h4>Except the following times:</h4>
       </div>
     );
   }
