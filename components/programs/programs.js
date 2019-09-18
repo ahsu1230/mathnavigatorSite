@@ -63,7 +63,7 @@ export class ProgramsPage extends React.Component {
 	}
 }
 
-class ProgramSection extends React.Component {
+export class ProgramSection extends React.Component {
 	render() {
 		const programs = this.props.programs;
 		const semester = this.props.semester;
@@ -82,7 +82,7 @@ class ProgramSection extends React.Component {
 	}
 }
 
-class ProgramCard extends React.Component {
+export class ProgramCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

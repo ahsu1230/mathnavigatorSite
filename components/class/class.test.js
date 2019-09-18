@@ -37,8 +37,8 @@ describe("test", () => {
     info.programObj.grade1 = "8";
     info.programObj.grade2 = "12";
     info.programObj.description = "some description";
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     var text = contentComponent.find(".class-info-1").text();
     expect(text).toMatch("Grades: 8 - 12");
     expect(text).toMatch("some description");
@@ -51,8 +51,8 @@ describe("test", () => {
       address2: "address2",
       address3: "room3"
     };
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     var targetComponent =
       contentComponent.find(".class-info-2")
         .find(".class-lines")
@@ -67,8 +67,8 @@ describe("test", () => {
 
   test("content renders with times", () => {
     info.classObj = {times: ["day1 time1", "day2 time2"]};
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     var targetComponent =
       contentComponent.find(".class-info-2")
         .find(".class-lines")
@@ -82,8 +82,8 @@ describe("test", () => {
   test("content renders with pricing (priceLump)", () => {
     info.classObj.priceLump = 100;
     info.classObj.pricePerSession = 0;
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     var targetComponent =
       contentComponent.find(".class-info-2")
         .find(".class-lines")
@@ -96,8 +96,8 @@ describe("test", () => {
   test("content renders with pricing (pricePerSession)", () => {
     info.classObj.priceLump = 0;
     info.classObj.pricePerSession = 100;
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     var targetComponent =
       contentComponent.find(".class-info-2")
         .find(".class-lines")
@@ -128,9 +128,18 @@ describe("test", () => {
   test("content renders with AYR sessions", () => {
     info.classObj.allYear = true;
     info.classObj.times = ["day1 time1"];
-
     const contentComponent = shallow(<ClassContent info={info}/>);
+
     expect(contentComponent.find("#view-schedule").text())
       .toMatch("Classes are held every week");
+  });
+
+  test("content renders with announcement", () => {
+    info.classAnnounce = { message: "asdfqwer"};
+    const contentComponent = shallow(<ClassContent info={info}/>);
+
+    var announceContainer = contentComponent.find("#view-class-announce");
+    expect(announceContainer.find("h2").text()).toMatch("Announcement");
+    expect(announceContainer.find("p").text()).toMatch("asdfqwer");
   });
 });
