@@ -16,6 +16,7 @@ describe("test", () => {
   test("renders form", () => {
     expect(formComponent.exists()).toBe(true);
     expect(formComponent.find("AfhSession").length).toBe(0);
+    expect(formComponent.exists(".submit-container button")).toBe(true);
   });
 
   test("renders sessions", () => {

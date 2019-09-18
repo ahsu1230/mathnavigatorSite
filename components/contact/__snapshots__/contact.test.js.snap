@@ -1,0 +1,453 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test snapshot 1`] = `
+<div
+  id="view-contact"
+>
+  <div
+    id="view-contact-container"
+  >
+    <h1>
+      Contact Us
+    </h1>
+    <h3>
+      Please fill the following form
+      <br />
+      to register for a program or to contact us.
+    </h3>
+    <div>
+      <div
+        className="modal-view"
+      >
+        <div
+          className="modal-overlay"
+        />
+        <div
+          className="modal"
+        >
+          <div
+            className=""
+            id="email-modal"
+          >
+            <div
+              className="container loading"
+            >
+              <h1>
+                Sending...
+              </h1>
+              <div
+                className="content"
+              >
+                <div
+                  className="dots-container"
+                >
+                  <div
+                    className="dots"
+                  >
+                    <div
+                      className="dot dot1"
+                    />
+                    <div
+                      className="dot dot2"
+                    />
+                    <div
+                      className="dot dot3"
+                    />
+                  </div>
+                  <img
+                    src="test-file-stub"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className="container success"
+            >
+              <h1>
+                Success
+              </h1>
+              <div
+                className="content"
+              >
+                <div
+                  className="img-wrapper"
+                >
+                  <img
+                    src="test-file-stub"
+                  />
+                </div>
+                <p>
+                  Thank you for contacting us.
+                  <br />
+                  You will hear from us soon!
+                  <br />
+                  <a
+                    href="#/"
+                    onClick={[Function]}
+                  >
+                    Back to Home
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div
+              className="container fail"
+            >
+              <h1>
+                Email request failed
+              </h1>
+              <div
+                className="content"
+              >
+                <img
+                  src="test-file-stub"
+                />
+                <p>
+                  Unfortunately, our email servers are not working at the moment.
+                  <br />
+                  Please try again later or
+                  <br />
+                  send your message to 
+                  <b>
+                    andymathnavigator@gmail.com
+                  </b>
+                  .
+                  <br />
+                  We apologize for any inconveniences.
+                </p>
+                <a
+                  href="#/"
+                  onClick={[Function]}
+                >
+                  Back to Home
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="section input"
+      >
+        <h2>
+          Student Information
+        </h2>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input student-fname"
+          >
+            <label>
+              First Name
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+          <div
+            className="form-input student-lname"
+          >
+            <label>
+              Last Name
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input student-grade"
+          >
+            <label>
+              Grade
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+          <div
+            className="form-input student-school"
+          >
+            <label>
+              School
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input student-phone"
+          >
+            <label>
+              Phone
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+          <div
+            className="form-input student-email"
+          >
+            <label>
+              Email
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+        <h2>
+          Guardian Information
+        </h2>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input guard-fname"
+          >
+            <label>
+              First Name
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+          <div
+            className="form-input guard-lname"
+          >
+            <label>
+              Last Name
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input guard-phone"
+          >
+            <label>
+              Phone
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+          <div
+            className="form-input guard-email"
+          >
+            <label>
+              Email
+            </label>
+            <input
+              onChange={[Function]}
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+        <div
+          className="contact-input-container"
+        >
+          <div
+            className="form-input guard-social-wechat"
+          >
+            <label>
+              WeChat username
+            </label>
+            <input
+              onChange={[Function]}
+              placeholder="(Optional)"
+              value=""
+            />
+            <label>
+              
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        className="section interested"
+      >
+        <div>
+          <h2>
+            Interested Programs
+          </h2>
+          <div
+            id="contact-section-interested"
+          >
+            <p>
+              Please select at least one Program.
+            </p>
+            <button
+              className="inverted"
+              onClick={[Function]}
+            >
+              Select Programs...
+            </button>
+          </div>
+          <div
+            className="modal-view"
+          >
+            <div
+              className="modal-overlay"
+              onClick={[Function]}
+            />
+            <div
+              className="modal"
+            >
+              <button
+                className="close-x"
+                onClick={[Function]}
+              >
+                <img
+                  src="test-file-stub"
+                />
+              </button>
+              <div
+                id="interest-modal"
+              >
+                <h1>
+                  Interested Programs
+                </h1>
+                <div
+                  id="interest-headers"
+                >
+                  <div
+                    className="header class-name"
+                  >
+                    Class
+                  </div>
+                  <div
+                    className="header times"
+                  >
+                    Times
+                  </div>
+                  <div
+                    className="header start-date"
+                  >
+                    Starting Date
+                  </div>
+                </div>
+                <div
+                  className="use-scrollbar"
+                  id="interest-view"
+                />
+                <div
+                  className="selected-line"
+                >
+                  0 classes selected
+                </div>
+                <button
+                  className="btn-done"
+                  onClick={[Function]}
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="section additional"
+      >
+        <h2>
+          Additional Information
+        </h2>
+        <textarea
+          onChange={[Function]}
+          placeholder="(Optional)"
+        />
+      </div>
+      <div
+        className="section submit"
+      >
+        <div
+          className="submit-container"
+        >
+          <button
+            className=""
+          >
+            Submit
+          </button>
+          <p>
+            Information will be sent to:
+            <br />
+            <a>
+              andymathnavigator@gmail.com
+            </a>
+          </p>
+        </div>
+      </div>
+      <div
+        className="section errors"
+      >
+        <ul>
+          <li>
+            Please correctly fill the form in order to submit!
+          </li>
+          <li>
+            Please completely fill your student information.
+          </li>
+          <li>
+            Please completely fill your guardian information.
+          </li>
+          <li>
+            Pick at least one program.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
