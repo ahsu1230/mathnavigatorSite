@@ -103,7 +103,7 @@ export class ClassPage extends React.Component {
   }
 }
 
-class ClassContent extends React.Component {
+export class ClassContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,21 +124,14 @@ class ClassContent extends React.Component {
 
 	render() {
     // Variables
-    const info = this.props.info;
+    const info = this.props.info || {};
     const announcements = info.classAnnounce;
     const classKey = info.classKey;
     const classObj = info.classObj;
     const locationObj = info.location;
     const programObj = info.programObj;
     const sessions = info.sessions || [];
-    const prereqPrograms = info.prereqPrograms;
-
-    var sessionCounter = 0;
-    sessions.forEach(function(session) {
-      if (!session.canceled) {
-        sessionCounter++;
-      }
-    });
+    const prereqPrograms = info.prereqPrograms || [];
 
     // All Components
     const announce = generateAnnouncement(announcements,
@@ -148,7 +141,7 @@ class ClassContent extends React.Component {
     const textLocation = generateLocation(locationObj);
     const textTimes = generateTimes(classObj);
     const textPricing = generatePricing(classObj.priceLump,
-        classObj.pricePerSession, sessionCounter, classObj.paymentNotes);
+        classObj.pricePerSession, sessions, classObj.paymentNotes);
     const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
 
 		return (
@@ -263,7 +256,14 @@ function generateTimes(classObj) {
   );
 }
 
-function generatePricing(priceLump, pricePerSession, numSessions, paymentNotes) {
+function generatePricing(priceLump, pricePerSession, sessions, paymentNotes) {
+  var numSessions = 0;
+  sessions.forEach(function(session) {
+    if (!session.canceled) {
+      numSessions++;
+    }
+  });
+
   let line1;
   let line2;
   let line3;
