@@ -8,7 +8,7 @@ echo %count%
 
 IF %count% GTR 0 (
 	echo files available!
-	move %target%.json components\repos\json
+	move %target%.json components\repos\fetchers\json
 )ELSE (
 	echo no files!
 )
