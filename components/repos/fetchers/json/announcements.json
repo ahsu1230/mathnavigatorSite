@@ -1,56 +1,38 @@
 [
   {
-    "timestamp": 1564704364,
-    "date": "8/1/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": [],
-    "author": "The Math Navigator Family",
-    "message": "Welcome! We are pleased to announce that our Math Navigator website is ready for use! With this website, you can check what available programs we have and even upcoming programs in the near future. To view program details such as schedules and price, check out our classes by clicking on a Program in our Programs page. If you have any questions or any feedback (this website is still in beta-release), please contact us by using our Contact page. Thank you for being part of our community!"
-  },
-  {
-    "timestamp": 1564972571,
-    "date": "8/4/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": [],
-    "author": "Amy",
-    "message": "Because Montgomery County Public Schools will close starting 8/10,  we will temporarily move our classroom location to Cathay Future Center at 9400 Key West Ave, Rockville MD 20850. Web Design & Development will still be held at our home basement. We will make another announcement when the Winston Churchill High School classroom is available again (probably when the school year starts)."
-  },
-  {
-    "timestamp": 1565992347,
-    "date": "8/24/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": [],
-    "author": "Amy",
-    "message": "NO CLASSES between from 8/24 - 9/3."
-  },
-  {
-    "timestamp": 1567901664,
-    "date": "9/8/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": [],
-    "author": "Amy",
-    "message": "On 9/8, we will start Algebra II, AP Calculus AB/BC and SAT class (D) three classes with different location. Please check the class detail information."
-  },
-  {
-    "timestamp": 1568081913,
-    "date": "9/13/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_summer_c]",
-    "author": "Amy",
-    "message": "On 9/13, SAT Class (C)  will have Friday Class 6:00pm - 8:00pm and prep test again at Churchill room 110"
-  },
-  {
     "timestamp": 1568507835,
     "date": "9/20/2019",
+    "important": "",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_d]",
+    "author": "Amy",
+    "message": "On 9/20, SAT class (D) will have 3rd session on Friday Class 6:00pm - 8:00pm at Churchill H.S. room 110."
+  },
+  {
+    "timestamp": 1569163164,
+    "date": "9/27/2019",
     "important": "",
     "onHomePage": "TRUE",
     "classKeys": "[sat1_fall_d]",
     "author": "Amy",
-    "message": "On 9/20, SAT class (D) will have 3rd session on Friday Class 6:00pm - 8:00pm at Churchill H.S. room 110."
+    "message": "On 9/27 (Friday), SAT class (D) and SAT Class (C) prep test classroom will move to Hoover M.S. Room 36"
+  },
+  {
+    "timestamp": 1569163318,
+    "date": "10/4/2019",
+    "important": "",
+    "onHomePage": "",
+    "classKeys": "[ap_java_fall_a]",
+    "author": "Amy",
+    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm"
+  },
+  {
+    "timestamp": 1569163476,
+    "date": "10/5/2019",
+    "important": "",
+    "onHomePage": "",
+    "classKeys": "[amc10_fall_a]",
+    "author": "Amy",
+    "message": "On 10/5, we will start AMC10 class on Saturday 4:00pm - 6:00pm"
   }
 ]
