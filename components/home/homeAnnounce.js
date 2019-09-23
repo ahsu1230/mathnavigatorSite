@@ -80,7 +80,7 @@ class Popup extends React.Component {
         <div className="text-container">
           <p>{announce.shortMessage}</p>
         </div>
-        <Link to="/announcements">Read more &#62;</Link>
+        <Link to="/announcements" onClick={handleDismiss}>Read more &#62;</Link>
       </div>
     );
   }
