@@ -305,9 +305,9 @@ function generateSchedules(sessions, allYear, classTimes) {
   var sessionIndex = 0;
   const sessionLines = sessions.map(function(session, index) {
     var text1 = "";
-    var text2 = ""
+    var text2 = "";
     if (session.canceled) {
-      text1 = "Canceled";
+      text1 = "No Class";
       text2 = "";
     } else {
       text1 = session.time;
