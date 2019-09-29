@@ -12,7 +12,7 @@
     "timestamp": 1569163164,
     "date": "9/27/2019",
     "important": "",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_fall_d]",
     "author": "Amy",
     "message": "On 9/27 (Friday), SAT class (D) and SAT Class (C) prep test classroom will move to Hoover M.S. Room 36"
@@ -21,10 +21,10 @@
     "timestamp": 1569163318,
     "date": "10/4/2019",
     "important": "",
-    "onHomePage": "",
+    "onHomePage": "TRUE",
     "classKeys": "[ap_java_fall_a]",
     "author": "Amy",
-    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm"
+    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm."
   },
   {
     "timestamp": 1569163476,
@@ -33,6 +33,6 @@
     "onHomePage": "",
     "classKeys": "[amc10_fall_a]",
     "author": "Amy",
-    "message": "On 10/5, we will start AMC10 class on Saturday 4:00pm - 6:00pm"
+    "message": "On 10/5, we will start the AMC10 class on Saturday 4:00pm - 6:00pm"
   }
 ]
