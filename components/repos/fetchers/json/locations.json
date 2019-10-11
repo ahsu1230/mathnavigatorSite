@@ -26,5 +26,12 @@
     "address1": "9400 Key West Ave",
     "address2": "Rockville, MD 20850",
     "address3": "Room 116"
+  },
+  {
+    "locationId": "loc_wchs2",
+    "name": "Winston Churchill High School",
+    "address1": "11300 Gainsborough Rd",
+    "address2": "Potomac, MD 20854",
+    "address3": "Room 112"
   }
 ]
