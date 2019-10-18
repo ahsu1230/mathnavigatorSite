@@ -99,13 +99,20 @@
   },
   {
     "afhId": 15,
+    "date": "10/25/2019`",
+    "time": "Friday 6:00pm - 7:00pm",
+    "locationId": "loc_home",
+    "notes": "For Java Programming students"
+  },
+  {
+    "afhId": 16,
     "date": "10/26/2019",
     "time": "Saturday 3:00pm - 4:00pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
-    "afhId": 16,
+    "afhId": 17,
     "date": "10/28/2019",
     "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
