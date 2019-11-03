@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+}
+
+li {
+	margin-bottom: 24px;
+	list-style: none;
+}
+
+li {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+}
+
+li :hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.overlay-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.overlay-bg {
+	width: 100%;
+	height: 100%;
+	background-color: #222;
+	opacity: 0.8;
+}
+
+.dismiss {
+	position: absolute;
+	top: 24px;
+	right: 24px;
+	width: 24px;
+	height: 24px;
+}
+
+.dismiss:hover {
+	cursor: pointer;
+}
+
+.overlay-content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.overlay-content img {
+	width: 600px;
+}
+
+.bradleyIFV {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/bradleyIFV.jpg");
+}
+
+.humvee {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/humvee.jpg");
+}
+
+.strykerAPC {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/strykerAPC.jpg");
+}
+
+.strykerIFV {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/strykerIFV.jpg");
+}
+
+.strykerMGS {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/strykerMGS.jpg");
+}
+
+.m1abrams {
+	width: 200px;
+	height: 150px;
+	background-size: cover;
+	box-sizing: border-box;
+	background-image: url("../assets/m1abrams.png");
+}

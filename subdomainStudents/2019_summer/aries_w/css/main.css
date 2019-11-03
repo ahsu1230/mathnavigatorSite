@@ -1,0 +1,47 @@
+head {
+	font-family: 'Roboto', sans-serif;
+
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+
+}
+
+li {
+	display: inline-block;
+	margin: 5px;
+	border-color: white;
+	border-width: 5px;
+	background-color: #90ee90;
+}
+
+.pewdiepie {
+	background-color: #ffa500;
+}
+
+.header {
+	height: 90px;
+	text-align: center;
+	padding: 30px 0px;
+	box-sizing: border-box;
+	background-color: #ADC8D6;
+	line-height: 30px;
+}
+
+.menu {
+	display: inline-block;
+	width: 150px;
+	height: calc(100% - 94px);
+	background-color: #ffbccb;
+	overflow-y: auto;
+}
+
+.content {
+	display: inline-block;
+	width: calc(100% - 154px);
+	height: calc(100% - 94px);
+	background-color: white;
+	overflow-y: auto;
+	vertical-align: top;
+}

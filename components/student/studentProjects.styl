@@ -36,12 +36,11 @@
     margin: 0 auto
 
     &:hover
-      & .overlay
-        opacity: 0.5
-        cursor: pointer
-
-      & h4
+      & .card-content
         display: block
+
+      & .overlay
+        opacity: 0.8
 
     & .overlay
       position: absolute
@@ -51,14 +50,6 @@
       height: 100%
       background-color: colorBlackDark
       opacity: 0.0
-
-    & h4
-      display: none
-      position: absolute
-      top: 50%
-      left: 50%
-      transform: translate(-50%, -50%)
-      color: colorWhite
 
   & img
     display: block
@@ -75,3 +66,28 @@
       line-height: lineHeight1
       font-size: fontSize1
       color: colorPrimary
+
+#view-students-projects .project-card .card-content
+  display: none
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 100%
+  padding: spacing2x spacing4x
+  box-sizing: border-box
+
+  & h4
+    margin-bottom: spacing2x
+    color: colorWhite
+    text-align: center
+
+  & p
+    margin: spacing2x 0
+    color: colorWhite
+    text-align: center
+
+  & a
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)

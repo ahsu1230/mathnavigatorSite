@@ -1,0 +1,101 @@
+head {
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+
+}
+
+li {
+	margin: 5px;
+	background-color: #00ff00;
+}
+
+.pewdiepie {
+	background-color: #ffd700;
+}
+
+.header {
+	height: 90px;
+	text-align: center;
+	padding: 30px 0px;
+	box-sizing: border-box;
+	background-color: #0000ff;
+	line-height: 30px;
+}
+
+.menu {
+	display: inline-block;
+	width: 150px;
+	height: calc(100% - 94px);
+	background-color: #ff0000;
+	overflow-y: auto;
+}
+
+.contentLi{
+	display: inline-block;
+	width: 150px;
+	height: calc(100% - 94px);
+	background-color: #ff0000;
+	overflow-y: auto;
+}
+
+.content {
+	display: inline-block;
+	width: calc(100% - 154px);
+	height: calc(100% - 94px);
+	background-color: #d3d3d3;
+	overflow-y: auto;
+	vertical-align: top;
+}
+
+.search-form {
+	width: 320px;
+	margin: 0 auto;
+	padding: 12px;
+	border-bottom: 1px solid #bbb;
+}
+
+.search-icon {
+	width: 16px;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+.search-text {
+	width: 200px;
+	line-height: 20px;
+	border: 1px solid white;
+	outline: none;
+	font-size: 14px;
+}
+
+.search-form button {
+	float: right;
+	padding: 4px 8px;
+	border-radius: 8px;
+	outline: none;
+	vertical-align: middle;
+	background-color: white;
+	cursor: pointer;
+}
+
+.search-form button:hover {
+	background-color: #fafafa;
+}
+
+.pokedex-icon {
+	width: 16px;
+	margin-right: 2px;
+	vertical-align: middle;
+}
+
+h3 {
+	text-align: center;
+}
+
+ul {
+	width: 480px;
+	margin: 0 auto;
+}

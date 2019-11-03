@@ -10,6 +10,8 @@ import {
 const classnames = require('classnames');
 const srcBlank = require('../../assets/blank.png');
 
+const STUDENTS_DOMAIN = "https://www.students.andymathnavigator.com";
+
 export class StudentProjectsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -74,7 +76,7 @@ class ProjectCard extends React.Component {
       <div className="project-card">
         <div className="img-container">
           <div className="overlay"></div>
-          <h4>Coming Soon</h4>
+          <OverlayContent project={project}/>
           <img src={project.imgSrc || srcBlank}/>
         </div>
         <div className="info">
@@ -82,6 +84,39 @@ class ProjectCard extends React.Component {
           <h4>{project.title}</h4>
           <div>{project.school}, {project.grade}</div>
         </div>
+      </div>
+    );
+  }
+}
+
+class OverlayContent extends React.Component {
+  render() {
+    const project = this.props.project;
+    const content = createContent(project);
+    return (
+      <div>
+        {content}
+      </div>
+    );
+  }
+}
+
+function createContent(project) {
+  const fullUrl = STUDENTS_DOMAIN + project.url;
+  if (project.url) {
+    return (
+      <div className="card-content">
+        <h4>{project.title}</h4>
+        <p>{project.description}</p>
+        <a href={fullUrl} target="_blank">
+          <button>View</button>
+        </a>
+      </div>
+    );
+  } else {
+    return (
+      <div className="card-content">
+        <h4>Coming Soon</h4>
       </div>
     );
   }

@@ -1,0 +1,100 @@
+body {
+	margin: 0;
+}
+.headercolor {
+	background-color: white;
+	width: 100%;
+}
+ul {
+  display: block;
+	margin: 0 auto;
+	background-color: white;
+	color: white;
+	text-align:left;  
+	width:500px;
+	font-size: 30px;
+	overflow: hidden;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #CFCFCF;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+li a:hover {
+	font-size:  30.5px;
+}
+.screen {
+	width: 1080px;
+	height: 400px;
+	margin: 0 auto;
+}
+.Headers {
+	color: #CFCFCF;
+	text-align:center;  
+	font-family: 'Nanum Brush Script', cursive;
+	font-size: 80px;
+}
+p {
+	color: #CFCFCF;
+	display: block;
+	font-family: 'Lato', sans-serif;
+	font-size: 40px;
+	text-align: center;
+}
+
+.mainpageimg {
+	display: inline-block;
+	padding-bottom: 10px;
+	height: width;
+	width: 48%;
+	overflow: hidden;
+}
+.littlediv {
+	width: 1000px;
+	margin: 0 auto;
+}
+#lastdiv {
+	padding-bottom: 100px;
+}
+
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #CFCFCF;
+}
+.footerh3 {
+	display: inline-block;
+	margin: 0;
+	width: 200px;
+	height: 50px;
+	position: relative;
+	Top: 20px;
+	Left: 280px;
+	font-size: 30px;
+	color: white;
+}
+.footerp {
+	color: white;
+	display: inline-block;
+	margin: 0;
+	position: relative;
+	Top: 20px;
+	Left: 220px;
+	font-size: 20px;
+}
+
+
+
+
+

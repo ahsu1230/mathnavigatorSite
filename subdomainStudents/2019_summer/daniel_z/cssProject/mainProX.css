@@ -1,0 +1,77 @@
+
+#mainheader {
+	height: 95px;
+	padding: 25px;
+	line-height: 25px;
+	background-color: #939BFF;
+	position: relative;
+}
+
+#leftheader {
+	display: inline-block;
+}
+
+#header-left {
+	float: left;
+}
+
+#header-right {
+	float: right;
+}
+
+#futuremissions {
+	display: inline-block;
+}
+
+#about {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#home {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.buttons {
+	font-size: 20px;
+}
+
+#Exa {
+	font-size: 20px;
+	float: right;
+	display: inline-block;
+	position: absolute;
+	bottom: 0px;
+	right: 45px;
+}
+
+#Siriuslogo {
+	width: 100px;
+	height: 100px;
+}
+
+#apollo50 {
+	float: center;
+	margin-top: 17px;
+}
+
+#Dedic {
+	text-align: center;
+	margin-top: 17px;
+	color: white;
+}
+
+#Inspiration {
+	text-align: center;
+	margin-top: 17px;
+}
+
+#creation {
+	text-align: center;
+	margin-top: 17px;
+}
+
+p {
+	color: white;
+}
