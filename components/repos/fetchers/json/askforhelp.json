@@ -1,114 +1,51 @@
 [
   {
     "afhId": 1,
-    "date": "9/23/2019",
+    "date": "11/4/2019",
     "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
+    "notes": "For All classes students"
   },
   {
     "afhId": 2,
-    "date": "9/24/2019",
-    "time": "Tuesday 6:30pm - 7:30pm",
+    "date": "11/7/2019",
+    "time": "Thursday 7:30pm - 8:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 3,
-    "date": "9/28/2019",
-    "time": "Saturday 4:00pm - 5:00pm",
+    "date": "11/11/2019",
+    "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 4,
-    "date": "9/30/2019",
-    "time": "Monday 9:00pm - 10:00pm",
+    "date": "11/14/2019",
+    "time": "Thursday 7:30pm - 8:30pm",
     "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
+    "notes": "For All classes students"
   },
   {
     "afhId": 5,
-    "date": "10/3/2019",
-    "time": "Thursday 7:30pm - 8:30pm",
+    "date": "11/18/2019",
+    "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 6,
-    "date": "10/5/2019",
-    "time": "Saturday 3:00pm - 4:00pm",
+    "date": "11/21/2019",
+    "time": "Thursday 7:30pm - 8:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 7,
-    "date": "10/7/2019",
+    "date": "11/25/2019",
     "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
-  },
-  {
-    "afhId": 8,
-    "date": "10/10/2019",
-    "time": "Thursday 7:30pm - 8:30pm",
-    "locationId": "loc_wchs",
     "notes": "For All classes students"
-  },
-  {
-    "afhId": 9,
-    "date": "10/12/2019",
-    "time": "Saturday 3:00pm - 4:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For All classes students"
-  },
-  {
-    "afhId": 10,
-    "date": "10/14/2019",
-    "time": "Monday 9:00pm - 10:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
-  },
-  {
-    "afhId": 11,
-    "date": "10/17/2019",
-    "time": "Thursday 7:30pm - 8:30pm",
-    "locationId": "loc_wchs",
-    "notes": "For All classes students"
-  },
-  {
-    "afhId": 12,
-    "date": "10/19/2019",
-    "time": "Saturday 3:00pm - 4:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For All classes students"
-  },
-  {
-    "afhId": 13,
-    "date": "10/21/2019",
-    "time": "Monday 9:00pm - 10:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
-  },
-  {
-    "afhId": 14,
-    "date": "10/24/2019",
-    "time": "Thursday 7:30pm - 8:30pm",
-    "locationId": "loc_wchs",
-    "notes": "For All classes students"
-  },
-  {
-    "afhId": 15,
-    "date": "10/26/2019",
-    "time": "Saturday 3:00pm - 4:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For All classes students"
-  },
-  {
-    "afhId": 16,
-    "date": "10/28/2019",
-    "time": "Monday 9:00pm - 10:00pm",
-    "locationId": "loc_wchs",
-    "notes": "For Pre-Calculus class students"
   }
 ]

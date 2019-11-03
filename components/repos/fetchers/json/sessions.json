@@ -748,8 +748,8 @@
     "classKey": "sat1_fall_d",
     "date": "10/25/2019",
     "canceled": "",
-    "time": "Friday 8:00pm - 9:40pm",
-    "notes": "SAT Prep Test, Classroom Change to  Hoover M.S. Room 36"
+    "time": "Email Prep test to you",
+    "notes": "SAT Prep Test, NO CLASSROOM available."
   },
   {
     "sessionId": 95,
@@ -3080,6 +3080,14 @@
     "notes": ""
   },
   {
+    "sessionId": 385,
+    "classKey": "ap_java_fall_a",
+    "date": "10/18/2019",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": ""
+  },
+  {
     "sessionId": 386,
     "classKey": "ap_java_fall_a",
     "date": "11/29/2019",
@@ -3154,9 +3162,9 @@
   {
     "sessionId": 395,
     "classKey": "college_fall_a",
-    "date": "11/9/2019",
+    "date": "11/8/2019",
     "canceled": "",
-    "time": "Saturday 2:00pm - 4:00pm",
+    "time": "Friday 6:30pm - 8:30pm",
     "notes": ""
   },
   {

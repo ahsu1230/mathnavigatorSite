@@ -12,7 +12,7 @@
     "timestamp": 1569163164,
     "date": "9/27/2019",
     "important": "",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_fall_d]",
     "author": "Amy",
     "message": "On 9/27 (Friday), SAT class (D) and SAT Class (C) prep test classroom will move to Hoover M.S. Room 36"
@@ -24,15 +24,42 @@
     "onHomePage": "",
     "classKeys": "[ap_java_fall_a]",
     "author": "Amy",
-    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm"
+    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm."
   },
   {
-    "timestamp": 1569163476,
+    "timestamp": 1570563757,
     "date": "10/5/2019",
     "important": "",
     "onHomePage": "",
     "classKeys": "[amc10_fall_a]",
     "author": "Amy",
-    "message": "On 10/5, we will start AMC10 class on Saturday 4:00pm - 6:00pm"
+    "message": "On 10/5, we will start the AMC10 class on Saturday 4:00pm - 6:00pm"
+  },
+  {
+    "timestamp": 1571961600,
+    "date": "10/25/2019",
+    "important": "",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_d]",
+    "author": "Amy",
+    "message": "On 10/25,SAT class (D) will start the first prep test and will EMAIL the prep test to all students due to NO CLASSROOM AVAILABLE."
+  },
+  {
+    "timestamp": 1572314580,
+    "date": "10/31/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[geometry_fall_a]",
+    "author": "Amy",
+    "message": "NO Geometry class on 10/31 - Happy Halloween!"
+  },
+  {
+    "timestamp": 1572314618,
+    "date": "11/2/2019",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_e]",
+    "author": "Amy",
+    "message": "On 11/2, we will start the new SAT class (E) on Saturday 2:00pm - 4:00pm at Churchill H.S. room 110."
   }
 ]
