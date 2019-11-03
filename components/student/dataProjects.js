@@ -32,7 +32,7 @@ const summer2019 = [
     student1: "Aries",
     grade: "11th Grade",
     school: "Richard Montgomery H.S.",
-    title: "Aries’s Website",
+    title: "Aries's Website",
     description: "This website is a concept testing website about equipment used in the military such as planes and vehicles.",
     imgSrc: srcThumbnailAries,
     url: "/2019_summer/aries_w/index.html"

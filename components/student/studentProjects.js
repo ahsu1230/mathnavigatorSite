@@ -82,7 +82,7 @@ class ProjectCard extends React.Component {
         <div className="info">
           <h4>{project.student1}</h4>
           <h4>{project.title}</h4>
-          <div>{project.school}, {project.grade}</div>
+          <div>{project.school} {project.grade}</div>
         </div>
       </div>
     );
