@@ -1,59 +1,5 @@
 [
   {
-    "timestamp": 1568507835,
-    "date": "9/20/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_d]",
-    "author": "Amy",
-    "message": "On 9/20, SAT class (D) will have 3rd session on Friday Class 6:00pm - 8:00pm at Churchill H.S. room 110."
-  },
-  {
-    "timestamp": 1569163164,
-    "date": "9/27/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_d]",
-    "author": "Amy",
-    "message": "On 9/27 (Friday), SAT class (D) and SAT Class (C) prep test classroom will move to Hoover M.S. Room 36"
-  },
-  {
-    "timestamp": 1569163318,
-    "date": "10/4/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[ap_java_fall_a]",
-    "author": "Amy",
-    "message": "On 10/4, we will start the Java Programming class on Friday 7:00pm - 9:00pm."
-  },
-  {
-    "timestamp": 1570563757,
-    "date": "10/5/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[amc10_fall_a]",
-    "author": "Amy",
-    "message": "On 10/5, we will start the AMC10 class on Saturday 4:00pm - 6:00pm"
-  },
-  {
-    "timestamp": 1571961600,
-    "date": "10/25/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_d]",
-    "author": "Amy",
-    "message": "On 10/25,SAT class (D) will start the first prep test and will EMAIL the prep test to all students due to NO CLASSROOM AVAILABLE."
-  },
-  {
-    "timestamp": 1572314580,
-    "date": "10/31/2019",
-    "important": "",
-    "onHomePage": "TRUE",
-    "classKeys": "[geometry_fall_a]",
-    "author": "Amy",
-    "message": "NO Geometry class on 10/31 - Happy Halloween!"
-  },
-  {
     "timestamp": 1572314618,
     "date": "11/2/2019",
     "important": "TRUE",
@@ -61,5 +7,14 @@
     "classKeys": "[sat1_fall_e]",
     "author": "Amy",
     "message": "On 11/2, we will start the new SAT class (E) on Saturday 2:00pm - 4:00pm at Churchill H.S. room 110."
+  },
+  {
+    "timestamp": 1572959900,
+    "date": "11/5/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[sat1_fall_e]",
+    "author": "Amy",
+    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 7:30pm-8:30pm"
   }
 ]
