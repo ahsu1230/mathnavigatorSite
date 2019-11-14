@@ -49,20 +49,14 @@ body {
 	background-color: #0000ff;
 }
 
-.home-page-img{
-	width: 45%;
-	height: 680px;
-	display: inline-block;
-	background-size: cover;
-	background-position: center;
-	position: relative;
-	top: 10px;
+.about {
+
 }
 
-.deca-logo {
-	background-image: url("../assets/decalogo.jpg");
+.contact {
+	
 }
 
-.rm-logo {
-	background-image: url("../assets/rmlogo.png");
+.social-media {
+	
 }
