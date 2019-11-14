@@ -180,21 +180,6 @@
     "paymentNotes": "First of every month"
   },
   {
-    "programId": "college",
-    "classId": "fall_a",
-    "key": "college_fall_a",
-    "className": "Fall",
-    "semesterId": "2019_fall",
-    "locationId": "loc_wchs2",
-    "times": "[Friday 6:30pm - 8:30pm]",
-    "startDate": "11/8/2019",
-    "endDate": "",
-    "allYear": "",
-    "pricePerSession": "",
-    "priceLump": 60,
-    "paymentNotes": ""
-  },
-  {
     "programId": "",
     "classId": "",
     "key": "",
