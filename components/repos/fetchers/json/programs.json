@@ -89,5 +89,12 @@
     "grade1": 10,
     "grade2": 11,
     "description": "For Sophmores or Juniors need to know how to get ready for college, including essays, college selection, and the application process?"
+  },
+  {
+    "programId": "Intern",
+    "title": "WebDesign Internship",
+    "grade1": 8,
+    "grade2": 16,
+    "description": "We will provide four internship opportuninites to the students who are interested in joining the designation for MathNavigator website from January 2020. The candidate students can be middle school students, high school students or college students. The salary hourly rate ranges are from $17 - $25 depending on the students' capabilities."
   }
 ]
