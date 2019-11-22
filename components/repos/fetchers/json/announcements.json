@@ -11,10 +11,19 @@
   {
     "timestamp": 1572959900,
     "date": "11/5/2019",
-    "important": "",
-    "onHomePage": "TRUE",
+    "important": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_fall_e]",
     "author": "Amy",
     "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 7:30pm-8:30pm"
+  },
+  {
+    "timestamp": 1574437328,
+    "date": "11/28/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[sat1_fall_e,amc10_fall_a]",
+    "author": "Amy",
+    "message": "Happy Thanksgiving! NO CLASS from 11/28-11/30"
   }
 ]
