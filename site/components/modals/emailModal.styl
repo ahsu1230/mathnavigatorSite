@@ -1,0 +1,172 @@
+@import "../static.styl"
+
+colorLoading = colorPrimary
+colorSuccess = colorTurquoiseLight
+colorFail = colorBlue
+
+#email-modal
+  width: propUnit12x
+  height: propUnit6x
+  transition: height 0.1s linear
+
+  &.success
+    height: propUnit9x
+  &.fail
+    height: propUnit12x
+
+  & .container
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    visibility: hidden
+
+  & .content
+    opacity: 0.0
+    transition: all 0.2s linear
+
+  & .container.show
+    visibility: visible
+    & .content
+      opacity: 1.0
+
+  & h1
+    margin: spacing4x 0 !important
+    text-align: center
+
+
+#email-modal .container.loading
+  & .dots-container
+    display: inline-block
+    position: relative
+    left: 50%
+    transform: translateX(-50%)
+
+  & .dots
+    display: inline-block
+    position: relative
+    top: 50%
+    transform: translateY(-50%)
+    width: 3px
+    height: 24px
+
+  & .dot
+    position: absolute
+    right: 0
+    width: 3px
+    height: 3px
+    background-color: colorPrimary
+    animation-iteration-count: infinite
+    animation-direction: forwards
+
+    &.dot1
+      top: 4px
+      animation-name: lengthen1
+      animation-duration: 1000ms
+      animation-timing-function: ease-out
+    &.dot2
+      top: 11px
+      animation-name: lengthen2
+      animation-duration: 800ms
+      animation-timing-function: linear
+    &.dot3
+      top: 18px
+      animation-name: lengthen3
+      animation-duration: 1200ms
+      animation-timing-function: ease-in
+
+  & img
+    display: inline-block
+    width: 48px
+
+
+#email-modal .container.success
+
+  & .content
+    transform: translate(0, 5%)
+    &.show
+      transform: translate(0, 0)
+
+    & h1
+      color: colorSuccess
+
+    & .img-wrapper
+      position: relative
+      width: 64px
+      height: 64px
+      margin: 0 auto
+      border-radius: 100%
+      background-color: colorSuccess
+
+    & img
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 24px
+
+    & p
+      text-align: center
+    & a
+      text-align: center
+
+#email-modal .container.fail
+
+  & .content
+    transform: translate(0, 5%)
+    &.show
+      transform: translate(0, 0)
+
+    & h1
+      color: colorFail
+
+    & img
+      display: block
+      width: 40px
+      margin: spacing2x auto
+
+    & p
+      width: 80%
+      margin: 0 auto
+      text-align: center
+
+    & textarea
+      display: block
+      width: 90%
+      height: propUnit4x
+      margin: 0 auto
+      resize: none
+      outline: colorPrimary
+
+    & a
+      display: block
+      margin-top: spacing2x
+      text-align: center
+
+    & b
+      color: colorBlue
+
+
+@keyframes lengthen1
+	0% {
+		width: 3px
+	}
+	50% {
+		width: 28px
+	}
+
+@keyframes lengthen2
+	0% {
+		width: 3px
+	}
+	50% {
+		width: 20px
+	}
+
+@keyframes lengthen3
+	0% {
+		width: 3px
+	}
+	50% {
+		width: 32px
+	}

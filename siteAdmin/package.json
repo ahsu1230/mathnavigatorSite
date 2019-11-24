@@ -1,0 +1,37 @@
+{
+  "name": "siteAdmin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build index.html",
+    "run": "parcel index.html"
+  },
+  "prebuild": "rm -rf dist",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahsu1230/mathnavigatorSite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahsu1230/mathnavigatorSite/issues"
+  },
+  "homepage": "https://github.com/ahsu1230/mathnavigatorSite#readme",
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "classnames": "^2.2.6",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
+    "parcel": "^1.12.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "stylus": "^0.54.7"
+  }
+}

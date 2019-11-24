@@ -1,0 +1,103 @@
+@import "../static.styl"
+
+body
+  margin: 0
+  background-color: colorBackground
+  color: colorBlackDark
+  font-family: fontFamilyRoboto
+  font-size: fontSize0
+  font-weight: 400
+  letter-spacing: letterSpacingRoboto
+
+h1
+  margin: 0
+  line-height: lineHeight3
+  font-family: fontFamilyRockwell
+  font-size: fontSize3
+  font-weight: 400
+  letter-spacing: letterSpacingRockwell
+
+h2
+  margin: 0
+  line-height: lineHeight2
+  font-family: fontFamilyRoboto
+  font-size: fontSize2
+  font-weight: 400
+  letter-spacing: letterSpacingRoboto
+
+h3
+  margin: 0
+  line-height: lineHeight1
+  font-family: fontFamilyRoboto
+  font-size: fontSize1
+  font-weight: bold
+  letter-spacing: letterSpacingRoboto
+
+h4
+  margin: 0
+  line-height: lineHeight0
+  font-family: fontFamilyRoboto
+  font-size: fontSize0
+  font-weight: bold
+  letter-spacing: letterSpacingRoboto
+
+p
+  margin: spacing4x 0
+  line-height: lineHeight0
+  font-family: fontFamilyRoboto
+  font-size: fontSize0
+  font-weight: 400
+  letter-spacing: letterSpacingRoboto
+
+.logo
+  font-family: fontFamilyRockwell
+  font-size: 17px
+  letter-spacing: letterSpacingRockwell
+
+  &:before
+    content: 'Math Navigator'
+
+button
+  padding: spacing1x spacing2x
+  outline: none
+  border: none
+  background-color: colorOrange
+  color: colorWhite
+  font-family: fontFamilyRoboto
+  font-size: fontSize0
+  line-height: lineHeight0
+  letter-spacing: letterSpacingRoboto
+  cursor: pointer
+
+  &:hover
+    filter: brightness(110%)
+
+  &.inverted
+    color: colorOrange
+    background-color: colorWhite
+    border: 1px solid colorOrange
+
+    &:hover
+      color: colorWhite
+      background-color: colorOrange
+
+a
+  color: colorBlue
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+
+.use-scrollbar
+  // For Firefox
+  scrollbar-color: colorPrimary colorWhiteLight
+  scrollbar-width: thin
+
+  // For Chrome & Safari
+  &::-webkit-scrollbar
+    width: 6px
+  &::-webkit-scrollbar-track
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+  &::-webkit-scrollbar-thumb
+    background-color: colorPrimary

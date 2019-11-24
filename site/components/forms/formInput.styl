@@ -1,0 +1,62 @@
+@import "../static.styl"
+.form-input
+  display: inline-block
+  margin-right: spacing4x
+  vertical-align: top
+
+  @media screen and (max-width: mediaWidth1)
+    width: 100%
+    margin-right: 0
+
+  & input
+    height: 28px
+    margin: spacing1x 0 0
+    padding: 0 spacing1x
+    font-family: fontFamilyRoboto
+    font-size: fontSize0
+    border: 1px solid colorPrimary
+
+    &:focus
+      outline-color: colorTurquoiseLight
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
+      margin-bottom: spacing2x
+
+  & label:first-child
+    display: block
+    line-height: lineHeight0
+    font-family: fontFamilyRoboto
+    font-size: fontSize0
+    color: colorBlackDark
+
+  & label:last-child
+    display: block
+    line-height: lineHeight0
+    font-family: fontFamilyRoboto
+    font-size: fontSize0
+
+
+  &.student-fname input
+  &.student-lname input
+    width: propUnit6x
+
+  &.student-age input
+    width: propUnit1x
+  &.student-grade input
+    width: propUnit1x
+  &.student-school input
+    width: 270px
+
+  &.student-phone input
+    width: propUnit4x
+  &.student-email input
+    width: propUnit8x
+
+  &.guard-fname input
+  &.guard-lname input
+    width: propUnit6x
+  &.guard-phone input
+    width: propUnit4x
+  &.guard-email input
+    width: propUnit8x

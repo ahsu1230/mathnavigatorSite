@@ -1,0 +1,67 @@
+@import "../static.styl"
+
+#view-footer
+  width: 100%
+  min-height: propUnit6x
+  padding: propUnit3x 0
+  background-color: colorPrimary
+
+  #view-footer-container
+    width: containerWidthPct
+    max-width: containerWidthPx1
+    margin: 0 auto
+
+    & a, p, h1, h2
+      color: colorWhite
+
+#view-footer-container ul
+  float: left
+
+  & li
+    margin: spacing2x 0
+
+  & a:hover
+    color: colorTurquoiseLight !important
+    text-decoration: none
+
+  @media screen and (max-width: mediaWidth1)
+    float: none
+    margin-bottom: spacing4x
+    text-align: center
+
+#view-footer-container .logo-container
+  float: right
+  width: 240px
+  text-align: right
+
+  & img
+    width: 28px
+    margin-right: 12px
+
+    @media screen and (max-width: mediaWidth1)
+      display: block
+      margin: spacing4x auto spacing2x
+
+  & h1
+    display: inline-block
+    vertical-align: top
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+
+    @media screen and (max-width: mediaWidth1)
+      text-align: center
+
+  & h2
+    margin-top: spacing1x
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & p
+    line-height: 24px
+    font-size: 12px
+
+  @media screen and (max-width: mediaWidth1)
+    float: none
+    margin: 0 auto
+    text-align: center

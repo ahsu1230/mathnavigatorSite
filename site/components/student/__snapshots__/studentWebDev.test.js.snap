@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test snapshot 1`] = `
+<div
+  id="view-students-wb"
+>
+  <div
+    id="view-students-wb-container"
+  >
+    <h1>
+      Overview for Students
+    </h1>
+    <h2>
+      Website Design & Development
+    </h2>
+    <p>
+       
+      When enrolled in our Website Development Program, students will create multiple mini-projects as exercises to apply their knowledge in website development. These small projects will allow students to recreate popular website designs and to creatively design their own!
+       
+    </p>
+    <div
+      className="section ig-header"
+    >
+      <h2>
+        Instagram Header
+      </h2>
+      <div
+        className="propz-container"
+      >
+        <img
+          src="test-file-stub"
+        />
+        <div
+          className="propz up"
+          style={
+            Object {
+              "left": "45%",
+              "top": "10px",
+            }
+          }
+        >
+          <div
+            className="tri"
+          />
+          <div>
+            Created by 
+            Evelyn
+          </div>
+          <div>
+            8th Grade
+          </div>
+        </div>
+      </div>
+      <div
+        className="credit"
+      >
+        Created by 
+        Evelyn
+        , 
+        8th Grade
+      </div>
+      <p>
+        Our first project in this class is recreating the header of Instagram's website. We teach students how to render images and position them to perfectly match the real website's header pixel by pixel!
+      </p>
+    </div>
+    <div
+      className="section tesla"
+    >
+      <h2>
+        Tesla's Social Media
+      </h2>
+      <div
+        className="tesla-container"
+      >
+        <div
+          className="propz-container"
+        >
+          <img
+            src="test-file-stub"
+          />
+          <div
+            className="propz right"
+            style={
+              Object {
+                "left": "132%",
+                "top": "156px",
+              }
+            }
+          >
+            <div
+              className="tri"
+            />
+            <div>
+              Created by 
+              Richard
+            </div>
+            <div>
+              12th Grade
+            </div>
+          </div>
+        </div>
+        <div
+          className="social-links"
+        >
+          <a
+            href="https://www.facebook.com/TeslaMoto"
+            target="_blank"
+          >
+            <div
+              className="icon social-fb"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com/teslamotors/"
+            target="_blank"
+          >
+            <div
+              className="icon social-ig"
+            />
+          </a>
+          <a
+            href="https://twitter.com/tesla"
+            target="_blank"
+          >
+            <div
+              className="icon social-tw"
+            />
+          </a>
+          <a
+            href="https://www.youtube.com/channel/UC5WjFrtBdufl6CZojX3D8dQ"
+            target="_blank"
+          >
+            <div
+              className="icon social-yt"
+            />
+          </a>
+        </div>
+      </div>
+      <div
+        className="credit"
+      >
+        Created by 
+        Richard
+        , 
+        12th Grade
+      </div>
+      <p>
+        Many large companies provide links to their social media pages in order to increase user engagement. But simply providing hyperlinks is boring - interactive icons are better. Hover over the social media icons under the Tesla logo to try it yourself!
+      </p>
+    </div>
+    <div
+      className="section profiles"
+    >
+      <h2>
+        Professional Profile Cards
+      </h2>
+      <div
+        className="propz-container"
+      >
+        <img
+          className="img1"
+          src="test-file-stub"
+        />
+        <div
+          className="propz up"
+          style={
+            Object {
+              "left": "70%",
+              "top": "0px",
+            }
+          }
+        >
+          <div
+            className="tri"
+          />
+          <div>
+            Created by 
+            Gaoxing
+          </div>
+          <div>
+            12th Grade
+          </div>
+        </div>
+        <div
+          className="credit"
+        >
+          Created by 
+          Gaoxing
+          , 
+          12th Grade
+        </div>
+      </div>
+      <div>
+        <div
+          className="descriptions"
+        >
+          <p>
+            Web design is a crucial element for modern websites to succeed. We encourage students to make their websites not only functional, but also aesthetically pleasing. In this project, we study how to create design-forward cards to present people or creative content in a professional fashion.
+          </p>
+          <p>
+            With the introduction of mobile phones and tablets, websites are no longer browsed only with desktops. So we have our students create responsive websites that alter their structure based on browser screen size. Make your browser window larger or smaller to see the difference!
+          </p>
+        </div>
+        <div
+          className="propz-container"
+        >
+          <img
+            className="img2"
+            src="test-file-stub"
+          />
+          <div
+            className="propz down"
+            style={
+              Object {
+                "left": "30%",
+                "top": "90%",
+              }
+            }
+          >
+            <div
+              className="tri"
+            />
+            <div>
+              Created by 
+              Jessica
+            </div>
+            <div>
+              12th Grade
+            </div>
+          </div>
+          <div
+            className="credit"
+          >
+            Created by 
+            Jessica
+            , 
+            12th Grade
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="section yelp"
+    >
+      <h2>
+        Yelp Search Results
+      </h2>
+      <p>
+        Using some advanced Javascript techniques, you can produce long lists of content like Yelp's search results. In our class, students simulate the same functionality to produce pixel-perfect Yelp content!
+      </p>
+      <div
+        className="propz-container"
+      >
+        <img
+          src="test-file-stub"
+        />
+        <div
+          className="propz right"
+          style={
+            Object {
+              "left": "80%",
+              "top": "164px",
+            }
+          }
+        >
+          <div
+            className="tri"
+          />
+          <div>
+            Created by 
+            Daniel
+          </div>
+          <div>
+            11th Grade
+          </div>
+        </div>
+      </div>
+      <div
+        className="credit"
+      >
+        Created by 
+        Daniel
+        , 
+        11th Grade
+      </div>
+    </div>
+    <h3>
+      And more coming soon!
+    </h3>
+  </div>
+</div>
+`;

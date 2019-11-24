@@ -1,0 +1,51 @@
+@import "../static.styl"
+
+#view-afh-container
+  width: propUnit16x
+  margin: 0 auto spacing16x
+
+  @media screen and (max-width: mediaWidth1)
+    width: 100%
+    margin: 0 0 spacing16x
+    padding: 0 spacing2x
+    box-sizing: border-box
+
+  & h1
+    margin: spacing12x 0 spacing4x
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+    color: colorPrimary
+
+    @media screen and (max-width: mediaWidth1)
+      text-align: center
+
+  & p
+    margin-bottom: spacing8x
+
+    @media screen and (max-width: mediaWidth1)
+      text-align: center
+
+  & h2
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorPrimary
+
+  & .location
+  & .times
+  & .notes
+    margin: spacing1x 0
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & .notes
+    margin-top: spacing2x
+
+
+  & a.back-programs
+    display: inline-block
+    margin-top: spacing8x
+    line-height: lineHeight0
+    font-size: fontSize0
+
+    @media screen and (max-width: mediaWidth1)
+      margin-top: 0

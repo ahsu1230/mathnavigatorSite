@@ -1,0 +1,68 @@
+head {
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+.header {
+	height: 90px;
+	width: 100%;
+	padding: 30px 0px;
+	background-color: #000000;
+	font-size: 40px;
+	text-align: center;
+	box-sizing: border-box;
+	line-height: 30px;
+}
+
+.blue {
+	color: #0000GG;
+}
+
+.gold {
+	color: #d4af37;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.other-page {
+	width: 24%;
+	height: 50px;
+	margin: 0px;
+	background-color: #a0a0e6;
+	font-size: 25px;
+	display: inline-block;
+	text-align: center;
+	line-height: 40px;
+	
+}
+
+.other-page.hover {
+	background-color: #0000ff;
+}
+
+.home-page-img{
+	width: 45%;
+	height: 680px;
+	display: inline-block;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+	top: 10px;
+}
+
+.deca-logo {
+	background-image: url("../assets/decalogo.jpg");
+}
+
+.rm-logo {
+	background-image: url("../assets/rmlogo.png");
+}

@@ -1,0 +1,93 @@
+@import "../static.styl"
+
+#view-students-projects
+  width: containerWidthPct
+  max-width: containerWidthPx2
+  margin: spacing12x auto spacing16x
+
+  & h1, h3
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+    color: colorPrimary
+    text-align: center
+
+  & p
+    text-align: center
+
+  & .section
+    & h3
+      line-height: propUnit2x
+      border-bottom: 1px solid colorGrayLight
+
+    & ul
+      margin-top: spacing4x
+
+    & li
+      margin-bottom: spacing8x
+
+
+#view-students-projects .project-card
+
+  & .img-container
+    position: relative
+    width: 440px
+    height: 330px
+    margin: 0 auto
+
+    &:hover
+      & .card-content
+        display: block
+
+      & .overlay
+        opacity: 0.8
+
+    & .overlay
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background-color: colorBlackDark
+      opacity: 0.0
+
+  & img
+    display: block
+    width: 100%
+    height: 100%
+
+  & .info
+    margin-top: spacing2x
+    line-height: lineHeight0
+    font-size: fontSize0
+    text-align: center
+
+    & h4
+      line-height: lineHeight1
+      font-size: fontSize1
+      color: colorPrimary
+
+#view-students-projects .project-card .card-content
+  display: none
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 100%
+  padding: spacing2x spacing4x
+  box-sizing: border-box
+
+  & h4
+    margin-bottom: spacing2x
+    color: colorWhite
+    text-align: center
+
+  & p
+    margin: spacing2x 0
+    color: colorWhite
+    text-align: center
+
+  & a
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)

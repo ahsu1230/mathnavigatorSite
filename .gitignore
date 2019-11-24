@@ -1,6 +1,10 @@
-node_modules/*
-build/*
-.cache
-dist
-package-lock.json
-ftp.tmp
+site/node_modules/*
+site/build/*
+site/.cache
+site/dist
+site/package-lock.json
+site/ftp.tmp
+
+siteAdmin/node_modules/*
+siteAdmin/dist/*
+siteAdmin/package-lock.json

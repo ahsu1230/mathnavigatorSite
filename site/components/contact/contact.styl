@@ -1,0 +1,119 @@
+@import "../static.styl"
+
+#view-contact-container
+  width: containerWidthPct
+  max-width: containerWidthPx1
+  margin: 0 auto spacing24x
+
+  & .section
+    margin: spacing4x 0 spacing8x
+
+  & h1
+    margin: spacing8x 0 spacing6x
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+    color: colorPrimary
+
+  & h2
+    margin: spacing6x 0 spacing2x
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorPrimary
+
+  & h3
+    line-height: lineHeight0
+    font-size: fontSize0
+    font-weight: 400
+    color: colorBlackDark
+
+#view-contact-container
+  & .contact-input-container
+    margin: spacing2x 0
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
+
+#view-contact-container
+  & .section.interested h2
+    margin-bottom: spacing2x
+
+  & .section.additional
+    margin-bottom: spacing2x
+
+    & h2
+      margin-bottom: spacing2x
+
+    & textarea
+      width: propUnit16x
+      height: propUnit4x
+      padding: spacing2x
+      box-sizing: border-box
+      font-family: fontFamilyRoboto
+      font-size: fontSize0
+      line-height: lineHeight0
+      resize: none
+      outline: colorPrimary
+
+      &:focus
+        outline-color: colorTurquoiseLight
+
+      @media screen and (max-width: mediaWidth1)
+        width: 100%
+        border: 1px solid colorBlackDark
+
+  & .section.submit
+    position: relative
+    width: propUnit16x
+
+    @media screen and (max-width: mediaWidth1)
+      width: 100%
+
+    & p
+      margin: 0
+      line-height: lineHeight0
+      font-size: fontSize0
+      color: colorBlackDark
+
+    & .list-fields-remaining
+      margin-top: spacing2x
+      font-size: fontSize0
+      display: none
+
+      &.show
+        display: block
+
+      & ul
+        margin: 0
+
+    & button
+      position: absolute
+      right: 0
+      top: 0
+      background-color: colorGrayLight
+      color: colorBlackDark
+      cursor: initial
+
+      &:hover
+        filter: none
+
+      &.active
+        background-color: colorOrange
+        color: colorWhite
+        cursor: pointer
+
+        &:hover
+          filter: brightness(110%)
+
+      @media screen and (max-width: mediaWidth1)
+        position: static
+        margin-bottom: spacing4x
+
+  & .section.errors li
+    line-height: lineHeight0
+    font-size: fontSize0
+    color: colorOrange
+
+    &:first-child
+      color: colorBlack
+      margin-bottom: spacing1x

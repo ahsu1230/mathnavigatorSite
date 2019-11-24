@@ -1,0 +1,69 @@
+@import "../static.styl"
+
+#view-achievements-container
+  width: containerWidthPct
+  max-width: containerWidthPx2
+  margin: 0 auto spacing16x
+
+
+  & h1
+    margin-top: spacing12x
+    line-height: lineHeight2
+    font-family: fontFamilyRockwell
+    font-size: fontSize2
+    color: colorPrimary
+    text-align: center
+
+  & .subheaders
+    margin: spacing4x 0 spacing12x
+    line-height: lineHeight1
+    font-size: fontSize1
+    color: colorBlackDark
+    text-align: center
+
+.achieve-card
+  margin-bottom: spacing12x
+
+  & h2
+    line-height: lineHeight3
+    font-size: fontSize1
+    color: colorPrimary
+    border-bottom: 1px solid colorBlackDark
+
+  & a
+    float: right
+    margin-top: spacing2x
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & li
+    position: relative
+    height: propUnit3x
+    line-height: lineHeight0
+    border-bottom: 1px solid colorGrayLight
+    font-size: fontSize0
+
+    &:last-child
+      border-bottom: none
+
+    & .highlight
+      color: colorPurple
+
+      & .bullet
+        background-color: colorPurple
+
+    & .bullet
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      width: 6px
+      height: 6px
+      border-radius: 100%
+      background-color: colorGrayLight
+
+    & p
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      margin: 0
+      margin-left: spacing4x

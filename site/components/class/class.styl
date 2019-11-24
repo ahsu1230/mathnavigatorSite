@@ -1,0 +1,144 @@
+@import "../static.styl"
+
+#view-class-container
+  width: containerWidthPx3
+  max-width: containerWidthPct
+  margin: 0 auto spacing16x
+
+  & h1
+    margin: spacing8x 0
+    line-height: lineHeight3
+    font-size: fontSize3
+    color: colorPrimary
+
+    @media screen and (max-width: mediaWidth1)
+      margin: spacing6x 0
+      line-height: lineHeight2
+      font-size: fontSize2
+
+    & a
+      color: colorPrimary
+
+  & .class-info-1
+  & .class-info-2
+    margin-bottom: spacing4x
+    line-height: lineHeight0
+    font-size: fontSize0
+    color: colorBlackDark
+
+    & .class-lines
+      margin-bottom: spacing4x
+
+  & .class-info-2
+    position: relative
+
+    & button
+      position: absolute
+      top: 0
+      right: 0
+
+      @media screen and (max-width: mediaWidth1)
+        display: block
+        position: relative
+        width: 100%
+        margin-bottom: spacing4x
+        border: 1px solid colorOrange
+        background-color: colorWhite
+        color: colorOrange
+
+  & #class-info-container
+    & b
+      color: colorPrimary
+
+
+#view-schedule
+  margin: spacing4x 0
+  line-height: lineHeight0
+  font-size: fontSize0
+
+  & h4
+    margin: spacing2x 0
+
+  & b
+    color: colorPrimary
+
+  & ul
+    padding: 0
+    width: 100%
+
+  & li
+    line-height: lineHeight0
+    margin: 0
+    padding: spacing2x 0
+    border-bottom: 1px solid colorGrayLight
+    list-style: none
+
+    & div
+      display: inline-block
+
+      &.line-index
+        width: propUnit2x
+      &.line-date
+        width: propUnit4x
+        @media screen and (max-width: mediaWidth1)
+          display: block
+
+      &.line-right
+        vertical-align: top
+
+        @media screen and (max-width: mediaWidth1)
+          display: block
+          width: 100%
+          line-height: lineHeight2
+
+        & .text-1
+          margin: 0
+          color: colorBlackDark
+
+        & .alert
+          display: block
+          font-weight: bold
+          color: colorBlue
+
+
+#view-class-container
+  & #view-questions
+    margin: spacing12x 0 spacing4x
+
+#view-class-announce
+  max-height: 400px
+  overflow: hidden
+  background-color: colorYellowLight
+  transition: 0.25s linear max-height
+
+  &.dismiss
+    max-height: 0
+
+  & .announce-container
+    position: relative
+    width: containerWidthPx1
+    max-width: containerWidthPct
+    margin: 0 auto
+    padding: spacing6x 0 spacing2x
+
+  & p
+    line-height: lineHeight0
+    font-size: fontSize0
+
+  & button
+    position: absolute
+    top: spacing5x
+    right: 0
+    color: colorBlackDark
+    background-color: transparent
+    border: 1px solid colorBlackDark
+
+    & span
+      margin-right: spacing1x
+      vertical-align: middle
+
+    & img
+      position: relative
+      top: 5px
+      width: 18px
+      height: 18px
