@@ -1,14 +1,13 @@
-# mathnavigatorSite
+# Math Navigator
 
-This website application uses ReactJs (https://reactjs.org/).
+This website application is for the Math Navigator tutoring program located in Montgomery County, Maryland. We serve our community families by providing high quality education as well as providing a transparent and effortless solution to manage their success.
 
-Toolchain:
- - npm (https://www.npmjs.com/)
- - Parcel (https://parceljs.org/)
- - ReactJs (https://reactjs.org/)
- - Stylus (http://stylus-lang.com/
- - Lodash (https://lodash.com/)
-
+Our technology stack includes:
+- ReactJs (Javascript Website Framework, https://reactjs.org/)
+- Golang (Google Programming Language, https://golang.org/)
+- MongoDb (NoSQL database, https://www.mongodb.com/)
+- AWS (Amazon Web Services, https://aws.amazon.com/)
+- Jenkins (Content Automation, https://jenkins.io/)
 
  ## Getting started
 
@@ -17,34 +16,15 @@ You will need to download the following:
  - git (https://git-scm.com/downloads)
  - nodejs (https://nodejs.org/en/download)
 
-
  ## Setting up
 
-1. Git clone this repository
+1. Request access from Aaron and he will give you the necessary tools to get started.
+
+2. Git clone this repository
 `$ git clone https://github.com/ahsu1230/mathnavigatorSite.git`
 
-2. Once node is installed, install parcel
+3. Learn the basics of Git here:
+https://docs.google.com/document/d/1yVO7b0Fqd-P6RHOVQH7_AgEKlsWvY8SRcMJpA6UgQpI/edit?usp=sharing
+https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners
 
-`$ npm install -g parcel`
-
-3. Now try to build the project using the below scripts
-
- ## Available Scripts
-
- In the project directory, you can run:
-
-`$ parcel index.html`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:1234](http://localhost:1234) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-`$ parcel build index.html`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+4. Create an account on Asana (https://asana.com/). This will be our main tool to manage and divide tasks amongst our team.
