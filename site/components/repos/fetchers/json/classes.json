@@ -283,5 +283,35 @@
     "pricePerSession": "",
     "priceLump": 480,
     "paymentNotes": "By First Session"
+  },
+  {
+    "programId": "",
+    "classId": "",
+    "key": "",
+    "className": "",
+    "semesterId": "",
+    "locationId": "",
+    "times": "",
+    "startDate": "",
+    "endDate": "",
+    "allYear": "",
+    "pricePerSession": "",
+    "priceLump": "",
+    "paymentNotes": ""
+  },
+  {
+    "programId": "Intern",
+    "classId": "spring_webdesign",
+    "key": "Intern_spring_webdesign",
+    "className": "2020 Spring",
+    "semesterId": "2020_spring",
+    "locationId": "loc_home",
+    "times": "[Saturday 10:00am - 6:00pm]",
+    "startDate": "1/5/2020",
+    "endDate": "6/1/2020",
+    "allYear": "",
+    "pricePerSession": "$17-$25",
+    "priceLump": "",
+    "paymentNotes": "Hourly rate"
   }
 ]
