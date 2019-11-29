@@ -13,5 +13,5 @@ This will print out the OS and library version of your Golang.
 
 After that, you can run the server locally using:
 ```
-go run helloworld.go
+go run orion.go
 ```
