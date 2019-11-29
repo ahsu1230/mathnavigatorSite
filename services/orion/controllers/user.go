@@ -4,9 +4,9 @@ import (
   "strings"
 )
 
-func sayHello(w http.ResponseWriter, r *http.Request) {
+func SayHello(w http.ResponseWriter, r *http.Request) {
   message := r.URL.Path
   message = strings.TrimPrefix(message, "/")
-  message = "Hello " + message
+  message = "Hello with mod: " + message
   w.Write([]byte(message))
 }
