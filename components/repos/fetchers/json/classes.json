@@ -180,6 +180,21 @@
     "paymentNotes": "First of every month"
   },
   {
+    "programId": "english",
+    "classId": "demo_a",
+    "key": "english_demo_a",
+    "className": "Fall",
+    "semesterId": "2019_fall",
+    "locationId": "loc_wchs2",
+    "times": "[Saturday 2:00pm - 4:00pm]",
+    "startDate": "12/14/2019",
+    "endDate": "12/14/2019",
+    "allYear": "",
+    "pricePerSession": "",
+    "priceLump": "",
+    "paymentNotes": "Free"
+  },
+  {
     "programId": "",
     "classId": "",
     "key": "",

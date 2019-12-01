@@ -21,9 +21,18 @@
     "timestamp": 1574437328,
     "date": "11/28/2019",
     "important": "",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_fall_e,amc10_fall_a]",
     "author": "Amy",
     "message": "Happy Thanksgiving! NO CLASS from 11/28-11/30"
+  },
+  {
+    "timestamp": 1575172957,
+    "date": "12/14/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[english_demo_a]",
+    "author": "Amy",
+    "message": "On 12/14, we will have an English Demo class on Saturday 2:00pm - 4:00pm at Churchill H.S. room 112."
   }
 ]
