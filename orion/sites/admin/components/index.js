@@ -9,7 +9,9 @@ import {
   Switch
 } from 'react-router-dom';
 
+import { HeaderSection } from './header/header.js';
 import { HomePage } from './home/home.js';
+const Header = () => <HeaderSection/>
 const Home = () => <HomePage/>;
 
 class AppContainer extends React.Component {
@@ -26,6 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Header/>
         <Switch>
           <Route path="/" exact component={Home}/>
         </Switch>
