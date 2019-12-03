@@ -1,0 +1,66 @@
+@import "../static.styl"
+
+#view-program
+  width: 100%
+  height: 400px
+  padding: 0 spacing2x
+  box-sizing: border-box
+  color: colorBlackDark
+
+  & h1
+    margin: spacing4x 0
+    line-height: lineHeight3
+    font-size: fontSize3
+
+  & ul
+    list-style: none
+    margin: 0
+    padding: 0
+
+
+#view-program #list-heading
+  border-bottom: 2px solid colorGrayDark
+
+  & li
+    display: inline-block
+    height: spacing4x
+    line-height: spacing4x
+
+
+#view-program #list-rows li
+  display: block
+  position: relative
+  width: 100%
+  height: 60px
+  line-height: 60px
+  border-bottom: 1px solid colorGrayLight
+
+  & div
+    display: inline-block
+
+  & button
+    position: absolute
+    top: 50%
+    right: spacing4x
+    transform: translateY(-50%)
+
+#view-program
+  & .li-small
+    width: 80px
+  & .li-med
+    width: 160px
+  & .li-large
+    width: 240px
+
+.btn-program-add
+  margin-top: spacing4x
+  padding: spacing2x spacing4x
+  border-radius: 6px
+  outline: none
+  background-color: colorTurquoise
+  color: colorWhite
+  font-size: fontSize0
+
+  &:hover
+    cursor: pointer
+    filter: brightness(1.1)

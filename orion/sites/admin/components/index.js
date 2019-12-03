@@ -8,11 +8,13 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-
 import { HeaderSection } from './header/header.js';
 import { HomePage } from './home/home.js';
+import { ProgramPage } from './programs/program.js';
+
 const Header = () => <HeaderSection/>
 const Home = () => <HomePage/>;
+const Programs = () => <ProgramPage/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -31,6 +33,7 @@ class App extends React.Component {
         <Header/>
         <Switch>
           <Route path="/" exact component={Home}/>
+          <Route path="/programs" component={Programs}/>
         </Switch>
       </div>
     );
