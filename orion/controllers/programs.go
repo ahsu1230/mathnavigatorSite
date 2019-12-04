@@ -7,19 +7,25 @@ import (
 )
 
 func GetPrograms(c *gin.Context) {
+  // Query DB
   results := []models.Program{}
   models.GetDb().Find(&results)
 
+  // JSON Response
   // somehow remove fields (id, createdAt, updatedAt, deletedAt)
   c.JSON(http.StatusOK, results)
   return;
 }
 
 func GetProgram(c *gin.Context) {
+  // Incoming parameters
   programId := c.Param("programId")
 
+  // Query DB
   var foundProgram models.Program
   query := models.GetDb().Where(&models.Program{ProgramId: programId}).First(&foundProgram)
+
+  // JSON Response
   if query.RecordNotFound() {
     c.String(http.StatusNotFound, "No Program " + programId)
   } else {
@@ -30,13 +36,17 @@ func GetProgram(c *gin.Context) {
 }
 
 func CreateProgram(c *gin.Context) {
-  var foundProgram models.Program
+  // Incoming JSON
   var newProgram models.Program
   c.BindJSON(&newProgram)
 
+  // Query DB
   db := models.GetDb()
   programName := newProgram.Name
+  var foundProgram models.Program
   query := db.Where(&models.Program{Name: programName}).First(&foundProgram)
+
+  // JSON Response
   if query.RecordNotFound() {
     db.Create(&newProgram)
     fmt.Println("New Program created")
@@ -50,13 +60,17 @@ func CreateProgram(c *gin.Context) {
 }
 
 func UpdateProgram(c *gin.Context) {
-  var foundProgram models.Program
-  var updatedProgram models.Program
+  // Incoming JSON & Parameters
   programId := c.Param("programId")
+  var updatedProgram models.Program
   c.BindJSON(&updatedProgram)
 
+  // Query DB
   db := models.GetDb()
+  var foundProgram models.Program
   query := db.Where(&models.Program{ProgramId: programId}).First(&foundProgram)
+
+  // JSON Response
   if query.RecordNotFound() {
     c.String(http.StatusNotFound, "No Program " + programId)
   } else {
@@ -72,10 +86,15 @@ func UpdateProgram(c *gin.Context) {
 }
 
 func DeleteProgram(c *gin.Context) {
-  var foundProgram models.Program
+  // Incoming Parameters
   programId := c.Param("programId")
+
+  // Query DB
   db := models.GetDb()
+  var foundProgram models.Program
   query := db.Where(&models.Program{ProgramId: programId}).First(&foundProgram)
+
+  // JSON Response
   if query.RecordNotFound() {
     c.String(http.StatusNotFound, "No Program " + programId)
   } else {
