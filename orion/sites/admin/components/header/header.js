@@ -21,7 +21,7 @@ export class HeaderSection extends React.Component {
 	render() {
 		return (
       <div id="view-header">
-        <h2>Math Navigator Admin</h2>
+        <h2><Link to="/">Math Navigator Admin</Link></h2>
         <div id="header-left">
           <HeaderDropdown id={"site"} title={"Site"}/>
           <HeaderLink title={"Accounts"} url={"/accounts"}/>
