@@ -48,13 +48,13 @@ export class ProgramPage extends React.Component {
 class ProgramRow extends React.Component {
   render() {
     const row = this.props.row;
-    const url = "/program/" + row.ProgramId + "/edit";
+    const url = "/program/" + row.programId + "/edit";
     return (
       <li className="program-row">
-        <div className="li-med">{row.ProgramId}</div>
-        <div className="li-med">{row.Name}</div>
-        <div className="li-small">{row.Grade1}</div>
-        <div className="li-small">{row.Grade2}</div>
+        <div className="li-med">{row.programId}</div>
+        <div className="li-med">{row.name}</div>
+        <div className="li-small">{row.grade1}</div>
+        <div className="li-small">{row.grade2}</div>
         <Link to={url}>Edit</Link>
       </li>
     );

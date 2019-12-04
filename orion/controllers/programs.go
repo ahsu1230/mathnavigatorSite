@@ -12,7 +12,6 @@ func GetPrograms(c *gin.Context) {
   models.GetDb().Find(&results)
 
   // JSON Response
-  // somehow remove fields (id, createdAt, updatedAt, deletedAt)
   c.JSON(http.StatusOK, results)
   return;
 }
@@ -29,7 +28,6 @@ func GetProgram(c *gin.Context) {
   if query.RecordNotFound() {
     c.String(http.StatusNotFound, "No Program " + programId)
   } else {
-    // somehow remove fields (id, createdAt, updatedAt, deletedAt)
     c.JSON(http.StatusOK, foundProgram)
   }
   return;

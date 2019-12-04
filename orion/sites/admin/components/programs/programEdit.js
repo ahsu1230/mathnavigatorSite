@@ -15,7 +15,6 @@ export class ProgramEditPage extends React.Component {
       isEdit: false,
       showDeleteModal: false,
       showSaveModal: false,
-
       inputProgramId: "",
       inputProgramName: "",
       inputGrade1: 0,
@@ -44,11 +43,11 @@ export class ProgramEditPage extends React.Component {
         .then(res => {
           const program = res.data;
           this.setState({
-            inputProgramId: program.ProgramId,
-            inputProgramName: program.Name,
-            inputGrade1: program.Grade1,
-            inputGrade2: program.Grade2,
-            inputDescription: program.Description,
+            inputProgramId: program.programId,
+            inputProgramName: program.name,
+            inputGrade1: program.grade1,
+            inputGrade2: program.grade2,
+            inputDescription: program.description,
             isEdit: true
           });
         });

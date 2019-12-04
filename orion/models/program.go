@@ -6,10 +6,10 @@ import (
 )
 
 type Program struct {
-  gorm.Model
-  ProgramId       string      `gorm:"type:varchar(100)"`
-  Name            string      `gorm:"size:255"`
-  Grade1          uint
-  Grade2          uint
-  Description     string
+  gorm.Model                  `json:"-"`
+  ProgramId       string      `gorm:"type:varchar(100)" json:"programId"`
+  Name            string      `gorm:"size:255" json:"name"`
+  Grade1          uint        `json:"grade1"`
+  Grade2          uint        `json:"grade2"`
+  Description     string      `json:"description"`
 }
