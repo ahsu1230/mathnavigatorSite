@@ -2,69 +2,33 @@
 require('./program.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import API from '../api.js';
 import { Modal } from '../modals/modal.js';
-import { ProgramModal } from './programModal.js';
-
-const FAKE_PROGRAM = {
-  programKey: "ap_java",
-  name: "AP Java",
-  grade1: 11,
-  grade2: 12,
-  description: "Some description blahb lahblah"
-};
-const FAKE_LIST = [FAKE_PROGRAM, FAKE_PROGRAM, FAKE_PROGRAM, FAKE_PROGRAM];
+import { Link } from 'react-router-dom';
 
 export class ProgramPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: FAKE_LIST,
-      showModal: false,
-      targetProgram: {}
+      list: []
     };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-		this.dismissModal = this.dismissModal.bind(this);
   }
 
-  handleClick() {
-    this.setState({
-      showModal: true
-    });
-	}
-
-  handleEdit(program) {
-    this.setState({
-			showModal: true,
-      targetProgram: program
-		});
+  componentDidMount() {
+    API.get("api/programs/v1/")
+      .then(res => {
+        const programs = res.data;
+        this.setState({ list: programs });
+      });
   }
-
-	dismissModal() {
-		this.setState({
-			showModal: false,
-      targetProgram: undefined
-		});
-	}
 
 	render() {
     const rows = this.state.list.map((row, index) => {
-      return <ProgramRow key={index} row={row} onHandleEdit={this.handleEdit}/>
+      return <ProgramRow key={index} row={row}/>
     });
     const numRows = rows.length;
-    const modalContent = <ProgramModal
-                            program={this.state.targetProgram}
-                            onDismiss={this.dismissModal}/>;
-    const modalDiv = (
-      <Modal content={modalContent}
-              show={this.state.showModal}
-              withClose={false}
-              onDismiss={this.dismissModal}/>
-    );
-
 		return (
       <div id="view-program">
-        {modalDiv}
         <h1>All Programs ({numRows})</h1>
         <ul id="list-heading">
           <li className="li-med">ProgramKey</li>
@@ -75,9 +39,7 @@ export class ProgramPage extends React.Component {
         <ul id="list-rows">
           {rows}
         </ul>
-        <button className="btn-program-add" onClick={this.handleClick}>
-          Add Program
-        </button>
+        <Link className="add-program" to={"/programs/add"}>Add Program</Link>
       </div>
 		);
 	}
@@ -86,13 +48,14 @@ export class ProgramPage extends React.Component {
 class ProgramRow extends React.Component {
   render() {
     const row = this.props.row;
+    const url = "/program/" + row.ProgramId + "/edit";
     return (
       <li className="program-row">
-        <div className="li-med">{row.programKey}</div>
-        <div className="li-med">{row.name}</div>
-        <div className="li-small">{row.grade1}</div>
-        <div className="li-small">{row.grade2}</div>
-        <button onClick={() => this.props.onHandleEdit(row)}>Edit</button>
+        <div className="li-med">{row.ProgramId}</div>
+        <div className="li-med">{row.Name}</div>
+        <div className="li-small">{row.Grade1}</div>
+        <div className="li-small">{row.Grade2}</div>
+        <Link to={url}>Edit</Link>
       </li>
     );
   }

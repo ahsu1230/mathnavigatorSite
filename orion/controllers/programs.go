@@ -12,6 +12,21 @@ func GetPrograms(c *gin.Context) {
 
   // somehow remove fields (id, createdAt, updatedAt, deletedAt)
   c.JSON(http.StatusOK, results)
+  return;
+}
+
+func GetProgram(c *gin.Context) {
+  programId := c.Param("programId")
+
+  var foundProgram models.Program
+  query := models.GetDb().Where(&models.Program{ProgramId: programId}).First(&foundProgram)
+  if query.RecordNotFound() {
+    c.String(http.StatusNotFound, "No Program " + programId)
+  } else {
+    // somehow remove fields (id, createdAt, updatedAt, deletedAt)
+    c.JSON(http.StatusOK, foundProgram)
+  }
+  return;
 }
 
 func CreateProgram(c *gin.Context) {
@@ -31,6 +46,7 @@ func CreateProgram(c *gin.Context) {
   } else {
     c.String(http.StatusBadRequest, "Program already exists " + programName)
   }
+  return;
 }
 
 func UpdateProgram(c *gin.Context) {
@@ -52,6 +68,7 @@ func UpdateProgram(c *gin.Context) {
     db.Save(&foundProgram)
     c.String(http.StatusOK, "Updated Program " + programId)
   }
+  return;
 }
 
 func DeleteProgram(c *gin.Context) {
@@ -65,4 +82,5 @@ func DeleteProgram(c *gin.Context) {
     db.Delete(&foundProgram)
     c.String(http.StatusOK, "Deleted Program " + programId)
   }
+  return;
 }

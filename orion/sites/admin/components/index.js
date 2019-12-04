@@ -11,10 +11,13 @@ import {
 import { HeaderSection } from './header/header.js';
 import { HomePage } from './home/home.js';
 import { ProgramPage } from './programs/program.js';
+import { ProgramEditPage } from './programs/programEdit.js';
 
 const Header = () => <HeaderSection/>
 const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
+const ProgramEdit = () => <ProgramEditPage/>;
+const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -33,6 +36,8 @@ class App extends React.Component {
         <Header/>
         <Switch>
           <Route path="/" exact component={Home}/>
+          <Route path="/program/:programId/edit" component={ProgramEditMatch}/>
+          <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
         </Switch>
       </div>

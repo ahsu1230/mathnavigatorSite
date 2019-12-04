@@ -18,14 +18,15 @@ func main() {
   router := gin.Default()
 
   // Webpage Routers
-  router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
-  router.Use(static.Serve("/admin", static.LocalFile("./sites/admin", true)))
+  // router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
+  router.Use(static.Serve("/", static.LocalFile("./sites/admin/dist", true)))
 
   // API Routers
   apiPrograms := router.Group("/api/programs/")
   {
     apiPrograms.GET("/v1", controllers.GetPrograms)
     apiPrograms.POST("/v1/create", controllers.CreateProgram)
+    apiPrograms.GET("/v1/program/:programId", controllers.GetProgram)
     apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
     apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
   }
