@@ -1,12 +1,7 @@
 package models
 
-import (
-  "github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/sqlite"
-)
-
 type Program struct {
-  gorm.Model                  `json:"-"`
+  Model                       `json:"-"`
   ProgramId       string      `gorm:"type:varchar(100)" json:"programId"`
   Name            string      `gorm:"size:255" json:"name"`
   Grade1          uint        `json:"grade1"`

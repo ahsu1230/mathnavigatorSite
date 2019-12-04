@@ -1,6 +1,5 @@
 package controllers
 import (
-  "fmt"
   "net/http"
   "github.com/gin-gonic/gin"
   "orion/models"
@@ -47,7 +46,6 @@ func CreateProgram(c *gin.Context) {
   // JSON Response
   if query.RecordNotFound() {
     db.Create(&newProgram)
-    fmt.Println("New Program created")
     c.JSON(http.StatusOK, gin.H{
       "program": newProgram,
     })
