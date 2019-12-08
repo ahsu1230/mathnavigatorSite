@@ -1,5 +1,6 @@
 package models
 import (
+  "fmt"
   "time"
   "github.com/jinzhu/gorm"
   _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -7,8 +8,20 @@ import (
 
 var openDb *gorm.DB
 
+func createConnectionInfo() (string) {
+  dbUser := "admin"
+  dbPassword := "Wireless0929." // temporary password
+  dbHost := "db-12072019.cg7kvvouuohm.us-west-2.rds.amazonaws.com"
+  // dbPort := 3306
+  dbSchema := "db"
+  info := fmt.Sprintf("%s:%s@(%s)/%s", dbUser, dbPassword, dbHost, dbSchema)
+  info += "?charset=utf8&parseTime=True&loc=Local"
+  fmt.Println(info)
+  return info
+}
+
 func OpenDb() {
-  db, err := gorm.Open("mysql", "root@/db?charset=utf8&parseTime=True&loc=Local")
+  db, err := gorm.Open("mysql", createConnectionInfo())
   if err != nil {
     panic("failed to connect database")
   }
