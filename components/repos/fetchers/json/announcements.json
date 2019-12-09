@@ -15,7 +15,7 @@
     "onHomePage": "",
     "classKeys": "[sat1_fall_e]",
     "author": "Amy",
-    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 7:30pm-8:30pm"
+    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 8:00pm-9:00pm"
   },
   {
     "timestamp": 1574437328,
@@ -34,5 +34,14 @@
     "classKeys": "[english_demo_a]",
     "author": "Amy",
     "message": "On 12/14, we will have an English Demo class on Saturday 2:00pm - 4:00pm at Churchill H.S. room 112."
+  },
+  {
+    "timestamp": 1575910403,
+    "date": "12/15/2019",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[Intern_spring_webdesign]",
+    "author": "Amy",
+    "message": "On 12/15, we will have an online test from 7:00pm - 10:00pm for MathNavigator website development intern opportunities."
   }
 ]
