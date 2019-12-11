@@ -13,7 +13,7 @@ import { HomePage } from './home/home.js';
 import { ProgramPage } from './programs/program.js';
 import { ProgramEditPage } from './programs/programEdit.js';
 
-const Header = () => <HeaderSection/>
+const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
 const ProgramEdit = () => <ProgramEditPage/>;
