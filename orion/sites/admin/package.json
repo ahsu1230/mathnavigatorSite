@@ -7,6 +7,7 @@
     "build-parcel": "parcel build index.html",
     "start-parcel": "parcel index.html",
     "build": "webpack --config webpack.prod.js",
+    "build-local": "webpack --config webpack.local.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "try": "webpack --display-error-details"
   },
