@@ -1,18 +1,54 @@
 package main
 import (
   "fmt"
+  "os"
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
+  "gopkg.in/yaml.v2"
 
   "orion/controllers"
   "orion/models"
 )
 
+type Config struct {
+    App struct {
+      Build string `yaml:"build"`
+    } `yaml:"app"`
+    Database struct {
+      Host string `yaml:"host"`
+      Port int `yaml:"port"`
+      Username string `yaml:"user"`
+      Password string `yaml:"pass"`
+    } `yaml:"database"`
+}
+
+func retrieveConfigurations() (Config) {
+  configFile := os.Args[1]
+  fmt.Println("Configuration File: ", configFile)
+
+  file, errFile := os.Open(configFile)
+  if errFile != nil {
+    fmt.Println("Error with file ", configFile)
+  }
+
+  var cfg Config
+  decoder := yaml.NewDecoder(file)
+  errParse := decoder.Decode(&cfg)
+  if errParse != nil {
+      fmt.Println("Error from parsing ", errParse)
+  }
+  return cfg
+}
+
 func main() {
   fmt.Println("Orion service starting...")
 
+  config := retrieveConfigurations()
+  fmt.Println("Building server in mode: ", config.App.Build)
+
   fmt.Println("Connecting to DB...")
-  models.OpenDb()
+  db := config.Database
+  models.OpenDb(db.Host, db.Port, db.Username, db.Password)
 
   fmt.Println("Setting up Router...")
   router := gin.Default()

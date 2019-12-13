@@ -1,7 +1,6 @@
 package models
 import (
   "fmt"
-  "os"
   "time"
   "github.com/jinzhu/gorm"
   _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -9,20 +8,17 @@ import (
 
 var openDb *gorm.DB
 
-func createConnectionInfo() (string) {
-  dbHost := os.Getenv("ORION_DB_HOST")
-  // dbPort := os.Getenv("ORION_DB_PORT")
-  dbUser := os.Getenv("ORION_DB_USER")
-  dbPassword := os.Getenv("ORION_DB_PASS")
+func createConnectionInfo(host string, port int, user string, pass string) (string) {
   dbSchema := "db"
-  info := fmt.Sprintf("%s:%s@(%s)/%s", dbUser, dbPassword, dbHost, dbSchema)
+  info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbSchema)
   info += "?charset=utf8&parseTime=True&loc=Local"
   fmt.Println(info)
   return info
 }
 
-func OpenDb() {
-  db, err := gorm.Open("mysql", createConnectionInfo())
+func OpenDb(host string, port int, user string, pass string) {
+  connection := createConnectionInfo(host, port, user, pass)
+  db, err := gorm.Open("mysql", connection)
   if err != nil {
     panic("failed to connect database")
   }
