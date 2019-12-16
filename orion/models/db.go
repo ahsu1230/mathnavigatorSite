@@ -20,7 +20,7 @@ func OpenDb(host string, port int, user string, pass string) {
   connection := createConnectionInfo(host, port, user, pass)
   db, err := gorm.Open("mysql", connection)
   if err != nil {
-    panic("failed to connect database")
+    panic(err)
   }
 
   openDb = db
