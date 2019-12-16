@@ -52,6 +52,18 @@ func main() {
 
   fmt.Println("Setting up Router...")
   router := gin.Default()
+  corsConfig := cors.DefaultConfig()
+  corsConfig.AllowHeaders := []string{
+    "origin", "content-type", "cache-control", "accept", "options", "authorization", "x-requested-with"
+  }
+  corsConfig.AllowOrigins = []string{
+    "http://www.google.com",
+    "http://lb-prod-webserver-678749426.us-west-2.elb.amazonaws.com",
+    "http://ec2-34-222-51-70.us-west-2.compute.amazonaws.com"
+  }
+  corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE"}
+  corsConfig.AllowCredentials = true
+  router.Use(cors.New(corsConfig))
 
   // Webpage Routers
   // router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
