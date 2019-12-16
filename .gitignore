@@ -1,6 +1,10 @@
-node_modules/*
-build/*
-.cache
-dist
-package-lock.json
-ftp.tmp
+**/node_modules
+**/build
+**/dist
+**/.cache
+**/tmp
+**/*.tmp
+**/*/package-lock.json
+**/*/go.sum
+
+orion/configs/*
