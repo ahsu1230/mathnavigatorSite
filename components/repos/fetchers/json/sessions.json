@@ -3160,39 +3160,167 @@
     "notes": ""
   },
   {
-    "sessionId": 396,
-    "classKey": "",
-    "date": "",
+    "sessionId": 395,
+    "classKey": "english2_spring_w910",
+    "date": "1/14/2020",
     "canceled": "",
-    "time": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 396,
+    "classKey": "english2_spring_w910",
+    "date": "1/21/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
     "notes": ""
   },
   {
     "sessionId": 397,
-    "classKey": "",
-    "date": "",
+    "classKey": "english2_spring_w910",
+    "date": "1/28/2020",
     "canceled": "",
-    "time": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
     "notes": ""
   },
   {
     "sessionId": 398,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
+    "classKey": "english2_spring_w910",
+    "date": "2/4/2020",
+    "canceled": "TRUE",
     "time": "",
-    "notes": ""
+    "notes": "Email practice"
   },
   {
     "sessionId": 399,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
+    "classKey": "english2_spring_w910",
+    "date": "2/11/2020",
+    "canceled": "TRUE",
     "time": "",
-    "notes": ""
+    "notes": "Email practice"
   },
   {
     "sessionId": 400,
+    "classKey": "english2_spring_w910",
+    "date": "2/18/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 401,
+    "classKey": "english2_spring_w910",
+    "date": "2/28/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 402,
+    "classKey": "english2_spring_w910",
+    "date": "3/3/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 403,
+    "classKey": "english2_spring_w910",
+    "date": "3/10/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 404,
+    "classKey": "english2_spring_w910",
+    "date": "3/17/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 405,
+    "classKey": "english2_spring_w910",
+    "date": "3/24/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 406,
+    "classKey": "english2_spring_w910",
+    "date": "3/31/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 407,
+    "classKey": "english2_spring_w910",
+    "date": "4/7/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 408,
+    "classKey": "english2_spring_w910",
+    "date": "4/14/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 409,
+    "classKey": "english2_spring_w910",
+    "date": "4/21/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 410,
+    "classKey": "english2_spring_w910",
+    "date": "4/28/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 411,
+    "classKey": "english2_spring_w910",
+    "date": "5/5/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 412,
+    "classKey": "english2_spring_w910",
+    "date": "5/12/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 413,
+    "classKey": "english2_spring_w910",
+    "date": "5/19/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 414,
+    "classKey": "english2_spring_w910",
+    "date": "5/26/2020",
+    "canceled": "",
+    "time": "Tuesday 7:00pm - 9:00pm",
+    "notes": "Done"
+  },
+  {
+    "sessionId": 415,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -3200,7 +3328,351 @@
     "notes": ""
   },
   {
-    "sessionId": 401,
+    "sessionId": 416,
+    "classKey": "english1_spring_w78",
+    "date": "1/16/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 417,
+    "classKey": "english1_spring_w78",
+    "date": "1/23/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 418,
+    "classKey": "english1_spring_w78",
+    "date": "1/30/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 419,
+    "classKey": "english1_spring_w78",
+    "date": "2/6/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 420,
+    "classKey": "english1_spring_w78",
+    "date": "2/13/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 421,
+    "classKey": "english1_spring_w78",
+    "date": "2/20/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 422,
+    "classKey": "english1_spring_w78",
+    "date": "2/27/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 423,
+    "classKey": "english1_spring_w78",
+    "date": "3/5/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 424,
+    "classKey": "english1_spring_w78",
+    "date": "3/12/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 425,
+    "classKey": "english1_spring_w78",
+    "date": "3/19/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 426,
+    "classKey": "english1_spring_w78",
+    "date": "3/26/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 427,
+    "classKey": "english1_spring_w78",
+    "date": "4/2/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 428,
+    "classKey": "english1_spring_w78",
+    "date": "4/9/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 429,
+    "classKey": "english1_spring_w78",
+    "date": "4/16/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 430,
+    "classKey": "english1_spring_w78",
+    "date": "4/23/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 431,
+    "classKey": "english1_spring_w78",
+    "date": "4/30/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 432,
+    "classKey": "english1_spring_w78",
+    "date": "5/7/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 433,
+    "classKey": "english1_spring_w78",
+    "date": "5/14/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 434,
+    "classKey": "english1_spring_w78",
+    "date": "5/21/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 435,
+    "classKey": "english1_spring_w78",
+    "date": "5/28/2020",
+    "canceled": "",
+    "time": "Thursday 7:00pm - 9:00pm",
+    "notes": "Done"
+  },
+  {
+    "sessionId": 436,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 437,
+    "classKey": "english3_spring_r910",
+    "date": "1/18/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 438,
+    "classKey": "english3_spring_r910",
+    "date": "1/25/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 439,
+    "classKey": "english3_spring_r910",
+    "date": "1/31/2020",
+    "canceled": "",
+    "time": "Friday 6:00pm - 8:00pm",
+    "notes": "Date and Time Change"
+  },
+  {
+    "sessionId": 440,
+    "classKey": "english3_spring_r910",
+    "date": "2/1/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 441,
+    "classKey": "english3_spring_r910",
+    "date": "2/8/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 442,
+    "classKey": "english3_spring_r910",
+    "date": "2/15/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 443,
+    "classKey": "english3_spring_r910",
+    "date": "2/22/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 444,
+    "classKey": "english3_spring_r910",
+    "date": "2/29/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 445,
+    "classKey": "english3_spring_r910",
+    "date": "3/7/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 446,
+    "classKey": "english3_spring_r910",
+    "date": "314/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 447,
+    "classKey": "english3_spring_r910",
+    "date": "3/21/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 448,
+    "classKey": "english3_spring_r910",
+    "date": "3/28/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 449,
+    "classKey": "english3_spring_r910",
+    "date": "4/4/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 450,
+    "classKey": "english3_spring_r910",
+    "date": "4/11/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 451,
+    "classKey": "english3_spring_r910",
+    "date": "4/18/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 452,
+    "classKey": "english3_spring_r910",
+    "date": "4/25/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 453,
+    "classKey": "english3_spring_r910",
+    "date": "5/2/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 454,
+    "classKey": "english3_spring_r910",
+    "date": "5/9/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 455,
+    "classKey": "english3_spring_r910",
+    "date": "5/16/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 456,
+    "classKey": "english3_spring_r910",
+    "date": "5/23/2020",
+    "canceled": "TRUE",
+    "time": "",
+    "notes": "Email practice"
+  },
+  {
+    "sessionId": 457,
+    "classKey": "english3_spring_r910",
+    "date": "5/30/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
+  },
+  {
+    "sessionId": 458,
+    "classKey": "english3_spring_r910",
+    "date": "6/6/2020",
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": "Done"
+  },
+  {
+    "sessionId": 459,
     "classKey": "",
     "date": "",
     "canceled": "",

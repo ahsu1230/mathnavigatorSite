@@ -27,15 +27,6 @@
     "message": "Happy Thanksgiving! NO CLASS from 11/28-11/30"
   },
   {
-    "timestamp": 1576082206,
-    "date": "12/14/2019",
-    "important": "",
-    "onHomePage": "TRUE",
-    "classKeys": "[english_demo_a]",
-    "author": "Amy",
-    "message": "On 12/14, we will have an English Demo class on Saturday 2:00pm - 4:00pm at Churchill H.S. room 112."
-  },
-  {
     "timestamp": 1575910403,
     "date": "12/15/2019",
     "important": "TRUE",
@@ -43,5 +34,14 @@
     "classKeys": "[Intern_spring_webdesign]",
     "author": "Amy",
     "message": "On 12/15, we will have an online test from 7:00pm - 10:00pm for MathNavigator website development intern opportunities."
+  },
+  {
+    "timestamp": 1576467061,
+    "date": "12/21/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": [],
+    "author": "Amy",
+    "message": "No Class from 12/22/19 - 1/6/20. Merry Christmas and Happy New Year!!"
   }
 ]
