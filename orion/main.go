@@ -68,7 +68,7 @@ func main() {
 
   // Webpage Routers
   // router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
-  router.Use(static.Serve("/", static.LocalFile("./sites/admin/dist", true)))
+  router.Use(static.Serve("/", static.LocalFile("./sites/admin", true)))
 
   // API Routers
   apiPrograms := router.Group("/api/programs/")
