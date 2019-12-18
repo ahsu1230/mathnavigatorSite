@@ -96,5 +96,26 @@
     "grade1": 8,
     "grade2": 16,
     "description": "We will provide four internship opportunities to the students who are interested in joining the designation for the MathNavigator website from January 2020. The candidate students can be middle school students, high school students or college students. The salary hourly rate ranges are from $17 - $25 depending on the students' capabilities. The online technical test date will be in early January 2020. We will use google \"golang\" computer language to design the website, if you know how to use \"golang\", you have the priority to the admission."
+  },
+  {
+    "programId": "english1",
+    "title": "English Writing & Grammar",
+    "grade1": 7,
+    "grade2": 8,
+    "description": "Targeted for 7th and 8th grade students to build upon their english, writing and grammar skills to improve their overall writing abilities."
+  },
+  {
+    "programId": "english2",
+    "title": "English Writing & Grammar",
+    "grade1": 9,
+    "grade2": 10,
+    "description": "A PRE-SAT English Level class designed for 9th or 10th grade students to help strengthen the writing skills by reading passages and building the foundation of how to write great essays. Also focus on the grammar rules to prepare for SAT test skills."
+  },
+  {
+    "programId": "english3",
+    "title": "English Reading & Grammar",
+    "grade1": 9,
+    "grade2": 10,
+    "description": "A PRE-SAT English Level class designed for 9-10th grade students to help strengthen reading comprehension skills. By studying advanced grammar structures, students will be able to develop comprehension and critical thinking techniques to succeed in the SAT Reading sections."
   }
 ]

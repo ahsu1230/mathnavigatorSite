@@ -15,15 +15,33 @@
     "onHomePage": "",
     "classKeys": "[sat1_fall_e]",
     "author": "Amy",
-    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 7:30pm-8:30pm"
+    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 8:00pm-9:00pm"
   },
   {
     "timestamp": 1574437328,
     "date": "11/28/2019",
     "important": "",
-    "onHomePage": "TRUE",
+    "onHomePage": "",
     "classKeys": "[sat1_fall_e,amc10_fall_a]",
     "author": "Amy",
     "message": "Happy Thanksgiving! NO CLASS from 11/28-11/30"
+  },
+  {
+    "timestamp": 1575910403,
+    "date": "12/15/2019",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[Intern_spring_webdesign]",
+    "author": "Amy",
+    "message": "On 12/15, we will have an online test from 7:00pm - 10:00pm for MathNavigator website development intern opportunities."
+  },
+  {
+    "timestamp": 1576467061,
+    "date": "12/21/2019",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": [],
+    "author": "Amy",
+    "message": "No Class from 12/22/19 - 1/6/20. Merry Christmas and Happy New Year!!"
   }
 ]
