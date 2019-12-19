@@ -11,8 +11,5 @@ if (process.env.NODE_ENV == 'production') {
 }
 
 export default axios.create({
-  baseURL: BASE_HOST,
-  headers: {
-	  'Access-Control-Allow-Origin': '*'
-	}
+  baseURL: BASE_HOST
 });

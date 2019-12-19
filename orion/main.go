@@ -2,7 +2,6 @@ package main
 import (
   "fmt"
   "os"
-  "github.com/gin-contrib/cors"
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
   "gopkg.in/yaml.v2"
@@ -53,18 +52,6 @@ func main() {
 
   fmt.Println("Setting up Router...")
   router := gin.Default()
-  corsConfig := cors.DefaultConfig()
-  corsConfig.AllowHeaders = []string{
-    "origin", "content-type", "cache-control", "accept", "options", "authorization", "x-requested-with",
-  }
-  corsConfig.AllowAllOrigins = true
-  // corsConfig.AllowOrigins = []string{
-  //   "http://lb-prod-webserver-678749426.us-west-2.elb.amazonaws.com",
-  //   "http://ec2-34-222-51-70.us-west-2.compute.amazonaws.com",
-  // }
-  corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
-  corsConfig.AllowCredentials = true
-  router.Use(cors.New(corsConfig))
 
   // Webpage Routers
   // router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
