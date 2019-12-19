@@ -2,6 +2,8 @@ package main
 import (
   "fmt"
   "os"
+
+	"github.com/gin-contrib/cors"
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
   "gopkg.in/yaml.v2"
@@ -53,6 +55,9 @@ func main() {
   fmt.Println("Setting up Router...")
   router := gin.Default()
 
+  // CORS middleware
+  router.Use(cors.Default())
+
   // Webpage Routers
   // router.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
   router.Use(static.Serve("/", static.LocalFile("./sites/admin", true)))
@@ -60,7 +65,7 @@ func main() {
   // API Routers
   apiPrograms := router.Group("/api/programs/")
   {
-    apiPrograms.GET("/v1", controllers.GetPrograms)
+    apiPrograms.GET("/v1/all", controllers.GetPrograms)
     apiPrograms.POST("/v1/create", controllers.CreateProgram)
     apiPrograms.GET("/v1/program/:programId", controllers.GetProgram)
     apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
