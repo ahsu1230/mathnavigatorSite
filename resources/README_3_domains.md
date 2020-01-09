@@ -27,6 +27,7 @@ Here are a few examples:
  - the computer game League of Legends uses port numbers between 5000 to 5500
  - Discord chat uses port 6463
  - The media player app VLC uses 1234 to stream contents sometimes
+ You can see more examples [here](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Registered_ports).
  
 One port can only be used by one application at a time. Many applications can use a certain port number as long as they are not attempting to use that port at the same time.
 
@@ -37,4 +38,6 @@ The web server may be on port `8080` while a website being developed may be laun
 What happens is the web server is launched locally at `http://localhost:8080`.
 If also launching the web client, it will be available locally at `http://localhost:8081`.
 From there, the web server and web client will be communicating with each other through these port numbers.
-The whole point of this is to simulate how a real web server on some IP address will interact with some user's computer or phone somewhere.
+
+The whole point of this is to simulate how a real web server on some IP address will interact with some user's computer or phone somewhere. We are setting up this environment so we can simulate this interaction all on our own computer!
+Once you are done developing, it is good practice to stop the web server and clients so those ports become available to other applications and to also free resources for your computer :)
