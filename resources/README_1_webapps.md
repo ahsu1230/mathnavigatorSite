@@ -1,6 +1,3 @@
-# Math Navigator Resources
-Here are some basic Q&A on working on web applications in general.
-
 ## Web Applications
 Web applications are computer programs that utilize web browsers to perform tasks over the Internet. Web applications usually involve two participants. One participant (the web client) initializes a "request" while the other participant (the web server) "responds" to the request with data. As the user uses the web applications, various requests from the client are sent to the web server. The web server responds with data which the client can then use.
 
