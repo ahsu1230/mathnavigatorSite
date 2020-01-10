@@ -1,43 +1,50 @@
 [
   {
     "afhId": 1,
-    "date": "12/2/2019",
-    "time": "Monday 9:00pm - 10:00pm",
+    "date": "1/9/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 2,
-    "date": "12/5/2019",
-    "time": "Thursday 8:00pm - 9:00pm",
+    "date": "1/12/2020",
+    "time": "Sunday 4:20pm - 5:45pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 3,
-    "date": "12/9/2019",
+    "date": "1/13/2020",
     "time": "Monday 9:00pm - 10:00pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 4,
-    "date": "12/12/2019",
-    "time": "Thursday 8:00pm - 9:00pm",
+    "date": "1/16/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 5,
-    "date": "12/16/2019",
-    "time": "Monday 9:00pm - 10:00pm",
+    "date": "1/23/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   },
   {
     "afhId": 6,
-    "date": "12/19/2019",
-    "time": "Thursday 8:00pm - 9:00pm",
+    "date": "1/27/2020",
+    "time": "Monday 9:00pm - 10:00pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 7,
+    "date": "1/30/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
     "locationId": "loc_wchs",
     "notes": "For All classes students"
   }
