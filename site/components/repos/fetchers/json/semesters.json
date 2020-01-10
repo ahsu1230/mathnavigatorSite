@@ -6,5 +6,9 @@
   {
     "semesterId": "2020_spring",
     "title": "Spring 2020"
+  },
+  {
+    "semesterId": "2020_summer",
+    "title": "Summer 2020"
   }
 ]

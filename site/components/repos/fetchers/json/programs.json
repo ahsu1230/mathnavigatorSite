@@ -57,7 +57,7 @@
   },
   {
     "programId": "pre_sat",
-    "title": "Pre-SAT",
+    "title": "Pre-SAT Math",
     "grade1": 8,
     "grade2": 10,
     "description": "Targeted for the rising 9th graders who have completed Geometry, this class will focus on basic and medium leveled SAT topics. We will also introduce Algebra II concepts to give students a preview of their upcoming semester."
@@ -117,5 +117,26 @@
     "grade1": 9,
     "grade2": 10,
     "description": "A PRE-SAT English Level class designed for 9-10th grade students to help strengthen reading comprehension skills. By studying advanced grammar structures, students will be able to develop comprehension and critical thinking techniques to succeed in the SAT Reading sections."
+  },
+  {
+    "programId": "english4",
+    "title": "English Read/Write & Grammar",
+    "grade1": 9,
+    "grade2": 10,
+    "description": "A PRE-SAT English Level class designed for 9-10th grade students to help strengthen reading comprehension skills. By studying advanced grammar structures, students will be able to develop comprehension and critical thinking techniques to succeed in the SAT Reading sections and also strenghten the writing skills for writing great essays."
+  },
+  {
+    "programId": "english5",
+    "title": "English Read/Write & Grammar",
+    "grade1": 7,
+    "grade2": 8,
+    "description": "A PRE-SAT English Level class designed for 7-8th grade students to help strengthen reading comprehension skills. By studying advanced grammar structures, students will be able to develop comprehension and critical thinking techniques to succeed in the SAT Reading sections and also strenghten the writing skills for writing great essays."
+  },
+  {
+    "programId": "sat_eng",
+    "title": "SAT English Section",
+    "grade1": 10,
+    "grade2": 12,
+    "description": "Our most popular program. Register for this class if you are planning to take the SAT1 exam. Teacher Lynne will cover all topics on the SAT English Section for both reading comprehension skills and writing essays to target the 800 full scores."
   }
 ]
