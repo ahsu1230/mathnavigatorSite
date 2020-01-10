@@ -9,7 +9,7 @@ import (
 var openDb *gorm.DB
 
 func createConnectionInfo(host string, port int, user string, pass string) (string) {
-  dbSchema := "db"
+  dbSchema := "mathnavdb"
   info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbSchema)
   info += "?charset=utf8&parseTime=True&loc=Local"
   fmt.Println(info)
