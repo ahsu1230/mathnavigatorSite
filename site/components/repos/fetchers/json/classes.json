@@ -225,9 +225,24 @@
     "paymentNotes": "By First Session"
   },
   {
-    "programId": "ap_calc",
-    "classId": "finalreview",
-    "key": "ap_calc_finalreview",
+    "programId": "ap_calc_final",
+    "classId": "spring_a",
+    "key": "ap_calc_final_spring_a",
+    "className": "Final Review",
+    "semesterId": "2020_spring",
+    "locationId": "loc_wchs",
+    "times": "[Thursday 6:30pm - 8:30pm]",
+    "startDate": "2/20/2020",
+    "endDate": "5/7/2020",
+    "allYear": "",
+    "pricePerSession": "",
+    "priceLump": 480,
+    "paymentNotes": "By First Session"
+  },
+  {
+    "programId": "ap_calc_final",
+    "classId": "spring_b",
+    "key": "ap_calc_final_spring_b",
     "className": "Final Review",
     "semesterId": "2020_spring",
     "locationId": "loc_wchs",

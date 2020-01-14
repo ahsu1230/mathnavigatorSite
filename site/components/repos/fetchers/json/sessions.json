@@ -2753,7 +2753,7 @@
   },
   {
     "sessionId": 342,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "2/23/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2761,7 +2761,7 @@
   },
   {
     "sessionId": 343,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/1/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2769,7 +2769,7 @@
   },
   {
     "sessionId": 344,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/8/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2777,7 +2777,7 @@
   },
   {
     "sessionId": 345,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/15/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2785,7 +2785,7 @@
   },
   {
     "sessionId": 346,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/22/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2793,7 +2793,7 @@
   },
   {
     "sessionId": 347,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/29/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2801,7 +2801,7 @@
   },
   {
     "sessionId": 348,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/5/2020",
     "canceled": "TRUE",
     "time": "",
@@ -2809,7 +2809,7 @@
   },
   {
     "sessionId": 349,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/12/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2817,7 +2817,7 @@
   },
   {
     "sessionId": 350,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/19/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2825,7 +2825,7 @@
   },
   {
     "sessionId": 351,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/26/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2833,7 +2833,7 @@
   },
   {
     "sessionId": 352,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "5/3/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2841,7 +2841,7 @@
   },
   {
     "sessionId": 353,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "5/10/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -5817,98 +5817,98 @@
   },
   {
     "sessionId": 727,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "2/20/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 728,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "2/27/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 729,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/5/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 730,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/12/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 731,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/19/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 732,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/26/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 733,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/2/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 734,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/9/2020",
+    "canceled": "TRUE",
+    "time": "Email Practice",
     "notes": ""
   },
   {
     "sessionId": 735,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/16/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 736,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/23/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 737,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/30/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 738,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "5/7/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
