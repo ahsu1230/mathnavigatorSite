@@ -1681,11 +1681,11 @@
   },
   {
     "sessionId": 208,
-    "classKey": "sat1_fall_e",
-    "date": "3/27/2020",
+    "classKey": "",
+    "date": "",
     "canceled": "",
-    "time": "Friday 8:00pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "time": "",
+    "notes": ""
   },
   {
     "sessionId": 209,
@@ -1821,7 +1821,7 @@
     "date": "5/16/2020",
     "canceled": "",
     "time": "Saturday 10:00am - 12:00pm",
-    "notes": "For ACT"
+    "notes": "For SAT/ACT"
   },
   {
     "sessionId": 226,
@@ -1829,7 +1829,7 @@
     "date": "5/23/2020",
     "canceled": "",
     "time": "Saturday 10:00am - 12:00pm",
-    "notes": "For ACT"
+    "notes": "For SAT/ACT"
   },
   {
     "sessionId": 227,
@@ -1877,7 +1877,7 @@
     "date": "5/22/2020",
     "canceled": "",
     "time": "Friday 8:00pm - 9:40pm",
-    "notes": "SAT/ACT Prep Test"
+    "notes": "SAT Prep Test"
   },
   {
     "sessionId": 233,
@@ -1890,18 +1890,18 @@
   {
     "sessionId": 234,
     "classKey": "sat1_spring_f",
-    "date": "6/7/2020",
+    "date": "6/2/2020",
     "canceled": "",
-    "time": "Friday 8:00pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "time": "Email practice",
+    "notes": ""
   },
   {
     "sessionId": 235,
-    "classKey": "sat1_spring_f",
-    "date": "6/12/2020",
+    "classKey": "",
+    "date": "",
     "canceled": "",
-    "time": "Friday 8:00pm - 9:40pm",
-    "notes": "ACT Prep Test"
+    "time": "",
+    "notes": ""
   },
   {
     "sessionId": 236,
@@ -2067,9 +2067,9 @@
     "sessionId": 256,
     "classKey": "sat2_spring_a",
     "date": "4/14/2020",
-    "canceled": "TRUE",
-    "time": "",
-    "notes": ""
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
   },
   {
     "sessionId": 257,
@@ -2347,9 +2347,9 @@
     "sessionId": 291,
     "classKey": "sat2_spring_b",
     "date": "4/14/2020",
-    "canceled": "TRUE",
-    "time": "",
-    "notes": ""
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
   },
   {
     "sessionId": 292,
@@ -2627,9 +2627,9 @@
     "sessionId": 326,
     "classKey": "sat2_spring_c",
     "date": "4/14/2020",
-    "canceled": "TRUE",
-    "time": "",
-    "notes": ""
+    "canceled": "",
+    "time": "Tuesday 7:30pm - 9:00pm",
+    "notes": "Extra Practice"
   },
   {
     "sessionId": 327,
@@ -2753,7 +2753,7 @@
   },
   {
     "sessionId": 342,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "2/23/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2761,7 +2761,7 @@
   },
   {
     "sessionId": 343,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/1/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2769,7 +2769,7 @@
   },
   {
     "sessionId": 344,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/8/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2777,7 +2777,7 @@
   },
   {
     "sessionId": 345,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/15/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2785,7 +2785,7 @@
   },
   {
     "sessionId": 346,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/22/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2793,7 +2793,7 @@
   },
   {
     "sessionId": 347,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "3/29/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2801,7 +2801,7 @@
   },
   {
     "sessionId": 348,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/5/2020",
     "canceled": "TRUE",
     "time": "",
@@ -2809,7 +2809,7 @@
   },
   {
     "sessionId": 349,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/12/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2817,7 +2817,7 @@
   },
   {
     "sessionId": 350,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/19/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2825,7 +2825,7 @@
   },
   {
     "sessionId": 351,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "4/26/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2833,7 +2833,7 @@
   },
   {
     "sessionId": 352,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "5/3/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -2841,7 +2841,7 @@
   },
   {
     "sessionId": 353,
-    "classKey": "ap_calc_spring_finalreview",
+    "classKey": "ap_cal_final_spring_b",
     "date": "5/10/2020",
     "canceled": "",
     "time": "Sunday 2:15pm - 4:15pm",
@@ -3651,9 +3651,9 @@
     "sessionId": 456,
     "classKey": "english3_spring_r910",
     "date": "5/23/2020",
-    "canceled": "TRUE",
-    "time": "",
-    "notes": "Email practice"
+    "canceled": "",
+    "time": "Saturday 4:00pm - 6:00pm",
+    "notes": ""
   },
   {
     "sessionId": 457,
@@ -3665,11 +3665,11 @@
   },
   {
     "sessionId": 458,
-    "classKey": "english3_spring_r910",
-    "date": "6/6/2020",
+    "classKey": "",
+    "date": "",
     "canceled": "",
-    "time": "Saturday 4:00pm - 6:00pm",
-    "notes": "Done"
+    "time": "",
+    "notes": ""
   },
   {
     "sessionId": 459,
@@ -5817,98 +5817,98 @@
   },
   {
     "sessionId": 727,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "2/20/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 728,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "2/27/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 729,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/5/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 730,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/12/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 731,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/19/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 732,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "3/26/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 733,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/2/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 734,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/9/2020",
+    "canceled": "TRUE",
+    "time": "Email Practice",
     "notes": ""
   },
   {
     "sessionId": 735,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/16/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 736,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/23/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 737,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "4/30/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
     "sessionId": 738,
-    "classKey": "",
-    "date": "",
+    "classKey": "ap_cal_final_spring_a",
+    "date": "5/7/2020",
     "canceled": "",
-    "time": "",
+    "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {

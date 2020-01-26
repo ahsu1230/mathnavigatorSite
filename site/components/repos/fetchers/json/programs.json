@@ -138,5 +138,12 @@
     "grade1": 10,
     "grade2": 12,
     "description": "Our most popular program. Register for this class if you are planning to take the SAT1 exam. Teacher Lynne will cover all topics on the SAT English Section for both reading comprehension skills and writing essays to target the 800 full scores."
+  },
+  {
+    "programId": "ap_calc_final",
+    "title": "AP Calculus Final Review",
+    "grade1": 10,
+    "grade2": 12,
+    "description": "Whether you take AP Calculus AB or BC at school, Teacher Andy will summarize all AP Calculus topics into easily applicable knowledge for students to use in their practice exams. In the Spring semester of the school year, we provide \"Final Review\" classes for students to go over any topics they need before aiming to get the top score of 5 on the AP Exam."
   }
 ]
