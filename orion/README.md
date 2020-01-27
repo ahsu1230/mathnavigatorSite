@@ -102,7 +102,10 @@ go test ./tests/*
 ```
 You should see an `ok`.
 
-After that, using a text editor of your choice (Sublime, Nodepad++, Atom, etc.), open `configs/config_local.yaml` in this folder. You should see a file with this content:
+In the `orion` folder,
+ * Create a new folder called `configs`.
+ * Inside this folder, create a new file called `config_local.yaml`.
+ * Paste the following content into this file and save.
 ```
 app:
   build: "development"
@@ -113,7 +116,7 @@ database:
   user: "root"
   pass: "<YOUR_PASSWORD_GOES_HERE>"
 ```
-Rememeber the password you saved for MySql? Paste that password in between the quotations!
+Remember the password you saved for MySql? Paste that password in between the quotations!
 
 After that, start the web server with this:
 ```
