@@ -5,30 +5,24 @@ This website application is for the Math Navigator tutoring program located in M
 Our technology stack includes:
 - ReactJs (Javascript Website Framework, https://reactjs.org/)
 - Golang (Google Programming Language, https://golang.org/)
-- MongoDb (NoSQL database, https://www.mongodb.com/)
+- MySQL (relational SQL database, https://www.mysql.com/)
 - AWS (Amazon Web Services, https://aws.amazon.com/)
 - Jenkins (Content Automation, https://jenkins.io/)
 
- ## Getting started
-
-You will need to download the following:
-
- - git (https://git-scm.com/downloads)
- - nodejs (https://nodejs.org/en/download)
-
  ## Setting up
 
-1. Request access from Aaron and he will give you the necessary tools to get started.
+1. Download git [here](https://git-scm.com/downloads).
+To learn more about Git, find the Git README in the `resources` folder.
+Or follow this link [here](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners).
 
-2. Git clone this repository
+2. Request access from Aaron and he will give you the necessary tools to get started.
+
+3. Git clone this repository
 `$ git clone https://github.com/ahsu1230/mathnavigatorSite.git`
 
-3. Learn the basics of Git here:
-https://docs.google.com/document/d/1yVO7b0Fqd-P6RHOVQH7_AgEKlsWvY8SRcMJpA6UgQpI/edit?usp=sharing
-https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners
+4. Create an account on [Asana](https://asana.com/). This will be our main tool to manage and divide tasks amongst our team.
 
-4. Create an account on Asana (https://asana.com/). This will be our main tool to manage and divide tasks amongst our team.
-
+5. Install [Slack](https://slack.com/) onto your computer and/or mobile phone to get access to our team chat application. 
 
 <!-- # MathNavigator Constellation Services
 
