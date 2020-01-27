@@ -7,4 +7,5 @@
 **/*/package-lock.json
 **/*/go.sum
 
-orion/configs/*
+orion/configs/config_dev.yaml
+orion/configs/config_prod.yaml
