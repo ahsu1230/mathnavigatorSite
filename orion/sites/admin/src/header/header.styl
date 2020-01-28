@@ -1,5 +1,7 @@
 @import "../static.styl"
 
+listHeight = spacing4x
+
 #view-header
   height: headerHeight
   padding: 0 spacing2x
@@ -46,7 +48,7 @@
 
 .header-dropdown
   &:hover ul
-    height: 100%
+    height: (listHeight * 4)
 
   & .title
     width: 100%
@@ -64,8 +66,8 @@
     transition: 0.1s linear height
 
     & li
-      height: spacing4x
-      line-height: spacing4x
+      height: listHeight
+      line-height: listHeight
       padding: 0 spacing2x
       text-align: center
       background-color: colorGrayLight

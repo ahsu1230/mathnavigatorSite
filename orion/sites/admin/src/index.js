@@ -12,7 +12,11 @@ import { HeaderSection } from './header/header.js';
 import { HomePage } from './home/home.js';
 import { ProgramPage } from './programs/program.js';
 import { ProgramEditPage } from './programs/programEdit.js';
+import { AchievePage } from './achieve/achieve.js';
+import { AnnouncePage } from './announce/announce.js';
 
+const Achieve = () => <AchievePage/>;
+const Announce = () => <AnnouncePage/>;
 const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
@@ -39,6 +43,8 @@ class App extends React.Component {
           <Route path="/program/:programId/edit" component={ProgramEditMatch}/>
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
+          <Route path="/announcements" component={Announce}/>
+          <Route path="/achievements" component={Achieve}/>
         </Switch>
       </div>
     );
