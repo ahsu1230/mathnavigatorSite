@@ -1,5 +1,5 @@
 'use strict';
-require('./programEditPage.styl');
+require('./programEdit.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -74,13 +74,19 @@ export class ProgramEditPage extends React.Component {
       grade2: parseInt(this.state.inputGrade2),
       description: this.state.inputDescription
     };
-    let successCallback = () => this.setState({ showSaveModal: true });
-    if (this.state.isEdit) {
-      API.post("api/programs/v1/program/" + program.programId, program)
-        .then(res => successCallback());
+
+    let programCheck = checkProgram(program);
+    if (programCheck.isValid) {
+      let successCallback = () => this.setState({ showSaveModal: true });
+      if (this.state.isEdit) {
+        API.post("api/programs/v1/program/" + program.programId, program)
+          .then(res => successCallback());
+      } else {
+        API.post("api/programs/v1/create", program)
+          .then(res => successCallback());
+      }
     } else {
-      API.post("api/programs/v1/create", program)
-        .then(res => successCallback());
+      alert(programCheck.errorMessage);
     }
   }
 
@@ -167,4 +173,12 @@ export class ProgramEditPage extends React.Component {
       </div>
     );
   }
+}
+
+function checkProgram(program) {
+  // *todo* change this later!
+  return {
+    isValid: true,
+    errorMessage: "Bad program!"
+  };
 }
