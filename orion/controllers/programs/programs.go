@@ -37,6 +37,14 @@ func CreateProgram(c *gin.Context) {
   var newProgram models.Program
   c.BindJSON(&newProgram)
 
+  // *todo* implement for real!
+  // isValid := CheckValidProgram(newProgram);
+  // if (isValid) {
+  //
+  // } else {
+  //
+  // }
+
   // Query DB
   db := models.GetDb()
   programName := newProgram.Name
@@ -98,4 +106,8 @@ func DeleteProgram(c *gin.Context) {
     c.String(http.StatusOK, "Deleted Program " + programId)
   }
   return;
+}
+
+func CheckValidProgram() bool {
+  return true;
 }

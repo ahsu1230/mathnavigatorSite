@@ -6,7 +6,7 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
 
-  "orion/controllers"
+  "orion/controllers/programs"
   "orion/middlewares"
   "orion/models"
 )
