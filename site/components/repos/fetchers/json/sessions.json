@@ -5019,9 +5019,9 @@
     "sessionId": 627,
     "classKey": "sat_eng_20_sum_a",
     "date": "7/14/2020",
-    "canceled": "",
-    "time": "Tuesday 6:00pm - 8:00pm",
-    "notes": "7th session"
+    "canceled": "TRUE",
+    "time": "NO CLASS",
+    "notes": ""
   },
   {
     "sessionId": 628,
@@ -5029,7 +5029,7 @@
     "date": "7/16/2020",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "8th session"
+    "notes": "7th session"
   },
   {
     "sessionId": 629,
@@ -5037,7 +5037,7 @@
     "date": "7/21/2020",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
-    "notes": "9th session"
+    "notes": "8th session"
   },
   {
     "sessionId": 630,
@@ -5045,7 +5045,7 @@
     "date": "7/23/2020",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "10th session"
+    "notes": "9th session"
   },
   {
     "sessionId": 631,
@@ -5053,7 +5053,7 @@
     "date": "7/28/2020",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
-    "notes": "11th session"
+    "notes": "10th session"
   },
   {
     "sessionId": 632,
@@ -5061,7 +5061,7 @@
     "date": "7/30/2020",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "12th session"
+    "notes": "11th session"
   },
   {
     "sessionId": 633,
@@ -5069,7 +5069,7 @@
     "date": "8/4/2020",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
-    "notes": "13th session"
+    "notes": "12th session"
   },
   {
     "sessionId": 634,
@@ -5077,7 +5077,7 @@
     "date": "8/6/2020",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "14th session"
+    "notes": "13th session"
   },
   {
     "sessionId": 635,
@@ -5085,7 +5085,7 @@
     "date": "8/11/2020",
     "canceled": "",
     "time": "Tuesday 6:00pm - 8:00pm",
-    "notes": "15th session"
+    "notes": "14th session"
   },
   {
     "sessionId": 636,
@@ -5093,10 +5093,18 @@
     "date": "8/13/2020",
     "canceled": "",
     "time": "Thursday 6:00pm - 8:00pm",
-    "notes": "16th session"
+    "notes": "15th session"
   },
   {
     "sessionId": 637,
+    "classKey": "sat_eng_20_sum_a",
+    "date": "8/18/2020",
+    "canceled": "",
+    "time": "Tuesday 6:00pm - 8:00pm",
+    "notes": "16th session"
+  },
+  {
+    "sessionId": 638,
     "classKey": "sat_eng_20_sum_a",
     "date": "7/17/2020",
     "canceled": "",
@@ -5104,7 +5112,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 638,
+    "sessionId": 639,
     "classKey": "sat_eng_20_sum_a",
     "date": "7/24/2020",
     "canceled": "",
@@ -5112,7 +5120,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 639,
+    "sessionId": 640,
     "classKey": "sat_eng_20_sum_a",
     "date": "7/31/2020",
     "canceled": "",
@@ -5120,7 +5128,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 640,
+    "sessionId": 641,
     "classKey": "sat_eng_20_sum_a",
     "date": "8/7/2020",
     "canceled": "",
@@ -5128,7 +5136,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 641,
+    "sessionId": 642,
     "classKey": "sat_eng_20_sum_a",
     "date": "8/14/2020",
     "canceled": "",
@@ -5136,7 +5144,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 642,
+    "sessionId": 643,
     "classKey": "sat_eng_20_sum_a",
     "date": "8/21/2020",
     "canceled": "",
@@ -5144,7 +5152,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 643,
+    "sessionId": 644,
     "classKey": "sat_eng_20_sum_a",
     "date": "8/24/2020",
     "canceled": "",
@@ -5152,15 +5160,15 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 644,
-    "classKey": "sat_eng_20_sum_a",
+    "sessionId": 645,
+    "classKey": "",
     "date": "9/11/2020",
     "canceled": "",
     "time": "Friday 6:00pm - 7:45pm",
     "notes": "ACT English prep test"
   },
   {
-    "sessionId": 645,
+    "sessionId": 646,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -5168,15 +5176,15 @@
     "notes": ""
   },
   {
-    "sessionId": 646,
+    "sessionId": 647,
     "classKey": "sat_eng_20_sum_b",
-    "date": "7/14/2020",
+    "date": "7/11/2020",
     "canceled": "",
-    "time": "Tuesday 8:00pm - 10:00pm",
+    "time": "Saturday 10:00am - 12:00pm",
     "notes": "1st session"
   },
   {
-    "sessionId": 647,
+    "sessionId": 648,
     "classKey": "sat_eng_20_sum_b",
     "date": "7/18/2020",
     "canceled": "",
@@ -5184,7 +5192,7 @@
     "notes": "2nd session"
   },
   {
-    "sessionId": 648,
+    "sessionId": 649,
     "classKey": "sat_eng_20_sum_b",
     "date": "7/21/2020",
     "canceled": "",
@@ -5192,7 +5200,7 @@
     "notes": "3rd session"
   },
   {
-    "sessionId": 649,
+    "sessionId": 650,
     "classKey": "sat_eng_20_sum_b",
     "date": "7/25/2020",
     "canceled": "",
@@ -5200,7 +5208,7 @@
     "notes": "4th session"
   },
   {
-    "sessionId": 650,
+    "sessionId": 651,
     "classKey": "sat_eng_20_sum_b",
     "date": "7/28/2020",
     "canceled": "",
@@ -5208,7 +5216,7 @@
     "notes": "5th session"
   },
   {
-    "sessionId": 651,
+    "sessionId": 652,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/1/2020",
     "canceled": "",
@@ -5216,7 +5224,7 @@
     "notes": "6th session"
   },
   {
-    "sessionId": 652,
+    "sessionId": 653,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/4/2020",
     "canceled": "",
@@ -5224,7 +5232,7 @@
     "notes": "7th session"
   },
   {
-    "sessionId": 653,
+    "sessionId": 654,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/8/2020",
     "canceled": "",
@@ -5232,7 +5240,7 @@
     "notes": "8th session"
   },
   {
-    "sessionId": 654,
+    "sessionId": 655,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/11/2020",
     "canceled": "",
@@ -5240,7 +5248,7 @@
     "notes": "9th session"
   },
   {
-    "sessionId": 655,
+    "sessionId": 656,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/15/2020",
     "canceled": "",
@@ -5248,7 +5256,7 @@
     "notes": "10th session"
   },
   {
-    "sessionId": 656,
+    "sessionId": 657,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/18/2020",
     "canceled": "",
@@ -5256,7 +5264,7 @@
     "notes": "11th session"
   },
   {
-    "sessionId": 657,
+    "sessionId": 658,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/22/2020",
     "canceled": "",
@@ -5264,23 +5272,23 @@
     "notes": "12th session"
   },
   {
-    "sessionId": 658,
+    "sessionId": 659,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/29/2020",
-    "canceled": "",
+    "canceled": "TRUE",
     "time": "Tuesday 8:00pm - 10:00pm",
     "notes": "13th session"
   },
   {
-    "sessionId": 659,
+    "sessionId": 660,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/5/2020",
-    "canceled": "TRUE",
+    "canceled": "",
     "time": "",
     "notes": ""
   },
   {
-    "sessionId": 660,
+    "sessionId": 661,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/12/2020",
     "canceled": "",
@@ -5288,7 +5296,7 @@
     "notes": "14th session"
   },
   {
-    "sessionId": 661,
+    "sessionId": 662,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/19/2020",
     "canceled": "",
@@ -5296,7 +5304,7 @@
     "notes": "15th session"
   },
   {
-    "sessionId": 662,
+    "sessionId": 663,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/26/2020",
     "canceled": "",
@@ -5304,7 +5312,7 @@
     "notes": "16th session"
   },
   {
-    "sessionId": 663,
+    "sessionId": 664,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/21/2020",
     "canceled": "",
@@ -5312,7 +5320,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 664,
+    "sessionId": 665,
     "classKey": "sat_eng_20_sum_b",
     "date": "8/28/2020",
     "canceled": "",
@@ -5320,7 +5328,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 665,
+    "sessionId": 666,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/4/2020",
     "canceled": "",
@@ -5328,7 +5336,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 666,
+    "sessionId": 667,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/11/2020",
     "canceled": "",
@@ -5336,7 +5344,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 667,
+    "sessionId": 668,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/18/2020",
     "canceled": "",
@@ -5344,7 +5352,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 668,
+    "sessionId": 669,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/25/2020",
     "canceled": "",
@@ -5352,7 +5360,7 @@
     "notes": "SAT English prep test"
   },
   {
-    "sessionId": 669,
+    "sessionId": 670,
     "classKey": "sat_eng_20_sum_b",
     "date": "9/28/2020",
     "canceled": "",
@@ -5360,7 +5368,7 @@
     "notes": ""
   },
   {
-    "sessionId": 670,
+    "sessionId": 671,
     "classKey": "sat_eng_20_sum_b",
     "date": "10/9/2020",
     "canceled": "",
@@ -5368,7 +5376,7 @@
     "notes": "ACT English prep test"
   },
   {
-    "sessionId": 671,
+    "sessionId": 672,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -5376,7 +5384,7 @@
     "notes": ""
   },
   {
-    "sessionId": 672,
+    "sessionId": 673,
     "classKey": "english5_20_sum_rw78",
     "date": "6/22/2020",
     "canceled": "",
@@ -5384,7 +5392,7 @@
     "notes": "Reading and Grammar #1"
   },
   {
-    "sessionId": 673,
+    "sessionId": 674,
     "classKey": "english5_20_sum_rw78",
     "date": "6/27/2020",
     "canceled": "",
@@ -5392,23 +5400,23 @@
     "notes": "Writing and Grammar #1"
   },
   {
-    "sessionId": 674,
+    "sessionId": 675,
     "classKey": "english5_20_sum_rw78",
     "date": "6/29/2020",
-    "canceled": "",
+    "canceled": "TRUE",
     "time": "Monday 8:00pm - 9:50m",
     "notes": "Reading and Grammar #2"
   },
   {
-    "sessionId": 675,
+    "sessionId": 676,
     "classKey": "english5_20_sum_rw78",
     "date": "7/4/2020",
-    "canceled": "TRUE",
+    "canceled": "",
     "time": "NO CLASS",
     "notes": ""
   },
   {
-    "sessionId": 676,
+    "sessionId": 677,
     "classKey": "english5_20_sum_rw78",
     "date": "7/6/2020",
     "canceled": "",
@@ -5416,7 +5424,7 @@
     "notes": "Reading and Grammar #3"
   },
   {
-    "sessionId": 677,
+    "sessionId": 678,
     "classKey": "english5_20_sum_rw78",
     "date": "7/11/2020",
     "canceled": "",
@@ -5424,7 +5432,7 @@
     "notes": "Writing and Grammar #2"
   },
   {
-    "sessionId": 678,
+    "sessionId": 679,
     "classKey": "english5_20_sum_rw78",
     "date": "7/13/2020",
     "canceled": "",
@@ -5432,7 +5440,7 @@
     "notes": "Reading and Grammar #4"
   },
   {
-    "sessionId": 679,
+    "sessionId": 680,
     "classKey": "english5_20_sum_rw78",
     "date": "7/18/2020",
     "canceled": "",
@@ -5440,7 +5448,7 @@
     "notes": "Writing and Grammar #3"
   },
   {
-    "sessionId": 680,
+    "sessionId": 681,
     "classKey": "english5_20_sum_rw78",
     "date": "7/20/2020",
     "canceled": "",
@@ -5448,7 +5456,7 @@
     "notes": "Reading and Grammar #5"
   },
   {
-    "sessionId": 681,
+    "sessionId": 682,
     "classKey": "english5_20_sum_rw78",
     "date": "7/25/2020",
     "canceled": "",
@@ -5456,7 +5464,7 @@
     "notes": "Writing and Grammar #4"
   },
   {
-    "sessionId": 682,
+    "sessionId": 683,
     "classKey": "english5_20_sum_rw78",
     "date": "7/27/2020",
     "canceled": "",
@@ -5464,7 +5472,7 @@
     "notes": "Reading and Grammar #6"
   },
   {
-    "sessionId": 683,
+    "sessionId": 684,
     "classKey": "english5_20_sum_rw78",
     "date": "8/1/2020",
     "canceled": "",
@@ -5472,7 +5480,7 @@
     "notes": "Writing and Grammar #5"
   },
   {
-    "sessionId": 684,
+    "sessionId": 685,
     "classKey": "english5_20_sum_rw78",
     "date": "8/3/2020",
     "canceled": "",
@@ -5480,7 +5488,7 @@
     "notes": "Reading and Grammar #7"
   },
   {
-    "sessionId": 685,
+    "sessionId": 686,
     "classKey": "english5_20_sum_rw78",
     "date": "8/3/2020",
     "canceled": "",
@@ -5488,7 +5496,7 @@
     "notes": "Writing and Grammar #6"
   },
   {
-    "sessionId": 686,
+    "sessionId": 687,
     "classKey": "english5_20_sum_rw78",
     "date": "8/8/2020",
     "canceled": "",
@@ -5496,7 +5504,7 @@
     "notes": "Reading and Grammar #8"
   },
   {
-    "sessionId": 687,
+    "sessionId": 688,
     "classKey": "english5_20_sum_rw78",
     "date": "8/10/2020",
     "canceled": "",
@@ -5504,7 +5512,7 @@
     "notes": "Writing and Grammar #7"
   },
   {
-    "sessionId": 688,
+    "sessionId": 689,
     "classKey": "english5_20_sum_rw78",
     "date": "8/15/2020",
     "canceled": "",
@@ -5512,20 +5520,12 @@
     "notes": "Reading and Grammar #9"
   },
   {
-    "sessionId": 689,
+    "sessionId": 690,
     "classKey": "english5_20_sum_rw78",
     "date": "8/17/2020",
     "canceled": "",
     "time": "Saturday 2:00pm - 3:50pm",
     "notes": "Writing and Grammar #8"
-  },
-  {
-    "sessionId": 690,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
-    "notes": ""
   },
   {
     "sessionId": 691,
@@ -5537,6 +5537,14 @@
   },
   {
     "sessionId": 692,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 693,
     "classKey": "english4_20_sum_presat_a",
     "date": "6/22/2020",
     "canceled": "",
@@ -5544,7 +5552,7 @@
     "notes": "Reading and Grammar #1"
   },
   {
-    "sessionId": 693,
+    "sessionId": 694,
     "classKey": "english4_20_sum_presat_a",
     "date": "6/24/2020",
     "canceled": "",
@@ -5552,7 +5560,7 @@
     "notes": "Writing and Grammar #1"
   },
   {
-    "sessionId": 694,
+    "sessionId": 695,
     "classKey": "english4_20_sum_presat_a",
     "date": "6/29/2020",
     "canceled": "",
@@ -5560,7 +5568,7 @@
     "notes": "Reading and Grammar #2"
   },
   {
-    "sessionId": 695,
+    "sessionId": 696,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/1/2020",
     "canceled": "",
@@ -5568,7 +5576,7 @@
     "notes": "Writing and Grammar #2"
   },
   {
-    "sessionId": 696,
+    "sessionId": 697,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/6/2020",
     "canceled": "",
@@ -5576,7 +5584,7 @@
     "notes": "Reading and Grammar #3"
   },
   {
-    "sessionId": 697,
+    "sessionId": 698,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/8/2020",
     "canceled": "",
@@ -5584,7 +5592,7 @@
     "notes": "Writing and Grammar #3"
   },
   {
-    "sessionId": 698,
+    "sessionId": 699,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/13/2020",
     "canceled": "",
@@ -5592,7 +5600,7 @@
     "notes": "Reading and Grammar #4"
   },
   {
-    "sessionId": 699,
+    "sessionId": 700,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/15/2020",
     "canceled": "",
@@ -5600,7 +5608,7 @@
     "notes": "Writing and Grammar #4"
   },
   {
-    "sessionId": 700,
+    "sessionId": 701,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/20/2020",
     "canceled": "",
@@ -5608,7 +5616,7 @@
     "notes": "Reading and Grammar #5"
   },
   {
-    "sessionId": 701,
+    "sessionId": 702,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/22/2020",
     "canceled": "",
@@ -5616,7 +5624,7 @@
     "notes": "Writing and Grammar #5"
   },
   {
-    "sessionId": 702,
+    "sessionId": 703,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/27/2020",
     "canceled": "",
@@ -5624,7 +5632,7 @@
     "notes": "Reading and Grammar #6"
   },
   {
-    "sessionId": 703,
+    "sessionId": 704,
     "classKey": "english4_20_sum_presat_a",
     "date": "7/29/2020",
     "canceled": "",
@@ -5632,7 +5640,7 @@
     "notes": "Writing and Grammar #6"
   },
   {
-    "sessionId": 704,
+    "sessionId": 705,
     "classKey": "english4_20_sum_presat_a",
     "date": "8/3/2020",
     "canceled": "",
@@ -5640,7 +5648,7 @@
     "notes": "Reading and Grammar #7"
   },
   {
-    "sessionId": 705,
+    "sessionId": 706,
     "classKey": "english4_20_sum_presat_a",
     "date": "8/5/2020",
     "canceled": "",
@@ -5648,7 +5656,7 @@
     "notes": "Writing and Grammar #7"
   },
   {
-    "sessionId": 706,
+    "sessionId": 707,
     "classKey": "english4_20_sum_presat_a",
     "date": "8/10/2020",
     "canceled": "",
@@ -5656,7 +5664,7 @@
     "notes": "Reading and Grammar #8"
   },
   {
-    "sessionId": 707,
+    "sessionId": 708,
     "classKey": "english4_20_sum_presat_a",
     "date": "8/12/2020",
     "canceled": "",
@@ -5664,7 +5672,7 @@
     "notes": "Writing and Grammar #8"
   },
   {
-    "sessionId": 708,
+    "sessionId": 709,
     "classKey": "",
     "date": "",
     "canceled": "",
@@ -5672,7 +5680,7 @@
     "notes": ""
   },
   {
-    "sessionId": 709,
+    "sessionId": 710,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/7/2020",
     "canceled": "",
@@ -5680,7 +5688,7 @@
     "notes": "Reading and Grammar #1"
   },
   {
-    "sessionId": 710,
+    "sessionId": 711,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/9/2020",
     "canceled": "",
@@ -5688,15 +5696,15 @@
     "notes": "Writing and Grammar #1"
   },
   {
-    "sessionId": 711,
+    "sessionId": 712,
     "classKey": "english4_20_sum_presat_b",
-    "date": "7/14/2020",
+    "date": "7/13/2020",
     "canceled": "",
-    "time": "Tuesday 8:00pm - 9:50pm",
-    "notes": "Reading and Grammar #2"
+    "time": "Monday 8:00pm - 9:50pm",
+    "notes": "Time Change, Reading and Grammar #2"
   },
   {
-    "sessionId": 712,
+    "sessionId": 713,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/16/2020",
     "canceled": "",
@@ -5704,7 +5712,7 @@
     "notes": "Writing and Grammar #2"
   },
   {
-    "sessionId": 713,
+    "sessionId": 714,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/21/2020",
     "canceled": "",
@@ -5712,7 +5720,7 @@
     "notes": "Reading and Grammar #3"
   },
   {
-    "sessionId": 714,
+    "sessionId": 715,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/23/2020",
     "canceled": "",
@@ -5720,7 +5728,7 @@
     "notes": "Writing and Grammar #3"
   },
   {
-    "sessionId": 715,
+    "sessionId": 716,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/28/2020",
     "canceled": "",
@@ -5728,7 +5736,7 @@
     "notes": "Reading and Grammar #4"
   },
   {
-    "sessionId": 716,
+    "sessionId": 717,
     "classKey": "english4_20_sum_presat_b",
     "date": "7/30/2020",
     "canceled": "",
@@ -5736,7 +5744,7 @@
     "notes": "Writing and Grammar #4"
   },
   {
-    "sessionId": 717,
+    "sessionId": 718,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/4/2020",
     "canceled": "",
@@ -5744,7 +5752,7 @@
     "notes": "Reading and Grammar #5"
   },
   {
-    "sessionId": 718,
+    "sessionId": 719,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/6/2020",
     "canceled": "",
@@ -5752,7 +5760,7 @@
     "notes": "Writing and Grammar #5"
   },
   {
-    "sessionId": 719,
+    "sessionId": 720,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/11/2020",
     "canceled": "",
@@ -5760,7 +5768,7 @@
     "notes": "Reading and Grammar #6"
   },
   {
-    "sessionId": 720,
+    "sessionId": 721,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/13/2020",
     "canceled": "",
@@ -5768,7 +5776,7 @@
     "notes": "Writing and Grammar #6"
   },
   {
-    "sessionId": 721,
+    "sessionId": 722,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/18/2020",
     "canceled": "",
@@ -5776,7 +5784,7 @@
     "notes": "Reading and Grammar #7"
   },
   {
-    "sessionId": 722,
+    "sessionId": 723,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/20/2020",
     "canceled": "",
@@ -5784,7 +5792,7 @@
     "notes": "Writing and Grammar #7"
   },
   {
-    "sessionId": 723,
+    "sessionId": 724,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/25/2020",
     "canceled": "",
@@ -5792,20 +5800,12 @@
     "notes": "Reading and Grammar #8"
   },
   {
-    "sessionId": 724,
+    "sessionId": 725,
     "classKey": "english4_20_sum_presat_b",
     "date": "8/27/2020",
     "canceled": "",
     "time": "Thursday 8:00pm - 9:50pm",
     "notes": "Writing and Grammar #8"
-  },
-  {
-    "sessionId": 725,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
-    "notes": ""
   },
   {
     "sessionId": 726,
@@ -5817,6 +5817,14 @@
   },
   {
     "sessionId": 727,
+    "classKey": "",
+    "date": "",
+    "canceled": "",
+    "time": "",
+    "notes": ""
+  },
+  {
+    "sessionId": 728,
     "classKey": "ap_cal_final_spring_a",
     "date": "2/20/2020",
     "canceled": "",
@@ -5824,7 +5832,7 @@
     "notes": ""
   },
   {
-    "sessionId": 728,
+    "sessionId": 729,
     "classKey": "ap_cal_final_spring_a",
     "date": "2/27/2020",
     "canceled": "",
@@ -5832,7 +5840,7 @@
     "notes": ""
   },
   {
-    "sessionId": 729,
+    "sessionId": 730,
     "classKey": "ap_cal_final_spring_a",
     "date": "3/5/2020",
     "canceled": "",
@@ -5840,7 +5848,7 @@
     "notes": ""
   },
   {
-    "sessionId": 730,
+    "sessionId": 731,
     "classKey": "ap_cal_final_spring_a",
     "date": "3/12/2020",
     "canceled": "",
@@ -5848,7 +5856,7 @@
     "notes": ""
   },
   {
-    "sessionId": 731,
+    "sessionId": 732,
     "classKey": "ap_cal_final_spring_a",
     "date": "3/19/2020",
     "canceled": "",
@@ -5856,7 +5864,7 @@
     "notes": ""
   },
   {
-    "sessionId": 732,
+    "sessionId": 733,
     "classKey": "ap_cal_final_spring_a",
     "date": "3/26/2020",
     "canceled": "",
@@ -5864,23 +5872,23 @@
     "notes": ""
   },
   {
-    "sessionId": 733,
+    "sessionId": 734,
     "classKey": "ap_cal_final_spring_a",
     "date": "4/2/2020",
-    "canceled": "",
+    "canceled": "TRUE",
     "time": "Thursday 6:30pm - 8:30pm",
     "notes": ""
   },
   {
-    "sessionId": 734,
+    "sessionId": 735,
     "classKey": "ap_cal_final_spring_a",
     "date": "4/9/2020",
-    "canceled": "TRUE",
+    "canceled": "",
     "time": "Email Practice",
     "notes": ""
   },
   {
-    "sessionId": 735,
+    "sessionId": 736,
     "classKey": "ap_cal_final_spring_a",
     "date": "4/16/2020",
     "canceled": "",
@@ -5888,7 +5896,7 @@
     "notes": ""
   },
   {
-    "sessionId": 736,
+    "sessionId": 737,
     "classKey": "ap_cal_final_spring_a",
     "date": "4/23/2020",
     "canceled": "",
@@ -5896,7 +5904,7 @@
     "notes": ""
   },
   {
-    "sessionId": 737,
+    "sessionId": 738,
     "classKey": "ap_cal_final_spring_a",
     "date": "4/30/2020",
     "canceled": "",
@@ -5904,19 +5912,11 @@
     "notes": ""
   },
   {
-    "sessionId": 738,
+    "sessionId": 739,
     "classKey": "ap_cal_final_spring_a",
     "date": "5/7/2020",
     "canceled": "",
     "time": "Thursday 6:30pm - 8:30pm",
-    "notes": ""
-  },
-  {
-    "sessionId": 739,
-    "classKey": "",
-    "date": "",
-    "canceled": "",
-    "time": "",
     "notes": ""
   }
 ]
