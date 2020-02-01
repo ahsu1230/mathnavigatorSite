@@ -91,6 +91,9 @@ mysql.server start
 mysql.server stop
 mysql.server restart
 ```
+Alternatively, if that doesn't work, you can use the MySQL Notifier app that comes with installation and appears in the taskbar:
+
+![alt text](https://github.com/ahsu1230/mathnavigatorSite/blob/max/orion/Untitled.png)
 ------
 
 ## Test back-end webserver
