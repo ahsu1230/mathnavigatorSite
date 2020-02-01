@@ -8,7 +8,7 @@ import (
 
   "orion/controllers/programs"
   "orion/middlewares"
-  "orion/models"
+  "orion/database"
 )
 
 func main() {
@@ -18,8 +18,9 @@ func main() {
   fmt.Println("Building server in mode: ", config.App.Build)
 
   fmt.Println("Connecting to DB...")
-  db := config.Database
-  models.OpenDb(db.Host, db.Port, db.Username, db.Password)
+  configDb := config.Database
+  database.OpenDb(configDb.Host, configDb.Port,
+    configDb.Username, configDb.Password)
 
   fmt.Println("Setting up Router...")
   router := gin.Default()
@@ -37,11 +38,11 @@ func main() {
   // API Routers
   apiPrograms := router.Group("/api/programs/")
   {
-    apiPrograms.GET("/v1/all", controllers.GetPrograms)
-    apiPrograms.POST("/v1/create", controllers.CreateProgram)
-    apiPrograms.GET("/v1/program/:programId", controllers.GetProgram)
-    apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
-    apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
+    apiPrograms.GET("/v1/all", programs.GetPrograms)
+    apiPrograms.POST("/v1/create", programs.CreateProgram)
+    apiPrograms.GET("/v1/program/:programId", programs.GetProgram)
+    apiPrograms.POST("/v1/program/:programId", programs.UpdateProgram)
+    apiPrograms.DELETE("/v1/program/:programId", programs.DeleteProgram)
   }
   // apiClasses := router.Group("api/classes/")
   // apiLocations := router.Group("api/locations/")
@@ -54,5 +55,6 @@ func main() {
   // Web server serves on :8080
 	router.Run(":8080")
 
-  // Close db?
+  // close DbConn when server finishes
+  defer database.CloseDb();
 }

@@ -98,7 +98,7 @@ In your Terminal, go to the `orion` directory. Use `cd` to travers around your f
 
 To run all tests of the back-end web server, run:
 ```
-go test ./...*
+go test ./...
 ```
 You should see `ok`s and no failures.
 
