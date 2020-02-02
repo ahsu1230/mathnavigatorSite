@@ -15,6 +15,7 @@ export class ProgramEditPage extends React.Component {
       isEdit: false,
       showDeleteModal: false,
       showSaveModal: false,
+      oldProgramId: "",
       inputProgramId: "",
       inputProgramName: "",
       inputGrade1: 0,
@@ -43,6 +44,7 @@ export class ProgramEditPage extends React.Component {
         .then(res => {
           const program = res.data;
           this.setState({
+            oldProgramId: program.programId,
             inputProgramId: program.programId,
             inputProgramName: program.name,
             inputGrade1: program.grade1,
@@ -79,7 +81,7 @@ export class ProgramEditPage extends React.Component {
     if (programCheck.isValid) {
       let successCallback = () => this.setState({ showSaveModal: true });
       if (this.state.isEdit) {
-        API.post("api/programs/v1/program/" + program.programId, program)
+        API.post("api/programs/v1/program/" + this.state.oldProgramId, program)
           .then(res => successCallback());
       } else {
         API.post("api/programs/v1/create", program)
