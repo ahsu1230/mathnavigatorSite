@@ -94,7 +94,7 @@ Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). 
  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_1_installer_networking.png)
  - `Authentication Method` Select the Recommended Strong Password Encryption.
  - `Account and Roles` Create a MySQL password. **Please remember this password!**
-  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_2_accounts.png)
+  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_2_installer_accounts.png)
  - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addtion, you can uncheck the `Start the MySQL Server at System Startup`. Tou can also run the Windows Service as the Standard system.
  - `Apply Configuration` Execute! Finish.
 
@@ -121,7 +121,7 @@ Congratulations! MySQL is successfully installed.
    - Add a semicolon `;` at the end of the value. 
    - Paste the copied MySQL Location folder
    - Save by pressing OK
-  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_6_environ_var.png)
+  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_6_env_var.png)
  - Open Command Prompt and type `mysql --version` to see if mysql is recognized by the Command Prompt.
 
 ------
