@@ -91,10 +91,10 @@ Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). 
  - You'll need to configure MySQL Server.
    - `High Availability` Select Standalone MySQL Server.
    - `Type and Networking` Make sure the Config Type is `Development Computer` and make sure you have TCP/IP checked, and Port: 3306.
- ![alt text](https://github.com/ahsu1230/mathnavigatorSite/tree/master/orion/onboarding/mysql_1_installer_networking.png)
+ ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_1_installer_networking.png)
  - `Authentication Method` Select the Recommended Strong Password Encryption.
  - `Account and Roles` Create a MySQL password. **Please remember this password!**
-  ![alt text](https://github.com/ahsu1230/mathnavigatorSite/tree/master/orion/onboarding/mysql_2_accounts.png)
+  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_2_accounts.png)
  - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addtion, you can uncheck the `Start the MySQL Server at System Startup`. Tou can also run the Windows Service as the Standard system.
  - `Apply Configuration` Execute! Finish.
 
@@ -106,7 +106,7 @@ net stop MySQL
 There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work.
 
 You can go ahead and open the application MySQL Shell. It will prompt you to enter your MySQL password. 
- ![alt text](https://github.com/ahsu1230/mathnavigatorSite/tree/master/orion/onboarding/mysql_8_shell.png)
+ ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_8_shell.png)
 Once you're in, run this command:
 ```
 CREATE SCHEMA mathnavdb;
@@ -121,7 +121,7 @@ Congratulations! MySQL is successfully installed.
    - Add a semicolon `;` at the end of the value. 
    - Paste the copied MySQL Location folder
    - Save by pressing OK
-  ![alt text](https://github.com/ahsu1230/mathnavigatorSite/tree/master/orion/onboarding/mysql_6_environ_var.png)
+  ![alt text](https://raw.githubusercontent.com/ahsu1230/mathnavigatorSite/master/orion/onboarding/mysql_6_environ_var.png)
  - Open Command Prompt and type `mysql --version` to see if mysql is recognized by the Command Prompt.
 
 ------
