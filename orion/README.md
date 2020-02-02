@@ -82,7 +82,7 @@ mysql.server restart
 ```
 Alternatively, if that doesn't work, you can use the MySQL Notifier app that comes with installation and appears in the taskbar:
 
-![alt text](onboarding/mysql_notifier.png)
+![mysql_notifier](onboarding/mysql_notifier.png)
 ------
 ### Installing MySQL (Windows)
 Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). Download the latest and smaller MSI Installer.
@@ -94,12 +94,16 @@ Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). 
  - You'll need to configure MySQL Server.
    - `High Availability` Select Standalone MySQL Server.
    - `Type and Networking` Make sure the Config Type is `Development Computer` and make sure you have TCP/IP checked, and Port: 3306.
+
 <img src="onboarding/mysql_1_installer_networking.png" width="480">
+
    - `Authentication Method` Select the Recommended Strong Password Encryption.
    - `Account and Roles` Create a MySQL password. **Please remember this password!**
+
 <img src="onboarding/mysql_2_installer_accounts.png" width="480">
+
    - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addtion, you can uncheck the `Start the MySQL Server at System Startup`. Tou can also run the Windows Service as the Standard system.
- - `Apply Configuration` Execute! Finish.
+   - `Apply Configuration` Execute! Finish.
 
 Now that you've installed MySQL, remember these two commands:
 ```
@@ -125,7 +129,9 @@ Congratulations! MySQL is successfully installed.
    - Add a semicolon `;` at the end of the value. 
    - Paste the copied MySQL Location folder
    - Save by pressing OK
+   
 <img src="onboarding/mysql_6_env_var.png" width="480">
+
    - Open Command Prompt and type `mysql --version` to see if mysql is recognized by the Command Prompt.
 
 ------
