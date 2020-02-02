@@ -163,7 +163,7 @@ database:
 ```
 Remember the password you saved for MySql? Paste that password in between the quotations!
 
-After that, start the web server with this:
+After that, go back to the `orion` directory and start the web server with this:
 ```
 go run main.go configs/config_local.yaml
 ```
