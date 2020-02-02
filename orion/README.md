@@ -93,7 +93,7 @@ mysql.server restart
 ```
 Alternatively, if that doesn't work, you can use the MySQL Notifier app that comes with installation and appears in the taskbar:
 
-![alt text](mysql_notifier.png)
+![alt text](onboarding/mysql_notifier.png)
 ------
 
 ## Test back-end webserver
