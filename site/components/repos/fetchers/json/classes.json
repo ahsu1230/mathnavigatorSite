@@ -525,21 +525,6 @@
     "paymentNotes": "By First Session"
   },
   {
-    "programId": "english5",
-    "classId": "20_sum_rw78",
-    "key": "english5_20_sum_rw78",
-    "className": "2020 Summer",
-    "semesterId": "2020_summer",
-    "locationId": "loc_wchs2",
-    "times": "[Monday 8:00pm - 9:50pm, Saturday 2:00pm - 3:50pm]",
-    "startDate": "6/22/2020",
-    "endDate": "8/17/2020",
-    "allYear": "",
-    "pricePerSession": "",
-    "priceLump": 720,
-    "paymentNotes": "By First Session"
-  },
-  {
     "programId": "english4",
     "classId": "20_sum_presat_a",
     "key": "english4_20_sum_presat_a",

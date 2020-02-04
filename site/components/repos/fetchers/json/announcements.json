@@ -1,41 +1,5 @@
 [
   {
-    "timestamp": 1572314618,
-    "date": "11/2/2019",
-    "important": "TRUE",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_e]",
-    "author": "Amy",
-    "message": "On 11/2, we will start the new SAT class (E) on Saturday 2:00pm - 4:00pm at Churchill H.S. room 110."
-  },
-  {
-    "timestamp": 1572959900,
-    "date": "11/5/2019",
-    "important": "TRUE",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_e]",
-    "author": "Amy",
-    "message": "Ask-for-Help for all students on every Monday 9:00pm-10:00pm and Thursday 8:00pm-9:00pm"
-  },
-  {
-    "timestamp": 1574437328,
-    "date": "11/28/2019",
-    "important": "",
-    "onHomePage": "",
-    "classKeys": "[sat1_fall_e,amc10_fall_a]",
-    "author": "Amy",
-    "message": "Happy Thanksgiving! NO CLASS from 11/28-11/30"
-  },
-  {
-    "timestamp": 1575910403,
-    "date": "12/15/2019",
-    "important": "TRUE",
-    "onHomePage": "",
-    "classKeys": "[Intern_spring_webdesign]",
-    "author": "Amy",
-    "message": "On 12/15, we will have an online test from 7:00pm - 10:00pm for MathNavigator website development intern opportunities."
-  },
-  {
     "timestamp": 1578933154,
     "date": "1/13/2020",
     "important": "TRUE",
@@ -70,5 +34,14 @@
     "classKeys": "[sat1_fall_e]",
     "author": "Amy",
     "message": "SAT Math class (E) will start the prep tests from 1/31/2020 on every Friday 8:00pm - 9:40pm at Churchill H.S. room 110."
+  },
+  {
+    "timestamp": 1580320769,
+    "date": "2/8/2020",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_e,sat2_spring_b]",
+    "author": "Amy",
+    "message": "On 2/8 (Saturday), the classroom change from Churchill H.S. to Hoover M.S. room 36 for SAT Math class (E) and SAT II class (B)."
   }
 ]
