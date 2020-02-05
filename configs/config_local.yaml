@@ -1,0 +1,8 @@
+app:
+  build: "development"
+  corsOrigin: "http://localhost:8081"
+database:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  pass: "localpass"
