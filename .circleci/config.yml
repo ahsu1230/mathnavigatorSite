@@ -22,5 +22,8 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
+      - run: export GOROOT=/usr/local/go
+      - run: export GOPATH=$HOME/go
+      - run: export PATH=$PATH:$GOROOT/bin
       - run: go get -v -t -d ./...
       - run: go test -v ./...
