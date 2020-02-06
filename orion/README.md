@@ -194,13 +194,16 @@ Great job getting here! You've built 2 local webservers to host the web applicat
 
 To make it easier on yourself in the future and to develop faster, you can use this script here in the `orion` folder.
 Before doing so, close the other Terminal tabs so we don't end up creating multiple web servers with conflicting port numbers.
+
 *Mac users only*
 ```
 ./run_admin_local.sh
 ```
 *Windows Users only*
+
+Open Windows PowerShell and run the command above. Alternatively, you can use
 ```
-coming soon...
+run_admin_local.sh
 ```
 
 Use Control+C to stop all webservers and run that command to spin it up again!
