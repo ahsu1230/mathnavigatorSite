@@ -35,7 +35,7 @@ Download MySQL from [here](https://dev.mysql.com/downloads/mysql/). Select Opera
 After installation, we'll need to set our environment variables so your computer can use `mysql` from the Terminal.
 Open up Terminal and edit this file by typing
 ```
-vi .bash_profile
+vim .bash_profile
 ```
 You are now using the default text editor called `Vim`.
 Press `I` to insert content.
@@ -53,17 +53,17 @@ Run this command:
 source .bash_profile
 ```
 
-And we can try this command to see if mysql works.
+And we can try this command to see if `mysql` works.
 ```
 mysql --version
 ```
-If no errors, our environment variables are setup correctly! We can start working with mysql.
+If there are no errors, our environment variables are setup correctly! We can start working with MySQL.
 
 Run this command:
 ```
 mysql --user=root --password
 ```
-The password is either nothing or the password that you entered before. If this worked, you should see a Welcome message and at the start of your command line, you should see:
+This will prompt you to enter your password. The password is either nothing or the password that you entered before. After you log in, you should see a Welcome message and at the start of your command line, you should see:
 ```
 mysql>
 ```
@@ -74,7 +74,7 @@ Create SCHEMA mathnavdb;
 ```
 If success (Query OK), you can exit MySql by typing `exit`.
 
-Once you exit out of MySQL, remember these three commands. They will start or stop your local MySql server on your machine.
+Once you exit out of MySQL, remember these three commands. They will start, stop, and restart your local MySQL server on your machine, respectively.
 ```
 mysql.server start
 mysql.server stop
@@ -82,27 +82,27 @@ mysql.server restart
 ```
 Alternatively, if that doesn't work, you can use the MySQL Notifier app that comes with installation and appears in the taskbar:
 
-![mysql_notifier](onboarding/mysql_notifier.png)
+![MySQL Notifier](onboarding/mysql_notifier.png "MySQL Notifier")
 ------
 ### Installing MySQL (Windows)
 Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). Download the latest and smaller MSI Installer.
-*NOTE* the instructions in this article may be outdated as they use an older version of Windows and MySQL. However, the installation process should still be similar.
+**Note:** the instructions in this article may be outdated as they use an older version of Windows and MySQL. However, the installation process should still be similar.
  - Once finished downloading the installer, double click it to start the installation process.
  - `Choosing a Setup Type` Select **Custom**
  - `Select Products and Features` Select the following: latest MySQL Server, latest MySQL Workbench (under Applications), MySQL Shell (also under Applications). Press Next.
- - `Installation` Execute! You should be downloading 3 products (Server, Workbench, Shell). Once finished Downloading and Installing, press Next.
+ - `Installation` Execute! You should be downloading 3 products (Server, Workbench, Shell). Once finished downloading and installing, press Next.
  - You'll need to configure MySQL Server.
    - `High Availability` Select Standalone MySQL Server.
-   - `Type and Networking` Make sure the Config Type is `Development Computer` and make sure you have TCP/IP checked, and Port: 3306.
+   - `Type and Networking` Make sure the Config Type is `Development Computer` and make sure you have TCP/IP checked, and Port: `3306`.
 
-<img src="onboarding/mysql_1_installer_networking.png" width="480">
+<img src="onboarding/mysql_1_installer_networking.png" width="480" alt="Type and Networking">
 
    - `Authentication Method` Select the Recommended Strong Password Encryption.
    - `Account and Roles` Create a MySQL password. **Please remember this password!**
 
-<img src="onboarding/mysql_2_installer_accounts.png" width="480">
+<img src="onboarding/mysql_2_installer_accounts.png" width="480" alt="Accounts and Roles">
 
-   - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addtion, you can uncheck the `Start the MySQL Server at System Startup`. Tou can also run the Windows Service as the Standard system.
+   - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addition, you can uncheck the `Start the MySQL Server at System Startup`. You can also run the Windows Service as the Standard system.
    - `Apply Configuration` Execute! Finish.
 
 Now that you've installed MySQL, remember these two commands:
@@ -110,10 +110,11 @@ Now that you've installed MySQL, remember these two commands:
 net start MySQL
 net stop MySQL
 ```
-There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work.
+There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar. 
 
-You can go ahead and open the application MySQL Shell. It will prompt you to enter your MySQL password.
-<img src="onboarding/mysql_8_shell.png" width="480">
+You can go ahead and open the application MySQL Command Line Client. It will prompt you to enter your MySQL password.
+
+<img src="onboarding/mysql_8_shell.png" width="480" alt="MySQL Shell">
 
 Once you're in, run this command:
 ```
@@ -130,22 +131,22 @@ Congratulations! MySQL is successfully installed.
    - Paste the copied MySQL Location folder
    - Save by pressing OK
    
-<img src="onboarding/mysql_6_env_var.png" width="480">
+<img src="onboarding/mysql_6_env_var.png" width="480" alt="Environment Variables">
 
-   - Open Command Prompt and type `mysql --version` to see if mysql is recognized by the Command Prompt.
+   - Open Command Prompt and type `mysql --version` to see if `mysql` is recognized by the Command Prompt.
 
 ------
 
 ## Test back-end webserver
-Before proceeding, double check to make sure your mysql server is running. For MacOs, it is the `mysql.server start` command and for Windows, it is the `net start MySQL`. 
-In your Terminal, go to the `orion` directory. Use `cd` to travers around your file system.
+Before proceeding, double check to make sure your MySQL server is running. For MacOs, it is the `mysql.server start` command and for Windows, it is the `net start MySQL`. **Note (Windows):** In order to run this, you need to run Command Prompt as administrator. To do so, right click the Command Prompt application and select "Run as administrator."
+
+In your Terminal, go to the `orion` directory. Use `cd` to traverse around your file system.
 
 To run all tests of the back-end web server, run:
 ```
 go test ./...
 ```
 You should see `ok`s and no failures.
-**note (Windows):** The first time you run this command, you may need to run Command Prompt as administrator. Simply close Command, right click the Application and select "Run as administrator"
 
 In the `orion` folder,
  * Create a new folder called `configs`.
@@ -161,25 +162,25 @@ database:
   user: "root"
   pass: "<YOUR_PASSWORD_GOES_HERE>"
 ```
-Remember the password you saved for MySql? Paste that password in between the quotations!
+Remember the password you saved for MySql? Paste that password where it says `<YOUR_PASSWORD_GOES_HERE>`!
 
 After that, go back to the `orion` directory and start the web server with this:
 ```
 go run main.go configs/config_local.yaml
 ```
-You should see a `Listening and serving HTTP on :8080` message. It worked! Now, you are currently running the Math Navigator webserver locally on your machine. Any HTTP requests to the port number 8080 will be received and responded to by the local webserver!
+You should see a `Listening and serving HTTP on :8080` message. It worked! Now, you are running the Math Navigator webserver locally on your machine. Any HTTP requests to the port number 8080 will be received and responded to by the local webserver!
 
 ## Test front-end web application (Admin)
 From here, open a new Terminal tab/window.
-Use `cd` to travers to `sites/admin`.
+Use `cd` to traverse to `sites/admin`.
 
 Run these commands:
 ```
 npm install
 npm run start
 ```
-This will run another webserver (this time at port 8081) which will host this website.
-Now, if you go to http://localhost:8081 in an Internet browser like Chrome, you should be able to see the Admin website!
+This will run another webserver (this time on port 8081) which will host this website.
+Now, if you go to http://localhost:8081 in an Internet browser, you should be able to see the Admin website!
 
 For future reference, `npm run start` creates a development version of the website application.
 If you need to create a "production" version (in other words, a version for consumers), run this command:
@@ -201,22 +202,22 @@ Before doing so, close the other Terminal tabs so we don't end up creating multi
 ```
 *Windows Users only*
 
-Open Windows PowerShell and run the command above. Alternatively, you can use
+Open Windows PowerShell and run the command above. Alternatively, on Command Prompt you can use
 ```
 run_admin_local.sh
 ```
 
 Use Control+C to stop all webservers and run that command to spin it up again!
 
-## MySql GUI
-To view your MySql database, you can either use the Terminal or download a MySQL GUI. The most popular free GUI is [MySql Workbench](https://dev.mysql.com/downloads/workbench/).
+## MySQL GUI
+To view your MySQL database, you can either use the Terminal or download a MySQL GUI. The most popular free GUI is [MySQL Workbench](https://dev.mysql.com/downloads/workbench/).
 
 If you decide to work in Terminal, use this command to sign in:
 ```
 mysql -u root -p
 ```
 
-If you want to use MySql Workbench, create a New Connection with the following properties:
+If you want to use MySQL Workbench, create a New Connection with the following properties:
  - Connection Method: Standard TCP/IP
  - Hostname:  `127.0.01`
  - Port: `3306`
