@@ -201,10 +201,8 @@ Before doing so, close the other Terminal tabs so we don't end up creating multi
 ./run_admin_local.sh
 ```
 *Windows Users only*
-
-Open Windows PowerShell and run the command above. Alternatively, on Command Prompt you can use
 ```
-run_admin_local.sh
+run_admin_local.bat
 ```
 
 Use Control+C to stop all webservers and run that command to spin it up again!
