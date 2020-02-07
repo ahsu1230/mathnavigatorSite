@@ -1,8 +1,9 @@
 package programs
 
 import (
-  "net/http"
   "github.com/gin-gonic/gin"
+  "net/http"
+  "strconv"
 )
 
 func GetPrograms(c *gin.Context) {
@@ -33,13 +34,10 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  // TODO: implement for real!
-  // isValid := CheckValidProgram(newProgram);
-  // if (isValid) {
-  //
-  // } else {
-  //
-  // }
+  // TODO: test if this works
+  if CheckValidProgram(c) == false {
+    return
+  }
 
   // Query Repo (INSERT & SELECT)
   err := InsertProgram(programJson)
@@ -81,6 +79,40 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram() bool {
+func CheckValidProgram(c *gin.Context) bool {
+  // Retrieves the inputted values
+  name := c.Param("programName")
+  grade1 := c.Param("grade1")
+  grade2 := c.Param("grade2")
+
+  // Checks if program name is empty
+  if name == "" {
+    c.String(http.StatusBadRequest, "Invalid name " + name)
+    return false
+  }
+
+  // Checks if the program name is a string only
+  for _, i := range name {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') {
+      c.String(http.StatusBadRequest, "Invalid name " + name)
+      return false
+    }
+  }
+
+  // Checks if the grades are integers
+  _, err1 := strconv.Atoi(grade1)
+  _, err2 := strconv.Atoi(grade2)
+
+  if err1 != nil || err2 != nil {
+    c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
+    return false
+  }
+
+  // Checks if the grades are valid
+  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+    c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
+    return false
+  }
+
   return true
 }
