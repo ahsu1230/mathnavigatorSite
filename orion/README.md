@@ -205,7 +205,7 @@ Before doing so, close the other Terminal tabs so we don't end up creating multi
 run_admin_local.bat
 ```
 
-Use Control+C to stop all webservers and run that command to spin it up again!
+Use Control+C to stop all webservers and run the script to spin it up again!
 
 ## MySQL GUI
 To view your MySQL database, you can either use the Terminal or download a MySQL GUI. The most popular free GUI is [MySQL Workbench](https://dev.mysql.com/downloads/workbench/).
