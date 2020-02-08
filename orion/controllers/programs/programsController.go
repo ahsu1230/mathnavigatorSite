@@ -33,13 +33,10 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  // TODO: implement for real!
-  // isValid := CheckValidProgram(newProgram);
-  // if (isValid) {
-  //
-  // } else {
-  //
-  // }
+  if CheckValidProgram(programJson) == false {
+    //c.String(http.StatusBadRequest)
+    return
+  }
 
   // Query Repo (INSERT & SELECT)
   err := InsertProgram(programJson)
@@ -56,6 +53,10 @@ func UpdateProgram(c *gin.Context) {
   programId := c.Param("programId")
   var programJson Program
   c.BindJSON(&programJson)
+
+  if CheckValidProgram(programJson) == false {
+    return
+  }
 
   // Query Repo (UPDATE & SELECT)
   err := UpdateProgramById(programId, programJson)
@@ -81,6 +82,38 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram() bool {
+func CheckValidProgram(program Program) bool {
+  // Retrieves the inputted values
+  programId := program.ProgramId
+  name := program.Name
+  grade1 := program.Grade1
+  grade2 := program.Grade2
+
+  // Checks if program name or program ID is empty
+  if programId == "" || name == "" {
+    return false
+  }
+
+  // TODO: use regex
+  // Checks if the program ID is alphanumeric
+  for _, i := range name {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
+      return false
+    }
+  }
+
+  // TODO: Check if program name is alphanumeric and can include spaces, underscores, and ampersands
+  // Checks if the program name is alphanumeric
+  for _, i := range name {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
+      return false
+    }
+  }
+
+  // Checks if the grades are valid
+  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+    return false
+  }
+
   return true
 }
