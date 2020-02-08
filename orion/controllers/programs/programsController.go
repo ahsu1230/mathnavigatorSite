@@ -34,7 +34,7 @@ func CreateProgram(c *gin.Context) {
   c.BindJSON(&programJson)
 
   if CheckValidProgram(programJson) == false {
-    c.String(http.StatusBadRequest)
+    //c.String(http.StatusBadRequest)
     return
   }
 
