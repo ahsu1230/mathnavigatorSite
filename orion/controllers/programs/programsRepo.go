@@ -1,8 +1,8 @@
 package programs
 
 import (
-  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/utils"
-  "github.com/ahsu1230/mathnavigatorSite/orion/database"
+  "orion/controllers/utils"
+  "orion/database"
 )
 
 func GetAllPrograms() []Program {
