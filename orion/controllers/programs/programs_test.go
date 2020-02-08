@@ -11,10 +11,27 @@ func TestExample(t *testing.T) {
   }
 }
 
-func TestCheckProgram(t *testing.T) {
-  program := Program{Name: "Test Program", Grade1: 1, Grade2: 12}
-  isValid := CheckValidProgram(program)
-  if !isValid == false {
-    t.Errorf("Check was incorrect, got: %t, expected: %t.", isValid, true)
+// TODO: add more tests for all programs and add programs that should not work
+func TestValidProgramId(t *testing.T) {
+  program := Program{ProgramId: "1", Name: "Test Program", Grade1: 1, Grade2: 12}
+  err := CheckValidProgram(program)
+  if err != nil {
+    t.Errorf("Check was incorrect, got: %s.", err.Error())
+  }
+}
+
+func TestValidProgramNames(t *testing.T) {
+  program := Program{ProgramId: "1", Name: "Test Program", Grade1: 1, Grade2: 12}
+  err := CheckValidProgram(program)
+  if err != nil {
+    t.Errorf("Check was incorrect, got: %s.", err.Error())
+  }
+}
+
+func TestValidGrades(t *testing.T) {
+  program := Program{ProgramId: "1", Name: "Test Program", Grade1: 1, Grade2: 12}
+  err := CheckValidProgram(program)
+  if err != nil {
+    t.Errorf("Check was incorrect, got: %s.", err.Error())
   }
 }

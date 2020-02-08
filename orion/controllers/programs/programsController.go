@@ -1,6 +1,7 @@
 package programs
 
 import (
+  "errors"
   "net/http"
   "github.com/gin-gonic/gin"
 )
@@ -33,8 +34,8 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  if CheckValidProgram(programJson) == false {
-    //c.String(http.StatusBadRequest)
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
     return
   }
 
@@ -54,7 +55,8 @@ func UpdateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  if CheckValidProgram(programJson) == false {
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
     return
   }
 
@@ -82,7 +84,7 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram(program Program) bool {
+func CheckValidProgram(program Program) error {
   // Retrieves the inputted values
   programId := program.ProgramId
   name := program.Name
@@ -90,30 +92,34 @@ func CheckValidProgram(program Program) bool {
   grade2 := program.Grade2
 
   // Checks if program name or program ID is empty
-  if programId == "" || name == "" {
-    return false
+  if programId == "" {
+    return errors.New("empty Program ID")
   }
 
   // TODO: use regex
   // Checks if the program ID is alphanumeric
   for _, i := range name {
     if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return false
+      return errors.New("invalid program name")
     }
+  }
+
+  if name == "" {
+    return errors.New("empty program name")
   }
 
   // TODO: Check if program name is alphanumeric and can include spaces, underscores, and ampersands
   // Checks if the program name is alphanumeric
   for _, i := range name {
     if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return false
+      return errors.New("invalid program name")
     }
   }
 
   // Checks if the grades are valid
   if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
-    return false
+    return errors.New("invalid grades")
   }
 
-  return true
+  return nil
 }
