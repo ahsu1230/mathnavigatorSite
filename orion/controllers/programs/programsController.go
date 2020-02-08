@@ -54,6 +54,10 @@ func UpdateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
+  if CheckValidProgram(programJson) == false {
+    return
+  }
+
   // Query Repo (UPDATE & SELECT)
   err := UpdateProgramById(programId, programJson)
   if err != nil {
