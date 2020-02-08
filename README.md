@@ -7,7 +7,7 @@ Our technology stack includes:
 - Golang (Google Programming Language, https://golang.org/)
 - MySQL (relational SQL database, https://www.mysql.com/)
 - AWS (Amazon Web Services, https://aws.amazon.com/)
-- Jenkins (Content Automation, https://jenkins.io/)
+- CircleCI (Continuous Integration, https://circleci.com/)
 
  ## Setting up
 
@@ -22,7 +22,7 @@ Or follow this link [here](https://product.hubspot.com/blog/git-and-github-tutor
 
 4. Create an account on [Asana](https://asana.com/). This will be our main tool to manage and divide tasks amongst our team.
 
-5. Install [Slack](https://slack.com/) onto your computer and/or mobile phone to get access to our team chat application. 
+5. Install [Slack](https://slack.com/) onto your computer and/or mobile phone to get access to our team chat application.
 
 <!-- # MathNavigator Constellation Services
 

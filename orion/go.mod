@@ -1,4 +1,4 @@
-module orion
+module github.com/ahsu1230/mathnavigatorSite/orion
 
 go 1.13
 
