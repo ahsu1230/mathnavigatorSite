@@ -1,9 +1,8 @@
 package programs
 
 import (
-  "github.com/gin-gonic/gin"
   "net/http"
-  "strconv"
+  "github.com/gin-gonic/gin"
 )
 
 func GetPrograms(c *gin.Context) {
@@ -34,8 +33,8 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  // TODO: test if this works
-  if CheckValidProgram(c) == false {
+  if CheckValidProgram(programJson) == false {
+    c.String(http.StatusBadRequest)
     return
   }
 
@@ -79,38 +78,26 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram(c *gin.Context) bool {
+func CheckValidProgram(program Program) bool {
   // Retrieves the inputted values
-  name := c.Param("programName")
-  grade1 := c.Param("grade1")
-  grade2 := c.Param("grade2")
+  name := program.Name
+  grade1 := program.Grade1
+  grade2 := program.Grade2
 
   // Checks if program name is empty
   if name == "" {
-    c.String(http.StatusBadRequest, "Invalid name " + name)
     return false
   }
 
-  // Checks if the program name is a string only
+  // Checks if the program name is alphanumeric
   for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && i != '_' {
-      c.String(http.StatusBadRequest, "Invalid name " + name)
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
       return false
     }
   }
 
-  // Checks if the grades are integers
-  first, err1 := strconv.Atoi(grade1)
-  second, err2 := strconv.Atoi(grade2)
-
-  if err1 != nil || err2 != nil {
-    c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
-    return false
-  }
-
   // Checks if the grades are valid
-  if !(first <= second && first >= 1 && second <= 12) {
-    c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
+  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
     return false
   }
 

@@ -12,7 +12,7 @@ func TestExample(t *testing.T) {
 }
 
 func TestCheckProgram(t *testing.T) {
-  // TODO: add a program to check
+  program := Program{Name: "Test Program", Grade1: 1, Grade2: 12}
   isValid := CheckValidProgram(program)
   if !isValid == false {
     t.Errorf("Check was incorrect, got: %t, expected: %t.", isValid, true)
