@@ -58,9 +58,9 @@ SELECT * FROM persons;
 The above line selects ALL rows in table `persons`.
 If we wanted to select particular rows or columns, we would use the `WHERE` clause like so:
 ```
-SELECT * FROM persons WHERE id=1;
+SELECT * FROM persons WHERE person_id=1;
 SELECT * FROM persons WHERE first_name="Ash";
-SELECT address, city FROM persons WHERE last_name="Ketchum"
+SELECT address, city FROM persons WHERE last_name="Ketchum";
 ```
 
 To update certain rows, you can use this:
@@ -79,7 +79,7 @@ When you are finished, you can use the following commands to:
  - quit out of MySQL Terminal/Shell
 ```
 DROP TABLE persons;
-DROP testDb;
+DROP DATABASE testDb;
 exit;
 ```
 
