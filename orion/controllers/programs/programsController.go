@@ -93,15 +93,15 @@ func CheckValidProgram(c *gin.Context) bool {
 
   // Checks if the program name is a string only
   for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && i != '_' {
       c.String(http.StatusBadRequest, "Invalid name " + name)
       return false
     }
   }
 
   // Checks if the grades are integers
-  _, err1 := strconv.Atoi(grade1)
-  _, err2 := strconv.Atoi(grade2)
+  first, err1 := strconv.Atoi(grade1)
+  second, err2 := strconv.Atoi(grade2)
 
   if err1 != nil || err2 != nil {
     c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
@@ -109,7 +109,7 @@ func CheckValidProgram(c *gin.Context) bool {
   }
 
   // Checks if the grades are valid
-  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+  if !(first <= second && first >= 1 && second <= 12) {
     c.String(http.StatusBadRequest, "Invalid grades " + grade1 + " to " + grade2)
     return false
   }
