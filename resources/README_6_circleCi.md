@@ -12,7 +12,7 @@ A CircleCI build triggers whenever a new commit is pushed onto a remote [Github]
 
 ### What happens if my Pull Request is failing CircleCI tests?
 
-<img src="images/circleci_build_failed.png" width="480" alt="CircleCI build failed">
+<img src="images/circleci_build_failed.png" width="600" alt="CircleCI build failed">
 
 You can simply click on `Details` on the right of "Your tests failed on CircleCI" where you will see where your build is failing.
 
