@@ -84,9 +84,30 @@ func DeleteProgram(c *gin.Context) {
 
 func CheckValidProgram(program Program) bool {
   // Retrieves the inputted values
+  programId := program.ProgramId
   name := program.Name
   grade1 := program.Grade1
   grade2 := program.Grade2
+
+  // Checks if program name or program ID is empty
+  if programId == "" || name == "" {
+    return false
+  }
+
+  // TODO: use regex
+  // Checks if the program ID is alphanumeric
+  for _, i := range name {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
+      return false
+    }
+  }
+
+  // Checks if the program name is alphanumeric
+  for _, i := range name {
+    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
+      return false
+    }
+  }
 
   // Checks if program name is empty
   if name == "" {
