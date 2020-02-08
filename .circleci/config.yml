@@ -11,7 +11,6 @@ jobs:
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
       - checkout
-      - run: cd orion
       - run: go get -v -t -d ./...
       - run:
           name: run tests
