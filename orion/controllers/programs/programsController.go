@@ -102,18 +102,7 @@ func CheckValidProgram(program Program) bool {
     }
   }
 
-  // Checks if the program name is alphanumeric
-  for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return false
-    }
-  }
-
-  // Checks if program name is empty
-  if name == "" {
-    return false
-  }
-
+  // TODO: Check if program name is alphanumeric and can include spaces, underscores, and ampersands
   // Checks if the program name is alphanumeric
   for _, i := range name {
     if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
