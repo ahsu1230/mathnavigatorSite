@@ -58,7 +58,7 @@ SELECT * FROM persons;
 The above line selects ALL rows in table `persons`.
 If we wanted to select particular rows or columns, we would use the `WHERE` clause like so:
 ```
-SELECT * FROM persons WHERE id=1;
+SELECT * FROM persons WHERE person_id=1;
 SELECT * FROM persons WHERE first_name="Ash";
 SELECT address, city FROM persons WHERE last_name="Ketchum"
 ```
