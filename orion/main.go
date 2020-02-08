@@ -6,9 +6,9 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
 
-  "orion/controllers/programs"
-  "orion/middlewares"
-  "orion/database"
+  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
+  "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
+  "github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
 
 func main() {
