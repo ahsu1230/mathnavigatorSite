@@ -3,6 +3,8 @@ package programs
 import (
   "net/http"
   "github.com/gin-gonic/gin"
+  
+  "regexp"
 )
 
 func GetPrograms(c *gin.Context) {
@@ -88,30 +90,21 @@ func CheckValidProgram(program Program) bool {
   name := program.Name
   grade1 := program.Grade1
   grade2 := program.Grade2
+  description := program.Description
 
-  // Checks if program name or program ID is empty
-  if programId == "" || name == "" {
+  // Checks if variables aren't empty
+  if programId == 0 || name == "" || description == "" {
     return false
   }
 
-  // TODO: use regex
-  // Checks if the program ID is alphanumeric
-  for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return false
-    }
-  }
-
-  // TODO: Check if program name is alphanumeric and can include spaces, underscores, and ampersands
-  // Checks if the program name is alphanumeric
-  for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return false
-    }
+  // Name validation
+  match, _ := regexp.MatchString(`^[A-Z]\S*(\s[A-Z]\S*)*$`, s)
+  if !match {
+  	return false
   }
 
   // Checks if the grades are valid
-  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+  if grade1 > grade2 || grade1 < 1 || grade2 > 12 {
     return false
   }
 
