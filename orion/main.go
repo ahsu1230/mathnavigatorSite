@@ -21,6 +21,8 @@ func main() {
   configDb := config.Database
   database.OpenDb(configDb.Host, configDb.Port,
     configDb.Username, configDb.Password)
+  fmt.Println("Performing DB Migrations...")
+  database.Migrate()
 
   fmt.Println("Setting up Router...")
   router := gin.Default()
@@ -55,6 +57,6 @@ func main() {
   // Web server serves on :8080
 	router.Run(":8080")
 
-  // close DbConn when server finishes
+  // close DbSqlx when server finishes
   defer database.CloseDb();
 }
