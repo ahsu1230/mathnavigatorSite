@@ -4,6 +4,7 @@ import (
   "net/http"
   "github.com/gin-gonic/gin"
   
+  "errors"
   "regexp"
 )
 
@@ -35,8 +36,8 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  if CheckValidProgram(programJson) == false {
-    //c.String(http.StatusBadRequest)
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
     return
   }
 
@@ -56,7 +57,8 @@ func UpdateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  if CheckValidProgram(programJson) == false {
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
     return
   }
 
@@ -84,7 +86,7 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram(program Program) bool {
+func CheckValidProgram(program Program) error {
   // Retrieves the inputted values
   programId := program.ProgramId
   name := program.Name
@@ -93,20 +95,20 @@ func CheckValidProgram(program Program) bool {
   description := program.Description
 
   // Checks if variables aren't empty
-  if programId == 0 || name == "" || description == "" {
-    return false
+  if programId == "" || name == "" || description == "" {
+    return errors.New("One or more fields are empty.")
   }
 
   // Name validation
-  match, _ := regexp.MatchString(`^[A-Z]\S*(\s[A-Z]\S*)*$`, s)
+  match, _ := regexp.MatchString(`^\s*[A-Z]\S*(\s[A-Z]\S*)*\s*$`, name)
   if !match {
-  	return false
+  	return errors.New("Invalid name.")
   }
 
   // Checks if the grades are valid
   if grade1 > grade2 || grade1 < 1 || grade2 > 12 {
-    return false
+    return errors.New("Invalid grades.")
   }
 
-  return true
+  return nil
 }
