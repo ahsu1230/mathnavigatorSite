@@ -70,7 +70,8 @@ mysql>
 
 From here, type in:
 ```
-Create DATABASE mathnavdb;
+CREATE DATABASE mathnavdb;
+USE DATABASE mathnavdb;
 ```
 If success (Query OK), you can exit MySql by typing `exit`.
 
@@ -119,8 +120,10 @@ You can go ahead and open the application MySQL Command Line Client. It will pro
 Once you're in, run this command:
 ```
 CREATE DATABASE mathnavdb;
+USE DATABASE mathnavdb;
 exit;
 ```
+If success (Query OK), you can exit MySql by typing `exit`.
 Congratulations! MySQL is successfully installed.
 
 **BONUS (optional)** You don't need to do this since you've installed the MySQL Shell. But if you would like to work with MySQL from the Command Prompt, you may edit your Environment Variables and include the MySQL path into the Environment Variable `PATH`.
@@ -136,7 +139,6 @@ Congratulations! MySQL is successfully installed.
    - Open Command Prompt and type `mysql --version` to see if `mysql` is recognized by the Command Prompt.
 
 ------
-
 ## Test back-end webserver
 Before proceeding, double check to make sure your MySQL server is running. For MacOs, it is the `mysql.server start` command and for Windows, it is the `net start MySQL`. **Note (Windows):** In order to run this, you need to run Command Prompt as administrator. To do so, right click the Command Prompt application and select "Run as administrator."
 
@@ -155,7 +157,7 @@ In the `orion` folder,
 ```
 app:
   build: "development"
-  corsOrigin: "http://localhost:8081"
+  corsOrigin: "*"
 database:
   host: "localhost"
   port: 3306
