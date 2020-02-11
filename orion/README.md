@@ -70,7 +70,7 @@ mysql>
 
 From here, type in:
 ```
-Create SCHEMA mathnavdb;
+Create DATABASE mathnavdb;
 ```
 If success (Query OK), you can exit MySql by typing `exit`.
 
@@ -110,7 +110,7 @@ Now that you've installed MySQL, remember these two commands:
 net start MySQL
 net stop MySQL
 ```
-There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar. 
+There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar.
 
 You can go ahead and open the application MySQL Command Line Client. It will prompt you to enter your MySQL password.
 
@@ -118,7 +118,7 @@ You can go ahead and open the application MySQL Command Line Client. It will pro
 
 Once you're in, run this command:
 ```
-CREATE SCHEMA mathnavdb;
+CREATE DATABASE mathnavdb;
 exit;
 ```
 Congratulations! MySQL is successfully installed.
@@ -127,10 +127,10 @@ Congratulations! MySQL is successfully installed.
  - Look for the folder: `C:\Program Files\MySQL\MySQL Server\bin`. Inside this directory, there should be a `mysql.exe`. If it is there, copy the Location to this folder (NOT the .exe). An example Location could be: `C:\Program Files\MySQL\MySql Server 8.0\bin`
  - From here, go to your computer's `Control Panel` > `System and Security` > `System` > `Advanced system settings` > `Environment Variables`.
    - Edit the environment variable `PATH`.
-   - Add a semicolon `;` at the end of the value. 
+   - Add a semicolon `;` at the end of the value.
    - Paste the copied MySQL Location folder
    - Save by pressing OK
-   
+
 <img src="onboarding/mysql_6_env_var.png" width="480" alt="Environment Variables">
 
    - Open Command Prompt and type `mysql --version` to see if `mysql` is recognized by the Command Prompt.
