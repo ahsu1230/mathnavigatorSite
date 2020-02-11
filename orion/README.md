@@ -68,25 +68,12 @@ This will prompt you to enter your password. The password is either nothing or t
 mysql>
 ```
 
-From here, copy & paste these commands:
+From here, type in:
 ```
-CREATE DATABASE mathnavdb;
+Create DATABASE mathnavdb;
 USE DATABASE `mathnavdb`;
-DROP TABLE IF EXISTS `programs`;
-CREATE TABLE `programs` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` bigint(20) NOT NULL,
-  `updated_at` bigint(20) NOT NULL,
-  `deleted_at` datetime,
-  `program_id` varchar(64) NOT NULL UNIQUE,
-  `name` varchar(255) NOT NULL,
-  `grade1` tinyint unsigned NOT NULL,
-  `grade2` tinyint unsigned NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
 ```
-If success (Query OK), you can exit MySql by typing `exit;`.
+If success (Query OK), you can exit MySql by typing `exit`.
 
 Once you exit out of MySQL, remember these three commands. They will start, stop, and restart your local MySQL server on your machine, respectively.
 ```
@@ -130,23 +117,11 @@ You can go ahead and open the application MySQL Command Line Client. It will pro
 
 <img src="onboarding/mysql_8_shell.png" width="480" alt="MySQL Shell">
 
-Once you're in, copy & paste these commands:
+Once you're in, run this command:
 ```
 CREATE DATABASE mathnavdb;
-USE DATABASE `mathnavdb`;
-DROP TABLE IF EXISTS `programs`;
-CREATE TABLE `programs` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` bigint(20) NOT NULL,
-  `updated_at` bigint(20) NOT NULL,
-  `deleted_at` datetime,
-  `program_id` varchar(64) NOT NULL UNIQUE,
-  `name` varchar(255) NOT NULL,
-  `grade1` tinyint unsigned NOT NULL,
-  `grade2` tinyint unsigned NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+USE DATABASE mathnavdb;
+exit;
 ```
 If success (Query OK), you can exit MySql by typing `exit`.
 Congratulations! MySQL is successfully installed.
