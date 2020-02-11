@@ -7,21 +7,21 @@ import (
 
 func GetAllPrograms() []Program {
   programList := []Program{}
-  database.DbConn.Select(&programList, "SELECT * FROM programs")
+  database.DbSqlx.Select(&programList, "SELECT * FROM programs")
   return programList
 }
 
 func GetProgramById(programId string) (Program, error) {
   program := Program{}
   sqlStatement := "SELECT * FROM programs WHERE program_id=?"
-  err := database.DbConn.Get(&program, sqlStatement, programId)
+  err := database.DbSqlx.Get(&program, sqlStatement, programId)
   return program, err
 }
 
 func InsertProgram(program Program) (error) {
   programId := program.ProgramId
   now := utils.TimestampNow()
-  db := database.DbConn
+  db := database.DbSqlx
   sqlStatement := "INSERT INTO programs " +
         "(created_at, updated_at, deleted_at, program_id, name, " +
           "grade1, grade2, description) " +
@@ -43,7 +43,7 @@ func InsertProgram(program Program) (error) {
 
 func UpdateProgramById(oldProgramId string, program Program) (error) {
   now := utils.TimestampNow()
-  db := database.DbConn
+  db := database.DbSqlx
 
   sqlStatement := "UPDATE programs SET " +
         "updated_at=:updatedAt, " +
@@ -71,6 +71,6 @@ func DeleteProgramById(programId string) error {
   parameters := map[string]interface{}{
     "programId": programId,
   }
-  _, err := database.DbConn.NamedExec(sqlStatement, parameters)
+  _, err := database.DbSqlx.NamedExec(sqlStatement, parameters)
   return err
 }
