@@ -88,22 +88,37 @@ func DeleteProgram(c *gin.Context) {
 }
 
 func CheckValidProgram(program Program) error {
+  // Retrieves the inputted values
   programId := program.ProgramId
+  name := program.Name
   grade1 := program.Grade1
   grade2 := program.Grade2
+  description := program.Description
 
+  // Ensures program ID isn't empty
   if programId == "" {
-    return errors.New("empty Program ID")
+    return errors.New("Empty programId.")
   }
 
   // Checks if the program ID is in the form of alphanumeric strings separated by underscores
   if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
-    return errors.New("invalid program id")
+    return errors.New("Invalid programId.")
+  }
+  
+  // Name validation
+  match, _ := regexp.MatchString(`^[A-Z0-9]\S*(\s[A-Z0-9]\S*)*$`, name)
+  if !match {
+  	return errors.New("Invalid name.")
   }
 
   // Checks if the grades are valid
   if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
-    return errors.New("invalid grades")
+    return errors.New("Invalid grades.")
+  }
+  
+  // Description validation
+  if description == "" {
+    return errors.New("Empty description.")
   }
 
   return nil
