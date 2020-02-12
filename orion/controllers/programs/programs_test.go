@@ -11,43 +11,43 @@ func TestProgramName(t *testing.T) {
 		t.Error(err)
 	}
 	
-	program = Program{ProgramId: "ok", Name: "AP Language And Composition", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "AP Language And Composition"
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
 	}
 	
-	program = Program{ProgramId: "ok", Name: "EvErY First CHARACTER Of W0rds@are CapitalizeD45", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "EvErY First CHARACTER Of W0rds@are CapitalizeD45"
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
 	}
 	
-	program = Program{ProgramId: "ok", Name: "Cooking 101", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "Cooking 101"
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
 	}
 	
-	program = Program{ProgramId: "ok", Name: "100 Ways To Become A Millionare", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "100 Ways To Become A Millionare"
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
 	}
 	
 	// failure examples
-	program = Program{ProgramId: "ok", Name: "calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "calculus BC"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
 	}
 	
-	program = Program{ProgramId: "ok", Name: "", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = ""
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
 	}
 	
-	program = Program{ProgramId: "ok", Name: "Calculus bC", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "Calculus bC"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
 	}
 	
-	program = Program{ProgramId: "ok", Name: "40 @40", Grade1: 1, Grade2: 12, Description: "ok"}
+	program.Name = "40 @40"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
 	}
@@ -61,7 +61,7 @@ func TestDescription(t *testing.T) {
 	}
 	
 	// failure example
-	program = Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: ""}
+	program.Description = ""
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
 	}
