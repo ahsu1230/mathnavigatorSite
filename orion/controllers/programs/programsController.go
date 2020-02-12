@@ -1,12 +1,13 @@
 package programs
 
 import (
-  "net/http"
-  "github.com/gin-gonic/gin"
-  
   "errors"
+  "net/http"
   "regexp"
+  "github.com/gin-gonic/gin"
 )
+
+const REGEX_PROGRAM_ID = "^[[:alnum:]]+(_[[:alnum:]]+)*$"
 
 func GetPrograms(c *gin.Context) {
   // Query Repo
@@ -94,11 +95,16 @@ func CheckValidProgram(program Program) error {
   grade2 := program.Grade2
   description := program.Description
 
-  // Checks if variables aren't empty
-  if programId == "" || name == "" || description == "" {
-    return errors.New("One or more fields are empty.")
+  // Ensures program ID isn't empty
+  if programId == "" {
+    return errors.New("Empty program ID.")
   }
 
+  // Checks if the program ID is in the form of alphanumeric strings separated by underscores
+  if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+    return errors.New("Invalid program ID.")
+  }
+  
   // Name validation
   match, _ := regexp.MatchString(`^[A-Z0-9]\S*(\s[A-Z0-9]\S*)*$`, name)
   if !match {
@@ -106,8 +112,13 @@ func CheckValidProgram(program Program) error {
   }
 
   // Checks if the grades are valid
-  if grade1 > grade2 || grade1 < 1 || grade2 > 12 {
+  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
     return errors.New("Invalid grades.")
+  }
+  
+  // Description validation
+  if description == "" {
+    return errors.New("Empty description.")
   }
 
   return nil
