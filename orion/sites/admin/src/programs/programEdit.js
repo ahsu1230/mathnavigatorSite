@@ -178,9 +178,43 @@ export class ProgramEditPage extends React.Component {
 }
 
 function checkProgram(program) {
-  // *todo* change this later!
+  let checkpro=true;
+
+  let programId = program.programId
+
+  //checks if programId contains special characters
+  var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+  for (let i=0; i<programId.length; i++) {
+    if (iChars.indexOf(programId.charAt(i)) != -1) {
+      checkpro= false;
+    }
+  }
+
+  //checks if programId contains uppercase
+  if ((programId.toLowerCase())!=programId) {
+    checkpro = false;
+  }
+
+  //checks if programId has spaces
+  if (programId.indexOf(' ')!=-1 ){
+    checkpro = false;
+  }
+
+  if (isNaN(program.grade1)) {
+    checkpro = false;
+  }
+  if (program.grade1<1 || program.grade1>12) {
+    checkpro = false;
+  }
+  if (isNaN(program.grade2)) {
+    checkpro = false;
+  }
+  if (program.grade2<program.grade1 || program.grade2>12) {
+    checkpro = false;
+  }
+
   return {
-    isValid: true,
+    isValid: checkpro,
     errorMessage: "Bad program!"
-  };
+  }
 }
