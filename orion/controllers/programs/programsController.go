@@ -4,6 +4,7 @@ import (
   "errors"
   "net/http"
   "github.com/gin-gonic/gin"
+  "regexp"
 )
 
 func GetPrograms(c *gin.Context) {
@@ -85,35 +86,17 @@ func DeleteProgram(c *gin.Context) {
 }
 
 func CheckValidProgram(program Program) error {
-  // Retrieves the inputted values
   programId := program.ProgramId
-  name := program.Name
   grade1 := program.Grade1
   grade2 := program.Grade2
 
-  // Checks if program name or program ID is empty
   if programId == "" {
     return errors.New("empty Program ID")
   }
 
-  // TODO: use regex
-  // Checks if the program ID is alphanumeric
-  for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return errors.New("invalid program name")
-    }
-  }
-
-  if name == "" {
-    return errors.New("empty program name")
-  }
-
-  // TODO: Check if program name is alphanumeric and can include spaces, underscores, and ampersands
-  // Checks if the program name is alphanumeric
-  for _, i := range name {
-    if (i < 'a' || i > 'z') && (i < 'A' || i > 'Z') && (i < '1' || i > '0') && i != '_' {
-      return errors.New("invalid program name")
-    }
+  // Checks if the program ID is in the form of alphanumeric strings separated by underscores
+  if matches, _ := regexp.MatchString("^[[:alnum:]]+(_[[:alnum:]]+)*$", programId); !matches {
+    return errors.New("invalid program id")
   }
 
   // Checks if the grades are valid
