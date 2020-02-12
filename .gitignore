@@ -6,5 +6,6 @@
 **/*.tmp
 **/*/package-lock.json
 **/*/go.sum
+**/.project
 
 orion/configs/*
