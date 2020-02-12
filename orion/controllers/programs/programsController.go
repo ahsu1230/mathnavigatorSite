@@ -1,11 +1,14 @@
 package programs
 
+
 import (
   "errors"
   "net/http"
   "regexp"
   "github.com/gin-gonic/gin"
 )
+
+const REGEX_PROGRAM_ID = "^[[:alnum:]]+(_[[:alnum:]]+)*$"
 
 func GetPrograms(c *gin.Context) {
   // Query Repo
@@ -95,7 +98,7 @@ func CheckValidProgram(program Program) error {
   }
 
   // Checks if the program ID is in the form of alphanumeric strings separated by underscores
-  if matches, _ := regexp.MatchString("^[[:alnum:]]+(_[[:alnum:]]+)*$", programId); !matches {
+  if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
     return errors.New("invalid program id")
   }
 
