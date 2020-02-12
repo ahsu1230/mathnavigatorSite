@@ -4,7 +4,9 @@ Goclipse is an Eclipse plugin that adds IDE functionality for Go to Eclipse. If 
 You can find the official documentation [here](https://github.com/GoClipse/goclipse/tree/latest/documentation).
 ### Prerequisites:
 Java VM version 8+ (I'm not sure why you need this, but the documentation says you do)
+
 Eclipse 4.6+ (Neon or later)
+
 Go
 ## Installing the Plugin
 1. Open Eclipse and click `Help -> Install New Software...` in the file menu bar up top.
