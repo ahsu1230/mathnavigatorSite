@@ -100,7 +100,7 @@ func CheckValidProgram(program Program) error {
   }
 
   // Name validation
-  match, _ := regexp.MatchString(`^\s*[A-Z]\S*(\s[A-Z]\S*)*\s*$`, name)
+  match, _ := regexp.MatchString(`^[A-Z0-9]\S*(\s[A-Z0-9]\S*)*$`, name)
   if !match {
   	return errors.New("Invalid name.")
   }

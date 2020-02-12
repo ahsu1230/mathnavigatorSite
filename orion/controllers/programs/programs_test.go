@@ -2,66 +2,67 @@ package programs
 
 import (
   "testing"
-  "math/rand"
-  "fmt"
 )
 
-func TestExample(t *testing.T) {
-  total := 5 + 5
-  if total != 10 {
-     t.Errorf("Sum was incorrect, got: %d, want: %d.", total, 10)
-  }
-}
-
-func Rand(a, b int) uint {
-	return uint(rand.Int() % (b - a) + a)
-}
-
-func TestCheckProgram(t *testing.T) {
+func TestProgramName(t *testing.T) {
 	// success examples
-	var s string
-	for i := 0; i < 1000; i++ {
-		s += "Word "
-		var grade1, grade2 uint = Rand(1, 12), Rand(1, 12)
-		if grade1 > grade2 {
-		    grade1, grade2 = grade2, grade1
-		}
-		program := Program{ProgramId: string(i), Name: s, Grade1: grade1, Grade2: grade2, Description: "a"}
-		if err := CheckValidProgram(program); err != nil {
-			fmt.Println(err)
-			return
-		}
+	program := Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
+	}
+	
+	program = Program{ProgramId: "ok", Name: "AP Language And Composition", Grade1: 1, Grade2: 12, Description: "ok"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
+	}
+	
+	program = Program{ProgramId: "ok", Name: "EvErY First CHARACTER Of W0rds@are CapitalizeD45", Grade1: 1, Grade2: 12, Description: "ok"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
+	}
+	
+	program = Program{ProgramId: "ok", Name: "Cooking 101", Grade1: 1, Grade2: 12, Description: "ok"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
+	}
+	
+	program = Program{ProgramId: "ok", Name: "100 Ways To Become A Millionare", Grade1: 1, Grade2: 12, Description: "ok"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
 	}
 	
 	// failure examples
-	program := Program{ProgramId: "", Name: "Asdf", Grade1: 1, Grade2: 12, Description: "a"}
+	program = Program{ProgramId: "ok", Name: "calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+		t.Error("Should have detected error but didn't.")
 	}
-	program = Program{ProgramId: "0", Name: "asdf", Grade1: 1, Grade2: 12, Description: "a"}
+	
+	program = Program{ProgramId: "ok", Name: "", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+		t.Error("Should have detected error but didn't.")
 	}
-	program = Program{ProgramId: "0", Name: "Asdf", Grade1: 1, Grade2: 12, Description: ""}
+	
+	program = Program{ProgramId: "ok", Name: "Calculus bC", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+		t.Error("Should have detected error but didn't.")
 	}
-	program = Program{ProgramId: "0", Name: "Asdf", Grade1: 17, Grade2: 12, Description: "a"}
+	
+	program = Program{ProgramId: "ok", Name: "40 @40", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+		t.Error("Should have detected error but didn't.")
 	}
-	program = Program{ProgramId: "0", Name: "Asdf", Grade1: 0, Grade2: 12, Description: "a"}
-	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+}
+
+func TestDescription(t *testing.T) {
+	// success example
+	program := Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
+	if err := CheckValidProgram(program); err != nil {
+		t.Error(err)
 	}
-	program = Program{ProgramId: "0", Name: "Asdf", Grade1: 5, Grade2: 2, Description: "a"}
+	
+	// failure example
+	program = Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: ""}
 	if err := CheckValidProgram(program); err == nil {
-		fmt.Println("Fail")
-		return
+		t.Error("Should have detected error but didn't.")
 	}
 }
