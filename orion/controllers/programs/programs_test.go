@@ -5,7 +5,7 @@ import (
 )
 
 func TestProgramName(t *testing.T) {
-	// success examples
+	// Success examples
 	program := Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
@@ -31,7 +31,7 @@ func TestProgramName(t *testing.T) {
 		t.Error(err)
 	}
 	
-	// failure examples
+	// Failure examples
 	program.Name = "calculus BC"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")
@@ -54,13 +54,13 @@ func TestProgramName(t *testing.T) {
 }
 
 func TestDescription(t *testing.T) {
-	// success example
+	// Success example
 	program := Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
 	if err := CheckValidProgram(program); err != nil {
 		t.Error(err)
 	}
 	
-	// failure example
+	// Failure example
 	program.Description = ""
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Should have detected error but didn't.")

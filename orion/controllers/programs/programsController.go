@@ -97,12 +97,12 @@ func CheckValidProgram(program Program) error {
 
   // Ensures program ID isn't empty
   if programId == "" {
-    return errors.New("Empty program ID.")
+    return errors.New("Empty programId.")
   }
 
   // Checks if the program ID is in the form of alphanumeric strings separated by underscores
   if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
-    return errors.New("Invalid program ID.")
+    return errors.New("Invalid programId.")
   }
   
   // Name validation
