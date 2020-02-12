@@ -4,7 +4,9 @@ Goclipse is an Eclipse plugin that adds IDE functionality for Go to Eclipse. If 
 You can find the official documentation [here](https://github.com/GoClipse/goclipse/tree/latest/documentation).
 ### Prerequisites:
 Java VM version 8+ (I'm not sure why you need this, but the documentation says you do)
+
 Eclipse 4.6+ (Neon or later)
+
 Go
 ## Installing the Plugin
 1. Open Eclipse and click `Help -> Install New Software...` in the file menu bar up top.
@@ -18,6 +20,10 @@ Go
 
 4.  Follow the installation wizard instructions and agree to all terms and conditions that pop up.
 ## Adding the IDE Functionality
+
+**Note: all of the following steps may only apply to Windows. The commands and file paths will differ slightly for Mac.
+(Mac instructions coming soon...)**
+
 The plugin now supports syntax highlighting, but a few more steps need to be taken to get autocomplete and other functionalities.
 
 Open the command prompt and enter in the following commands:
