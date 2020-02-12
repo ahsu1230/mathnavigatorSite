@@ -3,8 +3,8 @@ package programs
 import (
   "errors"
   "net/http"
-  "github.com/gin-gonic/gin"
   "regexp"
+  "github.com/gin-gonic/gin"
 )
 
 func GetPrograms(c *gin.Context) {
