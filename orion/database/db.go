@@ -5,10 +5,10 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/mysql"
-	"github.com/golang-migrate/migrate/source/file"
+	_ "github.com/golang-migrate/migrate/source/file"
 )
 
 var dbSql *sql.DB   // go/sql db connection
