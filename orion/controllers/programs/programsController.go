@@ -1,9 +1,13 @@
 package programs
 
 import (
+  "errors"
   "net/http"
+  "regexp"
   "github.com/gin-gonic/gin"
 )
+
+const REGEX_PROGRAM_ID = "^[[:alnum:]]+(_[[:alnum:]]+)*$"
 
 func GetPrograms(c *gin.Context) {
   // Query Repo
@@ -33,13 +37,10 @@ func CreateProgram(c *gin.Context) {
   var programJson Program
   c.BindJSON(&programJson)
 
-  // TODO: implement for real!
-  // isValid := CheckValidProgram(newProgram);
-  // if (isValid) {
-  //
-  // } else {
-  //
-  // }
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
+    return
+  }
 
   // Query Repo (INSERT & SELECT)
   err := InsertProgram(programJson)
@@ -56,6 +57,11 @@ func UpdateProgram(c *gin.Context) {
   programId := c.Param("programId")
   var programJson Program
   c.BindJSON(&programJson)
+
+  if err := CheckValidProgram(programJson); err != nil {
+    c.String(http.StatusBadRequest, err.Error())
+    return
+  }
 
   // Query Repo (UPDATE & SELECT)
   err := UpdateProgramById(programId, programJson)
@@ -81,6 +87,39 @@ func DeleteProgram(c *gin.Context) {
   return
 }
 
-func CheckValidProgram() bool {
-  return true
+func CheckValidProgram(program Program) error {
+  // Retrieves the inputted values
+  programId := program.ProgramId
+  name := program.Name
+  grade1 := program.Grade1
+  grade2 := program.Grade2
+  description := program.Description
+
+  // Ensures program ID isn't empty
+  if programId == "" {
+    return errors.New("Empty programId.")
+  }
+
+  // Checks if the program ID is in the form of alphanumeric strings separated by underscores
+  if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+    return errors.New("Invalid programId.")
+  }
+  
+  // Name validation
+  match, _ := regexp.MatchString(`^[A-Z0-9]\S*(\s[A-Z0-9]\S*)*$`, name)
+  if !match {
+  	return errors.New("Invalid name.")
+  }
+
+  // Checks if the grades are valid
+  if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+    return errors.New("Invalid grades.")
+  }
+  
+  // Description validation
+  if description == "" {
+    return errors.New("Empty description.")
+  }
+
+  return nil
 }
