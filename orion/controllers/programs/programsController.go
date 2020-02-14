@@ -8,7 +8,7 @@ import (
 )
 
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
-const REGEX_NAME = `^[A-Z0-9][\w-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
 func GetPrograms(c *gin.Context) {
 	// Query Repo

@@ -130,6 +130,6 @@ func TestDescription(t *testing.T) {
 	// Failure example
 	program.Description = ""
 	if err := CheckValidProgram(program); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid grades.")
+		t.Error("Check was incorrect, got: nil, expected: invalid description.")
 	}
 }
