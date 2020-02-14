@@ -178,43 +178,42 @@ export class ProgramEditPage extends React.Component {
 }
 
 function checkProgram(program) {
-  let checkpro=true;
+  let checkPro = true;
 
-  let programId = program.programId
+  let programId = program.programId;
 
-  //checks if programId contains special characters
-  var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
-  for (let i=0; i<programId.length; i++) {
-    if (iChars.indexOf(programId.charAt(i)) != -1) {
-      checkpro= false;
+  // Checks if programId contains special characters
+  let invalidChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+  for (let i = 0; i < programId.length; i++) {
+    if (invalidChars.indexOf(programId.charAt(i)) != -1) {
+      checkPro = false;
     }
   }
 
-  //checks if programId contains uppercase
-  if ((programId.toLowerCase())!=programId) {
-    checkpro = false;
+  // Checks if programId contains uppercase
+  if ((programId.toLowerCase()) != programId) {
+    checkPro = false;
   }
 
-  //checks if programId has spaces
-  if (programId.indexOf(' ')!=-1 ){
-    checkpro = false;
+  // Checks if programId has spaces
+  if (programId.indexOf(' ') != -1){
+    checkPro = false;
   }
 
-  if (isNaN(program.grade1)) {
-    checkpro = false;
+  // Checks if grades are valid
+  if (isNaN(program.grade1) || isNaN(program.grade2)) {
+    checkPro = false;
   }
-  if (program.grade1<1 || program.grade1>12) {
-    checkpro = false;
+  if (program.grade1 < 1 || program.grade1 > 12) {
+    checkPro = false;
   }
-  if (isNaN(program.grade2)) {
-    checkpro = false;
-  }
-  if (program.grade2<program.grade1 || program.grade2>12) {
-    checkpro = false;
+
+  if (program.grade2 < program.grade1 || program.grade2 > 12) {
+    checkPro = false;
   }
 
   return {
-    isValid: checkpro,
+    isValid: checkPro,
     errorMessage: "Bad program!"
   }
 }
