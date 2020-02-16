@@ -21,3 +21,5 @@ A React Component can be any of these layouts and every Component can have multi
 
 For example, maybe I'd like to click on an image (one React Component) to zoom in on it.
 When that happens, you can have other parts of the page (other React Components) move away or disappear so you can get a better view of the image.
+
+## Differences between State and Props
