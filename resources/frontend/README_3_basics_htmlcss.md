@@ -1,5 +1,7 @@
 # Important HTML / CSS topics to learn
 
+## [HTML] What is a DOM?
+
 ## [HTML] What is a <div>?
 ## [HTML] What is the difference between <div> and <span>?
 ## [CSS] What is the 'display' property? What is the difference between 'block' vs. 'inline' vs. 'inline-block'?

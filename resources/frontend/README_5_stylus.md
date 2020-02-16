@@ -5,6 +5,6 @@ What this means is that when you code in Stylus, it will eventually compile into
 In other words, it's just an easier way to do CSS.
 http://stylus-lang.com/
 
- - Supports CSS short-handing i.e. removes a lot of redundant CSS code.
+ - Supports CSS short-handing i.e. removes a lot of redundant CSS code, semicolon problems, braces problems, etc.
  - Supports variables!
  - Easy importing of other stylus files
