@@ -198,7 +198,7 @@ function checkProgram(program) {
   }
 
   // Checks if programId has spaces
-  if (programId.indexOf(' ') != -1){
+  if (programId.indexOf(' ') != -1) {
     checkPro = false;
     errorPopup = "No spaces allowed in Program ID!";
   }
