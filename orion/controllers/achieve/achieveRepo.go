@@ -7,13 +7,13 @@ import (
 
 func GetAllAchievements() []Achieve {
 	achieveList := []Achieve{}
-	database.DbSqlx.Select(&achieveList, "SELECT * FROM programs")
+	database.DbSqlx.Select(&achieveList, "SELECT * FROM achievements")
 	return achieveList
 }
 
 func GetAchievementById(id uint) (Achieve, error) {
 	achieve := Achieve{}
-	sqlStatement := "SELECT * FROM programs WHERE id=?"
+	sqlStatement := "SELECT * FROM achievements WHERE id=?"
 	err := database.DbSqlx.Get(&achieve, sqlStatement, id)
 	return achieve, err
 }
@@ -21,7 +21,7 @@ func GetAchievementById(id uint) (Achieve, error) {
 func InsertAchievement(achieve Achieve) error {
 	now := utils.TimestampNow()
 	db := database.DbSqlx
-	sqlStatement := "INSERT INTO programs " +
+	sqlStatement := "INSERT INTO achievements " +
 		"(created_at, updated_at, deleted_at, year, message) " +
 		"VALUES (:createdAt, :updatedAt, :deletedAt, :year, :message)"
 	parameters := map[string]interface{}{

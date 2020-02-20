@@ -9,6 +9,6 @@ type Achieve struct {
 	CreatedAt   uint          `db:"created_at"`
 	UpdatedAt   uint          `db:"updated_at"`
 	DeletedAt   sql.NullInt64 `db:"deleted_at"`
-	Year        uint          `json:"programId"`
+	Year        uint          `json:"year"`
 	Message     string        `json:"message"`
 }
