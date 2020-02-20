@@ -95,12 +95,12 @@ func CheckValidAchievement(achieve Achieve) error {
 	message := achieve.Message
 
 	// Year validation
-	if year >= 2000 {
+	if year < 2000 {
 		return errors.New("invalid year")
 	}
 
 	// Message validation
-	if message != "" {
+	if message == "" {
 		return errors.New("invalid message")
 	}
 
