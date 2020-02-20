@@ -1,7 +1,8 @@
-package programs
+package domains
 
 import (
 	"database/sql"
+    "github.com/gin-gonic/gin"
 )
 
 type Program struct {
@@ -14,4 +15,12 @@ type Program struct {
 	Grade1      uint          `json:"grade1"`
 	Grade2      uint          `json:"grade2"`
 	Description string        `json:"description"`
+}
+
+type ProgramService interface {
+    GetAll(c *gin.Context)
+    GetByProgramId(c *gin.Context)
+    Create(c *gin.Context)
+    Update(c *gin.Context)
+    Delete(c *gin.Context)
 }
