@@ -83,7 +83,7 @@ func DeleteProgram(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Program "+programId)
+		c.String(http.StatusOK, "Deleted Program " + programId)
 	}
 	return
 }
