@@ -24,3 +24,16 @@ type ProgramService interface {
     Update(c *gin.Context)
     Delete(c *gin.Context)
 }
+
+// Required for tests
+var ProgramColumns = []string {
+    "id",
+    "created_at",
+    "updated_at",
+    "deleted_at",
+    "program_id",
+    "name",
+    "grade1",
+    "grade2",
+    "description",
+}
