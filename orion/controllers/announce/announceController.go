@@ -8,9 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const REGEX_ANNOUNCE_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
-const REGEX_TITLE = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
-const REGEX_MESSAGE = `^\s*$`
+const REGEX = `[A-Za-z]+`
 
 func GetAnnouncements(c *gin.Context) {
 	// Query Repo
@@ -23,10 +21,10 @@ func GetAnnouncements(c *gin.Context) {
 
 func GetAnnouncement(c *gin.Context) {
 	// Incoming parameters
-	announceId := c.Param("announceId")
+	id := c.Param("id")
 
 	// Query Repo
-	announce, err := GetAnnouncementById(announceId)
+	announce, err := GetAnnouncementById(id)
 	if err != nil {
 		panic(err)
 	} else {
@@ -57,7 +55,7 @@ func CreateAnnouncement(c *gin.Context) {
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	announceId := c.Param("announceId")
+	id := c.Param("id")
 	var announceJson Announce
 	c.BindJSON(&announceJson)
 
@@ -67,7 +65,7 @@ func UpdateAnnouncement(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err := UpdateAnnouncementById(announceId, announceJson)
+	err := UpdateAnnouncementById(id, announceJson)
 	if err != nil {
 		panic(err)
 	} else {
@@ -78,37 +76,31 @@ func UpdateAnnouncement(c *gin.Context) {
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	announceId := c.Param("announceId")
+	id := c.Param("id")
 
 	// Query Repo (DELETE)
-	err := DeleteAnnouncementById(announceId)
+	err := DeleteAnnouncementById(id)
 	if err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Announcement "+announceId)
+		c.String(http.StatusOK, "Deleted Announcement " + id)
 	}
 	return
 }
 
 func CheckValidAnnouncement(announce Announce) error {
 	// Retrieves the inputted values
-	announceId := announce.AnnounceId
-	title := announce.Title
+	author := announce.Author
 	message := announce.Message
 	
-	// Announcement ID validation
-	if match, _ := regexp.MatchString(REGEX_ANNOUNCE_ID, announceId); !match {
-		return errors.New("invalid announcement id")
-	}
-	
-	// Title validation
-	if match, _ := regexp.MatchString(REGEX_TITLE, title); !match {
-		return errors.New("invalid title")
+	// Author validation
+	if match, _ := regexp.MatchString(REGEX, author); !match {
+		return errors.New("invalid author")
 	}
 	
 	// Message validation
-	if match, _ := regexp.MatchString(REGEX_MESSAGE, message); match {
-		return errors.New("empty message")
+	if match, _ := regexp.MatchString(REGEX, message); !match {
+		return errors.New("invalid message")
 	}
 	
 	return nil

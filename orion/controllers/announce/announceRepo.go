@@ -11,50 +11,48 @@ func GetAllAnnouncements() []Announce {
 	return announceList
 }
 
-func GetAnnouncementById(announceId string) (Announce, error) {
+func GetAnnouncementById(id string) (Announce, error) {
 	var announce Announce
-	err := database.DbSqlx.Get(&announce, "SELECT * FROM announces WHERE announce_id=?", announceId)
+	err := database.DbSqlx.Get(&announce, "SELECT * FROM announces WHERE id=?", id)
 	return announce, err
 }
 
 func InsertAnnouncement(announce Announce) (error) {
 	now := utils.TimestampNow()
 	sqlStatement := "INSERT INTO announcements " +
-		"(created_at, updated_at, deleted_at, announce_id, title, message) " +
-        "VALUES (:createdAt, :updatedAt, :deletedAt, :announceId, :title, :message)"
+		"(created_at, updated_at, deleted_at, posted_at, author, message) " +
+        "VALUES (:createdAt, :updatedAt, :deletedAt, :postedAt, :author, :message)"
 	parameters := map[string]interface{} {
 		"createdAt": now,
 		"updatedAt": now,
 		"deletedAt": nil,
-		"announceId": announce.AnnounceId,
-		"title": announce.Title,
+		"postedAt": nil,
+		"author": announce.Author,
 		"message": announce.Message,
 	}
 	_, err := database.DbSqlx.NamedExec(sqlStatement, parameters)
 	return err
 }
 
-func UpdateAnnouncementById(oldAnnounceId string, announce Announce) (error) {
+func UpdateAnnouncementById(id string, announce Announce) (error) {
 	now := utils.TimestampNow()
 
 	sqlStatement := "UPDATE announcements SET " +
 		"updated_at=:updatedAt, " +
-		"announce_id=:announceId, " +
-		"title=:grade1, " +
-		"message=:grade2, " +
-		"WHERE announce_id=:oldAnnounceId"
+		"author=:author, " +
+		"message=:message, " +
+		"WHERE id=:id"
 	parameters := map[string]interface{}{
 		"updatedAt": now,
-		"announceId": announce.AnnounceId,
-		"title": announce.Title,
+		"author": announce.Author,
 		"message": announce.Message,
-		"oldAnnounceId": oldAnnounceId,
+		"id": id,
 	}
 	_, err := database.DbSqlx.NamedExec(sqlStatement, parameters)
 	return err
 }
 
-func DeleteAnnouncementById(announceId string) error {
-	_, err := database.DbSqlx.NamedExec("DELETE FROM announces WHERE announce_id=:announceId", map[string]interface{}{"announceId": announceId})
+func DeleteAnnouncementById(id string) error {
+	_, err := database.DbSqlx.NamedExec("DELETE FROM announces WHERE id=:id", map[string]interface{}{"id": id})
 	return err
 }

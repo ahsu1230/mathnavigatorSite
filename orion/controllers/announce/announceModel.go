@@ -5,11 +5,11 @@ import (
 )
 
 type Announce struct {
-	Id				uint
+	Id				string
 	CreatedAt		uint
 	UpdatedAt		uint
 	DeletedAt		sql.NullInt64
-	AnnounceId		string
-	Title			string
+	PostedAt		uint
+	Author			string
 	Message			string
 }
