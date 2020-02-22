@@ -178,9 +178,47 @@ export class ProgramEditPage extends React.Component {
 }
 
 function checkProgram(program) {
-  // *todo* change this later!
+  let checkPro = true;
+  let errorPopup = "";
+  let programId = program.programId;
+
+  // Checks if programId contains special characters
+  let invalidChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+  for (let i = 0; i < programId.length; i++) {
+    if (invalidChars.indexOf(programId.charAt(i)) != -1) {
+      checkPro = false;
+      errorPopup = "Invalid characters in Program ID!";
+    }
+  }
+
+  // Checks if programId contains uppercase
+  if ((programId.toLowerCase()) != programId) {
+    checkPro = false;
+    errorPopup = "No uppercase allowed in Program ID!";
+  }
+
+  // Checks if programId has spaces
+  if (programId.indexOf(' ') != -1) {
+    checkPro = false;
+    errorPopup = "No spaces allowed in Program ID!";
+  }
+
+  // Checks if grades are valid
+  if (isNaN(program.grade1) || isNaN(program.grade2)) {
+    checkPro = false;
+    errorPopup = "Grades are not valid numbers!";
+  }
+  if (program.grade1 < 1 || program.grade1 > 12) {
+    checkPro = false;
+    errorPopup = "Grade 1 is not within range!";
+  }
+  if (program.grade2 < program.grade1 || program.grade2 > 12) {
+    checkPro = false;
+    errorPopup = "Grade 2 is not within range!";
+  }
+
   return {
-    isValid: true,
-    errorMessage: "Bad program!"
-  };
+    isValid: checkPro,
+    errorMessage: errorPopup
+  }
 }
