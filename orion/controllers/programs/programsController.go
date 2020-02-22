@@ -9,6 +9,7 @@ import (
 
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+const REGEX_DESCRIPTION = `[a-zA-z]+`
 
 func GetPrograms(c *gin.Context) {
 	// Query Repo
@@ -83,7 +84,7 @@ func DeleteProgram(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Program "+programId)
+		c.String(http.StatusOK, "Deleted Program " + programId)
 	}
 	return
 }
@@ -97,13 +98,12 @@ func CheckValidProgram(program Program) error {
 	description := program.Description
 
 	// Checks if the program ID is in the form of alphanumeric strings separated by underscores
-	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+	if match, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !match {
 		return errors.New("invalid program id")
 	}
 
 	// Name validation
-	match, _ := regexp.MatchString(REGEX_NAME, name)
-	if !match {
+	if match, _ := regexp.MatchString(REGEX_NAME, name); !match {
 		return errors.New("invalid program name")
 	}
 
@@ -113,8 +113,8 @@ func CheckValidProgram(program Program) error {
 	}
 
 	// Description validation
-	if description == "" {
-		return errors.New("empty description")
+	if match, _ := regexp.MatchString(REGEX_DESCRIPTION, description); !match {
+		return errors.New("invalid description")
 	}
 
 	return nil
