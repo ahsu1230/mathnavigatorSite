@@ -7,6 +7,7 @@ import (
   "github.com/gin-gonic/contrib/static"
 
   "github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
+  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
   "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
   "github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
@@ -48,7 +49,14 @@ func main() {
   }
   // apiClasses := router.Group("api/classes/")
   // apiLocations := router.Group("api/locations/")
-  // apiAnnounce := router.Group("api/announce/")
+  apiAnnounce := router.Group("api/announce/")
+  {
+  	apiAnnounce.GET("/v1/all", announce.GetAnnouncements)
+  	apiAnnounce.POST("/v1/create", announce.CreateAnnouncement)
+  	apiAnnounce.GET("/v1/announce/:id", announce.GetAnnouncement)
+  	apiAnnounce.POST("/v1/announce/:id", announce.UpdateAnnouncement)
+  	apiAnnounce.DELETE("/v1/announce/:id", announce.DeleteAnnouncement)
+  }
   // apiAchieve := router.Group("api/achieve/")
   // apiSemesters := router.Group("api/semesters/")
   // apiUsers := router.Group("api/users/")

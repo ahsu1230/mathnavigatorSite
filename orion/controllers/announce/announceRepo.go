@@ -13,7 +13,7 @@ func GetAllAnnouncements() []Announce {
 
 func GetAnnouncementById(id string) (Announce, error) {
 	var announce Announce
-	err := database.DbSqlx.Get(&announce, "SELECT * FROM announces WHERE id=?", id)
+	err := database.DbSqlx.Get(&announce, "SELECT * FROM announcements WHERE id=?", id)
 	return announce, err
 }
 
@@ -26,7 +26,7 @@ func InsertAnnouncement(announce Announce) (error) {
 		"createdAt": now,
 		"updatedAt": now,
 		"deletedAt": nil,
-		"postedAt": nil,
+		"postedAt": announce.PostedAt,
 		"author": announce.Author,
 		"message": announce.Message,
 	}
@@ -39,11 +39,13 @@ func UpdateAnnouncementById(id string, announce Announce) (error) {
 
 	sqlStatement := "UPDATE announcements SET " +
 		"updated_at=:updatedAt, " +
+		"posted_at=:postedAt, " +
 		"author=:author, " +
-		"message=:message, " +
+		"message=:message " +
 		"WHERE id=:id"
 	parameters := map[string]interface{}{
 		"updatedAt": now,
+		"postedAt": announce.PostedAt,
 		"author": announce.Author,
 		"message": announce.Message,
 		"id": id,
@@ -53,6 +55,6 @@ func UpdateAnnouncementById(id string, announce Announce) (error) {
 }
 
 func DeleteAnnouncementById(id string) error {
-	_, err := database.DbSqlx.NamedExec("DELETE FROM announces WHERE id=:id", map[string]interface{}{"id": id})
+	_, err := database.DbSqlx.NamedExec("DELETE FROM announcements WHERE id=:id", map[string]interface{}{"id": id})
 	return err
 }
