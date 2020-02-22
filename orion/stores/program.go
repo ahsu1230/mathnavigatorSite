@@ -30,14 +30,11 @@ func InsertProgram(dbx *sqlx.DB, newProgram domains.Program) error {
     programId := newProgram.ProgramId
 	now := utils.TimestampNow()
 	sqlStatement := "INSERT INTO programs " +
-		"(created_at, updated_at, deleted_at, program_id, name, " +
-		"grade1, grade2, description) " +
-		"VALUES (:createdAt, :updatedAt, :deletedAt, :programId, :name, " +
-		":grade1, :grade2, :description)"
+		"(created_at, updated_at, program_id, name, grade1, grade2, description) " +
+		"VALUES (:createdAt, :updatedAt, :programId, :name, :grade1, :grade2, :description)"
 	parameters := map[string]interface{}{
 		"createdAt":   now,
 		"updatedAt":   now,
-		"deletedAt":   nil,
 		"programId":   programId,
 		"name":        newProgram.Name,
 		"grade1":      newProgram.Grade1,
