@@ -6,7 +6,7 @@ import (
 )
 
 func GetAllPrograms() []Program {
-	programList := []Program{}
+	var programList []Program
 	database.DbSqlx.Select(&programList, "SELECT * FROM programs")
 	return programList
 }

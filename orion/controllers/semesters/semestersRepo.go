@@ -6,7 +6,7 @@ import (
 )
 
 func GetAllSemesters() []Semester {
-	semesterList := []Semester{}
+	var semesterList []Semester
 	database.DbSqlx.Select(&semesterList, "SELECT * FROM semesters")
 	return semesterList
 }
