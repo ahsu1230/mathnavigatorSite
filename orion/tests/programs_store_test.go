@@ -76,8 +76,7 @@ func TestStoreCreateProgram(t *testing.T) {
         1, 1000, 1000, sql.NullInt64{Int64:0, Valid:false}, "prog1", "Program1", 2, 3, "description1",
     }
     mock.ExpectExec("^INSERT INTO programs").
-        // WithArgs("prog1").
-        WillReturnResult(sqlmock.NewResult(1, 1))
+        WillReturnResult(sqlmock.NewResult(1, 1)) // last rowId is 1, 1 row affected
     // Execute command and check expectations
     store.InsertProgram(dbx, program)
 	if err := mock.ExpectationsWereMet(); err != nil {
@@ -87,9 +86,11 @@ func TestStoreCreateProgram(t *testing.T) {
     // Mock expected outcome when inserting same program again
     // Test unique program_id
     mock.ExpectExec("^INSERT INTO programs").
-        WillReturnError(fmt.Errorf("asdfd"))
+        WillReturnError(fmt.Errorf("non-unique program_id"))
     // Execute command and check expectations
-    store.InsertProgram(dbx, program)
+    if err := store.InsertProgram(dbx, program); err == nil {
+        t.Errorf("Expected an error but was none")
+    }
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}

@@ -8,6 +8,7 @@ import (
     "github.com/ahsu1230/mathnavigatorSite/orion/utils"
 )
 
+// Implements interface domains.ProgramService
 type ProgramService struct {
     DbSql *sql.DB       // golang native db connection
     DbSqlx *sqlx.DB     // sqlx wrapper over db connection
