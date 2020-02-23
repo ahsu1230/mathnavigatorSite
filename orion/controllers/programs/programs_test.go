@@ -61,6 +61,11 @@ func TestProgramName(t *testing.T) {
 	if err := CheckValidProgram(program); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
+	
+	program.Name = "Mommy & me"
+	if err := CheckValidProgram(program); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
 
 	program.Name = "Test__"
 	if err := CheckValidProgram(program); err == nil {
@@ -78,6 +83,11 @@ func TestProgramName(t *testing.T) {
 	}
 
 	program.Name = "40 @40"
+	if err := CheckValidProgram(program); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program name")
+	}
+	
+	program.Name = "A0 ^40"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
@@ -121,14 +131,29 @@ func TestValidGrades(t *testing.T) {
 }
 
 func TestDescription(t *testing.T) {
-	// Success example
+	// Success examples
 	program := Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
 	if err := CheckValidProgram(program); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
+	
+	program.Description = "                 a   "
+	if err := CheckValidProgram(program); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
 
-	// Failure example
+	// Failure examples
 	program.Description = ""
+	if err := CheckValidProgram(program); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid description.")
+	}
+	
+	program.Description = "                                                    "
+	if err := CheckValidProgram(program); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid description.")
+	}
+	
+	program.Description = "        1234                                        "
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid description.")
 	}

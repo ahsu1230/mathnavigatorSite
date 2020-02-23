@@ -8,8 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Regex checks ensure program IDs only contain alphanumeric characters, names do not
+start with lowercase or special characters, and descriptions contain at least one
+alphabetical character.
+*/
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+const REGEX_DESCRIPTION = `[a-zA-z]+`
 
 func GetPrograms(c *gin.Context) {
 	// Query Repo
@@ -25,11 +31,10 @@ func GetProgram(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo
-	program, err := GetProgramById(programId)
-	if err != nil {
+	if _, err := GetProgramById(programId); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, program)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -45,11 +50,10 @@ func CreateProgram(c *gin.Context) {
 	}
 
 	// Query Repo (INSERT & SELECT)
-	err := InsertProgram(programJson)
-	if err != nil {
+	if err := InsertProgram(programJson); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -66,11 +70,10 @@ func UpdateProgram(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err := UpdateProgramById(programId, programJson)
-	if err != nil {
+	if err := UpdateProgramById(programId, programJson); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -80,11 +83,10 @@ func DeleteProgram(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo (DELETE)
-	err := DeleteProgramById(programId)
-	if err != nil {
+	if err := DeleteProgramById(programId); err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Program " + programId)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -98,13 +100,12 @@ func CheckValidProgram(program Program) error {
 	description := program.Description
 
 	// Checks if the program ID is in the form of alphanumeric strings separated by underscores
-	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+	if match, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !match {
 		return errors.New("invalid program id")
 	}
 
 	// Name validation
-	match, _ := regexp.MatchString(REGEX_NAME, name)
-	if !match {
+	if match, _ := regexp.MatchString(REGEX_NAME, name); !match {
 		return errors.New("invalid program name")
 	}
 
@@ -114,8 +115,8 @@ func CheckValidProgram(program Program) error {
 	}
 
 	// Description validation
-	if description == "" {
-		return errors.New("empty description")
+	if match, _ := regexp.MatchString(REGEX_DESCRIPTION, description); !match {
+		return errors.New("invalid description")
 	}
 
 	return nil
