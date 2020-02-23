@@ -5,17 +5,23 @@ import (
     "fmt"
     "testing"
     sqlmock "github.com/DATA-DOG/go-sqlmock"
+    "github.com/jmoiron/sqlx"
     "github.com/ahsu1230/mathnavigatorSite/orion/domains"
     "github.com/ahsu1230/mathnavigatorSite/orion/store"
 )
 
-func TestStoreGetAllPrograms(t *testing.T) {
+func initTest(t *testing.T) (*sql.DB, *sqlx.DB, sqlmock.Sqlmock) {
     db, mock, err := sqlmock.New()
     if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	defer db.Close()
     dbx := store.CreateDbSqlx(db)
+    return db, dbx, mock
+}
+
+func TestStoreGetAllPrograms(t *testing.T) {
+    db, dbx, mock := initTest(t)
+	defer db.Close()
 
     // Mock expected outcome
     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -24,8 +30,7 @@ func TestStoreGetAllPrograms(t *testing.T) {
     mock.ExpectQuery("^SELECT (.+) FROM programs").WillReturnRows(rows)
 
     // Execute method
-    _, err = store.GetAllPrograms(dbx)
-	if err != nil {
+	if _, err := store.GetAllPrograms(dbx); err != nil {
 		t.Errorf("Error was not expected: %s", err)
 	}
 
@@ -36,12 +41,8 @@ func TestStoreGetAllPrograms(t *testing.T) {
 }
 
 func TestStoreGetProgramById(t *testing.T) {
-    db, mock, err := sqlmock.New()
-    if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer db.Close()
-    dbx := store.CreateDbSqlx(db)
+    db, dbx, mock := initTest(t)
+    defer db.Close()
 
     // Mock expected outcome with valid programId
     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -67,12 +68,8 @@ func TestStoreGetProgramById(t *testing.T) {
 }
 
 func TestStoreCreateProgram(t *testing.T) {
-    db, mock, err := sqlmock.New()
-    if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
+    db, dbx, mock := initTest(t)
 	defer db.Close()
-    dbx := store.CreateDbSqlx(db)
 
     // Mock expected SQL statement
     program := domains.Program {
@@ -99,12 +96,8 @@ func TestStoreCreateProgram(t *testing.T) {
 }
 
 // func TestStoreUpdateProgram(t *testing.T) {
-//     db, mock, err := sqlmock.New()
-//     if err != nil {
-// 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-// 	}
-// 	defer db.Close()
-//     dbx := store.CreateDbSqlx(db)
+//     db, dbx, mock := initTest()
+// 	    defer db.Close()
 //
 //     // Mock expected outcome with valid programId
 //     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -130,12 +123,8 @@ func TestStoreCreateProgram(t *testing.T) {
 // }
 
 func TestStoreDeleteProgram(t *testing.T) {
-    db, mock, err := sqlmock.New()
-    if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
+    db, dbx, mock := initTest(t)
 	defer db.Close()
-    dbx := store.CreateDbSqlx(db)
 
     // Mock expected outcome with valid programId
     sqlmock.NewRows(domains.ProgramColumns).
