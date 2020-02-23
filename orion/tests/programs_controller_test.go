@@ -8,10 +8,10 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/ahsu1230/mathnavigatorSite/orion/domains"
     "github.com/ahsu1230/mathnavigatorSite/orion/router"
-    "github.com/ahsu1230/mathnavigatorSite/orion/testMocks"
+    "github.com/ahsu1230/mathnavigatorSite/orion/test/mocks"
 )
 
-var ps testMocks.ProgramService
+var ps mocks.ProgramService
 var handler router.Handler
 
 func init() {
@@ -23,7 +23,7 @@ func TestHandlerGetAllPrograms(t *testing.T) {
     // Mock controller
     ps.GetAllFn = func(c *gin.Context) {
         var mockList = []*domains.Program {
-            testMocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1"),
+            mocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1"),
         }
         c.JSON(http.StatusOK, mockList)
 	}
@@ -54,7 +54,7 @@ func TestHandlerGetAllPrograms(t *testing.T) {
 func TestHandlerGetByProgramIdSuccess(t *testing.T) {
     // Mock controller
     ps.GetByProgramIdFn = func(c *gin.Context) {
-        program := testMocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1")
+        program := mocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1")
         c.JSON(http.StatusOK, program)
 	}
 

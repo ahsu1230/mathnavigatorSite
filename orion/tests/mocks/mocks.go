@@ -8,16 +8,16 @@ import (
 
 // ProgramService represents a mock implementation of domains.ProgramService
 type ProgramService struct {
-        GetAllFn      func(*gin.Context)
-        GetAllInvoked bool
-        GetByProgramIdFn      func(*gin.Context)
-        GetByProgramIdInvoked bool
-        CreateProgramFn      func(*gin.Context)
-        CreateProgramInvoked bool
-        UpdateProgramFn      func(*gin.Context)
-        UpdateProgramInvoked bool
-        DeleteProgramFn      func(*gin.Context)
-        DeleteProgramInvoked bool
+        GetAllFn                func(*gin.Context)
+        GetAllInvoked           bool
+        GetByProgramIdFn        func(*gin.Context)
+        GetByProgramIdInvoked   bool
+        CreateProgramFn         func(*gin.Context)
+        CreateProgramInvoked    bool
+        UpdateProgramFn         func(*gin.Context)
+        UpdateProgramInvoked    bool
+        DeleteProgramFn         func(*gin.Context)
+        DeleteProgramInvoked    bool
 }
 
 func (ps *ProgramService) GetAll(c *gin.Context) {
@@ -45,7 +45,12 @@ func (ps *ProgramService) Delete(c *gin.Context) {
         ps.DeleteProgramFn(c)
 }
 
-func CreateMockProgram(rowId uint, programId string, programName string, grade1 uint, grade2 uint, description string) *domains.Program {
+func CreateMockProgram(rowId uint,
+                        programId string,
+                        programName string,
+                        grade1 uint,
+                        grade2 uint,
+                        description string) *domains.Program {
     return &domains.Program {
         rowId,
         1000,
