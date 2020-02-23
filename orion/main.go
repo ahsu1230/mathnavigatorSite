@@ -7,10 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/contrib/static"
 
-  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
-  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
-  "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
-  "github.com/ahsu1230/mathnavigatorSite/orion/database"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/achieve"
+	"github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
 
 func main() {
