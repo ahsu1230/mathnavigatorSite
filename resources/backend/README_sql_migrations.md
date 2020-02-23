@@ -21,6 +21,7 @@ Sometimes, SQL Migrations also refer to transferring from one database to anothe
 ## Using Golang Migrations
 **How it works**
 We use the following library to handle migrations: https://github.com/golang-migrate/migrate
+
 All migrations are defined by files in `database/migrations`.
 You should notice a couple of files in the form of `<DB_VERSION_NUMBER>.up.sql` and `<DB_VERSION_NUMBER>.down.sql`.
 These files are necessary to "upgrade" or "downgrade" your database version in order to keep your database environment in-sync with other environments.
