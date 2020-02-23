@@ -7,5 +7,6 @@
 **/*/package-lock.json
 **/*/go.sum
 **/.project
+**/*/.project
 
 orion/configs/*
