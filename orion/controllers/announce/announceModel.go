@@ -5,7 +5,7 @@ import (
 )
 
 type Announce struct {
-	Id				string			`db:"id"`
+	Id				uint			`db:"id"`
 	CreatedAt		uint			`db:"created_at"`
 	UpdatedAt		uint			`db:"updated_at"`
 	DeletedAt		sql.NullInt64	`db:"deleted_at"`

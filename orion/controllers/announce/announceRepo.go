@@ -11,7 +11,7 @@ func GetAllAnnouncements() []Announce {
 	return announceList
 }
 
-func GetAnnouncementById(id string) (Announce, error) {
+func GetAnnouncementById(id uint) (Announce, error) {
 	var announce Announce
 	err := database.DbSqlx.Get(&announce, "SELECT * FROM announcements WHERE id=?", id)
 	return announce, err
@@ -34,7 +34,7 @@ func InsertAnnouncement(announce Announce) (error) {
 	return err
 }
 
-func UpdateAnnouncementById(id string, announce Announce) (error) {
+func UpdateAnnouncementById(id uint, announce Announce) (error) {
 	now := utils.TimestampNow()
 
 	sqlStatement := "UPDATE announcements SET " +
@@ -54,7 +54,7 @@ func UpdateAnnouncementById(id string, announce Announce) (error) {
 	return err
 }
 
-func DeleteAnnouncementById(id string) error {
+func DeleteAnnouncementById(id uint) error {
 	_, err := database.DbSqlx.NamedExec("DELETE FROM announcements WHERE id=:id", map[string]interface{}{"id": id})
 	return err
 }

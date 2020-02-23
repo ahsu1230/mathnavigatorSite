@@ -4,11 +4,12 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
+	"strconv"
 	
 	"github.com/gin-gonic/gin"
 )
 
-const REGEX = `[A-Za-z]+`
+const REGEX_ALPHA_ONLY = `[A-Za-z]+`
 
 func GetAnnouncements(c *gin.Context) {
 	// Query Repo
@@ -21,14 +22,14 @@ func GetAnnouncements(c *gin.Context) {
 
 func GetAnnouncement(c *gin.Context) {
 	// Incoming parameters
-	id := c.Param("id")
+	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	id := uint(id64)
 
 	// Query Repo
-	announce, err := GetAnnouncementById(id)
-	if err != nil {
+	if _, err := GetAnnouncementById(id); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, announce)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -44,18 +45,18 @@ func CreateAnnouncement(c *gin.Context) {
 	}
 
 	// Query Repo (INSERT & SELECT)
-	err := InsertAnnouncement(announceJson)
-	if err != nil {
+	if err := InsertAnnouncement(announceJson); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := c.Param("id")
+	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	id := uint(id64)
 	var announceJson Announce
 	c.BindJSON(&announceJson)
 
@@ -65,25 +66,24 @@ func UpdateAnnouncement(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err := UpdateAnnouncementById(id, announceJson)
-	if err != nil {
+	if err := UpdateAnnouncementById(id, announceJson); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id := c.Param("id")
+	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	id := uint(id64)
 
 	// Query Repo (DELETE)
-	err := DeleteAnnouncementById(id)
-	if err != nil {
+	if err := DeleteAnnouncementById(id); err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Announcement " + id)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -94,12 +94,12 @@ func CheckValidAnnouncement(announce Announce) error {
 	message := announce.Message
 	
 	// Author validation
-	if match, _ := regexp.MatchString(REGEX, author); !match {
+	if match, _ := regexp.MatchString(REGEX_ALPHA_ONLY, author); !match {
 		return errors.New("invalid author")
 	}
 	
 	// Message validation
-	if match, _ := regexp.MatchString(REGEX, message); !match {
+	if match, _ := regexp.MatchString(REGEX_ALPHA_ONLY, message); !match {
 		return errors.New("invalid message")
 	}
 	
