@@ -1,15 +1,17 @@
 package main
+
 import (
-  "fmt"
+	"fmt"
 
-  "github.com/gin-contrib/cors"
-  "github.com/gin-gonic/gin"
-  "github.com/gin-gonic/contrib/static"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/contrib/static"
 
-  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
-  "github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
-  "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
-  "github.com/ahsu1230/mathnavigatorSite/orion/database"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/achieve"
+	"github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
 
 func main() {
@@ -57,7 +59,14 @@ func main() {
   	apiAnnounce.POST("/v1/announce/:id", announce.UpdateAnnouncement)
   	apiAnnounce.DELETE("/v1/announce/:id", announce.DeleteAnnouncement)
   }
-  // apiAchieve := router.Group("api/achieve/")
+  apiAchieve := router.Group("api/achievements/")
+	{
+		apiAchieve.GET("/v1/all", achieve.GetAchievements)
+		apiAchieve.POST("/v1/create", achieve.CreateAchievement)
+		apiAchieve.GET("/v1/achievements/:id", achieve.GetAchievement)
+		apiAchieve.POST("/v1/achievements/:id", achieve.UpdateAchievement)
+		apiAchieve.DELETE("/v1/achievements/:id", achieve.DeleteAchievement)
+	}
   // apiSemesters := router.Group("api/semesters/")
   // apiUsers := router.Group("api/users/")
   // apiAccounts := router.Group("api/accounts/")
@@ -65,6 +74,6 @@ func main() {
   // Web server serves on :8080
 	router.Run(":8080")
 
-  // close DbSqlx when server finishes
-  defer database.CloseDb();
+	// close DbSqlx when server finishes
+	defer database.CloseDb()
 }
