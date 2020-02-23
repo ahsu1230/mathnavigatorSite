@@ -6,7 +6,7 @@ import (
 )
 
 func GetAllAchievements() []Achieve {
-	achieveList := []Achieve{}
+	var achieveList []Achieve
 	database.DbSqlx.Select(&achieveList, "SELECT * FROM achievements")
 	return achieveList
 }
