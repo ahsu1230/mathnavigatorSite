@@ -14,6 +14,7 @@ import (
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
+// Implements ProgramService in domains.ProgramService
 type ProgramService struct {
     DbSql *sql.DB       // golang native db connection
     DbSqlx *sqlx.DB     // sqlx wrapper over db connection

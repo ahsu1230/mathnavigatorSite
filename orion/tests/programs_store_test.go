@@ -9,7 +9,7 @@ import (
     "github.com/ahsu1230/mathnavigatorSite/orion/stores"
 )
 
-func TestGetAllPrograms(t *testing.T) {
+func TestStoreGetAllPrograms(t *testing.T) {
     db, mock, err := sqlmock.New()
     if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -35,7 +35,7 @@ func TestGetAllPrograms(t *testing.T) {
 	}
 }
 
-func TestGetProgramById(t *testing.T) {
+func TestStoreGetProgramById(t *testing.T) {
     db, mock, err := sqlmock.New()
     if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -66,7 +66,7 @@ func TestGetProgramById(t *testing.T) {
 	}
 }
 
-func TestCreateProgram(t *testing.T) {
+func TestStoreCreateProgram(t *testing.T) {
     db, mock, err := sqlmock.New()
     if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -98,7 +98,7 @@ func TestCreateProgram(t *testing.T) {
 	}
 }
 
-// func TestUpdateProgram(t *testing.T) {
+// func TestStoreUpdateProgram(t *testing.T) {
 //     db, mock, err := sqlmock.New()
 //     if err != nil {
 // 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -129,7 +129,7 @@ func TestCreateProgram(t *testing.T) {
 // 	}
 // }
 
-func TestDeleteProgram(t *testing.T) {
+func TestStoreDeleteProgram(t *testing.T) {
     db, mock, err := sqlmock.New()
     if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
