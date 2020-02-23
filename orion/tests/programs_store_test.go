@@ -6,7 +6,7 @@ import (
     "testing"
     sqlmock "github.com/DATA-DOG/go-sqlmock"
     "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/stores"
+    "github.com/ahsu1230/mathnavigatorSite/orion/store"
 )
 
 func TestStoreGetAllPrograms(t *testing.T) {
@@ -15,7 +15,7 @@ func TestStoreGetAllPrograms(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-    dbx := stores.CreateDbSqlx(db)
+    dbx := store.CreateDbSqlx(db)
 
     // Mock expected outcome
     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -24,7 +24,7 @@ func TestStoreGetAllPrograms(t *testing.T) {
     mock.ExpectQuery("^SELECT (.+) FROM programs").WillReturnRows(rows)
 
     // Execute method
-    _, err = stores.GetAllPrograms(dbx)
+    _, err = store.GetAllPrograms(dbx)
 	if err != nil {
 		t.Errorf("Error was not expected: %s", err)
 	}
@@ -41,7 +41,7 @@ func TestStoreGetProgramById(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-    dbx := stores.CreateDbSqlx(db)
+    dbx := store.CreateDbSqlx(db)
 
     // Mock expected outcome with valid programId
     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -50,7 +50,7 @@ func TestStoreGetProgramById(t *testing.T) {
             WithArgs("prog1").
             WillReturnRows(rows)
     // Execute command and check expectations
-    stores.GetProgramById(dbx, "prog1")
+    store.GetProgramById(dbx, "prog1")
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}
@@ -60,7 +60,7 @@ func TestStoreGetProgramById(t *testing.T) {
             WithArgs("prog2").
             WillReturnError(fmt.Errorf("not found"))
     // Execute command and check expectations
-    stores.GetProgramById(dbx, "prog2")
+    store.GetProgramById(dbx, "prog2")
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}
@@ -72,7 +72,7 @@ func TestStoreCreateProgram(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-    dbx := stores.CreateDbSqlx(db)
+    dbx := store.CreateDbSqlx(db)
 
     // Mock expected SQL statement
     program := domains.Program {
@@ -82,7 +82,7 @@ func TestStoreCreateProgram(t *testing.T) {
         // WithArgs("prog1").
         WillReturnResult(sqlmock.NewResult(1, 1))
     // Execute command and check expectations
-    stores.InsertProgram(dbx, program)
+    store.InsertProgram(dbx, program)
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}
@@ -92,7 +92,7 @@ func TestStoreCreateProgram(t *testing.T) {
     mock.ExpectExec("^INSERT INTO programs").
         WillReturnError(fmt.Errorf("asdfd"))
     // Execute command and check expectations
-    stores.InsertProgram(dbx, program)
+    store.InsertProgram(dbx, program)
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}
@@ -104,7 +104,7 @@ func TestStoreCreateProgram(t *testing.T) {
 // 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 // 	}
 // 	defer db.Close()
-//     dbx := stores.CreateDbSqlx(db)
+//     dbx := store.CreateDbSqlx(db)
 //
 //     // Mock expected outcome with valid programId
 //     rows := sqlmock.NewRows(domains.ProgramColumns).
@@ -113,7 +113,7 @@ func TestStoreCreateProgram(t *testing.T) {
 //             WithArgs("prog1").
 //             WillReturnRows(rows)
 //     // Execute command and check expectations
-//     stores.GetProgramById(dbx, "prog1")
+//     store.GetProgramById(dbx, "prog1")
 // 	if err := mock.ExpectationsWereMet(); err != nil {
 // 		t.Errorf("There were unfulfilled expectations: %s", err)
 // 	}
@@ -123,7 +123,7 @@ func TestStoreCreateProgram(t *testing.T) {
 //             WithArgs("prog2").
 //             WillReturnError(fmt.Errorf("not found"))
 //     // Execute command and check expectations
-//     stores.GetProgramById(dbx, "prog2")
+//     store.GetProgramById(dbx, "prog2")
 // 	if err := mock.ExpectationsWereMet(); err != nil {
 // 		t.Errorf("There were unfulfilled expectations: %s", err)
 // 	}
@@ -135,7 +135,7 @@ func TestStoreDeleteProgram(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-    dbx := stores.CreateDbSqlx(db)
+    dbx := store.CreateDbSqlx(db)
 
     // Mock expected outcome with valid programId
     sqlmock.NewRows(domains.ProgramColumns).
@@ -143,7 +143,7 @@ func TestStoreDeleteProgram(t *testing.T) {
     mock.ExpectExec("^DELETE FROM programs WHERE program_id=?").
             WithArgs("prog1")
     // Execute command and check expectations
-    stores.DeleteProgram(dbx, "prog1")
+    store.DeleteProgram(dbx, "prog1")
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}
@@ -153,7 +153,7 @@ func TestStoreDeleteProgram(t *testing.T) {
             WithArgs("prog1").
             WillReturnError(fmt.Errorf("not found"))
     // Execute command and check expectations
-    stores.DeleteProgram(dbx, "prog1")
+    store.DeleteProgram(dbx, "prog1")
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("There were unfulfilled expectations: %s", err)
 	}

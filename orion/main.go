@@ -7,7 +7,7 @@ import (
     "github.com/ahsu1230/mathnavigatorSite/orion/controllers"
     "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
     "github.com/ahsu1230/mathnavigatorSite/orion/router"
-    "github.com/ahsu1230/mathnavigatorSite/orion/stores"
+    "github.com/ahsu1230/mathnavigatorSite/orion/store"
 )
 
 func main() {
@@ -20,9 +20,9 @@ func main() {
     // App Store
     fmt.Println("Setting up Store...")
     configDb := config.Database
-    dbSql, dbSqlx := stores.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password)
-    stores.Migrate(dbSql)
-    defer stores.Close(dbSql, dbSqlx)
+    dbSql, dbSqlx := store.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password)
+    store.Migrate(dbSql)
+    defer store.Close(dbSql, dbSqlx)
 
     // App Router
     fmt.Println("Setting up Router...")

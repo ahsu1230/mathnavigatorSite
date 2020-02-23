@@ -1,4 +1,4 @@
-package stores
+package store
 
 import (
     "database/sql"
@@ -40,7 +40,7 @@ func Migrate(dbSql *sql.DB) {
     }
 
     // Setup migrations
-    migrationsPath := "file://stores/migrations"
+    migrationsPath := "file://store/migrations"
     m, err2 := migrate.NewWithDatabaseInstance(migrationsPath, "mysql", driver)
     if err2 != nil {
         panic(err2)

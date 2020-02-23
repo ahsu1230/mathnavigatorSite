@@ -8,7 +8,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/jmoiron/sqlx"
     "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/stores"
+    "github.com/ahsu1230/mathnavigatorSite/orion/store"
 )
 
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
@@ -21,7 +21,7 @@ type ProgramService struct {
 }
 
 func (ps *ProgramService) GetAll(c *gin.Context) {
-	programList, err := stores.GetAllPrograms(ps.DbSqlx)
+	programList, err := store.GetAllPrograms(ps.DbSqlx)
     if err != nil {
         c.Status(http.StatusInternalServerError)
     } else {
@@ -35,7 +35,7 @@ func (ps *ProgramService) GetByProgramId(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo
-	program, err := stores.GetProgramById(ps.DbSqlx, programId)
+	program, err := store.GetProgramById(ps.DbSqlx, programId)
 	if err != nil {
 		c.String(http.StatusNotFound, programId)
 	} else {
@@ -55,7 +55,7 @@ func (ps *ProgramService) Create(c *gin.Context) {
 	}
 
 	// Query Repo (INSERT & SELECT)
-	err := stores.InsertProgram(ps.DbSqlx, programJson)
+	err := store.InsertProgram(ps.DbSqlx, programJson)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 	} else {
@@ -76,7 +76,7 @@ func (ps *ProgramService) Update(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err := stores.UpdateProgram(ps.DbSqlx, programId, programJson)
+	err := store.UpdateProgram(ps.DbSqlx, programId, programJson)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 	} else {
@@ -90,7 +90,7 @@ func (ps *ProgramService) Delete(c *gin.Context) {
     programId := c.Param("programId")
 
     // Query Repo (DELETE)
-    err := stores.DeleteProgram(ps.DbSqlx, programId)
+    err := store.DeleteProgram(ps.DbSqlx, programId)
     if err != nil {
         c.Status(http.StatusInternalServerError)
     } else {
