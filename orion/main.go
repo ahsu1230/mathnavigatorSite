@@ -49,7 +49,7 @@ func main() {
   }
   // apiClasses := router.Group("api/classes/")
   // apiLocations := router.Group("api/locations/")
-  apiAnnounce := router.Group("api/announce/")
+  apiAnnounce := router.Group("api/announcements/")
   {
   	apiAnnounce.GET("/v1/all", announce.GetAnnouncements)
   	apiAnnounce.POST("/v1/create", announce.CreateAnnouncement)

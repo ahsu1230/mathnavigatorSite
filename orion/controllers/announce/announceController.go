@@ -11,6 +11,11 @@ import (
 
 const REGEX_ALPHA_ONLY = `[A-Za-z]+`
 
+func ConvertUint(s string) uint {
+	i, _ := strconv.ParseUint(s, 10, 32)
+	return uint(i)
+}
+
 func GetAnnouncements(c *gin.Context) {
 	// Query Repo
 	announceList := GetAllAnnouncements()
@@ -22,8 +27,7 @@ func GetAnnouncements(c *gin.Context) {
 
 func GetAnnouncement(c *gin.Context) {
 	// Incoming parameters
-	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	id := uint(id64)
+	id := ConvertUint(c.Param("id"))
 
 	// Query Repo
 	if _, err := GetAnnouncementById(id); err != nil {
@@ -55,8 +59,7 @@ func CreateAnnouncement(c *gin.Context) {
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	id := uint(id64)
+	id := ConvertUint(c.Param("id"))
 	var announceJson Announce
 	c.BindJSON(&announceJson)
 
@@ -76,8 +79,7 @@ func UpdateAnnouncement(c *gin.Context) {
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	id := uint(id64)
+	id := ConvertUint(c.Param("id"))
 
 	// Query Repo (DELETE)
 	if err := DeleteAnnouncementById(id); err != nil {
