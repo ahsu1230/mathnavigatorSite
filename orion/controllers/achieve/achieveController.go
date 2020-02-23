@@ -18,12 +18,7 @@ func GetAchievements(c *gin.Context) {
 }
 
 func GetAchievement(c *gin.Context) {
-	// Incoming parameters
-	id64, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	id := uint(id64)
+	id := StringToUint(c)
 
 	// Query Repo
 	achieve, err := GetAchievementById(id)
@@ -57,11 +52,7 @@ func CreateAchievement(c *gin.Context) {
 
 func UpdateAchievement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id64, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	id := uint(id64)
+	id := StringToUint(c)
 	var achieveJson Achieve
 	c.BindJSON(&achieveJson)
 
@@ -71,7 +62,7 @@ func UpdateAchievement(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err = UpdateAchievementById(id, achieveJson)
+	err := UpdateAchievementById(id, achieveJson)
 	if err != nil {
 		panic(err)
 	} else {
@@ -81,21 +72,24 @@ func UpdateAchievement(c *gin.Context) {
 }
 
 func DeleteAchievement(c *gin.Context) {
-	// Incoming Parameters
-	id64, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	id := uint(id64)
+	id := StringToUint(c)
 
 	// Query Repo (DELETE)
-	err = DeleteAchievementById(id)
+	err := DeleteAchievementById(id)
 	if err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Achieve " + strconv.FormatUint(id64, 10))
+		c.Status(http.StatusNoContent)
 	}
 	return
+}
+
+func StringToUint(c *gin.Context) uint {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id)
 }
 
 func CheckValidAchievement(achieve Achieve) error {
