@@ -56,17 +56,17 @@ func main() {
 	{
 		apiAchieve.GET("/v1/all", achieve.GetAchievements)
 		apiAchieve.POST("/v1/create", achieve.CreateAchievement)
-		apiAchieve.GET("/v1/achievements/:id", achieve.GetAchievement)
-		apiAchieve.POST("/v1/achievements/:id", achieve.UpdateAchievement)
-		apiAchieve.DELETE("/v1/achievements/:id", achieve.DeleteAchievement)
+		apiAchieve.GET("/v1/achievement/:id", achieve.GetAchievement)
+		apiAchieve.POST("/v1/achievement/:id", achieve.UpdateAchievement)
+		apiAchieve.DELETE("/v1/achievement/:id", achieve.DeleteAchievement)
 	}
 	apiSemesters := router.Group("api/semesters/")
 	{
 		apiSemesters.GET("/v1/all", semesters.GetSemesters)
 		apiSemesters.POST("/v1/create", semesters.CreateSemester)
-		apiSemesters.GET("/v1/semesters/:id", semesters.GetSemester)
-		apiSemesters.POST("/v1/semesters/:id", semesters.UpdateSemester)
-		apiSemesters.DELETE("/v1/semesters/:id", semesters.DeleteSemester)
+		apiSemesters.GET("/v1/semester/:id", semesters.GetSemester)
+		apiSemesters.POST("/v1/semester/:id", semesters.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:id", semesters.DeleteSemester)
 	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")

@@ -8,8 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// In the form year_season
 const REGEX_SEMESTER_ID = `^[1-9]\d{3,}_((spring)|(summer)|(fall)|(winter))$`
-const REGEX_TITLE = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+
+// Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores
+// separate words. Words can have parentheses around them and number signs must be followed by numbers.
+const REGEX_TITLE = `^[A-Z0-9][[:alnum:]]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
 func GetSemesters(c *gin.Context) {
 	// Query Repo
@@ -49,7 +53,7 @@ func CreateSemester(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -70,7 +74,7 @@ func UpdateSemester(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -94,14 +98,13 @@ func CheckValidSemester(semester Semester) error {
 	semesterId := semester.SemesterId
 	title := semester.Title
 
-	// Checks if the semester ID is in the form year_season
-	if matches, _ := regexp.MatchString(REGEX_SEMESTER_ID, semesterId); !matches {
+	// Semester ID validation
+	if matches, _ := regexp.MatchString(REGEX_SEMESTER_ID, semesterId); !matches || len(semesterId) > 64 {
 		return errors.New("invalid semester id")
 	}
 
 	// Title validation
-	match, _ := regexp.MatchString(REGEX_TITLE, title)
-	if !match || len(title) > 64 {
+	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches || len(title) > 64 {
 		return errors.New("invalid semester title")
 	}
 

@@ -5,6 +5,7 @@ import (
 )
 
 func TestValidSemesterId(t *testing.T) {
+	// Checks for valid semester IDs
 	semester := Semester{SemesterId: "2019_fall", Title: "Fall 2019"}
 	if err := CheckValidSemester(semester); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -15,6 +16,7 @@ func TestValidSemesterId(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
+	// Checks for invalid semester IDs
 	semester.SemesterId = "0999_spring"
 	if err := CheckValidSemester(semester); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid semester id")
@@ -26,7 +28,8 @@ func TestValidSemesterId(t *testing.T) {
 	}
 }
 
-func TestSemesterName(t *testing.T) {
+func TestValidName(t *testing.T) {
+	// Checks for valid names
 	semester := Semester{SemesterId: "2020_spring", Title: "Test title"}
 	if err := CheckValidSemester(semester); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -37,6 +40,7 @@ func TestSemesterName(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
+	// Checks for invalid names
 	semester.Title = "This title is too long. 123456789012345678901234567890123456789012345678901234567890"
 	if err := CheckValidSemester(semester); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid semester title")

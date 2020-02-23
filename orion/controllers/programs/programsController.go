@@ -8,8 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Alphanumeric characters separated by underscores
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
-const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+
+// Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores
+// separate words. Words can have parentheses around them and number signs must be followed by numbers.
+const REGEX_NAME = `^[A-Z0-9][[:alnum:]]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
 func GetPrograms(c *gin.Context) {
 	// Query Repo
@@ -49,7 +53,7 @@ func CreateProgram(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -70,7 +74,7 @@ func UpdateProgram(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -97,25 +101,24 @@ func CheckValidProgram(program Program) error {
 	grade2 := program.Grade2
 	description := program.Description
 
-	// Checks if the program ID is in the form of alphanumeric strings separated by underscores
-	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+	// Program ID validation
+	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches || len(programId) > 64 {
 		return errors.New("invalid program id")
 	}
 
 	// Name validation
-	match, _ := regexp.MatchString(REGEX_NAME, name)
-	if !match {
+	if matches, _ := regexp.MatchString(REGEX_NAME, name); !matches || len(name) > 255 {
 		return errors.New("invalid program name")
 	}
 
-	// Checks if the grades are valid
+	// Grade validation
 	if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
 		return errors.New("invalid grades")
 	}
 
 	// Description validation
 	if description == "" {
-		return errors.New("empty description")
+		return errors.New("invalid description")
 	}
 
 	return nil

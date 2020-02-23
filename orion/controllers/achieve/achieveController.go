@@ -45,7 +45,7 @@ func CreateAchievement(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -66,7 +66,7 @@ func UpdateAchievement(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }

@@ -4,7 +4,7 @@ CREATE TABLE semesters
     created_at  bigint(20)   NOT NULL,
     updated_at  bigint(20)   NOT NULL,
     deleted_at  datetime,
-    semester_id text         NOT NULL UNIQUE,
+    semester_id varchar(64)  NOT NULL UNIQUE,
     title       varchar(64)  NOT NULL,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1
