@@ -2,9 +2,10 @@ package programs
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"regexp"
+
+	"github.com/gin-gonic/gin"
 )
 
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
@@ -83,7 +84,7 @@ func DeleteProgram(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.String(http.StatusOK, "Deleted Program "+programId)
+		c.String(http.StatusOK, "Deleted Program " + programId)
 	}
 	return
 }
