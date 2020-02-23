@@ -9,6 +9,7 @@ import (
 
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/achieve"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/semesters"
 	"github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
@@ -59,7 +60,14 @@ func main() {
 		apiAchieve.POST("/v1/achievements/:id", achieve.UpdateAchievement)
 		apiAchieve.DELETE("/v1/achievements/:id", achieve.DeleteAchievement)
 	}
-	// apiSemesters := router.Group("api/semesters/")
+	apiSemesters := router.Group("api/semesters/")
+	{
+		apiSemesters.GET("/v1/all", semesters.GetSemesters)
+		apiSemesters.POST("/v1/create", semesters.CreateSemester)
+		apiSemesters.GET("/v1/semesters/:id", semesters.GetSemester)
+		apiSemesters.POST("/v1/semesters/:id", semesters.UpdateSemester)
+		apiSemesters.DELETE("/v1/semesters/:id", semesters.DeleteSemester)
+	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
 
