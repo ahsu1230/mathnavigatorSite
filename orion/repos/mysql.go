@@ -1,19 +1,12 @@
-package store
+package repos
 
 import (
     "database/sql"
     "fmt"
-
-    "github.com/jmoiron/sqlx"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/mysql"
 	_ "github.com/golang-migrate/migrate/source/file"
 )
-
-func CreateDbSqlx(db *sql.DB) *sqlx.DB {
-    return sqlx.NewDb(db, "mysql")
-}
 
 func createConnectionInfo(host string, port int, user string, pass string) string {
 	dbSchema := "mathnavdb"
@@ -22,25 +15,25 @@ func createConnectionInfo(host string, port int, user string, pass string) strin
 	return info
 }
 
-func Open(host string, port int, user string, pass string) (*sql.DB, *sqlx.DB) {
+func Open(host string, port int, user string, pass string) *sql.DB {
     connection := createConnectionInfo(host, port, user, pass)
-	dbSql, err := sql.Open("mysql", connection)
+	db, err := sql.Open("mysql", connection)
 	if err != nil {
 		panic(err)
 	}
-    return dbSql, CreateDbSqlx(dbSql)
+    return db
 }
 
-func Migrate(dbSql *sql.DB) {
+func Migrate(db *sql.DB) {
     // Create driver using sql db connection
     fmt.Println("Performing DB Migrations...")
-    driver, err1 := mysql.WithInstance(dbSql, &mysql.Config{})
+    driver, err1 := mysql.WithInstance(db, &mysql.Config{})
     if err1 != nil {
         panic(err1)
     }
 
     // Setup migrations
-    migrationsPath := "file://store/migrations"
+    migrationsPath := "file://repos/migrations"
     m, err2 := migrate.NewWithDatabaseInstance(migrationsPath, "mysql", driver)
     if err2 != nil {
         panic(err2)
@@ -57,9 +50,8 @@ func Migrate(dbSql *sql.DB) {
     fmt.Println("Current migration version: ", version)
 }
 
-func Close(dbSql *sql.DB, dbSqlx *sqlx.DB) error {
-	dbSqlx.Close()
-	dbSqlx = nil
-	dbSql = nil
-    return nil
+func Close(db *sql.DB) error {
+	err := db.Close()
+	db = nil
+    return err
 }

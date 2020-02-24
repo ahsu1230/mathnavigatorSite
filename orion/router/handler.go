@@ -3,12 +3,11 @@ package router
 import (
     "github.com/gin-gonic/contrib/static"
     "github.com/gin-gonic/gin"
-    "github.com/ahsu1230/mathnavigatorSite/orion/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/controllers"
 )
 
 type Handler struct {
     Engine *gin.Engine
-    ProgramService domains.ProgramService
 }
 
 func (h *Handler) SetupApiEndpoints() {
@@ -17,11 +16,11 @@ func (h *Handler) SetupApiEndpoints() {
 
     apiPrograms := h.Engine.Group("/api/programs/")
     {
-        apiPrograms.GET("/v1/all", h.ProgramService.GetAll)
-        apiPrograms.POST("/v1/create", h.ProgramService.Create)
-        apiPrograms.GET("/v1/program/:programId", h.ProgramService.GetByProgramId)
-        apiPrograms.POST("/v1/program/:programId", h.ProgramService.Update)
-        apiPrograms.DELETE("/v1/program/:programId", h.ProgramService.Delete)
+        apiPrograms.GET("/v1/all", controllers.GetAllPrograms)
+        apiPrograms.POST("/v1/create", controllers.CreateProgram)
+        apiPrograms.GET("/v1/program/:programId", controllers.GetProgramById)
+        apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
+        apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
     }
     // apiClasses := router.Group("api/classes/")
     // apiLocations := router.Group("api/locations/")

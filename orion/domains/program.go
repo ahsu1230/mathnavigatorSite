@@ -2,7 +2,8 @@ package domains
 
 import (
 	"database/sql"
-    "github.com/gin-gonic/gin"
+	"errors"
+	"regexp"
 )
 
 type Program struct {
@@ -17,23 +18,39 @@ type Program struct {
 	Description string        `json:"description"`
 }
 
-type ProgramService interface {
-    GetAll(c *gin.Context)
-    GetByProgramId(c *gin.Context)
-    Create(c *gin.Context)
-    Update(c *gin.Context)
-    Delete(c *gin.Context)
-}
+// Class Methods
 
-// Required for tests
-var ProgramColumns = []string {
-    "id",
-    "created_at",
-    "updated_at",
-    "deleted_at",
-    "program_id",
-    "name",
-    "grade1",
-    "grade2",
-    "description",
+const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
+const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
+
+func (program *Program) CheckValidProgram() error {
+	// Retrieves the inputted values
+	programId := program.ProgramId
+	name := program.Name
+	grade1 := program.Grade1
+	grade2 := program.Grade2
+	description := program.Description
+
+	// Checks if the program ID is in the form of alphanumeric strings separated by underscores
+	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+		return errors.New("invalid program id")
+	}
+
+	// Name validation
+	match, _ := regexp.MatchString(REGEX_NAME, name)
+	if !match {
+		return errors.New("invalid program name")
+	}
+
+	// Checks if the grades are valid
+	if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
+		return errors.New("invalid grades")
+	}
+
+	// Description validation
+	if description == "" {
+		return errors.New("empty description")
+	}
+
+	return nil
 }

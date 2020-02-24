@@ -4,10 +4,9 @@ import (
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
 
-    "github.com/ahsu1230/mathnavigatorSite/orion/controllers"
     "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
+    "github.com/ahsu1230/mathnavigatorSite/orion/repos"
     "github.com/ahsu1230/mathnavigatorSite/orion/router"
-    "github.com/ahsu1230/mathnavigatorSite/orion/store"
 )
 
 func main() {
@@ -17,12 +16,14 @@ func main() {
     config := middlewares.RetrieveConfigurations()
     fmt.Println("Building server in mode: ", config.App.Build)
 
-    // App Store
-    fmt.Println("Setting up Store...")
+    // App Repos
+    fmt.Println("Setting up Repos...")
     configDb := config.Database
-    dbSql, dbSqlx := store.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password)
-    store.Migrate(dbSql)
-    defer store.Close(dbSql, dbSqlx)
+    db := repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password)
+    repos.Migrate(db)
+    repos.SetupRepos(db)
+    defer repos.Close(db)
+    fmt.Println("Database started!")
 
     // App Router
     fmt.Println("Setting up Router...")
@@ -30,14 +31,7 @@ func main() {
     fmt.Println("Setting up Middlewares...")
     configCors := middlewares.CreateCorsConfig(config);
     engine.Use(cors.New(configCors))
-
-    // Assemble API
-    fmt.Println("Assembling Application...")
-    programService := &controllers.ProgramService{ dbSql, dbSqlx }
-    handler := router.Handler {
-        engine,
-        programService,
-    }
+    handler := router.Handler { engine }
     handler.SetupApiEndpoints()
 
     // Run web server
