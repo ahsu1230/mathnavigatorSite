@@ -42,7 +42,6 @@ func UpdateSemesterById(oldSemesterId string, semester Semester) error {
 
 	sqlStatement := "UPDATE semesters SET " +
 		"updated_at=:updatedAt, " +
-		"name=:name, " +
 		"semester_id=:semesterId, " +
 		"title=:title, " +
 		"WHERE semester_id=:oldSemesterId"
