@@ -64,9 +64,9 @@ func main() {
 	{
 		apiSemesters.GET("/v1/all", semesters.GetSemesters)
 		apiSemesters.POST("/v1/create", semesters.CreateSemester)
-		apiSemesters.GET("/v1/semester/:id", semesters.GetSemester)
-		apiSemesters.POST("/v1/semester/:id", semesters.UpdateSemester)
-		apiSemesters.DELETE("/v1/semester/:id", semesters.DeleteSemester)
+		apiSemesters.GET("/v1/semester/:semesterId", semesters.GetSemester)
+		apiSemesters.POST("/v1/semester/:semesterId", semesters.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:semesterId", semesters.DeleteSemester)
 	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
