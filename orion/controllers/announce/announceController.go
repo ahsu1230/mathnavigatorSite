@@ -12,9 +12,12 @@ import (
 // Ensures at least one uppercase or lowercase letter
 const REGEX_ALPHA_ONLY = `[A-Za-z]+`
 
-func ConvertUint(s string) uint {
-	i, _ := strconv.ParseUint(s, 10, 32)
-	return uint(i)
+func parseParamId(c *gin.Context) uint {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id)
 }
 
 func GetAnnouncements(c *gin.Context) {
@@ -28,7 +31,7 @@ func GetAnnouncements(c *gin.Context) {
 
 func GetAnnouncement(c *gin.Context) {
 	// Incoming parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 
 	// Query Repo
 	if _, err := GetAnnouncementById(id); err != nil {
@@ -60,7 +63,7 @@ func CreateAnnouncement(c *gin.Context) {
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 	var announceJson Announce
 	c.BindJSON(&announceJson)
 
@@ -80,7 +83,7 @@ func UpdateAnnouncement(c *gin.Context) {
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 
 	// Query Repo (DELETE)
 	if err := DeleteAnnouncementById(id); err != nil {
