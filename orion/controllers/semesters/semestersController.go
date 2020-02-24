@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// In the form year_season
+// In the form "year_season" i.e. 2020_fall
 const REGEX_SEMESTER_ID = `^[1-9]\d{3,}_((spring)|(summer)|(fall)|(winter))$`
 
 // Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores

@@ -34,10 +34,10 @@ func GetAnnouncement(c *gin.Context) {
 	id := parseParamId(c)
 
 	// Query Repo
-	if _, err := GetAnnouncementById(id); err != nil {
+	if announcement, err := GetAnnouncementById(id); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusNoContent)
+		c.JSON(http.StatusOK, announcement)
 	}
 	return
 }

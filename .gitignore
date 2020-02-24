@@ -6,7 +6,6 @@
 **/*.tmp
 **/*/package-lock.json
 **/*/go.sum
-**/.project
 **/*/.project
 **/.idea
 
