@@ -3,10 +3,14 @@ package achieve
 import (
 	"errors"
 	"net/http"
+	"regexp"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
+
+// Ensures at least one uppercase or lowercase letter
+const REGEX_ALPHA_ONLY = `[A-Za-z]+`
 
 func GetAchievements(c *gin.Context) {
 	// Query Repo
@@ -103,7 +107,7 @@ func CheckValidAchievement(achieve Achieve) error {
 	}
 
 	// Message validation
-	if message == "" {
+	if matches, _ := regexp.MatchString(REGEX_ALPHA_ONLY, message); !matches {
 		return errors.New("invalid message")
 	}
 
