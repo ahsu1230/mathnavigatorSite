@@ -24,7 +24,7 @@ func main() {
 	fmt.Println("Connecting to DB...")
 	configDb := config.Database
 	database.OpenDb(configDb.Host, configDb.Port,
-	configDb.Username, configDb.Password)
+		configDb.Username, configDb.Password)
 	fmt.Println("Performing DB Migrations...")
 	database.Migrate()
 
@@ -34,7 +34,7 @@ func main() {
 	fmt.Println("Setting up Middlewares...")
 
 	// CORS middleware
-	configCors := middlewares.CreateCorsConfig(config);
+	configCors := middlewares.CreateCorsConfig(config)
 	router.Use(cors.New(configCors))
 
 	// Webpage Routers
