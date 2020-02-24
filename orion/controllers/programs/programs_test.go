@@ -65,6 +65,11 @@ func TestValidName(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
+	program.Name = "Mommy & me"
+	if err := CheckValidProgram(program); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
 	// Checks for invalid names
 	program.Name = "Test__"
 	if err := CheckValidProgram(program); err == nil {
@@ -82,6 +87,11 @@ func TestValidName(t *testing.T) {
 	}
 
 	program.Name = "40 @40"
+	if err := CheckValidProgram(program); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program name")
+	}
+
+	program.Name = "A0 ^40"
 	if err := CheckValidProgram(program); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}

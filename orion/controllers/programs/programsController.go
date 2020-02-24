@@ -15,6 +15,9 @@ const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
 // separate words. Words can have parentheses around them and number signs must be followed by numbers.
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
+// Ensures at least one uppercase or lowercase letter
+const REGEX_ALPHA_ONLY = `[A-Za-z]+`
+
 func GetPrograms(c *gin.Context) {
 	// Query Repo
 	programList := GetAllPrograms()
@@ -29,11 +32,10 @@ func GetProgram(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo
-	program, err := GetProgramById(programId)
-	if err != nil {
+	if _, err := GetProgramById(programId); err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, program)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -49,8 +51,7 @@ func CreateProgram(c *gin.Context) {
 	}
 
 	// Query Repo (INSERT & SELECT)
-	err := InsertProgram(programJson)
-	if err != nil {
+	if err := InsertProgram(programJson); err != nil {
 		panic(err)
 	} else {
 		c.Status(http.StatusNoContent)
@@ -70,8 +71,7 @@ func UpdateProgram(c *gin.Context) {
 	}
 
 	// Query Repo (UPDATE & SELECT)
-	err := UpdateProgramById(programId, programJson)
-	if err != nil {
+	if err := UpdateProgramById(programId, programJson); err != nil {
 		panic(err)
 	} else {
 		c.Status(http.StatusNoContent)
@@ -84,8 +84,7 @@ func DeleteProgram(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo (DELETE)
-	err := DeleteProgramById(programId)
-	if err != nil {
+	if err := DeleteProgramById(programId); err != nil {
 		panic(err)
 	} else {
 		c.Status(http.StatusNoContent)
@@ -117,7 +116,7 @@ func CheckValidProgram(program Program) error {
 	}
 
 	// Description validation
-	if description == "" {
+	if matches, _ := regexp.MatchString(REGEX_ALPHA_ONLY, description); !matches {
 		return errors.New("invalid description")
 	}
 

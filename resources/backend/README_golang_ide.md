@@ -20,6 +20,7 @@ Go
 
 4.  Follow the installation wizard instructions and agree to all terms and conditions that pop up.
 ## Adding the IDE Functionality
+
 **Note: all of the following steps may only apply to Windows. The commands and file paths will differ slightly for Mac.
 (Mac instructions coming soon...)**
 

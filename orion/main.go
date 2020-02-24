@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/contrib/static"
 
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/achieve"
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/semesters"
 	"github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
@@ -23,7 +24,7 @@ func main() {
 	fmt.Println("Connecting to DB...")
 	configDb := config.Database
 	database.OpenDb(configDb.Host, configDb.Port,
-		configDb.Username, configDb.Password)
+	configDb.Username, configDb.Password)
 	fmt.Println("Performing DB Migrations...")
 	database.Migrate()
 
@@ -33,7 +34,7 @@ func main() {
 	fmt.Println("Setting up Middlewares...")
 
 	// CORS middleware
-	configCors := middlewares.CreateCorsConfig(config)
+	configCors := middlewares.CreateCorsConfig(config);
 	router.Use(cors.New(configCors))
 
 	// Webpage Routers
@@ -51,7 +52,14 @@ func main() {
 	}
 	// apiClasses := router.Group("api/classes/")
 	// apiLocations := router.Group("api/locations/")
-	// apiAnnounce := router.Group("api/announce/")
+	apiAnnounce := router.Group("api/announcements/")
+	{
+		apiAnnounce.GET("/v1/all", announce.GetAnnouncements)
+		apiAnnounce.POST("/v1/create", announce.CreateAnnouncement)
+		apiAnnounce.GET("/v1/announcement/:id", announce.GetAnnouncement)
+		apiAnnounce.POST("/v1/announcement/:id", announce.UpdateAnnouncement)
+		apiAnnounce.DELETE("/v1/announcement/:id", announce.DeleteAnnouncement)
+	}
 	apiAchieve := router.Group("api/achievements/")
 	{
 		apiAchieve.GET("/v1/all", achieve.GetAchievements)
