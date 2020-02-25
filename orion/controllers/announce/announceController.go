@@ -10,7 +10,7 @@ import (
 )
 
 // Ensures at least one uppercase or lowercase letter
-const REGEX_ALPHA_ONLY = `[A-Za-z]+`
+const REGEX_LETTER = `[A-Za-z]+`
 
 func parseParamId(c *gin.Context) uint {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -100,12 +100,12 @@ func CheckValidAnnouncement(announce Announce) error {
 	message := announce.Message
 
 	// Author validation
-	if matches, _ := regexp.MatchString(REGEX_ALPHA_ONLY, author); !matches {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, author); !matches {
 		return errors.New("invalid author")
 	}
 
 	// Message validation
-	if matches, _ := regexp.MatchString(REGEX_ALPHA_ONLY, message); !matches {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
 		return errors.New("invalid message")
 	}
 
