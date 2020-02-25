@@ -10,9 +10,9 @@ import (
 	"testing"
     "github.com/gin-gonic/gin"
     "github.com/stretchr/testify/assert"
-    "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/services"
-    "github.com/ahsu1230/mathnavigatorSite/orion/router"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
 )
 
 // Global test variables

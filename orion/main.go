@@ -4,9 +4,9 @@ import (
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
 
-    "github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
-    "github.com/ahsu1230/mathnavigatorSite/orion/repos"
-    "github.com/ahsu1230/mathnavigatorSite/orion/router"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
 )
 
 func main() {

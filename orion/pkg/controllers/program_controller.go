@@ -3,8 +3,8 @@ package controllers
 import (
     "net/http"
     "github.com/gin-gonic/gin"
-    "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/services"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 )
 
 func GetAllPrograms(c *gin.Context) {

@@ -33,7 +33,7 @@ func Migrate(db *sql.DB) {
     }
 
     // Setup migrations
-    migrationsPath := "file://repos/migrations"
+    migrationsPath := "file://pkg/repos/migrations"
     m, err2 := migrate.NewWithDatabaseInstance(migrationsPath, "mysql", driver)
     if err2 != nil {
         panic(err2)

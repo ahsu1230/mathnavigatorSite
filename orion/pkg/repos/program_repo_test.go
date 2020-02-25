@@ -5,8 +5,8 @@ import (
     "reflect"
     "testing"
     sqlmock "github.com/DATA-DOG/go-sqlmock"
-    "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/repos"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 )
 
 func initTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterface) {

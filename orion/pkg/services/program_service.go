@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/orion/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/repos"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 )
 
 var ProgramService programServiceInterface = &programService{}

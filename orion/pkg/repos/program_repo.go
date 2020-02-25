@@ -2,8 +2,8 @@ package repos
 
 import (
     "database/sql"
-    "github.com/ahsu1230/mathnavigatorSite/orion/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/utils"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/utils"
 )
 
 // Global variable
