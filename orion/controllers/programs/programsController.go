@@ -32,10 +32,10 @@ func GetProgram(c *gin.Context) {
 	programId := c.Param("programId")
 
 	// Query Repo
-	if _, err := GetProgramById(programId); err != nil {
+	if program, err := GetProgramById(programId); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, program)
 	}
 	return
 }
