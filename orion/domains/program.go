@@ -23,7 +23,7 @@ type Program struct {
 const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
-func (program *Program) CheckValidProgram() error {
+func (program *Program) Validate() error {
 	// Retrieves the inputted values
 	programId := program.ProgramId
 	name := program.Name

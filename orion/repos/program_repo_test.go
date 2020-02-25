@@ -18,13 +18,13 @@ func initTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterfac
     return db, mock, repo
 }
 
-func TestGetAllPrograms(t *testing.T) {
+func TestSelectAllPrograms(t *testing.T) {
     db, mock, repo := initTest(t)
     defer db.Close()
 
     // Mock DB queries and execute
-    rows := sqlmock.NewRows([]string{"Id", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
-                            AddRow(1, "Program1", "prog1", 2, 3, "descript1")
+    rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
+                            AddRow(1, 1000, 1000, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
 				mock.ExpectPrepare("SELECT (.+) FROM programs").ExpectQuery().WillReturnRows(rows)
     got, err := repo.SelectAll()
     if err != nil {
@@ -35,15 +35,18 @@ func TestGetAllPrograms(t *testing.T) {
     want := []domains.Program{
         {
             Id:         1,
-            Name:       "Program1",
+            CreatedAt:  1000,
+            UpdatedAt:  1000,
+            DeletedAt:  sql.NullInt64{},
             ProgramId:  "prog1",
-            Grade1: 2,
-            Grade2: 3,
+            Name:       "Program1",
+            Grade1:     2,
+            Grade2:     3,
             Description: "descript1",
         },
     }
     if !reflect.DeepEqual(got, want) {
-        t.Errorf("SelectAll() = %v, want %v", got, want)
+        t.Errorf("Values not equal: got = %v, want = %v", got, want)
     }
 }
 

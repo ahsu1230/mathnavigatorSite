@@ -31,7 +31,7 @@ func main() {
     fmt.Println("Setting up Middlewares...")
     configCors := middlewares.CreateCorsConfig(config);
     engine.Use(cors.New(configCors))
-    handler := router.Handler { engine }
+    handler := router.Handler { Engine: engine }
     handler.SetupApiEndpoints()
 
     // Run web server

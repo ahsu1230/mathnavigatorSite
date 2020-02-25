@@ -2,26 +2,20 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 )
 
 func SetupRepos(db *sql.DB) {
 	ProgramRepo.Initialize(db)
 }
 
-func QueryStatement(db *sql.DB, statement string) (*sql.Rows, error) {
-	stmt, err := db.Prepare(statement)
-	defer stmt.Close()
-	if err != nil {
-		return nil, err
+func handleSqlExecResult(result sql.Result, expected int64, errorMessage string) error {
+	numAffected, err := result.RowsAffected();
+    if err != nil {
+        return err
     }
-    
-    rows, err := stmt.Query()
-	if err != nil {
-		return nil,  err
+    if numAffected != expected {
+        return errors.New(errorMessage)
 	}
-	return rows, err
-}
-
-func ExecStatement(db *sql.DB) {
-
+	return nil
 }

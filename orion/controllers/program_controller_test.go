@@ -1,7 +1,9 @@
 package controllers_test
 
 import (
+    "bytes"
     "encoding/json"
+    "errors"
     "io"
     "net/http"
 	"net/http/httptest"
@@ -20,18 +22,37 @@ var mps mockProgramService
 // Fake programService that implements ProgramService interface
 type mockProgramService struct {
     mockGetAll func() ([]domains.Program, error)
+    mockGetByProgramId func(string) (domains.Program, error)
+    mockCreate func(domains.Program) error
+    mockUpdate func(string, domains.Program) error
+    mockDelete func(string) error
 }
 
 // Implement methods of ProgramService interface with mocked implementations
 func (mps *mockProgramService) GetAll() ([]domains.Program, error) {
 	return mps.mockGetAll()
 }
+func (mps *mockProgramService) GetByProgramId(programId string) (domains.Program, error) {
+	return mps.mockGetByProgramId(programId)
+}
+func (mps *mockProgramService) Create(program domains.Program) error {
+	return mps.mockCreate(program)
+}
+func (mps *mockProgramService) Update(programId string, program domains.Program) error {
+	return mps.mockUpdate(programId, program)
+}
+func (mps *mockProgramService) Delete(programId string) error {
+	return mps.mockDelete(programId)
+}
 
 func init() {
-	handler = router.Handler{ gin.Default() }
+	handler = router.Handler{ Engine: gin.Default() }
     handler.SetupApiEndpoints()
 }
 
+//
+// Test Get All
+//
 func TestGetAllPrograms_Success(t *testing.T) {
 	mps.mockGetAll = func() ([]domains.Program, error) {
 		 return []domains.Program{
@@ -62,7 +83,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
     assert.EqualValues(t, http.StatusOK, recorder.Code)
     var programs []domains.Program
     if err := json.Unmarshal(recorder.Body.Bytes(), &programs); err != nil {
-        t.Errorf("unexpcted error: %v\n", err)
+        t.Errorf("unexpected error: %v\n", err)
     }
     assert.EqualValues(t, "Program1", programs[0].Name)
     assert.EqualValues(t, "prog1", programs[0].ProgramId)
@@ -71,8 +92,170 @@ func TestGetAllPrograms_Success(t *testing.T) {
     assert.EqualValues(t, 2, len(programs))
 }
 
+//
+// Test Get Program
+//
+func TestGetProgram_Success(t *testing.T) {
+	mps.mockGetByProgramId = func(programId string) (domains.Program, error) {
+        program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
+        return program, nil
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
 
+    // Validate results
+    assert.EqualValues(t, http.StatusOK, recorder.Code)
+    var program domains.Program
+    if err := json.Unmarshal(recorder.Body.Bytes(), &program); err != nil {
+        t.Errorf("unexpected error: %v\n", err)
+    }
+    assert.EqualValues(t, "prog1", program.ProgramId)
+    assert.EqualValues(t, "Program1", program.Name)
+}
+
+func TestGetProgram_Failure(t *testing.T) {
+	mps.mockGetByProgramId = func(programId string) (domains.Program, error) {
+		 return domains.Program{}, errors.New("Not Found")
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog2", nil)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+}
+
+//
+// Test Create
+//
+func TestCreateProgram_Success(t *testing.T) {
+	mps.mockCreate = func(program domains.Program) error {
+		 return nil
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
+    marshal, _ := json.Marshal(program)
+    body := bytes.NewBuffer(marshal)
+    recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestCreateProgram_Failure(t *testing.T) {
+    // no mock needed
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    program := createMockProgram("prog1", "", 2, 3, "descript1") // Empty Name!
+    marshal, _ := json.Marshal(program)
+    body := bytes.NewBuffer(marshal)
+    recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+//
+// Test Update
+//
+func TestUpdateProgram_Success(t *testing.T) {
+	mps.mockUpdate = func(programId string, program domains.Program) error {
+		 return nil // Succesful update
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
+    body := createBodyFromProgram(program)
+    recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestUpdateProgram_Invalid(t *testing.T) {
+    // no mock needed
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    program := createMockProgram("prog2", "", 2, 3, "descript2") // Empty Name!
+    body := createBodyFromProgram(program)
+    recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+func TestUpdateProgram_Failure(t *testing.T) {
+	mps.mockUpdate = func(programId string, program domains.Program) error {
+		 return errors.New("not found")
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
+    body := createBodyFromProgram(program)
+    recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Delete
+//
+func TestDeleteProgram_Success(t *testing.T) {
+	mps.mockDelete = func(programId string) error {
+		return nil // Return no error, successful delete!
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestDeleteProgram_Failure(t *testing.T) {
+	mps.mockDelete = func(programId string) error {
+		return errors.New("not found")
+    }
+    services.ProgramService = &mps
+    
+    // Create new HTTP request to endpoint
+    recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
+
+    // Validate results
+    assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
 // Helper Methods
+//
+func createMockProgram(programId string, name string, grade1 uint, grade2 uint, description string) domains.Program {
+    return domains.Program{
+        ProgramId: programId,
+        Name: name,
+        Grade1: grade1,
+        Grade2: grade2,
+        Description: description,
+    }
+}
+
+func createBodyFromProgram(program domains.Program) io.Reader {
+    marshal, err := json.Marshal(program)
+    if err != nil {
+        panic(err)
+    }
+    return bytes.NewBuffer(marshal)
+}
 
 func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {
     req, err := http.NewRequest(method, url, body)
@@ -83,93 +266,3 @@ func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest
     handler.Engine.ServeHTTP(w, req)
     return w
 }
-
-
-
-
-
-
-
-
-
-// var ps mocks.ProgramService
-// var handler router.Handler
-
-// func init() {
-// 	handler = router.Handler{ gin.Default(), &ps }
-//     handler.SetupApiEndpoints()
-// }
-
-// func TestHandlerGetAllPrograms(t *testing.T) {
-//     // Mock controller
-//     ps.GetAllFn = func(c *gin.Context) {
-//         var mockList = []*domains.Program {
-//             mocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1"),
-//         }
-//         c.JSON(http.StatusOK, mockList)
-// 	}
-
-//     // Send fake http to handler
-//     w := httptest.NewRecorder()
-// 	r, _ := http.NewRequest("GET", "/api/programs/v1/all", nil)
-// 	handler.Engine.ServeHTTP(w, r)
-
-//     // Validate results
-//     if !ps.GetAllInvoked {
-// 		t.Fatal("expected GetAllPrograms() to be invoked")
-// 	}
-//     if w.Code != http.StatusOK {
-//         t.Fatalf("expected code: %d, actual: %d", http.StatusOK, w.Code)
-//     }
-
-//     var resultList []domains.Program
-//     json.Unmarshal(w.Body.Bytes(), &resultList)
-//     if resultList[0].ProgramId != "prog1" {
-//         t.Fatalf("mismatched programId: %s, actual: %s", resultList[0].ProgramId, "prog1")
-//     }
-//     if resultList[0].Name != "Program1" {
-//         t.Fatalf("mismatched programName: %s, actual: %s", resultList[0].Name, "Program1")
-//     }
-// }
-
-// func TestHandlerGetByProgramIdSuccess(t *testing.T) {
-//     // Mock controller
-//     ps.GetByProgramIdFn = func(c *gin.Context) {
-//         program := mocks.CreateMockProgram(1, "prog1", "Program1", 2, 3, "Description1")
-//         c.JSON(http.StatusOK, program)
-// 	}
-
-//     // Send correct fake http to handler
-//     w := httptest.NewRecorder()
-// 	r, _ := http.NewRequest("GET", "/api/programs/v1/program/prog1", nil)
-// 	handler.Engine.ServeHTTP(w, r)
-
-//     // Validate success results
-//     if !ps.GetByProgramIdInvoked {
-// 		t.Fatal("expected GetAllPrograms() to be invoked")
-// 	}
-//     if w.Code != http.StatusOK {
-//         t.Fatalf("expected code: %d, actual: %d", http.StatusOK, w.Code)
-//     }
-//     var resultProgram domains.Program
-//     json.Unmarshal(w.Body.Bytes(), &resultProgram)
-//     if resultProgram.ProgramId != "prog1" {
-//         t.Fatalf("mismatched programId: %s, actual: %s", resultProgram.ProgramId, "prog1")
-//     }
-// }
-
-// func TestHandlerGetByProgramIdFail(t *testing.T) {
-//     // Mock controller
-//     ps.GetByProgramIdFn = func(c *gin.Context) {
-//         c.Status(http.StatusNotFound)
-// 	}
-
-//     // Send incorrect fake http to handler
-//     w := httptest.NewRecorder()
-// 	r, _ := http.NewRequest("GET", "/api/programs/v1/program/asdf", nil)
-// 	handler.Engine.ServeHTTP(w, r)
-
-//     if w.Code != http.StatusNotFound {
-//         t.Fatalf("expected code: %d, actual: %d", http.StatusNotFound, w.Code)
-//     }
-// }

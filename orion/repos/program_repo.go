@@ -3,6 +3,7 @@ package repos
 import (
     "database/sql"
     "github.com/ahsu1230/mathnavigatorSite/orion/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/utils"
 )
 
 // Global variable
@@ -17,10 +18,10 @@ type programRepo struct {
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
     SelectAll() ([]domains.Program, error)
-    // SelectByProgramId()
-    // Insert()
-    // Update()
-    // Delete()
+    SelectByProgramId(string) (domains.Program, error)
+    Insert(domains.Program) error
+    Update(string, domains.Program) error
+    Delete(string) error
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
@@ -30,18 +31,26 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 func (pr *programRepo) SelectAll() ([]domains.Program, error) {
     results := make([]domains.Program, 0)
 
-    rows, err := QueryStatement(pr.db, "SELECT * FROM programs")
-    if err != nil {
-        return results, err
+    stmt, err := pr.db.Prepare("SELECT * FROM programs")
+	if err != nil {
+		return nil, err
+    }
+    defer stmt.Close()
+    rows, err := stmt.Query()
+	if err != nil {
+		return nil,  err
     }
     defer rows.Close()
-    
+
     for rows.Next() {
 		var program domains.Program
 		if errScan := rows.Scan(
-                &program.Id, 
-                &program.Name, 
+                &program.Id,
+                &program.CreatedAt,
+                &program.UpdatedAt,
+                &program.DeletedAt,
                 &program.ProgramId, 
+                &program.Name, 
                 &program.Grade1, 
                 &program.Grade2, 
                 &program.Description); 
@@ -53,79 +62,109 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 	return results, nil
 }
 
+func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, error) {
+    statement := "SELECT * FROM programs WHERE program_id=?"
+    stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return domains.Program{}, err
+    }
+    defer stmt.Close()
+    
+    var program domains.Program
+    row := stmt.QueryRow(programId)
+    errScan := row.Scan(
+            &program.Id, 
+            &program.CreatedAt,
+            &program.UpdatedAt,
+            &program.DeletedAt,
+            &program.ProgramId, 
+            &program.Name, 
+            &program.Grade1, 
+            &program.Grade2, 
+            &program.Description)
+	return program, errScan
+}
+
+func (pr *programRepo) Insert(program domains.Program) error {
+    statement := "INSERT INTO programs (" + 
+            "created_at, " + 
+            "updated_at, " +
+            "program_id, " +
+            "name, " +
+    		"grade1, " +
+    		"grade2, " +
+            "description" + 
+            ") VALUES (?, ?, ?, ?, ?, ?, ?)"
+
+    stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return err
+    }
+    defer stmt.Close()
+
+    now := utils.TimestampNow()
+    execResult, err := stmt.Exec(
+        now,
+        now, 
+        program.ProgramId, 
+        program.Name,
+        program.Grade1, 
+        program.Grade2, 
+        program.Description)
+    if err != nil {
+        return err
+    }
+    return handleSqlExecResult(execResult, 1, "program was not inserted")
+}
+
+func (pr *programRepo) Update(programId string, program domains.Program) error {
+    statement := "UPDATE programs SET " + 
+            "updated_at=?, " +
+            "program_id=?, " +
+            "name=?, " + 
+    		"grade1=?, " +
+    		"grade2=?, " +
+            "description=? " + 
+            "WHERE program_id=?"
+    stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return err
+    }
+    defer stmt.Close()
+
+    now := utils.TimestampNow()
+    execResult, err := stmt.Exec(
+        now, 
+        program.ProgramId, 
+        program.Name,
+        program.Grade1, 
+        program.Grade2, 
+        program.Description, 
+        programId)
+    if err != nil {
+        return err
+    }
+    return handleSqlExecResult(execResult, 1, "program was not updated")
+}
+
+func (pr *programRepo) Delete(programId string) error {
+    statement := "DELETE FROM programs WHERE program_id=?"
+    stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return err
+    }
+    defer stmt.Close()
+
+    execResult, err := stmt.Exec(programId)
+    if err != nil {
+        return err
+    }
+    return handleSqlExecResult(execResult, 1, "program was not deleted")
+}
+
 // For Tests Only
 func CreateTestProgramRepo(db *sql.DB) ProgramRepoInterface {
     pr := &programRepo{}
     pr.Initialize(db)
     return pr
 }
-
-// // Implements interface domains.ProgramService
-// type ProgramService struct {
-//     db *sql.DB       // golang native db connection
-//     dbx *sqlx.DB     // sqlx wrapper over db connection
-// }
-
-// func GetAllPrograms(dbx *sqlx.DB) ([]domains.Program, error) {
-//     programList := []domains.Program{}
-// 	err := dbx.Select(&programList, "SELECT * FROM programs")
-// 	return programList, err
-// }
-
-// func GetProgramById(dbx *sqlx.DB, programId string) (domains.Program, error) {
-//     program := domains.Program{}
-// 	sqlStatement := "SELECT * FROM programs WHERE program_id=?"
-// 	err := dbx.Get(&program, sqlStatement, programId)
-// 	return program, err
-// }
-
-// func InsertProgram(dbx *sqlx.DB, newProgram domains.Program) error {
-//     programId := newProgram.ProgramId
-// 	now := utils.TimestampNow()
-// 	sqlStatement := "INSERT INTO programs " +
-// 		"(created_at, updated_at, program_id, name, grade1, grade2, description) " +
-// 		"VALUES (:createdAt, :updatedAt, :programId, :name, :grade1, :grade2, :description)"
-// 	parameters := map[string]interface{}{
-// 		"createdAt":   now,
-// 		"updatedAt":   now,
-// 		"programId":   programId,
-// 		"name":        newProgram.Name,
-// 		"grade1":      newProgram.Grade1,
-// 		"grade2":      newProgram.Grade2,
-// 		"description": newProgram.Description,
-// 	}
-// 	_, err := dbx.NamedExec(sqlStatement, parameters)
-// 	return err
-// }
-
-// func UpdateProgram(dbx *sqlx.DB, oldProgramId string, newProgram domains.Program) error {
-//     now := utils.TimestampNow()
-// 	sqlStatement := "UPDATE programs SET " +
-// 		"updated_at=:updatedAt, " +
-// 		"name=:name, " +
-// 		"program_id=:programId, " +
-// 		"grade1=:grade1, " +
-// 		"grade2=:grade2, " +
-// 		"description=:description " +
-// 		"WHERE program_id=:oldProgramId"
-// 	parameters := map[string]interface{}{
-// 		"updatedAt":    now,
-// 		"programId":    newProgram.ProgramId,
-// 		"name":         newProgram.Name,
-// 		"grade1":       newProgram.Grade1,
-// 		"grade2":       newProgram.Grade2,
-// 		"description":  newProgram.Description,
-// 		"oldProgramId": oldProgramId,
-// 	}
-// 	_, err := dbx.NamedExec(sqlStatement, parameters)
-// 	return err
-// }
-
-// func DeleteProgram(dbx *sqlx.DB, programId string) error {
-//     sqlStatement := "DELETE FROM programs WHERE program_id=:programId"
-// 	parameters := map[string]interface{}{
-// 		"programId": programId,
-// 	}
-// 	_, err := dbx.NamedExec(sqlStatement, parameters)
-// 	return err
-// }
