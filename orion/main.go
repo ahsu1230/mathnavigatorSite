@@ -19,7 +19,7 @@ func main() {
     // App Repos
     fmt.Println("Setting up Repos...")
     configDb := config.Database
-    db := repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password)
+    db := repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
     repos.Migrate(db)
     repos.SetupRepos(db)
     defer repos.Close(db)

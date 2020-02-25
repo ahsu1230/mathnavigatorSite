@@ -8,15 +8,14 @@ import (
 	_ "github.com/golang-migrate/migrate/source/file"
 )
 
-func createConnectionInfo(host string, port int, user string, pass string) string {
-	dbSchema := "mathnavdb"
-	info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbSchema)
+func createConnectionInfo(host string, port int, user string, pass string, dbName string) string {
+	info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbName)
 	info += "?charset=utf8&parseTime=True&loc=Local"
 	return info
 }
 
-func Open(host string, port int, user string, pass string) *sql.DB {
-    connection := createConnectionInfo(host, port, user, pass)
+func Open(host string, port int, user string, pass string, dbName string) *sql.DB {
+    connection := createConnectionInfo(host, port, user, pass, dbName)
 	db, err := sql.Open("mysql", connection)
 	if err != nil {
 		panic(err)
