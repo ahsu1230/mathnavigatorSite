@@ -10,7 +10,7 @@ CREATE TABLE users
     email       varchar(64)  NOT NULL,
     phone       varchar(24)  NOT NULL,
     isGuardian  boolean      NOT NULL,
-    guardianId  int unsigned NOT NULL,
+    guardianId  int unsigned,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1
   DEFAULT CHARSET = UTF8MB4;
