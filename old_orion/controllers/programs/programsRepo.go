@@ -1,4 +1,4 @@
-// package programs
+package programs
 
 // import (
 // 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/utils"

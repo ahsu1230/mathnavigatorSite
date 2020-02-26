@@ -1,4 +1,4 @@
-// package semesters
+package semesters
 
 // import (
 // 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/utils"

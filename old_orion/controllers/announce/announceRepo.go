@@ -1,4 +1,4 @@
-// package announce
+package announce
 
 // import (
 // 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/utils"
