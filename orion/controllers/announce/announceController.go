@@ -5,15 +5,19 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
-	
+
 	"github.com/gin-gonic/gin"
 )
 
-const REGEX_ALPHA_ONLY = `[A-Za-z]+`
+// Ensures at least one uppercase or lowercase letter
+const REGEX_LETTER = `[A-Za-z]+`
 
-func ConvertUint(s string) uint {
-	i, _ := strconv.ParseUint(s, 10, 32)
-	return uint(i)
+func parseParamId(c *gin.Context) uint {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id)
 }
 
 func GetAnnouncements(c *gin.Context) {
@@ -27,13 +31,13 @@ func GetAnnouncements(c *gin.Context) {
 
 func GetAnnouncement(c *gin.Context) {
 	// Incoming parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 
 	// Query Repo
-	if _, err := GetAnnouncementById(id); err != nil {
+	if announcement, err := GetAnnouncementById(id); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, announcement)
 	}
 	return
 }
@@ -52,14 +56,14 @@ func CreateAnnouncement(c *gin.Context) {
 	if err := InsertAnnouncement(announceJson); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusOK)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 	var announceJson Announce
 	c.BindJSON(&announceJson)
 
@@ -72,20 +76,20 @@ func UpdateAnnouncement(c *gin.Context) {
 	if err := UpdateAnnouncementById(id, announceJson); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusOK)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id := ConvertUint(c.Param("id"))
+	id := parseParamId(c)
 
 	// Query Repo (DELETE)
 	if err := DeleteAnnouncementById(id); err != nil {
 		panic(err)
 	} else {
-		c.Status(http.StatusOK)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -94,16 +98,16 @@ func CheckValidAnnouncement(announce Announce) error {
 	// Retrieves the inputted values
 	author := announce.Author
 	message := announce.Message
-	
+
 	// Author validation
-	if match, _ := regexp.MatchString(REGEX_ALPHA_ONLY, author); !match {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, author); !matches {
 		return errors.New("invalid author")
 	}
-	
+
 	// Message validation
-	if match, _ := regexp.MatchString(REGEX_ALPHA_ONLY, message); !match {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
 		return errors.New("invalid message")
 	}
-	
+
 	return nil
 }

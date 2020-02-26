@@ -3,10 +3,14 @@ package achieve
 import (
 	"errors"
 	"net/http"
+	"regexp"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
+
+// Ensures at least one uppercase or lowercase letter
+const REGEX_LETTER = `[A-Za-z]+`
 
 func GetAchievements(c *gin.Context) {
 	// Query Repo
@@ -45,7 +49,7 @@ func CreateAchievement(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -66,7 +70,7 @@ func UpdateAchievement(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusNoContent)
 	}
 	return
 }
@@ -103,7 +107,7 @@ func CheckValidAchievement(achieve Achieve) error {
 	}
 
 	// Message validation
-	if message == "" {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
 		return errors.New("invalid message")
 	}
 

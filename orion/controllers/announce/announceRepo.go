@@ -17,24 +17,24 @@ func GetAnnouncementById(id uint) (Announce, error) {
 	return announce, err
 }
 
-func InsertAnnouncement(announce Announce) (error) {
+func InsertAnnouncement(announce Announce) error {
 	now := utils.TimestampNow()
 	sqlStatement := "INSERT INTO announcements " +
 		"(created_at, updated_at, deleted_at, posted_at, author, message) " +
-        "VALUES (:createdAt, :updatedAt, :deletedAt, :postedAt, :author, :message)"
-	parameters := map[string]interface{} {
+		"VALUES (:createdAt, :updatedAt, :deletedAt, :postedAt, :author, :message)"
+	parameters := map[string]interface{}{
 		"createdAt": now,
 		"updatedAt": now,
 		"deletedAt": nil,
-		"postedAt": announce.PostedAt,
-		"author": announce.Author,
-		"message": announce.Message,
+		"postedAt":  announce.PostedAt,
+		"author":    announce.Author,
+		"message":   announce.Message,
 	}
 	_, err := database.DbSqlx.NamedExec(sqlStatement, parameters)
 	return err
 }
 
-func UpdateAnnouncementById(id uint, announce Announce) (error) {
+func UpdateAnnouncementById(id uint, announce Announce) error {
 	now := utils.TimestampNow()
 
 	sqlStatement := "UPDATE announcements SET " +
@@ -45,10 +45,10 @@ func UpdateAnnouncementById(id uint, announce Announce) (error) {
 		"WHERE id=:id"
 	parameters := map[string]interface{}{
 		"updatedAt": now,
-		"postedAt": announce.PostedAt,
-		"author": announce.Author,
-		"message": announce.Message,
-		"id": id,
+		"postedAt":  announce.PostedAt,
+		"author":    announce.Author,
+		"message":   announce.Message,
+		"id":        id,
 	}
 	_, err := database.DbSqlx.NamedExec(sqlStatement, parameters)
 	return err
