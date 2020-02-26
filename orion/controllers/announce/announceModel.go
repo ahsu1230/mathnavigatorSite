@@ -5,11 +5,11 @@ import (
 )
 
 type Announce struct {
-	Id				uint			`db:"id"`
-	CreatedAt		uint			`db:"created_at"`
-	UpdatedAt		uint			`db:"updated_at"`
-	DeletedAt		sql.NullInt64	`db:"deleted_at"`
-	PostedAt		uint			`db:"posted_at"`
-	Author			string			`db:"author"`
-	Message			string			`db:"message"`
+	Id        uint
+	CreatedAt uint          `db:"created_at"`
+	UpdatedAt uint          `db:"updated_at"`
+	DeletedAt sql.NullInt64 `db:"deleted_at"`
+	PostedAt  uint          `db:"posted_at"`
+	Author    string        `json:"author"`
+	Message   string        `json:"message"`
 }

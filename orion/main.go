@@ -10,6 +10,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/programs"
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/announce"
 	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/achieve"
+	"github.com/ahsu1230/mathnavigatorSite/orion/controllers/semesters"
 	"github.com/ahsu1230/mathnavigatorSite/orion/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/orion/database"
 )
@@ -23,7 +24,7 @@ func main() {
 	fmt.Println("Connecting to DB...")
 	configDb := config.Database
 	database.OpenDb(configDb.Host, configDb.Port,
-	configDb.Username, configDb.Password)
+		configDb.Username, configDb.Password)
 	fmt.Println("Performing DB Migrations...")
 	database.Migrate()
 
@@ -33,7 +34,7 @@ func main() {
 	fmt.Println("Setting up Middlewares...")
 
 	// CORS middleware
-	configCors := middlewares.CreateCorsConfig(config);
+	configCors := middlewares.CreateCorsConfig(config)
 	router.Use(cors.New(configCors))
 
 	// Webpage Routers
@@ -55,19 +56,26 @@ func main() {
 	{
 		apiAnnounce.GET("/v1/all", announce.GetAnnouncements)
 		apiAnnounce.POST("/v1/create", announce.CreateAnnouncement)
-		apiAnnounce.GET("/v1/announce/:id", announce.GetAnnouncement)
-		apiAnnounce.POST("/v1/announce/:id", announce.UpdateAnnouncement)
-		apiAnnounce.DELETE("/v1/announce/:id", announce.DeleteAnnouncement)
+		apiAnnounce.GET("/v1/announcement/:id", announce.GetAnnouncement)
+		apiAnnounce.POST("/v1/announcement/:id", announce.UpdateAnnouncement)
+		apiAnnounce.DELETE("/v1/announcement/:id", announce.DeleteAnnouncement)
 	}
 	apiAchieve := router.Group("api/achievements/")
 	{
 		apiAchieve.GET("/v1/all", achieve.GetAchievements)
 		apiAchieve.POST("/v1/create", achieve.CreateAchievement)
-		apiAchieve.GET("/v1/achievements/:id", achieve.GetAchievement)
-		apiAchieve.POST("/v1/achievements/:id", achieve.UpdateAchievement)
-		apiAchieve.DELETE("/v1/achievements/:id", achieve.DeleteAchievement)
+		apiAchieve.GET("/v1/achievement/:id", achieve.GetAchievement)
+		apiAchieve.POST("/v1/achievement/:id", achieve.UpdateAchievement)
+		apiAchieve.DELETE("/v1/achievement/:id", achieve.DeleteAchievement)
 	}
-	// apiSemesters := router.Group("api/semesters/")
+	apiSemesters := router.Group("api/semesters/")
+	{
+		apiSemesters.GET("/v1/all", semesters.GetSemesters)
+		apiSemesters.POST("/v1/create", semesters.CreateSemester)
+		apiSemesters.GET("/v1/semester/:semesterId", semesters.GetSemester)
+		apiSemesters.POST("/v1/semester/:semesterId", semesters.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:semesterId", semesters.DeleteSemester)
+	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
 
