@@ -16,7 +16,7 @@ separate words. Words can have parentheses around them and number signs must be 
 const REGEX_NAME = `^[A-Z0-9][[:alnum:]]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
 // Ensures at least one uppercase or lowercase letter
-const REGEX_Letter = `[A-Za-z]+`
+const REGEX_LETTER = `[A-Za-z]+`
 
 func GetPrograms(c *gin.Context) {
 	// Query Repo
@@ -116,7 +116,7 @@ func CheckValidProgram(program Program) error {
 	}
 
 	// Description validation
-	if matches, _ := regexp.MatchString(REGEX_Letter, description); !matches {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, description); !matches {
 		return errors.New("invalid description")
 	}
 
