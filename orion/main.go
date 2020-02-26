@@ -1,6 +1,7 @@
 package main
 import (
     "fmt"
+    "os"
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
 
@@ -13,14 +14,15 @@ func main() {
     fmt.Println("Orion service starting...")
 
     // App Configurations
-    config := middlewares.RetrieveConfigurations()
+    configFile := os.Args[1]
+    config := middlewares.RetrieveConfigurations(configFile)
     fmt.Println("Building server in mode: ", config.App.Build)
 
     // App Repos
     fmt.Println("Setting up Repos...")
     configDb := config.Database
     db := repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
-    repos.Migrate(db)
+    repos.Migrate(db, "file://pkg/repos/migrations")
     repos.SetupRepos(db)
     defer repos.Close(db)
     fmt.Println("Database started!")
@@ -29,7 +31,8 @@ func main() {
     fmt.Println("Setting up Router...")
     engine := gin.Default()
     fmt.Println("Setting up Middlewares...")
-    configCors := middlewares.CreateCorsConfig(config);
+    corsOrigins := []string{config.App.CorsOrigin}
+    configCors := middlewares.CreateCorsConfig(corsOrigins);
     engine.Use(cors.New(configCors))
     handler := router.Handler { Engine: engine }
     handler.SetupApiEndpoints()

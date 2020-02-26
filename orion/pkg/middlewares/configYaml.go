@@ -20,13 +20,12 @@ type Config struct {
 	} `yaml:"database"`
 }
 
-func RetrieveConfigurations() Config {
-	configFile := os.Args[1]
-	fmt.Println("Configuration File: ", configFile)
+func RetrieveConfigurations(fileName string) Config {
+	fmt.Println("Configuration File: ", fileName)
 
-	file, errFile := os.Open(configFile)
+	file, errFile := os.Open(fileName)
 	if errFile != nil {
-		fmt.Println("Error with file ", configFile)
+		fmt.Println("Error with file ", fileName)
 	}
 
 	var cfg Config

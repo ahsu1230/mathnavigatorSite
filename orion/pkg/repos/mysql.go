@@ -23,7 +23,7 @@ func Open(host string, port int, user string, pass string, dbName string) *sql.D
     return db
 }
 
-func Migrate(db *sql.DB) {
+func Migrate(db *sql.DB, migrationsPath string) {
     // Create driver using sql db connection
     fmt.Println("Performing DB Migrations...")
     driver, err1 := mysql.WithInstance(db, &mysql.Config{})
@@ -32,7 +32,6 @@ func Migrate(db *sql.DB) {
     }
 
     // Setup migrations
-    migrationsPath := "file://pkg/repos/migrations"
     m, err2 := migrate.NewWithDatabaseInstance(migrationsPath, "mysql", driver)
     if err2 != nil {
         panic(err2)

@@ -46,7 +46,9 @@ func (mps *mockProgramService) Delete(programId string) error {
 }
 
 func init() {
-	handler = router.Handler{ Engine: gin.Default() }
+    gin.SetMode(gin.TestMode)
+    engine := gin.Default()
+	handler = router.Handler{ Engine: engine }
     handler.SetupApiEndpoints()
 }
 
