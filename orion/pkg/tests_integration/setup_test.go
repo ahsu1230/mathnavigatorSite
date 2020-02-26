@@ -23,17 +23,17 @@ func TestMain(m *testing.M) {
 	fmt.Println("Setting up Test Environment...")
 	config := middlewares.RetrieveConfigurations("./config_integrations.yaml")
 	configDb := config.Database
-	db = repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password, "")	
+	db = setupTestDatabase(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
 	defer db.Close()
-	setupTestDatabase(configDb.DbName)
-	setupTestRouter()
+	handler = setupTestRouter()
 	os.Exit(m.Run())
 }
 
 // Helper methods for Database
-func setupTestDatabase(dbName string) {
-
-	tx, err := db.Begin()
+func setupTestDatabase(host string, port int, username string, password string, dbName string) *sql.DB {
+	// Open first connection to create database
+	dbConn := repos.Open(host, port, username, password, "")
+	tx, err := dbConn.Begin()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -42,33 +42,22 @@ func setupTestDatabase(dbName string) {
 	tx.Exec(fmt.Sprintf("USE %s;", dbName))
 	tx.Commit()
 
-	// // Drop database if already exists
-	// fmt.Println("Dropping if exists ", dbName)
-	// if _, err := db.Exec(); err != nil {
-	// 	panic(err.Error())
-	// }
+	// Close connection and start a new connection using test database
+	dbConn.Close()
+	dbConn = repos.Open(host, port, username, password, dbName)
+	// Can now start operations with newly created test database
 
-	// // Create database
-	// fmt.Println("Creating database ", dbName)
-	// if _, err := db.Exec(); err != nil {
-	// 	panic(err.Error())
-	// }
-	
-	// // Use database
-	// fmt.Println("Using database ", dbName)
-	// if _, err := db.Exec(); err != nil {
-	// 	panic(err.Error())
-	// }
 	fmt.Println("Starting migrations...")
-	repos.Migrate(db, "file://../repos/migrations")
+	repos.Migrate(dbConn, "file://../repos/migrations")
 	
 	fmt.Println("Initializing repos...")
-	repos.ProgramRepo.Initialize(db)
+	repos.ProgramRepo.Initialize(dbConn)
 	// Initialize other tables here...
 
-	if err := db.Ping(); err != nil {
+	if err := dbConn.Ping(); err != nil {
 		panic(err.Error())
 	}
+	return dbConn
 }
 
 func refreshTable(t *testing.T, tableName string) error {
@@ -84,12 +73,13 @@ func refreshTable(t *testing.T, tableName string) error {
 }
 
 // Helper methods for Router
-func setupTestRouter() {
+func setupTestRouter() router.Handler {
 	fmt.Println("Initializing Router...")
 	gin.SetMode(gin.TestMode)
     engine := gin.Default()
-	handler = router.Handler{ Engine: engine }
-    handler.SetupApiEndpoints()
+	newHandler := router.Handler{ Engine: engine }
+	newHandler.SetupApiEndpoints()
+	return newHandler
 }
 
 func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {

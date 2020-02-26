@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var TABLE_PROGRAMS = "programs"
+
 type Program struct {
 	Id          uint
 	CreatedAt   time.Time     `db:"created_at"`

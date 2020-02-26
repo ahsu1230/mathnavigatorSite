@@ -2,7 +2,6 @@ package repos
 
 import (
     "database/sql"
-    "fmt"
     "time"
     "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
@@ -27,7 +26,6 @@ type ProgramRepoInterface interface {
 
 func (pr *programRepo) Initialize(db *sql.DB) {
     pr.db = db
-    fmt.Println("INITIALIZED ", db)
 }
 
 func (pr *programRepo) SelectAll() ([]domains.Program, error) {

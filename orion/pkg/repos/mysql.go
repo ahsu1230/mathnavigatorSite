@@ -9,9 +9,9 @@ import (
 )
 
 func createConnectionInfo(host string, port int, user string, pass string, dbName string) string {
-	info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbName)
-	info += "?charset=utf8&parseTime=True&loc=Local"
-	return info
+    info := fmt.Sprintf("%s:%s@(%s)/%s", user, pass, host, dbName)
+    info += "?charset=utf8&parseTime=True&loc=UTC"
+    return info
 }
 
 func Open(host string, port int, user string, pass string, dbName string) *sql.DB {
