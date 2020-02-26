@@ -6,7 +6,7 @@ import (
 )
 
 func TestValidProgramId(t *testing.T) {
-// Checks for valid program IDs
+	// Checks for valid program IDs
 	program := domains.Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -67,7 +67,7 @@ func TestProgramName(t *testing.T) {
 	}
 
 	program.Name = "Mommy & me"
-	if err := CheckValidProgram(program); err != nil {
+	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
@@ -93,18 +93,15 @@ func TestProgramName(t *testing.T) {
 	}
 
 	program.Name = "A0 ^40"
-	if err := CheckValidProgram(program); err == nil {
+	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
 }
 
 func TestValidGrades(t *testing.T) {
-	// Checks for valid grades	
+	// Checks for valid grades
 	program := domains.Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
 	if err := program.Validate(); err != nil {
-	
-	program := Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
-	if err := CheckValidProgram(program); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
