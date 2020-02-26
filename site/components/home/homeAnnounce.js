@@ -51,7 +51,7 @@ export class HomeAnnounce extends React.Component {
 
 	render() {
     const announce = this.state.targetAnnounce;
-    var showAnnounce = !isEmpty(announce) && (announce.timestamp > this.state.lastDismissed);
+    var showAnnounce = !isEmpty(announce);
     var component;
     if (showAnnounce) {
       component = <Popup announce={announce}
