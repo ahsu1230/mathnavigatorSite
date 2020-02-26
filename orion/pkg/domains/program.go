@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"errors"
 	"regexp"
+	"time"
 )
 
 type Program struct {
 	Id          uint
-	CreatedAt   uint          `db:"created_at"`
-	UpdatedAt   uint          `db:"updated_at"`
-	DeletedAt   sql.NullInt64 `db:"deleted_at"`
+	CreatedAt   time.Time     `db:"created_at"`
+	UpdatedAt   time.Time     `db:"updated_at"`
+	DeletedAt   sql.NullTime  `db:"deleted_at"`
 	ProgramId   string        `db:"program_id" json:"programId"`
 	Name        string        `json:"name"`
 	Grade1      uint          `json:"grade1"`

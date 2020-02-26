@@ -2,8 +2,8 @@ package repos
 
 import (
     "database/sql"
+    "time"
     "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/utils"
 )
 
 // Global variable
@@ -102,7 +102,7 @@ func (pr *programRepo) Insert(program domains.Program) error {
     }
     defer stmt.Close()
 
-    now := utils.TimestampNow()
+    now := time.Now().UTC()
     execResult, err := stmt.Exec(
         now,
         now, 
@@ -132,7 +132,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
     }
     defer stmt.Close()
 
-    now := utils.TimestampNow()
+    now := time.Now().UTC()
     execResult, err := stmt.Exec(
         now, 
         program.ProgramId, 

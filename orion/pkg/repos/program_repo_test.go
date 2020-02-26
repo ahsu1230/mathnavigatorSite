@@ -4,6 +4,7 @@ import (
     "database/sql"
     "reflect"
     "testing"
+    "time"
     sqlmock "github.com/DATA-DOG/go-sqlmock"
     "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
     "github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
@@ -26,8 +27,9 @@ func TestSelectAllPrograms(t *testing.T) {
     defer db.Close()
 
     // Mock DB statements and execute
+    now := time.Now().UTC()
     rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
-                            AddRow(1, 1000, 1000, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
+                            AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 				mock.ExpectPrepare("^SELECT (.+) FROM programs").ExpectQuery().WillReturnRows(rows)
     got, err := repo.SelectAll()
     if err != nil {
@@ -38,9 +40,9 @@ func TestSelectAllPrograms(t *testing.T) {
     want := []domains.Program{
         {
             Id:         1,
-            CreatedAt:  1000,
-            UpdatedAt:  1000,
-            DeletedAt:  sql.NullInt64{},
+            CreatedAt:  now,
+            UpdatedAt:  now,
+            DeletedAt:  sql.NullTime{},
             ProgramId:  "prog1",
             Name:       "Program1",
             Grade1:     2,
@@ -64,8 +66,9 @@ func TestSelectProgram(t *testing.T) {
     defer db.Close()
 
     // Mock DB statements and execute
+    now := time.Now().UTC()
     rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
-                            AddRow(1, 1000, 1000, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
+                            AddRow(1, now, now, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
     mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
         ExpectQuery().
         WithArgs("prog1").
@@ -78,9 +81,9 @@ func TestSelectProgram(t *testing.T) {
     // Validate results
     want := domains.Program{
         Id:         1,
-        CreatedAt:  1000,
-        UpdatedAt:  1000,
-        DeletedAt:  sql.NullInt64{},
+        CreatedAt:  now,
+        UpdatedAt:  now,
+        DeletedAt:  sql.NullTime{},
         ProgramId:  "prog1",
         Name:       "Program1",
         Grade1:     2,
