@@ -9,10 +9,11 @@ jobs:
       - image: circleci/mysql:latest
         environment:
           MYSQL_HOST: 127.0.0.1
-          MYSQL_ROOT_PASSWORD: localpass
-          MYSQL_USER: root
-          MYSQL_PASSWORD: localpass
+          MYSQL_PORT: 3306
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_DATABASE: mathnavdb_test
+          MYSQL_USER: admin
+          MYSQL_PASSWORD:
 
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
