@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Install MySQL CLI;
           command: |
-            sudo apt-get install mysql-client
+            sudo apt-get install default-mysql-client
             echo "mysql-server mysql-server/root_password password localpass" | debconf-set-selections
             echo "mysql-server mysql-server/root_password_again password localpass" | debconf-set-selections
             mysql -h 127.0.0.1 -u user -plocalpass mathnavdb_test
