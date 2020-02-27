@@ -6,13 +6,8 @@
 **/*.tmp
 **/*/package-lock.json
 **/*/go.sum
-<<<<<<< HEAD
-**/.project
-**/.idea
+**/*.idea
 **/*.iml
-=======
-**/*/.project
-**/.idea
->>>>>>> 25586ab1ae139b848671347e5a59eb79042de1d8
+**/*.project
 
 orion/configs/*
