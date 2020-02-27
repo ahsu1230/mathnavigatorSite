@@ -6,15 +6,14 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
-      - image: circleci/mysql:5.7
         environment:
-          MYSQL_ROOT_PASSWORD: localpass
+          MYSQL_ROOT_HOST: "%"
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_DATABASE: mathnavdb_test
           MYSQL_USER: admin
-          MYSQL_PASSWORD: localpass
+          MYSQL_PASSWORD: password
 
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
@@ -33,10 +32,21 @@ jobs:
       - run:
           name: Install MySQL CLI;
           command: |
-            sudo apt-get install default-mysql-client
-            echo "mysql-server mysql-server/root_password password localpass" | debconf-set-selections
-            echo "mysql-server mysql-server/root_password_again password localpass" | debconf-set-selections
-            mysql -h 127.0.0.1 -u user -plocalpass mathnavdb_test
+            sudo apt-get -y install default-mysql-client
+      - run:
+          name: Fix MySQL socket config
+          command: |
+            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
+      - run:
+          name: Start database server
+          command: |
+            sudo service mysql start
+            sleep 2
+            ps aux | grep mysql
+      - run:
+          name: Create non-admin user
+          command: |
+            sudo mysql -u root -e "CREATE user myuser IDENTIFIED BY 'password';"
 
       - run: cd orion
       - run: go get -v -t -d ./...
