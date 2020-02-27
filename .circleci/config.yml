@@ -8,6 +8,7 @@ jobs:
       - image: circleci/golang:1.13
       - image: circleci/mysql:latest
         environment:
+          MYSQL_ROOT_PASSWORD:
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
           MYSQL_ALLOW_EMPTY_PASSWORD: true
