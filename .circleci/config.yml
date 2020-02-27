@@ -6,14 +6,15 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
+      - image: circleci/mysql:5.7
         environment:
-          MYSQL_ROOT_HOST: "admin"
+          MYSQL_ROOT_USER: root
           MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
-          MYSQL_DATABASE: mathnavdb_test
-          MYSQL_USER: admin
-          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: mysql
+          MYSQL_USER: user1
+          MYSQL_PASSWORD: password1
 
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
@@ -21,8 +22,8 @@ jobs:
       - run:
           name: Install MySQL CLI;
           command: |
-            sudo apt-get -y install default-mysql-client mysql-server
-            mysql.server start
+            sudo apt-get update
+            sudo apt-get install default-mysql-client
 
       - run: cd orion
       - run: go get -v -t -d ./...
