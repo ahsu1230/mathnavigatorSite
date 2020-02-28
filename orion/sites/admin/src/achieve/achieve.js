@@ -24,16 +24,18 @@ export class AchievePage extends React.Component {
 		};
 		return (
       	<div id="view-achieve">
-      	<h1>All Achievements ({numAchievements})</h1>
-		<ul id="list-heading">
-          	<li className="li-med">Year</li>
-          	<li className="li-med"> Message</li>
-        </ul>
-			<AchieveRow achieveObj = {fakeAchieve}/>
-			<AchieveRow achieveObj = {fakeAchieve2}/>
-			<button>
-			<Link className="add-achievement" to={"/Achievements/add"}>Add achievement</Link>
-			</button>
+	      	<h1>All Achievements ({numAchievements})</h1>
+			<ul id="list-heading">
+	          	<li className="li-med">Year</li>
+	          	<li className="li-med"> Message</li>
+	        </ul>
+			<ul>
+				<AchieveRow achieveObj = {fakeAchieve}/>
+				<AchieveRow achieveObj = {fakeAchieve2}/>
+			</ul>
+				<button>
+				<Link className="add-achievement" to={"/achievements/add"}>Add Achievement</Link>
+				</button>
       	</div>
 		);
 	}
@@ -45,11 +47,11 @@ class AchieveRow extends React.Component {
 		const message = this.props.achieveObj.message;
 		const url = "/achievement/"  + "/edit";
 	    return (
-	      <ul id="achieve-row">
-	        <li className="li-med">{year}</li>
-	        <li className="li-med">{message}</li>
-	        <Link to={url}>Edit</Link>
-	      </ul>
+	    	<ul id="achieve-row">
+	        	<li className="li-med">{year}</li>
+	        	<li className="li-med">{message}</li>
+	        	<Link to={url}>Edit</Link>
+	      	</ul>
 	    )
   	}
 }
