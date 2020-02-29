@@ -1,0 +1,9 @@
+app:
+  build: "development"
+  corsOrigin: "*"
+database:
+  host: "127.0.0.1"
+  port: 3306
+  user: "ci_tester"
+  pass: "test"
+  dbName: "mathnavdb_test"
