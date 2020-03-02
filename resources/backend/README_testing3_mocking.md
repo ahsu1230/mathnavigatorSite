@@ -54,15 +54,15 @@ When it comes to unit testing the controller, we don't really care much about th
 Let's go back to our controller. `service` in this code is the `fakeService` with the mocked methods. Now we can easily unit test controller because `service` methods are much simpler and return expected results.
 ```
 var service = fakeService
-// var service = realService // NOT USED FOR TESTING
+// var service = realService                        // NOT USED FOR TESTING
 ...
 func someControllerMethod() {
     ...
-    result := service.doSomething1() // result becomes 10
+    result := service.doSomething1()                // result becomes 10
     if (result) {
         ...
     } else {
-        result2 := service.doSomething2() // result2 becomes "bacon"
+        result2 := service.doSomething2()           // result2 becomes "bacon"
     }
     ...
 }
@@ -70,7 +70,7 @@ func someControllerMethod() {
 
 But if we want to use our code to actually function (like back in the real application), we can simply use the other `service`. Notice, how the function for `someControllerMethod()` stays exactly the same, we've simply switched out the services.
 ```
-// var service = fakeService // NOT USED FOR PRODUCTION
+// var service = fakeService                        // NOT USED FOR PRODUCTION
 var service = realService
 ...
 func someControllerMethod() {
