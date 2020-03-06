@@ -3,6 +3,7 @@ module github.com/ahsu1230/mathnavigatorSite/orion
 go 1.13
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/contrib v0.0.0-20190923054218-35076c1b2bea
 	github.com/gin-gonic/gin v1.5.0
@@ -15,6 +16,7 @@ require (
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/lib/pq v1.1.1
 	github.com/mattn/go-isatty v0.0.10 // indirect
+	github.com/stretchr/testify v1.4.0
 	golang.org/x/sys v0.0.0-20191128015809-6d18c012aee9 // indirect
 	gopkg.in/go-playground/validator.v9 v9.30.2 // indirect
 	gopkg.in/yaml.v2 v2.2.7
