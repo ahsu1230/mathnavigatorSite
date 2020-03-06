@@ -28,12 +28,12 @@ func Test_CreatePrograms(t *testing.T) {
 
 	// Call Get All!
 	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all", nil)
-	
+
 	// Validate results
-    assert.EqualValues(t, http.StatusOK, recorder4.Code)
-    var programs []domains.Program
-    if err := json.Unmarshal(recorder4.Body.Bytes(), &programs); err != nil {
-        t.Errorf("unexpected error: %v\n", err)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	var programs []domains.Program
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &programs); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "Program1", programs[0].Name)
 	assert.EqualValues(t, "prog1", programs[0].ProgramId)
@@ -65,7 +65,7 @@ func Test_UniqueProgramId(t *testing.T) {
 	// Validate results
 	var program domains.Program
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &program); err != nil {
-        t.Errorf("unexpected error: %v\n", err)
+		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "prog1", program.ProgramId)
 	assert.EqualValues(t, "Program1", program.Name)
@@ -96,7 +96,7 @@ func Test_UpdateProgram(t *testing.T) {
 	// Validate results
 	var program domains.Program
 	if err := json.Unmarshal(recorder4.Body.Bytes(), &program); err != nil {
-        t.Errorf("unexpected error: %v\n", err)
+		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "prog2", program.ProgramId)
 	assert.EqualValues(t, "Program2a", program.Name)
@@ -123,11 +123,11 @@ func Test_DeleteProgram(t *testing.T) {
 
 // Helper methods
 func createProgram(programId string, name string, grade1 uint, grade2 uint, description string) domains.Program {
-    return domains.Program{
-        ProgramId: programId,
-        Name: name,
-        Grade1: grade1,
-        Grade2: grade2,
-        Description: description,
-    }
+	return domains.Program{
+		ProgramId:   programId,
+		Name:        name,
+		Grade1:      grade1,
+		Grade2:      grade2,
+		Description: description,
+	}
 }

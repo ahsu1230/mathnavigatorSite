@@ -16,7 +16,7 @@ type Config struct {
 		Port     int    `yaml:"port"`
 		Username string `yaml:"user"`
 		Password string `yaml:"pass"`
-		DbName	 string `yaml:"dbName"`
+		DbName   string `yaml:"dbName"`
 	} `yaml:"database"`
 }
 

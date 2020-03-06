@@ -20,7 +20,7 @@ func Open(host string, port int, user string, pass string, dbName string) *sql.D
 	if err != nil {
 		panic(err)
 	}
-    return db
+	return db
 }
 
 func Migrate(db *sql.DB, migrationsPath string) {
