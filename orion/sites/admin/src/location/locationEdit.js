@@ -14,7 +14,7 @@ export class LocationEditPage extends React.Component {
              inputState: "",
              inputZip: "",
              inputRoomNum: "",
-             isEdit: true,
+             isEdit: false,
           };
     }
 
