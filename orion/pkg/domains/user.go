@@ -36,7 +36,7 @@ func (user *User) Validate() error {
 	guardianId := user.GuardianId
 
 	// First name validation
-	if firstName != "" {
+	if lastName != "" || len(firstName) > 32 {
 		return errors.New("invalid first name")
 	}
 
