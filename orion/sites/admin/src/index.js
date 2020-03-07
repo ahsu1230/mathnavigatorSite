@@ -16,6 +16,7 @@ import { AchievePage } from './achieve/achieve.js';
 import { AchieveEditPage } from './achieve/achieveEdit.js';
 import { AnnouncePage } from './announce/announce.js';
 import { LocationPage } from './location/location.js';
+import { LocationEditPage } from './location/locationEdit.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
@@ -27,6 +28,8 @@ const Programs = () => <ProgramPage/>;
 const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 const Location = () => <LocationPage/>;
+const LocationEdit = () => <LocationEditPage/>;
+const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -52,6 +55,8 @@ class App extends React.Component {
           <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
+          <Route path="/locations/:locationId/edit" component={LocationEditMatch}/>
+          <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
         </Switch>
       </div>
