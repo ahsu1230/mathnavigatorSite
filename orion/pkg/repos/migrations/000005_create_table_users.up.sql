@@ -9,7 +9,7 @@ CREATE TABLE users
     middle_name varchar(32),
     email       varchar(64)  NOT NULL,
     phone       varchar(24)  NOT NULL,
-    isGuardian  boolean      NOT NULL,
+    isGuardian  boolean      NOT NULL DEFAULT 0,
     guardianId  int unsigned,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1

@@ -31,7 +31,7 @@ func (semester *Semester) Validate() error {
 	}
 
 	// Title validation
-	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches || len(title) > 255 {
+	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches || len(title) > 64 {
 		return errors.New("invalid semester title")
 	}
 

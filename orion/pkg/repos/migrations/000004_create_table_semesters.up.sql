@@ -5,7 +5,7 @@ CREATE TABLE semesters
     updated_at  datetime     NOT NULL,
     deleted_at  datetime,
     semester_id varchar(64)  NOT NULL UNIQUE,
-    title       varchar(255) NOT NULL,
+    title       varchar(64)  NOT NULL,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1
   DEFAULT CHARSET = UTF8MB4;
