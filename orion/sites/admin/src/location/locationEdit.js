@@ -35,7 +35,7 @@ export class LocationEditPage extends React.Component {
     }
 
     render() {
-        const title = "Edit Location";
+        const title = this.state.isEdit ? "Edit Location" : "Add Location";
         let deleteButton = <div></div>;
         if (this.state.isEdit) {
           deleteButton = (
