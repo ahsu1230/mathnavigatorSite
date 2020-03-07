@@ -15,6 +15,7 @@ import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
 import { AnnouncePage } from './announce/announce.js';
 import { AnnounceEditPage } from './announce/announceEdit.js';
+import { SemesterPage } from './semester/semester.js';
 
 const Achieve = () => <AchievePage/>;
 const Announce = () => <AnnouncePage/>;
@@ -25,6 +26,7 @@ const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
 const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
+const Semester = () => <SemesterPage/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -50,6 +52,7 @@ class App extends React.Component {
           <Route path="/announce/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
           <Route path="/achievements" component={Achieve}/>
+          <Route path="/semesters" component={Semester}/>
         </Switch>
       </div>
     );
