@@ -6,6 +6,9 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
 
+// Global variable
+var AnnounceRepo AnnounceRepoInterface = &announceRepo{}
+
 type announceRepo struct {
 	db *sql.DB;
 }
@@ -13,7 +16,7 @@ type announceRepo struct {
 type AnnounceRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Announce, error)
-	SelectById(uint) (domains.Announce, error)
+	SelectByAnnounceId(uint) (domains.Announce, error)
 	Insert(domains.Announce) error
 	Update(uint, domains.Announce) error
 	Delete(uint) error
@@ -46,7 +49,8 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 			&announce.DeletedAt,
 			&announce.PostedAt,
 			&announce.Author,
-			&announce.Message); errScan != nil {
+			&announce.Message);
+		errScan != nil {
 			return results, errScan
 		}
 		results = append(results, announce)
@@ -55,7 +59,7 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 	return results, nil
 }
 
-func (ar *announceRepo) SelectById(id uint) (domains.Announce, error) {
+func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 	stmt, err := ar.db.Prepare("SELECT * FROM announcements WHERE id=?")
 	if err != nil {
 		return domains.Announce{}, err

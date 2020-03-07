@@ -1,4 +1,4 @@
-package repos
+package repos_test
 
 import (
 	"database/sql"
@@ -7,19 +7,20 @@ import (
     "time"
     sqlmock "github.com/DATA-DOG/go-sqlmock"
     "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 )
 
-func initTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, AnnounceRepoInterface) {
+func initAnnounceTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AnnounceRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := CreateTestAnnounceRepo(db)
+	repo := repos.CreateTestAnnounceRepo(db)
 	return db, mock, repo
 }
 
 func TestSelectAllAnnouncements(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initAnnounceTest(t)
 	defer db.Close()
 	
 	// Mock DB statements and execute
@@ -52,14 +53,14 @@ func TestSelectAllAnnouncements(t *testing.T) {
 }
 
 func TestSelectAnnouncement(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initAnnounceTest(t)
 	defer db.Close()
 	
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PostedAt", "Author", "Message"}).AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").ExpectQuery().WithArgs(1).WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectByAnnounceId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -83,7 +84,7 @@ func TestSelectAnnouncement(t *testing.T) {
 }
 
 func TestInsertAnnouncement(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initAnnounceTest(t)
 	defer db.Close()
 	
 	// Mock DB statements and execute
@@ -107,7 +108,7 @@ func TestInsertAnnouncement(t *testing.T) {
 }
 
 func TestUpdateAnnouncement(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initAnnounceTest(t)
 	defer db.Close()
 	
 	// Mock DB statements and execute
@@ -130,8 +131,8 @@ func TestUpdateAnnouncement(t *testing.T) {
 	}
 }
 
-func TestDeleteProgram(t *testing.T) {
-	db, mock, repo := initTest(t)
+func TestDeleteAnnouncement(t *testing.T) {
+	db, mock, repo := initAnnounceTest(t)
 	defer db.Close()
 	
 	// Mock DB statements and execute

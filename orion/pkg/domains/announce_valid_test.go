@@ -1,12 +1,13 @@
-package domains
+package domains_test
 
 import (
 	"testing"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
 
 func TestValidAuthor(t *testing.T) {
 	// Check for valid authors
-	announce := Announce{Author: "Valid Author", Message: "not blank"}
+	announce := domains.Announce{Author: "Valid Author", Message: "not blank"}
 	if err := announce.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -35,7 +36,7 @@ func TestValidAuthor(t *testing.T) {
 	
 func TestValidMessage(t *testing.T) {
 	// Check for valid messages
-	announce := Announce{Author: "Valid Author", Message: "not blank"}
+	announce := domains.Announce{Author: "Valid Author", Message: "not blank"}
 	if err := announce.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}

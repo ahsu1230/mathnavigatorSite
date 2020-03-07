@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var TABLE_ANNOUNCEMENTS = "announcements"
+
 type Announce struct {
 	Id			uint			`db:"id"`
 	CreatedAt	time.Time		`db:"created_at"`
