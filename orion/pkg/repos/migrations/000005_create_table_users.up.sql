@@ -1,8 +1,8 @@
 CREATE TABLE users
 (
     id          int unsigned NOT NULL AUTO_INCREMENT,
-    created_at  bigint(20)   NOT NULL,
-    updated_at  bigint(20)   NOT NULL,
+    created_at  datetime     NOT NULL,
+    updated_at  datetime     NOT NULL,
     deleted_at  datetime,
     first_name  varchar(32)  NOT NULL,
     last_name   varchar(32)  NOT NULL,

@@ -42,12 +42,12 @@ func (program *Program) Validate() error {
 	description := program.Description
 
 	// Program ID validation
-	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches || len(programId) > 64 {
 		return errors.New("invalid program id")
 	}
 
 	// Name validation
-	if matches, _ := regexp.MatchString(REGEX_NAME, name); !matches {
+	if matches, _ := regexp.MatchString(REGEX_NAME, name); !matches || len(name) > 255 {
 		return errors.New("invalid program name")
 	}
 
