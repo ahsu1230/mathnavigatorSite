@@ -1,8 +1,8 @@
 package domains_test
 
 import (
-	"testing"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"testing"
 )
 
 func TestValidProgramId(t *testing.T) {

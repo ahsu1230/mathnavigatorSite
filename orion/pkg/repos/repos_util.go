@@ -10,12 +10,12 @@ func SetupRepos(db *sql.DB) {
 }
 
 func handleSqlExecResult(result sql.Result, expected int64, errorMessage string) error {
-	numAffected, err := result.RowsAffected();
-    if err != nil {
-        return err
-    }
-    if numAffected != expected {
-        return errors.New(errorMessage)
+	numAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if numAffected != expected {
+		return errors.New(errorMessage)
 	}
 	return nil
 }
