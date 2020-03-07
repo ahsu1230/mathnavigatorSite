@@ -39,27 +39,28 @@ export class AnnouncePage extends React.Component {
 				{/* these are the lists under the subheading */}
 				<ul>
 					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceA.date} </div>
-						<div className="li-med"> {fakeAnnounceA.author} </div>
+						<li className="li-med"> {fakeAnnounceA.date} </li>
+						<li className="li-med"> {fakeAnnounceA.author} </li>
 						<p className="li-large"> {fakeAnnounceA.message} </p>
-						<div className="li-small"> Edit > </div>
+						<li className="li-small"> Edit > </li>
 					</li>
 					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceB.date} </div>
-						<div className="li-med"> {fakeAnnounceB.author} </div>
+						<li className="li-med"> {fakeAnnounceB.date} </li>
+						<li className="li-med"> {fakeAnnounceB.author} </li>
 						<p className="li-large"> {fakeAnnounceB.message} </p>
-						<div className="li-small"> Edit > </div>
+						<li className="li-small"> Edit > </li>
 					</li>
 					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceC.date} </div>
-						<div className="li-med"> {fakeAnnounceC.author} </div>
+						<li className="li-med"> {fakeAnnounceC.date} </li>
+						<li className="li-med"> {fakeAnnounceC.author} </li>
 						<p className="li-large"> {fakeAnnounceC.message} </p>
-						<div className="li-small"> Edit > </div>
+						<li className="li-small"> Edit > </li>
 					</li>
 
 				</ul>
 
-				<button className="announcement-button"> Add Announcement</button>
+			{/* believe this should be Link not a but Link makes page not load. fix later*/}
+				<a to="/announceEdit"> <button className="announcement-button"> Add Announcement</button> </a>
 
       </div>
 		);
