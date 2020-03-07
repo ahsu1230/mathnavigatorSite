@@ -3,18 +3,24 @@ require('./achieveEdit.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import API from '../api.js';
-import { Modal } from '../modals/modal.js';
-import { OkayModal } from '../modals/okayModal.js';
-import { YesNoModal } from '../modals/yesnoModal.js';
 
 export class AchieveEditPage extends React.Component {
+constructor(props) {
+  super(props);
+  this.state = {
+    isEdit: false,
+    showDeleteModal: false,
+    showSaveModal: false,
+    inputYear: "",
+    inputMessage: "",
+  };
+}
 
   render() {
-
+    const title = "Edit Achievement";
+    let deleteButton = <div></div>;
     return (
       <div id="view-achieve-edit">
-        {modalDiv}
         <h2>{title}</h2>
         <h4>Year</h4>
         <input value={this.state.inputYear}
