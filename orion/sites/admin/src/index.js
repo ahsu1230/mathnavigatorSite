@@ -13,8 +13,8 @@ import { HomePage } from './home/home.js';
 import { ProgramPage } from './programs/program.js';
 import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
-import { AnnouncePage } from './announce/announce.js';
 import { AchieveEditPage } from './achieve/achieveEdit.js';
+import { AnnouncePage } from './announce/announce.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
