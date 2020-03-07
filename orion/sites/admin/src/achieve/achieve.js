@@ -12,7 +12,6 @@ export class AchievePage extends React.Component {
 	    };
  	}
 
-
 	render() {
 		var numAchievements = 5;
 		var fakeAchieve = {
