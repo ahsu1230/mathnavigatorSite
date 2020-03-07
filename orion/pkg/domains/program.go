@@ -47,7 +47,7 @@ func (program *Program) Validate() error {
 	}
 
 	// Description validation
-	if matches, _ := regexp.MatchString(REGEX_LETTER, description); !matches {
+	if matches, _ := regexp.MatchString(REGEX_AT_LEAST_ONE_LETTER, description); !matches {
 		return errors.New("invalid description")
 	}
 
