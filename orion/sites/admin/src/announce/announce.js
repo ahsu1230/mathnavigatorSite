@@ -37,7 +37,7 @@ export class AnnouncePage extends React.Component {
 				</ul>
 
 				{/* these are the lists under the subheading */}
-				<ul>
+				<ul> {/*I think there's a problem having li under li, but I'll fix it later*/}
 					<li className="announce-lists">
 						<li className="li-med"> {fakeAnnounceA.date} </li>
 						<li className="li-med"> {fakeAnnounceA.author} </li>
@@ -59,8 +59,9 @@ export class AnnouncePage extends React.Component {
 
 				</ul>
 
-			{/* believe this should be Link not a but Link makes page not load. fix later*/}
-				<a to="/announceEdit"> <button className="announcement-button"> Add Announcement</button> </a>
+			{/* I think this should be <Link> not <a> but <Link> makes page not load. fix later*/}
+			{/*okay now can't find page error. idk why it's not working? */}
+				<a href="/announceEdit.js"> <button className="announcement-button"> Add Announcement</button> </a>
 
       </div>
 		);
