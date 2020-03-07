@@ -2,6 +2,9 @@
 require('./announce.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import API from '../api.js';
+import { Modal } from '../modals/modal.js';
+import { Link } from 'react-router-dom';
 
 export class AnnouncePage extends React.Component {
 	render() {
@@ -39,30 +42,30 @@ export class AnnouncePage extends React.Component {
 				{/* these are the lists under the subheading */}
 				<ul> {/*I think there's a problem having li under li, but I'll fix it later*/}
 					<li className="announce-lists">
-						<li className="li-med"> {fakeAnnounceA.date} </li>
-						<li className="li-med"> {fakeAnnounceA.author} </li>
+						<div className="li-med"> {fakeAnnounceA.date} </div>
+						<div className="li-med"> {fakeAnnounceA.author} </div>
 						<p className="li-large"> {fakeAnnounceA.message} </p>
-						<li className="li-small"> Edit > </li>
+						<div className="li-small"> Edit > </div>
 					</li>
 					<li className="announce-lists">
-						<li className="li-med"> {fakeAnnounceB.date} </li>
-						<li className="li-med"> {fakeAnnounceB.author} </li>
+						<div className="li-med"> {fakeAnnounceB.date} </div>
+						<div className="li-med"> {fakeAnnounceB.author} </div>
 						<p className="li-large"> {fakeAnnounceB.message} </p>
-						<li className="li-small"> Edit > </li>
+						<div className="li-small"> Edit > </div>
 					</li>
 					<li className="announce-lists">
-						<li className="li-med"> {fakeAnnounceC.date} </li>
-						<li className="li-med"> {fakeAnnounceC.author} </li>
+						<div className="li-med"> {fakeAnnounceC.date} </div>
+						<div className="li-med"> {fakeAnnounceC.author} </div>
 						<p className="li-large"> {fakeAnnounceC.message} </p>
-						<li className="li-small"> Edit > </li>
+						<div className="li-small"> Edit > </div>
 					</li>
 
 				</ul>
 
 			{/* I think this should be <Link> not <a> but <Link> makes page not load. fix later*/}
-			{/*okay now can't find page error. idk why it's not working? */}
-				<a href="/announceEdit.js"> <button className="announcement-button"> Add Announcement</button> </a>
-
+			{/*<button className="announcement-button"> Add Announcement</button>*/}
+				<Link to={"/announce/add"}> <button className="announcement-button"> Add Announcement</button> </Link>
+				{/*<Link className="announcement-button" to={"/announce/add"}>Add Announcement</Link>*/}
       </div>
 		);
 	}

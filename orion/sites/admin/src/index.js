@@ -14,9 +14,12 @@ import { ProgramPage } from './programs/program.js';
 import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
 import { AnnouncePage } from './announce/announce.js';
+import { AnnounceEditPage } from './announce/announceEdit.js';
 
 const Achieve = () => <AchievePage/>;
 const Announce = () => <AnnouncePage/>;
+const AnnounceEdit = () => <AnnounceEditPage/>;
+const AnnounceEditMatch = ({match}) => <AnnounceEditPage programId={match.params.AnnounceId}/>;
 const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
@@ -34,7 +37,7 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
-  render() {
+ render() {
     return (
       <div>
         <Header/>
@@ -43,6 +46,8 @@ class App extends React.Component {
           <Route path="/program/:programId/edit" component={ProgramEditMatch}/>
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
+          <Route path="/announce/:announceId/edit" component={AnnounceEditMatch}/>
+          <Route path="/announce/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
           <Route path="/achievements" component={Achieve}/>
         </Switch>
