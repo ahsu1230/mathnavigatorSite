@@ -50,7 +50,7 @@ func TestValidProgramId(t *testing.T) {
 	}
 }
 
-func TestProgramName(t *testing.T) {
+func TestValidProgramName(t *testing.T) {
 	// Checks for valid names
 	program := domains.Program{ProgramId: "ok", Name: "AP Calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := program.Validate(); err != nil {
@@ -153,7 +153,7 @@ func TestValidGrades(t *testing.T) {
 	}
 }
 
-func TestDescription(t *testing.T) {
+func TestValidDescription(t *testing.T) {
 	// Checks for valid descriptions
 	program := domains.Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
 	if err := program.Validate(); err != nil {

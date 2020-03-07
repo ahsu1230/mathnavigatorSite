@@ -7,8 +7,8 @@ const (
 	// In the form "year_season" i.e. 2020_fall
 	REGEX_SEMESTER_ID = `^[1-9]\d{3,}_((spring)|(summer)|(fall)|(winter))$`
 
-	/* Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores
-	separate words. Words can have parentheses around them and number signs must be followed by numbers. */
+	/* Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and
+	underscores separate words. Words can have parentheses around them and number signs must be followed by numbers. */
 	REGEX_TITLE = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
 
 	// Ensures at least one uppercase or lowercase letter
@@ -17,6 +17,6 @@ const (
 	// There are no spaces and there must be characters before and after the @
 	REGEX_EMAIL = `^[^ ]+@[^ ]+$`
 
-	// US phone numbers
-	REGEX_PHONE = `^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$`
+	// At least 3 characters and there can be digits, spaces, pluses, periods, parentheses, slashes, and dashes
+	REGEX_PHONE = `^[\d\s+.()/-]{3,}$`
 )
