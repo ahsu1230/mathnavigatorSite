@@ -9,8 +9,11 @@ export class LocationEditPage extends React.Component {
          super(props);
          this.state = {
              inputLocationId: "",
-             inputAddress: "",
-             inputRoomNum: 0,
+             inputStreet: "",
+             inputCity: "",
+             inputState: "",
+             inputZip: "",
+             inputRoomNum: "",
           };
     }
 
@@ -35,9 +38,18 @@ export class LocationEditPage extends React.Component {
             <h4>Location ID</h4>
             <input value={this.state.inputLocationId}
                 onChange={(e) => this.handleChange(e, "inputLocationId")}/>
-            <h4>Address</h4>
-            <input value={this.state.inputAddress}
-                onChange={(e) => this.handleChange(e, "inputAddress")}/>
+            <h4>Street</h4>
+            <input value={this.state.inputStreet}
+                onChange={(e) => this.handleChange(e, "inputStreet")}/>
+            <h4>City</h4>
+            <input value={this.state.inputStreet}
+                onChange={(e) => this.handleChange(e, "inputCity")}/>
+            <h4>State</h4>
+            <input value={this.state.inputStreet}
+                onChange={(e) => this.handleChange(e, "inputState")}/>
+            <h4>Zipcode</h4>
+            <input value={this.state.inputStreet}
+                onChange={(e) => this.handleChange(e, "inputZip")}/>
             <h4>Room Number</h4>
             <input value={this.state.inputRoomNum}
                 onChange={(e) => this.handleChange(e, "inputRoomNum")}/>
