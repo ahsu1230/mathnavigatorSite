@@ -36,12 +36,12 @@ func (user *User) Validate() error {
 	guardianId := user.GuardianId
 
 	// First name validation
-	if lastName != "" || len(firstName) > 32 {
+	if firstName == "" || len(firstName) > 32 {
 		return errors.New("invalid first name")
 	}
 
 	// Last name validation
-	if lastName != "" || len(lastName) > 32 {
+	if lastName == "" || len(lastName) > 32 {
 		return errors.New("invalid last name")
 	}
 

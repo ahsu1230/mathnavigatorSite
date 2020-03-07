@@ -88,12 +88,12 @@ func TestValidEmail(t *testing.T) {
 	// Checks for invalid emails
 	program.Email = "invalidEmail"
 	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid middle name")
+		t.Error("Check was incorrect, got: nil, expected: invalid email")
 	}
 
 	program.Email = "email@email" + strings.Repeat("A", 64)
 	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid middle name")
+		t.Error("Check was incorrect, got: nil, expected: invalid email")
 	}
 }
 
@@ -112,11 +112,11 @@ func TestValidPhone(t *testing.T) {
 	// Checks for invalid phone numbers
 	program.Phone = "#$^3rdg4@#4&%$^%8dfg^&*^%^45#$%"
 	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid middle name")
+		t.Error("Check was incorrect, got: nil, expected: invalid phone")
 	}
 
 	program.Phone = "555" + strings.Repeat("5", 24)
 	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid middle name")
+		t.Error("Check was incorrect, got: nil, expected: invalid phone")
 	}
 }
