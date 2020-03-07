@@ -10,7 +10,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 )
 
-func initTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterface) {
+func initProgramTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -23,12 +23,12 @@ func initTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterfac
 // Test Select All
 //
 func TestSelectAllPrograms(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initProgramTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
 		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").ExpectQuery().WillReturnRows(rows)
 	got, err := repo.SelectAll()
@@ -62,13 +62,13 @@ func TestSelectAllPrograms(t *testing.T) {
 // Select One
 //
 func TestSelectProgram(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initProgramTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("prog1").
@@ -102,7 +102,7 @@ func TestSelectProgram(t *testing.T) {
 // Create
 //
 func TestInsertProgram(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initProgramTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -133,7 +133,7 @@ func TestInsertProgram(t *testing.T) {
 // Update
 //
 func TestUpdateProgram(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initProgramTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -164,7 +164,7 @@ func TestUpdateProgram(t *testing.T) {
 // Delete
 //
 func TestDeleteProgram(t *testing.T) {
-	db, mock, repo := initTest(t)
+	db, mock, repo := initProgramTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
