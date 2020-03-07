@@ -20,9 +20,6 @@ type Achieve struct {
 
 // Class Methods
 
-// Ensures at least one uppercase or lowercase letter
-const REGEX_LETTER = `[A-Za-z]+`
-
 func (achieve *Achieve) Validate() error {
 	// Retrieves the inputted values
 	year := achieve.Year

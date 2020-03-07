@@ -20,13 +20,6 @@ type Semester struct {
 
 // Class Methods
 
-// In the form "year_season" i.e. 2020_fall
-const REGEX_SEMESTER_ID = `^[1-9]\d{3,}_((spring)|(summer)|(fall)|(winter))$`
-
-/* Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores
-separate words. Words can have parentheses around them and number signs must be followed by numbers. */
-const REGEX_TITLE = `^[A-Z0-9][[:alnum:]]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
-
 func (semester *Semester) Validate() error {
 	// 	Retrieves the inputted values
 	semesterId := semester.SemesterId

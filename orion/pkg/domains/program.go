@@ -23,16 +23,6 @@ type Program struct {
 
 // Class Methods
 
-// Alphanumeric characters separated by underscores
-const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
-
-/* Starts with a capital letter or number. Words consist of alphanumeric characters and dashes, spaces, and underscores
-separate words. Words can have parentheses around them and number signs must be followed by numbers. */
-const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
-
-// Ensures at least one uppercase or lowercase letter
-const REGEX_Letter = `[A-Za-z]+`
-
 func (program *Program) Validate() error {
 	// Retrieves the inputted values
 	programId := program.ProgramId
@@ -57,7 +47,7 @@ func (program *Program) Validate() error {
 	}
 
 	// Description validation
-	if matches, _ := regexp.MatchString(REGEX_Letter, description); !matches {
+	if matches, _ := regexp.MatchString(REGEX_LETTER, description); !matches {
 		return errors.New("invalid description")
 	}
 
