@@ -37,7 +37,7 @@ func (program *Program) Validate() error {
 	}
 
 	// Name validation
-	if matches, _ := regexp.MatchString(REGEX_NAME, name); !matches || len(name) > 255 {
+	if matches, _ := regexp.MatchString(REGEX_TITLE, name); !matches || len(name) > 255 {
 		return errors.New("invalid program name")
 	}
 

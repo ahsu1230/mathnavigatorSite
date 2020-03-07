@@ -1,6 +1,7 @@
 package domains_test
 
 import (
+	"strings"
 	"testing"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
@@ -22,6 +23,11 @@ func TestValidProgramId(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
+	program.ProgramId = "Valid_Program_123"
+	if err := program.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
 	// Checks for invalid program IDs
 	program.ProgramId = "a__a"
 	if err := program.Validate(); err == nil {
@@ -34,6 +40,11 @@ func TestValidProgramId(t *testing.T) {
 	}
 
 	program.ProgramId = ""
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program id")
+	}
+
+	program.ProgramId = "Too long: " + strings.Repeat("A", 64)
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program id")
 	}
@@ -93,6 +104,11 @@ func TestProgramName(t *testing.T) {
 	}
 
 	program.Name = "A0 ^40"
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program name")
+	}
+
+	program.Name = "Too long: " + strings.Repeat("A", 255)
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
