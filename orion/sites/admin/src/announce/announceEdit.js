@@ -33,8 +33,6 @@ export class AnnounceEditPage extends React.Component {
     }
 
     handleChange(event, value) {
-        console.log(event.target.value);
-        console.log(value);
       this.setState({[value]: event.target.value});
     }
 
