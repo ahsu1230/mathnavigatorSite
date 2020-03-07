@@ -35,7 +35,7 @@ jobs:
             go vet ./...
             go test -v ./...
 
-      - run: cd sites/admin
+      - run: cd orion/sites/admin
       - run:
           name: Update npm
           command: npm update
