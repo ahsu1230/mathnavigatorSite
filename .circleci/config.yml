@@ -6,7 +6,6 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
-      - image: circleci/node:10.16.3
       - image: circleci/mysql:8.0
         environment:
           MYSQL_ROOT_USER: root
@@ -36,13 +35,16 @@ jobs:
             go vet ./...
             go test -v ./...
 
+      - run:
+          name: Install npm
+          command: |
+            sudo apt install nodejs
+            nodejs --version
+            npm --version
       - run: cd orion/sites/admin
       - run:
-          name: Update npm
-          command: npm update
-      - run:
           name: Install packages
-          command: npm install
+          command: npm run install
       - run:
           name: Format Javascript
           command: prettier --check "**/*.js"
