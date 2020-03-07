@@ -4,19 +4,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router';
 import {
-  HashRouter as Router,
-  Route,
-  Switch
+    HashRouter as Router,
+    Route,
+    Switch
 } from 'react-router-dom';
 import { HeaderSection } from './header/header.js';
 import { HomePage } from './home/home.js';
 import { ProgramPage } from './programs/program.js';
 import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
+import { AchieveEditPage } from './achieve/achieveEdit.js';
 import { AnnouncePage } from './announce/announce.js';
 import { LocationPage } from './location/location.js';
 
 const Achieve = () => <AchievePage/>;
+const AchieveEdit = () => <AchieveEditPage/>;
+const AchieveEditMatch = ({match}) => <AchieveEditPage year={match.params.year}/>;
 const Announce = () => <AnnouncePage/>;
 const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
@@ -46,6 +49,8 @@ class App extends React.Component {
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
           <Route path="/announcements" component={Announce}/>
+          <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
+          <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
           <Route path="/locations" component={Location}/>
         </Switch>
