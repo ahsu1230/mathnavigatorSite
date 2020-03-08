@@ -38,6 +38,7 @@ jobs:
           name: Install npm
           command: |
             sudo apt install nodejs
+            sudo apt-get install npm
             nodejs --version
             npm --version
       - run: cd orion/sites/admin
@@ -45,5 +46,7 @@ jobs:
           name: Install packages
           command: npm run install
       - run:
-          name: Format Javascript
-          command: prettier --check "**/*.js"
+          name: Check Javascript Format
+          command: |
+            npm uninstall -g prettier
+            prettier --check "**/*.js"
