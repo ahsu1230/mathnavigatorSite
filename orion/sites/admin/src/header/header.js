@@ -23,6 +23,10 @@ const LinkMap = {
       url: "/achievements"
     },
     {
+      title: "Locations",
+      url: "/locations"
+    },
+    {
       title: "Semesters",
       url: "/semesters"
     }
