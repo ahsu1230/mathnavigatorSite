@@ -25,7 +25,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install default-mysql-client
 
-      - run: cd orion
       - run: go get -v -t -d ./...
       - run:
           name: run tests
@@ -41,7 +40,6 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
-      - run: cd orion/sites/admin
       - run:
           name: Install packages
           command: npm install
@@ -49,4 +47,4 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "**/*.js"
+            prettier --check "orion/sites/admin/**/*.js"
