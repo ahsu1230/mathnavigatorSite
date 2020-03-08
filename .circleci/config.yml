@@ -42,7 +42,6 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
-      - run: cd orion/sites/admin
       - run:
           name: Install packages
           command: npm install
@@ -50,4 +49,4 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "**/*.js"
+            prettier --check "orion/sites/admin/**/*.js"
