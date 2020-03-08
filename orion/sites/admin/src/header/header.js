@@ -23,8 +23,8 @@ const LinkMap = {
       url: "/achievements"
     },
     {
-      title: "Semesters",
-      url: "/semesters"
+      title: "Locations",
+      url: "/locations"
     }
   ]
 }
