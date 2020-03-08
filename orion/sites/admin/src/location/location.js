@@ -1,8 +1,8 @@
-'use strict';
-require('./location.styl');
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+"use strict";
+require("./location.styl");
+import React from "react";
+import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
 
 export class LocationPage extends React.Component {
     render() {
@@ -11,17 +11,17 @@ export class LocationPage extends React.Component {
             locId: 123,
             address: "123 Sesame Street",
             roomNum: 23
-        }
+        };
         var fakeLocation1 = {
             locId: 4567,
             address: "456 Sesame St",
             roomNum: 892
-        }
+        };
         var fakeLocation2 = {
             locId: 123456,
             address: "12345 Park Place",
             roomNum: 212
-        }
+        };
         return (
             <div id="view-location">
                 <h1>All Locations ({numLocations})</h1>
@@ -31,13 +31,13 @@ export class LocationPage extends React.Component {
                     <li className="li-large">Room Number</li>
                 </ul>
                 <ul>
-                    <LocationRow locationObj = {fakeLocation}/>
-                    <LocationRow locationObj = {fakeLocation1}/>
-                    <LocationRow locationObj = {fakeLocation2}/>
+                    <LocationRow locationObj={fakeLocation} />
+                    <LocationRow locationObj={fakeLocation1} />
+                    <LocationRow locationObj={fakeLocation2} />
                 </ul>
-                    <button id="add-location">
-                        <Link to={"/locations/add"}>Add Location</Link>
-                    </button>
+                <button id="add-location">
+                    <Link to={"/locations/add"}>Add Location</Link>
+                </button>
             </div>
         );
     }
