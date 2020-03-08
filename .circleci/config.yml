@@ -49,4 +49,4 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "orion/sites/admin/**/*.js"
+            prettier --check --tab-width=4 "orion/sites/admin/**/*.js"
