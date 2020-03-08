@@ -1,8 +1,6 @@
 'use strict';
 require('./locationEdit.styl');
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
 import API from '../api.js';
 import { Modal } from '../modals/modal.js';
 import { OkayModal } from '../modals/okayModal.js';
@@ -146,8 +144,10 @@ export class LocationEditPage extends React.Component {
                 <input value={this.state.inputLocId}
                     onChange={(e) => this.handleChange(e, "inputLocId")}/>
                 <h4>Street</h4>
-                <input value={this.state.inputStreet}
-                    onChange={(e) => this.handleChange(e, "inputStreet")}/>
+                <input
+                    value={this.state.inputStreet}
+                    onChange={e => this.handleChange(e, "inputStreet")}
+                />
                 <h4>City</h4>
                 <input value={this.state.inputCity}
                     onChange={(e) => this.handleChange(e, "inputCity")}/>
@@ -161,8 +161,12 @@ export class LocationEditPage extends React.Component {
                 <input value={this.state.inputRoom}
                     onChange={(e) => this.handleChange(e, "inputRoom")}/>
                 <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>Save</button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>Cancel</button>
+                    <button className="btn-save" onClick={this.onClickSave}>
+                        Save
+                    </button>
+                    <button className="btn-cancel" onClick={this.onClickCancel}>
+                        Cancel
+                    </button>
                     {deleteButton}
                 </div>
             </div>

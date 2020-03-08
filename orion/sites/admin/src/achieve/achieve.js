@@ -6,12 +6,12 @@ import API from '../api.js';
 import { Link } from 'react-router-dom';
 
 export class AchievePage extends React.Component {
-	constructor(props) {
-	    super(props);
-	    this.state = {
-	      list: []
-	    };
- 	}
+    constructor(props) {
+        super(props);
+        this.state = {
+            list: []
+        };
+    }
 
 	componentDidMount() {
       API.get("api/achievements/v1/all")

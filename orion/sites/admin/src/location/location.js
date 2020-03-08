@@ -37,9 +37,9 @@ export class LocationPage extends React.Component {
                 <ul>
                     {location}
                 </ul>
-                    <button id="add-location">
-                        <Link to={"/locations/add"}>Add Location</Link>
-                    </button>
+                <button id="add-location">
+                    <Link to={"/locations/add"}>Add Location</Link>
+                </button>
             </div>
         );
     }
