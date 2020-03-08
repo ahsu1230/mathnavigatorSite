@@ -21,7 +21,8 @@ Use this to reformat your code
 prettier --write "**/*.js"
 ```
 
-Look [here](https://prettier.io/docs/en/options.html) for more options. Example:
+Look [here](https://prettier.io/docs/en/options.html) for more options.
+For consistency, we should use the following command to format our code:
 ```
 prettier --tab-width=4 --write "**/*.js"
 ```
