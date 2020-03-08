@@ -49,5 +49,5 @@ jobs:
       - run:
           name: Check Javascript Format
           command: |
-            npm install -g prettier
+            sudo npm install -g prettier
             prettier --check "**/*.js"
