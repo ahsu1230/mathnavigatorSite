@@ -10,7 +10,7 @@ func TestValidProgramId(t *testing.T) {
 	// Checks for valid program IDs
 	program := domains.Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
 	if err := program.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+				t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	program.ProgramId = "a_a_a_a_a_a"
