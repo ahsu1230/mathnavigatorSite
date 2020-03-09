@@ -25,11 +25,10 @@ jobs:
             sudo apt-get update
             sudo apt-get install default-mysql-client
 
-      - run: cd orion
       - run: go get -v -t -d ./...
       - run:
           name: Format Go codebase
-          command: test -z `gofmt -l ./`
+          command: ./orion/formatter.sh
       - run:
           name: Run Go tests
           command: |
