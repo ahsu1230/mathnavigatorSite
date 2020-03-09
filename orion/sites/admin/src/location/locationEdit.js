@@ -14,6 +14,7 @@ export class LocationEditPage extends React.Component {
              inputState: "",
              inputZip: "",
              inputRoomNum: "",
+             isEdit: false,
           };
     }
 
@@ -22,7 +23,11 @@ export class LocationEditPage extends React.Component {
     }
 
     onClickCancel() {
-        console.log("cancel button clicked");
+        window.location.hash = "locations";
+    }
+
+    onClickDelete() {
+        console.log("delete button clicked");
     }
 
     handleChange() {
@@ -30,8 +35,13 @@ export class LocationEditPage extends React.Component {
     }
 
     render() {
-        const title = "Edit Location";
+        const title = this.state.isEdit ? "Edit Location" : "Add Location";
         let deleteButton = <div></div>;
+        if (this.state.isEdit) {
+          deleteButton = (
+            <button className="btn-delete" onClick={this.onClickDelete}>Delete</button>
+          );
+        }
         return (
             <div id="view-location-edit">
                 <h2>{title}</h2>
