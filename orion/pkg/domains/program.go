@@ -23,9 +23,6 @@ type Program struct {
 
 // Class Methods
 
-const REGEX_PROGRAM_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
-const REGEX_NAME = `^[A-Z0-9][[:alnum:]-]*([- _]([(]?#\d[)]?|&|([(]?[[:alnum:]]+[)]?)))*$`
-
 func (program *Program) Validate() error {
 	// Retrieves the inputted values
 	programId := program.ProgramId
@@ -34,25 +31,24 @@ func (program *Program) Validate() error {
 	grade2 := program.Grade2
 	description := program.Description
 
-	// Checks if the program ID is in the form of alphanumeric strings separated by underscores
-	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches {
+	// Program ID validation
+	if matches, _ := regexp.MatchString(REGEX_PROGRAM_ID, programId); !matches || len(programId) > 64 {
 		return errors.New("invalid program id")
 	}
 
 	// Name validation
-	match, _ := regexp.MatchString(REGEX_NAME, name)
-	if !match {
+	if matches, _ := regexp.MatchString(REGEX_TITLE, name); !matches || len(name) > 255 {
 		return errors.New("invalid program name")
 	}
 
-	// Checks if the grades are valid
+	// Grade validation
 	if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
 		return errors.New("invalid grades")
 	}
 
 	// Description validation
-	if description == "" {
-		return errors.New("empty description")
+	if matches, _ := regexp.MatchString(REGEX_AT_LEAST_ONE_LETTER, description); !matches {
+		return errors.New("invalid description")
 	}
 
 	return nil

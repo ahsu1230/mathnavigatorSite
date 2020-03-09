@@ -2,6 +2,7 @@ package domains_test
 
 import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"strings"
 	"testing"
 )
 
@@ -22,6 +23,11 @@ func TestValidProgramId(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
+	program.ProgramId = "Valid_Program_123"
+	if err := program.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
 	// Checks for invalid program IDs
 	program.ProgramId = "a__a"
 	if err := program.Validate(); err == nil {
@@ -37,9 +43,14 @@ func TestValidProgramId(t *testing.T) {
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program id")
 	}
+
+	program.ProgramId = "Too long: " + strings.Repeat("A", 64)
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program id")
+	}
 }
 
-func TestProgramName(t *testing.T) {
+func TestValidProgramName(t *testing.T) {
 	// Checks for valid names
 	program := domains.Program{ProgramId: "ok", Name: "AP Calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
 	if err := program.Validate(); err != nil {
@@ -96,6 +107,11 @@ func TestProgramName(t *testing.T) {
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
+
+	program.Name = "Too long: " + strings.Repeat("A", 255)
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid program name")
+	}
 }
 
 func TestValidGrades(t *testing.T) {
@@ -137,7 +153,7 @@ func TestValidGrades(t *testing.T) {
 	}
 }
 
-func TestDescription(t *testing.T) {
+func TestValidDescription(t *testing.T) {
 	// Checks for valid descriptions
 	program := domains.Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
 	if err := program.Validate(); err != nil {
