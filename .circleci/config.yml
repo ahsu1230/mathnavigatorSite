@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
-      - image: circleci/mysql:5.7
+      - image: circleci/mysql:8.0
         environment:
           MYSQL_ROOT_USER: root
           MYSQL_ROOT_PASSWORD: password
@@ -25,11 +25,12 @@ jobs:
             sudo apt-get update
             sudo apt-get install default-mysql-client
 
-      - run: cd orion
       - run: go get -v -t -d ./...
       - run:
-          name: run tests
+          name: Format Go codebase
+          command: ./orion/formatter.sh
+      - run:
+          name: Run Go tests
           command: |
-            go fmt ./...
             go vet ./...
             go test -v ./...

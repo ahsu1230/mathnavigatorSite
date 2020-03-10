@@ -1,13 +1,13 @@
 package repos_test
 
 import (
-    "database/sql"
-    "reflect"
-    "testing"
-    "time"
-    sqlmock "github.com/DATA-DOG/go-sqlmock"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+	"database/sql"
+	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+	"reflect"
+	"testing"
+	"time"
 )
 
 func initProgramTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterface) {
@@ -15,8 +15,8 @@ func initProgramTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-    repo := repos.CreateTestProgramRepo(db)
-    return db, mock, repo
+	repo := repos.CreateTestProgramRepo(db)
+	return db, mock, repo
 }
 
 //
