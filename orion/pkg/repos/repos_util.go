@@ -7,6 +7,7 @@ import (
 
 func SetupRepos(db *sql.DB) {
 	ProgramRepo.Initialize(db)
+	AnnounceRepo.Initialize(db)
 }
 
 func handleSqlExecResult(result sql.Result, expected int64, errorMessage string) error {

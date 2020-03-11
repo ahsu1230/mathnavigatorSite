@@ -24,7 +24,14 @@ func (h *Handler) SetupApiEndpoints() {
 	}
 	// apiClasses := router.Group("api/classes/")
 	// apiLocations := router.Group("api/locations/")
-	// apiAnnounce := router.Group("api/announce/")
+	apiAnnounces := h.Engine.Group("api/announcements/")
+	{
+		apiAnnounces.GET("/v1/all", controllers.GetAllAnnouncements)
+		apiAnnounces.POST("/v1/create", controllers.CreateAnnouncement)
+		apiAnnounces.GET("/v1/announce/:id", controllers.GetAnnouncementById)
+		apiAnnounces.POST("/v1/announce/:id", controllers.UpdateAnnouncement)
+		apiAnnounces.DELETE("/v1/announce/:id", controllers.DeleteAnnouncement)
+	}
 	// apiAchieve := router.Group("api/achieve/")
 	// apiSemesters := router.Group("api/semesters/")
 	// apiUsers := router.Group("api/users/")

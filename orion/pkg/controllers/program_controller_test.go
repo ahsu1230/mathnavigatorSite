@@ -5,52 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 )
-
-// Global test variables
-var handler router.Handler
-var mps mockProgramService
-
-// Fake programService that implements ProgramService interface
-type mockProgramService struct {
-	mockGetAll         func() ([]domains.Program, error)
-	mockGetByProgramId func(string) (domains.Program, error)
-	mockCreate         func(domains.Program) error
-	mockUpdate         func(string, domains.Program) error
-	mockDelete         func(string) error
-}
-
-// Implement methods of ProgramService interface with mocked implementations
-func (mps *mockProgramService) GetAll() ([]domains.Program, error) {
-	return mps.mockGetAll()
-}
-func (mps *mockProgramService) GetByProgramId(programId string) (domains.Program, error) {
-	return mps.mockGetByProgramId(programId)
-}
-func (mps *mockProgramService) Create(program domains.Program) error {
-	return mps.mockCreate(program)
-}
-func (mps *mockProgramService) Update(programId string, program domains.Program) error {
-	return mps.mockUpdate(programId, program)
-}
-func (mps *mockProgramService) Delete(programId string) error {
-	return mps.mockDelete(programId)
-}
-
-func init() {
-	gin.SetMode(gin.TestMode)
-	engine := gin.Default()
-	handler = router.Handler{Engine: engine}
-	handler.SetupApiEndpoints()
-}
 
 //
 // Test Get All
@@ -257,14 +217,4 @@ func createBodyFromProgram(program domains.Program) io.Reader {
 		panic(err)
 	}
 	return bytes.NewBuffer(marshal)
-}
-
-func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {
-	req, err := http.NewRequest(method, url, body)
-	if err != nil {
-		t.Errorf("http request error: %v\n", err)
-	}
-	w := httptest.NewRecorder()
-	handler.Engine.ServeHTTP(w, req)
-	return w
 }
