@@ -48,37 +48,6 @@ func Test_CreateAnnouncements(t *testing.T) {
 	assert.EqualValues(t, 3, len(announces))
 }
 
-// It just occurred to me that this test makes no sense because unlike programs, announcements don't have a separate
-// human-friendly id. I've been using the database id for the "get by id" functions, and the database id is auto-
-// incremented upon insertion, so you physically cannot have two entries with matching id by design.
-//// Test: Create 2 Announcements with same id. Then GetByAnnounceId()
-//func Test_UniqueAnnounceId(t *testing.T) {
-//	refreshTable(t, domains.TABLE_ANNOUNCEMENTS)
-//
-//	now := time.Now().UTC()
-//	announce1 := createAnnouncement(now, "Author 1", "Message 1")
-//	announce2 := createAnnouncement(now, "Author 2", "Message 2") // Same announceId
-//	body1 := createJsonBody(announce1)
-//	body2 := createJsonBody(announce2)
-//	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/create", body1)
-//	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/create", body2)
-//	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-//	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
-//	errBody := recorder2.Body.String()
-//	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
-//
-//	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announce/1", nil)
-//	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-//
-//	// Validate results
-//	var announce domains.Announce
-//	if err := json.Unmarshal(recorder3.Body.Bytes(), &announce); err != nil {
-//		t.Errorf("unexpected error: %v\n", err)
-//	}
-//	assert.EqualValues(t, 1, announce.Id)
-//	assert.EqualValues(t, "Author 2", announce.Author)
-//}
-
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
 func Test_UpdateAnnouncement(t *testing.T) {
 	refreshTable(t, domains.TABLE_ANNOUNCEMENTS)

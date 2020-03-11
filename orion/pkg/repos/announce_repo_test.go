@@ -28,8 +28,18 @@ func TestSelectAllAnnouncements(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PostedAt", "Author", "Message"}).AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
-	mock.ExpectPrepare("^SELECT (.+) FROM announcements").ExpectQuery().WillReturnRows(rows)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"PostedAt",
+		"Author",
+		"Message"}).
+		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
+	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
+		ExpectQuery().
+		WillReturnRows(rows)
 	got, err := repo.SelectAll()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -64,8 +74,19 @@ func TestSelectAnnouncement(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PostedAt", "Author", "Message"}).AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
-	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").ExpectQuery().WithArgs(1).WillReturnRows(rows)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"PostedAt",
+		"Author",
+		"Message"}).
+		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
+	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").
+		ExpectQuery().
+		WithArgs(1).
+		WillReturnRows(rows)
 	got, err := repo.SelectByAnnounceId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -99,7 +120,10 @@ func TestInsertAnnouncement(t *testing.T) {
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO announcements").ExpectExec().WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), now, "Author Name", "Valid Message").WillReturnResult(result)
+	mock.ExpectPrepare("^INSERT INTO announcements").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), now, "Author Name", "Valid Message").
+		WillReturnResult(result)
 	announce := domains.Announce{
 		PostedAt: now,
 		Author:   "Author Name",
@@ -126,7 +150,10 @@ func TestUpdateAnnouncement(t *testing.T) {
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE announcements SET (.*) WHERE id=?").ExpectExec().WithArgs(sqlmock.AnyArg(), now, "Author Name", "Valid Message", 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE announcements SET (.*) WHERE id=?").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), now, "Author Name", "Valid Message", 1).
+		WillReturnResult(result)
 	announce := domains.Announce{
 		PostedAt: now,
 		Author:   "Author Name",
@@ -152,7 +179,10 @@ func TestDeleteAnnouncement(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM announcements WHERE id=?").ExpectExec().WithArgs(1).WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM announcements WHERE id=?").
+		ExpectExec().
+		WithArgs(1).
+		WillReturnResult(result)
 	err := repo.Delete(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
