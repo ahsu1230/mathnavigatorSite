@@ -52,6 +52,7 @@ func setupTestDatabase(host string, port int, username string, password string, 
 
 	fmt.Println("Initializing repos...")
 	repos.ProgramRepo.Initialize(dbConn)
+	repos.AnnounceRepo.Initialize(dbConn)
 	// Initialize other tables here...
 
 	if err := dbConn.Ping(); err != nil {

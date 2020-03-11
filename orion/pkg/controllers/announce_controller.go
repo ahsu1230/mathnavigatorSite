@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"net/http"
-	"strconv"
-	"github.com/gin-gonic/gin"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 func parseParamId(c *gin.Context) uint {
@@ -41,12 +41,12 @@ func CreateAnnouncement(c *gin.Context) {
 	// Incoming JSON
 	var announceJson domains.Announce
 	c.BindJSON(&announceJson)
-	
+
 	if err := announceJson.Validate(); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
-	
+
 	err := services.AnnounceService.Create(announceJson)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
@@ -77,7 +77,7 @@ func UpdateAnnouncement(c *gin.Context) {
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
 	id := parseParamId(c)
-	
+
 	err := services.AnnounceService.Delete(id)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())

@@ -2,15 +2,15 @@ package repos
 
 import (
 	"database/sql"
-	"time"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"time"
 )
 
 // Global variable
 var AnnounceRepo AnnounceRepoInterface = &announceRepo{}
 
 type announceRepo struct {
-	db *sql.DB;
+	db *sql.DB
 }
 
 type AnnounceRepoInterface interface {
@@ -28,7 +28,7 @@ func (ar *announceRepo) Initialize(db *sql.DB) {
 
 func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 	results := make([]domains.Announce, 0)
-	
+
 	stmt, err := ar.db.Prepare("SELECT * FROM announcements")
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	
+
 	for rows.Next() {
 		var announce domains.Announce
 		if errScan := rows.Scan(
@@ -49,13 +49,12 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 			&announce.DeletedAt,
 			&announce.PostedAt,
 			&announce.Author,
-			&announce.Message);
-		errScan != nil {
+			&announce.Message); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, announce)
 	}
-	
+
 	return results, nil
 }
 
@@ -65,7 +64,7 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 		return domains.Announce{}, err
 	}
 	defer stmt.Close()
-	
+
 	var announce domains.Announce
 	row := stmt.QueryRow(id)
 	errScan := row.Scan(
@@ -76,23 +75,23 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 		&announce.PostedAt,
 		&announce.Author,
 		&announce.Message)
-	
+
 	return announce, errScan
 }
 
 func (ar *announceRepo) Insert(announce domains.Announce) error {
 	stmt, err := ar.db.Prepare("INSERT INTO announcements (" +
-								"created_at, " +
-								"updated_at, " +
-								"posted_at, " +
-								"author, " +
-								"message" +
-								") VALUES (?, ?, ?, ?, ?)")
+		"created_at, " +
+		"updated_at, " +
+		"posted_at, " +
+		"author, " +
+		"message" +
+		") VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
-	
+
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
@@ -103,32 +102,33 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return handleSqlExecResult(result, 1, "announcement was not inserted")
 }
 
 func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 	stmt, err := ar.db.Prepare("UPDATE announcements SET " +
-								"updated_at=?, " +
-								"posted_at=?, " +
-								"author=?, " +
-								"message=? " +
-								"WHERE id=?")
+		"updated_at=?, " +
+		"posted_at=?, " +
+		"author=?, " +
+		"message=? " +
+		"WHERE id=?")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
-	
+
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
 		announce.PostedAt,
 		announce.Author,
-		announce.Message)
+		announce.Message,
+		id)
 	if err != nil {
 		return err
 	}
-	
+
 	return handleSqlExecResult(result, 1, "announcement was not updated")
 }
 
@@ -138,12 +138,12 @@ func (ar *announceRepo) Delete(id uint) error {
 		return err
 	}
 	defer stmt.Close()
-	
+
 	result, err := stmt.Exec(id)
 	if err != nil {
 		return err
 	}
-	
+
 	return handleSqlExecResult(result, 1, "announcement was not deleted")
 }
 

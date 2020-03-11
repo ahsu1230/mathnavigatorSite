@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
 	"time"
-	"github.com/stretchr/testify/assert"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 )
 
 //
@@ -21,16 +21,16 @@ func TestGetAllAnnouncements_Success(t *testing.T) {
 	mas.mockGetAll = func() ([]domains.Announce, error) {
 		return []domains.Announce{
 			{
-				Id:			1,
-				PostedAt:	now,
-				Author:		"Author Name",
-				Message:	"Valid Message",
+				Id:       1,
+				PostedAt: now,
+				Author:   "Author Name",
+				Message:  "Valid Message",
 			},
 			{
-				Id:			2,
-				PostedAt:	now,
-				Author:		"Author Name 2",
-				Message:	"Valid Message 2",
+				Id:       2,
+				PostedAt: now,
+				Author:   "Author Name 2",
+				Message:  "Valid Message 2",
 			},
 		}, nil
 	}
@@ -46,7 +46,11 @@ func TestGetAllAnnouncements_Success(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, announces[0].Id)
+	assert.EqualValues(t, "Author Name", announces[0].Author)
+	assert.EqualValues(t, "Valid Message", announces[0].Message)
 	assert.EqualValues(t, 2, announces[1].Id)
+	assert.EqualValues(t, "Author Name 2", announces[1].Author)
+	assert.EqualValues(t, "Valid Message 2", announces[1].Message)
 	assert.EqualValues(t, 2, len(announces))
 }
 
@@ -71,6 +75,8 @@ func TestGetAnnouncement_Success(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, announce.Id)
+	assert.EqualValues(t, "Author Name", announce.Author)
+	assert.EqualValues(t, "Valid Message", announce.Message)
 }
 
 func TestGetAnnounce_Failure(t *testing.T) {
@@ -204,10 +210,10 @@ func TestDeleteAnnounce_Failure(t *testing.T) {
 //
 func createMockAnnounce(id uint, postedAt time.Time, author string, message string) domains.Announce {
 	return domains.Announce{
-		Id:			id,
-		PostedAt:	postedAt,
-		Author:		author,
-		Message:	message,
+		Id:       id,
+		PostedAt: postedAt,
+		Author:   author,
+		Message:  message,
 	}
 }
 

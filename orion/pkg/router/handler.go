@@ -1,9 +1,9 @@
 package router
 
 import (
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/controllers"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/controllers"
 )
 
 type Handler struct {

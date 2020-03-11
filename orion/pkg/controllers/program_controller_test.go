@@ -1,15 +1,15 @@
 package controllers_test
 
 import (
-    "bytes"
-    "encoding/json"
-    "errors"
-    "io"
-    "net/http"
+	"bytes"
+	"encoding/json"
+	"errors"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
+	"io"
+	"net/http"
 	"testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 )
 
 //

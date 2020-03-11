@@ -1,13 +1,13 @@
 package controllers_test
 
 import (
-	"io"
-    "net/http"
-	"net/http/httptest"
-	"testing"
-	"github.com/gin-gonic/gin"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
+	"github.com/gin-gonic/gin"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 // Global test variables
@@ -17,11 +17,11 @@ var mps mockProgramService
 
 // Fake programService that implements ProgramService interface
 type mockProgramService struct {
-    mockGetAll func() ([]domains.Program, error)
-    mockGetByProgramId func(string) (domains.Program, error)
-    mockCreate func(domains.Program) error
-    mockUpdate func(string, domains.Program) error
-    mockDelete func(string) error
+	mockGetAll         func() ([]domains.Program, error)
+	mockGetByProgramId func(string) (domains.Program, error)
+	mockCreate         func(domains.Program) error
+	mockUpdate         func(string, domains.Program) error
+	mockDelete         func(string) error
 }
 
 // Implement methods of ProgramService interface with mocked implementations
@@ -45,11 +45,11 @@ var mas mockAnnounceService
 
 // Fake announceService that implements AnnounceService interface
 type mockAnnounceService struct {
-	mockGetAll func() ([]domains.Announce, error)
+	mockGetAll          func() ([]domains.Announce, error)
 	mockGetByAnnounceId func(uint) (domains.Announce, error)
-	mockCreate func(domains.Announce) error
-	mockUpdate func(uint, domains.Announce) error
-	mockDelete func(uint) error
+	mockCreate          func(domains.Announce) error
+	mockUpdate          func(uint, domains.Announce) error
+	mockDelete          func(uint) error
 }
 
 // Implement methods of AnnounceService interface with mocked implementations
@@ -77,11 +77,11 @@ func init() {
 }
 
 func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {
-    req, err := http.NewRequest(method, url, body)
+	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		t.Errorf("http request error: %v\n", err)
-    }
-    w := httptest.NewRecorder()
-    handler.Engine.ServeHTTP(w, req)
-    return w
+	}
+	w := httptest.NewRecorder()
+	handler.Engine.ServeHTTP(w, req)
+	return w
 }
