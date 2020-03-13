@@ -131,7 +131,7 @@ func TestUpdateAchieve(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE achievements SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 2021, "message2").
+		WithArgs(sqlmock.AnyArg(), 2021, "message2", 1).
 		WillReturnResult(result)
 	achieve := domains.Achieve{
 		Year:    2021,
