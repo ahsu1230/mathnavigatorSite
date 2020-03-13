@@ -70,7 +70,7 @@ func TestSelectAchieve(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAchieveId(1)
+	got, err := repo.SelectById(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
