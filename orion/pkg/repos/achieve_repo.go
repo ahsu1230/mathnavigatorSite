@@ -18,20 +18,20 @@ type achieveRepo struct {
 type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Achieve, error)
-	SelectById(string) (domains.Achieve, error)
+	SelectById(uint) (domains.Achieve, error)
 	Insert(domains.Achieve) error
-	Update(string, domains.Achieve) error
-	Delete(string) error
+	Update(uint, domains.Achieve) error
+	Delete(uint) error
 }
 
-func (pr *achieveRepo) Initialize(db *sql.DB) {
-	pr.db = db
+func (ar *achieveRepo) Initialize(db *sql.DB) {
+	ar.db = db
 }
 
-func (pr *achieveRepo) SelectAll() ([]domains.Achieve, error) {
+func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 	results := make([]domains.Achieve, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM achievements")
+	stmt, err := ar.db.Prepare("SELECT * FROM achievements")
 	if err != nil {
 		return nil, err
 	}
@@ -58,9 +58,9 @@ func (pr *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 	return results, nil
 }
 
-func (pr *achieveRepo) SelectById(id string) (domains.Achieve, error) {
+func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	statement := "SELECT * FROM achievements WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return domains.Achieve{}, err
 	}
@@ -78,7 +78,7 @@ func (pr *achieveRepo) SelectById(id string) (domains.Achieve, error) {
 	return achieve, errScan
 }
 
-func (pr *achieveRepo) Insert(achieve domains.Achieve) error {
+func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 	statement := "INSERT INTO achievements (" +
 		"created_at, " +
 		"updated_at, " +
@@ -86,7 +86,7 @@ func (pr *achieveRepo) Insert(achieve domains.Achieve) error {
 		"message" +
 		") VALUES (?, ?, ?, ?)"
 
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -104,14 +104,13 @@ func (pr *achieveRepo) Insert(achieve domains.Achieve) error {
 	return handleSqlExecResult(execResult, 1, "achievement was not inserted")
 }
 
-func (pr *achieveRepo) Update(id string, achieve domains.Achieve) error {
+func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 	statement := "UPDATE achievements SET " +
 		"updated_at=?, " +
-		"id=?, " +
 		"year=?, " +
 		"message=? " +
 		"WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -129,9 +128,9 @@ func (pr *achieveRepo) Update(id string, achieve domains.Achieve) error {
 	return handleSqlExecResult(execResult, 1, "achievement was not updated")
 }
 
-func (pr *achieveRepo) Delete(id string) error {
+func (ar *achieveRepo) Delete(id uint) error {
 	statement := "DELETE FROM achievements WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -146,7 +145,7 @@ func (pr *achieveRepo) Delete(id string) error {
 
 // For Tests Only
 func CreateTestAchieveRepo(db *sql.DB) AchieveRepoInterface {
-	pr := &achieveRepo{}
-	pr.Initialize(db)
-	return pr
+	ar := &achieveRepo{}
+	ar.Initialize(db)
+	return ar
 }
