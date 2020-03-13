@@ -18,20 +18,20 @@ type userRepo struct {
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.User, error)
-	SelectById(string) (domains.User, error)
+	SelectById(uint) (domains.User, error)
 	Insert(domains.User) error
-	Update(string, domains.User) error
-	Delete(string) error
+	Update(uint, domains.User) error
+	Delete(uint) error
 }
 
-func (pr *userRepo) Initialize(db *sql.DB) {
-	pr.db = db
+func (ur *userRepo) Initialize(db *sql.DB) {
+	ur.db = db
 }
 
-func (pr *userRepo) SelectAll() ([]domains.User, error) {
+func (ur *userRepo) SelectAll() ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM users")
+	stmt, err := ur.db.Prepare("SELECT * FROM users")
 	if err != nil {
 		return nil, err
 	}
@@ -63,9 +63,9 @@ func (pr *userRepo) SelectAll() ([]domains.User, error) {
 	return results, nil
 }
 
-func (pr *userRepo) SelectById(id string) (domains.User, error) {
+func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 	statement := "SELECT * FROM users WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return domains.User{}, err
 	}
@@ -88,7 +88,7 @@ func (pr *userRepo) SelectById(id string) (domains.User, error) {
 	return user, errScan
 }
 
-func (pr *userRepo) Insert(user domains.User) error {
+func (ur *userRepo) Insert(user domains.User) error {
 	statement := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
@@ -101,7 +101,7 @@ func (pr *userRepo) Insert(user domains.User) error {
 		"guardian_id" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -124,10 +124,9 @@ func (pr *userRepo) Insert(user domains.User) error {
 	return handleSqlExecResult(execResult, 1, "user was not inserted")
 }
 
-func (pr *userRepo) Update(id string, user domains.User) error {
+func (ur *userRepo) Update(id uint, user domains.User) error {
 	statement := "UPDATE users SET " +
 		"updated_at=?, " +
-		"id=?, " +
 		"first_name=?, " +
 		"last_name=?, " +
 		"middle_name=?, " +
@@ -136,7 +135,7 @@ func (pr *userRepo) Update(id string, user domains.User) error {
 		"is_guardian=?, " +
 		"guardian_id=? " +
 		"WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -159,9 +158,9 @@ func (pr *userRepo) Update(id string, user domains.User) error {
 	return handleSqlExecResult(execResult, 1, "user was not updated")
 }
 
-func (pr *userRepo) Delete(id string) error {
+func (ur *userRepo) Delete(id uint) error {
 	statement := "DELETE FROM users WHERE id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -176,7 +175,7 @@ func (pr *userRepo) Delete(id string) error {
 
 // For Tests Only
 func CreateTestUserRepo(db *sql.DB) UserRepoInterface {
-	pr := &userRepo{}
-	pr.Initialize(db)
-	return pr
+	ur := &userRepo{}
+	ur.Initialize(db)
+	return ur
 }

@@ -28,8 +28,31 @@ func TestSelectAllUsers(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "FirstName", "LastName", "MiddleName", "Email", "Phone", "IsGuardian", "GuardianId"}).
-		AddRow(1, now, now, sql.NullTime{}, "John", "Smith", "Middle", "john.smith@example.com", "555-555-0100", false, 0)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"FirstName",
+		"LastName",
+		"MiddleName",
+		"Email",
+		"Phone",
+		"IsGuardian",
+		"GuardianId",
+	}).AddRow(
+		1,
+		now,
+		now,
+		sql.NullTime{},
+		"John",
+		"Smith",
+		"Middle",
+		"john.smith@example.com",
+		"555-555-0100",
+		false,
+		sql.NullUint,
+	)
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
 	got, err := repo.SelectAll()
 	if err != nil {
@@ -69,13 +92,36 @@ func TestSelectUser(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "FirstName", "LastName", "MiddleName", "Email", "Phone", "IsGuardian", "GuardianId"}).
-		AddRow(1, now, now, sql.NullTime{}, "John", "Smith", "Middle", "john.smith@example.com", "555-555-0100", false, 0)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"FirstName",
+		"LastName",
+		"MiddleName",
+		"Email",
+		"Phone",
+		"IsGuardian",
+		"GuardianId",
+	}).AddRow(
+		1,
+		now,
+		now,
+		sql.NullTime{},
+		"John",
+		"Smith",
+		"Middle",
+		"john.smith@example.com",
+		"555-555-0100",
+		false,
+		0,
+	)
 	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByUserId(1) // Correct id
+	got, err := repo.SelectByUserId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -114,8 +160,17 @@ func TestInsertUser(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO users").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "John", "Smith", "Middle", "john.smith@example.com", "555-555-0100", false, 0).
-		WillReturnResult(result)
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"John",
+			"Smith",
+			"Middle",
+			"john.smith@example.com",
+			"555-555-0100",
+			false,
+			0,
+		).WillReturnResult(result)
 	user := domains.User{
 		FirstName:  "John",
 		LastName:   "Smith",
