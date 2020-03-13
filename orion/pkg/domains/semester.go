@@ -21,7 +21,7 @@ type Semester struct {
 // Class Methods
 
 func (semester *Semester) Validate() error {
-	// 	Retrieves the inputted values
+	// Retrieves the inputted values
 	semesterId := semester.SemesterId
 	title := semester.Title
 
