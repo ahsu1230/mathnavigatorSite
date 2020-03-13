@@ -9,15 +9,15 @@ var ProgramService programServiceInterface = &programService{}
 
 // Interface for ProgramService
 type programServiceInterface interface {
-    GetAll() ([]domains.Program, error)
-    GetByProgramId(string) (domains.Program, error)
-    Create(domains.Program) error
-    Update(string, domains.Program) error
-    Delete(string) error
+	GetAll() ([]domains.Program, error)
+	GetByProgramId(string) (domains.Program, error)
+	Create(domains.Program) error
+	Update(string, domains.Program) error
+	Delete(string) error
 }
 
 // Struct that implements interface
-type programService struct {}
+type programService struct{}
 
 func (ps *programService) GetAll() ([]domains.Program, error) {
 	programs, err := repos.ProgramRepo.SelectAll()
