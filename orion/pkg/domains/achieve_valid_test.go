@@ -19,7 +19,7 @@ func TestValidYear(t *testing.T) {
 	}
 }
 
-func TestValidMessage(t *testing.T) {
+func TestValidAchievementMessage(t *testing.T) {
 	// Checks for valid messages
 	achieve := domains.Achieve{Year: 2050, Message: "Hello World!"}
 	if err := achieve.Validate(); err != nil {
