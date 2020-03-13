@@ -62,7 +62,7 @@ func (user *User) Validate() error {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if guardianId == id {
+		if guardian, _ := guardianId.Value; guardian == id {
 			return errors.New("invalid guardian id")
 		}
 	}
