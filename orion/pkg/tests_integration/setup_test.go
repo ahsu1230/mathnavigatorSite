@@ -5,15 +5,15 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
+	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
-	"github.com/gin-gonic/gin"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
 )
 
 var db *sql.DB
@@ -49,9 +49,10 @@ func setupTestDatabase(host string, port int, username string, password string, 
 
 	fmt.Println("Starting migrations...")
 	repos.Migrate(dbConn, "file://../repos/migrations")
-	
+
 	fmt.Println("Initializing repos...")
 	repos.ProgramRepo.Initialize(dbConn)
+	repos.AnnounceRepo.Initialize(dbConn)
 	// Initialize other tables here...
 
 	if err := dbConn.Ping(); err != nil {
@@ -76,20 +77,20 @@ func refreshTable(t *testing.T, tableName string) error {
 func setupTestRouter() router.Handler {
 	fmt.Println("Initializing Router...")
 	gin.SetMode(gin.TestMode)
-    engine := gin.Default()
-	newHandler := router.Handler{ Engine: engine }
+	engine := gin.Default()
+	newHandler := router.Handler{Engine: engine}
 	newHandler.SetupApiEndpoints()
 	return newHandler
 }
 
 func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {
-    req, err := http.NewRequest(method, url, body)
+	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		t.Errorf("http request error: %v\n", err)
-    }
-    w := httptest.NewRecorder()
-    handler.Engine.ServeHTTP(w, req)
-    return w
+	}
+	w := httptest.NewRecorder()
+	handler.Engine.ServeHTTP(w, req)
+	return w
 }
 
 func createJsonBody(v interface{}) io.Reader {
