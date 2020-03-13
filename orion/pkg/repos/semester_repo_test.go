@@ -133,7 +133,7 @@ func TestUpdateSemester(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE semesters SET (.*) WHERE semester_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "2021_spring", "Spring 2021").
+		WithArgs(sqlmock.AnyArg(), "2021_spring", "Spring 2021", "2020_fall").
 		WillReturnResult(result)
 	semester := domains.Semester{
 		SemesterId: "2021_spring",
