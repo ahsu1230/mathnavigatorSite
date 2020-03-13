@@ -30,7 +30,9 @@ func TestSelectAllPrograms(t *testing.T) {
 	now := time.Now().UTC()
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
 		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
-	mock.ExpectPrepare("^SELECT (.+) FROM programs").ExpectQuery().WillReturnRows(rows)
+	mock.ExpectPrepare("^SELECT (.+) FROM programs").
+		ExpectQuery().
+		WillReturnRows(rows)
 	got, err := repo.SelectAll()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

@@ -1,24 +1,24 @@
 package controllers
 
 import (
-    "net/http"
-    "github.com/gin-gonic/gin"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-    "github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func GetAllPrograms(c *gin.Context) {
 	programList, err := services.ProgramService.GetAll()
-    if err != nil {
+	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
-    } else {
-        c.JSON(http.StatusOK, programList)
-    }
+	} else {
+		c.JSON(http.StatusOK, programList)
+	}
 	return
 }
 
 func GetProgramById(c *gin.Context) {
-    // Incoming parameters
+	// Incoming parameters
 	programId := c.Param("programId")
 
 	program, err := services.ProgramService.GetByProgramId(programId)
@@ -31,7 +31,7 @@ func GetProgramById(c *gin.Context) {
 }
 
 func CreateProgram(c *gin.Context) {
-    // Incoming JSON
+	// Incoming JSON
 	var programJson domains.Program
 	c.BindJSON(&programJson)
 
@@ -42,7 +42,7 @@ func CreateProgram(c *gin.Context) {
 
 	err := services.ProgramService.Create(programJson)
 	if err != nil {
-        c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
 	}
@@ -50,7 +50,7 @@ func CreateProgram(c *gin.Context) {
 }
 
 func UpdateProgram(c *gin.Context) {
-    // Incoming JSON & Parameters
+	// Incoming JSON & Parameters
 	programId := c.Param("programId")
 	var programJson domains.Program
 	c.BindJSON(&programJson)
@@ -62,7 +62,7 @@ func UpdateProgram(c *gin.Context) {
 
 	err := services.ProgramService.Update(programId, programJson)
 	if err != nil {
-        c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
 	}
@@ -70,14 +70,14 @@ func UpdateProgram(c *gin.Context) {
 }
 
 func DeleteProgram(c *gin.Context) {
-    // Incoming Parameters
-    programId := c.Param("programId")
+	// Incoming Parameters
+	programId := c.Param("programId")
 
-    err := services.ProgramService.Delete(programId)
-    if err != nil {
-        c.String(http.StatusInternalServerError, err.Error())
-    } else {
-        c.Status(http.StatusOK)
-    }
-    return
+	err := services.ProgramService.Delete(programId)
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
 }
