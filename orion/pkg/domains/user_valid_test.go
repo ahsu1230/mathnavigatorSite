@@ -54,25 +54,6 @@ func TestValidLastName(t *testing.T) {
 	}
 }
 
-func TestValidMiddleName(t *testing.T) {
-	// Checks for valid middle names
-	program := domains.User{FirstName: "John", LastName: "Smith", MiddleName: "Middle", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: 1}
-	if err := program.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-
-	program.MiddleName = ""
-	if err := program.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-
-	// Checks for invalid middle names
-	program.MiddleName = "Too long" + strings.Repeat("A", 32)
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid middle name")
-	}
-}
-
 func TestValidEmail(t *testing.T) {
 	// Checks for valid emails
 	program := domains.User{FirstName: "John", LastName: "Smith", MiddleName: "Middle", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: 1}
