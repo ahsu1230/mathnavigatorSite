@@ -51,10 +51,7 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	repos.Migrate(dbConn, "file://../repos/migrations")
 
 	fmt.Println("Initializing repos...")
-	repos.ProgramRepo.Initialize(dbConn)
-	repos.AnnounceRepo.Initialize(dbConn)
-	repos.LocationRepo.Initialize(dbConn)
-	// Initialize other tables here...
+	repos.SetupRepos(dbConn)
 
 	if err := dbConn.Ping(); err != nil {
 		panic(err.Error())
