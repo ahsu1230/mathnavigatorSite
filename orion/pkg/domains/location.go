@@ -11,15 +11,15 @@ var TABLE_LOCATIONS = "locations"
 
 type Location struct {
 	Id        uint
-	CreatedAt time.Time    `db:"created_at"`
-	UpdatedAt time.Time    `db:"update_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
-	LocId     string       `db:"loc_id" json:"locId"`
-	Street    string       `json:"street"`
-	City      string       `json:"city"`
-	State     string       `json:"state"`
-	Zipcode   string       `json:"zipcode"`
-	Room      string       `json:"room"`
+	CreatedAt time.Time      `db:"created_at"`
+	UpdatedAt time.Time      `db:"update_at"`
+	DeletedAt sql.NullTime   `db:"deleted_at"`
+	LocId     string         `db:"loc_id" json:"locId"`
+	Street    string         `json:"street"`
+	City      string         `json:"city"`
+	State     string         `json:"state"`
+	Zipcode   string         `json:"zipcode"`
+	Room      sql.NullString `json:"room"`
 }
 
 func (location *Location) Validate() error {
@@ -57,8 +57,10 @@ func (location *Location) Validate() error {
 	}
 
 	// Room validation
-	if matches, _ := regexp.MatchString(REGEX_ALPHA, room); room != "" && !matches {
-		return errors.New("invalid room")
+	if room.Valid {
+		if matches, _ := regexp.MatchString(REGEX_ALPHA, room.String); !matches {
+			return errors.New("invalid room")
+		}
 	}
 
 	return nil

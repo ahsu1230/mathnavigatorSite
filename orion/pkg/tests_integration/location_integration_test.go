@@ -1,6 +1,7 @@
 package integration_tests
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
@@ -129,6 +130,6 @@ func createLocation(locId string, street string, city string, state string, zipc
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    room,
+		Room:    sql.NullString{room, true},
 	}
 }
