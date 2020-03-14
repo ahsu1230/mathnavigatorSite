@@ -39,7 +39,7 @@ func TestSelectAllLocations(t *testing.T) {
 		"State",
 		"Zipcode",
 		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{"Room 2", true})
+		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{String: "Room 2", Valid: true})
 	mock.ExpectPrepare("^SELECT (.+) FROM locations").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -60,7 +60,7 @@ func TestSelectAllLocations(t *testing.T) {
 			City:      "Potomac",
 			State:     "MD",
 			Zipcode:   "20854",
-			Room:      sql.NullString{"Room 2", true},
+			Room:      sql.NullString{String: "Room 2", Valid: true},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -91,7 +91,7 @@ func TestSelectLocation(t *testing.T) {
 		"State",
 		"Zipcode",
 		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{"Room 2", true})
+		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{String: "Room 2", Valid: true})
 	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE loc_id=?").
 		ExpectQuery().
 		WithArgs("xkcd").
@@ -112,7 +112,7 @@ func TestSelectLocation(t *testing.T) {
 		City:      "Potomac",
 		State:     "MD",
 		Zipcode:   "20854",
-		Room:      sql.NullString{"Room 2", true},
+		Room:      sql.NullString{String: "Room 2", Valid: true},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -133,7 +133,7 @@ func TestInsertLocation(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO locations").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{"Room 2", true}).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", sql.NullString{String: "Room 2", Valid: true}).
 		WillReturnResult(result)
 	location := domains.Location{
 		LocId:   "xkcd",
@@ -141,7 +141,7 @@ func TestInsertLocation(t *testing.T) {
 		City:    "Potomac",
 		State:   "MD",
 		Zipcode: "20854",
-		Room:    sql.NullString{"Room 2", true},
+		Room:    sql.NullString{String: "Room 2", Valid: true},
 	}
 	err := repo.Insert(location)
 	if err != nil {
@@ -165,7 +165,7 @@ func TestUpdateLocation(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE loc_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", sql.NullString{"Room 41", true}, "xkcd").
+		WithArgs(sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", sql.NullString{String: "Room 41", Valid: true}, "xkcd").
 		WillReturnResult(result)
 	location := domains.Location{
 		LocId:   "www",
@@ -173,7 +173,7 @@ func TestUpdateLocation(t *testing.T) {
 		City:    "San Francisco",
 		State:   "CA",
 		Zipcode: "94016",
-		Room:    sql.NullString{"Room 41", true},
+		Room:    sql.NullString{String: "Room 41", Valid: true},
 	}
 	err := repo.Update("xkcd", location)
 	if err != nil {

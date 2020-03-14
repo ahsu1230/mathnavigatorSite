@@ -224,7 +224,7 @@ func TestValidLocationRoom(t *testing.T) {
 		City:    "Potomac",
 		State:   "MD",
 		Zipcode: "20854",
-		Room:    sql.NullString{"Room 2", true},
+		Room:    sql.NullString{String: "Room 2", Valid: true},
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())

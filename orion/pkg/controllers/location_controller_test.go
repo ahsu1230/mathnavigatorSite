@@ -26,7 +26,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "City",
 				State:   "MA",
 				Zipcode: "77294",
-				Room:    sql.NullString{"Room 1", true},
+				Room:    sql.NullString{String: "Room 1", Valid: true},
 			},
 			{
 				Id:      2,
@@ -35,7 +35,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "Dity",
 				State:   "MD",
 				Zipcode: "12353",
-				Room:    sql.NullString{"Room 2", true},
+				Room:    sql.NullString{String: "Room 2", Valid: true},
 			},
 		}, nil
 	}
@@ -211,7 +211,7 @@ func createMockLocation(locId string, street string, city string, state string, 
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    sql.NullString{room, true},
+		Room:    sql.NullString{String: room, Valid: true},
 	}
 }
 
