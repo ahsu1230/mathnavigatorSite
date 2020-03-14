@@ -2,8 +2,6 @@
 require('./announce.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import API from '../api.js';
-import { Modal } from '../modals/modal.js';
 import { Link } from 'react-router-dom';
 
 export class AnnouncePage extends React.Component {
@@ -30,7 +28,7 @@ export class AnnouncePage extends React.Component {
 		return (
       <div id="view-announce">
         <h1>All Announcements ({numAnnouncements}) </h1>
-				<ul> {/* this is the subheading */}
+				<ul id = "announce-subhead">
 					<div className="announce-lists">
 						<li className="li-med"> Date </li>
 						<li className="li-med"> Author </li>
@@ -39,8 +37,7 @@ export class AnnouncePage extends React.Component {
 					</div>
 				</ul>
 
-				{/* these are the lists under the subheading */}
-				<ul> {/*I think there's a problem having li under li, but I'll fix it later*/}
+				<ul id = "announce-lists-under-subhead">
 					<li className="announce-lists">
 						<div className="li-med"> {fakeAnnounceA.date} </div>
 						<div className="li-med"> {fakeAnnounceA.author} </div>
@@ -62,10 +59,7 @@ export class AnnouncePage extends React.Component {
 
 				</ul>
 
-			{/* I think this should be <Link> not <a> but <Link> makes page not load. fix later*/}
-			{/*<button className="announcement-button"> Add Announcement</button>*/}
 				<Link to={"/announce/add"}> <button className="announcement-button"> Add Announcement</button> </Link>
-				{/*<Link className="announcement-button" to={"/announce/add"}>Add Announcement</Link>*/}
       </div>
 		);
 	}
