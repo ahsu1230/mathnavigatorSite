@@ -62,7 +62,7 @@ func (user *User) Validate() error {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if (guardianId == sql_helper.NullUint{id, true}) {
+		if (guardianId == sql_helper.NullUint{Uint: id, Valid: true}) {
 			return errors.New("invalid guardian id")
 		}
 	}
