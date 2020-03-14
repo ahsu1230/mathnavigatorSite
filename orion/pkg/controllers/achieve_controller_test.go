@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllAchievements_Success(t *testing.T) {
-	mas.mockGetAll = func() ([]domains.Achieve, error) {
+	achieveService.mockGetAll = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			{
 				Id:      1,
@@ -30,7 +30,7 @@ func TestGetAllAchievements_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all", nil)
@@ -54,11 +54,11 @@ func TestGetAllAchievements_Success(t *testing.T) {
 // Test Get Achieve
 //
 func TestGetAchievement_Success(t *testing.T) {
-	mas.mockGetByAchieveId = func(id uint) (domains.Achieve, error) {
+	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
 		achieve := createMockAchievement(1, 2020, "message1")
 		return achieve, nil
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
@@ -75,10 +75,10 @@ func TestGetAchievement_Success(t *testing.T) {
 }
 
 func TestGetAchievement_Failure(t *testing.T) {
-	mas.mockGetByAchieveId = func(id uint) (domains.Achieve, error) {
+	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
 		return domains.Achieve{}, errors.New("not found")
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
@@ -91,10 +91,10 @@ func TestGetAchievement_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateAchievement_Success(t *testing.T) {
-	mas.mockCreate = func(achieve domains.Achieve) error {
+	achieveService.mockCreate = func(achieve domains.Achieve) error {
 		return nil
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
@@ -108,7 +108,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 
 func TestCreateAchievement_Failure(t *testing.T) {
 	// no mock needed
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
@@ -124,10 +124,10 @@ func TestCreateAchievement_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateAchievement_Success(t *testing.T) {
-	mas.mockUpdate = func(id uint, achieve domains.Achieve) error {
+	achieveService.mockUpdate = func(id uint, achieve domains.Achieve) error {
 		return nil // Successful update
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
@@ -140,7 +140,7 @@ func TestUpdateAchievement_Success(t *testing.T) {
 
 func TestUpdateAchievement_Invalid(t *testing.T) {
 	// no mock needed
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
@@ -152,10 +152,10 @@ func TestUpdateAchievement_Invalid(t *testing.T) {
 }
 
 func TestUpdateAchievement_Failure(t *testing.T) {
-	mas.mockUpdate = func(id uint, achieve domains.Achieve) error {
+	achieveService.mockUpdate = func(id uint, achieve domains.Achieve) error {
 		return errors.New("not found")
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
@@ -170,10 +170,10 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteAchievement_Success(t *testing.T) {
-	mas.mockDelete = func(id uint) error {
+	achieveService.mockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
@@ -183,10 +183,10 @@ func TestDeleteAchievement_Success(t *testing.T) {
 }
 
 func TestDeleteAchievement_Failure(t *testing.T) {
-	mas.mockDelete = func(id uint) error {
+	achieveService.mockDelete = func(id uint) error {
 		return errors.New("not found")
 	}
-	services.AchieveService = &mas
+	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
