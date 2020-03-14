@@ -54,8 +54,8 @@ class App extends React.Component {
           <Route path="/program/:programId/edit" component={ProgramEditMatch}/>
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
-          <Route path="/announce/:announceId/edit" component={AnnounceEditMatch}/>
-          <Route path="/announce/add" component={AnnounceEdit}/>
+          <Route path="/announcements/:announceId/edit" component={AnnounceEditMatch}/>
+          <Route path="/announcements/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
           <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
