@@ -66,7 +66,7 @@ func TestGetAnnouncement_Success(t *testing.T) {
 	services.AnnounceService = &mas
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announce/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announcement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -81,12 +81,12 @@ func TestGetAnnouncement_Success(t *testing.T) {
 
 func TestGetAnnounce_Failure(t *testing.T) {
 	mas.mockGetByAnnounceId = func(id uint) (domains.Announce, error) {
-		return domains.Announce{}, errors.New("Not Found")
+		return domains.Announce{}, errors.New("not found")
 	}
 	services.AnnounceService = &mas
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announce/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announcement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -140,7 +140,7 @@ func TestUpdateAnnounce_Success(t *testing.T) {
 	now := time.Now().UTC()
 	announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
 	body := createBodyFromAnnounce(announce)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announce/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announcement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -154,7 +154,7 @@ func TestUpdateAnnounce_Invalid(t *testing.T) {
 	now := time.Now().UTC()
 	announce := createMockAnnounce(1, now, "", "Valid Message")
 	body := createBodyFromAnnounce(announce)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announce/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announcement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -170,7 +170,7 @@ func TestUpdateAnnounce_Failure(t *testing.T) {
 	now := time.Now().UTC()
 	announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
 	body := createBodyFromAnnounce(announce)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announce/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announcement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -186,7 +186,7 @@ func TestDeleteAnnounce_Success(t *testing.T) {
 	services.AnnounceService = &mas
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announce/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announcement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -199,7 +199,7 @@ func TestDeleteAnnounce_Failure(t *testing.T) {
 	services.AnnounceService = &mas
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announce/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announcement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

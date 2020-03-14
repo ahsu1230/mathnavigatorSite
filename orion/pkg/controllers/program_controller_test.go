@@ -79,7 +79,7 @@ func TestGetProgram_Success(t *testing.T) {
 
 func TestGetProgram_Failure(t *testing.T) {
 	mps.mockGetByProgramId = func(programId string) (domains.Program, error) {
-		return domains.Program{}, errors.New("Not Found")
+		return domains.Program{}, errors.New("not found")
 	}
 	services.ProgramService = &mps
 
@@ -128,7 +128,7 @@ func TestCreateProgram_Failure(t *testing.T) {
 //
 func TestUpdateProgram_Success(t *testing.T) {
 	mps.mockUpdate = func(programId string, program domains.Program) error {
-		return nil // Succesful update
+		return nil // Successful update
 	}
 	services.ProgramService = &mps
 
