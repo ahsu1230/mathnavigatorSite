@@ -19,10 +19,7 @@ const (
 
 	// At least 3 characters and there can be digits, spaces, pluses, periods, parentheses, slashes, and dashes
 	REGEX_PHONE = `^[\d\s+.()/-]{3,}$`
-<<<<<<< HEAD
-=======
 
 	// Ensures at least one uppercase or lowercase letter
 	REGEX_LETTER = `[A-Za-z]+`
->>>>>>> 9a08136be7ff7dfaafea6384acab707d1a002f1d
 )

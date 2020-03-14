@@ -9,7 +9,7 @@ import { OkayModal } from '../modals/okayModal.js';
 import { YesNoModal } from '../modals/yesnoModal.js';
 
 export class AnnounceEditPage extends React.Component {
-    constructor(props) { /*this is just copied from programEdit, need to change sightly*/
+    constructor(props) { 
       super(props);
       this.state = {
         isEdit: false,
@@ -37,12 +37,11 @@ export class AnnounceEditPage extends React.Component {
     }
 
       render() {
-/*I have no idea how this looks because this page has "Cannot GET /announceEdit.js" error. fix later*/
         return (
             <div id ="view-announce-edit">
             <h2>Add Announcement</h2>
 
-            <h4>Date</h4> {/* will be post date later*/}
+            <h4>Date</h4> {/* TODO: will be post date later*/}
             <input value={this.state.inputDate}
                     onChange={(e) => this.handleChange(e, "inputDate")}/>
 
