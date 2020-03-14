@@ -213,7 +213,7 @@ func TestUpdateUser(t *testing.T) {
 			true,
 			sql_helper.NullUint{},
 			1,
-	).WillReturnResult(result)
+		).WillReturnResult(result)
 	user := domains.User{
 		FirstName:  "Bob",
 		LastName:   "Joe",
