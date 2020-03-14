@@ -69,6 +69,34 @@ func (mas *mockAnnounceService) Delete(id uint) error {
 	return mas.mockDelete(id)
 }
 
+var semesterService mockSemesterService
+
+// Fake semesterService that implements SemesterService interface
+type mockSemesterService struct {
+	mockGetAll          func() ([]domains.Semester, error)
+	mockGetBySemesterId func(string) (domains.Semester, error)
+	mockCreate          func(domains.Semester) error
+	mockUpdate          func(string, domains.Semester) error
+	mockDelete          func(string) error
+}
+
+// Implement methods of SemesterService interface with mocked implementations
+func (semesterService *mockSemesterService) GetAll() ([]domains.Semester, error) {
+	return semesterService.mockGetAll()
+}
+func (semesterService *mockSemesterService) GetBySemesterId(semesterId string) (domains.Semester, error) {
+	return semesterService.mockGetBySemesterId(semesterId)
+}
+func (semesterService *mockSemesterService) Create(semester domains.Semester) error {
+	return semesterService.mockCreate(semester)
+}
+func (semesterService *mockSemesterService) Update(semesterId string, semester domains.Semester) error {
+	return semesterService.mockUpdate(semesterId, semester)
+}
+func (semesterService *mockSemesterService) Delete(semesterId string) error {
+	return semesterService.mockDelete(semesterId)
+}
+
 func init() {
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
