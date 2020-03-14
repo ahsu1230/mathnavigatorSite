@@ -7,24 +7,28 @@ import { Link } from 'react-router-dom';
 const LinkMap = {
   "site": [
     {
-      title: "Programs",
-      url: "/programs"
+        title: "Programs",
+        url: "/programs"
     },
     {
-      title: "Classes",
-      url: "/classes"
+        title: "Classes",
+        url: "/classes"
     },
     {
-      title: "Announcements",
-      url: "/announcements"
+        title: "Announcements",
+        url: "/announcements"
     },
     {
-      title: "Achievements",
-      url: "/achievements"
+        title: "Achievements",
+        url: "/achievements"
     },
     {
-      title: "Locations",
-      url: "/locations"
+        title: "Locations",
+        url: "/locations"
+    },
+    {
+        title: "Semesters",
+        url: "/semesters"
     }
   ]
 }
