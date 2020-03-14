@@ -33,7 +33,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAnnounces.DELETE("/v1/announce/:id", controllers.DeleteAnnouncement)
 	}
 	// apiAchieve := router.Group("api/achieve/")
-	// apiSemesters := router.Group("api/semesters/")
+	apiSemesters := h.Engine.Group("api/semesters/")
+	{
+		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
+		apiSemesters.POST("/v1/create", controllers.CreateSemester)
+		apiSemesters.GET("/v1/semester/:id", controllers.GetSemesterById)
+		apiSemesters.POST("/v1/semester/:id", controllers.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:id", controllers.DeleteSemester)
+	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
 }
