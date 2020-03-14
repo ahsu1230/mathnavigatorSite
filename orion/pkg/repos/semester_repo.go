@@ -24,14 +24,14 @@ type SemesterRepoInterface interface {
 	Delete(string) error
 }
 
-func (pr *semesterRepo) Initialize(db *sql.DB) {
-	pr.db = db
+func (sr *semesterRepo) Initialize(db *sql.DB) {
+	sr.db = db
 }
 
-func (pr *semesterRepo) SelectAll() ([]domains.Semester, error) {
+func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	results := make([]domains.Semester, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM semesters")
+	stmt, err := sr.db.Prepare("SELECT * FROM semesters")
 	if err != nil {
 		return nil, err
 	}
@@ -58,9 +58,9 @@ func (pr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	return results, nil
 }
 
-func (pr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
+func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
 	statement := "SELECT * FROM semesters WHERE semester_id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return domains.Semester{}, err
 	}
@@ -78,7 +78,7 @@ func (pr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 	return semester, errScan
 }
 
-func (pr *semesterRepo) Insert(semester domains.Semester) error {
+func (sr *semesterRepo) Insert(semester domains.Semester) error {
 	statement := "INSERT INTO semesters (" +
 		"created_at, " +
 		"updated_at, " +
@@ -86,7 +86,7 @@ func (pr *semesterRepo) Insert(semester domains.Semester) error {
 		"title" +
 		") VALUES (?, ?, ?, ?)"
 
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -104,14 +104,14 @@ func (pr *semesterRepo) Insert(semester domains.Semester) error {
 	return handleSqlExecResult(execResult, 1, "semester was not inserted")
 }
 
-func (pr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
+func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
 		"name=?, " +
 		"title=? " +
 		"WHERE semester_id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -129,9 +129,9 @@ func (pr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	return handleSqlExecResult(execResult, 1, "semester was not updated")
 }
 
-func (pr *semesterRepo) Delete(semesterId string) error {
+func (sr *semesterRepo) Delete(semesterId string) error {
 	statement := "DELETE FROM semesters WHERE semester_id=?"
-	stmt, err := pr.db.Prepare(statement)
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (pr *semesterRepo) Delete(semesterId string) error {
 
 // For Tests Only
 func CreateTestSemesterRepo(db *sql.DB) SemesterRepoInterface {
-	pr := &semesterRepo{}
-	pr.Initialize(db)
-	return pr
+	sr := &semesterRepo{}
+	sr.Initialize(db)
+	return sr
 }
