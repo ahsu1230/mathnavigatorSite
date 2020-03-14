@@ -5,16 +5,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
-
-func parseParamId(c *gin.Context) uint {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	return uint(id)
-}
 
 func GetAllAnnouncements(c *gin.Context) {
 	announceList, err := services.AnnounceService.GetAll()
@@ -27,7 +18,7 @@ func GetAllAnnouncements(c *gin.Context) {
 
 func GetAnnouncementById(c *gin.Context) {
 	// Incoming parameters
-	id := parseParamId(c)
+	id := ParseParamId(c)
 
 	announce, err := services.AnnounceService.GetByAnnounceId(id)
 	if err != nil {
@@ -57,7 +48,7 @@ func CreateAnnouncement(c *gin.Context) {
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := parseParamId(c)
+	id := ParseParamId(c)
 	var announceJson domains.Announce
 	c.BindJSON(&announceJson)
 
@@ -76,7 +67,7 @@ func UpdateAnnouncement(c *gin.Context) {
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id := parseParamId(c)
+	id := ParseParamId(c)
 
 	err := services.AnnounceService.Delete(id)
 	if err != nil {
