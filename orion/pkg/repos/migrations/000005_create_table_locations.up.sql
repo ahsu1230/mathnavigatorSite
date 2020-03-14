@@ -8,6 +8,6 @@ CREATE TABLE locations (
 	city varchar(64) NOT NULL,
 	state varchar(64) NOT NULL,
 	zipcode varchar(64) NOT NULL,
-	room varchar(64) NOT NULL,
+	room varchar(64),
 	PRIMARY KEY (id)
 ) AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
