@@ -77,18 +77,16 @@ export class ProgramEditPage extends React.Component {
       description: this.state.inputDescription
     };
 
-    let programCheck = checkProgram(program);
-    if (programCheck.isValid) {
-      let successCallback = () => this.setState({ showSaveModal: true });
-      if (this.state.isEdit) {
-        API.post("api/programs/v1/program/" + this.state.oldProgramId, program)
-          .then(res => successCallback());
-      } else {
-        API.post("api/programs/v1/create", program)
-          .then(res => successCallback());
-      }
+    let successCallback = () => this.setState({ showSaveModal: true });
+    let failCallback = (err) => alert("Could not save program: " + err.response.data);
+    if (this.state.isEdit) {
+      API.post("api/programs/v1/program/" + this.state.oldProgramId, program)
+        .then(res => successCallback())
+        .catch(err => failCallback(err));
     } else {
-      alert(programCheck.errorMessage);
+      API.post("api/programs/v1/create", program)
+        .then(res => successCallback())
+        .catch(err => failCallback(err));
     }
   }
 
@@ -174,51 +172,5 @@ export class ProgramEditPage extends React.Component {
         </div>
       </div>
     );
-  }
-}
-
-function checkProgram(program) {
-  let checkPro = true;
-  let errorPopup = "";
-  let programId = program.programId;
-
-  // Checks if programId contains special characters
-  let invalidChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
-  for (let i = 0; i < programId.length; i++) {
-    if (invalidChars.indexOf(programId.charAt(i)) != -1) {
-      checkPro = false;
-      errorPopup = "Invalid characters in Program ID!";
-    }
-  }
-
-  // Checks if programId contains uppercase
-  if ((programId.toLowerCase()) != programId) {
-    checkPro = false;
-    errorPopup = "No uppercase allowed in Program ID!";
-  }
-
-  // Checks if programId has spaces
-  if (programId.indexOf(' ') != -1) {
-    checkPro = false;
-    errorPopup = "No spaces allowed in Program ID!";
-  }
-
-  // Checks if grades are valid
-  if (isNaN(program.grade1) || isNaN(program.grade2)) {
-    checkPro = false;
-    errorPopup = "Grades are not valid numbers!";
-  }
-  if (program.grade1 < 1 || program.grade1 > 12) {
-    checkPro = false;
-    errorPopup = "Grade 1 is not within range!";
-  }
-  if (program.grade2 < program.grade1 || program.grade2 > 12) {
-    checkPro = false;
-    errorPopup = "Grade 2 is not within range!";
-  }
-
-  return {
-    isValid: checkPro,
-    errorMessage: errorPopup
   }
 }
