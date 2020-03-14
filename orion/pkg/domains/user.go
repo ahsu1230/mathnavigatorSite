@@ -58,11 +58,11 @@ func (user *User) Validate() error {
 
 	// Guardian validation
 	if isGuardian {
-		if guardianId != sql_helper.NullUint {
+		if (guardianId != sql_helper.NullUint{}) {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if guardian, _ := guardianId.Value; guardian == id {
+		if (guardianId == sql_helper.NullUint{id, true}) {
 			return errors.New("invalid guardian id")
 		}
 	}
