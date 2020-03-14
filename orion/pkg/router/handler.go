@@ -28,11 +28,18 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiAnnounces.GET("/v1/all", controllers.GetAllAnnouncements)
 		apiAnnounces.POST("/v1/create", controllers.CreateAnnouncement)
-		apiAnnounces.GET("/v1/announce/:id", controllers.GetAnnouncementById)
-		apiAnnounces.POST("/v1/announce/:id", controllers.UpdateAnnouncement)
-		apiAnnounces.DELETE("/v1/announce/:id", controllers.DeleteAnnouncement)
+		apiAnnounces.GET("/v1/announcement/:id", controllers.GetAnnouncementById)
+		apiAnnounces.POST("/v1/announcement/:id", controllers.UpdateAnnouncement)
+		apiAnnounces.DELETE("/v1/announcement/:id", controllers.DeleteAnnouncement)
 	}
-	// apiAchieve := router.Group("api/achieve/")
+	apiAchieves := h.Engine.Group("api/achievements/")
+	{
+		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
+		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
+		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
+		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
+		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
+	}
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
 		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)

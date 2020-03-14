@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	mps.mockGetAll = func() ([]domains.Program, error) {
+	programService.mockGetAll = func() ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -36,7 +36,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all", nil)
@@ -58,11 +58,11 @@ func TestGetAllPrograms_Success(t *testing.T) {
 // Test Get Program
 //
 func TestGetProgram_Success(t *testing.T) {
-	mps.mockGetByProgramId = func(programId string) (domains.Program, error) {
+	programService.mockGetByProgramId = func(programId string) (domains.Program, error) {
 		program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
 		return program, nil
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
@@ -78,10 +78,10 @@ func TestGetProgram_Success(t *testing.T) {
 }
 
 func TestGetProgram_Failure(t *testing.T) {
-	mps.mockGetByProgramId = func(programId string) (domains.Program, error) {
-		return domains.Program{}, errors.New("Not Found")
+	programService.mockGetByProgramId = func(programId string) (domains.Program, error) {
+		return domains.Program{}, errors.New("not found")
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog2", nil)
@@ -94,10 +94,10 @@ func TestGetProgram_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateProgram_Success(t *testing.T) {
-	mps.mockCreate = func(program domains.Program) error {
+	programService.mockCreate = func(program domains.Program) error {
 		return nil
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
@@ -111,7 +111,7 @@ func TestCreateProgram_Success(t *testing.T) {
 
 func TestCreateProgram_Failure(t *testing.T) {
 	// no mock needed
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "", 2, 3, "descript1") // Empty Name!
@@ -127,10 +127,10 @@ func TestCreateProgram_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateProgram_Success(t *testing.T) {
-	mps.mockUpdate = func(programId string, program domains.Program) error {
-		return nil // Succesful update
+	programService.mockUpdate = func(programId string, program domains.Program) error {
+		return nil // Successful update
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
@@ -143,7 +143,7 @@ func TestUpdateProgram_Success(t *testing.T) {
 
 func TestUpdateProgram_Invalid(t *testing.T) {
 	// no mock needed
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "", 2, 3, "descript2") // Empty Name!
@@ -155,10 +155,10 @@ func TestUpdateProgram_Invalid(t *testing.T) {
 }
 
 func TestUpdateProgram_Failure(t *testing.T) {
-	mps.mockUpdate = func(programId string, program domains.Program) error {
+	programService.mockUpdate = func(programId string, program domains.Program) error {
 		return errors.New("not found")
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
@@ -173,10 +173,10 @@ func TestUpdateProgram_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteProgram_Success(t *testing.T) {
-	mps.mockDelete = func(programId string) error {
+	programService.mockDelete = func(programId string) error {
 		return nil // Return no error, successful delete!
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
@@ -186,10 +186,10 @@ func TestDeleteProgram_Success(t *testing.T) {
 }
 
 func TestDeleteProgram_Failure(t *testing.T) {
-	mps.mockDelete = func(programId string) error {
+	programService.mockDelete = func(programId string) error {
 		return errors.New("not found")
 	}
-	services.ProgramService = &mps
+	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
