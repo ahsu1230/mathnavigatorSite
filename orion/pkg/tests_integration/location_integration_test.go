@@ -130,6 +130,6 @@ func createLocation(locId string, street string, city string, state string, zipc
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    sql.NullString{room, true},
+		Room:    sql.NullString{String: room, Valid: true},
 	}
 }
