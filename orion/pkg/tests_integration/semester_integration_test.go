@@ -124,7 +124,7 @@ func Test_DeleteSemester(t *testing.T) {
 // Helper methods
 func createSemester(semesterId string, title string) domains.Semester {
 	return domains.Semester{
-		SemesterId:   semesterId,
-		Title:        title,
+		SemesterId: semesterId,
+		Title:      title,
 	}
 }
