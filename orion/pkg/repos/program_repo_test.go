@@ -2,7 +2,7 @@ package repos_test
 
 import (
 	"database/sql"
-	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
@@ -28,9 +28,11 @@ func TestSelectAllPrograms(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
 		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
-	mock.ExpectPrepare("^SELECT (.+) FROM programs").ExpectQuery().WillReturnRows(rows)
+	mock.ExpectPrepare("^SELECT (.+) FROM programs").
+		ExpectQuery().
+		WillReturnRows(rows)
 	got, err := repo.SelectAll()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -67,8 +69,8 @@ func TestSelectProgram(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "ProgramId", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullInt64{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("prog1").

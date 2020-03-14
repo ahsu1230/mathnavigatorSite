@@ -7,38 +7,38 @@ import (
 	"net/http"
 )
 
-func GetAllAnnouncements(c *gin.Context) {
-	announceList, err := services.AnnounceService.GetAll()
+func GetAllAchievements(c *gin.Context) {
+	achieveList, err := services.AchieveService.GetAll()
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, announceList)
+		c.JSON(http.StatusOK, achieveList)
 	}
 }
 
-func GetAnnouncementById(c *gin.Context) {
+func GetAchievementById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
 
-	announce, err := services.AnnounceService.GetByAnnounceId(id)
+	achieve, err := services.AchieveService.GetById(id)
 	if err != nil {
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, announce)
+		c.JSON(http.StatusOK, achieve)
 	}
 }
 
-func CreateAnnouncement(c *gin.Context) {
+func CreateAchievement(c *gin.Context) {
 	// Incoming JSON
-	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	var achieveJson domains.Achieve
+	c.BindJSON(&achieveJson)
 
-	if err := announceJson.Validate(); err != nil {
+	if err := achieveJson.Validate(); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.AnnounceService.Create(announceJson)
+	err := services.AchieveService.Create(achieveJson)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
@@ -46,18 +46,18 @@ func CreateAnnouncement(c *gin.Context) {
 	}
 }
 
-func UpdateAnnouncement(c *gin.Context) {
+func UpdateAchievement(c *gin.Context) {
 	// Incoming JSON & Parameters
 	id := ParseParamId(c)
-	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	var achieveJson domains.Achieve
+	c.BindJSON(&achieveJson)
 
-	if err := announceJson.Validate(); err != nil {
+	if err := achieveJson.Validate(); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.AnnounceService.Update(id, announceJson)
+	err := services.AchieveService.Update(id, achieveJson)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
@@ -65,11 +65,11 @@ func UpdateAnnouncement(c *gin.Context) {
 	}
 }
 
-func DeleteAnnouncement(c *gin.Context) {
+func DeleteAchievement(c *gin.Context) {
 	// Incoming Parameters
 	id := ParseParamId(c)
 
-	err := services.AnnounceService.Delete(id)
+	err := services.AchieveService.Delete(id)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
