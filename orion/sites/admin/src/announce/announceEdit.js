@@ -3,13 +3,13 @@ require('./announceEdit.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import API from '../api.js';
-import { Modal } from '../modals/modal.js';
+//import API from '../api.js';
+//import { Modal } from '../modals/modal.js';
 import { OkayModal } from '../modals/okayModal.js';
 import { YesNoModal } from '../modals/yesnoModal.js';
 
 export class AnnounceEditPage extends React.Component {
-    constructor(props) { 
+    constructor(props) {
       super(props);
       this.state = {
         isEdit: false,
