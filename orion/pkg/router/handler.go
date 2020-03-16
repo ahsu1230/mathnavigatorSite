@@ -44,9 +44,9 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
 		apiSemesters.POST("/v1/create", controllers.CreateSemester)
-		apiSemesters.GET("/v1/semester/:id", controllers.GetSemesterById)
-		apiSemesters.POST("/v1/semester/:id", controllers.UpdateSemester)
-		apiSemesters.DELETE("/v1/semester/:id", controllers.DeleteSemester)
+		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
+		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:semesterId", controllers.DeleteSemester)
 	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
