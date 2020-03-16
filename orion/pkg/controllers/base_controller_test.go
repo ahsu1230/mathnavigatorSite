@@ -97,6 +97,34 @@ func (achieveService *mockAchieveService) Delete(id uint) error {
 	return achieveService.mockDelete(id)
 }
 
+var mls mockLocationService
+
+// Fake locationService that implements LocationService interface
+type mockLocationService struct {
+	mockGetAll          func() ([]domains.Location, error)
+	mockGetByLocationId func(string) (domains.Location, error)
+	mockCreate          func(domains.Location) error
+	mockUpdate          func(string, domains.Location) error
+	mockDelete          func(string) error
+}
+
+// Implement methods of LocationService interface with mocked implementations
+func (mls *mockLocationService) GetAll() ([]domains.Location, error) {
+	return mls.mockGetAll()
+}
+func (mls *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
+	return mls.mockGetByLocationId(locId)
+}
+func (mls *mockLocationService) Create(location domains.Location) error {
+	return mls.mockCreate(location)
+}
+func (mls *mockLocationService) Update(locId string, location domains.Location) error {
+	return mls.mockUpdate(locId, location)
+}
+func (mls *mockLocationService) Delete(locId string) error {
+	return mls.mockDelete(locId)
+}
+
 func init() {
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
