@@ -60,7 +60,7 @@ func TestSelectAllLocations(t *testing.T) {
 			City:      "Potomac",
 			State:     "MD",
 			Zipcode:   "20854",
-			Room:      sql.NullString{String: "Room 2", Valid: true},
+			Room:      "Room 2",
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -112,7 +112,7 @@ func TestSelectLocation(t *testing.T) {
 		City:      "Potomac",
 		State:     "MD",
 		Zipcode:   "20854",
-		Room:      sql.NullString{String: "Room 2", Valid: true},
+		Room:      "Room 2",
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -141,7 +141,7 @@ func TestInsertLocation(t *testing.T) {
 		City:    "Potomac",
 		State:   "MD",
 		Zipcode: "20854",
-		Room:    sql.NullString{String: "Room 2", Valid: true},
+		Room:    "Room 2",
 	}
 	err := repo.Insert(location)
 	if err != nil {
@@ -173,7 +173,7 @@ func TestUpdateLocation(t *testing.T) {
 		City:    "San Francisco",
 		State:   "CA",
 		Zipcode: "94016",
-		Room:    sql.NullString{String: "Room 41", Valid: true},
+		Room:    "Room 41",
 	}
 	err := repo.Update("xkcd", location)
 	if err != nil {

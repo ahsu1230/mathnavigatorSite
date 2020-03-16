@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"testing"
 )
@@ -224,34 +223,34 @@ func TestValidLocationRoom(t *testing.T) {
 		City:    "Potomac",
 		State:   "MD",
 		Zipcode: "20854",
-		Room:    sql.NullString{String: "Room 2", Valid: true},
+		Room:    "Room 2",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.Room.Scan("124")
+	location.Room = "124"
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.Room.Scan("Auditorium")
+	location.Room = "Auditorium"
+	if err := location.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	location.Room = ""
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid rooms
-	location.Room.Scan("@@@")
+	location.Room = "@@@"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid room")
 	}
 
-	location.Room.Scan("#@!*")
-	if err := location.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid room")
-	}
-
-	location.Room.Scan("")
+	location.Room = "#@!*"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid room")
 	}

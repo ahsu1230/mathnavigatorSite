@@ -102,6 +102,10 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	defer stmt.Close()
 
 	now := time.Now().UTC()
+	room := sql.NullString{String: location.Room, Valid: true}
+	if location.Room == "" {
+		room.Valid = false
+	}
 	result, err := stmt.Exec(
 		now,
 		now,
@@ -110,7 +114,7 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 		location.City,
 		location.State,
 		location.Zipcode,
-		location.Room)
+		room)
 	if err != nil {
 		return err
 	}
@@ -134,6 +138,10 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	defer stmt.Close()
 
 	now := time.Now().UTC()
+	room := sql.NullString{String: location.Room, Valid: true}
+	if location.Room == "" {
+		room.Valid = false
+	}
 	result, err := stmt.Exec(
 		now,
 		location.LocId,
@@ -141,7 +149,7 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 		location.City,
 		location.State,
 		location.Zipcode,
-		location.Room,
+		room,
 		locId)
 	if err != nil {
 		return err

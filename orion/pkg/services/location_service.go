@@ -19,7 +19,7 @@ type locationServiceInterface interface {
 // Struct that implements interface
 type locationService struct{}
 
-func (ps *locationService) GetAll() ([]domains.Location, error) {
+func (ls *locationService) GetAll() ([]domains.Location, error) {
 	locations, err := repos.LocationRepo.SelectAll()
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func (ps *locationService) GetAll() ([]domains.Location, error) {
 	return locations, nil
 }
 
-func (ps *locationService) GetByLocationId(locId string) (domains.Location, error) {
+func (ls *locationService) GetByLocationId(locId string) (domains.Location, error) {
 	location, err := repos.LocationRepo.SelectByLocationId(locId)
 	if err != nil {
 		return domains.Location{}, err
@@ -35,17 +35,17 @@ func (ps *locationService) GetByLocationId(locId string) (domains.Location, erro
 	return location, nil
 }
 
-func (ps *locationService) Create(location domains.Location) error {
+func (ls *locationService) Create(location domains.Location) error {
 	err := repos.LocationRepo.Insert(location)
 	return err
 }
 
-func (ps *locationService) Update(locId string, location domains.Location) error {
+func (ls *locationService) Update(locId string, location domains.Location) error {
 	err := repos.LocationRepo.Update(locId, location)
 	return err
 }
 
-func (ps *locationService) Delete(locId string) error {
+func (ls *locationService) Delete(locId string) error {
 	err := repos.LocationRepo.Delete(locId)
 	return err
 }

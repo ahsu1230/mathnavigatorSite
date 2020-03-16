@@ -2,7 +2,6 @@ package controllers_test
 
 import (
 	"bytes"
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
@@ -26,7 +25,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "City",
 				State:   "MA",
 				Zipcode: "77294",
-				Room:    sql.NullString{String: "Room 1", Valid: true},
+				Room:    "Room 1",
 			},
 			{
 				Id:      2,
@@ -35,7 +34,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "Dity",
 				State:   "MD",
 				Zipcode: "12353",
-				Room:    sql.NullString{String: "Room 2", Valid: true},
+				Room:    "Room 2",
 			},
 		}, nil
 	}
@@ -211,7 +210,7 @@ func createMockLocation(locId string, street string, city string, state string, 
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    sql.NullString{String: room, Valid: true},
+		Room:    room,
 	}
 }
 

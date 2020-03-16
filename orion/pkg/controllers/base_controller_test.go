@@ -115,11 +115,11 @@ func (mls *mockLocationService) GetAll() ([]domains.Location, error) {
 func (mls *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
 	return mls.mockGetByLocationId(locId)
 }
-func (mls *mockLocationService) Create(Location domains.Location) error {
-	return mls.mockCreate(Location)
+func (mls *mockLocationService) Create(location domains.Location) error {
+	return mls.mockCreate(location)
 }
-func (mls *mockLocationService) Update(locId string, Location domains.Location) error {
-	return mls.mockUpdate(locId, Location)
+func (mls *mockLocationService) Update(locId string, location domains.Location) error {
+	return mls.mockUpdate(locId, location)
 }
 func (mls *mockLocationService) Delete(locId string) error {
 	return mls.mockDelete(locId)
