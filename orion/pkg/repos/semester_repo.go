@@ -108,7 +108,6 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
-		"name=?, " +
 		"title=? " +
 		"WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
