@@ -130,7 +130,7 @@ func TestCreateLocation_Failure(t *testing.T) {
 //
 func TestUpdateLocation_Success(t *testing.T) {
 	locationService.mockUpdate = func(locId string, location domains.Location) error {
-		return nil // Succesful update
+		return nil // Successful update
 	}
 	services.LocationService = &locationService
 
