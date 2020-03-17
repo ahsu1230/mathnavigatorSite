@@ -122,7 +122,7 @@ func TestCreateSemester_Failure(t *testing.T) {
 //
 func TestUpdateSemester_Success(t *testing.T) {
 	semesterService.mockUpdate = func(semesterId string, semester domains.Semester) error {
-		return nil // Succesful update
+		return nil // Successful update
 	}
 	services.SemesterService = &semesterService
 

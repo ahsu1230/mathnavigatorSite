@@ -41,6 +41,34 @@ func (programService *mockProgramService) Delete(programId string) error {
 	return programService.mockDelete(programId)
 }
 
+var locationService mockLocationService
+
+// Fake locationService that implements LocationService interface
+type mockLocationService struct {
+	mockGetAll          func() ([]domains.Location, error)
+	mockGetByLocationId func(string) (domains.Location, error)
+	mockCreate          func(domains.Location) error
+	mockUpdate          func(string, domains.Location) error
+	mockDelete          func(string) error
+}
+
+// Implement methods of LocationService interface with mocked implementations
+func (locationService *mockLocationService) GetAll() ([]domains.Location, error) {
+	return locationService.mockGetAll()
+}
+func (locationService *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
+	return locationService.mockGetByLocationId(locId)
+}
+func (locationService *mockLocationService) Create(location domains.Location) error {
+	return locationService.mockCreate(location)
+}
+func (locationService *mockLocationService) Update(locId string, location domains.Location) error {
+	return locationService.mockUpdate(locId, location)
+}
+func (locationService *mockLocationService) Delete(locId string) error {
+	return locationService.mockDelete(locId)
+}
+
 var announceService mockAnnounceService
 
 // Fake announceService that implements AnnounceService interface
