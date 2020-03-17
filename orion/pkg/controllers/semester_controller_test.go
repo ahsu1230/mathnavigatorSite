@@ -108,7 +108,7 @@ func TestCreateSemester_Failure(t *testing.T) {
 	services.SemesterService = &semesterService
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_fall", "")
+	semester := createMockSemester("2020_fall", "") // Empty title
 	marshal, _ := json.Marshal(semester)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body)
@@ -140,7 +140,7 @@ func TestUpdateSemester_Invalid(t *testing.T) {
 	services.SemesterService = &semesterService
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_winter", "")
+	semester := createMockSemester("2020_winter", "") // Empty title
 	body := createBodyFromSemester(semester)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/semester/2020_fall", body)
 
