@@ -51,7 +51,7 @@ func (class *Class) Validate() error {
 	}
 
 	// End Date validation
-	if startDate.After(endDate) {
+	if !endDate.After(startDate) {
 		return errors.New("invalid end date")
 	}
 

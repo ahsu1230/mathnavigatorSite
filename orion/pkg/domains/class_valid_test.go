@@ -9,11 +9,12 @@ import (
 
 func TestValidClassKey(t *testing.T) {
 	// Checks for valid class keys
+	now := time.Now().UTC()
 	class := domains.Class{
 		ClassKey:  sql.NullString{String: "final_review", Valid: true},
 		Times:     "3 pm - 5 pm",
-		StartDate: time.Now(),
-		EndDate:   time.Now().Add(time.Hour * 24 * 100),
+		StartDate: now,
+		EndDate:   now.Add(time.Hour * 24 * 100),
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -48,11 +49,12 @@ func TestValidClassKey(t *testing.T) {
 
 func TestValidTimes(t *testing.T) {
 	// Checks for valid times
+	now := time.Now().UTC()
 	class := domains.Class{
 		ClassKey:  sql.NullString{String: "final_review", Valid: true},
 		Times:     "6 pm - 8 pm",
-		StartDate: time.Now(),
-		EndDate:   time.Now().Add(time.Hour * 24 * 100),
+		StartDate: now,
+		EndDate:   now.Add(time.Hour * 24 * 100),
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -77,31 +79,32 @@ func TestValidTimes(t *testing.T) {
 
 func TestValidDates(t *testing.T) {
 	// Checks for valid dates
+	now := time.Now().UTC()
 	class := domains.Class{
 		ClassKey:  sql.NullString{String: "final_review", Valid: true},
 		Times:     "3 pm - 5 pm",
-		StartDate: time.Now(),
-		EndDate:   time.Now().Add(time.Hour * 24 * 30),
+		StartDate: now,
+		EndDate:   now.Add(time.Hour * 24 * 30),
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	class.StartDate = time.Now()
-	class.EndDate = time.Now().Add(time.Hour * 24 * 365 * 100)
+	class.StartDate = now
+	class.EndDate = now.Add(time.Hour * 24 * 365 * 100)
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid dates
 	class.StartDate = time.Unix(0, 0)
-	class.EndDate = class.StartDate.Add(time.Hour * 24 * 60)
+	class.EndDate = now
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid grades.")
 	}
 
-	class.StartDate = time.Now().Add(time.Hour * 24)
-	class.EndDate = time.Now()
+	class.StartDate = now.Add(time.Hour * 24)
+	class.EndDate = now
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid grades.")
 	}
