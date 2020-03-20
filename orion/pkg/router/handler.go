@@ -23,7 +23,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
 	}
 	// apiClasses := router.Group("api/classes/")
-	// apiLocations := router.Group("api/locations/")
+	apiLocations := h.Engine.Group("api/locations/")
+	{
+		apiLocations.GET("v1/all", controllers.GetAllLocations)
+		apiLocations.POST("/v1/create", controllers.CreateLocation)
+		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
+		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
+		apiLocations.DELETE("/v1/location/:locId", controllers.DeleteLocation)
+	}
 	apiAnnounces := h.Engine.Group("api/announcements/")
 	{
 		apiAnnounces.GET("/v1/all", controllers.GetAllAnnouncements)
@@ -40,7 +47,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
 	}
-	// apiSemesters := router.Group("api/semesters/")
+	apiSemesters := h.Engine.Group("api/semesters/")
+	{
+		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
+		apiSemesters.POST("/v1/create", controllers.CreateSemester)
+		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
+		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:semesterId", controllers.DeleteSemester)
+	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
 }
