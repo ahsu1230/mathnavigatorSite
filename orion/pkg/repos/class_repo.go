@@ -19,8 +19,8 @@ type ClassRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Class, error)
 	SelectByClassId(string) (domains.Class, error)
-	Insert(domains.Class, domains.Program, domains.Semester, domains.Location) error
-	Update(string, domains.Class, domains.Program, domains.Semester, domains.Location) error
+	Insert(domains.Class) error
+	Update(string, domains.Class) error
 	Delete(string) error
 }
 
@@ -90,7 +90,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 	return class, errScan
 }
 
-func (cr *classRepo) Insert(class domains.Class, program domains.Program, semester domains.Semester, location domains.Location) error {
+func (cr *classRepo) Insert(class domains.Class) error {
 	statement := "INSERT INTO classes (" +
 		"created_at, " +
 		"updated_at, " +
@@ -114,11 +114,11 @@ func (cr *classRepo) Insert(class domains.Class, program domains.Program, semest
 	execResult, err := stmt.Exec(
 		now,
 		now,
-		program.ProgramId,
-		semester.SemesterId,
+		class.ProgramId,
+		class.SemesterId,
 		class.ClassKey,
-		generateClassId(program, semester, class),
-		location.LocId,
+		generateClassId(class),
+		class.LocationId,
 		class.Times,
 		class.StartDate,
 		class.EndDate)
@@ -128,7 +128,7 @@ func (cr *classRepo) Insert(class domains.Class, program domains.Program, semest
 	return handleSqlExecResult(execResult, 1, "class was not inserted")
 }
 
-func (cr *classRepo) Update(classId string, class domains.Class, program domains.Program, semester domains.Semester, location domains.Location) error {
+func (cr *classRepo) Update(classId string, class domains.Class) error {
 	statement := "UPDATE classes SET " +
 		"updated_at, " +
 		"program_id, " +
@@ -149,11 +149,11 @@ func (cr *classRepo) Update(classId string, class domains.Class, program domains
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
-		program.ProgramId,
-		semester.SemesterId,
+		class.ProgramId,
+		class.SemesterId,
 		class.ClassKey,
-		generateClassId(program, semester, class),
-		location.LocId,
+		generateClassId(class),
+		class.LocationId,
 		class.Times,
 		class.StartDate,
 		class.EndDate,
@@ -186,8 +186,8 @@ func CreateTestClassRepo(db *sql.DB) ClassRepoInterface {
 	return cr
 }
 
-func generateClassId(program domains.Program, semester domains.Semester, class domains.Class) string {
-	classId := program.ProgramId + "_" + semester.SemesterId + "_"
+func generateClassId(class domains.Class) string {
+	classId := class.ProgramId + "_" + class.SemesterId
 	if class.ClassKey.Valid {
 		return classId + "_" + class.ClassKey.String
 	}

@@ -122,7 +122,7 @@ func TestSelectClass(t *testing.T) {
 		"churchill",
 		"3 pm - 5 pm",
 		now,
-		now.Add(time.Hour * 24 * 100),
+		now.Add(time.Hour * 24 * 60),
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
