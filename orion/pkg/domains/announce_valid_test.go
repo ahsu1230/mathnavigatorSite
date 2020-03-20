@@ -34,7 +34,7 @@ func TestValidAuthor(t *testing.T) {
 	}
 }
 
-func TestValidMessage(t *testing.T) {
+func TestValidAnnouncementMessage(t *testing.T) {
 	// Check for valid messages
 	announce := domains.Announce{Author: "Valid Author", Message: "not blank"}
 	if err := announce.Validate(); err != nil {

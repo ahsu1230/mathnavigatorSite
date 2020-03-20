@@ -23,17 +23,38 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
 	}
 	// apiClasses := router.Group("api/classes/")
-	// apiLocations := router.Group("api/locations/")
+	apiLocations := h.Engine.Group("api/locations/")
+	{
+		apiLocations.GET("v1/all", controllers.GetAllLocations)
+		apiLocations.POST("/v1/create", controllers.CreateLocation)
+		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
+		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
+		apiLocations.DELETE("/v1/location/:locId", controllers.DeleteLocation)
+	}
 	apiAnnounces := h.Engine.Group("api/announcements/")
 	{
 		apiAnnounces.GET("/v1/all", controllers.GetAllAnnouncements)
 		apiAnnounces.POST("/v1/create", controllers.CreateAnnouncement)
-		apiAnnounces.GET("/v1/announce/:id", controllers.GetAnnouncementById)
-		apiAnnounces.POST("/v1/announce/:id", controllers.UpdateAnnouncement)
-		apiAnnounces.DELETE("/v1/announce/:id", controllers.DeleteAnnouncement)
+		apiAnnounces.GET("/v1/announcement/:id", controllers.GetAnnouncementById)
+		apiAnnounces.POST("/v1/announcement/:id", controllers.UpdateAnnouncement)
+		apiAnnounces.DELETE("/v1/announcement/:id", controllers.DeleteAnnouncement)
 	}
-	// apiAchieve := router.Group("api/achieve/")
-	// apiSemesters := router.Group("api/semesters/")
+	apiAchieves := h.Engine.Group("api/achievements/")
+	{
+		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
+		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
+		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
+		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
+		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
+	}
+	apiSemesters := h.Engine.Group("api/semesters/")
+	{
+		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
+		apiSemesters.POST("/v1/create", controllers.CreateSemester)
+		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
+		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
+		apiSemesters.DELETE("/v1/semester/:semesterId", controllers.DeleteSemester)
+	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")
 }

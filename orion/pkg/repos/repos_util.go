@@ -7,7 +7,13 @@ import (
 
 func SetupRepos(db *sql.DB) {
 	ProgramRepo.Initialize(db)
+	// ClassRepo.Initialize(db)
+	LocationRepo.Initialize(db)
 	AnnounceRepo.Initialize(db)
+	AchieveRepo.Initialize(db)
+	SemesterRepo.Initialize(db)
+	// UserRepo.Initialize(db)
+	// AccountRepo.Initialize(db)
 }
 
 func handleSqlExecResult(result sql.Result, expected int64, errorMessage string) error {

@@ -7,72 +7,77 @@ import (
 	"net/http"
 )
 
-func GetAllAnnouncements(c *gin.Context) {
-	announceList, err := services.AnnounceService.GetAll()
+func GetAllLocations(c *gin.Context) {
+	locationList, err := services.LocationService.GetAll()
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, announceList)
+		c.JSON(http.StatusOK, locationList)
 	}
+	return
 }
 
-func GetAnnouncementById(c *gin.Context) {
+func GetLocationById(c *gin.Context) {
 	// Incoming parameters
-	id := ParseParamId(c)
+	locId := c.Param("locId")
 
-	announce, err := services.AnnounceService.GetByAnnounceId(id)
+	location, err := services.LocationService.GetByLocationId(locId)
 	if err != nil {
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, announce)
+		c.JSON(http.StatusOK, location)
 	}
+	return
 }
 
-func CreateAnnouncement(c *gin.Context) {
+func CreateLocation(c *gin.Context) {
 	// Incoming JSON
-	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	var locationJson domains.Location
+	c.BindJSON(&locationJson)
 
-	if err := announceJson.Validate(); err != nil {
+	if err := locationJson.Validate(); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.AnnounceService.Create(announceJson)
+	err := services.LocationService.Create(locationJson)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
 	}
+	return
 }
 
-func UpdateAnnouncement(c *gin.Context) {
+func UpdateLocation(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
-	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	locId := c.Param("locId")
+	var locationJson domains.Location
+	c.BindJSON(&locationJson)
 
-	if err := announceJson.Validate(); err != nil {
+	if err := locationJson.Validate(); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.AnnounceService.Update(id, announceJson)
+	err := services.LocationService.Update(locId, locationJson)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
 	}
+	return
 }
 
-func DeleteAnnouncement(c *gin.Context) {
+func DeleteLocation(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	locId := c.Param("locId")
 
-	err := services.AnnounceService.Delete(id)
+	err := services.LocationService.Delete(locId)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
+	return
 }

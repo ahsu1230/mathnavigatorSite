@@ -62,11 +62,11 @@ func Test_UpdateAnnouncement(t *testing.T) {
 	// Update
 	updatedAnnounce := createAnnouncement(now, "Author 2", "Message 2")
 	updatedBody := createJsonBody(updatedAnnounce)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announce/1", updatedBody)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/announcements/v1/announcement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announce/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announcement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -91,11 +91,11 @@ func Test_DeleteAnnouncement(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announce/1", nil)
+	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/announcements/v1/announcement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announce/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/v1/announcement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 }
 
