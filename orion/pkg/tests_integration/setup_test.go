@@ -60,7 +60,7 @@ func setupTestDatabase(host string, port int, username string, password string, 
 }
 
 func refreshTable(t *testing.T, tableName string) error {
-	stmt, err := db.Prepare(fmt.Sprintf("TRUNCATE TABLE %s;", tableName))
+	stmt, err := db.Prepare(fmt.Sprintf("DELETE FROM %s;", tableName))
 	if err != nil {
 		panic(err.Error())
 	}
