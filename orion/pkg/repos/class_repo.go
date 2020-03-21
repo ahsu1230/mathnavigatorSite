@@ -19,6 +19,9 @@ type ClassRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Class, error)
 	SelectByClassId(string) (domains.Class, error)
+	SelectByProgramId(string) ([]domains.Class, error)
+	SelectBySemesterId(string) ([]domains.Class, error)
+	SelectByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
 	Delete(string) error
@@ -88,6 +91,85 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.StartDate,
 		&class.EndDate)
 	return class, errScan
+}
+
+
+func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
+	statement := "SELECT * FROM classes WHERE program_id=?"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var classes []domains.Class
+	row := stmt.QueryRow(programId)
+	errScan := row.Scan(
+		&classes.Id,
+		&classes.CreatedAt,
+		&classes.UpdatedAt,
+		&classes.DeletedAt,
+		&classes.ProgramId,
+		&classes.SemesterId,
+		&classes.ClassKey,
+		&classes.ClassId,
+		&classes.LocationId,
+		&classes.Times,
+		&classes.StartDate,
+		&classes.EndDate)
+	return classes, errScan
+}
+
+func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, error) {
+	statement := "SELECT * FROM classes WHERE semester_id=?"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var classes []domains.Class
+	row := stmt.QueryRow(semesterId)
+	errScan := row.Scan(
+		&classes.Id,
+		&classes.CreatedAt,
+		&classes.UpdatedAt,
+		&classes.DeletedAt,
+		&classes.ProgramId,
+		&classes.SemesterId,
+		&classes.ClassKey,
+		&classes.ClassId,
+		&classes.LocationId,
+		&classes.Times,
+		&classes.StartDate,
+		&classes.EndDate)
+	return classes, errScan
+}
+
+func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
+	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=?"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var classes []domains.Class
+	row := stmt.QueryRow(programId, semesterId)
+	errScan := row.Scan(
+		&classes.Id,
+		&classes.CreatedAt,
+		&classes.UpdatedAt,
+		&classes.DeletedAt,
+		&classes.ProgramId,
+		&classes.SemesterId,
+		&classes.ClassKey,
+		&classes.ClassId,
+		&classes.LocationId,
+		&classes.Times,
+		&classes.StartDate,
+		&classes.EndDate)
+	return classes, errScan
 }
 
 func (cr *classRepo) Insert(class domains.Class) error {
