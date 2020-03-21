@@ -11,6 +11,9 @@ var ClassService classServiceInterface = &classService{}
 type classServiceInterface interface {
 	GetAll() ([]domains.Class, error)
 	GetByClassId(string) (domains.Class, error)
+	GetByProgramId(string) ([]domains.Class, error)
+	GetBySemesterId(string) ([]domains.Class, error)
+	GetByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Create(domains.Class) error
 	Update(string, domains.Class) error
 	Delete(string) error
@@ -33,6 +36,30 @@ func (cs *classService) GetByClassId(classId string) (domains.Class, error) {
 		return domains.Class{}, err
 	}
 	return class, nil
+}
+
+func (cs *classService) GetByProgramId(programId string) ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectByProgramId(programId)
+	if err != nil {
+		return nil, err
+	}
+	return classes, nil
+}
+
+func (cs *classService) GetBySemesterId(semesterId string) ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectBySemesterId(semesterId)
+	if err != nil {
+		return nil, err
+	}
+	return classes, nil
+}
+
+func (cs *classService) GetByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(programId, semesterId)
+	if err != nil {
+		return nil, err
+	}
+	return classes, nil
 }
 
 func (cs *classService) Create(class domains.Class) error {

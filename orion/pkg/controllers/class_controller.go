@@ -30,6 +30,46 @@ func GetClassById(c *gin.Context) {
 	return
 }
 
+func GetClassesByProgram(c *gin.Context) {
+	// Incoming parameters
+	programId := c.Param("programId")
+
+	classes, err := services.ClassService.GetByProgramId(programId)
+	if err != nil {
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, classes)
+	}
+	return
+}
+
+func GetClassesBySemester(c *gin.Context) {
+	// Incoming parameters
+	semesterId := c.Param("semesterId")
+
+	classes, err := services.ClassService.GetBySemesterId(semesterId)
+	if err != nil {
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, classes)
+	}
+	return
+}
+
+func GetClassesByProgramAndSemester(c *gin.Context) {
+	// Incoming parameters
+	programId := c.Param("programId")
+	semesterId := c.Param("semesterId")
+
+	classes, err := services.ClassService.GetByProgramAndSemesterId(programId, semesterId)
+	if err != nil {
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, classes)
+	}
+	return
+}
+
 func CreateClass(c *gin.Context) {
 	// Incoming JSON
 	var classJson domains.Class
