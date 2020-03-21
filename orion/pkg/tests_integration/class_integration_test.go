@@ -149,6 +149,250 @@ func Test_UniqueClassId(t *testing.T) {
 	assert.EqualValues(t, now.Add(time.Hour*24*60), class.EndDate)
 }
 
+// Test: Create 3 Classes and GetClassesByProgram()
+func Test_GetClassesByProgram(t *testing.T) {
+	resetTable(t, domains.TABLE_CLASSES)
+
+	now := time.Now().UTC()
+	class1 := createClass(
+		"program1",
+		"2020_spring",
+		sql.NullString{String: "class1", Valid: true},
+		"program1_2020_spring_class1",
+		"churchill",
+		"3 pm - 5 pm",
+		now,
+		now.Add(time.Hour*24*60),
+	)
+	class2 := createClass(
+		"program1",
+		"2020_summer",
+		sql.NullString{},
+		"program1_2020_summer",
+		"churchill",
+		"5 pm - 7 pm",
+		now,
+		now.Add(time.Hour*24*30),
+	)
+	class3 := createClass(
+		"program2",
+		"2020_summer",
+		sql.NullString{String: "class2", Valid: true},
+		"program2_2020_summer_class2",
+		"churchill",
+		"5 pm - 7 pm",
+		now.Add(time.Hour*24*60),
+		now.Add(time.Hour*24*120),
+	)
+
+	body1 := createJsonBody(class1)
+	body2 := createJsonBody(class2)
+	body3 := createJsonBody(class3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body3)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Call GetClassesByProgram()
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, "program1", classes[0].ProgramId)
+	assert.EqualValues(t, "2020_spring", classes[0].SemesterId)
+	assert.EqualValues(t, sql.NullString{String: "class1", Valid: true}, classes[0].ClassKey)
+	assert.EqualValues(t, "program1_2020_spring_class1", classes[0].ClassId)
+	assert.EqualValues(t, "churchill", classes[0].LocationId)
+	assert.EqualValues(t, "3 pm - 5 pm", classes[0].Times)
+	assert.EqualValues(t, now, classes[0].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*60), classes[0].EndDate)
+
+	assert.EqualValues(t, "program1", classes[1].ProgramId)
+	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
+	assert.EqualValues(t, sql.NullString{}, classes[1].ClassKey)
+	assert.EqualValues(t, "program1_2020_summer", classes[1].ClassId)
+	assert.EqualValues(t, "churchill", classes[1].LocationId)
+	assert.EqualValues(t, "5 pm - 7 pm", classes[1].Times)
+	assert.EqualValues(t, now, classes[1].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*30), classes[1].EndDate)
+
+	assert.EqualValues(t, 2, len(classes))
+}
+
+// Test: Create 3 Classes and GetClassesBySemester()
+func Test_GetClassesBySemester(t *testing.T) {
+	resetTable(t, domains.TABLE_CLASSES)
+
+	now := time.Now().UTC()
+	class1 := createClass(
+		"program1",
+		"2020_spring",
+		sql.NullString{String: "class1", Valid: true},
+		"program1_2020_spring_class1",
+		"churchill",
+		"3 pm - 5 pm",
+		now,
+		now.Add(time.Hour*24*60),
+	)
+	class2 := createClass(
+		"program2",
+		"2020_summer",
+		sql.NullString{},
+		"program2_2020_summer",
+		"churchill",
+		"5 pm - 7 pm",
+		now,
+		now.Add(time.Hour*24*30),
+	)
+	class3 := createClass(
+		"program3",
+		"2020_summer",
+		sql.NullString{String: "class2", Valid: true},
+		"program3_2020_summer_class2",
+		"churchill",
+		"5 pm - 7 pm",
+		now.Add(time.Hour*24*60),
+		now.Add(time.Hour*24*120),
+	)
+
+	body1 := createJsonBody(class1)
+	body2 := createJsonBody(class2)
+	body3 := createJsonBody(class3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body3)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Call GetClassesBySemester()
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/semester/2020_summer", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, "program2", classes[0].ProgramId)
+	assert.EqualValues(t, "2020_summer", classes[0].SemesterId)
+	assert.EqualValues(t, sql.NullString{}, classes[0].ClassKey)
+	assert.EqualValues(t, "program2_2020_summer", classes[0].ClassId)
+	assert.EqualValues(t, "churchill", classes[0].LocationId)
+	assert.EqualValues(t, "5 pm - 7 pm", classes[0].Times)
+	assert.EqualValues(t, now, classes[0].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*30), classes[0].EndDate)
+
+	assert.EqualValues(t, "program3", classes[1].ProgramId)
+	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
+	assert.EqualValues(t, sql.NullString{String: "class2", Valid: true}, classes[1].ClassKey)
+	assert.EqualValues(t, "program3_2020_summer_class2", classes[1].ClassId)
+	assert.EqualValues(t, "churchill", classes[1].LocationId)
+	assert.EqualValues(t, "5 pm - 7 pm", classes[1].Times)
+	assert.EqualValues(t, now.Add(time.Hour*24*60), classes[1].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*120), classes[1].EndDate)
+
+	assert.EqualValues(t, 2, len(classes))
+}
+
+// Test: Create 4 Classes and GetClassesByProgramAndSemester()
+func Test_GetClassesByProgramAndSemester(t *testing.T) {
+	resetTable(t, domains.TABLE_CLASSES)
+
+	now := time.Now().UTC()
+	class1 := createClass(
+		"program1",
+		"2020_spring",
+		sql.NullString{String: "class1", Valid: true},
+		"program1_2020_spring_class1",
+		"churchill",
+		"3 pm - 5 pm",
+		now,
+		now.Add(time.Hour*24*60),
+	)
+	class2 := createClass(
+		"program1",
+		"2020_summer",
+		sql.NullString{},
+		"program1_2020_summer",
+		"churchill",
+		"5 pm - 7 pm",
+		now,
+		now.Add(time.Hour*24*30),
+	)
+	class3 := createClass(
+		"program1",
+		"2020_summer",
+		sql.NullString{String: "final_review", Valid: true},
+		"program1_2020_summer_final_review",
+		"churchill",
+		"5 pm - 8 pm",
+		now.Add(time.Hour*24*30),
+		now.Add(time.Hour*24*31),
+	)
+	class4 := createClass(
+		"program2",
+		"2020_summer",
+		sql.NullString{},
+		"program2_2020_summer",
+		"churchill",
+		"4 pm - 6 pm",
+		now,
+		now.Add(time.Hour*24*90),
+	)
+
+	body1 := createJsonBody(class1)
+	body2 := createJsonBody(class2)
+	body3 := createJsonBody(class3)
+	body4 := createJsonBody(class4)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body4)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+
+	// Call GetClassesByProgramAndSemester()
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_summer", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, "program1", classes[0].ProgramId)
+	assert.EqualValues(t, "2020_summer", classes[0].SemesterId)
+	assert.EqualValues(t, sql.NullString{}, classes[0].ClassKey)
+	assert.EqualValues(t, "program1_2020_summer", classes[0].ClassId)
+	assert.EqualValues(t, "churchill", classes[0].LocationId)
+	assert.EqualValues(t, "5 pm - 7 pm", classes[0].Times)
+	assert.EqualValues(t, now, classes[0].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*30), classes[0].EndDate)
+
+	assert.EqualValues(t, "program1", classes[1].ProgramId)
+	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
+	assert.EqualValues(t, sql.NullString{String: "final_review", Valid: true}, classes[1].ClassKey)
+	assert.EqualValues(t, "program1_2020_summer_final_review", classes[1].ClassId)
+	assert.EqualValues(t, "churchill", classes[1].LocationId)
+	assert.EqualValues(t, "5 pm - 8 pm", classes[1].Times)
+	assert.EqualValues(t, now.Add(time.Hour*24*30), classes[1].StartDate)
+	assert.EqualValues(t, now.Add(time.Hour*24*31), classes[1].EndDate)
+
+	assert.EqualValues(t, 2, len(classes))
+}
+
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
