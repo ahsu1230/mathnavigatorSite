@@ -12,7 +12,7 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	refreshTable(t, domains.TABLE_USERS)
+	resetTable(t, domains.TABLE_USERS)
 
 	user1 := createUser(
 		"John",
@@ -89,7 +89,7 @@ func Test_CreateUsers(t *testing.T) {
 
 // Test: Create 1 User, Update it, GetByUserId()
 func Test_UpdateUser(t *testing.T) {
-	refreshTable(t, domains.TABLE_USERS)
+	resetTable(t, domains.TABLE_USERS)
 
 	// Create 1 User
 	user1 := createUser(
@@ -140,7 +140,7 @@ func Test_UpdateUser(t *testing.T) {
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	refreshTable(t, domains.TABLE_USERS)
+	resetTable(t, domains.TABLE_USERS)
 
 	// Create
 	user1 := createUser(
