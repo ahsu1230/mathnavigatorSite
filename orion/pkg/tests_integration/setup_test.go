@@ -66,7 +66,7 @@ func refreshTable(t *testing.T, tableName string) error {
 	}
 	_, err = stmt.Exec()
 	if err != nil {
-		t.Fatalf("Error truncating tables: %s", err)
+		t.Fatalf("Error deleting tables: %s", err)
 	}
 	return nil
 }
