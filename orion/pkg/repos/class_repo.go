@@ -94,81 +94,111 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 }
 
 func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
-	statement := "SELECT * FROM classes WHERE program_id=?"
-	stmt, err := cr.db.Prepare(statement)
+	results := make([]domains.Class, 0)
+
+	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE program_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
+	rows, err := stmt.Query(programId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-	var classes []domains.Class
-	row := stmt.QueryRow(programId)
-	errScan := row.Scan(
-		&classes.Id,
-		&classes.CreatedAt,
-		&classes.UpdatedAt,
-		&classes.DeletedAt,
-		&classes.ProgramId,
-		&classes.SemesterId,
-		&classes.ClassKey,
-		&classes.ClassId,
-		&classes.LocationId,
-		&classes.Times,
-		&classes.StartDate,
-		&classes.EndDate)
-	return classes, errScan
+	for rows.Next() {
+		var class domains.Class
+		if errScan := rows.Scan(
+			&class.Id,
+			&class.CreatedAt,
+			&class.UpdatedAt,
+			&class.DeletedAt,
+			&class.ProgramId,
+			&class.SemesterId,
+			&class.ClassKey,
+			&class.ClassId,
+			&class.LocationId,
+			&class.Times,
+			&class.StartDate,
+			&class.EndDate); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, class)
+	}
+	return results, nil
 }
 
 func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, error) {
-	statement := "SELECT * FROM classes WHERE semester_id=?"
-	stmt, err := cr.db.Prepare(statement)
+	results := make([]domains.Class, 0)
+
+	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE semester_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
+	rows, err := stmt.Query(semesterId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-	var classes []domains.Class
-	row := stmt.QueryRow(semesterId)
-	errScan := row.Scan(
-		&classes.Id,
-		&classes.CreatedAt,
-		&classes.UpdatedAt,
-		&classes.DeletedAt,
-		&classes.ProgramId,
-		&classes.SemesterId,
-		&classes.ClassKey,
-		&classes.ClassId,
-		&classes.LocationId,
-		&classes.Times,
-		&classes.StartDate,
-		&classes.EndDate)
-	return classes, errScan
+	for rows.Next() {
+		var class domains.Class
+		if errScan := rows.Scan(
+			&class.Id,
+			&class.CreatedAt,
+			&class.UpdatedAt,
+			&class.DeletedAt,
+			&class.ProgramId,
+			&class.SemesterId,
+			&class.ClassKey,
+			&class.ClassId,
+			&class.LocationId,
+			&class.Times,
+			&class.StartDate,
+			&class.EndDate); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, class)
+	}
+	return results, nil
 }
 
 func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
-	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=?"
-	stmt, err := cr.db.Prepare(statement)
+	results := make([]domains.Class, 0)
+
+	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE program_id=? AND semester_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
+	rows, err := stmt.Query(programId, semesterId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-	var classes []domains.Class
-	row := stmt.QueryRow(programId, semesterId)
-	errScan := row.Scan(
-		&classes.Id,
-		&classes.CreatedAt,
-		&classes.UpdatedAt,
-		&classes.DeletedAt,
-		&classes.ProgramId,
-		&classes.SemesterId,
-		&classes.ClassKey,
-		&classes.ClassId,
-		&classes.LocationId,
-		&classes.Times,
-		&classes.StartDate,
-		&classes.EndDate)
-	return classes, errScan
+	for rows.Next() {
+		var class domains.Class
+		if errScan := rows.Scan(
+			&class.Id,
+			&class.CreatedAt,
+			&class.UpdatedAt,
+			&class.DeletedAt,
+			&class.ProgramId,
+			&class.SemesterId,
+			&class.ClassKey,
+			&class.ClassId,
+			&class.LocationId,
+			&class.Times,
+			&class.StartDate,
+			&class.EndDate); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, class)
+	}
+	return results, nil
 }
 
 func (cr *classRepo) Insert(class domains.Class) error {
