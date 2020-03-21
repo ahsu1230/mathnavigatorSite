@@ -327,7 +327,7 @@ func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1/2020_summer", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program/program1/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
