@@ -53,7 +53,7 @@ func TestSelectAllClasses(t *testing.T) {
 		"churchill",
 		"3 pm - 5 pm",
 		now,
-		now.Add(time.Hour * 24 * 60),
+		now.Add(time.Hour*24*60),
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").
 		ExpectQuery().
@@ -122,7 +122,7 @@ func TestSelectClass(t *testing.T) {
 		"churchill",
 		"3 pm - 5 pm",
 		now,
-		now.Add(time.Hour * 24 * 60),
+		now.Add(time.Hour*24*60),
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
@@ -178,7 +178,7 @@ func TestInsertClass(t *testing.T) {
 			"churchill",
 			"3 pm - 5 pm",
 			now,
-			now.Add(time.Hour * 24 * 60),
+			now.Add(time.Hour*24*60),
 		).WillReturnResult(result)
 	class := domains.Class{
 		ProgramId:  "program1",
@@ -222,7 +222,7 @@ func TestUpdateClass(t *testing.T) {
 			"churchill",
 			"5 pm - 7 pm",
 			now,
-			now.Add(time.Hour * 24 * 30),
+			now.Add(time.Hour*24*30),
 			"program1_2020_spring_final_review",
 		).WillReturnResult(result)
 	class := domains.Class{
