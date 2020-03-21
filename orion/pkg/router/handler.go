@@ -27,9 +27,9 @@ func (h *Handler) SetupApiEndpoints() {
 		apiClasses.GET("/v1/all", controllers.GetAllClasses)
 		apiClasses.POST("/v1/create", controllers.CreateClass)
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
-		apiClasses.GET("/v1/class/program/:programId", controllers.GetClassesByProgram)
-		apiClasses.GET("/v1/class/semester/:semesterId", controllers.GetClassesBySemester)
-		apiClasses.GET("/v1/class/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
+		apiClasses.GET("/v1/classes/program/:programId", controllers.GetClassesByProgram)
+		apiClasses.GET("/v1/classes/semester/:semesterId", controllers.GetClassesBySemester)
+		apiClasses.GET("/v1/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
 		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
 	}
