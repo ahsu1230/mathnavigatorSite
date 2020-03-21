@@ -5,10 +5,15 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 
 export class AnnouncePage extends React.Component {
-	render() {
-		var numAnnouncements = 3;/* this needs to be a variable later */
+	constructor(props) {
+	    super(props);
+	    this.state = {
+	      list: []
+	    };
+ 	}
 
-		/* these fake announcements will eventually be replaced with real announcements */
+	render() {
+		var numAnnouncements = 3;
 		let fakeAnnounceA = {
 			date: "02/15/2020",
 			author: "Melon King",
@@ -19,48 +24,48 @@ export class AnnouncePage extends React.Component {
 			author: "Fruit Hater",
 			message: "Watermelons are fruit, therefore they deserve to dry on the vine"
 		};
-		/* will use this to test text wrapping later */
+		/* TODO: will use this to test text wrapping later */
 		let fakeAnnounceC = {
 			date: "02/23/2020",
 			author: "Talkative",
 			message: "This will be a longer message later"
 		};
+
 		return (
-      <div id="view-announce">
-        <h1>All Announcements ({numAnnouncements}) </h1>
-				<ul>
-					<div className="announce-lists">
-						<li className="li-med"> Date </li>
-						<li className="li-med"> Author </li>
-						<li className="li-large"> Message </li>
-						<li className="li-small"> </li>
-					</div>
+			<div id="view-announce">
+				<h1>All Announcements ({numAnnouncements})</h1>
+
+				<ul className="announce-lists">
+					<li className="li-med"> Date </li>
+					<li className="li-med"> Author </li>
+					<li className="li-large"> Message </li>
+					<li className="li-small"> </li>
 				</ul>
 
 				<ul>
-					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceA.date} </div>
-						<div className="li-med"> {fakeAnnounceA.author} </div>
-						<p className="li-large"> {fakeAnnounceA.message} </p>
-						<div className="li-small"> Edit > </div>
-					</li>
-					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceB.date} </div>
-						<div className="li-med"> {fakeAnnounceB.author} </div>
-						<p className="li-large"> {fakeAnnounceB.message} </p>
-						<div className="li-small"> Edit > </div>
-					</li>
-					<li className="announce-lists">
-						<div className="li-med"> {fakeAnnounceC.date} </div>
-						<div className="li-med"> {fakeAnnounceC.author} </div>
-						<p className="li-large"> {fakeAnnounceC.message} </p>
-						<div className="li-small"> Edit > </div>
-					</li>
-
+					<AnnounceRow announceObj = {fakeAnnounceA}/>
+					<AnnounceRow announceObj = {fakeAnnounceB}/>
+					<AnnounceRow announceObj = {fakeAnnounceC}/>
 				</ul>
-
-				<Link to={"/announce/add"}> <button className="announcement-button"> Add Announcement</button> </Link>
-      </div>
+				<Link to={"/announcements/add"}> <button className="announcement-button"> Add Announcement</button> </Link>
+			</div>
 		);
 	}
+}
+
+class AnnounceRow extends React.Component {
+  	render() {
+  		const date = this.props.announceObj.date;
+		const author = this.props.announceObj.author;
+		const message = this.props.announceObj.message;
+		const url = "/announcement/"  + "/edit";
+	    return (
+	    	<ul className="announce-lists">
+	        	<li className="li-med"> {date} </li>
+	        	<li className="li-med"> {author} </li>
+				<li className="li-large"> {message} </li>
+	        	<Link to={url}> Edit </Link>
+	      	</ul>
+	    )
+  	}
 }
