@@ -2,26 +2,30 @@
 require('./location.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import API from '../api.js';
 import { Link } from 'react-router-dom';
 
 export class LocationPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          list: []
+        };
+    }
+
+    componentDidMount() {
+      API.get("api/locations/v1/all")
+        .then(res => {
+          const locations = res.data;
+          this.setState({ list: locations });
+        });
+    }
+
     render() {
-        var numLocations = 5;
-        var fakeLocation = {
-            locId: 123,
-            address: "123 Sesame Street",
-            roomNum: 23
-        }
-        var fakeLocation1 = {
-            locId: 4567,
-            address: "456 Sesame St",
-            roomNum: 892
-        }
-        var fakeLocation2 = {
-            locId: 123456,
-            address: "12345 Park Place",
-            roomNum: 212
-        }
+        const location = this.state.list.map((location,index) => {
+            return <LocationRow key={index} location={location}/>
+        });
+        const numLocations = location.length;
         return (
             <div id="view-location">
                 <h1>All Locations ({numLocations})</h1>
@@ -31,9 +35,7 @@ export class LocationPage extends React.Component {
                     <li className="li-large">Room Number</li>
                 </ul>
                 <ul>
-                    <LocationRow locationObj = {fakeLocation}/>
-                    <LocationRow locationObj = {fakeLocation1}/>
-                    <LocationRow locationObj = {fakeLocation2}/>
+                    {location}
                 </ul>
                     <button id="add-location">
                         <Link to={"/locations/add"}>Add Location</Link>
@@ -48,7 +50,7 @@ class LocationRow extends React.Component {
         const locId = this.props.locationObj.locId;
         const address = this.props.locationObj.address;
         const roomNum = this.props.locationObj.roomNum;
-        const url = "/location/" + "/edit";
+        const url = "/location/" + locId + "/edit";
         return (
             <ul id="location-row">
                 <li className="li-med">{locId}</li>

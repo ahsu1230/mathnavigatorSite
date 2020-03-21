@@ -31,7 +31,7 @@ const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 const Location = () => <LocationPage/>;
 const LocationEdit = () => <LocationEditPage/>;
-const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
+const LocationEditMatch = ({match}) => <LocationEditPage locId={match.params.locId}/>;
 const Class = () => <ClassPage/>;
 const ClassEdit = () => <ClassEditPage/>;
 const ClassEditMatch = ({match}) => <ClassEditPage classId={match.params.classId}/>;
@@ -60,7 +60,7 @@ class App extends React.Component {
           <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
-          <Route path="/locations/:locationId/edit" component={LocationEditMatch}/>
+          <Route path="/locations/:locId/edit" component={LocationEditMatch}/>
           <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
           <Route path="/classes/:classId/edit" component={ClassEditMatch}/>
