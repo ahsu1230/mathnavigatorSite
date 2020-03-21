@@ -23,7 +23,7 @@ export class AchievePage extends React.Component {
 
 	render() {
 		const achieve = this.state.list.map((achieve,index) => {
-			return <AchieveRow key ={index} achieve = {achieve}/>
+			return <AchieveRow key={index} achieve={achieve}/>
 		});
 		const numAchievements = achieve.length;
 		return (
