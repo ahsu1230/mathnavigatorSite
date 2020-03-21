@@ -93,7 +93,6 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 	return class, errScan
 }
 
-
 func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
 	statement := "SELECT * FROM classes WHERE program_id=?"
 	stmt, err := cr.db.Prepare(statement)
