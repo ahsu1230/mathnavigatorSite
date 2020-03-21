@@ -9,7 +9,7 @@ export class LocationEditPage extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             inputlocId: "",
+             inputLocId: "",
              inputStreet: "",
              inputCity: "",
              inputState: "",
@@ -17,17 +17,15 @@ export class LocationEditPage extends React.Component {
              inputRoomNum: "",
              isEdit: false,
           };
-      this.handleChange = this.handleChange.bind(this);
+          this.handleChange = this.handleChange.bind(this);
 
-      this.onClickCancel = this.onClickCancel.bind(this);
-      this.onClickDelete = this.onClickDelete.bind(this);
-      this.onClickSave = this.onClickSave.bind(this);
+          this.onClickCancel = this.onClickCancel.bind(this);
+          this.onClickDelete = this.onClickDelete.bind(this);
+          this.onClickSave = this.onClickSave.bind(this);
 
-      this.onDeleted = this.onDeleted.bind(this);
-      this.onSaved = this.onSaved.bind(this);
+          this.onDeleted = this.onDeleted.bind(this);
+          this.onSaved = this.onSaved.bind(this);
     }
-
-
 
     componentDidMount() {
       const locId = this.props.locId;
@@ -36,9 +34,10 @@ export class LocationEditPage extends React.Component {
           .then(res => {
             const location = res.data;
             this.setState({
-              oldlocId: location.locId,
-              inputlocId: location.locId,
+              oldLocId: location.locId,
+              inputLocId: location.locId,
               inputStreet: location.street,
+              inputCity: location.city,
               inputState: location.state1,
               inputZip: location.zip,
               inputRoomNum: location.roomNum,
@@ -48,8 +47,8 @@ export class LocationEditPage extends React.Component {
       }
     }
 
-    handleChange(event,inputField) {
-        this.setState({[inputField]: event.target.inputField});
+    handleChange(event,value) {
+        this.setState({[value]: event.target.value});
     }
 
     onClickCancel() {
@@ -62,17 +61,18 @@ export class LocationEditPage extends React.Component {
 
     onClickSave() {
         let location = {
-            locId: this.state.inputlocId,
+            locId: this.state.inputLocId,
             street: this.state.inputStreet,
-            state1: this.state.state1,
-            zip: this.state.zip,
-            roomNum: this.state.roomNum
+            city: this.state.inputCity,
+            state1: this.state.inputState,
+            zip: this.state.inputZip,
+            roomNum: this.state.inputRoomNum
         };
 
         let successCallback = () => this.onSaved();
         let failCallback = (err) => alert("Could not save location: " + err.response.data);
         if (this.state.isEdit) {
-            API.post("api/locations/v1/location/" + this.state.oldlocId, location)
+            API.post("api/locations/v1/location/" + this.state.oldLocId, location)
                 .then(res => successCallback())
                 .catch(err => failCallback(err));
         } else {
@@ -92,7 +92,7 @@ export class LocationEditPage extends React.Component {
 
     onSaved() {
         window.location.hash = "locations";
-        alert(this.state.isEdit);
+        alert("Location has been saved!");
     }
 
     render() {
@@ -109,22 +109,22 @@ export class LocationEditPage extends React.Component {
             <div id="view-location-edit">
                 <h2>{title}</h2>
                 <h4>Location ID</h4>
-                <input inputField={this.state.inputlocId}
-                    onChange={(e) => this.handleChange(e, "inputlocId")}/>
+                <input value={this.state.inputLocId}
+                    onChange={(e) => this.handleChange(e, "inputLocId")}/>
                 <h4>Street</h4>
-                <input inputField={this.state.inputStreet}
+                <input value={this.state.inputStreet}
                     onChange={(e) => this.handleChange(e, "inputStreet")}/>
                 <h4>City</h4>
-                <input inputField={this.state.inputCity}
+                <input value={this.state.inputCity}
                     onChange={(e) => this.handleChange(e, "inputCity")}/>
                 <h4>State</h4>
-                <input inputField={this.state.inputState}
+                <input value={this.state.inputState}
                     onChange={(e) => this.handleChange(e, "inputState")}/>
                 <h4>Zipcode</h4>
-                <input inputField={this.state.inputZip}
+                <input value={this.state.inputZip}
                     onChange={(e) => this.handleChange(e, "inputZip")}/>
                 <h4>Room Number</h4>
-                <input inputField={this.state.inputRoomNum}
+                <input value={this.state.inputRoomNum}
                     onChange={(e) => this.handleChange(e, "inputRoomNum")}/>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>Save</button>
