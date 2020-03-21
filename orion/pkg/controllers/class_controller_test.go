@@ -312,7 +312,7 @@ func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 				EndDate:    now.Add(time.Hour * 24 * 31),
 			},
 			{
-				Id:         3,
+				Id:         4,
 				ProgramId:  "program2",
 				SemesterId: "2020_summer",
 				ClassKey:   sql.NullString{},
