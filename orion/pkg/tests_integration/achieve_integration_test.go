@@ -46,7 +46,7 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 3, len(achieves))
 }
 
-// Test: Create 1 Achievement, Update it, GetByAchieveId()
+// Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
 	refreshTable(t, domains.TABLE_ACHIEVEMENTS)
 
@@ -76,7 +76,7 @@ func Test_UpdateAchievement(t *testing.T) {
 	assert.EqualValues(t, "message2", achieve.Message)
 }
 
-// Test: Create 1 Achievement, Delete it, GetByAchieveId()
+// Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
 	refreshTable(t, domains.TABLE_ACHIEVEMENTS)
 
