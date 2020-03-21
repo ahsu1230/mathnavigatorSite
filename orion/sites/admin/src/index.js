@@ -15,6 +15,7 @@ import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
 import { AchieveEditPage } from './achieve/achieveEdit.js';
 import { AnnouncePage } from './announce/announce.js';
+import { AnnounceEditPage } from './announce/announceEdit.js';
 import { LocationPage } from './location/location.js';
 import { LocationEditPage } from './location/locationEdit.js';
 
@@ -22,6 +23,8 @@ const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
 const AchieveEditMatch = ({match}) => <AchieveEditPage year={match.params.year}/>;
 const Announce = () => <AnnouncePage/>;
+const AnnounceEdit = () => <AnnounceEditPage/>;
+const AnnounceEditMatch = ({match}) => <AnnounceEditPage announceId={match.params.AnnounceId}/>;
 const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
 const Programs = () => <ProgramPage/>;
@@ -42,7 +45,7 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
-  render() {
+ render() {
     return (
       <div>
         <Header/>
@@ -51,6 +54,8 @@ class App extends React.Component {
           <Route path="/program/:programId/edit" component={ProgramEditMatch}/>
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
+          <Route path="/announcements/:announceId/edit" component={AnnounceEditMatch}/>
+          <Route path="/announcements/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
           <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
