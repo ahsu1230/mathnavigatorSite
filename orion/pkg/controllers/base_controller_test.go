@@ -157,11 +157,11 @@ var sessionService mockSessionService
 
 // Fake sessionService that implements SessionService interface
 type mockSessionService struct {
-	mockGetAll  func() ([]domains.Session, error)
+	mockGetAll         func() ([]domains.Session, error)
 	mockGetBySessionId func(uint) (domains.Session, error)
-	mockCreate  func(domains.Session) error
-	mockUpdate  func(uint, domains.Session) error
-	mockDelete  func(uint) error
+	mockCreate         func(domains.Session) error
+	mockUpdate         func(uint, domains.Session) error
+	mockDelete         func(uint) error
 }
 
 // Implement methods of SessionService interface with mocked implementations
