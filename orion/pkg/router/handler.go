@@ -59,9 +59,9 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiSessions.GET("/v1/all", controllers.GetAllSessions)
 		apiSessions.POST("/v1/create", controllers.CreateSession)
-		apiSessions.GET("/v1/semester/:id", controllers.GetSessionById)
-		apiSessions.POST("/v1/semester/:id", controllers.UpdateSession)
-		apiSessions.DELETE("/v1/semester/:id", controllers.DeleteSession)
+		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
+		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
+		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
 	}
 	// apiUsers := router.Group("api/users/")
 	// apiAccounts := router.Group("api/accounts/")

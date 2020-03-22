@@ -61,7 +61,7 @@ func TestGetAllSessions_Success(t *testing.T) {
 //
 func TestGetSession_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionService.mockGetBySessionId = func(id string) (domains.Session, error) {
+	sessionService.mockGetBySessionId = func(id uint) (domains.Session, error) {
 		session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
 		return session, nil
 	}
@@ -138,6 +138,7 @@ func TestUpdateSession_Success(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
+	now := time.Now().UTC()
 	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", body)
@@ -151,6 +152,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
+	now := time.Now().UTC()
 	session := createMockSession(1, "__", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", body)
@@ -166,6 +168,7 @@ func TestUpdateSession_Failure(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
+	now := time.Now().UTC()
 	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/2", body)
