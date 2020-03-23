@@ -59,14 +59,14 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	return dbConn
 }
 
-func refreshTable(t *testing.T, tableName string) error {
-	stmt, err := db.Prepare(fmt.Sprintf("TRUNCATE TABLE %s;", tableName))
+func resetTable(t *testing.T, tableName string) error {
+	_, err := db.Exec(fmt.Sprintf("DELETE FROM %s; ", tableName))
 	if err != nil {
-		panic(err.Error())
+		t.Fatalf("Error deleting table rows: %s", err)
 	}
-	_, err = stmt.Exec()
+	_, err = db.Exec(fmt.Sprintf("ALTER TABLE %s AUTO_INCREMENT=1;", tableName))
 	if err != nil {
-		t.Fatalf("Error truncating tables: %s", err)
+		t.Fatalf("Error altering table auto-increment: %s", err)
 	}
 	return nil
 }

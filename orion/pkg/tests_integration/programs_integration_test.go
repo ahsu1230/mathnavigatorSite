@@ -11,7 +11,7 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func Test_CreatePrograms(t *testing.T) {
-	refreshTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_PROGRAMS)
 
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog2", "Program2", 2, 3, "descript2")
@@ -46,7 +46,7 @@ func Test_CreatePrograms(t *testing.T) {
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
 func Test_UniqueProgramId(t *testing.T) {
-	refreshTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_PROGRAMS)
 
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2") // Same programId
@@ -73,7 +73,7 @@ func Test_UniqueProgramId(t *testing.T) {
 
 // Test: Create 1 Program, Update it, GetByProgramId()
 func Test_UpdateProgram(t *testing.T) {
-	refreshTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_PROGRAMS)
 
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
@@ -104,7 +104,7 @@ func Test_UpdateProgram(t *testing.T) {
 
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func Test_DeleteProgram(t *testing.T) {
-	refreshTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_PROGRAMS)
 
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
