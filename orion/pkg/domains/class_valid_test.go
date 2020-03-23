@@ -9,11 +9,12 @@ import (
 func TestValidClassKey(t *testing.T) {
 	// Checks for valid class keys
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 100)
 	class := domains.Class{
 		ClassKey:  "final_review",
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
-		EndDate:   now.Add(time.Hour * 24 * 100),
+		EndDate:   later,
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -44,11 +45,12 @@ func TestValidClassKey(t *testing.T) {
 func TestValidTimes(t *testing.T) {
 	// Checks for valid times
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 100)
 	class := domains.Class{
 		ClassKey:  "final_review",
 		Times:     "6 pm - 8 pm",
 		StartDate: now,
-		EndDate:   now.Add(time.Hour * 24 * 100),
+		EndDate:   later,
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -74,11 +76,12 @@ func TestValidTimes(t *testing.T) {
 func TestValidDates(t *testing.T) {
 	// Checks for valid dates
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 30)
 	class := domains.Class{
 		ClassKey:  "final_review",
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
-		EndDate:   now.Add(time.Hour * 24 * 30),
+		EndDate:   later,
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
