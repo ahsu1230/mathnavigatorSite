@@ -139,7 +139,7 @@ func TestGetClassesByProgram_Success(t *testing.T) {
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 60)
 	later3 := now.Add(time.Hour * 24 * 90)
-	classService.mockGetByProgramId = func() ([]domains.Class, error) {
+	classService.mockGetByProgramId = func(programId string) ([]domains.Class, error) {
 		return []domains.Class{
 			{
 				Id:         1,
@@ -213,7 +213,7 @@ func TestGetClassesBySemester_Success(t *testing.T) {
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 60)
 	later3 := now.Add(time.Hour * 24 * 61)
-	classService.mockGetByProgramId = func() ([]domains.Class, error) {
+	classService.mockGetBySemesterId = func(semesterId string) ([]domains.Class, error) {
 		return []domains.Class{
 			{
 				Id:         1,
@@ -287,7 +287,7 @@ func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 31)
 	later3 := now.Add(time.Hour * 24 * 90)
-	classService.mockGetByProgramId = func() ([]domains.Class, error) {
+	classService.mockGetByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
 		return []domains.Class{
 			{
 				Id:         1,
