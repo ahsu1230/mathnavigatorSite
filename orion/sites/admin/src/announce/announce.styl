@@ -5,9 +5,48 @@
   height: 400px
   padding: 0 spacing2x
   box-sizing: border-box
-  color: colorBlackDark
+  color: colorGrayDark
+  font-family: fontFamilyRoboto
 
   & h1
     margin: spacing4x 0
     line-height: lineHeight3
     font-size: fontSize3
+  & ul
+    padding: 0
+
+  & .announce-lists
+    display: inline-block
+    list-style: none
+    padding-left: 0
+    height: lineHeight6
+    border-bottom: 1px solid colorGrayLight
+    line-height: lineHeight6
+
+    & li
+        display: inline-block
+    & div
+        display: inline-block
+    & p
+        display: inline-block
+
+#view-announce
+      & .li-small
+        width: spacing8x
+        color: colorTurquoise
+
+      & .li-med
+          width: spacing16x
+
+      & .li-large
+          width: spacing64x
+
+  .announcement-button
+    display: inline-block
+    width: spacing32x
+    height: lineHeight6
+    line-height: lineHeight6
+    border-radius: spacing1x
+    background-color: colorTurquoise
+    text-align: center
+    color: colorWhite
