@@ -227,7 +227,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		now,
 		class.ProgramId,
 		class.SemesterId,
-		class.ClassKey,
+		sql.NullString{String: class.ClassKey, Valid: true},
 		generateClassId(class),
 		class.LocationId,
 		class.Times,
@@ -262,7 +262,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		now,
 		class.ProgramId,
 		class.SemesterId,
-		class.ClassKey,
+		sql.NullString{String: class.ClassKey, Valid: true},
 		generateClassId(class),
 		class.LocationId,
 		class.Times,
@@ -299,8 +299,8 @@ func CreateTestClassRepo(db *sql.DB) ClassRepoInterface {
 
 func generateClassId(class domains.Class) string {
 	classId := class.ProgramId + "_" + class.SemesterId
-	if class.ClassKey.Valid {
-		return classId + "_" + class.ClassKey.String
+	if len(class.ClassKey) != 0 {
+		return classId + "_" + class.ClassKey
 	}
 	return classId
 }

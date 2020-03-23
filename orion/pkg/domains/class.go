@@ -11,17 +11,17 @@ var TABLE_CLASSES = "classes"
 
 type Class struct {
 	Id         uint
-	CreatedAt  time.Time      `db:"created_at"`
-	UpdatedAt  time.Time      `db:"updated_at"`
-	DeletedAt  sql.NullTime   `db:"deleted_at"`
-	ProgramId  string         `db:"program_id" json:"programId"`
-	SemesterId string         `db:"semester_id" json:"semesterId"`
-	ClassKey   sql.NullString `db:"class_key" json:"classKey"`
-	ClassId    string         `db:"class_id" json:"classId"`
-	LocationId string         `db:"location_id" json:"locationId"`
-	Times      string         `json:"times"`
-	StartDate  time.Time      `json:"startDate"`
-	EndDate    time.Time      `json:"endDate"`
+	CreatedAt  time.Time    `db:"created_at"`
+	UpdatedAt  time.Time    `db:"updated_at"`
+	DeletedAt  sql.NullTime `db:"deleted_at"`
+	ProgramId  string       `db:"program_id" json:"programId"`
+	SemesterId string       `db:"semester_id" json:"semesterId"`
+	ClassKey   string       `db:"class_key" json:"classKey"`
+	ClassId    string       `db:"class_id" json:"classId"`
+	LocationId string       `db:"location_id" json:"locationId"`
+	Times      string       `json:"times"`
+	StartDate  time.Time    `json:"startDate"`
+	EndDate    time.Time    `json:"endDate"`
 }
 
 // Class Methods
@@ -34,8 +34,8 @@ func (class *Class) Validate() error {
 	endDate := class.EndDate
 
 	// Class Key validation
-	if classKey.Valid {
-		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches || len(classKey.String) > 64 {
+	if len(classKey) != 0 {
+		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey); !matches || len(classKey) > 64 {
 			return errors.New("invalid class key")
 		}
 	}

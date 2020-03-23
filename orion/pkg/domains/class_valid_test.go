@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"testing"
 	"time"
@@ -11,7 +10,7 @@ func TestValidClassKey(t *testing.T) {
 	// Checks for valid class keys
 	now := time.Now().UTC()
 	class := domains.Class{
-		ClassKey:  sql.NullString{String: "final_review", Valid: true},
+		ClassKey:  "final_review",
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
 		EndDate:   now.Add(time.Hour * 24 * 100),
@@ -20,28 +19,23 @@ func TestValidClassKey(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	class.ClassKey = sql.NullString{}
+	class.ClassKey = ""
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	class.ClassKey = sql.NullString{String: "Valid_Class_100", Valid: true}
+	class.ClassKey = "Valid_Class_100"
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid class keys
-	class.ClassKey = sql.NullString{String: "a__a", Valid: true}
+	class.ClassKey = "a__a"
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid class key")
 	}
 
-	class.ClassKey = sql.NullString{String: "_", Valid: true}
-	if err := class.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid class key")
-	}
-
-	class.ClassKey = sql.NullString{String: "", Valid: true}
+	class.ClassKey = "_"
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid class key")
 	}
@@ -51,7 +45,7 @@ func TestValidTimes(t *testing.T) {
 	// Checks for valid times
 	now := time.Now().UTC()
 	class := domains.Class{
-		ClassKey:  sql.NullString{String: "final_review", Valid: true},
+		ClassKey:  "final_review",
 		Times:     "6 pm - 8 pm",
 		StartDate: now,
 		EndDate:   now.Add(time.Hour * 24 * 100),
@@ -81,7 +75,7 @@ func TestValidDates(t *testing.T) {
 	// Checks for valid dates
 	now := time.Now().UTC()
 	class := domains.Class{
-		ClassKey:  sql.NullString{String: "final_review", Valid: true},
+		ClassKey:  "final_review",
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
 		EndDate:   now.Add(time.Hour * 24 * 30),
