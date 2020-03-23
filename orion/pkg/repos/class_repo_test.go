@@ -28,6 +28,7 @@ func TestSelectAllClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 60)
 	var rows = sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
@@ -53,7 +54,7 @@ func TestSelectAllClasses(t *testing.T) {
 		"churchill",
 		"3 pm - 5 pm",
 		now,
-		now.Add(time.Hour*24*60),
+		later,
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").
 		ExpectQuery().
@@ -77,7 +78,7 @@ func TestSelectAllClasses(t *testing.T) {
 			LocationId: "churchill",
 			Times:      "3 pm - 5 pm",
 			StartDate:  now,
-			EndDate:    now.Add(time.Hour * 24 * 60),
+			EndDate:    later,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -97,6 +98,7 @@ func TestSelectClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 60)
 	rows := sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
@@ -122,7 +124,7 @@ func TestSelectClass(t *testing.T) {
 		"churchill",
 		"3 pm - 5 pm",
 		now,
-		now.Add(time.Hour*24*60),
+		later,
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
@@ -146,7 +148,7 @@ func TestSelectClass(t *testing.T) {
 		LocationId: "churchill",
 		Times:      "3 pm - 5 pm",
 		StartDate:  now,
-		EndDate:    now.Add(time.Hour * 24 * 60),
+		EndDate:    later,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -165,6 +167,7 @@ func TestInsertClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 60)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO classes").
 		ExpectExec().
@@ -178,7 +181,7 @@ func TestInsertClass(t *testing.T) {
 			"churchill",
 			"3 pm - 5 pm",
 			now,
-			now.Add(time.Hour*24*60),
+			later,
 		).WillReturnResult(result)
 	class := domains.Class{
 		ProgramId:  "program1",
@@ -188,7 +191,7 @@ func TestInsertClass(t *testing.T) {
 		LocationId: "churchill",
 		Times:      "3 pm - 5 pm",
 		StartDate:  now,
-		EndDate:    now.Add(time.Hour * 24 * 60),
+		EndDate:    later,
 	}
 	err := repo.Insert(class)
 	if err != nil {
@@ -210,6 +213,7 @@ func TestUpdateClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
+	later := now.Add(time.Hour * 24 * 30)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE classes SET (.*) WHERE class_id=?").
 		ExpectExec().
@@ -222,7 +226,7 @@ func TestUpdateClass(t *testing.T) {
 			"churchill",
 			"5 pm - 7 pm",
 			now,
-			now.Add(time.Hour*24*30),
+			later,
 			"program1_2020_spring_final_review",
 		).WillReturnResult(result)
 	class := domains.Class{
@@ -233,7 +237,7 @@ func TestUpdateClass(t *testing.T) {
 		LocationId: "churchill",
 		Times:      "5 pm - 7 pm",
 		StartDate:  now,
-		EndDate:    now.Add(time.Hour * 24 * 30),
+		EndDate:    later,
 	}
 	err := repo.Update("program1_2020_spring_final_review", class)
 	if err != nil {
