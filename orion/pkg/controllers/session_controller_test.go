@@ -16,9 +16,9 @@ import (
 //
 // Test Get All
 //
-func TestGetAllSessions_Success(t *testing.T) {
+func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionService.mockGetAll = func() ([]domains.Session, error) {
+	sessionService.mockGetAllByClassId = func(classId string) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -30,7 +30,7 @@ func TestGetAllSessions_Success(t *testing.T) {
 			},
 			{
 				Id:       2,
-				ClassId:  "id_2",
+				ClassId:  "id_1",
 				StartsAt: now,
 				EndsAt:   now,
 				Canceled: true,
@@ -41,7 +41,7 @@ func TestGetAllSessions_Success(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/all/id_1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -52,7 +52,7 @@ func TestGetAllSessions_Success(t *testing.T) {
 	assert.EqualValues(t, 1, sessions[0].Id)
 	assert.EqualValues(t, "id_1", sessions[0].ClassId)
 	assert.EqualValues(t, 2, sessions[1].Id)
-	assert.EqualValues(t, "id_2", sessions[1].ClassId)
+	assert.EqualValues(t, "id_1", sessions[1].ClassId)
 	assert.EqualValues(t, 2, len(sessions))
 }
 

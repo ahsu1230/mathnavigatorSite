@@ -7,8 +7,10 @@ import (
 	"net/http"
 )
 
-func GetAllSessions(c *gin.Context) {
-	sessionList, err := services.SessionService.GetAll()
+func GetAllSessionsByClassId(c *gin.Context) {
+	classId := c.Param("classId")
+
+	sessionList, err := services.SessionService.GetAllByClassId(classId)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {

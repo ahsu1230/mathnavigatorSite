@@ -20,9 +20,9 @@ func initSessionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SessionRepoI
 }
 
 //
-// Test Select All
+// Test Select All By Class Id
 //
-func TestSelectAllSessions(t *testing.T) {
+func TestSelectAllSessionsByClassId(t *testing.T) {
 	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
@@ -39,10 +39,11 @@ func TestSelectAllSessions(t *testing.T) {
 		"Canceled",
 		"Notes"}).
 		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, "special lecture from guest")
-	mock.ExpectPrepare("^SELECT (.+) FROM sessions").
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
+		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAllByClassId("id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

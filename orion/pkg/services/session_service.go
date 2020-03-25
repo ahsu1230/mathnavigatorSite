@@ -9,7 +9,7 @@ var SessionService sessionServiceInterface = &sessionService{}
 
 // Interface for SessionService
 type sessionServiceInterface interface {
-	GetAll() ([]domains.Session, error)
+	GetAllByClassId(string) ([]domains.Session, error)
 	GetBySessionId(uint) (domains.Session, error)
 	Create(domains.Session) error
 	Update(uint, domains.Session) error
@@ -19,8 +19,8 @@ type sessionServiceInterface interface {
 // Struct that implements interface
 type sessionService struct{}
 
-func (ss *sessionService) GetAll() ([]domains.Session, error) {
-	sessions, err := repos.SessionRepo.SelectAll()
+func (ss *sessionService) GetAllByClassId(classId string) ([]domains.Session, error) {
+	sessions, err := repos.SessionRepo.SelectAllByClassId(classId)
 	if err != nil {
 		return nil, err
 	}

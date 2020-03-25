@@ -3,6 +3,7 @@ package repos
 import (
 	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"log"
 	"time"
 )
 
@@ -15,7 +16,7 @@ type sessionRepo struct {
 
 type SessionRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Session, error)
+	SelectAllByClassId(string) ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert(domains.Session) error
 	Update(uint, domains.Session) error
@@ -26,15 +27,15 @@ func (sr *sessionRepo) Initialize(db *sql.DB) {
 	sr.db = db
 }
 
-func (sr *sessionRepo) SelectAll() ([]domains.Session, error) {
+func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
 	results := make([]domains.Session, 0)
 
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions")
+	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE class_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(classId)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +92,7 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 		"starts_at, " +
 		"ends_at, " +
 		"canceled, " +
-		"notes, " +
+		"notes" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
@@ -108,6 +109,7 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 		session.Canceled,
 		session.Notes)
 	if err != nil {
+		log.Fatal(err) // temporarily added for debugging integration tests
 		return err
 	}
 
