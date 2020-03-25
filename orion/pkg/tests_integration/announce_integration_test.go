@@ -11,7 +11,7 @@ import (
 
 // Test: Create 3 Announcements and GetAll()
 func Test_CreateAnnouncements(t *testing.T) {
-	refreshTable(t, domains.TABLE_ANNOUNCEMENTS)
+	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 
 	now := time.Now().UTC()
 	announce1 := createAnnouncement(now, "Author 1", "Message 1")
@@ -50,7 +50,7 @@ func Test_CreateAnnouncements(t *testing.T) {
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
 func Test_UpdateAnnouncement(t *testing.T) {
-	refreshTable(t, domains.TABLE_ANNOUNCEMENTS)
+	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 
 	// Create 1 Announcement
 	now := time.Now().UTC()
@@ -81,7 +81,7 @@ func Test_UpdateAnnouncement(t *testing.T) {
 
 // Test: Create 1 Announcement, Delete it, GetByAnnounceId()
 func Test_DeleteAnnouncement(t *testing.T) {
-	refreshTable(t, domains.TABLE_ANNOUNCEMENTS)
+	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 
 	// Create
 	now := time.Now().UTC()

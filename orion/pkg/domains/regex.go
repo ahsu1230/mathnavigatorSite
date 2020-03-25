@@ -5,7 +5,10 @@ const (
 	REGEX_ALPHA = `[[:alnum:]]`
 
 	// Ensures at least one uppercase or lowercase letter
-	REGEX_LETTER = `[A-Za-z]+`
+	REGEX_LETTER = `[A-Za-z]`
+
+	// Ensures at least one number
+	REGEX_NUMBER = `[0-9]`
 
 	// Alphanumeric characters separated by underscores
 	REGEX_GENERIC_ID = `^[[:alnum:]]+(_[[:alnum:]]+)*$`
@@ -26,12 +29,13 @@ const (
 	// Ensures formatting matches a valid street address
 	REGEX_STREET = `^[1-9][0-9]*( [A-Z][a-z]*){2,}$`
 
-	// One or more capitalized words
-	REGEX_CITY = `^([A-Z][a-z]*)( [A-Z][a-z]*)*$`
+	// One or more capitalized words separated by spaces or dashes
+	REGEX_CITY = `^([A-Z][a-z]*)([ -][A-Z][a-z]*)*$`
 
-	// Two letter state codes
-	REGEX_STATE = `^[A-Z][A-Z]$`
+	// All U.S. state and possession addresses used by the USPS
+	REGEX_STATE = `^(A[A|E|K|L|P|R|S|Z]|C[A|O|T]|D[C|E]|F[L|M]|G[A|U]|HI|I[A|D|L|N]|K[S|Y]|LA|M[A|D|E|H|I|N|O|P|S|T]` +
+		`|N[C|D|E|H|J|M|V|Y]|O[H|K|R]|P[A|R|W]|RI|S[C|D]|T[N|X]|UT|V[A|I|T]|W[A|I|V|Y])$`
 
-	// Ensures formatting matches a valid zipcode
-	REGEX_ZIPCODE = `^[0-9]{5}(-[0-9]{4}){0,1}$`
+	// Ensures formatting matches a valid ZIP code
+	REGEX_ZIPCODE = `^[0-9]{5}(-[0-9]{4})?$`
 )
