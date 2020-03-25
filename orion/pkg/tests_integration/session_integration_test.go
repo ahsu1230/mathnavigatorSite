@@ -36,7 +36,7 @@ func Test_CreateSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Call Get All!
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/all/class_A", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/class_A/sessions", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)

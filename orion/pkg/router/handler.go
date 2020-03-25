@@ -22,10 +22,13 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
 	}
-	// apiClasses := router.Group("api/classes/")
+	apiClasses := h.Engine.Group("api/classes/")
+	{
+		apiClasses.GET("/v1/class/:classId/sessions", controllers.GetAllSessionsByClassId)
+	}
 	apiLocations := h.Engine.Group("api/locations/")
 	{
-		apiLocations.GET("v1/all", controllers.GetAllLocations)
+		apiLocations.GET("/v1/all", controllers.GetAllLocations)
 		apiLocations.POST("/v1/create", controllers.CreateLocation)
 		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
 		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
@@ -57,7 +60,6 @@ func (h *Handler) SetupApiEndpoints() {
 	}
 	apiSessions := h.Engine.Group("api/sessions/")
 	{
-		apiSessions.GET("/v1/all/:classId", controllers.GetAllSessionsByClassId)
 		apiSessions.POST("/v1/create", controllers.CreateSession)
 		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)

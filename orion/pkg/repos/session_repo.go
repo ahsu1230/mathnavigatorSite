@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"log"
+	"sort"
 	"time"
 )
 
@@ -57,6 +58,10 @@ func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, er
 		}
 		results = append(results, session)
 	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].StartsAt.Before(results[j].StartsAt)
+	})
 
 	return results, nil
 }
