@@ -28,6 +28,15 @@ func GetAchievementById(c *gin.Context) {
 	}
 }
 
+func GetAchievementsByYear(c *gin.Context) {
+	achieveList, err := services.AchieveService.GetByYear()
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, achieveList)
+	}
+}
+
 func CreateAchievement(c *gin.Context) {
 	// Incoming JSON
 	var achieveJson domains.Achieve
