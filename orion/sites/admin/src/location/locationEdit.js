@@ -9,12 +9,13 @@ export class LocationEditPage extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
+             oldLocId: "",
              inputLocId: "",
              inputStreet: "",
              inputCity: "",
              inputState: "",
              inputZip: "",
-             inputRoomNum: "",
+             inputRoom: "",
              isEdit: false,
           };
           this.handleChange = this.handleChange.bind(this);
@@ -38,9 +39,9 @@ export class LocationEditPage extends React.Component {
               inputLocId: location.locId,
               inputStreet: location.street,
               inputCity: location.city,
-              inputState: location.state1,
-              inputZip: location.zip,
-              inputRoomNum: location.roomNum,
+              inputState: location.state,
+              inputZip: location.zipcode,
+              inputRoom: location.room,
               isEdit: true
             });
           });
@@ -56,7 +57,11 @@ export class LocationEditPage extends React.Component {
     }
 
     onClickDelete() {
-        console.log("delete button clicked");
+        const locId = this.props.locId;
+        API.delete("api/locations/v1/location/" + locId)
+            .then(res => {
+                window.location.hash = "locations";
+            })
     }
 
     onClickSave() {
@@ -64,9 +69,9 @@ export class LocationEditPage extends React.Component {
             locId: this.state.inputLocId,
             street: this.state.inputStreet,
             city: this.state.inputCity,
-            state1: this.state.inputState,
-            zip: this.state.inputZip,
-            roomNum: this.state.inputRoomNum
+            state: this.state.inputState,
+            zipcode: this.state.inputZip,
+            room: this.state.inputRoom
         };
 
         let successCallback = () => this.onSaved();
@@ -123,9 +128,9 @@ export class LocationEditPage extends React.Component {
                 <h4>Zipcode</h4>
                 <input value={this.state.inputZip}
                     onChange={(e) => this.handleChange(e, "inputZip")}/>
-                <h4>Room Number</h4>
-                <input value={this.state.inputRoomNum}
-                    onChange={(e) => this.handleChange(e, "inputRoomNum")}/>
+                <h4>Room</h4>
+                <input value={this.state.inputRoom}
+                    onChange={(e) => this.handleChange(e, "inputRoom")}/>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>Save</button>
                     <button className="btn-cancel" onClick={this.onClickCancel}>Cancel</button>

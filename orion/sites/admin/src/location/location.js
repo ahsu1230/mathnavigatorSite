@@ -31,8 +31,8 @@ export class LocationPage extends React.Component {
                 <h1>All Locations ({numLocations})</h1>
                 <ul id="list-heading">
                     <li className="li-med">Location ID</li>
-                    <li className="li-med">Address</li>
-                    <li className="li-large">Room Number</li>
+                    <li className="li-large">Address</li>
+                    <li className="li-large">Room</li>
                 </ul>
                 <ul>
                     {location}
@@ -47,15 +47,19 @@ export class LocationPage extends React.Component {
 
 class LocationRow extends React.Component {
     render() {
-        const locId = this.props.locationObj.locId;
-        const address = this.props.locationObj.address;
-        const roomNum = this.props.locationObj.roomNum;
-        const url = "/location/" + locId + "/edit";
+        const locId = this.props.location.locId;
+        const address1 = this.props.location.street
+        const address2 = this.props.location.city + ", " + this.props.location.state + " " + this.props.location.zipcode;
+        const room = this.props.location.room;
+        const url = "/locations/" + locId + "/edit";
         return (
             <ul id="location-row">
                 <li className="li-med">{locId}</li>
-                <li className="li-med">{address}</li>
-                <li className="li-small">{roomNum}</li>
+                <li className="li-large">
+                    <div> {address1} </div>
+                    <div> {address2} </div>
+                </li>
+                <li className="li-small">{room}</li>
                 <Link to={url}>Edit</Link>
             </ul>
         );
