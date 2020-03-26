@@ -30,7 +30,6 @@ export class AchieveEditPage extends React.Component {
       if (achieveId) {
         API.get("api/achievements/v1/achievement/" + achieveId)
           .then(res => {
-            debugger;
             const achieve = res.data;
             this.setState({
               inputYear: achieve.year,
@@ -58,7 +57,6 @@ export class AchieveEditPage extends React.Component {
             year: parseInt(this.state.inputYear),
             message: this.state.inputMessage
         };
-        alert(this.state.isEdit);
         let successCallback = () => alert("Successfully saved!");
         let failCallback = (err) => alert("Could not save achievement: " + err.response.data);
         if (this.state.isEdit) {
