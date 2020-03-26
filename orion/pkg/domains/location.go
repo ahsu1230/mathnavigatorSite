@@ -18,8 +18,8 @@ type Location struct {
 	Street    string       `json:"street"`
 	City      string       `json:"city"`
 	State     string       `json:"state"`
-	Zipcode   string       `json:"zipcode"`
-	Room      string       `json:"room"`
+	ZipCode   string       `json:"zipcode"`
+	Room      NullString   `json:"room"`
 }
 
 func (location *Location) Validate() error {
@@ -28,7 +28,7 @@ func (location *Location) Validate() error {
 	street := location.Street
 	city := location.City
 	state := location.State
-	zipcode := location.Zipcode
+	zipcode := location.ZipCode
 	room := location.Room
 
 	// Location ID validation
@@ -51,14 +51,14 @@ func (location *Location) Validate() error {
 		return errors.New("invalid state")
 	}
 
-	// Zipcode validation
+	// ZipCode validation
 	if matches, _ := regexp.MatchString(REGEX_ZIPCODE, zipcode); !matches {
 		return errors.New("invalid zipcode")
 	}
 
 	// Room validation
-	if room != "" {
-		if matches, _ := regexp.MatchString(REGEX_ALPHA, room); !matches {
+	if room.Valid {
+		if matches, _ := regexp.MatchString(REGEX_ALPHA, room.String); !matches {
 			return errors.New("invalid room")
 		}
 	}

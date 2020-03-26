@@ -18,24 +18,8 @@ import (
 func TestGetAllLocations_Success(t *testing.T) {
 	locationService.mockGetAll = func() ([]domains.Location, error) {
 		return []domains.Location{
-			{
-				Id:      1,
-				LocId:   "loc1",
-				Street:  "4040 Location Rd",
-				City:    "City",
-				State:   "MA",
-				Zipcode: "77294",
-				Room:    "Room 1",
-			},
-			{
-				Id:      2,
-				LocId:   "loc2",
-				Street:  "4040 Location Ave",
-				City:    "Dity",
-				State:   "MD",
-				Zipcode: "12353",
-				Room:    "Room 2",
-			},
+			createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1"),
+			createMockLocation("loc2", "4040 Location Ave", "Dity", "MD", "12353", "Room 2"),
 		}, nil
 	}
 	services.LocationService = &locationService
@@ -103,8 +87,7 @@ func TestCreateLocation_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	marshal, _ := json.Marshal(location)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromLocation(location)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body)
 
 	// Validate results
@@ -117,8 +100,7 @@ func TestCreateLocation_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
-	marshal, _ := json.Marshal(location)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromLocation(location)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body)
 
 	// Validate results
@@ -209,13 +191,13 @@ func createMockLocation(locId string, street string, city string, state string, 
 		Street:  street,
 		City:    city,
 		State:   state,
-		Zipcode: zipcode,
-		Room:    room,
+		ZipCode: zipcode,
+		Room:    domains.CreateNullString(room),
 	}
 }
 
 func createBodyFromLocation(location domains.Location) io.Reader {
-	marshal, err := json.Marshal(location)
+	marshal, err := json.Marshal(&location)
 	if err != nil {
 		panic(err)
 	}
