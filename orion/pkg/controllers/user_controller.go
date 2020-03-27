@@ -10,6 +10,7 @@ import (
 func GetAllUsers(c *gin.Context) {
 	userList, err := services.UserService.GetAll()
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, userList)
@@ -22,6 +23,7 @@ func GetUserById(c *gin.Context) {
 
 	user, err := services.UserService.GetById(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
 		c.JSON(http.StatusOK, user)
@@ -34,15 +36,17 @@ func CreateUser(c *gin.Context) {
 	c.BindJSON(&userJson)
 
 	if err := userJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.UserService.Create(userJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 }
 
@@ -53,15 +57,17 @@ func UpdateUser(c *gin.Context) {
 	c.BindJSON(&userJson)
 
 	if err := userJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.UserService.Update(id, userJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 }
 
@@ -71,6 +77,7 @@ func DeleteUser(c *gin.Context) {
 
 	err := services.UserService.Delete(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
