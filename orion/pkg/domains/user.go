@@ -3,7 +3,6 @@ package domains
 import (
 	"database/sql"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"regexp"
 	"time"
 )
@@ -12,16 +11,16 @@ var TABLE_USERS = "users"
 
 type User struct {
 	Id         uint
-	CreatedAt  time.Time           `db:"created_at"`
-	UpdatedAt  time.Time           `db:"updated_at"`
-	DeletedAt  sql.NullTime        `db:"deleted_at"`
-	FirstName  string              `json:"firstName"`
-	LastName   string              `json:"lastName"`
-	MiddleName sql.NullString      `json:"middleName"`
-	Email      string              `json:"email"`
-	Phone      string              `json:"phone"`
-	IsGuardian bool                `json:"isGuardian"`
-	GuardianId sql_helper.NullUint `db:"guardian_id" json:"guardianId"`
+	CreatedAt  time.Time    `db:"created_at"`
+	UpdatedAt  time.Time    `db:"updated_at"`
+	DeletedAt  sql.NullTime `db:"deleted_at"`
+	FirstName  string       `json:"firstName"`
+	LastName   string       `json:"lastName"`
+	MiddleName string       `json:"middleName"`
+	Email      string       `json:"email"`
+	Phone      string       `json:"phone"`
+	IsGuardian bool         `json:"isGuardian"`
+	GuardianId uint         `db:"guardian_id" json:"guardianId"`
 }
 
 // Class Methods
@@ -58,11 +57,11 @@ func (user *User) Validate() error {
 
 	// Guardian validation
 	if isGuardian {
-		if (guardianId != sql_helper.NullUint{}) {
+		if guardianId != 0 {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if (guardianId == sql_helper.NullUint{Uint: id, Valid: true}) {
+		if guardianId == id {
 			return errors.New("invalid guardian id")
 		}
 	}

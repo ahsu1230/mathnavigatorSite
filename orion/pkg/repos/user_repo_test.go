@@ -5,7 +5,6 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"reflect"
 	"testing"
 	"time"
@@ -48,11 +47,11 @@ func TestSelectAllUsers(t *testing.T) {
 		sql.NullTime{},
 		"John",
 		"Smith",
-		sql.NullString{String: "Middle", Valid: true},
+		"Middle",
 		"john.smith@example.com",
 		"555-555-0100",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
 	got, err := repo.SelectAll()
@@ -69,11 +68,11 @@ func TestSelectAllUsers(t *testing.T) {
 			DeletedAt:  sql.NullTime{},
 			FirstName:  "John",
 			LastName:   "Smith",
-			MiddleName: sql.NullString{String: "Middle", Valid: true},
+			MiddleName: "Middle",
 			Email:      "john.smith@example.com",
 			Phone:      "555-555-0100",
 			IsGuardian: true,
-			GuardianId: sql_helper.NullUint{},
+			GuardianId: 0,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -112,11 +111,11 @@ func TestSelectUser(t *testing.T) {
 		sql.NullTime{},
 		"John",
 		"Smith",
-		sql.NullString{String: "Middle", Valid: true},
+		"Middle",
 		"john.smith@example.com",
 		"555-555-0100",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id=?").
 		ExpectQuery().
@@ -135,11 +134,11 @@ func TestSelectUser(t *testing.T) {
 		DeletedAt:  sql.NullTime{},
 		FirstName:  "John",
 		LastName:   "Smith",
-		MiddleName: sql.NullString{String: "Middle", Valid: true},
+		MiddleName: "Middle",
 		Email:      "john.smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: true,
-		GuardianId: sql_helper.NullUint{},
+		GuardianId: 0,
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -166,20 +165,20 @@ func TestInsertUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"John",
 			"Smith",
-			sql.NullString{String: "Middle", Valid: true},
+			"Middle",
 			"john.smith@example.com",
 			"555-555-0100",
 			true,
-			sql_helper.NullUint{},
+			0,
 		).WillReturnResult(result)
 	user := domains.User{
 		FirstName:  "John",
 		LastName:   "Smith",
-		MiddleName: sql.NullString{String: "Middle", Valid: true},
+		MiddleName: "Middle",
 		Email:      "john.smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: true,
-		GuardianId: sql_helper.NullUint{},
+		GuardianId: 0,
 	}
 	err := repo.Insert(user)
 	if err != nil {
@@ -207,21 +206,21 @@ func TestUpdateUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"Bob",
 			"Joe",
-			sql.NullString{},
+			"",
 			"bob.joe@example.com",
 			"555-555-0199",
 			true,
-			sql_helper.NullUint{},
+			0,
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
 		FirstName:  "Bob",
 		LastName:   "Joe",
-		MiddleName: sql.NullString{},
+		MiddleName: "",
 		Email:      "bob.joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
-		GuardianId: sql_helper.NullUint{},
+		GuardianId: 0,
 	}
 	err := repo.Update(1, user)
 	if err != nil {

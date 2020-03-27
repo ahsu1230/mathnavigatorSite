@@ -3,6 +3,7 @@ package repos
 import (
 	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"time"
 )
 
@@ -113,11 +114,11 @@ func (ur *userRepo) Insert(user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		user.MiddleName,
+		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.GuardianId)
+		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0})
 	if err != nil {
 		return err
 	}
@@ -146,11 +147,11 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		user.MiddleName,
+		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.GuardianId,
+		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0},
 		id)
 	if err != nil {
 		return err
