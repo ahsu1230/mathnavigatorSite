@@ -17,34 +17,8 @@ import (
 // Test Get All
 //
 func TestGetAllClasses_Success(t *testing.T) {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 60)
-	later2 := now.Add(time.Hour * 24 * 30)
 	classService.mockGetAll = func() ([]domains.Class, error) {
-		return []domains.Class{
-			{
-				Id:         1,
-				ProgramId:  "program1",
-				SemesterId: "2020_spring",
-				ClassKey:   "class1",
-				ClassId:    "program1_2020_spring_class1",
-				LocationId: "churchill",
-				Times:      "3 pm - 5 pm",
-				StartDate:  now,
-				EndDate:    later1,
-			},
-			{
-				Id:         2,
-				ProgramId:  "program2",
-				SemesterId: "2020_summer",
-				ClassKey:   "",
-				ClassId:    "program2_2020_summer",
-				LocationId: "churchill",
-				Times:      "5 pm - 7 pm",
-				StartDate:  now,
-				EndDate:    later2,
-			},
-		}, nil
+		return createMockClasses(), nil
 	}
 	services.ClassService = &classService
 
@@ -57,25 +31,12 @@ func TestGetAllClasses_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "program1", classes[0].ProgramId)
-	assert.EqualValues(t, "2020_spring", classes[0].SemesterId)
-	assert.EqualValues(t, "class1", classes[0].ClassKey)
-	assert.EqualValues(t, "program1_2020_spring_class1", classes[0].ClassId)
-	assert.EqualValues(t, "churchill", classes[0].LocationId)
-	assert.EqualValues(t, "3 pm - 5 pm", classes[0].Times)
-	assert.EqualValues(t, now, classes[0].StartDate)
-	assert.EqualValues(t, later1, classes[0].EndDate)
 
-	assert.EqualValues(t, "program2", classes[1].ProgramId)
-	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
-	assert.EqualValues(t, "", classes[1].ClassKey)
-	assert.EqualValues(t, "program2_2020_summer", classes[1].ClassId)
-	assert.EqualValues(t, "churchill", classes[1].LocationId)
-	assert.EqualValues(t, "5 pm - 7 pm", classes[1].Times)
-	assert.EqualValues(t, now, classes[1].StartDate)
-	assert.EqualValues(t, later2, classes[1].EndDate)
-
-	assert.EqualValues(t, 2, len(classes))
+	assertMockClasses(t, 1, classes[0])
+	assertMockClasses(t, 2, classes[1])
+	assertMockClasses(t, 3, classes[2])
+	assertMockClasses(t, 4, classes[3])
+	assert.EqualValues(t, 4, len(classes))
 }
 
 //
@@ -135,46 +96,8 @@ func TestGetClass_Failure(t *testing.T) {
 // Test Get Classes by other properties
 //
 func TestGetClassesByProgram_Success(t *testing.T) {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 60)
-	later3 := now.Add(time.Hour * 24 * 90)
 	classService.mockGetByProgramId = func(programId string) ([]domains.Class, error) {
-		return []domains.Class{
-			{
-				Id:         1,
-				ProgramId:  "program1",
-				SemesterId: "2020_spring",
-				ClassKey:   "class1",
-				ClassId:    "program1_2020_spring_class1",
-				LocationId: "churchill",
-				Times:      "3 pm - 5 pm",
-				StartDate:  now,
-				EndDate:    later1,
-			},
-			{
-				Id:         2,
-				ProgramId:  "program2",
-				SemesterId: "2020_summer",
-				ClassKey:   "",
-				ClassId:    "program2_2020_summer",
-				LocationId: "churchill",
-				Times:      "5 pm - 7 pm",
-				StartDate:  now,
-				EndDate:    later2,
-			},
-			{
-				Id:         3,
-				ProgramId:  "program1",
-				SemesterId: "2020_fall",
-				ClassKey:   "class2",
-				ClassId:    "program1_2020_fall_class2",
-				LocationId: "churchill",
-				Times:      "5 pm - 7 pm",
-				StartDate:  now,
-				EndDate:    later3,
-			},
-		}, nil
+		return createMockClasses(), nil
 	}
 	services.ClassService = &classService
 
@@ -187,68 +110,16 @@ func TestGetClassesByProgram_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "program1", classes[0].ProgramId)
-	assert.EqualValues(t, "2020_spring", classes[0].SemesterId)
-	assert.EqualValues(t, "class1", classes[0].ClassKey)
-	assert.EqualValues(t, "program1_2020_spring_class1", classes[0].ClassId)
-	assert.EqualValues(t, "churchill", classes[0].LocationId)
-	assert.EqualValues(t, "3 pm - 5 pm", classes[0].Times)
-	assert.EqualValues(t, now, classes[0].StartDate)
-	assert.EqualValues(t, later1, classes[0].EndDate)
 
-	assert.EqualValues(t, "program1", classes[1].ProgramId)
-	assert.EqualValues(t, "2020_fall", classes[1].SemesterId)
-	assert.EqualValues(t, "class2", classes[1].ClassKey)
-	assert.EqualValues(t, "program1_2020_fall_class2", classes[1].ClassId)
-	assert.EqualValues(t, "churchill", classes[1].LocationId)
-	assert.EqualValues(t, "5 pm - 7 pm", classes[1].Times)
-	assert.EqualValues(t, now, classes[1].StartDate)
-	assert.EqualValues(t, later3, classes[1].EndDate)
-
-	assert.EqualValues(t, 2, len(classes))
+	assertMockClasses(t, 1, classes[0])
+	assertMockClasses(t, 2, classes[1])
+	assertMockClasses(t, 3, classes[2])
+	assert.EqualValues(t, 3, len(classes))
 }
 
 func TestGetClassesBySemester_Success(t *testing.T) {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 60)
-	later3 := now.Add(time.Hour * 24 * 61)
 	classService.mockGetBySemesterId = func(semesterId string) ([]domains.Class, error) {
-		return []domains.Class{
-			{
-				Id:         1,
-				ProgramId:  "program1",
-				SemesterId: "2020_spring",
-				ClassKey:   "class1",
-				ClassId:    "program1_2020_spring_class1",
-				LocationId: "churchill",
-				Times:      "3 pm - 5 pm",
-				StartDate:  now,
-				EndDate:    later1,
-			},
-			{
-				Id:         2,
-				ProgramId:  "program2",
-				SemesterId: "2020_summer",
-				ClassKey:   "",
-				ClassId:    "program2_2020_summer",
-				LocationId: "churchill",
-				Times:      "5 pm - 7 pm",
-				StartDate:  now,
-				EndDate:    later2,
-			},
-			{
-				Id:         3,
-				ProgramId:  "program1",
-				SemesterId: "2020_summer",
-				ClassKey:   "final_review",
-				ClassId:    "program1_2020_summer_final_review",
-				LocationId: "churchill",
-				Times:      "3 pm - 5 pm",
-				StartDate:  later2,
-				EndDate:    later3,
-			},
-		}, nil
+		return createMockClasses(), nil
 	}
 	services.ClassService = &classService
 
@@ -261,84 +132,20 @@ func TestGetClassesBySemester_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "program2", classes[0].ProgramId)
-	assert.EqualValues(t, "2020_summer", classes[0].SemesterId)
-	assert.EqualValues(t, "", classes[0].ClassKey)
-	assert.EqualValues(t, "program2_2020_summer", classes[0].ClassId)
-	assert.EqualValues(t, "churchill", classes[0].LocationId)
-	assert.EqualValues(t, "5 pm - 7 pm", classes[0].Times)
-	assert.EqualValues(t, now, classes[0].StartDate)
-	assert.EqualValues(t, later2, classes[0].EndDate)
 
-	assert.EqualValues(t, "program1", classes[1].ProgramId)
-	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
-	assert.EqualValues(t, "final_review", classes[1].ClassKey)
-	assert.EqualValues(t, "program1_2020_summer_final_review", classes[1].ClassId)
-	assert.EqualValues(t, "churchill", classes[1].LocationId)
-	assert.EqualValues(t, "3 pm - 5 pm", classes[1].Times)
-	assert.EqualValues(t, later2, classes[1].StartDate)
-	assert.EqualValues(t, later3, classes[1].EndDate)
-
+	assertMockClasses(t, 3, classes[0])
+	assertMockClasses(t, 4, classes[1])
 	assert.EqualValues(t, 2, len(classes))
 }
 
 func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 31)
-	later3 := now.Add(time.Hour * 24 * 90)
 	classService.mockGetByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
-		return []domains.Class{
-			{
-				Id:         1,
-				ProgramId:  "program1",
-				SemesterId: "2020_spring",
-				ClassKey:   "class1",
-				ClassId:    "program1_2020_spring_class1",
-				LocationId: "churchill",
-				Times:      "3 pm - 5 pm",
-				StartDate:  now,
-				EndDate:    later1,
-			},
-			{
-				Id:         2,
-				ProgramId:  "program1",
-				SemesterId: "2020_summer",
-				ClassKey:   "",
-				ClassId:    "program1_2020_summer",
-				LocationId: "churchill",
-				Times:      "5 pm - 7 pm",
-				StartDate:  now,
-				EndDate:    later1,
-			},
-			{
-				Id:         3,
-				ProgramId:  "program1",
-				SemesterId: "2020_summer",
-				ClassKey:   "final_review",
-				ClassId:    "program1_2020_summer_final_review",
-				LocationId: "churchill",
-				Times:      "5 pm - 8 pm",
-				StartDate:  later1,
-				EndDate:    later2,
-			},
-			{
-				Id:         4,
-				ProgramId:  "program2",
-				SemesterId: "2020_summer",
-				ClassKey:   "",
-				ClassId:    "program2_2020_summer",
-				LocationId: "churchill",
-				Times:      "4 pm - 6 pm",
-				StartDate:  now,
-				EndDate:    later3,
-			},
-		}, nil
+		return createMockClasses(), nil
 	}
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_summer", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -346,24 +153,9 @@ func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "program1", classes[0].ProgramId)
-	assert.EqualValues(t, "2020_summer", classes[0].SemesterId)
-	assert.EqualValues(t, "", classes[0].ClassKey)
-	assert.EqualValues(t, "program1_2020_summer", classes[0].ClassId)
-	assert.EqualValues(t, "churchill", classes[0].LocationId)
-	assert.EqualValues(t, "5 pm - 7 pm", classes[0].Times)
-	assert.EqualValues(t, now, classes[0].StartDate)
-	assert.EqualValues(t, later1, classes[0].EndDate)
 
-	assert.EqualValues(t, "program1", classes[1].ProgramId)
-	assert.EqualValues(t, "2020_summer", classes[1].SemesterId)
-	assert.EqualValues(t, "final_review", classes[1].ClassKey)
-	assert.EqualValues(t, "program1_2020_summer_final_review", classes[1].ClassId)
-	assert.EqualValues(t, "churchill", classes[1].LocationId)
-	assert.EqualValues(t, "5 pm - 8 pm", classes[1].Times)
-	assert.EqualValues(t, later1, classes[1].StartDate)
-	assert.EqualValues(t, later2, classes[1].EndDate)
-
+	assertMockClasses(t, 1, classes[0])
+	assertMockClasses(t, 2, classes[1])
 	assert.EqualValues(t, 2, len(classes))
 }
 
@@ -543,6 +335,104 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 		Times:      times,
 		StartDate:  startDate,
 		EndDate:    endDate,
+	}
+}
+
+func createMockClasses() []domains.Class {
+	now := time.Now().UTC()
+	later1 := now.Add(time.Hour * 24 * 30)
+	later2 := now.Add(time.Hour * 24 * 31)
+	later3 := now.Add(time.Hour * 24 * 60)
+	return []domains.Class{
+		{
+			Id:         1,
+			ProgramId:  "program1",
+			SemesterId: "2020_spring",
+			ClassKey:   "class1",
+			ClassId:    "program1_2020_spring_class1",
+			LocationId: "churchill",
+			Times:      "3 pm - 5 pm",
+			StartDate:  now,
+			EndDate:    later1,
+		},
+		{
+			Id:         2,
+			ProgramId:  "program1",
+			SemesterId: "2020_spring",
+			ClassKey:   "class2",
+			ClassId:    "program1_2020_spring_class2",
+			LocationId: "churchill",
+			Times:      "5 pm - 7 pm",
+			StartDate:  now,
+			EndDate:    later1,
+		},
+		{
+			Id:         3,
+			ProgramId:  "program1",
+			SemesterId: "2020_summer",
+			ClassKey:   "final_review",
+			ClassId:    "program1_2020_summer_final_review",
+			LocationId: "churchill",
+			Times:      "5 pm - 8 pm",
+			StartDate:  later1,
+			EndDate:    later2,
+		},
+		{
+			Id:         4,
+			ProgramId:  "program2",
+			SemesterId: "2020_summer",
+			ClassKey:   "",
+			ClassId:    "program2_2020_summer",
+			LocationId: "churchill",
+			Times:      "4 pm - 6 pm",
+			StartDate:  later2,
+			EndDate:    later3,
+		},
+	}
+}
+
+func assertMockClasses(t *testing.T, id int, class domains.Class) {
+	now := time.Now().UTC()
+	later1 := now.Add(time.Hour * 24 * 30)
+	later2 := now.Add(time.Hour * 24 * 31)
+	later3 := now.Add(time.Hour * 24 * 60)
+	switch id {
+	case 1:
+		assert.EqualValues(t, "program1", class.ProgramId)
+		assert.EqualValues(t, "2020_spring", class.SemesterId)
+		assert.EqualValues(t, "class1", class.ClassKey)
+		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
+		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
+		assert.EqualValues(t, now, class.StartDate)
+		assert.EqualValues(t, later1, class.EndDate)
+	case 2:
+		assert.EqualValues(t, "program1", class.ProgramId)
+		assert.EqualValues(t, "2020_spring", class.SemesterId)
+		assert.EqualValues(t, "class2", class.ClassKey)
+		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
+		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
+		assert.EqualValues(t, now, class.StartDate)
+		assert.EqualValues(t, later1, class.EndDate)
+	case 3:
+		assert.EqualValues(t, "program1", class.ProgramId)
+		assert.EqualValues(t, "2020_summer", class.SemesterId)
+		assert.EqualValues(t, "final_review", class.ClassKey)
+		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
+		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
+		assert.EqualValues(t, later1, class.StartDate)
+		assert.EqualValues(t, later2, class.EndDate)
+	case 4:
+		assert.EqualValues(t, "program2", class.ProgramId)
+		assert.EqualValues(t, "2020_summer", class.SemesterId)
+		assert.EqualValues(t, "", class.ClassKey)
+		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
+		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
+		assert.EqualValues(t, later2, class.StartDate)
+		assert.EqualValues(t, later3, class.EndDate)
 	}
 }
 
