@@ -25,7 +25,7 @@ const LinkMap = {
     {
       title: "Locations",
       url: "/locations"
-    },
+    }
   ]
 }
 
