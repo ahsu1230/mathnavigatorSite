@@ -5,6 +5,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"reflect"
 	"testing"
 	"time"
@@ -165,11 +166,11 @@ func TestInsertUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"John",
 			"Smith",
-			"Middle",
+			sql.NullString{String: "Middle", Valid: true},
 			"john.smith@example.com",
 			"555-555-0100",
 			true,
-			0,
+			sql_helper.NullUint{},
 		).WillReturnResult(result)
 	user := domains.User{
 		FirstName:  "John",
@@ -206,11 +207,11 @@ func TestUpdateUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"Bob",
 			"Joe",
-			"",
+			sql.NullString{},
 			"bob.joe@example.com",
 			"555-555-0199",
 			true,
-			0,
+			sql_helper.NullUint{},
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
