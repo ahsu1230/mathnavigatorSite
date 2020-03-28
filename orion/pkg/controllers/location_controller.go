@@ -10,6 +10,7 @@ import (
 func GetAllLocations(c *gin.Context) {
 	locationList, err := services.LocationService.GetAll()
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, locationList)
@@ -23,6 +24,7 @@ func GetLocationById(c *gin.Context) {
 
 	location, err := services.LocationService.GetByLocationId(locId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
 		c.JSON(http.StatusOK, location)
@@ -36,15 +38,17 @@ func CreateLocation(c *gin.Context) {
 	c.BindJSON(&locationJson)
 
 	if err := locationJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.LocationService.Create(locationJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -56,15 +60,17 @@ func UpdateLocation(c *gin.Context) {
 	c.BindJSON(&locationJson)
 
 	if err := locationJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.LocationService.Update(locId, locationJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -75,6 +81,7 @@ func DeleteLocation(c *gin.Context) {
 
 	err := services.LocationService.Delete(locId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
