@@ -18,7 +18,7 @@ import { AnnouncePage } from './announce/announce.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
-const AchieveEditMatch = ({match}) => <AchieveEditPage year={match.params.year}/>;
+const AchieveEditMatch = ({match}) => <AchieveEditPage Id={match.params.Id}/>;
 const Announce = () => <AnnouncePage/>;
 const Header = () => <HeaderSection/>;
 const Home = () => <HomePage/>;
@@ -47,7 +47,7 @@ class App extends React.Component {
           <Route path="/programs/add" component={ProgramEdit}/>
           <Route path="/programs" component={Programs}/>
           <Route path="/announcements" component={Announce}/>
-          <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
+          <Route path="/achievements/:Id/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
         </Switch>

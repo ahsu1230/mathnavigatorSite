@@ -26,9 +26,9 @@ export class AchieveEditPage extends React.Component {
     }
 
     componentDidMount() {
-      const achieveId = this.props.achieveId;
-      if (achieveId) {
-        API.get("api/achievements/v1/achievement/" + achieveId)
+      const Id = this.props.Id;
+      if (Id) {
+        API.get("api/achievements/v1/achievement/" + Id)
           .then(res => {
             const achieve = res.data;
             this.setState({
@@ -49,18 +49,22 @@ export class AchieveEditPage extends React.Component {
     }
 
     onClickDelete() {
-        this.setState({ showDeleteModal: true });
+        const Id = this.props.Id;
+        API.delete("api/achievements/v1/achievement/" + Id)
+        .then(res => {
+            window.location.hash = "achievements";
+        })
     }
 
     onClickSave() {
         let achieve = {
             year: parseInt(this.state.inputYear),
-            message: this.state.inputMessage
+            message: this.state.inputMessage,
         };
-        let successCallback = () => alert("Successfully saved!");
+        let successCallback = () => this.onSaved();
         let failCallback = (err) => alert("Could not save achievement: " + err.response.data);
         if (this.state.isEdit) {
-            API.post("api/achievements/v1/achievement/" + this.props.achieveId, achieve)
+            API.post("api/achievements/v1/achievement/" + this.props.Id, achieve)
             .then (res => successCallback())
             .catch(err => failCallback(err));
         } else {
@@ -75,8 +79,8 @@ export class AchieveEditPage extends React.Component {
     }
 
     onDeleted() {
-        const achieveId = this.props.achieveId;
-        API.delete("api/achievements/v1/achievement/" + achieveId)
+        const Id = this.props.Id;
+        API.delete("api/achievements/v1/achievement/" + Id)
         .then(res => {
             window.location.hash = "achievements";
         })

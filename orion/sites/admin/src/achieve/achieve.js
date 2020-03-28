@@ -47,7 +47,7 @@ export class AchievePage extends React.Component {
 class AchieveRow extends React.Component {
   	render() {
 		const achieve = this.props.achieve;
-		const url = "/achievements/" + achieve.achieveId + "/edit";
+		const url = "/achievements/" + achieve.Id + "/edit";
 	    return (
 	    	<ul id="achieve-row">
 	        	<li className="li-med">{achieve.year}</li>
