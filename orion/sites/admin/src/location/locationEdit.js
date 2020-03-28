@@ -130,7 +130,7 @@ export class LocationEditPage extends React.Component {
         }
         if (this.state.showSaveModal) {
           showModal = this.state.showSaveModal;
-          modalContent = <OkayModal text={"Program information saved!"}
+          modalContent = <OkayModal text={"Location information saved!"}
                                   onOkay={this.onSaved}/>;
         }
         if (modalContent) {
