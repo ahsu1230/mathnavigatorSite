@@ -2,12 +2,10 @@ package controllers_test
 
 import (
 	"bytes"
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
@@ -24,21 +22,21 @@ func TestGetAllUsers_Success(t *testing.T) {
 				Id:         1,
 				FirstName:  "John",
 				LastName:   "Smith",
-				MiddleName: sql.NullString{},
+				MiddleName: "",
 				Email:      "john_smith@example.com",
 				Phone:      "555-555-0199",
 				IsGuardian: true,
-				GuardianId: sql_helper.NullUint{},
+				GuardianId: 0,
 			},
 			{
 				Id:         2,
 				FirstName:  "Bob",
 				LastName:   "Joe",
-				MiddleName: sql.NullString{String: "Middle", Valid: true},
+				MiddleName: "Middle",
 				Email:      "bob_joe@example.com",
 				Phone:      "555-555-0199",
 				IsGuardian: false,
-				GuardianId: sql_helper.NullUint{Uint: 1, Valid: true},
+				GuardianId: 1,
 			},
 		}, nil
 	}
@@ -56,19 +54,19 @@ func TestGetAllUsers_Success(t *testing.T) {
 	assert.EqualValues(t, 1, users[0].Id)
 	assert.EqualValues(t, "John", users[0].FirstName)
 	assert.EqualValues(t, "Smith", users[0].LastName)
-	assert.EqualValues(t, sql.NullString{}, users[0].MiddleName)
+	assert.EqualValues(t, "", users[0].MiddleName)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, true, users[0].IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{}, users[0].GuardianId)
+	assert.EqualValues(t, 0, users[0].GuardianId)
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
-	assert.EqualValues(t, sql.NullString{String: "Middle", Valid: true}, users[1].MiddleName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0199", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{Uint: 1, Valid: true}, users[1].GuardianId)
+	assert.EqualValues(t, 1, users[1].GuardianId)
 	assert.EqualValues(t, 2, len(users))
 }
 
@@ -77,7 +75,16 @@ func TestGetAllUsers_Success(t *testing.T) {
 //
 func TestGetUser_Success(t *testing.T) {
 	userService.mockGetById = func(id uint) (domains.User, error) {
-		user := createMockUser(1, "John", "message1")
+		user := createMockUser(
+			1,
+			"John",
+			"Smith",
+			"",
+			"john_smith@example.com",
+			"555-555-0199",
+			true,
+			0,
+		)
 		return user, nil
 	}
 	services.UserService = &userService
@@ -92,8 +99,13 @@ func TestGetUser_Success(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, user.Id)
-	assert.EqualValues(t, 2020, user.Year)
-	assert.EqualValues(t, "message1", user.Message)
+	assert.EqualValues(t, "John", user.FirstName)
+	assert.EqualValues(t, "Smith", user.LastName)
+	assert.EqualValues(t, "", user.MiddleName)
+	assert.EqualValues(t, "john_smith@example.com", user.Email)
+	assert.EqualValues(t, "555-555-0199", user.Phone)
+	assert.EqualValues(t, true, user.IsGuardian)
+	assert.EqualValues(t, 0, user.GuardianId)
 }
 
 func TestGetUser_Failure(t *testing.T) {
@@ -123,11 +135,11 @@ func TestCreateUser_Success(t *testing.T) {
 		1,
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0199",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	marshal, _ := json.Marshal(user)
 	body := bytes.NewBuffer(marshal)
@@ -146,11 +158,11 @@ func TestCreateUser_Failure(t *testing.T) {
 		1,
 		"",
 		"",
-		sql.NullString{},
+		"",
 		"",
 		"",
 		false,
-		sql_helper.NullUint{},
+		0,
 	)
 	marshal, _ := json.Marshal(user)
 	body := bytes.NewBuffer(marshal)
@@ -174,11 +186,11 @@ func TestUpdateUser_Success(t *testing.T) {
 		1,
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0199",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	body := createBodyFromUser(user)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
@@ -196,11 +208,11 @@ func TestUpdateUser_Invalid(t *testing.T) {
 		1,
 		"",
 		"",
-		sql.NullString{},
+		"",
 		"",
 		"",
 		false,
-		sql_helper.NullUint{},
+		0,
 	)
 	body := createBodyFromUser(user)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
@@ -220,11 +232,11 @@ func TestUpdateUser_Failure(t *testing.T) {
 		1,
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0199",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	body := createBodyFromUser(user)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
@@ -265,7 +277,7 @@ func TestDeleteUser_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockUser(id uint, firstName string, lastName string, middleName sql.NullString, email string, phone string, isGuardian bool, guardianId sql_helper.NullUint) domains.User {
+func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, guardianId uint) domains.User {
 	return domains.User{
 		Id:         id,
 		FirstName:  firstName,
