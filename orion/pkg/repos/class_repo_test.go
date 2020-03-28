@@ -221,7 +221,7 @@ func TestUpdateClass(t *testing.T) {
 			sqlmock.AnyArg(),
 			"program2",
 			"2020_summer",
-			"",
+			sql.NullString{},
 			"program2_2020_summer",
 			"churchill",
 			"5 pm - 7 pm",
