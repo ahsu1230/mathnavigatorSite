@@ -13,6 +13,8 @@ import (
 	"time"
 )
 
+var now = time.Now().UTC()
+
 //
 // Test Get All
 //
@@ -272,7 +274,6 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 func createMockClasses(ids ...int) []domains.Class {
 	classes := make([]domains.Class, len(ids))
 
-	now := time.Now().UTC()
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 31)
 	later3 := now.Add(time.Hour * 24 * 60)
@@ -330,7 +331,6 @@ func createMockClasses(ids ...int) []domains.Class {
 }
 
 func assertMockClasses(t *testing.T, id int, class domains.Class) {
-	now := time.Now().UTC()
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 31)
 	later3 := now.Add(time.Hour * 24 * 60)
