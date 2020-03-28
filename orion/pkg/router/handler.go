@@ -24,7 +24,15 @@ func (h *Handler) SetupApiEndpoints() {
 	}
 	apiClasses := h.Engine.Group("api/classes/")
 	{
+		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/create", controllers.CreateClass)
+		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
+		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
+		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
 		apiClasses.GET("/v1/class/:classId/sessions", controllers.GetAllSessionsByClassId)
+		apiClasses.GET("/v1/classes/program/:programId", controllers.GetClassesByProgram)
+		apiClasses.GET("/v1/classes/semester/:semesterId", controllers.GetClassesBySemester)
+		apiClasses.GET("/v1/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
 	}
 	apiLocations := h.Engine.Group("api/locations/")
 	{
@@ -65,6 +73,13 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
 	}
-	// apiUsers := router.Group("api/users/")
+	apiUsers := h.Engine.Group("api/users/")
+	{
+		apiUsers.GET("/v1/all", controllers.GetAllUsers)
+		apiUsers.POST("/v1/create", controllers.CreateUser)
+		apiUsers.GET("/v1/user/:id", controllers.GetUserById)
+		apiUsers.POST("/v1/user/:id", controllers.UpdateUser)
+		apiUsers.DELETE("/v1/user/:id", controllers.DeleteUser)
+	}
 	// apiAccounts := router.Group("api/accounts/")
 }

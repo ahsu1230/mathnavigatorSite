@@ -3,8 +3,6 @@ package repos
 import (
 	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"log"
-	"sort"
 	"time"
 )
 
@@ -31,7 +29,7 @@ func (sr *sessionRepo) Initialize(db *sql.DB) {
 func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
 	results := make([]domains.Session, 0)
 
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE class_id=?")
+	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC")
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +56,6 @@ func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, er
 		}
 		results = append(results, session)
 	}
-
-	sort.Slice(results, func(i, j int) bool {
-		return results[i].StartsAt.Before(results[j].StartsAt)
-	})
 
 	return results, nil
 }
@@ -114,7 +108,6 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 		session.Canceled,
 		session.Notes)
 	if err != nil {
-		log.Fatal(err) // temporarily added for debugging integration tests
 		return err
 	}
 
@@ -128,7 +121,7 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 		"starts_at=?, " +
 		"ends_at=?, " +
 		"canceled=?, " +
-		"notes=?, " +
+		"notes=? " +
 		"WHERE id=?")
 	if err != nil {
 		return err

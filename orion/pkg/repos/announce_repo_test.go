@@ -28,6 +28,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
+	early := time.Unix(0, 0)
 	rows := sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
@@ -36,7 +37,8 @@ func TestSelectAllAnnouncements(t *testing.T) {
 		"PostedAt",
 		"Author",
 		"Message"}).
-		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
+		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message").
+		AddRow(2, early, early, sql.NullTime{}, early, "Author Name 2", "Valid Message 2")
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -55,6 +57,15 @@ func TestSelectAllAnnouncements(t *testing.T) {
 			PostedAt:  now,
 			Author:    "Author Name",
 			Message:   "Valid Message",
+		},
+		{
+			Id:        2,
+			CreatedAt: early,
+			UpdatedAt: early,
+			DeletedAt: sql.NullTime{},
+			PostedAt:  early,
+			Author:    "Author Name 2",
+			Message:   "Valid Message 2",
 		},
 	}
 	if !reflect.DeepEqual(got, want) {

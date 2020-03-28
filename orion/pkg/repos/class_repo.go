@@ -212,7 +212,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"location_id, " +
 		"times, " +
 		"start_date, " +
-		"end_date, " +
+		"end_date" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
@@ -227,7 +227,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		now,
 		class.ProgramId,
 		class.SemesterId,
-		sql.NullString{String: class.ClassKey, Valid: true},
+		sql.NullString{String: class.ClassKey, Valid: class.ClassKey != ""},
 		generateClassId(class),
 		class.LocationId,
 		class.Times,
@@ -262,7 +262,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		now,
 		class.ProgramId,
 		class.SemesterId,
-		sql.NullString{String: class.ClassKey, Valid: true},
+		sql.NullString{String: class.ClassKey, Valid: class.ClassKey != ""},
 		generateClassId(class),
 		class.LocationId,
 		class.Times,

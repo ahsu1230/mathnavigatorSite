@@ -9,5 +9,5 @@ CREATE TABLE sessions (
 	canceled boolean NOT NULL DEFAULT 0,
 	notes text NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (class_id) REFERENCES classes(class_id)
+	FOREIGN KEY (class_id) REFERENCES classes (class_id)
 ) AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
