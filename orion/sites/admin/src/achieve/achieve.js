@@ -22,10 +22,10 @@ export class AchievePage extends React.Component {
     }
 
 	render() {
-		const achieve = this.state.list.map((achieve,index) => {
-			return <AchieveRow key ={index} achieve = {achieve}/>
+		const achievements = this.state.list.map((achieve,index) => {
+			return <AchieveRow key={index} achieve={achieve}/>
 		});
-		const numAchievements = achieve.length;
+		const numAchievements = achievements.length;
 		return (
       	<div id="view-achieve">
 	      	<h1>All Achievements ({numAchievements})</h1>
@@ -34,7 +34,7 @@ export class AchievePage extends React.Component {
 	          	<li className="li-med"> Message</li>
 	        </ul>
 			<ul>
-				{achieve}
+				{achievements}
 			</ul>
 				<button>
 					<Link className="add-achievement" to={"/achievements/add"}>Add Achievement</Link>
