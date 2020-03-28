@@ -8,7 +8,6 @@ import { Modal } from '../modals/modal.js';
 import { OkayModal } from '../modals/okayModal.js';
 import { YesNoModal } from '../modals/yesnoModal.js';
 
-
 export class LocationEditPage extends React.Component {
     constructor(props) {
          super(props);
