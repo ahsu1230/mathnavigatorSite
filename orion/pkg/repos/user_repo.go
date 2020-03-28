@@ -94,11 +94,11 @@ func (ur *userRepo) Insert(user domains.User) error {
 		"created_at, " +
 		"updated_at, " +
 		"first_name, " +
-		"last_name" +
+		"last_name," +
 		"middle_name, " +
-		"email" +
+		"email," +
 		"phone, " +
-		"is_guardian" +
+		"is_guardian," +
 		"guardian_id" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
