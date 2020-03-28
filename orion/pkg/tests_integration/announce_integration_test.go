@@ -13,9 +13,11 @@ import (
 func Test_CreateAnnouncements(t *testing.T) {
 	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 
+	early := time.Unix(0, 0)
+	mid := time.Unix(55, 123)
 	now := time.Now().UTC()
-	announce1 := createAnnouncement(now, "Author 1", "Message 1")
-	announce2 := createAnnouncement(now, "Author 2", "Message 2")
+	announce1 := createAnnouncement(early, "Author 1", "Message 1")
+	announce2 := createAnnouncement(mid, "Author 2", "Message 2")
 	announce3 := createAnnouncement(now, "Author 3", "Message 3")
 	body1 := createJsonBody(announce1)
 	body2 := createJsonBody(announce2)
@@ -36,16 +38,16 @@ func Test_CreateAnnouncements(t *testing.T) {
 	if err := json.Unmarshal(recorder4.Body.Bytes(), &announces); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, announces[0].Id)
-	assert.EqualValues(t, "Author 1", announces[0].Author)
-	assert.EqualValues(t, "Message 1", announces[0].Message)
+	assert.EqualValues(t, 3, announces[0].Id)
+	assert.EqualValues(t, "Author 3", announces[0].Author)
+	assert.EqualValues(t, "Message 3", announces[0].Message)
 	assert.EqualValues(t, 2, announces[1].Id)
 	assert.EqualValues(t, "Author 2", announces[1].Author)
 	assert.EqualValues(t, "Message 2", announces[1].Message)
-	assert.EqualValues(t, 3, announces[2].Id)
-	assert.EqualValues(t, "Author 3", announces[2].Author)
-	assert.EqualValues(t, "Message 3", announces[2].Message)
 	assert.EqualValues(t, 3, len(announces))
+	assert.EqualValues(t, 1, announces[2].Id)
+	assert.EqualValues(t, "Author 1", announces[2].Author)
+	assert.EqualValues(t, "Message 1", announces[2].Message)
 }
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
