@@ -22,7 +22,17 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
 	}
-	// apiClasses := router.Group("api/classes/")
+	apiClasses := h.Engine.Group("api/classes/")
+	{
+		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/create", controllers.CreateClass)
+		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
+		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
+		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
+		apiClasses.GET("/v1/classes/program/:programId", controllers.GetClassesByProgram)
+		apiClasses.GET("/v1/classes/semester/:semesterId", controllers.GetClassesBySemester)
+		apiClasses.GET("/v1/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
+	}
 	apiLocations := h.Engine.Group("api/locations/")
 	{
 		apiLocations.GET("v1/all", controllers.GetAllLocations)
