@@ -11,7 +11,7 @@ import (
 
 // Test: Create 3 Semesters and GetAll()
 func Test_CreateSemesters(t *testing.T) {
-	refreshTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_SEMESTERS)
 
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
@@ -46,7 +46,7 @@ func Test_CreateSemesters(t *testing.T) {
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
 func Test_UniqueSemesterId(t *testing.T) {
-	refreshTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_SEMESTERS)
 
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_spring", "Fall 2020") // Same semesterId
@@ -73,7 +73,7 @@ func Test_UniqueSemesterId(t *testing.T) {
 
 // Test: Create 1 Semester, Update it, GetBySemesterId()
 func Test_UpdateSemester(t *testing.T) {
-	refreshTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_SEMESTERS)
 
 	// Create 1 Semester
 	semester1 := createSemester("2020_spring", "Spring 2020")
@@ -104,7 +104,7 @@ func Test_UpdateSemester(t *testing.T) {
 
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
 func Test_DeleteSemester(t *testing.T) {
-	refreshTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_SEMESTERS)
 
 	// Create
 	semester1 := createSemester("2020_spring", "Spring 2020")
