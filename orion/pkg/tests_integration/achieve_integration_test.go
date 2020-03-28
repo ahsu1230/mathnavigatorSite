@@ -10,7 +10,7 @@ import (
 
 // Test: Create 3 Achievements and GetAll()
 func Test_CreateAchievements(t *testing.T) {
-	refreshTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
@@ -48,7 +48,7 @@ func Test_CreateAchievements(t *testing.T) {
 
 // Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
-	refreshTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	// Create 1 Achievement
 	achieve1 := createAchievement(2020, "message1")
@@ -78,7 +78,7 @@ func Test_UpdateAchievement(t *testing.T) {
 
 // Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
-	refreshTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	// Create
 	achieve1 := createAchievement(2020, "message1")
