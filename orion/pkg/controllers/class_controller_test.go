@@ -18,7 +18,7 @@ import (
 //
 func TestGetAllClasses_Success(t *testing.T) {
 	classService.mockGetAll = func() ([]domains.Class, error) {
-		return createMockClasses(), nil
+		return createMockClasses(1, 2, 3, 4), nil
 	}
 	services.ClassService = &classService
 
@@ -43,20 +43,8 @@ func TestGetAllClasses_Success(t *testing.T) {
 // Test Get Class
 //
 func TestGetClass_Success(t *testing.T) {
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
 	classService.mockGetByClassId = func(classId string) (domains.Class, error) {
-		class := createMockClass(
-			"program1",
-			"2020_spring",
-			"class1",
-			"program1_2020_spring_class1",
-			"churchill",
-			"3 pm - 5 pm",
-			now,
-			later,
-		)
-		return class, nil
+		return createMockClasses(1)[0], nil
 	}
 	services.ClassService = &classService
 
@@ -69,14 +57,8 @@ func TestGetClass_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &class); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "program1", class.ProgramId)
-	assert.EqualValues(t, "2020_spring", class.SemesterId)
-	assert.EqualValues(t, "class1", class.ClassKey)
-	assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-	assert.EqualValues(t, "churchill", class.LocationId)
-	assert.EqualValues(t, "3 pm - 5 pm", class.Times)
-	assert.EqualValues(t, now, class.StartDate)
-	assert.EqualValues(t, later, class.EndDate)
+
+	assertMockClasses(t, 1, class)
 }
 
 func TestGetClass_Failure(t *testing.T) {
@@ -97,7 +79,7 @@ func TestGetClass_Failure(t *testing.T) {
 //
 func TestGetClassesByProgram_Success(t *testing.T) {
 	classService.mockGetByProgramId = func(programId string) ([]domains.Class, error) {
-		return createMockClasses(), nil
+		return createMockClasses(1, 2, 3), nil
 	}
 	services.ClassService = &classService
 
@@ -119,7 +101,7 @@ func TestGetClassesByProgram_Success(t *testing.T) {
 
 func TestGetClassesBySemester_Success(t *testing.T) {
 	classService.mockGetBySemesterId = func(semesterId string) ([]domains.Class, error) {
-		return createMockClasses(), nil
+		return createMockClasses(3, 4), nil
 	}
 	services.ClassService = &classService
 
@@ -140,7 +122,7 @@ func TestGetClassesBySemester_Success(t *testing.T) {
 
 func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 	classService.mockGetByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
-		return createMockClasses(), nil
+		return createMockClasses(1, 2), nil
 	}
 	services.ClassService = &classService
 
@@ -169,18 +151,7 @@ func TestCreateClass_Success(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass(
-		"program1",
-		"2020_spring",
-		"class1",
-		"program1_2020_spring_class1",
-		"churchill",
-		"3 pm - 5 pm",
-		now,
-		later,
-	)
+	class := createMockClasses(1)[0]
 	marshal, _ := json.Marshal(class)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
@@ -196,16 +167,7 @@ func TestCreateClass_Failure(t *testing.T) {
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
 	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass( // Empty fields and end time is before start time
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		later,
-		now,
-	)
+	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
 	marshal, _ := json.Marshal(class)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
@@ -224,18 +186,7 @@ func TestUpdateClass_Success(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 30)
-	class := createMockClass(
-		"program2",
-		"2020_summer",
-		"",
-		"program2_2020_summer",
-		"churchill",
-		"5 pm - 7 pm",
-		now,
-		later,
-	)
+	class := createMockClasses(2)[0]
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
 
@@ -250,16 +201,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
 	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass( // Empty fields and end time is before start time
-		"program2",
-		"",
-		"",
-		"",
-		"",
-		"",
-		later,
-		now,
-	)
+	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
 
@@ -274,18 +216,7 @@ func TestUpdateClass_Failure(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 30)
-	class := createMockClass(
-		"program2",
-		"2020_summer",
-		"",
-		"program2_2020_summer",
-		"churchill",
-		"5 pm - 7 pm",
-		now,
-		later,
-	)
+	class := createMockClasses(2)[0]
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
 
@@ -338,57 +269,64 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 	}
 }
 
-func createMockClasses() []domains.Class {
+func createMockClasses(ids ...int) []domains.Class {
+	classes := make([]domains.Class, len(ids))
+
 	now := time.Now().UTC()
 	later1 := now.Add(time.Hour * 24 * 30)
 	later2 := now.Add(time.Hour * 24 * 31)
 	later3 := now.Add(time.Hour * 24 * 60)
-	return []domains.Class{
-		{
-			Id:         1,
-			ProgramId:  "program1",
-			SemesterId: "2020_spring",
-			ClassKey:   "class1",
-			ClassId:    "program1_2020_spring_class1",
-			LocationId: "churchill",
-			Times:      "3 pm - 5 pm",
-			StartDate:  now,
-			EndDate:    later1,
-		},
-		{
-			Id:         2,
-			ProgramId:  "program1",
-			SemesterId: "2020_spring",
-			ClassKey:   "class2",
-			ClassId:    "program1_2020_spring_class2",
-			LocationId: "churchill",
-			Times:      "5 pm - 7 pm",
-			StartDate:  now,
-			EndDate:    later1,
-		},
-		{
-			Id:         3,
-			ProgramId:  "program1",
-			SemesterId: "2020_summer",
-			ClassKey:   "final_review",
-			ClassId:    "program1_2020_summer_final_review",
-			LocationId: "churchill",
-			Times:      "5 pm - 8 pm",
-			StartDate:  later1,
-			EndDate:    later2,
-		},
-		{
-			Id:         4,
-			ProgramId:  "program2",
-			SemesterId: "2020_summer",
-			ClassKey:   "",
-			ClassId:    "program2_2020_summer",
-			LocationId: "churchill",
-			Times:      "4 pm - 6 pm",
-			StartDate:  later2,
-			EndDate:    later3,
-		},
+	for i, id := range ids {
+		switch id {
+		case 1:
+			classes[i] = createMockClass(
+				"program1",
+				"2020_spring",
+				"class1",
+				"program1_2020_spring_class1",
+				"churchill",
+				"3 pm - 5 pm",
+				now,
+				later1,
+			)
+		case 2:
+			classes[i] = createMockClass(
+				"program1",
+				"2020_spring",
+				"class2",
+				"program1_2020_spring_class2",
+				"churchill",
+				"5 pm - 7 pm",
+				now,
+				later1,
+			)
+		case 3:
+			classes[i] = createMockClass(
+				"program1",
+				"2020_summer",
+				"final_review",
+				"program1_2020_summer_final_review",
+				"churchill",
+				"5 pm - 8 pm",
+				later1,
+				later2,
+			)
+		case 4:
+			classes[i] = createMockClass(
+				"program2",
+				"2020_summer",
+				"",
+				"program2_2020_summer",
+				"churchill",
+				"4 pm - 6 pm",
+				later2,
+				later3,
+			)
+		default:
+			classes[i] = domains.Class{}
+		}
 	}
+	return classes
 }
 
 func assertMockClasses(t *testing.T, id int, class domains.Class) {
