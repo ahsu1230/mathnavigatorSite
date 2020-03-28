@@ -1,10 +1,8 @@
 package integration_tests
 
 import (
-	"database/sql"
 	"encoding/json"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -17,29 +15,29 @@ func Test_CreateUsers(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0100",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	user2 := createUser(
 		"Bob",
 		"Joe",
-		sql.NullString{},
+		"",
 		"bob_joe@example.com",
 		"555-555-0101",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	user3 := createUser(
 		"Foo",
 		"Bar",
-		sql.NullString{},
+		"",
 		"foobar@example.com",
 		"555-555-0102",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	body1 := createJsonBody(user1)
 	body2 := createJsonBody(user2)
@@ -63,27 +61,27 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, 1, users[0].Id)
 	assert.EqualValues(t, "John", users[0].FirstName)
 	assert.EqualValues(t, "Smith", users[0].LastName)
-	assert.EqualValues(t, sql.NullString{}, users[0].MiddleName)
+	assert.EqualValues(t, "", users[0].MiddleName)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0100", users[0].Phone)
 	assert.EqualValues(t, true, users[0].IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{}, users[0].GuardianId)
+	assert.EqualValues(t, "", users[0].GuardianId)
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
-	assert.EqualValues(t, sql.NullString{}, users[1].MiddleName)
+	assert.EqualValues(t, "", users[1].MiddleName)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0101", users[1].Phone)
 	assert.EqualValues(t, true, users[1].IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{}, users[1].GuardianId)
+	assert.EqualValues(t, "", users[1].GuardianId)
 	assert.EqualValues(t, 3, users[2].Id)
 	assert.EqualValues(t, "Foo", users[2].FirstName)
 	assert.EqualValues(t, "Bar", users[2].LastName)
-	assert.EqualValues(t, sql.NullString{}, users[2].MiddleName)
+	assert.EqualValues(t, "", users[2].MiddleName)
 	assert.EqualValues(t, "foobar@example.com", users[2].Email)
 	assert.EqualValues(t, "555-555-0102", users[2].Phone)
 	assert.EqualValues(t, true, users[2].IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{}, users[2].GuardianId)
+	assert.EqualValues(t, "", users[2].GuardianId)
 	assert.EqualValues(t, 3, len(users))
 }
 
@@ -95,11 +93,11 @@ func Test_UpdateUser(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0100",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	body1 := createJsonBody(user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
@@ -109,11 +107,11 @@ func Test_UpdateUser(t *testing.T) {
 	updatedUser := createUser(
 		"Bob",
 		"Joe",
-		sql.NullString{},
+		"",
 		"bob_joe@example.com",
 		"555-555-0101",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	updatedBody := createJsonBody(updatedUser)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", updatedBody)
@@ -131,11 +129,11 @@ func Test_UpdateUser(t *testing.T) {
 	assert.EqualValues(t, 1, user.Id)
 	assert.EqualValues(t, "Bob", user.FirstName)
 	assert.EqualValues(t, "Joe", user.LastName)
-	assert.EqualValues(t, sql.NullString{}, user.MiddleName)
+	assert.EqualValues(t, "", user.MiddleName)
 	assert.EqualValues(t, "bob_joe@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0101", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, sql_helper.NullUint{}, user.GuardianId)
+	assert.EqualValues(t, 0, user.GuardianId)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
@@ -146,11 +144,11 @@ func Test_DeleteUser(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		sql.NullString{},
+		"",
 		"john_smith@example.com",
 		"555-555-0100",
 		true,
-		sql_helper.NullUint{},
+		0,
 	)
 	body1 := createJsonBody(user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
@@ -166,7 +164,7 @@ func Test_DeleteUser(t *testing.T) {
 }
 
 // Helper methods
-func createUser(firstName string, lastName string, middleName sql.NullString, email string, phone string, isGuardian bool, guardianId sql_helper.NullUint) domains.User {
+func createUser(firstName, lastName, middleName, email, phone string, isGuardian bool, guardianId uint) domains.User {
 	return domains.User{
 		FirstName:  firstName,
 		LastName:   lastName,
