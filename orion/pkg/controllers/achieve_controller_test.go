@@ -91,16 +91,16 @@ func TestGetAchievement_Failure(t *testing.T) {
 // Test Get By Year
 //
 func TestGetAchievementsByYear_Success(t *testing.T) {
-	achieveService.mockGetByYear = func() ([][]domains.Achieve, error) {
-		return [][]domains.Achieve{
-			{
+	achieveService.mockGetByYear = func() (map[uint][]domains.Achieve, error) {
+		return map[uint][]domains.Achieve{
+			2021: {
 				{
 					Id:      1,
 					Year:    2021,
 					Message: "message1",
 				},
 			},
-			{
+			2020: {
 				{
 					Id:      2,
 					Year:    2020,
@@ -116,16 +116,16 @@ func TestGetAchievementsByYear_Success(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var achieves [][]domains.Achieve
+	var achieves map[uint][]domains.Achieve
 	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, achieves[0][0].Id)
-	assert.EqualValues(t, 2021, achieves[0][0].Year)
-	assert.EqualValues(t, "message1", achieves[0][0].Message)
-	assert.EqualValues(t, 2, achieves[1][0].Id)
-	assert.EqualValues(t, 2020, achieves[1][0].Year)
-	assert.EqualValues(t, "message2", achieves[1][0].Message)
+	assert.EqualValues(t, 1, achieves[2021][0].Id)
+	assert.EqualValues(t, 2021, achieves[2021][0].Year)
+	assert.EqualValues(t, "message1", achieves[2021][0].Message)
+	assert.EqualValues(t, 2, achieves[2020][0].Id)
+	assert.EqualValues(t, 2020, achieves[2020][0].Year)
+	assert.EqualValues(t, "message2", achieves[2020][0].Message)
 	assert.EqualValues(t, 2, len(achieves))
 }
 

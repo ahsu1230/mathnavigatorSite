@@ -19,7 +19,7 @@ type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Achieve, error)
 	SelectById(uint) (domains.Achieve, error)
-	SelectByYear() ([][]domains.Achieve, error)
+	SelectByYear() (map[uint][]domains.Achieve, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -79,8 +79,8 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	return achieve, errScan
 }
 
-func (ar *achieveRepo) SelectByYear() ([][]domains.Achieve, error) {
-	results := make([][]domains.Achieve, 0)
+func (ar *achieveRepo) SelectByYear() (map[uint][]domains.Achieve, error) {
+	results := make(map[uint][]domains.Achieve)
 
 	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC")
 	if err != nil {
@@ -108,14 +108,14 @@ func (ar *achieveRepo) SelectByYear() ([][]domains.Achieve, error) {
 		}
 		if achieve.Year != curYear {
 			if len(row) > 0 {
-				results = append(results, row)
+				results[curYear] = row
 				row = nil
 			}
 			curYear = achieve.Year
 		}
 		row = append(row, achieve)
 	}
-	results = append(results, row)
+	results[curYear] = row
 
 	return results, nil
 }

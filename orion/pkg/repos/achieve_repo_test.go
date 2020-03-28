@@ -111,8 +111,8 @@ func TestSelectByYear(t *testing.T) {
 	}
 
 	// Validate results
-	want := [][]domains.Achieve{
-		{
+	want := map[uint][]domains.Achieve{
+		2021: {
 			{
 				Id:        2,
 				CreatedAt: now,
@@ -122,7 +122,7 @@ func TestSelectByYear(t *testing.T) {
 				Message:   "1600 on SAT",
 			},
 		},
-		{
+		2020: {
 			{
 				Id:        1,
 				CreatedAt: now,

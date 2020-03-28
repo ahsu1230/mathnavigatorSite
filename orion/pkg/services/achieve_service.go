@@ -11,7 +11,7 @@ var AchieveService achieveServiceInterface = &achieveService{}
 type achieveServiceInterface interface {
 	GetAll() ([]domains.Achieve, error)
 	GetById(uint) (domains.Achieve, error)
-	GetByYear() ([][]domains.Achieve, error)
+	GetByYear() (map[uint][]domains.Achieve, error)
 	Create(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -36,7 +36,7 @@ func (as *achieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieve, nil
 }
 
-func (as *achieveService) GetByYear() ([][]domains.Achieve, error) {
+func (as *achieveService) GetByYear() (map[uint][]domains.Achieve, error) {
 	achieves, err := repos.AchieveRepo.SelectByYear()
 	if err != nil {
 		return nil, err

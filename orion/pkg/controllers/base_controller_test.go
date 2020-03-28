@@ -103,7 +103,7 @@ var achieveService mockAchieveService
 type mockAchieveService struct {
 	mockGetAll    func() ([]domains.Achieve, error)
 	mockGetById   func(uint) (domains.Achieve, error)
-	mockGetByYear func() ([][]domains.Achieve, error)
+	mockGetByYear func() (map[uint][]domains.Achieve, error)
 	mockCreate    func(domains.Achieve) error
 	mockUpdate    func(uint, domains.Achieve) error
 	mockDelete    func(uint) error
@@ -116,7 +116,7 @@ func (achieveService *mockAchieveService) GetAll() ([]domains.Achieve, error) {
 func (achieveService *mockAchieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieveService.mockGetById(id)
 }
-func (achieveService *mockAchieveService) GetByYear() ([][]domains.Achieve, error) {
+func (achieveService *mockAchieveService) GetByYear() (map[uint][]domains.Achieve, error) {
 	return achieveService.mockGetByYear()
 }
 func (achieveService *mockAchieveService) Create(achieve domains.Achieve) error {
