@@ -16,7 +16,7 @@ export class AnnouncePage extends React.Component {
 
 	render() {
 		const rows = this.state.list.map ((row, index) => {
-	      return <AnnounceRow key = {index} row = {row}/>
+	      return <AnnounceRow key={index} row={row}/>
 		});
 		const numRows = rows.length;
 			return (
@@ -30,7 +30,7 @@ export class AnnouncePage extends React.Component {
 						<li className="li-small"> </li>
 					</ul>
 
-					<ul id="view-announce">
+					<ul id="announce-list">
 						{rows}
 					</ul>
 					<Link to={"/announcements/add"}> <button className="announcement-button"> Add Announcement</button> </Link>
