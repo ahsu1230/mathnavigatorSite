@@ -3,15 +3,13 @@ require('./achieveEdit.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import API from '../api.js';
 
 export class AchieveEditPage extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             isEdit: false,
-             inputYear: 0,
-             inputMessage: ""
+             inputYear: "",
+             inputMessage: "",
           };
 
     this.handleChange = this.handleChange.bind(this);
@@ -74,8 +72,8 @@ export class AchieveEditPage extends React.Component {
         }
     }
 
-    onSaved() {
-        window.location.hash = "achievements";
+    onClickCancel() {
+        console.log("cancel button clicked");
     }
 
     onDeleted() {
@@ -87,19 +85,8 @@ export class AchieveEditPage extends React.Component {
     }
 
     render() {
-        const isEdit = this.state.isEdit;
-        const achieve = this.state.achieve;
-        const title = isEdit ? "Edit Achievement" : "Add Achievement";
-
+        const title = "Edit Achievement";
         let deleteButton = <div></div>;
-        if (isEdit) {
-          deleteButton = (
-            <button className="btn-delete" onClick={this.onClickDelete}>
-              Delete
-            </button>
-          );
-        }
-
         return (
             <div id="view-achieve-edit">
             <h2>{title}</h2>

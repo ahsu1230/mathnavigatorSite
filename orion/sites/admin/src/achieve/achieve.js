@@ -2,7 +2,6 @@
 require('./achieve.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import API from '../api.js';
 import { Link } from 'react-router-dom';
 
 export class AchievePage extends React.Component {
@@ -13,19 +12,16 @@ export class AchievePage extends React.Component {
 	    };
  	}
 
-	componentDidMount() {
-      API.get("api/achievements/v1/all")
-        .then(res => {
-          const achievements = res.data;
-          this.setState({ list: achievements });
-        });
-    }
-
 	render() {
-		const achieve = this.state.list.map((achieve,index) => {
-			return <AchieveRow key ={index} achieve = {achieve}/>
-		});
-		const numAchievements = achieve.length;
+		var numAchievements = 5;
+		var fakeAchieve = {
+			year: 2020,
+			message: "Hi"
+		};
+		var fakeAchieve2 = {
+			year: 2019,
+			message: "Hello"
+		};
 		return (
       	<div id="view-achieve">
 	      	<h1>All Achievements ({numAchievements})</h1>
@@ -34,7 +30,8 @@ export class AchievePage extends React.Component {
 	          	<li className="li-med"> Message</li>
 	        </ul>
 			<ul>
-				{achieve}
+				<AchieveRow achieveObj = {fakeAchieve}/>
+				<AchieveRow achieveObj = {fakeAchieve2}/>
 			</ul>
 				<button>
 					<Link className="add-achievement" to={"/achievements/add"}>Add Achievement</Link>
@@ -50,8 +47,8 @@ class AchieveRow extends React.Component {
 		const url = "/achievements/" + achieve.Id + "/edit";
 	    return (
 	    	<ul id="achieve-row">
-	        	<li className="li-med">{achieve.year}</li>
-	        	<li className="li-med">{achieve.message}</li>
+	        	<li className="li-med">{year}</li>
+	        	<li className="li-med">{message}</li>
 	        	<Link to={url}>Edit</Link>
 	      	</ul>
 	    )
