@@ -15,12 +15,6 @@ import { ProgramEditPage } from './programs/programEdit.js';
 import { AchievePage } from './achieve/achieve.js';
 import { AchieveEditPage } from './achieve/achieveEdit.js';
 import { AnnouncePage } from './announce/announce.js';
-<<<<<<< HEAD
-=======
-import { AnnounceEditPage } from './announce/announceEdit.js';
-import { LocationPage } from './location/location.js';
-import { LocationEditPage } from './location/locationEdit.js';
->>>>>>> 6e897ddc6df4dba6517bd497fb20a91652fd5a5c
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
