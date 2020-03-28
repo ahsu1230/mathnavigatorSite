@@ -15,29 +15,29 @@ func Test_CreateUsers(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		"",
+		"Middle1",
 		"john_smith@example.com",
 		"555-555-0100",
-		true,
-		0,
+		false,
+		2,
 	)
 	user2 := createUser(
 		"Bob",
 		"Joe",
-		"",
+		"Middle2",
 		"bob_joe@example.com",
 		"555-555-0101",
-		true,
-		0,
+		false,
+		1,
 	)
 	user3 := createUser(
 		"Foo",
 		"Bar",
-		"",
+		"Middle3",
 		"foobar@example.com",
 		"555-555-0102",
-		true,
-		0,
+		false,
+		1,
 	)
 	body1 := createJsonBody(user1)
 	body2 := createJsonBody(user2)
@@ -61,27 +61,29 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, 1, users[0].Id)
 	assert.EqualValues(t, "John", users[0].FirstName)
 	assert.EqualValues(t, "Smith", users[0].LastName)
-	assert.EqualValues(t, "", users[0].MiddleName)
+	assert.EqualValues(t, "Middle1", users[0].MiddleName)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0100", users[0].Phone)
-	assert.EqualValues(t, true, users[0].IsGuardian)
-	assert.EqualValues(t, "", users[0].GuardianId)
+	assert.EqualValues(t, false, users[0].IsGuardian)
+	assert.EqualValues(t, 2, users[0].GuardianId)
+
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
-	assert.EqualValues(t, "", users[1].MiddleName)
+	assert.EqualValues(t, "Middle2", users[1].MiddleName)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0101", users[1].Phone)
-	assert.EqualValues(t, true, users[1].IsGuardian)
-	assert.EqualValues(t, "", users[1].GuardianId)
+	assert.EqualValues(t, false, users[1].IsGuardian)
+	assert.EqualValues(t, 1, users[1].GuardianId)
+	
 	assert.EqualValues(t, 3, users[2].Id)
 	assert.EqualValues(t, "Foo", users[2].FirstName)
 	assert.EqualValues(t, "Bar", users[2].LastName)
-	assert.EqualValues(t, "", users[2].MiddleName)
+	assert.EqualValues(t, "Middle3", users[2].MiddleName)
 	assert.EqualValues(t, "foobar@example.com", users[2].Email)
 	assert.EqualValues(t, "555-555-0102", users[2].Phone)
 	assert.EqualValues(t, true, users[2].IsGuardian)
-	assert.EqualValues(t, "", users[2].GuardianId)
+	assert.EqualValues(t, 1, users[2].GuardianId)
 	assert.EqualValues(t, 3, len(users))
 }
 
@@ -93,11 +95,11 @@ func Test_UpdateUser(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		"",
+		"Middle1",
 		"john_smith@example.com",
 		"555-555-0100",
-		true,
-		0,
+		false,
+		2,
 	)
 	body1 := createJsonBody(user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
@@ -107,11 +109,11 @@ func Test_UpdateUser(t *testing.T) {
 	updatedUser := createUser(
 		"Bob",
 		"Joe",
-		"",
+		"Middle2",
 		"bob_joe@example.com",
 		"555-555-0101",
-		true,
-		0,
+		false,
+		1,
 	)
 	updatedBody := createJsonBody(updatedUser)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", updatedBody)
@@ -129,11 +131,11 @@ func Test_UpdateUser(t *testing.T) {
 	assert.EqualValues(t, 1, user.Id)
 	assert.EqualValues(t, "Bob", user.FirstName)
 	assert.EqualValues(t, "Joe", user.LastName)
-	assert.EqualValues(t, "", user.MiddleName)
+	assert.EqualValues(t, "Middle2", user.MiddleName)
 	assert.EqualValues(t, "bob_joe@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0101", user.Phone)
-	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, 0, user.GuardianId)
+	assert.EqualValues(t, false, user.IsGuardian)
+	assert.EqualValues(t, 1, user.GuardianId)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
@@ -144,11 +146,11 @@ func Test_DeleteUser(t *testing.T) {
 	user1 := createUser(
 		"John",
 		"Smith",
-		"",
+		"Middle1",
 		"john_smith@example.com",
 		"555-555-0100",
-		true,
-		0,
+		false,
+		2,
 	)
 	body1 := createJsonBody(user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
