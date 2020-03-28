@@ -14,7 +14,7 @@ import (
 func Test_CreateClasses(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 
-	createAllClasses()
+	createAllClasses(t)
 
 	// Call Get All!
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all", nil)
@@ -64,7 +64,7 @@ func Test_UniqueClassId(t *testing.T) {
 func Test_GetClassesByProgram(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 
-	createAllClasses()
+	createAllClasses(t)
 
 	// Call GetClassesByProgram()
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1", nil)
@@ -86,7 +86,7 @@ func Test_GetClassesByProgram(t *testing.T) {
 func Test_GetClassesBySemester(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 
-	createAllClasses()
+	createAllClasses(t)
 
 	// Call GetClassesBySemester()
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/semester/2020_summer", nil)
@@ -107,7 +107,7 @@ func Test_GetClassesBySemester(t *testing.T) {
 func Test_GetClassesByProgramAndSemester(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 
-	createAllClasses()
+	createAllClasses(t)
 
 	// Call GetClassesByProgramAndSemester()
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_spring", nil)
@@ -229,7 +229,7 @@ func createClass(id int) domains.Class {
 	}
 }
 
-func createAllClasses() {
+func createAllClasses(t *testing.T) {
 	for i := 1; i < 5; i++ {
 		class := createClass(i)
 		body := createJsonBody(class)
