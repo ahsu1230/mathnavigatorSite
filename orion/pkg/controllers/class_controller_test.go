@@ -281,7 +281,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_spring",
-				domains.CreateNullString("class1"),
+				domains.NewNullString("class1"),
 				"program1_2020_spring_class1",
 				"churchill",
 				"3 pm - 5 pm",
@@ -292,7 +292,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_spring",
-				domains.CreateNullString("class2"),
+				domains.NewNullString("class2"),
 				"program1_2020_spring_class2",
 				"churchill",
 				"5 pm - 7 pm",
@@ -303,7 +303,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_summer",
-				domains.CreateNullString("final_review"),
+				domains.NewNullString("final_review"),
 				"program1_2020_summer_final_review",
 				"churchill",
 				"5 pm - 8 pm",
@@ -314,7 +314,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program2",
 				"2020_summer",
-				domains.CreateNullString(""),
+				domains.NewNullString(""),
 				"program2_2020_summer",
 				"churchill",
 				"4 pm - 6 pm",

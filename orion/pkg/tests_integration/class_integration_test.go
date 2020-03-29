@@ -215,7 +215,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_spring",
-			ClassKey:   domains.CreateNullString("class1"),
+			ClassKey:   domains.NewNullString("class1"),
 			ClassId:    "program1_2020_spring_class1",
 			LocationId: "churchill",
 			Times:      "3 pm - 5 pm",
@@ -226,7 +226,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_spring",
-			ClassKey:   domains.CreateNullString("class2"),
+			ClassKey:   domains.NewNullString("class2"),
 			ClassId:    "program1_2020_spring_class2",
 			LocationId: "churchill",
 			Times:      "5 pm - 7 pm",
@@ -237,7 +237,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_summer",
-			ClassKey:   domains.CreateNullString("final_review"),
+			ClassKey:   domains.NewNullString("final_review"),
 			ClassId:    "program1_2020_summer_final_review",
 			LocationId: "churchill",
 			Times:      "5 pm - 8 pm",
@@ -248,7 +248,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program2",
 			SemesterId: "2020_summer",
-			ClassKey:   domains.CreateNullString(""),
+			ClassKey:   domains.NewNullString(""),
 			ClassId:    "program2_2020_summer",
 			LocationId: "churchill",
 			Times:      "4 pm - 6 pm",

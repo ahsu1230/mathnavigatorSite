@@ -11,7 +11,7 @@ func TestValidClassKey(t *testing.T) {
 	now := time.Now().UTC()
 	later := now.Add(time.Hour * 24 * 100)
 	class := domains.Class{
-		ClassKey:  CreateNullString("final_review"),
+		ClassKey:  domains.NewNullString("final_review"),
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
 		EndDate:   later,
@@ -47,7 +47,7 @@ func TestValidTimes(t *testing.T) {
 	now := time.Now().UTC()
 	later := now.Add(time.Hour * 24 * 100)
 	class := domains.Class{
-		ClassKey:  CreateNullString("final_review"),
+		ClassKey:  domains.NewNullString("final_review"),
 		Times:     "6 pm - 8 pm",
 		StartDate: now,
 		EndDate:   later,
@@ -78,7 +78,7 @@ func TestValidDates(t *testing.T) {
 	now := time.Now().UTC()
 	later := now.Add(time.Hour * 24 * 30)
 	class := domains.Class{
-		ClassKey:  CreateNullString(""),
+		ClassKey:  domains.NewNullString(""),
 		Times:     "3 pm - 5 pm",
 		StartDate: now,
 		EndDate:   later,
