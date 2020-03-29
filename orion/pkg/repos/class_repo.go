@@ -212,7 +212,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"location_id, " +
 		"times, " +
 		"start_date, " +
-		"end_date, " +
+		"end_date " +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)

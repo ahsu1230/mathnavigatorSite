@@ -10,10 +10,19 @@ import (
 	"time"
 )
 
+var now = time.Now().UTC()
+var later1 = now.Add(time.Hour * 24 * 30)
+var later2 = now.Add(time.Hour * 24 * 31)
+var later3 = now.Add(time.Hour * 24 * 60)
+
 // Test: Create 4 Classes and GetAll()
 func Test_CreateClasses(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 
+	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call Get All!
@@ -36,7 +45,11 @@ func Test_CreateClasses(t *testing.T) {
 // Test: Create 2 Classes with same classId. Then GetByClassId()
 func Test_UniqueClassId(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 
+	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(1)
 	body1 := createJsonBody(class1)
@@ -63,7 +76,11 @@ func Test_UniqueClassId(t *testing.T) {
 // Test: Create 4 Classes and GetClassesByProgram()
 func Test_GetClassesByProgram(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 
+	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesByProgram()
@@ -85,7 +102,11 @@ func Test_GetClassesByProgram(t *testing.T) {
 // Test: Create 4 Classes and GetClassesBySemester()
 func Test_GetClassesBySemester(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 
+	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesBySemester()
@@ -106,7 +127,11 @@ func Test_GetClassesBySemester(t *testing.T) {
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
 func Test_GetClassesByProgramAndSemester(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 
+	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesByProgramAndSemester()
@@ -127,6 +152,11 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
+
+	createAllProgramsSemestersLocations(t)
 
 	// Create 1 Class
 	class1 := createClass(1)
@@ -157,6 +187,11 @@ func Test_UpdateClass(t *testing.T) {
 // Test: Create 1 Class, Delete it, GetByClassId()
 func Test_DeleteClass(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
+
+	createAllProgramsSemestersLocations(t)
 
 	// Create
 	class1 := createClass(1)
@@ -175,10 +210,6 @@ func Test_DeleteClass(t *testing.T) {
 
 // Helper methods
 func createClass(id int) domains.Class {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 31)
-	later3 := now.Add(time.Hour * 24 * 60)
 	switch id {
 	case 1:
 		return domains.Class{
@@ -238,11 +269,33 @@ func createAllClasses(t *testing.T) {
 	}
 }
 
+func createAllProgramsSemestersLocations(t *testing.T) {
+	program1 := createProgram("program1", "Program1", 1, 3, "description1")
+	program2 := createProgram("program2", "Program2", 6, 8, "description2")
+	semester1 := createSemester("2020_spring", "Spring 2020")
+	semester2 := createSemester("2020_summer", "Summer 2020")
+	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
+
+	body1 := createJsonBody(program1)
+	body2 := createJsonBody(program2)
+	body3 := createJsonBody(semester1)
+	body4 := createJsonBody(semester2)
+	body5 := createJsonBody(location1)
+
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body4)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body5)
+
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+}
+
 func assertClass(t *testing.T, id int, class domains.Class) {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 31)
-	later3 := now.Add(time.Hour * 24 * 60)
 	switch id {
 	case 1:
 		assert.EqualValues(t, "program1", class.ProgramId)
