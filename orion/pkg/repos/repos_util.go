@@ -12,7 +12,7 @@ func SetupRepos(db *sql.DB) {
 	AnnounceRepo.Initialize(db)
 	AchieveRepo.Initialize(db)
 	SemesterRepo.Initialize(db)
-	// UserRepo.Initialize(db)
+	UserRepo.Initialize(db)
 	// AccountRepo.Initialize(db)
 }
 
