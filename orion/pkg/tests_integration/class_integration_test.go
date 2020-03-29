@@ -52,8 +52,8 @@ func Test_UniqueClassId(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(1)
-	body1 := createJsonBody(class1)
-	body2 := createJsonBody(class2)
+	body1 := createJsonBody(&class1)
+	body2 := createJsonBody(&class2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -160,13 +160,13 @@ func Test_UpdateClass(t *testing.T) {
 
 	// Create 1 Class
 	class1 := createClass(1)
-	body1 := createJsonBody(class1)
+	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedClass := createClass(2)
-	updatedBody := createJsonBody(updatedClass)
+	updatedBody := createJsonBody(&updatedClass)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1_2020_spring_class1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
@@ -195,7 +195,7 @@ func Test_DeleteClass(t *testing.T) {
 
 	// Create
 	class1 := createClass(1)
-	body1 := createJsonBody(class1)
+	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -215,7 +215,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_spring",
-			ClassKey:   "class1",
+			ClassKey:   domains.CreateNullString("class1"),
 			ClassId:    "program1_2020_spring_class1",
 			LocationId: "churchill",
 			Times:      "3 pm - 5 pm",
@@ -226,7 +226,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_spring",
-			ClassKey:   "class2",
+			ClassKey:   domains.CreateNullString("class2"),
 			ClassId:    "program1_2020_spring_class2",
 			LocationId: "churchill",
 			Times:      "5 pm - 7 pm",
@@ -237,7 +237,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program1",
 			SemesterId: "2020_summer",
-			ClassKey:   "final_review",
+			ClassKey:   domains.CreateNullString("final_review"),
 			ClassId:    "program1_2020_summer_final_review",
 			LocationId: "churchill",
 			Times:      "5 pm - 8 pm",
@@ -248,7 +248,7 @@ func createClass(id int) domains.Class {
 		return domains.Class{
 			ProgramId:  "program2",
 			SemesterId: "2020_summer",
-			ClassKey:   "",
+			ClassKey:   domains.CreateNullString(""),
 			ClassId:    "program2_2020_summer",
 			LocationId: "churchill",
 			Times:      "4 pm - 6 pm",
@@ -263,7 +263,7 @@ func createClass(id int) domains.Class {
 func createAllClasses(t *testing.T) {
 	for i := 1; i < 5; i++ {
 		class := createClass(i)
-		body := createJsonBody(class)
+		body := createJsonBody(&class)
 		recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
@@ -280,7 +280,7 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 	body2 := createJsonBody(program2)
 	body3 := createJsonBody(semester1)
 	body4 := createJsonBody(semester2)
-	body5 := createJsonBody(location1)
+	body5 := createJsonBody(&location1)
 
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
@@ -300,7 +300,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 	case 1:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
-		assert.EqualValues(t, "class1", class.ClassKey)
+		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
@@ -309,7 +309,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
-		assert.EqualValues(t, "class2", class.ClassKey)
+		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
@@ -318,7 +318,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
-		assert.EqualValues(t, "final_review", class.ClassKey)
+		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
@@ -327,7 +327,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
-		assert.EqualValues(t, "", class.ClassKey)
+		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
