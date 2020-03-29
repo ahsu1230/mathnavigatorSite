@@ -10,7 +10,7 @@ import (
 )
 
 func TestNullString(t *testing.T) {
-	ns1 := domains.CreateNullString("asdf")
+	ns1 := domains.NewNullString("asdf")
 	assert.EqualValues(t, "asdf", ns1.String)
 	assert.EqualValues(t, true, ns1.Valid)
 
@@ -30,7 +30,7 @@ func TestNullString(t *testing.T) {
 }
 
 func TestNullStringEmpty(t *testing.T) {
-	ns1 := domains.CreateNullString("")
+	ns1 := domains.NewNullString("")
 	bytes, err := json.Marshal(&ns1)
 	if err != nil {
 		t.Errorf("Error %v", err)
@@ -47,7 +47,7 @@ func TestNullStringEmpty(t *testing.T) {
 }
 
 func TestNullUint(t *testing.T) {
-	nu1 := domains.CreateNullUint(14)
+	nu1 := domains.NewNullUint(14)
 	bytes, err := json.Marshal(&nu1)
 	if err != nil {
 		t.Errorf("Error %v", err)
@@ -64,7 +64,7 @@ func TestNullUint(t *testing.T) {
 }
 
 func TestNullUintEmpty(t *testing.T) {
-	nu1 := domains.CreateNullUint(0)
+	nu1 := domains.NewNullUint(0)
 	bytes, err := json.Marshal(&nu1)
 	if err != nil {
 		t.Errorf("Error %v", err)

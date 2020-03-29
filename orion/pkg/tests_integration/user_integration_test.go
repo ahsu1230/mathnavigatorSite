@@ -171,10 +171,10 @@ func createUser(firstName, lastName, middleName, email, phone string, isGuardian
 	return domains.User{
 		FirstName:  firstName,
 		LastName:   lastName,
-		MiddleName: domains.CreateNullString(middleName),
+		MiddleName: domains.NewNullString(middleName),
 		Email:      email,
 		Phone:      phone,
 		IsGuardian: isGuardian,
-		GuardianId: domains.CreateNullUint(guardianId),
+		GuardianId: domains.NewNullUint(guardianId),
 	}
 }

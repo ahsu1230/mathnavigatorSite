@@ -111,14 +111,14 @@ func TestValidGuardianId(t *testing.T) {
 		Email:      "gmail@gmail.com",
 		Phone:      "555-555-0100",
 		IsGuardian: false,
-		GuardianId: domains.CreateNullUint(2),
+		GuardianId: domains.NewNullUint(2),
 	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid guardian ids
-	user.GuardianId = domains.CreateNullUint(0)
+	user.GuardianId = domains.NewNullUint(0)
 	if err := user.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid guardian id")
 	}

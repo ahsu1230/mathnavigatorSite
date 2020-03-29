@@ -13,7 +13,7 @@ type NullString struct {
 	sql.NullString
 }
 
-func CreateNullString(str string) NullString {
+func NewNullString(str string) NullString {
 	return NullString{sql.NullString{String: str, Valid: str != ""}}
 }
 
@@ -40,7 +40,7 @@ type NullUint struct {
 	Valid bool // Valid is true if Num is not NULL
 }
 
-func CreateNullUint(num uint) NullUint {
+func NewNullUint(num uint) NullUint {
 	return NullUint{
 		Num:   num,
 		Valid: num != 0,
