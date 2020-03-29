@@ -17,11 +17,7 @@ var later3 = now.Add(time.Hour * 24 * 60)
 
 // Test: Create 4 Classes and GetAll()
 func Test_CreateClasses(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -44,12 +40,9 @@ func Test_CreateClasses(t *testing.T) {
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
 func Test_UniqueClassId(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
+
 	class1 := createClass(1)
 	class2 := createClass(1)
 	body1 := createJsonBody(&class1)
@@ -75,11 +68,7 @@ func Test_UniqueClassId(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesByProgram()
 func Test_GetClassesByProgram(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -101,11 +90,7 @@ func Test_GetClassesByProgram(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesBySemester()
 func Test_GetClassesBySemester(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -126,11 +111,7 @@ func Test_GetClassesBySemester(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
 func Test_GetClassesByProgramAndSemester(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -151,11 +132,7 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 
 	// Create 1 Class
@@ -186,11 +163,7 @@ func Test_UpdateClass(t *testing.T) {
 
 // Test: Create 1 Class, Delete it, GetByClassId()
 func Test_DeleteClass(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-
+	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 
 	// Create
@@ -334,4 +307,11 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
 	}
+}
+
+func resetTables(t *testing.T) {
+	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 }
