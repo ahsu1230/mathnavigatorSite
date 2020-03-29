@@ -16,7 +16,7 @@ type Class struct {
 	DeletedAt  sql.NullTime `db:"deleted_at"`
 	ProgramId  string       `db:"program_id" json:"programId"`
 	SemesterId string       `db:"semester_id" json:"semesterId"`
-	ClassKey   string       `db:"class_key" json:"classKey"`
+	ClassKey   NullString   `db:"class_key" json:"classKey"`
 	ClassId    string       `db:"class_id" json:"classId"`
 	LocationId string       `db:"location_id" json:"locationId"`
 	Times      string       `json:"times"`
@@ -34,8 +34,8 @@ func (class *Class) Validate() error {
 	endDate := class.EndDate
 
 	// Class Key validation
-	if len(classKey) != 0 {
-		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey); !matches || len(classKey) > 64 {
+	if classKey.Valid {
+		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches || len(classKey.String) > 64 {
 			return errors.New("invalid class key")
 		}
 	}

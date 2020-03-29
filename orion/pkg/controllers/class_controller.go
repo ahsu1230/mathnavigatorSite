@@ -27,7 +27,7 @@ func GetClassById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, class)
+		c.JSON(http.StatusOK, &class)
 	}
 	return
 }
