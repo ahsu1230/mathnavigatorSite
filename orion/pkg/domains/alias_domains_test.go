@@ -59,7 +59,7 @@ func TestNullUint(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	assert.EqualValues(t, uint(14), result.Num)
+	assert.EqualValues(t, uint(14), result.Uint)
 	assert.EqualValues(t, true, result.Valid)
 }
 
@@ -76,6 +76,6 @@ func TestNullUintEmpty(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	assert.EqualValues(t, uint(0), result.Num)
+	assert.EqualValues(t, uint(0), result.Uint)
 	assert.EqualValues(t, false, result.Valid)
 }

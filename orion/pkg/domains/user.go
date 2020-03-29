@@ -57,11 +57,11 @@ func (user *User) Validate() error {
 
 	// Guardian validation
 	if isGuardian {
-		if guardianId.Num != 0 {
+		if guardianId.Uint != 0 {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if guardianId.Num == id {
+		if guardianId.Uint == id {
 			return errors.New("invalid guardian id")
 		}
 	}

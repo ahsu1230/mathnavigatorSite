@@ -66,7 +66,7 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0100", users[0].Phone)
 	assert.EqualValues(t, false, users[0].IsGuardian)
-	assert.EqualValues(t, 2, users[0].GuardianId.Num)
+	assert.EqualValues(t, 2, users[0].GuardianId.Uint)
 
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
@@ -75,7 +75,7 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0101", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 1, users[1].GuardianId.Num)
+	assert.EqualValues(t, 1, users[1].GuardianId.Uint)
 
 	assert.EqualValues(t, 3, users[2].Id)
 	assert.EqualValues(t, "Foo", users[2].FirstName)
@@ -84,7 +84,7 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, "foobar@example.com", users[2].Email)
 	assert.EqualValues(t, "555-555-0102", users[2].Phone)
 	assert.EqualValues(t, false, users[2].IsGuardian)
-	assert.EqualValues(t, 1, users[2].GuardianId.Num)
+	assert.EqualValues(t, 1, users[2].GuardianId.Uint)
 	assert.EqualValues(t, 3, len(users))
 }
 
@@ -136,7 +136,7 @@ func Test_UpdateUser(t *testing.T) {
 	assert.EqualValues(t, "bob_joe@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0101", user.Phone)
 	assert.EqualValues(t, false, user.IsGuardian)
-	assert.EqualValues(t, 1, user.GuardianId.Num)
+	assert.EqualValues(t, 1, user.GuardianId.Uint)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()

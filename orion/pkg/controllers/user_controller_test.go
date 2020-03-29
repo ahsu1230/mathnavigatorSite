@@ -59,7 +59,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, true, users[0].IsGuardian)
-	assert.EqualValues(t, 0, users[0].GuardianId.Num)
+	assert.EqualValues(t, 0, users[0].GuardianId.Uint)
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
@@ -67,7 +67,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0199", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 1, users[1].GuardianId.Num)
+	assert.EqualValues(t, 1, users[1].GuardianId.Uint)
 	assert.EqualValues(t, 2, len(users))
 }
 
@@ -107,7 +107,7 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0199", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, 0, user.GuardianId.Num)
+	assert.EqualValues(t, 0, user.GuardianId.Uint)
 }
 
 func TestGetUser_Failure(t *testing.T) {

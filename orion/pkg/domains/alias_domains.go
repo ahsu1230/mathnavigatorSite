@@ -18,17 +18,17 @@ func NewNullString(str string) NullString {
 }
 
 // MarshalJSON for NullString
-func (ns *NullString) MarshalJSON() ([]byte, error) {
-	if !ns.Valid {
+func (nullString *NullString) MarshalJSON() ([]byte, error) {
+	if !nullString.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(ns.String)
+	return json.Marshal(nullString.String)
 }
 
 // UnmarshalJSON for NullString
-func (ns *NullString) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &ns.String)
-	ns.Valid = (err == nil && ns.String != "")
+func (nullString *NullString) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &nullString.String)
+	nullString.Valid = err == nil && nullString.String != ""
 	return err
 }
 
@@ -36,13 +36,13 @@ func (ns *NullString) UnmarshalJSON(b []byte) error {
 // NullUint implements the Scanner interface so
 // it can be used as a scan destination, similar to NullString.
 type NullUint struct {
-	Num   uint
-	Valid bool // Valid is true if Num is not NULL
+	Uint  uint
+	Valid bool // Valid is true if Uint is not NULL
 }
 
 func NewNullUint(num uint) NullUint {
 	return NullUint{
-		Num:   num,
+		Uint:  num,
 		Valid: num != 0,
 	}
 }
@@ -60,7 +60,7 @@ func (n NullUint) Value() (driver.Value, error) {
 	if !n.Valid {
 		return nil, nil
 	}
-	return int64(n.Num), nil
+	return int64(n.Uint), nil
 }
 
 // MarshalJSON for NullUint
@@ -68,12 +68,12 @@ func (n *NullUint) MarshalJSON() ([]byte, error) {
 	if !n.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(n.Num)
+	return json.Marshal(n.Uint)
 }
 
 // UnmarshalJSON for NullUint
 func (n *NullUint) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &n.Num)
-	n.Valid = (err == nil && n.Num != 0)
+	err := json.Unmarshal(b, &n.Uint)
+	n.Valid = err == nil && n.Uint != 0
 	return err
 }
