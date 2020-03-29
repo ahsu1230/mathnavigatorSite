@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var now = time.Now().UTC()
+var now = time.Date(2020, 3, 1, 0, 0, 0, 0, time.UTC)
 var later1 = now.Add(time.Hour * 24 * 30)
 var later2 = now.Add(time.Hour * 24 * 31)
 var later3 = now.Add(time.Hour * 24 * 60)

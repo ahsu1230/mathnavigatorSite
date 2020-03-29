@@ -212,7 +212,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"location_id, " +
 		"times, " +
 		"start_date, " +
-		"end_date " +
+		"end_date" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
@@ -241,15 +241,15 @@ func (cr *classRepo) Insert(class domains.Class) error {
 
 func (cr *classRepo) Update(classId string, class domains.Class) error {
 	statement := "UPDATE classes SET " +
-		"updated_at, " +
-		"program_id, " +
-		"semester_id, " +
-		"class_key, " +
-		"class_id, " +
-		"location_id, " +
-		"times, " +
-		"start_date, " +
-		"end_date, " +
+		"updated_at=?, " +
+		"program_id=?, " +
+		"semester_id=?, " +
+		"class_key=?, " +
+		"class_id=?, " +
+		"location_id=?, " +
+		"times=?, " +
+		"start_date=?, " +
+		"end_date=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
