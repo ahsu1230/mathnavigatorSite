@@ -299,8 +299,8 @@ func CreateTestClassRepo(db *sql.DB) ClassRepoInterface {
 
 func generateClassId(class domains.Class) string {
 	classId := class.ProgramId + "_" + class.SemesterId
-	if len(class.ClassKey) != 0 {
-		return classId + "_" + class.ClassKey
+	if class.ClassKey.Valid {
+		return classId + "_" + class.ClassKey.String
 	}
 	return classId
 }

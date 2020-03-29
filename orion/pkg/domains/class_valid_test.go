@@ -20,23 +20,23 @@ func TestValidClassKey(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	class.ClassKey = ""
+	class.ClassKey = domains.NewNullString("")
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	class.ClassKey = "Valid_Class_100"
+	class.ClassKey = domains.NewNullString("Valid_Class_100")
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid class keys
-	class.ClassKey = "a__a"
+	class.ClassKey = domains.NewNullString("a__a")
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid class key")
 	}
 
-	class.ClassKey = "_"
+	class.ClassKey = domains.NewNullString("_")
 	if err := class.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid class key")
 	}

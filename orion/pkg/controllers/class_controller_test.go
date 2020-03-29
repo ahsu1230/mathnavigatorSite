@@ -169,9 +169,7 @@ func TestCreateClass_Failure(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
+	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
 
@@ -202,9 +200,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
+	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
 
@@ -263,7 +259,7 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 	return domains.Class{
 		ProgramId:  programId,
 		SemesterId: semesterId,
-		ClassKey:   classKey,
+		ClassKey:   domains.NewNullString(classKey),
 		ClassId:    classId,
 		LocationId: locationId,
 		Times:      times,
@@ -281,7 +277,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_spring",
-				domains.NewNullString("class1"),
+				"class1",
 				"program1_2020_spring_class1",
 				"churchill",
 				"3 pm - 5 pm",
@@ -292,7 +288,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_spring",
-				domains.NewNullString("class2"),
+				"class2",
 				"program1_2020_spring_class2",
 				"churchill",
 				"5 pm - 7 pm",
@@ -303,7 +299,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program1",
 				"2020_summer",
-				domains.NewNullString("final_review"),
+				"final_review",
 				"program1_2020_summer_final_review",
 				"churchill",
 				"5 pm - 8 pm",
@@ -314,7 +310,7 @@ func createMockClasses(ids ...int) []domains.Class {
 			classes[i] = createMockClass(
 				"program2",
 				"2020_summer",
-				domains.NewNullString(""),
+				"",
 				"program2_2020_summer",
 				"churchill",
 				"4 pm - 6 pm",
