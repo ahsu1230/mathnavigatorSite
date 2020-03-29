@@ -45,7 +45,7 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
- render() {
+  render() {
     return (
       <div>
         <Header/>
