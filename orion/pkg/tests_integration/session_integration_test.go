@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func resetTables(t *testing.T) {
+func resetSessionTables(t *testing.T) {
 	resetTable(t, domains.TABLE_SESSIONS)
 	resetTable(t, domains.TABLE_CLASSES)
 	resetTable(t, domains.TABLE_SEMESTERS)
@@ -19,7 +19,7 @@ func resetTables(t *testing.T) {
 
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
 func Test_CreateSessions(t *testing.T) {
-	resetTables(t)
+	resetSessionTables(t)
 
 	// Create
 	start := time.Now().UTC()
@@ -30,8 +30,8 @@ func Test_CreateSessions(t *testing.T) {
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
-	class1 := createClass("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
-	class2 := createClass("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm", start, end)
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
+	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", mid, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	session3 := createSession("slow_track_2020_fall_class_B", start, end, false, "May 5th regular meeting")
@@ -40,8 +40,8 @@ func Test_CreateSessions(t *testing.T) {
 	body3 := createJsonBody(loc1)
 	body4 := createJsonBody(semester1)
 	body5 := createJsonBody(semester2)
-	body6 := createJsonBody(class1)
-	body7 := createJsonBody(class2)
+	body6 := createJsonBody(&class1)
+	body7 := createJsonBody(&class2)
 	body8 := createJsonBody(session1)
 	body9 := createJsonBody(session2)
 	body10 := createJsonBody(session3)
@@ -84,7 +84,7 @@ func Test_CreateSessions(t *testing.T) {
 
 // Test: Create 1 Session, Update it, GetBySessionId()
 func Test_UpdateSession(t *testing.T) {
-	resetTables(t)
+	resetSessionTables(t)
 
 	// Create 1 Session
 	start := time.Now().UTC()
@@ -92,12 +92,12 @@ func Test_UpdateSession(t *testing.T) {
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1")
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	class1 := createClass("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := createJsonBody(prog1)
 	body2 := createJsonBody(loc1)
 	body3 := createJsonBody(semester1)
-	body4 := createJsonBody(class1)
+	body4 := createJsonBody(&class1)
 	body5 := createJsonBody(session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
@@ -132,7 +132,7 @@ func Test_UpdateSession(t *testing.T) {
 
 // Test: Create 1 Session, Delete it, GetBySessionId()
 func Test_DeleteSession(t *testing.T) {
-	resetTables(t)
+	resetSessionTables(t)
 
 	// Create
 	start := time.Now().UTC()
@@ -140,12 +140,12 @@ func Test_DeleteSession(t *testing.T) {
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1")
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	class1 := createClass("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := createJsonBody(prog1)
 	body2 := createJsonBody(loc1)
 	body3 := createJsonBody(semester1)
-	body4 := createJsonBody(class1)
+	body4 := createJsonBody(&class1)
 	body5 := createJsonBody(session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
@@ -175,5 +175,17 @@ func createSession(classId string, startsAt time.Time, endsAt time.Time, cancele
 		EndsAt:   endsAt,
 		Canceled: canceled,
 		Notes:    notes,
+	}
+}
+
+func createClassUtil(programId string, semesterId string, classKey string, locationId string, times string, startDate time.Time, endDate time.Time) domains.Class {
+	return domains.Class{
+		ProgramId:  programId,
+		SemesterId: semesterId,
+		ClassKey:   domains.NewNullString(classKey),
+		LocationId: locationId,
+		Times:      times,
+		StartDate:  startDate,
+		EndDate:    endDate,
 	}
 }

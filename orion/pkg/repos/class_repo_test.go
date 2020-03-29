@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+var now = time.Now().UTC()
+var later = now.Add(time.Hour * 24 * 60)
+
 func initClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ClassRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -27,35 +30,7 @@ func TestSelectAllClasses(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	var rows = sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"ProgramId",
-		"SemesterId",
-		"ClassKey",
-		"ClassId",
-		"LocationId",
-		"Times",
-		"StartDate",
-		"EndDate",
-	}).AddRow(
-		1,
-		now,
-		now,
-		sql.NullTime{},
-		"program1",
-		"2020_spring",
-		"final_review",
-		"program1_2020_spring_final_review",
-		"churchill",
-		"3 pm - 5 pm",
-		now,
-		later,
-	)
+	rows := getRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -65,22 +40,7 @@ func TestSelectAllClasses(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.Class{
-		{
-			Id:         1,
-			CreatedAt:  now,
-			UpdatedAt:  now,
-			DeletedAt:  sql.NullTime{},
-			ProgramId:  "program1",
-			SemesterId: "2020_spring",
-			ClassKey:   "final_review",
-			ClassId:    "program1_2020_spring_final_review",
-			LocationId: "churchill",
-			Times:      "3 pm - 5 pm",
-			StartDate:  now,
-			EndDate:    later,
-		},
-	}
+	want := []domains.Class{getClass()}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
@@ -97,35 +57,7 @@ func TestSelectClass(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	rows := sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"ProgramId",
-		"SemesterId",
-		"ClassKey",
-		"ClassId",
-		"LocationId",
-		"Times",
-		"StartDate",
-		"EndDate",
-	}).AddRow(
-		1,
-		now,
-		now,
-		sql.NullTime{},
-		"program1",
-		"2020_spring",
-		"final_review",
-		"program1_2020_spring_final_review",
-		"churchill",
-		"3 pm - 5 pm",
-		now,
-		later,
-	)
+	rows := getRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("program1_2020_spring_final_review").
@@ -136,20 +68,91 @@ func TestSelectClass(t *testing.T) {
 	}
 
 	// Validate results
-	want := domains.Class{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
-		ProgramId:  "program1",
-		SemesterId: "2020_spring",
-		ClassKey:   "final_review",
-		ClassId:    "program1_2020_spring_final_review",
-		LocationId: "churchill",
-		Times:      "3 pm - 5 pm",
-		StartDate:  now,
-		EndDate:    later,
+	want := getClass()
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select One By Program ID
+//
+func TestSelectClassesByProgramId(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE program_id=?").
+		ExpectQuery().
+		WithArgs("program1").
+		WillReturnRows(rows)
+	got, err := repo.SelectByProgramId("program1") // Correct programId
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Class{getClass()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select One By Semester ID
+//
+func TestSelectClassesBySemesterId(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE semester_id=?").
+		ExpectQuery().
+		WithArgs("2020_spring").
+		WillReturnRows(rows)
+	got, err := repo.SelectBySemesterId("2020_spring") // Correct semesterId
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Class{getClass()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select One By Program ID and Semester ID
+//
+func TestSelectClassesByProgramIdAndSemesterId(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getRows()
+	mock.ExpectPrepare(`^SELECT (.+) FROM classes WHERE program_id=\? AND semester_id=?`).
+		ExpectQuery().
+		WithArgs("program1", "2020_spring").
+		WillReturnRows(rows)
+	got, err := repo.SelectByProgramAndSemesterId("program1", "2020_spring") // Correct programId and semesterId
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Class{getClass()}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
@@ -166,8 +169,6 @@ func TestInsertClass(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO classes").
 		ExpectExec().
@@ -176,23 +177,14 @@ func TestInsertClass(t *testing.T) {
 			sqlmock.AnyArg(),
 			"program1",
 			"2020_spring",
-			"final_review",
+			domains.NewNullString("final_review"),
 			"program1_2020_spring_final_review",
 			"churchill",
 			"3 pm - 5 pm",
 			now,
 			later,
 		).WillReturnResult(result)
-	class := domains.Class{
-		ProgramId:  "program1",
-		SemesterId: "2020_spring",
-		ClassKey:   "final_review",
-		ClassId:    "program1_2020_spring_final_review",
-		LocationId: "churchill",
-		Times:      "3 pm - 5 pm",
-		StartDate:  now,
-		EndDate:    later,
-	}
+	class := getClass()
 	err := repo.Insert(class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -212,8 +204,6 @@ func TestUpdateClass(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 30)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE classes SET (.*) WHERE class_id=?").
 		ExpectExec().
@@ -221,7 +211,7 @@ func TestUpdateClass(t *testing.T) {
 			sqlmock.AnyArg(),
 			"program2",
 			"2020_summer",
-			sql.NullString{},
+			domains.NewNullString(""),
 			"program2_2020_summer",
 			"churchill",
 			"5 pm - 7 pm",
@@ -232,7 +222,7 @@ func TestUpdateClass(t *testing.T) {
 	class := domains.Class{
 		ProgramId:  "program2",
 		SemesterId: "2020_summer",
-		ClassKey:   "",
+		ClassKey:   domains.NewNullString(""),
 		ClassId:    "program2_2020_summer",
 		LocationId: "churchill",
 		Times:      "5 pm - 7 pm",
@@ -271,5 +261,55 @@ func TestDeleteClass(t *testing.T) {
 	// Validate results
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Helper Methods
+//
+func getRows() *sqlmock.Rows {
+	return sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"ProgramId",
+		"SemesterId",
+		"ClassKey",
+		"ClassId",
+		"LocationId",
+		"Times",
+		"StartDate",
+		"EndDate",
+	}).AddRow(
+		1,
+		now,
+		now,
+		sql.NullTime{},
+		"program1",
+		"2020_spring",
+		domains.NewNullString("final_review"),
+		"program1_2020_spring_final_review",
+		"churchill",
+		"3 pm - 5 pm",
+		now,
+		later,
+	)
+}
+
+func getClass() domains.Class {
+	return domains.Class{
+		Id:         1,
+		CreatedAt:  now,
+		UpdatedAt:  now,
+		DeletedAt:  sql.NullTime{},
+		ProgramId:  "program1",
+		SemesterId: "2020_spring",
+		ClassKey:   domains.NewNullString("final_review"),
+		ClassId:    "program1_2020_spring_final_review",
+		LocationId: "churchill",
+		Times:      "3 pm - 5 pm",
+		StartDate:  now,
+		EndDate:    later,
 	}
 }

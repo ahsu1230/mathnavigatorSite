@@ -14,6 +14,9 @@ import (
 )
 
 var now = time.Now().UTC()
+var later1 = now.Add(time.Hour * 24 * 30)
+var later2 = now.Add(time.Hour * 24 * 31)
+var later3 = now.Add(time.Hour * 24 * 60)
 
 //
 // Test Get All
@@ -154,8 +157,7 @@ func TestCreateClass_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	class := createMockClasses(1)[0]
-	marshal, _ := json.Marshal(class)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
 
 	// Validate results
@@ -167,11 +169,8 @@ func TestCreateClass_Failure(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
-	marshal, _ := json.Marshal(class)
-	body := bytes.NewBuffer(marshal)
+	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
+	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
 
 	// Validate results
@@ -201,9 +200,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	services.ClassService = &classService
 
 	// Create new HTTP request to endpoint
-	now := time.Now().UTC()
-	later := now.Add(time.Hour * 24 * 60)
-	class := createMockClass("", "", "", "", "", "", later, now) // Empty fields and end time is before start time
+	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
 
@@ -262,7 +259,7 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 	return domains.Class{
 		ProgramId:  programId,
 		SemesterId: semesterId,
-		ClassKey:   classKey,
+		ClassKey:   domains.NewNullString(classKey),
 		ClassId:    classId,
 		LocationId: locationId,
 		Times:      times,
@@ -274,9 +271,6 @@ func createMockClass(programId, semesterId, classKey, classId, locationId, times
 func createMockClasses(ids ...int) []domains.Class {
 	classes := make([]domains.Class, len(ids))
 
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 31)
-	later3 := now.Add(time.Hour * 24 * 60)
 	for i, id := range ids {
 		switch id {
 		case 1:
@@ -331,14 +325,11 @@ func createMockClasses(ids ...int) []domains.Class {
 }
 
 func assertMockClasses(t *testing.T, id int, class domains.Class) {
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 31)
-	later3 := now.Add(time.Hour * 24 * 60)
 	switch id {
 	case 1:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
-		assert.EqualValues(t, "class1", class.ClassKey)
+		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
@@ -347,7 +338,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
-		assert.EqualValues(t, "class2", class.ClassKey)
+		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
@@ -356,7 +347,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
-		assert.EqualValues(t, "final_review", class.ClassKey)
+		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
@@ -365,7 +356,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
-		assert.EqualValues(t, "", class.ClassKey)
+		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
@@ -375,7 +366,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 }
 
 func createBodyFromClass(class domains.Class) io.Reader {
-	marshal, err := json.Marshal(class)
+	marshal, err := json.Marshal(&class)
 	if err != nil {
 		panic(err)
 	}

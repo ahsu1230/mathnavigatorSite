@@ -15,8 +15,8 @@ type Session struct {
 	UpdatedAt time.Time    `db:"updated_at"`
 	DeletedAt sql.NullTime `db:"deleted_at"`
 	ClassId   string       `db:"class_id" json:"classId"`
-	StartsAt  time.Time    `db:"starts_at"`
-	EndsAt    time.Time    `db:"ends_at"`
+	StartsAt  time.Time    `db:"starts_at" json:"startsAt"`
+	EndsAt    time.Time    `db:"ends_at" json:"endsAt"`
 	Canceled  bool         `json:"canceled"`
 	Notes     string       `json:"notes"`
 }
