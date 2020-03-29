@@ -119,7 +119,7 @@ func TestCreateSession_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "__", now, now, true, "special lecture from guest")
+	session := createMockSession(1, "id_1", now, now, true, "@@")
 	marshal, _ := json.Marshal(session)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body)
@@ -153,7 +153,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "__", now, now, true, "special lecture from guest")
+	session := createMockSession(1, "id_1", now, now, true, "@@")
 	body := createBodyFromSession(session)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", body)
 
