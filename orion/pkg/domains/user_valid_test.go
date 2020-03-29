@@ -9,7 +9,14 @@ import (
 
 func TestValidFirstName(t *testing.T) {
 	// Checks for valid first names
-	user := domains.User{FirstName: "John", LastName: "Smith", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: domains.NewNullUint(0)}
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: true,
+		GuardianId: domains.NewNullUint(0),
+	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -33,7 +40,14 @@ func TestValidFirstName(t *testing.T) {
 
 func TestValidLastName(t *testing.T) {
 	// Checks for valid last names
-	user := domains.User{FirstName: "John", LastName: "Smith", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: domains.NewNullUint(0)}
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: true,
+		GuardianId: domains.NewNullUint(0),
+	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -57,7 +71,14 @@ func TestValidLastName(t *testing.T) {
 
 func TestValidEmail(t *testing.T) {
 	// Checks for valid emails
-	user := domains.User{FirstName: "John", LastName: "Smith", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: domains.NewNullUint(0)}
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: true,
+		GuardianId: domains.NewNullUint(0),
+	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -81,7 +102,14 @@ func TestValidEmail(t *testing.T) {
 
 func TestValidPhone(t *testing.T) {
 	// Checks for valid phone numbers
-	user := domains.User{FirstName: "John", LastName: "Smith", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: true, GuardianId: domains.NewNullUint(0)}
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: true,
+		GuardianId: domains.NewNullUint(0),
+	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
