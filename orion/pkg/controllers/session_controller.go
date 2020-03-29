@@ -29,7 +29,7 @@ func GetSessionById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, session)
+		c.JSON(http.StatusOK, &session)
 	}
 	return
 }

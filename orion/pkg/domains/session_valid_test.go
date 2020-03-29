@@ -7,13 +7,23 @@ import (
 
 func TestValidNotes(t *testing.T) {
 	// Checks for valid notes
-	session := domains.Session{ClassId: "valid_id", Notes: "ok"}
+	session := domains.Session{ClassId: "valid_id", Notes: domains.NewNullString("ok")}
+	if err := session.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	session.Notes = domains.NewNullString("")
 	if err := session.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid notes
-	session.Notes = ""
+	session.Notes = domains.NewNullString("@@")
+	if err := session.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid notes")
+	}
+
+	session.Notes = domains.NewNullString("923441")
 	if err := session.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid notes")
 	}

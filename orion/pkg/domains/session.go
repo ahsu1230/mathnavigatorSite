@@ -17,8 +17,8 @@ type Session struct {
 	ClassId   string       `db:"class_id" json:"classId"`
 	StartsAt  time.Time    `db:"starts_at" json:"startsAt"`
 	EndsAt    time.Time    `db:"ends_at" json:"endsAt"`
-	Canceled  bool         `json:"canceled"`
-	Notes     string       `json:"notes"`
+	Canceled  bool         `db:"canceled" json:"canceled"`
+	Notes     NullString   `db:"notes" json:"notes"`
 }
 
 func (session *Session) Validate() error {
@@ -26,8 +26,10 @@ func (session *Session) Validate() error {
 	notes := session.Notes
 
 	// Notes validation
-	if matches, _ := regexp.MatchString(REGEX_LETTER, notes); !matches {
-		return errors.New("invalid notes")
+	if notes.Valid {
+		if matches, _ := regexp.MatchString(REGEX_LETTER, notes.String); !matches {
+			return errors.New("invalid notes")
+		}
 	}
 
 	return nil

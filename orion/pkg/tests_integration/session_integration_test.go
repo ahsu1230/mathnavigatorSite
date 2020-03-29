@@ -42,9 +42,9 @@ func Test_CreateSessions(t *testing.T) {
 	body5 := createJsonBody(semester2)
 	body6 := createJsonBody(&class1)
 	body7 := createJsonBody(&class2)
-	body8 := createJsonBody(session1)
-	body9 := createJsonBody(session2)
-	body10 := createJsonBody(session3)
+	body8 := createJsonBody(&session1)
+	body9 := createJsonBody(&session2)
+	body10 := createJsonBody(&session3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
@@ -98,7 +98,7 @@ func Test_UpdateSession(t *testing.T) {
 	body2 := createJsonBody(loc1)
 	body3 := createJsonBody(semester1)
 	body4 := createJsonBody(&class1)
-	body5 := createJsonBody(session1)
+	body5 := createJsonBody(&session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
@@ -112,7 +112,7 @@ func Test_UpdateSession(t *testing.T) {
 
 	// Update
 	updatedSession := createSession("fast_track_2020_spring_class_A", start, end, true, "cancelled due to corona")
-	updatedBody := createJsonBody(updatedSession)
+	updatedBody := createJsonBody(&updatedSession)
 	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
@@ -127,7 +127,7 @@ func Test_UpdateSession(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, session.Id)
 	assert.EqualValues(t, "fast_track_2020_spring_class_A", session.ClassId)
-	assert.EqualValues(t, "cancelled due to corona", session.Notes)
+	assert.EqualValues(t, domains.NewNullString("cancelled due to corona"), session.Notes)
 }
 
 // Test: Create 1 Session, Delete it, GetBySessionId()
@@ -146,7 +146,7 @@ func Test_DeleteSession(t *testing.T) {
 	body2 := createJsonBody(loc1)
 	body3 := createJsonBody(semester1)
 	body4 := createJsonBody(&class1)
-	body5 := createJsonBody(session1)
+	body5 := createJsonBody(&session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
@@ -174,7 +174,7 @@ func createSession(classId string, startsAt time.Time, endsAt time.Time, cancele
 		StartsAt: startsAt,
 		EndsAt:   endsAt,
 		Canceled: canceled,
-		Notes:    notes,
+		Notes:    domains.NewNullString(notes),
 	}
 }
 
