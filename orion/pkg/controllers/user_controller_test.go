@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
 )
 
 //
@@ -18,26 +19,26 @@ import (
 func TestGetAllUsers_Success(t *testing.T) {
 	userService.mockGetAll = func() ([]domains.User, error) {
 		return []domains.User{
-			{
-				Id:         1,
-				FirstName:  "John",
-				LastName:   "Smith",
-				MiddleName: "",
-				Email:      "john_smith@example.com",
-				Phone:      "555-555-0199",
-				IsGuardian: true,
-				GuardianId: 0,
-			},
-			{
-				Id:         2,
-				FirstName:  "Bob",
-				LastName:   "Joe",
-				MiddleName: "Middle",
-				Email:      "bob_joe@example.com",
-				Phone:      "555-555-0199",
-				IsGuardian: false,
-				GuardianId: 1,
-			},
+			createMockUser(
+				1,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				true,
+				0,
+			),
+			createMockUser(
+				2,
+				"Bob",
+				"Joe",
+				"Middle",
+				"bob_joe@example.com",
+				"555-555-0199",
+				false,
+				1,
+			),
 		}, nil
 	}
 	services.UserService = &userService
@@ -54,19 +55,19 @@ func TestGetAllUsers_Success(t *testing.T) {
 	assert.EqualValues(t, 1, users[0].Id)
 	assert.EqualValues(t, "John", users[0].FirstName)
 	assert.EqualValues(t, "Smith", users[0].LastName)
-	assert.EqualValues(t, "", users[0].MiddleName)
+	assert.EqualValues(t, "", users[0].MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, true, users[0].IsGuardian)
-	assert.EqualValues(t, 0, users[0].GuardianId)
+	assert.EqualValues(t, 0, users[0].GuardianId.Num)
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
-	assert.EqualValues(t, "Middle", users[1].MiddleName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0199", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 1, users[1].GuardianId)
+	assert.EqualValues(t, 1, users[1].GuardianId.Num)
 	assert.EqualValues(t, 2, len(users))
 }
 
@@ -94,6 +95,7 @@ func TestGetUser_Success(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
 	var user domains.User
 	if err := json.Unmarshal(recorder.Body.Bytes(), &user); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
@@ -101,11 +103,11 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, 1, user.Id)
 	assert.EqualValues(t, "John", user.FirstName)
 	assert.EqualValues(t, "Smith", user.LastName)
-	assert.EqualValues(t, "", user.MiddleName)
+	assert.EqualValues(t, "", user.MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0199", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, 0, user.GuardianId)
+	assert.EqualValues(t, 0, user.GuardianId.Num)
 }
 
 func TestGetUser_Failure(t *testing.T) {
@@ -141,8 +143,7 @@ func TestCreateUser_Success(t *testing.T) {
 		true,
 		0,
 	)
-	marshal, _ := json.Marshal(user)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromUser(user)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
 
 	// Validate results
@@ -164,8 +165,7 @@ func TestCreateUser_Failure(t *testing.T) {
 		false,
 		0,
 	)
-	marshal, _ := json.Marshal(user)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromUser(user)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
 
 	// Validate results
@@ -282,16 +282,16 @@ func createMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		Id:         id,
 		FirstName:  firstName,
 		LastName:   lastName,
-		MiddleName: middleName,
+		MiddleName: domains.CreateNullString(middleName),
 		Email:      email,
 		Phone:      phone,
 		IsGuardian: isGuardian,
-		GuardianId: guardianId,
+		GuardianId: domains.CreateNullUint(guardianId),
 	}
 }
 
 func createBodyFromUser(user domains.User) io.Reader {
-	marshal, err := json.Marshal(user)
+	marshal, err := json.Marshal(&user)
 	if err != nil {
 		panic(err)
 	}

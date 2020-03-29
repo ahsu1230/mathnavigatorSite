@@ -16,11 +16,11 @@ type User struct {
 	DeletedAt  sql.NullTime `db:"deleted_at"`
 	FirstName  string       `json:"firstName"`
 	LastName   string       `json:"lastName"`
-	MiddleName string       `json:"middleName"`
+	MiddleName NullString   `json:"middleName"`
 	Email      string       `json:"email"`
 	Phone      string       `json:"phone"`
-	IsGuardian bool         `json:"isGuardian"`
-	GuardianId uint         `db:"guardian_id" json:"guardianId"`
+	IsGuardian bool         `db:"is_guardian" json:"isGuardian"`
+	GuardianId NullUint     `db:"guardian_id" json:"guardianId"`
 }
 
 // Class Methods
@@ -57,11 +57,11 @@ func (user *User) Validate() error {
 
 	// Guardian validation
 	if isGuardian {
-		if guardianId != 0 {
+		if guardianId.Num != 0 {
 			return errors.New("guardian cannot have a guardian id")
 		}
 	} else {
-		if guardianId == id {
+		if guardianId.Num == id {
 			return errors.New("invalid guardian id")
 		}
 	}

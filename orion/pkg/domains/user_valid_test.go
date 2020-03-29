@@ -1,9 +1,10 @@
 package domains_test
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"strings"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
 
 func TestValidFirstName(t *testing.T) {
@@ -104,13 +105,20 @@ func TestValidPhone(t *testing.T) {
 
 func TestValidGuardianId(t *testing.T) {
 	// Checks for valid guardian ids
-	user := domains.User{FirstName: "John", LastName: "Smith", Email: "gmail@gmail.com", Phone: "555-555-0100", IsGuardian: false, GuardianId: 2}
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: false,
+		GuardianId: domains.CreateNullUint(2),
+	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid guardian ids
-	user.GuardianId = 0
+	user.GuardianId = domains.CreateNullUint(0)
 	if err := user.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid guardian id")
 	}

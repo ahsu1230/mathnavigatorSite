@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func GetAllUsers(c *gin.Context) {
@@ -26,7 +27,7 @@ func GetUserById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, &user)
 	}
 }
 

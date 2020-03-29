@@ -2,9 +2,9 @@ package repos
 
 import (
 	"database/sql"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
 
 // Global variable
@@ -114,11 +114,12 @@ func (ur *userRepo) Insert(user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
+		user.MiddleName,
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0})
+		user.GuardianId,
+	)
 	if err != nil {
 		return err
 	}
@@ -147,11 +148,11 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
+		user.MiddleName,
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0},
+		user.GuardianId,
 		id)
 	if err != nil {
 		return err
