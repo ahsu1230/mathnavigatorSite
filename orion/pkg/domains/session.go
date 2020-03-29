@@ -23,13 +23,7 @@ type Session struct {
 
 func (session *Session) Validate() error {
 	// Retrieves the inputted values
-	classId := session.ClassId
 	notes := session.Notes
-
-	// Class ID validation
-	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classId); !matches {
-		return errors.New("invalid class id")
-	}
 
 	// Notes validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, notes); !matches {

@@ -12,6 +12,7 @@ func GetAllSessionsByClassId(c *gin.Context) {
 
 	sessionList, err := services.SessionService.GetAllByClassId(classId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, sessionList)
@@ -25,6 +26,7 @@ func GetSessionById(c *gin.Context) {
 
 	session, err := services.SessionService.GetBySessionId(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
 		c.JSON(http.StatusOK, session)
@@ -38,12 +40,14 @@ func CreateSession(c *gin.Context) {
 	c.BindJSON(&sessionJson)
 
 	if err := sessionJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.SessionService.Create(sessionJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
@@ -58,12 +62,14 @@ func UpdateSession(c *gin.Context) {
 	c.BindJSON(&sessionJson)
 
 	if err := sessionJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.SessionService.Update(id, sessionJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, nil)
@@ -77,6 +83,7 @@ func DeleteSession(c *gin.Context) {
 
 	err := services.SessionService.Delete(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)

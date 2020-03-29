@@ -41,7 +41,7 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/id_1/sessions", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/id_1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)

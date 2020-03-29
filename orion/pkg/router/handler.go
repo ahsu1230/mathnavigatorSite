@@ -29,7 +29,6 @@ func (h *Handler) SetupApiEndpoints() {
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
 		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
-		apiClasses.GET("/v1/class/:classId/sessions", controllers.GetAllSessionsByClassId)
 		apiClasses.GET("/v1/classes/program/:programId", controllers.GetClassesByProgram)
 		apiClasses.GET("/v1/classes/semester/:semesterId", controllers.GetClassesBySemester)
 		apiClasses.GET("/v1/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
@@ -72,6 +71,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
+		apiClasses.GET("/v1/class/:classId", controllers.GetAllSessionsByClassId)
 	}
 	apiUsers := h.Engine.Group("api/users/")
 	{

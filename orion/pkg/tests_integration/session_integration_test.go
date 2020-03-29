@@ -9,13 +9,17 @@ import (
 	"time"
 )
 
-// Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
-func Test_CreateSessions(t *testing.T) {
+func resetTables(t *testing.T) {
 	resetTable(t, domains.TABLE_SESSIONS)
 	resetTable(t, domains.TABLE_CLASSES)
 	resetTable(t, domains.TABLE_SEMESTERS)
 	resetTable(t, domains.TABLE_LOCATIONS)
 	resetTable(t, domains.TABLE_PROGRAMS)
+}
+
+// Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
+func Test_CreateSessions(t *testing.T) {
+	resetTables(t)
 
 	// Create
 	start := time.Now().UTC()
@@ -63,7 +67,7 @@ func Test_CreateSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder10.Code)
 
 	// Call Get All!
-	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/fast_track_2020_spring_class_A/sessions", nil)
+	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/fast_track_2020_spring_class_A", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder11.Code)
@@ -80,11 +84,7 @@ func Test_CreateSessions(t *testing.T) {
 
 // Test: Create 1 Session, Update it, GetBySessionId()
 func Test_UpdateSession(t *testing.T) {
-	resetTable(t, domains.TABLE_SESSIONS)
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTables(t)
 
 	// Create 1 Session
 	start := time.Now().UTC()
@@ -132,11 +132,7 @@ func Test_UpdateSession(t *testing.T) {
 
 // Test: Create 1 Session, Delete it, GetBySessionId()
 func Test_DeleteSession(t *testing.T) {
-	resetTable(t, domains.TABLE_SESSIONS)
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTables(t)
 
 	// Create
 	start := time.Now().UTC()
