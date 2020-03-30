@@ -20,6 +20,7 @@ type UserRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
+	SelectByGuardianId(domains.NullUint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -87,6 +88,41 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.IsGuardian,
 		&user.GuardianId)
 	return user, errScan
+}
+
+func (ur *userRepo) SelectByGuardianId(guardianId domains.NullUint) ([]domains.User, error) {
+	results := make([]domains.User, 0)
+
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE guardian_id=?")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(guardianId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.DeletedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.MiddleName,
+			&user.Email,
+			&user.Phone,
+			&user.IsGuardian,
+			&user.GuardianId); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, user)
+	}
+	return results, nil
 }
 
 func (ur *userRepo) Insert(user domains.User) error {
