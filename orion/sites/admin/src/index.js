@@ -68,7 +68,7 @@ class App extends React.Component {
           <Route path="/locations/:locationId/edit" component={LocationEditMatch}/>
           <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
-          <Route path="/semesters/:semesterId/edit" component={SemesterEditMatch}/>
+          <Route path="/semesters/:semesId/edit" component={SemesterEditMatch}/>
           <Route path="/semesters/add" component={SemesterEdit}/>
           <Route path="/semesters" component={Semester}/>
         </Switch>
