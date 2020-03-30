@@ -18,6 +18,8 @@ import { AnnouncePage } from './announce/announce.js';
 import { AnnounceEditPage } from './announce/announceEdit.js';
 import { LocationPage } from './location/location.js';
 import { LocationEditPage } from './location/locationEdit.js';
+import { SemesterPage } from './semesters/semester.js';
+import { SemesterEditPage } from './semesters/semesterEdit.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
@@ -32,7 +34,11 @@ const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 const Location = () => <LocationPage/>;
 const LocationEdit = () => <LocationEditPage/>;
+const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
 const LocationEditMatch = ({match}) => <LocationEditPage locId={match.params.locId}/>;
+const Semester = () => <SemesterPage/>;
+const SemesterEdit = () => <SemesterEditPage/>;
+const SemesterEditMatch = ({match}) => <SemesterEditPage semesterId={match.params.semesterId}/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -63,6 +69,9 @@ class App extends React.Component {
           <Route path="/locations/:locId/edit" component={LocationEditMatch}/>
           <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
+          <Route path="/semesters/:locationId/edit" component={SemesterEditMatch}/>
+          <Route path="/semesters/add" component={SemesterEdit}/>
+          <Route path="/semesters" component={Semester}/>
         </Switch>
       </div>
     );
