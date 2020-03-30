@@ -1,0 +1,37 @@
+[
+  {
+    "locationId": "loc_wchs",
+    "name": "Winston Churchill High School",
+    "address1": "11300 Gainsborough Rd",
+    "address2": "Potomac, MD 20854",
+    "address3": "Room 110"
+  },
+  {
+    "locationId": "loc_hhms",
+    "name": "Herbert Hoover Middle School",
+    "address1": "8810 Postoak Rd",
+    "address2": "Potomac, MD 20854",
+    "address3": "Room 31"
+  },
+  {
+    "locationId": "loc_home",
+    "name": "Hsu House",
+    "address1": "8419 Harker Drive",
+    "address2": "Potomac, MD 20854",
+    "address3": "Basement"
+  },
+  {
+    "locationId": "loc_cathay",
+    "name": "Cathay Future Center",
+    "address1": "9400 Key West Ave",
+    "address2": "Rockville, MD 20850",
+    "address3": "Room 116"
+  },
+  {
+    "locationId": "loc_wchs2",
+    "name": "Winston Churchill High School",
+    "address1": "11300 Gainsborough Rd",
+    "address2": "Potomac, MD 20854",
+    "address3": "Room 112"
+  }
+]

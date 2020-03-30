@@ -1,0 +1,47 @@
+[
+  {
+    "timestamp": 1578933154,
+    "date": "1/13/2020",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[english2_spring_w910,english3_spring_r910]",
+    "author": "Amy",
+    "message": "We will start English R/W class for 9&10th graders and SAT2 Classes from the week of 1/13. Please check the \"Progrmas\" menu option for the detail."
+  },
+  {
+    "timestamp": 1579832678,
+    "date": "1/23/2020",
+    "important": "",
+    "onHomePage": "TRUE",
+    "classKeys": "[sat1_spring_f]",
+    "author": "Amy",
+    "message": "On 2/1, we will start the new SAT Math class (F) on every Saturday 10:00am - 12:00pm at Harker Drive classroom."
+  },
+  {
+    "timestamp": 1579832627,
+    "date": "1/24/2020",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[english2_spring_w910,english3_spring_r910]",
+    "author": "Amy",
+    "message": "NO English Reading class and Writing class for 9,10th graders from 2/1 - 2/25 ."
+  },
+  {
+    "timestamp": 1579832996,
+    "date": "1/31/2020",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_e]",
+    "author": "Amy",
+    "message": "SAT Math class (E) will start the prep tests from 1/31/2020 on every Friday 8:00pm - 9:40pm at Churchill H.S. room 110."
+  },
+  {
+    "timestamp": 1580320769,
+    "date": "2/8/2020",
+    "important": "TRUE",
+    "onHomePage": "",
+    "classKeys": "[sat1_fall_e,sat2_spring_b]",
+    "author": "Amy",
+    "message": "On 2/8 (Saturday), the classroom change from Churchill H.S. to Hoover M.S. room 36 for SAT Math class (E) and SAT II class (B)."
+  }
+]
