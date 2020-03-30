@@ -21,7 +21,7 @@ import { LocationEditPage } from './location/locationEdit.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
-const AchieveEditMatch = ({match}) => <AchieveEditPage year={match.params.year}/>;
+const AchieveEditMatch = ({match}) => <AchieveEditPage Id={match.params.Id}/>;
 const Announce = () => <AnnouncePage/>;
 const AnnounceEdit = () => <AnnounceEditPage/>;
 const AnnounceEditMatch = ({match}) => <AnnounceEditPage announceId={match.params.AnnounceId}/>;
@@ -57,7 +57,7 @@ class App extends React.Component {
           <Route path="/announcements/:announceId/edit" component={AnnounceEditMatch}/>
           <Route path="/announcements/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
-          <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
+          <Route path="/achievements/:Id/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
           <Route path="/locations/:locId/edit" component={LocationEditMatch}/>

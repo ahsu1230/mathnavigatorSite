@@ -3,31 +3,103 @@ require('./achieveEdit.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import API from '../api.js';
 
 export class AchieveEditPage extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             inputYear: "",
-             inputMessage: "",
+             isEdit: false,
+             inputYear: 0,
+             inputMessage: ""
           };
+
+    this.handleChange = this.handleChange.bind(this);
+
+    this.onClickCancel = this.onClickCancel.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickSave = this.onClickSave.bind(this);
+
+    this.onDeleted = this.onDeleted.bind(this);
+    this.onSaved = this.onSaved.bind(this);
+
     }
 
-    onClickSave() {
-        console.log("save button clicked");
+    componentDidMount() {
+      const Id = this.props.Id;
+      if (Id) {
+        API.get("api/achievements/v1/achievement/" + Id)
+          .then(res => {
+            const achieve = res.data;
+            this.setState({
+              inputYear: achieve.year,
+              inputMessage: achieve.message,
+              isEdit: true
+            });
+          });
+      }
+    }
+
+    handleChange(event, value) {
+      this.setState({[value]: event.target.value});
     }
 
     onClickCancel() {
-        console.log("cancel button clicked");
+        window.location.hash = "achievements";
     }
 
-    handleChange() {
-        console.log("handle change");
+    onClickDelete() {
+        const Id = this.props.Id;
+        API.delete("api/achievements/v1/achievement/" + Id)
+        .then(res => {
+            window.location.hash = "achievements";
+        })
+    }
+
+    onClickSave() {
+        let achieve = {
+            year: parseInt(this.state.inputYear),
+            message: this.state.inputMessage,
+        };
+        let successCallback = () => this.onSaved();
+        let failCallback = (err) => alert("Could not save achievement: " + err.response.data);
+        if (this.state.isEdit) {
+            API.post("api/achievements/v1/achievement/" + this.props.Id, achieve)
+            .then (res => successCallback())
+            .catch(err => failCallback(err));
+        } else {
+            API.post("api/achievements/v1/create", achieve)
+            .then(res => successCallback())
+            .catch(err => failCallback(err));
+        }
+    }
+
+    onSaved() {
+        window.location.hash = "achievements";
+    }
+
+    onDeleted() {
+        const Id = this.props.Id;
+        API.delete("api/achievements/v1/achievement/" + Id)
+        .then(res => {
+            window.location.hash = "achievements";
+        })
     }
 
     render() {
-        const title = "Edit Achievement";
+        const isEdit = this.state.isEdit;
+        const achieve = this.state.achieve;
+        const title = isEdit ? "Edit Achievement" : "Add Achievement";
+
         let deleteButton = <div></div>;
+        if (isEdit) {
+          deleteButton = (
+            <button className="btn-delete" onClick={this.onClickDelete}>
+              Delete
+            </button>
+          );
+        }
+
         return (
             <div id="view-achieve-edit">
             <h2>{title}</h2>
