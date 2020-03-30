@@ -10,6 +10,7 @@ import (
 func GetAllAnnouncements(c *gin.Context) {
 	announceList, err := services.AnnounceService.GetAll()
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, announceList)
@@ -22,6 +23,7 @@ func GetAnnouncementById(c *gin.Context) {
 
 	announce, err := services.AnnounceService.GetByAnnounceId(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
 		c.JSON(http.StatusOK, announce)
@@ -34,15 +36,17 @@ func CreateAnnouncement(c *gin.Context) {
 	c.BindJSON(&announceJson)
 
 	if err := announceJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.AnnounceService.Create(announceJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 }
 
@@ -53,15 +57,17 @@ func UpdateAnnouncement(c *gin.Context) {
 	c.BindJSON(&announceJson)
 
 	if err := announceJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.AnnounceService.Update(id, announceJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 }
 
@@ -71,6 +77,7 @@ func DeleteAnnouncement(c *gin.Context) {
 
 	err := services.AnnounceService.Delete(id)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
