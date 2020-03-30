@@ -79,7 +79,6 @@ func CreateClass(c *gin.Context) {
 	// Incoming JSON
 	var classJson domains.Class
 	c.BindJSON(&classJson)
-
 	if err := classJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
