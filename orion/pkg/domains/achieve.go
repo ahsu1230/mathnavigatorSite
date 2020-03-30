@@ -13,7 +13,7 @@ type Achieve struct {
 	Id        uint
 	CreatedAt time.Time    `db:"created_at"`
 	UpdatedAt time.Time    `db:"updated_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
+	DeletedAt sql.NullTime `db:"deleted_at" json:"-"`
 	Year      uint         `json:"year"`
 	Message   string       `json:"message"`
 }

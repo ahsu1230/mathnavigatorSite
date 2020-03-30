@@ -13,7 +13,7 @@ type Announce struct {
 	Id        uint         `db:"id"`
 	CreatedAt time.Time    `db:"created_at"`
 	UpdatedAt time.Time    `db:"updated_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
+	DeletedAt sql.NullTime `db:"deleted_at" json:"-"`
 	PostedAt  time.Time    `db:"posted_at"`
 	Author    string       `json:"author"`
 	Message   string       `json:"message"`

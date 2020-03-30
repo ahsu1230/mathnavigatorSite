@@ -13,7 +13,7 @@ type Semester struct {
 	Id         uint
 	CreatedAt  time.Time    `db:"created_at"`
 	UpdatedAt  time.Time    `db:"updated_at"`
-	DeletedAt  sql.NullTime `db:"deleted_at"`
+	DeletedAt  sql.NullTime `db:"deleted_at" json:"-"`
 	SemesterId string       `db:"semester_id" json:"semesterId"`
 	Title      string       `json:"title"`
 }

@@ -13,7 +13,7 @@ type Class struct {
 	Id         uint
 	CreatedAt  time.Time    `db:"created_at"`
 	UpdatedAt  time.Time    `db:"updated_at"`
-	DeletedAt  sql.NullTime `db:"deleted_at"`
+	DeletedAt  sql.NullTime `db:"deleted_at" json:"-"`
 	ProgramId  string       `db:"program_id" json:"programId"`
 	SemesterId string       `db:"semester_id" json:"semesterId"`
 	ClassKey   NullString   `db:"class_key" json:"classKey"`

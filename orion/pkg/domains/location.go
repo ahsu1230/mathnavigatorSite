@@ -13,7 +13,7 @@ type Location struct {
 	Id        uint
 	CreatedAt time.Time    `db:"created_at"`
 	UpdatedAt time.Time    `db:"update_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
+	DeletedAt sql.NullTime `db:"deleted_at" json:"-"`
 	LocId     string       `db:"loc_id" json:"locId"`
 	Street    string       `json:"street"`
 	City      string       `json:"city"`
