@@ -50,7 +50,7 @@ func CreateSession(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -72,7 +72,7 @@ func UpdateSession(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
