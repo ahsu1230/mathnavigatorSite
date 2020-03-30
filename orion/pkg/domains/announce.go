@@ -14,7 +14,7 @@ type Announce struct {
 	CreatedAt time.Time    `db:"created_at"`
 	UpdatedAt time.Time    `db:"updated_at"`
 	DeletedAt sql.NullTime `db:"deleted_at"`
-	PostedAt  time.Time    `db:"posted_at"`
+	PostedAt  time.Time    `db:"posted_at" json:"postedAt"`
 	Author    string       `json:"author"`
 	Message   string       `json:"message"`
 }
