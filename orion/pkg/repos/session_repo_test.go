@@ -10,62 +10,56 @@ import (
 	"time"
 )
 
-func initAnnounceTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AnnounceRepoInterface) {
+func initSessionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SessionRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAnnounceRepo(db)
+	repo := repos.CreateTestSessionRepo(db)
 	return db, mock, repo
 }
 
 //
-// Test Select All
+// Test Select All By Class Id
 //
-func TestSelectAllAnnouncements(t *testing.T) {
-	db, mock, repo := initAnnounceTest(t)
+func TestSelectAllSessionsByClassId(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	early := time.Unix(0, 0)
 	rows := sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PostedAt",
-		"Author",
-		"Message"}).
-		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message").
-		AddRow(2, early, early, sql.NullTime{}, early, "Author Name 2", "Valid Message 2")
-	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
+		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAllByClassId("id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := []domains.Announce{
+	want := []domains.Session{
 		{
 			Id:        1,
 			CreatedAt: now,
 			UpdatedAt: now,
 			DeletedAt: sql.NullTime{},
-			PostedAt:  now,
-			Author:    "Author Name",
-			Message:   "Valid Message",
-		},
-		{
-			Id:        2,
-			CreatedAt: early,
-			UpdatedAt: early,
-			DeletedAt: sql.NullTime{},
-			PostedAt:  early,
-			Author:    "Author Name 2",
-			Message:   "Valid Message 2",
+			ClassId:   "id_1",
+			StartsAt:  now,
+			EndsAt:    now,
+			Canceled:  false,
+			Notes:     domains.NewNullString("special lecture from guest"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -79,8 +73,8 @@ func TestSelectAllAnnouncements(t *testing.T) {
 //
 // Select One
 //
-func TestSelectAnnouncement(t *testing.T) {
-	db, mock, repo := initAnnounceTest(t)
+func TestSelectSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -90,28 +84,32 @@ func TestSelectAnnouncement(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PostedAt",
-		"Author",
-		"Message"}).
-		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
-	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAnnounceId(1)
+	got, err := repo.SelectBySessionId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := domains.Announce{
+	want := domains.Session{
 		Id:        1,
 		CreatedAt: now,
 		UpdatedAt: now,
 		DeletedAt: sql.NullTime{},
-		PostedAt:  now,
-		Author:    "Author Name",
-		Message:   "Valid Message",
+		ClassId:   "id_1",
+		StartsAt:  now,
+		EndsAt:    now,
+		Canceled:  false,
+		Notes:     domains.NewNullString("special lecture from guest"),
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -124,23 +122,25 @@ func TestSelectAnnouncement(t *testing.T) {
 //
 // Create
 //
-func TestInsertAnnouncement(t *testing.T) {
-	db, mock, repo := initAnnounceTest(t)
+func TestInsertSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO announcements").
+	mock.ExpectPrepare("^INSERT INTO sessions").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), now, "Author Name", "Valid Message").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest")).
 		WillReturnResult(result)
-	announce := domains.Announce{
-		PostedAt: now,
-		Author:   "Author Name",
-		Message:  "Valid Message",
+	session := domains.Session{
+		ClassId:  "id_1",
+		StartsAt: now,
+		EndsAt:   now,
+		Canceled: false,
+		Notes:    domains.NewNullString("special lecture from guest"),
 	}
-	err := repo.Insert(announce)
+	err := repo.Insert(session)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -154,23 +154,25 @@ func TestInsertAnnouncement(t *testing.T) {
 //
 // Update
 //
-func TestUpdateAnnouncement(t *testing.T) {
-	db, mock, repo := initAnnounceTest(t)
+func TestUpdateSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE announcements SET (.*) WHERE id=?").
+	mock.ExpectPrepare("^UPDATE sessions SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), now, "Author Name", "Valid Message", 1).
+		WithArgs(sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
 		WillReturnResult(result)
-	announce := domains.Announce{
-		PostedAt: now,
-		Author:   "Author Name",
-		Message:  "Valid Message",
+	session := domains.Session{
+		ClassId:  "id_1",
+		StartsAt: now,
+		EndsAt:   now,
+		Canceled: false,
+		Notes:    domains.NewNullString("special lecture from guest"),
 	}
-	err := repo.Update(1, announce)
+	err := repo.Update(1, session)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -184,13 +186,13 @@ func TestUpdateAnnouncement(t *testing.T) {
 //
 // Delete
 //
-func TestDeleteAnnouncement(t *testing.T) {
-	db, mock, repo := initAnnounceTest(t)
+func TestDeleteSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM announcements WHERE id=?").
+	mock.ExpectPrepare("^DELETE FROM sessions WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)

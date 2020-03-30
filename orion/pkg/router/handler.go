@@ -22,10 +22,20 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
 	}
-	// apiClasses := router.Group("api/classes/")
+	apiClasses := h.Engine.Group("api/classes/")
+	{
+		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/create", controllers.CreateClass)
+		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
+		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
+		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
+		apiClasses.GET("/v1/classes/program/:programId", controllers.GetClassesByProgram)
+		apiClasses.GET("/v1/classes/semester/:semesterId", controllers.GetClassesBySemester)
+		apiClasses.GET("/v1/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
+	}
 	apiLocations := h.Engine.Group("api/locations/")
 	{
-		apiLocations.GET("v1/all", controllers.GetAllLocations)
+		apiLocations.GET("/v1/all", controllers.GetAllLocations)
 		apiLocations.POST("/v1/create", controllers.CreateLocation)
 		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
 		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
@@ -56,6 +66,21 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/v1/semester/:semesterId", controllers.DeleteSemester)
 	}
-	// apiUsers := router.Group("api/users/")
+	apiSessions := h.Engine.Group("api/sessions/")
+	{
+		apiSessions.POST("/v1/create", controllers.CreateSession)
+		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
+		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
+		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
+		apiSessions.GET("/v1/class/:classId", controllers.GetAllSessionsByClassId)
+	}
+	apiUsers := h.Engine.Group("api/users/")
+	{
+		apiUsers.GET("/v1/all", controllers.GetAllUsers)
+		apiUsers.POST("/v1/create", controllers.CreateUser)
+		apiUsers.GET("/v1/user/:id", controllers.GetUserById)
+		apiUsers.POST("/v1/user/:id", controllers.UpdateUser)
+		apiUsers.DELETE("/v1/user/:id", controllers.DeleteUser)
+	}
 	// apiAccounts := router.Group("api/accounts/")
 }

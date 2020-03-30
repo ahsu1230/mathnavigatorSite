@@ -18,6 +18,11 @@ type Achieve struct {
 	Message   string       `json:"message"`
 }
 
+type AchieveList struct {
+	Year         uint
+	Achievements []Achieve
+}
+
 // Class Methods
 
 func (achieve *Achieve) Validate() error {

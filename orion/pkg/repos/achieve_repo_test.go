@@ -111,25 +111,31 @@ func TestSelectByYear(t *testing.T) {
 	}
 
 	// Validate results
-	want := map[uint][]domains.Achieve{
-		2021: {
-			{
-				Id:        2,
-				CreatedAt: now,
-				UpdatedAt: now,
-				DeletedAt: sql.NullTime{},
-				Year:      2021,
-				Message:   "1600 on SAT",
+	want := []domains.AchieveList{
+		{
+			Year: 2021,
+			Achievements: []domains.Achieve{
+				{
+					Id:        2,
+					CreatedAt: now,
+					UpdatedAt: now,
+					DeletedAt: sql.NullTime{},
+					Year:      2021,
+					Message:   "1600 on SAT",
+				},
 			},
 		},
-		2020: {
-			{
-				Id:        1,
-				CreatedAt: now,
-				UpdatedAt: now,
-				DeletedAt: sql.NullTime{},
-				Year:      2020,
-				Message:   "message1",
+		{
+			Year: 2020,
+			Achievements: []domains.Achieve{
+				{
+					Id:        1,
+					CreatedAt: now,
+					UpdatedAt: now,
+					DeletedAt: sql.NullTime{},
+					Year:      2020,
+					Message:   "message1",
+				},
 			},
 		},
 	}

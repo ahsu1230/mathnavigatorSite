@@ -72,26 +72,26 @@ func Test_GetAchievementsByYear(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-	var achieves map[uint][]domains.Achieve
+	var achieves []domains.AchieveList
 	if err := json.Unmarshal(recorder5.Body.Bytes(), &achieves); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, achieves[2020][0].Id)
-	assert.EqualValues(t, 2020, achieves[2020][0].Year)
-	assert.EqualValues(t, "message1", achieves[2020][0].Message)
-	assert.EqualValues(t, 2, achieves[2021][0].Id)
-	assert.EqualValues(t, 2021, achieves[2021][0].Year)
-	assert.EqualValues(t, "message2", achieves[2021][0].Message)
-	assert.EqualValues(t, 4, achieves[2021][1].Id)
-	assert.EqualValues(t, 2021, achieves[2021][1].Year)
-	assert.EqualValues(t, "message4", achieves[2021][1].Message)
-	assert.EqualValues(t, 3, achieves[2022][0].Id)
-	assert.EqualValues(t, 2022, achieves[2022][0].Year)
-	assert.EqualValues(t, "message3", achieves[2022][0].Message)
+	assert.EqualValues(t, 3, achieves[0].Achievements[0].Id)
+	assert.EqualValues(t, 2022, achieves[0].Achievements[0].Year)
+	assert.EqualValues(t, "message3", achieves[0].Achievements[0].Message)
+	assert.EqualValues(t, 2, achieves[1].Achievements[0].Id)
+	assert.EqualValues(t, 2021, achieves[1].Achievements[0].Year)
+	assert.EqualValues(t, "message2", achieves[1].Achievements[0].Message)
+	assert.EqualValues(t, 4, achieves[1].Achievements[1].Id)
+	assert.EqualValues(t, 2021, achieves[1].Achievements[1].Year)
+	assert.EqualValues(t, "message4", achieves[1].Achievements[1].Message)
+	assert.EqualValues(t, 1, achieves[2].Achievements[0].Id)
+	assert.EqualValues(t, 2020, achieves[2].Achievements[0].Year)
+	assert.EqualValues(t, "message1", achieves[2].Achievements[0].Message)
 	assert.EqualValues(t, 3, len(achieves))
 }
 
-// Test: Create 1 Achievement, Update it, GetByAchieveId()
+// Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
@@ -121,7 +121,7 @@ func Test_UpdateAchievement(t *testing.T) {
 	assert.EqualValues(t, "message2", achieve.Message)
 }
 
-// Test: Create 1 Achievement, Delete it, GetByAchieveId()
+// Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 

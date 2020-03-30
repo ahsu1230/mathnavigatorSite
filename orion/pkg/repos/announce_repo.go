@@ -29,7 +29,7 @@ func (ar *announceRepo) Initialize(db *sql.DB) {
 func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 	results := make([]domains.Announce, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM announcements")
+	stmt, err := ar.db.Prepare("SELECT * FROM announcements ORDER BY posted_at DESC")
 	if err != nil {
 		return nil, err
 	}

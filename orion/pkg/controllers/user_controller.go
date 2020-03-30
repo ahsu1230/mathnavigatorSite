@@ -1,90 +1,86 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func GetAllLocations(c *gin.Context) {
-	locationList, err := services.LocationService.GetAll()
+func GetAllUsers(c *gin.Context) {
+	userList, err := services.UserService.GetAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, locationList)
+		c.JSON(http.StatusOK, userList)
 	}
-	return
 }
 
-func GetLocationById(c *gin.Context) {
+func GetUserById(c *gin.Context) {
 	// Incoming parameters
-	locId := c.Param("locId")
+	id := ParseParamId(c)
 
-	location, err := services.LocationService.GetByLocationId(locId)
+	user, err := services.UserService.GetById(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, location)
+		c.JSON(http.StatusOK, &user)
 	}
-	return
 }
 
-func CreateLocation(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	// Incoming JSON
-	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	var userJson domains.User
+	c.BindJSON(&userJson)
 
-	if err := locationJson.Validate(); err != nil {
+	if err := userJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.LocationService.Create(locationJson)
+	err := services.UserService.Create(userJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
-	return
 }
 
-func UpdateLocation(c *gin.Context) {
+func UpdateUser(c *gin.Context) {
 	// Incoming JSON & Parameters
-	locId := c.Param("locId")
-	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	id := ParseParamId(c)
+	var userJson domains.User
+	c.BindJSON(&userJson)
 
-	if err := locationJson.Validate(); err != nil {
+	if err := userJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.LocationService.Update(locId, locationJson)
+	err := services.UserService.Update(id, userJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
-	return
 }
 
-func DeleteLocation(c *gin.Context) {
+func DeleteUser(c *gin.Context) {
 	// Incoming Parameters
-	locId := c.Param("locId")
+	id := ParseParamId(c)
 
-	err := services.LocationService.Delete(locId)
+	err := services.UserService.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
-	return
 }

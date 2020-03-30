@@ -7,43 +7,45 @@ import (
 	"net/http"
 )
 
-func GetAllLocations(c *gin.Context) {
-	locationList, err := services.LocationService.GetAll()
+func GetAllSessionsByClassId(c *gin.Context) {
+	classId := c.Param("classId")
+
+	sessionList, err := services.SessionService.GetAllByClassId(classId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, locationList)
+		c.JSON(http.StatusOK, sessionList)
 	}
 	return
 }
 
-func GetLocationById(c *gin.Context) {
+func GetSessionById(c *gin.Context) {
 	// Incoming parameters
-	locId := c.Param("locId")
+	id := ParseParamId(c)
 
-	location, err := services.LocationService.GetByLocationId(locId)
+	session, err := services.SessionService.GetBySessionId(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, location)
+		c.JSON(http.StatusOK, &session)
 	}
 	return
 }
 
-func CreateLocation(c *gin.Context) {
+func CreateSession(c *gin.Context) {
 	// Incoming JSON
-	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	var sessionJson domains.Session
+	c.BindJSON(&sessionJson)
 
-	if err := locationJson.Validate(); err != nil {
+	if err := sessionJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.LocationService.Create(locationJson)
+	err := services.SessionService.Create(sessionJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -53,19 +55,19 @@ func CreateLocation(c *gin.Context) {
 	return
 }
 
-func UpdateLocation(c *gin.Context) {
+func UpdateSession(c *gin.Context) {
 	// Incoming JSON & Parameters
-	locId := c.Param("locId")
-	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	id := ParseParamId(c)
+	var sessionJson domains.Session
+	c.BindJSON(&sessionJson)
 
-	if err := locationJson.Validate(); err != nil {
+	if err := sessionJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.LocationService.Update(locId, locationJson)
+	err := services.SessionService.Update(id, sessionJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -75,11 +77,11 @@ func UpdateLocation(c *gin.Context) {
 	return
 }
 
-func DeleteLocation(c *gin.Context) {
+func DeleteSession(c *gin.Context) {
 	// Incoming Parameters
-	locId := c.Param("locId")
+	id := ParseParamId(c)
 
-	err := services.LocationService.Delete(locId)
+	err := services.SessionService.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

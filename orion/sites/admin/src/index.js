@@ -18,10 +18,12 @@ import { AnnouncePage } from './announce/announce.js';
 import { AnnounceEditPage } from './announce/announceEdit.js';
 import { LocationPage } from './location/location.js';
 import { LocationEditPage } from './location/locationEdit.js';
+import { SemesterPage } from './semesters/semester.js';
+import { SemesterEditPage } from './semesters/semesterEdit.js';
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
-const AchieveEditMatch = ({match}) => <AchieveEditPage year={match.params.year}/>;
+const AchieveEditMatch = ({match}) => <AchieveEditPage Id={match.params.Id}/>;
 const Announce = () => <AnnouncePage/>;
 const AnnounceEdit = () => <AnnounceEditPage/>;
 const AnnounceEditMatch = ({match}) => <AnnounceEditPage announceId={match.params.AnnounceId}/>;
@@ -33,6 +35,10 @@ const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.p
 const Location = () => <LocationPage/>;
 const LocationEdit = () => <LocationEditPage/>;
 const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
+const LocationEditMatch = ({match}) => <LocationEditPage locId={match.params.locId}/>;
+const Semester = () => <SemesterPage/>;
+const SemesterEdit = () => <SemesterEditPage/>;
+const SemesterEditMatch = ({match}) => <SemesterEditPage semesterId={match.params.semesterId}/>;
 
 class AppContainer extends React.Component {
 	render() {
@@ -45,7 +51,7 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
- render() {
+  render() {
     return (
       <div>
         <Header/>
@@ -57,12 +63,15 @@ class App extends React.Component {
           <Route path="/announcements/:announceId/edit" component={AnnounceEditMatch}/>
           <Route path="/announcements/add" component={AnnounceEdit}/>
           <Route path="/announcements" component={Announce}/>
-          <Route path="/achievements/:achieveId/edit" component={AchieveEditMatch}/>
+          <Route path="/achievements/:Id/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
-          <Route path="/locations/:locationId/edit" component={LocationEditMatch}/>
+          <Route path="/locations/:locId/edit" component={LocationEditMatch}/>
           <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
+          <Route path="/semesters/:locationId/edit" component={SemesterEditMatch}/>
+          <Route path="/semesters/add" component={SemesterEdit}/>
+          <Route path="/semesters" component={Semester}/>
         </Switch>
       </div>
     );
