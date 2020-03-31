@@ -118,7 +118,7 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievements/years", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)

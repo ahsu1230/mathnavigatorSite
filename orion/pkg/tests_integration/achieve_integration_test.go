@@ -46,8 +46,8 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 3, len(achieves))
 }
 
-// Test: Create 4 Achievements and GetByYear()
-func Test_GetAchievementsByYear(t *testing.T) {
+// Test: Create 4 Achievements and GetAllGroupedByYear()
+func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	achieve1 := createAchievement(2020, "message1")
@@ -68,7 +68,7 @@ func Test_GetAchievementsByYear(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Call Get All!
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievements/years", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)

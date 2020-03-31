@@ -19,8 +19,8 @@ type Achieve struct {
 }
 
 type AchieveYearGroup struct {
-	Year         uint
-	Achievements []Achieve
+	Year         uint      `json:"year"`
+	Achievements []Achieve `json:"achievements"`
 }
 
 // Class Methods

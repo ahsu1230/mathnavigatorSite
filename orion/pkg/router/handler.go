@@ -56,7 +56,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
-		apiAchieves.GET("/v1/achievements/years", controllers.GetAllAchievementsGroupedByYear)
+		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
 	}
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
