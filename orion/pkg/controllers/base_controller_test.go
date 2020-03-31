@@ -227,6 +227,7 @@ var userService mockUserService
 type mockUserService struct {
 	mockGetAll  func() ([]domains.User, error)
 	mockGetById func(uint) (domains.User, error)
+	mockGetByGuardianId func(domains.NullUint) ([]domains.User, error)
 	mockCreate  func(domains.User) error
 	mockUpdate  func(uint, domains.User) error
 	mockDelete  func(uint) error
@@ -238,6 +239,9 @@ func (userService *mockUserService) GetAll() ([]domains.User, error) {
 }
 func (userService *mockUserService) GetById(id uint) (domains.User, error) {
 	return userService.mockGetById(id)
+}
+func (userService *mockUserService) GetByGuardianId(guardianId domains.NullUint) ([]domains.User, error) {
+	return userService.mockGetByGuardianId(guardianId)
 }
 func (userService *mockUserService) Create(user domains.User) error {
 	return userService.mockCreate(user)
