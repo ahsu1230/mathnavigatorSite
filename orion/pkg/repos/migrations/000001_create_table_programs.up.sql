@@ -9,6 +9,7 @@ CREATE TABLE programs
     grade1      tinyint unsigned NOT NULL,
     grade2      tinyint unsigned NOT NULL,
     description text             NOT NULL,
+    featured	tinyint unsigned NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1
   DEFAULT CHARSET = UTF8MB4;

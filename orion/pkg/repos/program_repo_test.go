@@ -28,8 +28,8 @@ func TestSelectAllPrograms(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description", "Featured"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1", 0)
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -50,6 +50,7 @@ func TestSelectAllPrograms(t *testing.T) {
 			Grade1:      2,
 			Grade2:      3,
 			Description: "descript1",
+			Featured:    0,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -69,8 +70,8 @@ func TestSelectProgram(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description", "Featured"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1", 0)
 	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("prog1").
@@ -91,6 +92,7 @@ func TestSelectProgram(t *testing.T) {
 		Grade1:      2,
 		Grade2:      3,
 		Description: "descript1",
+		Featured:    0,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -111,7 +113,7 @@ func TestInsertProgram(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO programs").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "prog1", "Program1", 2, 3, "Descript1").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "prog1", "Program1", 2, 3, "Descript1", 0).
 		WillReturnResult(result)
 	program := domains.Program{
 		ProgramId:   "prog1",
@@ -119,6 +121,7 @@ func TestInsertProgram(t *testing.T) {
 		Grade1:      2,
 		Grade2:      3,
 		Description: "Descript1",
+		Featured:    0,
 	}
 	err := repo.Insert(program)
 	if err != nil {
@@ -142,7 +145,7 @@ func TestUpdateProgram(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE programs SET (.*) WHERE program_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "prog2", "Program2", 2, 3, "Descript2", "prog1").
+		WithArgs(sqlmock.AnyArg(), "prog2", "Program2", 2, 3, "Descript2", 0, "prog1").
 		WillReturnResult(result)
 	program := domains.Program{
 		ProgramId:   "prog2",
@@ -150,6 +153,7 @@ func TestUpdateProgram(t *testing.T) {
 		Grade1:      2,
 		Grade2:      3,
 		Description: "Descript2",
+		Featured:    0,
 	}
 	err := repo.Update("prog1", program)
 	if err != nil {

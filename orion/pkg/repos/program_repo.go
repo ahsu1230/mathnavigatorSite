@@ -53,7 +53,8 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description); errScan != nil {
+			&program.Description,
+			&program.Featured); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)
@@ -80,7 +81,8 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.Name,
 		&program.Grade1,
 		&program.Grade2,
-		&program.Description)
+		&program.Description,
+		&program.Featured)
 	return program, errScan
 }
 
@@ -92,8 +94,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		"name, " +
 		"grade1, " +
 		"grade2, " +
-		"description" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)"
+		"description, " +
+		"featured" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -109,7 +112,8 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Name,
 		program.Grade1,
 		program.Grade2,
-		program.Description)
+		program.Description,
+		program.Featured)
 	if err != nil {
 		return err
 	}
@@ -123,7 +127,8 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		"name=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
-		"description=? " +
+		"description=?, " +
+		"featured=? " +
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -139,6 +144,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		program.Grade1,
 		program.Grade2,
 		program.Description,
+		program.Featured,
 		programId)
 	if err != nil {
 		return err
