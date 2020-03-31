@@ -72,7 +72,7 @@ func Test_GetAchievementsByYear(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-	var achieves []domains.AchieveList
+	var achieves []domains.AchieveYearGroup
 	if err := json.Unmarshal(recorder5.Body.Bytes(), &achieves); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}

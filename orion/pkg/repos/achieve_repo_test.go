@@ -95,7 +95,7 @@ func TestSelectAchieve(t *testing.T) {
 //
 // Select All By Year
 //
-func TestSelectByYear(t *testing.T) {
+func TestSelectAllGroupedByYear(t *testing.T) {
 	db, mock, repo := initAchieveTest(t)
 	defer db.Close()
 
@@ -105,13 +105,13 @@ func TestSelectByYear(t *testing.T) {
 		AddRow(2, now, now, sql.NullTime{}, 2021, "1600 on SAT").
 		AddRow(1, now, now, sql.NullTime{}, 2020, "message1")
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectByYear()
+	got, err := repo.SelectAllGroupedByYear()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := []domains.AchieveList{
+	want := []domains.AchieveYearGroup{
 		{
 			Year: 2021,
 			Achievements: []domains.Achieve{

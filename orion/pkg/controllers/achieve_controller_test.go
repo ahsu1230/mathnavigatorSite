@@ -88,11 +88,11 @@ func TestGetAchievement_Failure(t *testing.T) {
 }
 
 //
-// Test Get By Year
+// Test Get All Grouped By Year
 //
-func TestGetAchievementsByYear_Success(t *testing.T) {
-	achieveService.mockGetByYear = func() ([]domains.AchieveList, error) {
-		return []domains.AchieveList{
+func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
+	achieveService.mockGetAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
+		return []domains.AchieveYearGroup{
 			{
 				Year: 2021,
 				Achievements: []domains.Achieve{
@@ -122,7 +122,7 @@ func TestGetAchievementsByYear_Success(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var achieves []domains.AchieveList
+	var achieves []domains.AchieveYearGroup
 	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}

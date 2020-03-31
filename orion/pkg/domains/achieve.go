@@ -18,7 +18,7 @@ type Achieve struct {
 	Message   string       `json:"message"`
 }
 
-type AchieveList struct {
+type AchieveYearGroup struct {
 	Year         uint
 	Achievements []Achieve
 }
