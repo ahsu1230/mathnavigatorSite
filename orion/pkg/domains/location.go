@@ -19,7 +19,7 @@ type Location struct {
 	City      string       `json:"city"`
 	State     string       `json:"state"`
 	Zipcode   string       `json:"zipcode"`
-	Room      string       `json:"room"`
+	Room      NullString   `json:"room"`
 }
 
 func (location *Location) Validate() error {
@@ -57,8 +57,8 @@ func (location *Location) Validate() error {
 	}
 
 	// Room validation
-	if room != "" {
-		if matches, _ := regexp.MatchString(REGEX_ALPHA, room); !matches {
+	if room.Valid {
+		if matches, _ := regexp.MatchString(REGEX_ALPHA, room.String); !matches {
 			return errors.New("invalid room")
 		}
 	}
