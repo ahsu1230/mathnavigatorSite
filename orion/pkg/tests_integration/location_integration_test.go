@@ -16,9 +16,9 @@ func Test_CreateLocations(t *testing.T) {
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	location2 := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
 	location3 := createLocation("loc3", "4040 Location Blvd", "Eity", "ND", "08430-0302", "Room 3")
-	body1 := createJsonBody(location1)
-	body2 := createJsonBody(location2)
-	body3 := createJsonBody(location3)
+	body1 := createJsonBody(&location1)
+	body2 := createJsonBody(&location2)
+	body3 := createJsonBody(&location3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
@@ -50,8 +50,8 @@ func Test_UniqueLocationId(t *testing.T) {
 
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	location2 := createLocation("loc1", "89 South Glen Rd", "City", "MD", "77294", "Room 43") // Same locId
-	body1 := createJsonBody(location1)
-	body2 := createJsonBody(location2)
+	body1 := createJsonBody(&location1)
+	body2 := createJsonBody(&location2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -77,13 +77,13 @@ func Test_UpdateLocation(t *testing.T) {
 
 	// Create 1 Location
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	body1 := createJsonBody(location1)
+	body1 := createJsonBody(&location1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedLocation := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
-	updatedBody := createJsonBody(updatedLocation)
+	updatedBody := createJsonBody(&updatedLocation)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/location/loc1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
@@ -108,7 +108,7 @@ func Test_DeleteLocation(t *testing.T) {
 
 	// Create
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	body1 := createJsonBody(location1)
+	body1 := createJsonBody(&location1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -129,6 +129,6 @@ func createLocation(locId string, street string, city string, state string, zipc
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    room,
+		Room:    domains.NewNullString(room),
 	}
 }
