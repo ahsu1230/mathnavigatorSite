@@ -10,6 +10,7 @@ import (
 func GetAllPrograms(c *gin.Context) {
 	programList, err := services.ProgramService.GetAll()
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, programList)
@@ -23,6 +24,7 @@ func GetProgramById(c *gin.Context) {
 
 	program, err := services.ProgramService.GetByProgramId(programId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
 		c.JSON(http.StatusOK, program)
@@ -36,15 +38,17 @@ func CreateProgram(c *gin.Context) {
 	c.BindJSON(&programJson)
 
 	if err := programJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.ProgramService.Create(programJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -56,15 +60,17 @@ func UpdateProgram(c *gin.Context) {
 	c.BindJSON(&programJson)
 
 	if err := programJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.ProgramService.Update(programId, programJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -75,6 +81,7 @@ func DeleteProgram(c *gin.Context) {
 
 	err := services.ProgramService.Delete(programId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
