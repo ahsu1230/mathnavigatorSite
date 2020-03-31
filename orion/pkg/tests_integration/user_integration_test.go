@@ -36,7 +36,7 @@ func Test_GetUsersByGuardian(t *testing.T) {
 	createAllUsers(t)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/guardian/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -148,7 +148,6 @@ func createAllUsers(t *testing.T) {
 func assertUser(t *testing.T, id int, user domains.User) {
 	switch id {
 	case 1:
-		assert.EqualValues(t, 1, user.Id)
 		assert.EqualValues(t, "John", user.FirstName)
 		assert.EqualValues(t, "Smith", user.LastName)
 		assert.EqualValues(t, "Middle", user.MiddleName.String)
@@ -157,7 +156,6 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, true, user.IsGuardian)
 		assert.EqualValues(t, 0, user.GuardianId.Uint)
 	case 2:
-		assert.EqualValues(t, 2, user.Id)
 		assert.EqualValues(t, "Bob", user.FirstName)
 		assert.EqualValues(t, "Joe", user.LastName)
 		assert.EqualValues(t, "", user.MiddleName.String)
@@ -166,7 +164,6 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, false, user.IsGuardian)
 		assert.EqualValues(t, 1, user.GuardianId.Uint)
 	case 3:
-		assert.EqualValues(t, 3, user.Id)
 		assert.EqualValues(t, "Foo", user.FirstName)
 		assert.EqualValues(t, "Bar", user.LastName)
 		assert.EqualValues(t, "", user.MiddleName.String)

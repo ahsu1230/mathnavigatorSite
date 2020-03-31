@@ -30,7 +30,7 @@ func TestSelectAllClasses(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -57,7 +57,7 @@ func TestSelectClass(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("program1_2020_spring_final_review").
@@ -85,7 +85,7 @@ func TestSelectClassesByProgramId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("program1").
@@ -113,7 +113,7 @@ func TestSelectClassesBySemesterId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE semester_id=?").
 		ExpectQuery().
 		WithArgs("2020_spring").
@@ -141,7 +141,7 @@ func TestSelectClassesByProgramIdAndSemesterId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare(`^SELECT (.+) FROM classes WHERE program_id=\? AND semester_id=?`).
 		ExpectQuery().
 		WithArgs("program1", "2020_spring").
@@ -267,7 +267,7 @@ func TestDeleteClass(t *testing.T) {
 //
 // Helper Methods
 //
-func getRows() *sqlmock.Rows {
+func getClassRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
