@@ -225,12 +225,12 @@ var userService mockUserService
 
 // Fake userService that implements UserService interface
 type mockUserService struct {
-	mockGetAll  func() ([]domains.User, error)
-	mockGetById func(uint) (domains.User, error)
+	mockGetAll          func() ([]domains.User, error)
+	mockGetById         func(uint) (domains.User, error)
 	mockGetByGuardianId func(domains.NullUint) ([]domains.User, error)
-	mockCreate  func(domains.User) error
-	mockUpdate  func(uint, domains.User) error
-	mockDelete  func(uint) error
+	mockCreate          func(domains.User) error
+	mockUpdate          func(uint, domains.User) error
+	mockDelete          func(uint) error
 }
 
 // Implement methods of UserService interface with mocked implementations
