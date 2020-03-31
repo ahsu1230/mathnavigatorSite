@@ -56,7 +56,7 @@ func (cr *classRepo) SelectAll() ([]domains.Class, error) {
 			&class.SemesterId,
 			&class.ClassKey,
 			&class.ClassId,
-			&class.LocationId,
+			&class.LocId,
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate); errScan != nil {
@@ -86,7 +86,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.SemesterId,
 		&class.ClassKey,
 		&class.ClassId,
-		&class.LocationId,
+		&class.LocId,
 		&class.Times,
 		&class.StartDate,
 		&class.EndDate)
@@ -118,7 +118,7 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.SemesterId,
 			&class.ClassKey,
 			&class.ClassId,
-			&class.LocationId,
+			&class.LocId,
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate); errScan != nil {
@@ -154,7 +154,7 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.SemesterId,
 			&class.ClassKey,
 			&class.ClassId,
-			&class.LocationId,
+			&class.LocId,
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate); errScan != nil {
@@ -190,7 +190,7 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.SemesterId,
 			&class.ClassKey,
 			&class.ClassId,
-			&class.LocationId,
+			&class.LocId,
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate); errScan != nil {
@@ -209,7 +209,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"semester_id, " +
 		"class_key, " +
 		"class_id, " +
-		"location_id, " +
+		"loc_id, " +
 		"times, " +
 		"start_date, " +
 		"end_date" +
@@ -229,7 +229,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		class.SemesterId,
 		class.ClassKey,
 		generateClassId(class),
-		class.LocationId,
+		class.LocId,
 		class.Times,
 		class.StartDate,
 		class.EndDate)
@@ -246,7 +246,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"semester_id=?, " +
 		"class_key=?, " +
 		"class_id=?, " +
-		"location_id=?, " +
+		"loc_id=?, " +
 		"times=?, " +
 		"start_date=?, " +
 		"end_date=? " +
@@ -264,7 +264,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.SemesterId,
 		class.ClassKey,
 		generateClassId(class),
-		class.LocationId,
+		class.LocId,
 		class.Times,
 		class.StartDate,
 		class.EndDate,
