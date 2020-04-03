@@ -8,18 +8,24 @@ export class HomePage extends React.Component {
 		const unpubContent = 5
 		return (
 	      <div id="view-home">
-		      <h2> Unpublished Content </h2>
-			  	  <ul>
-				      {unpubContent}
-				  </ul>
-			  <h2> Registrations </h2>
-			      <ul> New Users </ul>
-				  <ul> Questions </ul>
-				  <ul> Complaints </ul>
-			  <button id="go-to-page">
-			  	  Add Location
-			  </button>
-	      </div>
+		  	  <div>
+			      <h2> Unpublished Content </h2>
+				  	  <ul>
+					      {unpubContent}
+					  </ul>
+				  <h2> Registrations </h2>
+				      <ul> New Users </ul>
+					  <ul> Questions </ul>
+					  <ul> Complaints </ul>
+			 </div>
+		  	 <div className="boxed">
+			 	text
+		  	</div>
+			<button id="go-to-page">
+				Go to Page
+			</button>
+		  </div>
+
 		);
 	}
 }
