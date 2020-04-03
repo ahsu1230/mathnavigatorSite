@@ -22,6 +22,7 @@ type AchieveRepoInterface interface {
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
+	Publish(uint) error
 }
 
 func (ar *achieveRepo) Initialize(db *sql.DB) {
@@ -141,6 +142,22 @@ func (ar *achieveRepo) Delete(id uint) error {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "achievement was not deleted")
+}
+
+func (ar *achieveRepo) Publish(id uint) error {
+	statement := "UPDATE achievements SET updated_at=? WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, id)
+	if err != nil {
+		return err
+	}
+	return handleSqlExecResult(execResult, 1, "achievement was not published")
 }
 
 // For Tests Only

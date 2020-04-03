@@ -171,3 +171,24 @@ func TestDeleteAchieve(t *testing.T) {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
 }
+
+func TestPublishAchieve(t *testing.T) {
+	db, mock, repo := initAchieveTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare(`^UPDATE achievements SET updated_at=\? WHERE id=\?`).
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), 1).
+		WillReturnResult(result)
+	err := repo.Publish(1)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
