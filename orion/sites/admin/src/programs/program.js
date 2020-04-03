@@ -29,7 +29,11 @@ export class ProgramPage extends React.Component {
     const numRows = rows.length;
 		return (
       <div id="view-program">
-        <h1>All Programs ({numRows})</h1>
+        <ul>
+            <h1>All Programs ({numRows}) </h1>
+            <div> You have 5 unpublished items. </div>
+            <div> You have selected 0 items to publish. </div>
+        </ul>
         <ul id="list-heading">
           <li className="li-med">ProgramKey</li>
           <li className="li-med">Name</li>
@@ -39,7 +43,18 @@ export class ProgramPage extends React.Component {
         <ul id="list-rows">
           {rows}
         </ul>
-        <Link className="add-program" to={"/programs/add"}>Add Program</Link>
+        <ul id="list-buttons">
+            <div className="li-med">
+                <button>
+                <Link className="add-program" to={"/programs/add"}>Add Program</Link>
+                </button>
+            </div>
+            <div className="li-med">
+                <button>
+                <Link className="publish" to={"/programs/add"}>Publish</Link>
+                </button>
+            </div>
+        </ul>
       </div>
 		);
 	}
@@ -51,6 +66,7 @@ class ProgramRow extends React.Component {
     const url = "/program/" + row.programId + "/edit";
     return (
       <li className="program-row">
+        <input type="checkbox" name="unpublished"/>
         <div className="li-med">{row.programId}</div>
         <div className="li-med">{row.name}</div>
         <div className="li-small">{row.grade1}</div>
