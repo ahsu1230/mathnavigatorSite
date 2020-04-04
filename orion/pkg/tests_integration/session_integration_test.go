@@ -178,12 +178,12 @@ func createSession(classId string, startsAt time.Time, endsAt time.Time, cancele
 	}
 }
 
-func createClassUtil(programId string, semesterId string, classKey string, locationId string, times string, startDate time.Time, endDate time.Time) domains.Class {
+func createClassUtil(programId, semesterId, classKey, locId, times string, startDate, endDate time.Time) domains.Class {
 	return domains.Class{
 		ProgramId:  programId,
 		SemesterId: semesterId,
 		ClassKey:   domains.NewNullString(classKey),
-		LocationId: locationId,
+		LocId:      locId,
 		Times:      times,
 		StartDate:  startDate,
 		EndDate:    endDate,

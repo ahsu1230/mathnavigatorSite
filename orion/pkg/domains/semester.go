@@ -10,11 +10,11 @@ import (
 var TABLE_SEMESTERS = "semesters"
 
 type Semester struct {
-	Id         uint
-	CreatedAt  time.Time    `db:"created_at"`
-	UpdatedAt  time.Time    `db:"updated_at"`
-	DeletedAt  sql.NullTime `db:"deleted_at"`
-	SemesterId string       `db:"semester_id" json:"semesterId"`
+	Id         uint         `json:"id"`
+	CreatedAt  time.Time    `json:"-" db:"created_at"`
+	UpdatedAt  time.Time    `json:"-" db:"updated_at"`
+	DeletedAt  sql.NullTime `json:"-" db:"deleted_at"`
+	SemesterId string       `json:"semesterId" db:"semester_id"`
 	Title      string       `json:"title"`
 }
 
