@@ -99,7 +99,7 @@ func DeleteAchievement(c *gin.Context) {
 
 func PublishAchievements(c *gin.Context) {
 	// Incoming JSON
-	type Ids struct{
+	type Ids struct {
 		Ids []uint
 	}
 	var ids Ids

@@ -64,7 +64,7 @@ func Test_GetPublishedAchievements(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Publish achieve1 and achieve3
-	ids := struct{Ids []uint}{[]uint{1, 3}}
+	ids := struct{ Ids []uint }{[]uint{1, 3}}
 	body4 := createJsonBody(ids)
 	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", body4)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
@@ -92,12 +92,12 @@ func Test_GetUnpublishedAchievements(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	achieve1 := domains.Achieve{
-		Year:        2020,
-		Message:     "message1",
+		Year:    2020,
+		Message: "message1",
 	}
 	achieve2 := domains.Achieve{
-		Year:        2021,
-		Message:     "message2",
+		Year:    2021,
+		Message: "message2",
 	}
 	body1 := createJsonBody(achieve1)
 	body2 := createJsonBody(achieve2)
@@ -229,7 +229,7 @@ func Test_PublishAchievement(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Publish
-	ids := struct{Ids []uint}{[]uint{1}}
+	ids := struct{ Ids []uint }{[]uint{1}}
 	body2 := createJsonBody(ids)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
