@@ -18,8 +18,9 @@ import { AnnouncePage } from './announce/announce.js';
 import { AnnounceEditPage } from './announce/announceEdit.js';
 import { LocationPage } from './location/location.js';
 import { LocationEditPage } from './location/locationEdit.js';
-import { SemesterPage } from './semesters/semester.js';
-import { SemesterEditPage } from './semesters/semesterEdit.js';
+import { SemesterPage } from './semester/semester.js';
+import { SemesterEditPage } from './semester/semesterEdit.js';
+
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
@@ -65,10 +66,10 @@ class App extends React.Component {
           <Route path="/achievements/:Id/edit" component={AchieveEditMatch}/>
           <Route path="/achievements/add" component={AchieveEdit}/>
           <Route path="/achievements" component={Achieve}/>
-          <Route path="/locations/:locId/edit" component={LocationEditMatch}/>
+          <Route path="/locations/:locationId/edit" component={LocationEditMatch}/>
           <Route path="/locations/add" component={LocationEdit}/>
           <Route path="/locations" component={Location}/>
-          <Route path="/semesters/:locationId/edit" component={SemesterEditMatch}/>
+          <Route path="/semesters/:semesterId/edit" component={SemesterEditMatch}/>
           <Route path="/semesters/add" component={SemesterEdit}/>
           <Route path="/semesters" component={Semester}/>
         </Switch>
