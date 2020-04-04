@@ -7,43 +7,45 @@ import (
 	"net/http"
 )
 
-func GetAllPrograms(c *gin.Context) {
-	programList, err := services.ProgramService.GetAll()
+func GetAllSessionsByClassId(c *gin.Context) {
+	classId := c.Param("classId")
+
+	sessionList, err := services.SessionService.GetAllByClassId(classId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, programList)
+		c.JSON(http.StatusOK, sessionList)
 	}
 	return
 }
 
-func GetProgramById(c *gin.Context) {
+func GetSessionById(c *gin.Context) {
 	// Incoming parameters
-	programId := c.Param("programId")
+	id := ParseParamId(c)
 
-	program, err := services.ProgramService.GetByProgramId(programId)
+	session, err := services.SessionService.GetBySessionId(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, program)
+		c.JSON(http.StatusOK, &session)
 	}
 	return
 }
 
-func CreateProgram(c *gin.Context) {
+func CreateSession(c *gin.Context) {
 	// Incoming JSON
-	var programJson domains.Program
-	c.BindJSON(&programJson)
+	var sessionJson domains.Session
+	c.BindJSON(&sessionJson)
 
-	if err := programJson.Validate(); err != nil {
+	if err := sessionJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.ProgramService.Create(programJson)
+	err := services.SessionService.Create(sessionJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -53,19 +55,19 @@ func CreateProgram(c *gin.Context) {
 	return
 }
 
-func UpdateProgram(c *gin.Context) {
+func UpdateSession(c *gin.Context) {
 	// Incoming JSON & Parameters
-	programId := c.Param("programId")
-	var programJson domains.Program
-	c.BindJSON(&programJson)
+	id := ParseParamId(c)
+	var sessionJson domains.Session
+	c.BindJSON(&sessionJson)
 
-	if err := programJson.Validate(); err != nil {
+	if err := sessionJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := services.ProgramService.Update(programId, programJson)
+	err := services.SessionService.Update(id, sessionJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -75,11 +77,11 @@ func UpdateProgram(c *gin.Context) {
 	return
 }
 
-func DeleteProgram(c *gin.Context) {
+func DeleteSession(c *gin.Context) {
 	// Incoming Parameters
-	programId := c.Param("programId")
+	id := ParseParamId(c)
 
-	err := services.ProgramService.Delete(programId)
+	err := services.SessionService.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

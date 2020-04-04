@@ -141,11 +141,12 @@ var achieveService mockAchieveService
 
 // Fake achieveService that implements AchieveService interface
 type mockAchieveService struct {
-	mockGetAll  func() ([]domains.Achieve, error)
-	mockGetById func(uint) (domains.Achieve, error)
-	mockCreate  func(domains.Achieve) error
-	mockUpdate  func(uint, domains.Achieve) error
-	mockDelete  func(uint) error
+	mockGetAll              func() ([]domains.Achieve, error)
+	mockGetById             func(uint) (domains.Achieve, error)
+	mockGetAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
+	mockCreate              func(domains.Achieve) error
+	mockUpdate              func(uint, domains.Achieve) error
+	mockDelete              func(uint) error
 }
 
 // Implement methods of AchieveService interface with mocked implementations
@@ -154,6 +155,9 @@ func (achieveService *mockAchieveService) GetAll() ([]domains.Achieve, error) {
 }
 func (achieveService *mockAchieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieveService.mockGetById(id)
+}
+func (achieveService *mockAchieveService) GetAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
+	return achieveService.mockGetAllGroupedByYear()
 }
 func (achieveService *mockAchieveService) Create(achieve domains.Achieve) error {
 	return achieveService.mockCreate(achieve)
@@ -191,6 +195,34 @@ func (semesterService *mockSemesterService) Update(semesterId string, semester d
 }
 func (semesterService *mockSemesterService) Delete(semesterId string) error {
 	return semesterService.mockDelete(semesterId)
+}
+
+var sessionService mockSessionService
+
+// Fake sessionService that implements SessionService interface
+type mockSessionService struct {
+	mockGetAllByClassId func(string) ([]domains.Session, error)
+	mockGetBySessionId  func(uint) (domains.Session, error)
+	mockCreate          func(domains.Session) error
+	mockUpdate          func(uint, domains.Session) error
+	mockDelete          func(uint) error
+}
+
+// Implement methods of SessionService interface with mocked implementations
+func (sessionService *mockSessionService) GetAllByClassId(classId string) ([]domains.Session, error) {
+	return sessionService.mockGetAllByClassId(classId)
+}
+func (sessionService *mockSessionService) GetBySessionId(id uint) (domains.Session, error) {
+	return sessionService.mockGetBySessionId(id)
+}
+func (sessionService *mockSessionService) Create(session domains.Session) error {
+	return sessionService.mockCreate(session)
+}
+func (sessionService *mockSessionService) Update(id uint, session domains.Session) error {
+	return sessionService.mockUpdate(id, session)
+}
+func (sessionService *mockSessionService) Delete(id uint) error {
+	return sessionService.mockDelete(id)
 }
 
 var userService mockUserService

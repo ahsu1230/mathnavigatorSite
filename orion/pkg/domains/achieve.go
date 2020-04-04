@@ -10,12 +10,17 @@ import (
 var TABLE_ACHIEVEMENTS = "achievements"
 
 type Achieve struct {
-	Id        uint
-	CreatedAt time.Time    `db:"created_at"`
-	UpdatedAt time.Time    `db:"updated_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
+	Id        uint         `json:"id"`
+	CreatedAt time.Time    `json:"-" db:"created_at"`
+	UpdatedAt time.Time    `json:"-" db:"updated_at"`
+	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
 	Year      uint         `json:"year"`
 	Message   string       `json:"message"`
+}
+
+type AchieveYearGroup struct {
+	Year         uint      `json:"year"`
+	Achievements []Achieve `json:"achievements"`
 }
 
 // Class Methods

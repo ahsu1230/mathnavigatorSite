@@ -10,20 +10,20 @@ import (
 	"time"
 )
 
-func initLocationTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.LocationRepoInterface) {
+func initSessionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SessionRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestLocationRepo(db)
+	repo := repos.CreateTestSessionRepo(db)
 	return db, mock, repo
 }
 
 //
-// Test Select All
+// Test Select All By Class Id
 //
-func TestSelectAllLocations(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
+func TestSelectAllSessionsByClassId(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -33,34 +33,33 @@ func TestSelectAllLocations(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"LocId",
-		"Street",
-		"City",
-		"State",
-		"Zipcode",
-		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
-	mock.ExpectPrepare("^SELECT (.+) FROM locations").
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
+		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAllByClassId("id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := []domains.Location{
+	want := []domains.Session{
 		{
 			Id:        1,
 			CreatedAt: now,
 			UpdatedAt: now,
 			DeletedAt: sql.NullTime{},
-			LocId:     "xkcd",
-			Street:    "4040 Cherry Rd",
-			City:      "Potomac",
-			State:     "MD",
-			Zipcode:   "20854",
-			Room:      domains.NewNullString("Room 2"),
+			ClassId:   "id_1",
+			StartsAt:  now,
+			EndsAt:    now,
+			Canceled:  false,
+			Notes:     domains.NewNullString("special lecture from guest"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -74,8 +73,8 @@ func TestSelectAllLocations(t *testing.T) {
 //
 // Select One
 //
-func TestSelectLocation(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
+func TestSelectSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -85,34 +84,32 @@ func TestSelectLocation(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"LocId",
-		"Street",
-		"City",
-		"State",
-		"Zipcode",
-		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
-	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE loc_id=?").
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
-		WithArgs("xkcd").
+		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByLocationId("xkcd")
+	got, err := repo.SelectBySessionId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := domains.Location{
+	want := domains.Session{
 		Id:        1,
 		CreatedAt: now,
 		UpdatedAt: now,
 		DeletedAt: sql.NullTime{},
-		LocId:     "xkcd",
-		Street:    "4040 Cherry Rd",
-		City:      "Potomac",
-		State:     "MD",
-		Zipcode:   "20854",
-		Room:      domains.NewNullString("Room 2"),
+		ClassId:   "id_1",
+		StartsAt:  now,
+		EndsAt:    now,
+		Canceled:  false,
+		Notes:     domains.NewNullString("special lecture from guest"),
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -125,25 +122,25 @@ func TestSelectLocation(t *testing.T) {
 //
 // Create
 //
-func TestInsertLocation(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
+func TestInsertSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO locations").
+	mock.ExpectPrepare("^INSERT INTO sessions").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2")).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest")).
 		WillReturnResult(result)
-	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
-		Room:    domains.NewNullString("Room 2"),
+	session := domains.Session{
+		ClassId:  "id_1",
+		StartsAt: now,
+		EndsAt:   now,
+		Canceled: false,
+		Notes:    domains.NewNullString("special lecture from guest"),
 	}
-	err := repo.Insert(location)
+	err := repo.Insert(session)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -157,25 +154,25 @@ func TestInsertLocation(t *testing.T) {
 //
 // Update
 //
-func TestUpdateLocation(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
+func TestUpdateSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE loc_id=?").
+	mock.ExpectPrepare("^UPDATE sessions SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), "xkcd").
+		WithArgs(sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
 		WillReturnResult(result)
-	location := domains.Location{
-		LocId:   "www",
-		Street:  "4041 Cherry Rd",
-		City:    "San Francisco",
-		State:   "CA",
-		Zipcode: "94016",
-		Room:    domains.NewNullString("Room 41"),
+	session := domains.Session{
+		ClassId:  "id_1",
+		StartsAt: now,
+		EndsAt:   now,
+		Canceled: false,
+		Notes:    domains.NewNullString("special lecture from guest"),
 	}
-	err := repo.Update("xkcd", location)
+	err := repo.Update(1, session)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -189,17 +186,17 @@ func TestUpdateLocation(t *testing.T) {
 //
 // Delete
 //
-func TestDeleteLocation(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
+func TestDeleteSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM locations WHERE loc_id=?").
+	mock.ExpectPrepare("^DELETE FROM sessions WHERE id=?").
 		ExpectExec().
-		WithArgs("xkcd").
+		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete("xkcd")
+	err := repo.Delete(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
