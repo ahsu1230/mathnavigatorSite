@@ -1,13 +1,11 @@
 package integration_tests
 
 import (
-	"database/sql"
 	"encoding/json"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
-	"time"
 )
 
 // Test: Create 3 Achievements and GetAll(false)
@@ -48,47 +46,45 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 3, len(achieves))
 }
 
-// Test: Create 2 Achievements and GetAll(true)
+// Test: Create 3 Achievements, Publish 2, and GetAll(true)
 func Test_GetPublishedAchievements(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
-	now := time.Now().UTC()
-	achieve1 := domains.Achieve{
-		PublishedAt: sql.NullTime{Time: now, Valid: true},
-		Year:        2020,
-		Message:     "message1",
-	}
-	achieve2 := domains.Achieve{
-		PublishedAt: sql.NullTime{Time: now, Valid: true},
-		Year:        2021,
-		Message:     "message2",
-	}
+	achieve1 := createAchievement(2020, "message1")
+	achieve2 := createAchievement(2021, "message2")
+	achieve3 := createAchievement(2022, "message3")
 	body1 := createJsonBody(achieve1)
 	body2 := createJsonBody(achieve2)
+	body3 := createJsonBody(achieve3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Publish achieve1 and achieve3
+	ids := struct{Ids []uint}{[]uint{1, 3}}
+	body4 := createJsonBody(ids)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", body4)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Call Get All!
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 	var achieves []domains.Achieve
-	if err := json.Unmarshal(recorder3.Body.Bytes(), &achieves); err != nil {
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &achieves); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, achieves[0].Id)
 	assert.EqualValues(t, 2020, achieves[0].Year)
 	assert.EqualValues(t, "message1", achieves[0].Message)
-	assert.EqualValues(t, 2, achieves[1].Id)
-	assert.EqualValues(t, 2021, achieves[1].Year)
-	assert.EqualValues(t, "message2", achieves[1].Message)
-	assert.EqualValues(t, 3, achieves[2].Id)
-	assert.EqualValues(t, 2022, achieves[2].Year)
-	assert.EqualValues(t, "message3", achieves[2].Message)
-	assert.EqualValues(t, 3, len(achieves))
+	assert.EqualValues(t, 3, achieves[1].Id)
+	assert.EqualValues(t, 2022, achieves[1].Year)
+	assert.EqualValues(t, "message3", achieves[1].Message)
+	assert.EqualValues(t, 2, len(achieves))
 }
 
 // Test: Create 2 Unpublished Achievements and GetUnpublished()
@@ -96,12 +92,10 @@ func Test_GetUnpublishedAchievements(t *testing.T) {
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 
 	achieve1 := domains.Achieve{
-		PublishedAt: sql.NullTime{},
 		Year:        2020,
 		Message:     "message1",
 	}
 	achieve2 := domains.Achieve{
-		PublishedAt: sql.NullTime{},
 		Year:        2021,
 		Message:     "message2",
 	}
@@ -113,7 +107,7 @@ func Test_GetUnpublishedAchievements(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Call Get Unpublished!
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/v1/publish", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -235,7 +229,9 @@ func Test_PublishAchievement(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Publish
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", nil)
+	ids := struct{Ids []uint}{[]uint{1}}
+	body2 := createJsonBody(ids)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 }
 

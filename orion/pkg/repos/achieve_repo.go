@@ -240,7 +240,7 @@ func (ar *achieveRepo) Publish(id uint) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "achievement was not published")
+	return handleSqlExecResult(execResult, 1, "achievements were not published")
 }
 
 // For Tests Only
