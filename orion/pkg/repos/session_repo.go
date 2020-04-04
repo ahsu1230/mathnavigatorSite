@@ -20,6 +20,8 @@ type SessionRepoInterface interface {
 	Insert(domains.Session) error
 	Update(uint, domains.Session) error
 	Delete(uint) error
+	SelectAllUnpublished() ([]uint, error)
+	Publish([]uint) error
 }
 
 func (sr *sessionRepo) Initialize(db *sql.DB) {
@@ -159,6 +161,45 @@ func (sr *sessionRepo) Delete(id uint) error {
 	}
 
 	return handleSqlExecResult(result, 1, "session was not deleted")
+}
+
+func (sr *sessionRepo) SelectAllUnpublished() ([]uint, error) {
+	results := make([]uint, 0)
+
+	stmt, err := sr.db.Prepare("SELECT id FROM sessions WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id uint
+		if errScan := rows.Scan(&id); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, id)
+	}
+	return results, nil
+}
+
+func (sr *sessionRepo) Publish(ids []uint) error {
+	for _, id := range ids {
+		session, err := sr.SelectBySessionId(id)
+		if err != nil {
+			return err
+		}
+		if !session.PublishedAt.Valid {
+			now := time.Now().UTC()
+			session.PublishedAt.Scan(now)
+			sr.Update(id, session)
+		}
+	}
+	return nil
 }
 
 func CreateTestSessionRepo(db *sql.DB) SessionRepoInterface {

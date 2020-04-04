@@ -20,6 +20,8 @@ type LocationRepoInterface interface {
 	Insert(domains.Location) error
 	Update(string, domains.Location) error
 	Delete(string) error
+	SelectAllUnpublished() ([]string, error)
+	Publish([]string) error
 }
 
 func (lr *locationRepo) Initialize(db *sql.DB) {
@@ -165,6 +167,45 @@ func (lr *locationRepo) Delete(locId string) error {
 	}
 
 	return handleSqlExecResult(result, 1, "location was not deleted")
+}
+
+func (lr *locationRepo) SelectAllUnpublished() ([]string, error) {
+	results := make([]string, 0)
+
+	stmt, err := lr.db.Prepare("SELECT loc_id FROM locations WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var locId string
+		if errScan := rows.Scan(&locId); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, locId)
+	}
+	return results, nil
+}
+
+func (lr *locationRepo) Publish(locIds []string) error {
+	for _, locId := range locIds {
+		location, err := lr.SelectByLocationId(locId)
+		if err != nil {
+			return err
+		}
+		if !location.PublishedAt.Valid {
+			now := time.Now().UTC()
+			location.PublishedAt.Scan(now)
+			lr.Update(locId, location)
+		}
+	}
+	return nil
 }
 
 func CreateTestLocationRepo(db *sql.DB) LocationRepoInterface {

@@ -210,3 +210,30 @@ func TestDeleteSession(t *testing.T) {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
 }
+
+//
+// Select All Unpublished
+//
+func TestSelectAllUnpublishedSessions(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := sqlmock.NewRows([]string{"Id"}).AddRow(1).AddRow(2)
+	mock.ExpectPrepare("^SELECT id FROM sessions WHERE published_at IS NULL").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAllUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []uint{1, 2}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}

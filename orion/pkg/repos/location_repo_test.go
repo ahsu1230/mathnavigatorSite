@@ -213,3 +213,30 @@ func TestDeleteLocation(t *testing.T) {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
 }
+
+//
+// Select All Unpublished
+//
+func TestSelectAllUnpublishedLocations(t *testing.T) {
+	db, mock, repo := initLocationTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := sqlmock.NewRows([]string{"LocId"}).AddRow("loc1").AddRow("loc2")
+	mock.ExpectPrepare("^SELECT loc_id FROM locations WHERE published_at IS NULL").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAllUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []string{"loc1", "loc2"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
