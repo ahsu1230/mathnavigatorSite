@@ -8,7 +8,7 @@ export class SemesterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
         };
     }
 
@@ -16,16 +16,16 @@ export class SemesterPage extends React.Component {
         var numSemesters = 3;
         let fakeSemesterA = {
             semesterId: "2020_fall",
-            title: "2020 Fall"
+            title: "2020 Fall",
         };
         let fakeSemesterB = {
             semesterId: "2021_spring",
-            title: "2021 Spring"
+            title: "2021 Spring",
         };
         /* TODO: will use this to test text wrapping later */
         let fakeSemesterC = {
             semesterId: "2021_summer",
-            title: "2020 Summer"
+            title: "2020 Summer",
         };
 
         return (

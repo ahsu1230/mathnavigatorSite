@@ -4,6 +4,6 @@ const common = require("./webpack.common.js");
 module.exports = merge(common, {
     mode: "none",
     devServer: {
-        contentBase: "./"
-    }
+        contentBase: "./",
+    },
 });

@@ -10,7 +10,7 @@ export class SemesterEditPage extends React.Component {
         this.state = {
             isEdit: false,
             inputSemesterId: "",
-            inputTitle: ""
+            inputTitle: "",
         };
     }
 
@@ -36,13 +36,13 @@ export class SemesterEditPage extends React.Component {
                 <h4>SemesterID</h4>
                 <input
                     value={this.state.inputDate}
-                    onChange={e => this.handleChange(e, "inputDate")}
+                    onChange={(e) => this.handleChange(e, "inputDate")}
                 />
 
                 <h4>Title</h4>
                 <input
                     value={this.state.inputAuthor}
-                    onChange={e => this.handleChange(e, "inputAuthor")}
+                    onChange={(e) => this.handleChange(e, "inputAuthor")}
                 />
 
                 <div className="buttons">

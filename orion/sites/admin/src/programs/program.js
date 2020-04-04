@@ -10,12 +10,12 @@ export class ProgramPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
         };
     }
 
     componentDidMount() {
-        API.get("api/programs/v1/all").then(res => {
+        API.get("api/programs/v1/all").then((res) => {
             const programs = res.data;
             this.setState({ list: programs });
         });

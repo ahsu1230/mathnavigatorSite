@@ -9,12 +9,12 @@ export class AchievePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
         };
     }
 
     componentDidMount() {
-        API.get("api/achievements/v1/all").then(res => {
+        API.get("api/achievements/v1/all").then((res) => {
             const achievements = res.data;
             this.setState({ list: achievements });
         });

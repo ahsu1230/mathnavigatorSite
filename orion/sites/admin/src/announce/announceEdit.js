@@ -11,7 +11,7 @@ export class AnnounceEditPage extends React.Component {
             isEdit: false,
             inputDate: "",
             inputAuthor: "",
-            inputMessage: ""
+            inputMessage: "",
         };
     }
 
@@ -36,17 +36,17 @@ export class AnnounceEditPage extends React.Component {
                 <h4>Date</h4> {/* TODO: Make this "Posted Date" */}
                 <input
                     value={this.state.inputDate}
-                    onChange={e => this.handleChange(e, "inputDate")}
+                    onChange={(e) => this.handleChange(e, "inputDate")}
                 />
                 <h4>Author</h4>
                 <input
                     value={this.state.inputAuthor}
-                    onChange={e => this.handleChange(e, "inputAuthor")}
+                    onChange={(e) => this.handleChange(e, "inputAuthor")}
                 />
                 <h4>Message</h4>
                 <input
                     value={this.state.inputMessage}
-                    onChange={e => this.handleChange(e, "inputMessage")}
+                    onChange={(e) => this.handleChange(e, "inputMessage")}
                 />
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>

@@ -9,12 +9,12 @@ export class LocationPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
         };
     }
 
     componentDidMount() {
-        API.get("api/locations/v1/all").then(res => {
+        API.get("api/locations/v1/all").then((res) => {
             const locations = res.data;
             this.setState({ list: locations });
         });

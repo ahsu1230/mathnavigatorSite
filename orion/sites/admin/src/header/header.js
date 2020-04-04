@@ -8,29 +8,29 @@ const LinkMap = {
     site: [
         {
             title: "Programs",
-            url: "/programs"
+            url: "/programs",
         },
         {
             title: "Classes",
-            url: "/classes"
+            url: "/classes",
         },
         {
             title: "Announcements",
-            url: "/announcements"
+            url: "/announcements",
         },
         {
             title: "Achievements",
-            url: "/achievements"
+            url: "/achievements",
         },
         {
             title: "Locations",
-            url: "/locations"
+            url: "/locations",
         },
         {
             title: "Semesters",
-            url: "/semesters"
-        }
-    ]
+            url: "/semesters",
+        },
+    ],
 };
 
 export class HeaderSection extends React.Component {

@@ -21,10 +21,10 @@ export class Modal extends React.Component {
         const persistent = this.props.persistent || false;
         const withClose = this.props.withClose || false;
         const modalViewClasses = classnames("modal-view", {
-            show: this.props.show
+            show: this.props.show,
         });
         const modalOverlayClasses = classnames("modal-overlay", {
-            show: this.props.show
+            show: this.props.show,
         });
 
         const onClickOverlay = persistent ? undefined : this.handleDismiss;

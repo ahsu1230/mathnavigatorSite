@@ -20,7 +20,7 @@ export class ProgramEditPage extends React.Component {
             inputProgramName: "",
             inputGrade1: 0,
             inputGrade2: 0,
-            inputDescription: ""
+            inputDescription: "",
         };
 
         // input onChange
@@ -40,7 +40,7 @@ export class ProgramEditPage extends React.Component {
     componentDidMount() {
         const programId = this.props.programId;
         if (programId) {
-            API.get("api/programs/v1/program/" + programId).then(res => {
+            API.get("api/programs/v1/program/" + programId).then((res) => {
                 const program = res.data;
                 this.setState({
                     oldProgramId: program.programId,
@@ -49,7 +49,7 @@ export class ProgramEditPage extends React.Component {
                     inputGrade1: program.grade1,
                     inputGrade2: program.grade2,
                     inputDescription: program.description,
-                    isEdit: true
+                    isEdit: true,
                 });
             });
         }
@@ -73,30 +73,30 @@ export class ProgramEditPage extends React.Component {
             name: this.state.inputProgramName,
             grade1: parseInt(this.state.inputGrade1),
             grade2: parseInt(this.state.inputGrade2),
-            description: this.state.inputDescription
+            description: this.state.inputDescription,
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = err =>
+        let failCallback = (err) =>
             alert("Could not save program: " + err.response.data);
         if (this.state.isEdit) {
             API.post(
                 "api/programs/v1/program/" + this.state.oldProgramId,
                 program
             )
-                .then(res => successCallback())
-                .catch(err => failCallback(err));
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
         } else {
             API.post("api/programs/v1/create", program)
-                .then(res => successCallback())
-                .catch(err => failCallback(err));
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
         }
     }
 
     onDeleted() {
         const programId = this.props.programId;
         API.delete("api/programs/v1/program/" + programId)
-            .then(res => {
+            .then((res) => {
                 window.location.hash = "programs";
             })
             .finally(() => this.onDismissModal());
@@ -110,7 +110,7 @@ export class ProgramEditPage extends React.Component {
     onDismissModal() {
         this.setState({
             showDeleteModal: false,
-            showSaveModal: false
+            showSaveModal: false,
         });
     }
 
@@ -167,27 +167,27 @@ export class ProgramEditPage extends React.Component {
                 <h4>Program Id</h4>
                 <input
                     value={this.state.inputProgramId}
-                    onChange={e => this.handleChange(e, "inputProgramId")}
+                    onChange={(e) => this.handleChange(e, "inputProgramId")}
                 />
                 <h4>Program Name</h4>
                 <input
                     value={this.state.inputProgramName}
-                    onChange={e => this.handleChange(e, "inputProgramName")}
+                    onChange={(e) => this.handleChange(e, "inputProgramName")}
                 />
                 <h4>Grade1</h4>
                 <input
                     value={this.state.inputGrade1}
-                    onChange={e => this.handleChange(e, "inputGrade1")}
+                    onChange={(e) => this.handleChange(e, "inputGrade1")}
                 />
                 <h4>Grade2</h4>
                 <input
                     value={this.state.inputGrade2}
-                    onChange={e => this.handleChange(e, "inputGrade2")}
+                    onChange={(e) => this.handleChange(e, "inputGrade2")}
                 />
                 <h4>Description</h4>
                 <textarea
                     value={this.state.inputDescription}
-                    onChange={e => this.handleChange(e, "inputDescription")}
+                    onChange={(e) => this.handleChange(e, "inputDescription")}
                 />
 
                 <div className="buttons">

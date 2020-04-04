@@ -19,7 +19,7 @@ export class LocationEditPage extends React.Component {
             inputState: "",
             inputZip: "",
             inputRoom: "",
-            isEdit: false
+            isEdit: false,
         };
         this.handleChange = this.handleChange.bind(this);
 
@@ -35,7 +35,7 @@ export class LocationEditPage extends React.Component {
     componentDidMount() {
         const locId = this.props.locId;
         if (locId) {
-            API.get("api/locations/v1/location/" + locId).then(res => {
+            API.get("api/locations/v1/location/" + locId).then((res) => {
                 const location = res.data;
                 this.setState({
                     oldLocId: location.locId,
@@ -45,7 +45,7 @@ export class LocationEditPage extends React.Component {
                     inputState: location.state,
                     inputZip: location.zipcode,
                     inputRoom: location.room,
-                    isEdit: true
+                    isEdit: true,
                 });
             });
         }
@@ -70,29 +70,29 @@ export class LocationEditPage extends React.Component {
             city: this.state.inputCity,
             state: this.state.inputState,
             zipcode: this.state.inputZip,
-            room: this.state.inputRoom
+            room: this.state.inputRoom,
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = err =>
+        let failCallback = (err) =>
             alert("Could not save location: " + err.response.data);
         if (this.state.isEdit) {
             API.post(
                 "api/locations/v1/location/" + this.state.oldLocId,
                 location
             )
-                .then(res => successCallback())
-                .catch(err => failCallback(err));
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
         } else {
             API.post("api/locations/v1/create", location)
-                .then(res => successCallback())
-                .catch(err => failCallback(err));
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
         }
     }
 
     onDeleted() {
         const locId = this.props.locId;
-        API.delete("api/locations/v1/location/" + locId).then(res => {
+        API.delete("api/locations/v1/location/" + locId).then((res) => {
             window.location.hash = "locations";
         });
     }
@@ -105,7 +105,7 @@ export class LocationEditPage extends React.Component {
     onDismissModal() {
         this.setState({
             showDeleteModal: false,
-            showSaveModal: false
+            showSaveModal: false,
         });
     }
 
@@ -161,32 +161,32 @@ export class LocationEditPage extends React.Component {
                 <h4>Location ID</h4>
                 <input
                     value={this.state.inputLocId}
-                    onChange={e => this.handleChange(e, "inputLocId")}
+                    onChange={(e) => this.handleChange(e, "inputLocId")}
                 />
                 <h4>Street</h4>
                 <input
                     value={this.state.inputStreet}
-                    onChange={e => this.handleChange(e, "inputStreet")}
+                    onChange={(e) => this.handleChange(e, "inputStreet")}
                 />
                 <h4>City</h4>
                 <input
                     value={this.state.inputCity}
-                    onChange={e => this.handleChange(e, "inputCity")}
+                    onChange={(e) => this.handleChange(e, "inputCity")}
                 />
                 <h4>State</h4>
                 <input
                     value={this.state.inputState}
-                    onChange={e => this.handleChange(e, "inputState")}
+                    onChange={(e) => this.handleChange(e, "inputState")}
                 />
                 <h4>Zipcode</h4>
                 <input
                     value={this.state.inputZip}
-                    onChange={e => this.handleChange(e, "inputZip")}
+                    onChange={(e) => this.handleChange(e, "inputZip")}
                 />
                 <h4>Room</h4>
                 <input
                     value={this.state.inputRoom}
-                    onChange={e => this.handleChange(e, "inputRoom")}
+                    onChange={(e) => this.handleChange(e, "inputRoom")}
                 />
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
