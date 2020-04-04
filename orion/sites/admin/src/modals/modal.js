@@ -44,8 +44,7 @@ export class Modal extends React.Component {
             <div className={modalViewClasses}>
                 <div
                     className={modalOverlayClasses}
-                    onClick={onClickOverlay}
-                ></div>
+                    onClick={onClickOverlay}></div>
                 <div className={modalClasses}>
                     {closeButton}
                     {modalContent}
