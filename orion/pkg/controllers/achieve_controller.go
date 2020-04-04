@@ -40,16 +40,6 @@ func GetAllAchievementsGroupedByYear(c *gin.Context) {
 	}
 }
 
-func GetUnpublishedAchievements(c *gin.Context) {
-	achieveList, err := services.AchieveService.GetAll()
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, achieveList)
-	}
-}
-
 func CreateAchievement(c *gin.Context) {
 	// Incoming JSON
 	var achieveJson domains.Achieve
