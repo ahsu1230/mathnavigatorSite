@@ -226,8 +226,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
-	marshal, _ := json.Marshal(&achieve)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromAchieve(achieve)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
 
 	// Validate results
@@ -240,8 +239,7 @@ func TestCreateAchievement_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
-	marshal, _ := json.Marshal(&achieve)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromAchieve(achieve)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
 
 	// Validate results
