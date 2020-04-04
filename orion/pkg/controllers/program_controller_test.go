@@ -199,6 +199,51 @@ func TestDeleteProgram_Failure(t *testing.T) {
 }
 
 //
+// Test Get All Unpublished
+//
+func TestGetAllUnpublishedPrograms_Success(t *testing.T) {
+	programService.mockGetAllUnpublished = func() ([]string, error) {
+		return []string{"prog1", "prog2"}, nil
+	}
+	services.ProgramService = &programService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var programIds []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &programIds); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "prog1", programIds[0])
+	assert.EqualValues(t, "prog2", programIds[1])
+	assert.EqualValues(t, 2, len(programIds))
+}
+
+//
+// Test Publish
+//
+func TestPublishPrograms_Success(t *testing.T) {
+	programService.mockPublish = func(programIds []string) error {
+		return nil // Successful update
+	}
+	services.ProgramService = &programService
+
+	// Create new HTTP request to endpoint
+	programIds := []string{"prog1", "prog2"}
+	marshal, err := json.Marshal(programIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+//
 // Helper Methods
 //
 func createMockProgram(programId string, name string, grade1 uint, grade2 uint, description string) domains.Program {

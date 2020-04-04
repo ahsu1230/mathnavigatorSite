@@ -88,3 +88,29 @@ func DeleteLocation(c *gin.Context) {
 	}
 	return
 }
+
+func GetAllUnpublishedLocations(c *gin.Context) {
+	locIds, err := services.LocationService.GetAllUnpublished()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, locIds)
+	}
+	return
+}
+
+func PublishLocations(c *gin.Context) {
+	// Incoming JSON
+	var locIdsJson []string
+	c.BindJSON(&locIdsJson)
+
+	err := services.LocationService.Publish(locIdsJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}

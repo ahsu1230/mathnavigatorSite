@@ -201,6 +201,51 @@ func TestDeleteLocation_Failure(t *testing.T) {
 }
 
 //
+// Test Get All Unpublished
+//
+func TestGetAllUnpublishedLocations_Success(t *testing.T) {
+	locationService.mockGetAllUnpublished = func() ([]string, error) {
+		return []string{"loc1", "loc2"}, nil
+	}
+	services.LocationService = &locationService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var locIds []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &locIds); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "loc1", locIds[0])
+	assert.EqualValues(t, "loc2", locIds[1])
+	assert.EqualValues(t, 2, len(locIds))
+}
+
+//
+// Test Publish
+//
+func TestPublishLocations_Success(t *testing.T) {
+	locationService.mockPublish = func(locIds []string) error {
+		return nil // Successful update
+	}
+	services.LocationService = &locationService
+
+	// Create new HTTP request to endpoint
+	locIds := []string{"loc1", "loc2"}
+	marshal, err := json.Marshal(locIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+//
 // Helper Methods
 //
 func createMockLocation(locId string, street string, city string, state string, zipcode string, room string) domains.Location {

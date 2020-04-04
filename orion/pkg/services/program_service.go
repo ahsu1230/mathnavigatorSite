@@ -14,6 +14,8 @@ type programServiceInterface interface {
 	Create(domains.Program) error
 	Update(string, domains.Program) error
 	Delete(string) error
+	GetAllUnpublished() ([]string, error)
+	Publish([]string) error
 }
 
 // Struct that implements interface
@@ -47,5 +49,18 @@ func (ps *programService) Update(programId string, program domains.Program) erro
 
 func (ps *programService) Delete(programId string) error {
 	err := repos.ProgramRepo.Delete(programId)
+	return err
+}
+
+func (ps *programService) GetAllUnpublished() ([]string, error) {
+	programIds, err := repos.ProgramRepo.SelectAllUnpublished()
+	if err != nil {
+		return nil, err
+	}
+	return programIds, nil
+}
+
+func (ps *programService) Publish(programIds []string) error {
+	err := repos.ProgramRepo.Publish(programIds)
 	return err
 }

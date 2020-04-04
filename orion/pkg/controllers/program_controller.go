@@ -88,3 +88,29 @@ func DeleteProgram(c *gin.Context) {
 	}
 	return
 }
+
+func GetAllUnpublishedPrograms(c *gin.Context) {
+	programIds, err := services.ProgramService.GetAllUnpublished()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, programIds)
+	}
+	return
+}
+
+func PublishPrograms(c *gin.Context) {
+	// Incoming JSON
+	var programIdsJson []string
+	c.BindJSON(&programIdsJson)
+
+	err := services.ProgramService.Publish(programIdsJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}

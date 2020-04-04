@@ -207,6 +207,51 @@ func TestDeleteSession_Failure(t *testing.T) {
 }
 
 //
+// Test Get All Unpublished
+//
+func TestGetAllUnpublishedSessions_Success(t *testing.T) {
+	sessionService.mockGetAllUnpublished = func() ([]uint, error) {
+		return []uint{1, 2}, nil
+	}
+	services.SessionService = &sessionService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var ids []uint
+	if err := json.Unmarshal(recorder.Body.Bytes(), &ids); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, ids[0])
+	assert.EqualValues(t, 2, ids[1])
+	assert.EqualValues(t, 2, len(ids))
+}
+
+//
+// Test Publish
+//
+func TestPublishSessions_Success(t *testing.T) {
+	sessionService.mockPublish = func(ids []uint) error {
+		return nil // Successful update
+	}
+	services.SessionService = &sessionService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1, 2}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+//
 // Helper Methods
 //
 func createMockSession(id uint, classId string, startsAt time.Time, endsAt time.Time, canceled bool, notes string) domains.Session {

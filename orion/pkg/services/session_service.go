@@ -14,6 +14,8 @@ type sessionServiceInterface interface {
 	Create(domains.Session) error
 	Update(uint, domains.Session) error
 	Delete(uint) error
+	GetAllUnpublished() ([]uint, error)
+	Publish([]uint) error
 }
 
 // Struct that implements interface
@@ -47,5 +49,18 @@ func (ss *sessionService) Update(id uint, session domains.Session) error {
 
 func (ss *sessionService) Delete(id uint) error {
 	err := repos.SessionRepo.Delete(id)
+	return err
+}
+
+func (ss *sessionService) GetAllUnpublished() ([]uint, error) {
+	ids, err := repos.SessionRepo.SelectAllUnpublished()
+	if err != nil {
+		return nil, err
+	}
+	return ids, nil
+}
+
+func (ss *sessionService) Publish(ids []uint) error {
+	err := repos.SessionRepo.Publish(ids)
 	return err
 }
