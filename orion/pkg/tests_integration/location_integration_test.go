@@ -1,7 +1,6 @@
 package integration_tests
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
@@ -156,11 +155,7 @@ func Test_PublishLocations(t *testing.T) {
 
 	// Publish loc1 and loc3
 	publishIds := []string{"loc1", "loc3"}
-	marshal, err := json.Marshal(publishIds)
-	if err != nil {
-		panic(err)
-	}
-	publishBody := bytes.NewBuffer(marshal)
+	publishBody := createJsonBody(publishIds)
 	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", publishBody)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 

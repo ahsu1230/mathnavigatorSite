@@ -33,13 +33,13 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
-		"Notes"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+		"Notes",
+		"PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("id_1").
@@ -56,12 +56,12 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   sql.NullTime{},
-			PublishedAt: sql.NullTime{},
 			ClassId:     "id_1",
 			StartsAt:    now,
 			EndsAt:      now,
 			Canceled:    false,
 			Notes:       domains.NewNullString("special lecture from guest"),
+			PublishedAt: sql.NullTime{},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -86,13 +86,13 @@ func TestSelectSession(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
-		"Notes"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+		"Notes",
+		"PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -108,12 +108,12 @@ func TestSelectSession(t *testing.T) {
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		DeletedAt:   sql.NullTime{},
-		PublishedAt: sql.NullTime{},
 		ClassId:     "id_1",
 		StartsAt:    now,
 		EndsAt:      now,
 		Canceled:    false,
 		Notes:       domains.NewNullString("special lecture from guest"),
+		PublishedAt: sql.NullTime{},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -167,7 +167,7 @@ func TestUpdateSession(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE sessions SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
+		WithArgs(sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
 	session := domains.Session{
 		ClassId:  "id_1",

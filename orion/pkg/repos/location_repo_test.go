@@ -33,14 +33,14 @@ func TestSelectAllLocations(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PublishedAt",
 		"LocId",
 		"Street",
 		"City",
 		"State",
 		"Zipcode",
-		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
+		"Room",
+		"PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"), sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM locations").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -56,13 +56,13 @@ func TestSelectAllLocations(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   sql.NullTime{},
-			PublishedAt: sql.NullTime{},
 			LocId:       "xkcd",
 			Street:      "4040 Cherry Rd",
 			City:        "Potomac",
 			State:       "MD",
 			Zipcode:     "20854",
 			Room:        domains.NewNullString("Room 2"),
+			PublishedAt: sql.NullTime{},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -87,14 +87,14 @@ func TestSelectLocation(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"PublishedAt",
 		"LocId",
 		"Street",
 		"City",
 		"State",
 		"Zipcode",
-		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
+		"Room",
+		"PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"), sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE loc_id=?").
 		ExpectQuery().
 		WithArgs("xkcd").
@@ -110,13 +110,13 @@ func TestSelectLocation(t *testing.T) {
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		DeletedAt:   sql.NullTime{},
-		PublishedAt: sql.NullTime{},
 		LocId:       "xkcd",
 		Street:      "4040 Cherry Rd",
 		City:        "Potomac",
 		State:       "MD",
 		Zipcode:     "20854",
 		Room:        domains.NewNullString("Room 2"),
+		PublishedAt: sql.NullTime{},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -169,7 +169,7 @@ func TestUpdateLocation(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE loc_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), "xkcd").
+		WithArgs(sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), sqlmock.AnyArg(), "xkcd").
 		WillReturnResult(result)
 	location := domains.Location{
 		LocId:   "www",

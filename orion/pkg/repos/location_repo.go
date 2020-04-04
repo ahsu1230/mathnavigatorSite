@@ -49,13 +49,13 @@ func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
 			&location.CreatedAt,
 			&location.UpdatedAt,
 			&location.DeletedAt,
-			&location.PublishedAt,
 			&location.LocId,
 			&location.Street,
 			&location.City,
 			&location.State,
 			&location.Zipcode,
-			&location.Room); errScan != nil {
+			&location.Room,
+			&location.PublishedAt); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, location)
@@ -78,13 +78,13 @@ func (lr *locationRepo) SelectByLocationId(locId string) (domains.Location, erro
 		&location.CreatedAt,
 		&location.UpdatedAt,
 		&location.DeletedAt,
-		&location.PublishedAt,
 		&location.LocId,
 		&location.Street,
 		&location.City,
 		&location.State,
 		&location.Zipcode,
-		&location.Room)
+		&location.Room,
+		&location.PublishedAt)
 
 	return location, errScan
 }
@@ -125,13 +125,13 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
-		"published_at=?, " +
 		"loc_id=?, " +
 		"street=?, " +
 		"city=?, " +
 		"state=?, " +
 		"zipcode=?, " +
-		"room=? " +
+		"room=?, " +
+		"published_at=? " +
 		"WHERE loc_id=?")
 	if err != nil {
 		return err
@@ -141,13 +141,13 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		location.PublishedAt,
 		location.LocId,
 		location.Street,
 		location.City,
 		location.State,
 		location.Zipcode,
 		location.Room,
+		location.PublishedAt,
 		locId)
 	if err != nil {
 		return err

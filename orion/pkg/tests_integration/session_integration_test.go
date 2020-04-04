@@ -1,7 +1,6 @@
 package integration_tests
 
 import (
-	"bytes"
 	"encoding/json"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/stretchr/testify/assert"
@@ -233,11 +232,7 @@ func Test_PublishSessions(t *testing.T) {
 
 	// Publish first and third session
 	publishIds := []uint{1, 3}
-	marshal, err := json.Marshal(publishIds)
-	if err != nil {
-		panic(err)
-	}
-	publishBody := bytes.NewBuffer(marshal)
+	publishBody := createJsonBody(publishIds)
 	recorder12 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", publishBody)
 	assert.EqualValues(t, http.StatusOK, recorder12.Code)
 

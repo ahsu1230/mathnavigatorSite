@@ -49,12 +49,12 @@ func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, er
 			&session.CreatedAt,
 			&session.UpdatedAt,
 			&session.DeletedAt,
-			&session.PublishedAt,
 			&session.ClassId,
 			&session.StartsAt,
 			&session.EndsAt,
 			&session.Canceled,
-			&session.Notes); errScan != nil {
+			&session.Notes,
+			&session.PublishedAt); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, session)
@@ -77,12 +77,12 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.DeletedAt,
-		&session.PublishedAt,
 		&session.ClassId,
 		&session.StartsAt,
 		&session.EndsAt,
 		&session.Canceled,
-		&session.Notes)
+		&session.Notes,
+		&session.PublishedAt)
 
 	return session, errScan
 }
@@ -121,12 +121,12 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
 		"updated_at=?, " +
-		"published_at=?, " +
 		"class_id=?, " +
 		"starts_at=?, " +
 		"ends_at=?, " +
 		"canceled=?, " +
-		"notes=? " +
+		"notes=?, " +
+		"published_at=? " +
 		"WHERE id=?")
 	if err != nil {
 		return err
@@ -136,12 +136,12 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		session.PublishedAt,
 		session.ClassId,
 		session.StartsAt,
 		session.EndsAt,
 		session.Canceled,
 		session.Notes,
+		session.PublishedAt,
 		id)
 	if err != nil {
 		return err

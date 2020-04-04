@@ -28,8 +28,8 @@ func TestSelectAllPrograms(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description", "PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1", sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -45,12 +45,12 @@ func TestSelectAllPrograms(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   sql.NullTime{},
-			PublishedAt: sql.NullTime{},
 			ProgramId:   "prog1",
 			Name:        "Program1",
 			Grade1:      2,
 			Grade2:      3,
 			Description: "descript1",
+			PublishedAt: sql.NullTime{},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -70,8 +70,8 @@ func TestSelectProgram(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description", "PublishedAt"}).
+		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1", sql.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("prog1").
@@ -87,12 +87,12 @@ func TestSelectProgram(t *testing.T) {
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		DeletedAt:   sql.NullTime{},
-		PublishedAt: sql.NullTime{},
 		ProgramId:   "prog1",
 		Name:        "Program1",
 		Grade1:      2,
 		Grade2:      3,
 		Description: "descript1",
+		PublishedAt: sql.NullTime{},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -144,7 +144,7 @@ func TestUpdateProgram(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE programs SET (.*) WHERE program_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sql.NullTime{}, "prog2", "Program2", 2, 3, "Descript2", "prog1").
+		WithArgs(sqlmock.AnyArg(), "prog2", "Program2", 2, 3, "Descript2", sqlmock.AnyArg(), "prog1").
 		WillReturnResult(result)
 	program := domains.Program{
 		ProgramId:   "prog2",
