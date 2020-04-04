@@ -3,7 +3,6 @@ CREATE TABLE sessions (
 	created_at datetime NOT NULL,
 	updated_at datetime NOT NULL,
 	deleted_at datetime,
-	published_at datetime,
 	class_id varchar(192) NOT NULL,
 	starts_at datetime NOT NULL,
 	ends_at datetime NOT NULL,

@@ -4,7 +4,6 @@ CREATE TABLE programs
     created_at   datetime         NOT NULL,
     updated_at   datetime         NOT NULL,
     deleted_at   datetime,
-	published_at datetime,
     program_id   varchar(64)      NOT NULL UNIQUE,
     name         varchar(255)     NOT NULL,
     grade1       tinyint unsigned NOT NULL,

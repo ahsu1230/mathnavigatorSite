@@ -4,7 +4,6 @@ CREATE TABLE locations
     created_at   datetime     NOT NULL,
     updated_at   datetime     NOT NULL,
     deleted_at   datetime,
-	published_at datetime,
     loc_id       varchar(64)  NOT NULL UNIQUE,
     street       varchar(255) NOT NULL,
     city         varchar(64)  NOT NULL,
