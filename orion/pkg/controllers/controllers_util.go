@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -28,26 +29,59 @@ func ParseParamIds(c *gin.Context, key string) []uint {
 	return ids
 }
 
-func checkError(c *gin.Context, list interface{}, err error) {
+type Domains struct {
+	Programs  []domains.Program  `json:"programs"`
+	Classes   []domains.Class    `json:"classes"`
+	Locations []domains.Location `json:"locations"`
+	Achieves  []domains.Achieve  `json:"achieves"`
+	Semesters []domains.Semester `json:"semesters"`
+	Sessions  []domains.Session  `json:"sessions"`
+}
+
+func callServices() (Domains, error) {
+	// programList, err := services.ProgramService.GetUnpublished()
+	// if err != nil {
+	// 	return Domains{}, err
+	// }
+	// classList, err := services.ClassService.GetUnpublished()
+	// if err != nil {
+	// 	return Domains{}, err
+	// }
+	// locationList, err := services.LocationService.GetUnpublished()
+	// if err != nil {
+	// 	return Domains{}, err
+	// }
+	achieveList, err := services.AchieveService.GetUnpublished()
+	if err != nil {
+		return Domains{}, err
+	}
+	// semesterList, err := services.SemesterService.GetUnpublished()
+	// if err != nil {
+	// 	return Domains{}, err
+	// }
+	// sessionList, err := services.SessionService.GetUnpublished()
+	// if err != nil {
+	// 	return Domains{}, err
+	// }
+
+	domains := Domains{
+		// Programs: programList,
+		// Classes:   classList,
+		// Locations: locationList,
+		Achieves: achieveList,
+		// Semesters: semesterList,
+		// Sessions:  sessionList,
+	}
+
+	return domains, nil
+}
+
+func GetAllUnpublished(c *gin.Context) {
+	domains, err := callServices()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, list)
+		c.JSON(http.StatusOK, domains)
 	}
-}
-
-func GetAllUnpublished(c *gin.Context) {
-	programList, err := services.ProgramService.GetAll()
-	checkError(c, programList, err)
-	classList, err := services.ClassService.GetAll()
-	checkError(c, classList, err)
-	locationList, err := services.LocationService.GetAll()
-	checkError(c, locationList, err)
-	achieveList, err := services.AchieveService.GetAll()
-	checkError(c, achieveList, err)
-	semesterList, err := services.SemesterService.GetAll()
-	checkError(c, semesterList, err)
-	sessionList, err := services.SessionService.GetAll()
-	checkError(c, sessionList, err)
 }
