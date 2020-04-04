@@ -18,13 +18,9 @@ import { AnnouncePage } from './announce/announce.js';
 import { AnnounceEditPage } from './announce/announceEdit.js';
 import { LocationPage } from './location/location.js';
 import { LocationEditPage } from './location/locationEdit.js';
-<<<<<<< HEAD
 import { SemesterPage } from './semester/semester.js';
 import { SemesterEditPage } from './semester/semesterEdit.js';
-=======
-import { SemesterPage } from './semesters/semester.js';
-import { SemesterEditPage } from './semesters/semesterEdit.js';
->>>>>>> 69085cf1cf077c270ee68280d22d79089a85928a
+
 
 const Achieve = () => <AchievePage/>;
 const AchieveEdit = () => <AchieveEditPage/>;
@@ -39,11 +35,7 @@ const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 const Location = () => <LocationPage/>;
 const LocationEdit = () => <LocationEditPage/>;
-const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
-<<<<<<< HEAD
-=======
 const LocationEditMatch = ({match}) => <LocationEditPage locId={match.params.locId}/>;
->>>>>>> 69085cf1cf077c270ee68280d22d79089a85928a
 const Semester = () => <SemesterPage/>;
 const SemesterEdit = () => <SemesterEditPage/>;
 const SemesterEditMatch = ({match}) => <SemesterEditPage semesterId={match.params.semesterId}/>;
