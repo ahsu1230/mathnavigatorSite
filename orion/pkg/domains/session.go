@@ -10,15 +10,16 @@ import (
 var TABLE_SESSIONS = "sessions"
 
 type Session struct {
-	Id        uint
-	CreatedAt time.Time    `db:"created_at"`
-	UpdatedAt time.Time    `db:"updated_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
-	ClassId   string       `db:"class_id" json:"classId"`
-	StartsAt  time.Time    `db:"starts_at" json:"startsAt"`
-	EndsAt    time.Time    `db:"ends_at" json:"endsAt"`
-	Canceled  bool         `db:"canceled" json:"canceled"`
-	Notes     NullString   `db:"notes" json:"notes"`
+	Id          uint
+	CreatedAt   time.Time    `db:"created_at"`
+	UpdatedAt   time.Time    `db:"updated_at"`
+	DeletedAt   sql.NullTime `db:"deleted_at"`
+	PublishedAt sql.NullTime `db:"published_at" json:"publishedAt"`
+	ClassId     string       `db:"class_id" json:"classId"`
+	StartsAt    time.Time    `db:"starts_at" json:"startsAt"`
+	EndsAt      time.Time    `db:"ends_at" json:"endsAt"`
+	Canceled    bool         `db:"canceled" json:"canceled"`
+	Notes       NullString   `db:"notes" json:"notes"`
 }
 
 func (session *Session) Validate() error {

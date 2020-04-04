@@ -10,16 +10,17 @@ import (
 var TABLE_LOCATIONS = "locations"
 
 type Location struct {
-	Id        uint
-	CreatedAt time.Time    `db:"created_at"`
-	UpdatedAt time.Time    `db:"update_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
-	LocId     string       `db:"loc_id" json:"locId"`
-	Street    string       `json:"street"`
-	City      string       `json:"city"`
-	State     string       `json:"state"`
-	Zipcode   string       `json:"zipcode"`
-	Room      NullString   `json:"room"`
+	Id          uint
+	CreatedAt   time.Time    `db:"created_at"`
+	UpdatedAt   time.Time    `db:"update_at"`
+	DeletedAt   sql.NullTime `db:"deleted_at"`
+	PublishedAt sql.NullTime `db:"published_at" json:"publishedAt"`
+	LocId       string       `db:"loc_id" json:"locId"`
+	Street      string       `json:"street"`
+	City        string       `json:"city"`
+	State       string       `json:"state"`
+	Zipcode     string       `json:"zipcode"`
+	Room        NullString   `json:"room"`
 }
 
 func (location *Location) Validate() error {

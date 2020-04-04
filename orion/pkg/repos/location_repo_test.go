@@ -33,13 +33,14 @@ func TestSelectAllLocations(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"LocId",
 		"Street",
 		"City",
 		"State",
 		"Zipcode",
 		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
 	mock.ExpectPrepare("^SELECT (.+) FROM locations").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -51,16 +52,17 @@ func TestSelectAllLocations(t *testing.T) {
 	// Validate results
 	want := []domains.Location{
 		{
-			Id:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-			DeletedAt: sql.NullTime{},
-			LocId:     "xkcd",
-			Street:    "4040 Cherry Rd",
-			City:      "Potomac",
-			State:     "MD",
-			Zipcode:   "20854",
-			Room:      domains.NewNullString("Room 2"),
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   sql.NullTime{},
+			PublishedAt: sql.NullTime{},
+			LocId:       "xkcd",
+			Street:      "4040 Cherry Rd",
+			City:        "Potomac",
+			State:       "MD",
+			Zipcode:     "20854",
+			Room:        domains.NewNullString("Room 2"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -85,13 +87,14 @@ func TestSelectLocation(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"LocId",
 		"Street",
 		"City",
 		"State",
 		"Zipcode",
 		"Room"}).
-		AddRow(1, now, now, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
 	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE loc_id=?").
 		ExpectQuery().
 		WithArgs("xkcd").
@@ -103,16 +106,17 @@ func TestSelectLocation(t *testing.T) {
 
 	// Validate results
 	want := domains.Location{
-		Id:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		DeletedAt: sql.NullTime{},
-		LocId:     "xkcd",
-		Street:    "4040 Cherry Rd",
-		City:      "Potomac",
-		State:     "MD",
-		Zipcode:   "20854",
-		Room:      domains.NewNullString("Room 2"),
+		Id:          1,
+		CreatedAt:   now,
+		UpdatedAt:   now,
+		DeletedAt:   sql.NullTime{},
+		PublishedAt: sql.NullTime{},
+		LocId:       "xkcd",
+		Street:      "4040 Cherry Rd",
+		City:        "Potomac",
+		State:       "MD",
+		Zipcode:     "20854",
+		Room:        domains.NewNullString("Room 2"),
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)

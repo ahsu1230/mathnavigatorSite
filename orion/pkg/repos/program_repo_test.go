@@ -28,8 +28,8 @@ func TestSelectAllPrograms(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -45,6 +45,7 @@ func TestSelectAllPrograms(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   sql.NullTime{},
+			PublishedAt: sql.NullTime{},
 			ProgramId:   "prog1",
 			Name:        "Program1",
 			Grade1:      2,
@@ -69,8 +70,8 @@ func TestSelectProgram(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
 	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("prog1").
@@ -86,6 +87,7 @@ func TestSelectProgram(t *testing.T) {
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		DeletedAt:   sql.NullTime{},
+		PublishedAt: sql.NullTime{},
 		ProgramId:   "prog1",
 		Name:        "Program1",
 		Grade1:      2,

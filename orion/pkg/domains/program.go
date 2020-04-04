@@ -14,6 +14,7 @@ type Program struct {
 	CreatedAt   time.Time    `db:"created_at"`
 	UpdatedAt   time.Time    `db:"updated_at"`
 	DeletedAt   sql.NullTime `db:"deleted_at"`
+	PublishedAt sql.NullTime `db:"published_at" json:"publishedAt"`
 	ProgramId   string       `db:"program_id" json:"programId"`
 	Name        string       `json:"name"`
 	Grade1      uint         `json:"grade1"`

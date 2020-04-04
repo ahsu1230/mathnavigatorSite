@@ -33,12 +33,13 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
 		"Notes"}).
-		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("id_1").
@@ -51,15 +52,16 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 	// Validate results
 	want := []domains.Session{
 		{
-			Id:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-			DeletedAt: sql.NullTime{},
-			ClassId:   "id_1",
-			StartsAt:  now,
-			EndsAt:    now,
-			Canceled:  false,
-			Notes:     domains.NewNullString("special lecture from guest"),
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   sql.NullTime{},
+			PublishedAt: sql.NullTime{},
+			ClassId:     "id_1",
+			StartsAt:    now,
+			EndsAt:      now,
+			Canceled:    false,
+			Notes:       domains.NewNullString("special lecture from guest"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -84,12 +86,13 @@ func TestSelectSession(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
 		"Notes"}).
-		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -101,15 +104,16 @@ func TestSelectSession(t *testing.T) {
 
 	// Validate results
 	want := domains.Session{
-		Id:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		DeletedAt: sql.NullTime{},
-		ClassId:   "id_1",
-		StartsAt:  now,
-		EndsAt:    now,
-		Canceled:  false,
-		Notes:     domains.NewNullString("special lecture from guest"),
+		Id:          1,
+		CreatedAt:   now,
+		UpdatedAt:   now,
+		DeletedAt:   sql.NullTime{},
+		PublishedAt: sql.NullTime{},
+		ClassId:     "id_1",
+		StartsAt:    now,
+		EndsAt:      now,
+		Canceled:    false,
+		Notes:       domains.NewNullString("special lecture from guest"),
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
