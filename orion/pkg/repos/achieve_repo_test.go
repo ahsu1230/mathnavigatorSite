@@ -268,13 +268,16 @@ func TestDeleteAchieve(t *testing.T) {
 	}
 }
 
+//
+// Publish
+//
 func TestPublishAchieves(t *testing.T) {
 	db, mock, repo := initAchieveTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE achievements SET updated_at=\? WHERE id=\?`).
+	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\?`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
