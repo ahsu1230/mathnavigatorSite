@@ -122,7 +122,7 @@ func TestSelectAchieve(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "DeletedAt", "Year", "Message"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
 		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, 2020, "message1")
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements WHERE id=?").
 		ExpectQuery().

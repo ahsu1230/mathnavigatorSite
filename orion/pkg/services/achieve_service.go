@@ -69,6 +69,7 @@ func (as *achieveService) Delete(id uint) error {
 	return err
 }
 
+// TODO: Use DB Transactions
 func (as *achieveService) Publish(ids []uint) error {
 	for _, id := range ids {
 		err := repos.AchieveRepo.Publish(id)

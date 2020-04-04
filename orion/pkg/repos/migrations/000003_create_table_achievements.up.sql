@@ -4,7 +4,6 @@ CREATE TABLE achievements
     created_at   datetime     NOT NULL,
     updated_at   datetime     NOT NULL,
     deleted_at   datetime,
-    published_at datetime,
     year         int unsigned NOT NULL,
     message      text         NOT NULL,
     PRIMARY KEY (id)
