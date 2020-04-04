@@ -1,12 +1,52 @@
 package integration_tests
 
 import (
+	"database/sql"
 	"encoding/json"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 )
+
+// Test: Create 2 Unpublished Achievements and GetUnpublished()
+func Test_GetUnpublishedAchievements(t *testing.T) {
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+
+	achieve1 := domains.Achieve{
+		PublishedAt: sql.NullTime{},
+		Year:        2020,
+		Message:     "message1",
+	}
+	achieve2 := domains.Achieve{
+		PublishedAt: sql.NullTime{},
+		Year:        2021,
+		Message:     "message2",
+	}
+	body1 := createJsonBody(achieve1)
+	body2 := createJsonBody(achieve2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body2)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+
+	// Call Get Unpublished!
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/publish", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	var achieves []domains.Achieve
+	if err := json.Unmarshal(recorder3.Body.Bytes(), &achieves); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, achieves[0].Id)
+	assert.EqualValues(t, 2020, achieves[0].Year)
+	assert.EqualValues(t, "message1", achieves[0].Message)
+	assert.EqualValues(t, 2, achieves[1].Id)
+	assert.EqualValues(t, 2021, achieves[1].Year)
+	assert.EqualValues(t, "message2", achieves[1].Message)
+	assert.EqualValues(t, 2, len(achieves))
+}
 
 // Test: Create 3 Achievements and GetAll()
 func Test_CreateAchievements(t *testing.T) {
@@ -93,6 +133,21 @@ func Test_DeleteAchievement(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+}
+
+// Test: Create 1 Achievement and Publish it
+func Test_PublishAchievement(t *testing.T) {
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+
+	// Create
+	achieve1 := createAchievement(2020, "message1")
+	body1 := createJsonBody(achieve1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	// Publish
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", nil)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 }
 
 // Helper methods
