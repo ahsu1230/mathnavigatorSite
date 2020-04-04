@@ -11,9 +11,11 @@ var AchieveService achieveServiceInterface = &achieveService{}
 type achieveServiceInterface interface {
 	GetAll() ([]domains.Achieve, error)
 	GetById(uint) (domains.Achieve, error)
+	GetUnpublished() ([]domains.Achieve, error)
 	Create(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
+	Publish([]uint) error
 }
 
 // Struct that implements interface
@@ -35,6 +37,14 @@ func (as *achieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieve, nil
 }
 
+func (as *achieveService) GetUnpublished() ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectUnpublished()
+	if err != nil {
+		return nil, err
+	}
+	return achieves, nil
+}
+
 func (as *achieveService) Create(achieve domains.Achieve) error {
 	err := repos.AchieveRepo.Insert(achieve)
 	return err
@@ -48,4 +58,14 @@ func (as *achieveService) Update(id uint, achieve domains.Achieve) error {
 func (as *achieveService) Delete(id uint) error {
 	err := repos.AchieveRepo.Delete(id)
 	return err
+}
+
+func (as *achieveService) Publish(ids []uint) error {
+	for _, id := range ids {
+		err := repos.AchieveRepo.Publish(id)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

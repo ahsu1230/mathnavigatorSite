@@ -30,6 +30,16 @@ func GetAchievementById(c *gin.Context) {
 	}
 }
 
+func GetUnpublishedAchievements(c *gin.Context) {
+	achieveList, err := services.AchieveService.GetAll()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, achieveList)
+	}
+}
+
 func CreateAchievement(c *gin.Context) {
 	// Incoming JSON
 	var achieveJson domains.Achieve
@@ -76,6 +86,19 @@ func DeleteAchievement(c *gin.Context) {
 	id := ParseParamId(c)
 
 	err := services.AchieveService.Delete(id)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+}
+
+func PublishAchievements(c *gin.Context) {
+	// Incoming JSON & Parameters
+	ids := ParseParamIds(c, "ids")
+
+	err := services.AchieveService.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

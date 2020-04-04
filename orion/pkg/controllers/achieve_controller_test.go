@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
@@ -51,7 +52,7 @@ func TestGetAllAchievements_Success(t *testing.T) {
 }
 
 //
-// Test Get Achieve
+// Test Get Achievement
 //
 func TestGetAchievement_Success(t *testing.T) {
 	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
@@ -85,6 +86,46 @@ func TestGetAchievement_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+}
+
+//
+// Test Get Unpublished
+//
+func TestGetUnpublishedAchievements_Success(t *testing.T) {
+	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
+		return []domains.Achieve{
+			{
+				Id:          1,
+				PublishedAt: sql.NullTime{},
+				Year:        2020,
+				Message:     "message1",
+			},
+			{
+				Id:          2,
+				PublishedAt: sql.NullTime{},
+				Year:        2021,
+				Message:     "message2",
+			},
+		}, nil
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/publish", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var achieves []domains.Achieve
+	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, achieves[0].Id)
+	assert.EqualValues(t, 2020, achieves[0].Year)
+	assert.EqualValues(t, "message1", achieves[0].Message)
+	assert.EqualValues(t, 2, achieves[1].Id)
+	assert.EqualValues(t, 2021, achieves[1].Year)
+	assert.EqualValues(t, "message2", achieves[1].Message)
+	assert.EqualValues(t, 2, len(achieves))
 }
 
 //
@@ -190,6 +231,35 @@ func TestDeleteAchievement_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishAchievement_Success(t *testing.T) {
+	achieveService.mockPublish = func(ids []uint) error {
+		return nil // Return no error, successful publish!
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestPublishAchievement_Failure(t *testing.T) {
+	achieveService.mockPublish = func(ids []uint) error {
+		return errors.New("not found")
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
