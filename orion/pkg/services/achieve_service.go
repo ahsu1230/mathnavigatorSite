@@ -9,10 +9,10 @@ var AchieveService achieveServiceInterface = &achieveService{}
 
 // Interface for AchieveService
 type achieveServiceInterface interface {
-	GetAll() ([]domains.Achieve, error)
+	GetAll(bool) ([]domains.Achieve, error)
+	GetUnpublished() ([]domains.Achieve, error)
 	GetById(uint) (domains.Achieve, error)
 	GetAllGroupedByYear() ([]domains.AchieveYearGroup, error)
-	GetUnpublished() ([]domains.Achieve, error)
 	Create(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -22,8 +22,16 @@ type achieveServiceInterface interface {
 // Struct that implements interface
 type achieveService struct{}
 
-func (as *achieveService) GetAll() ([]domains.Achieve, error) {
-	achieves, err := repos.AchieveRepo.SelectAll()
+func (as *achieveService) GetAll(published bool) ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectAll(published)
+	if err != nil {
+		return nil, err
+	}
+	return achieves, nil
+}
+
+func (as *achieveService) GetUnpublished() ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -40,14 +48,6 @@ func (as *achieveService) GetById(id uint) (domains.Achieve, error) {
 
 func (as *achieveService) GetAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
 	achieves, err := repos.AchieveRepo.SelectAllGroupedByYear()
-	if err != nil {
-		return nil, err
-	}
-	return achieves, nil
-}
-
-func (as *achieveService) GetUnpublished() ([]domains.Achieve, error) {
-	achieves, err := repos.AchieveRepo.SelectUnpublished()
 	if err != nil {
 		return nil, err
 	}

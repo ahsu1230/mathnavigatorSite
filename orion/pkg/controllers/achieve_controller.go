@@ -8,7 +8,10 @@ import (
 )
 
 func GetAllAchievements(c *gin.Context) {
-	achieveList, err := services.AchieveService.GetAll()
+	// Incoming optional parameter
+	published := c.Query("published")
+
+	achieveList, err := services.AchieveService.GetAll(published == "true")
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

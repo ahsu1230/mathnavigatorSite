@@ -17,7 +17,7 @@ type achieveRepo struct {
 // Interface to implement
 type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Achieve, error)
+	SelectAll(bool) ([]domains.Achieve, error)
 	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
 	SelectById(uint) (domains.Achieve, error)
 	SelectUnpublished() ([]domains.Achieve, error)
@@ -31,10 +31,16 @@ func (ar *achieveRepo) Initialize(db *sql.DB) {
 	ar.db = db
 }
 
-func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
+func (ar *achieveRepo) SelectAll(published bool) ([]domains.Achieve, error) {
 	results := make([]domains.Achieve, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM achievements")
+	var query string
+	if published {
+		query = "SELECT * FROM achievements WHERE published_at IS NOT NULL"
+	} else {
+		query = "SELECT * FROM achievements"
+	}
+	stmt, err := ar.db.Prepare(query)
 	if err != nil {
 		return nil, err
 	}

@@ -29,42 +29,33 @@ func ParseParamIds(c *gin.Context, key string) []uint {
 	return ids
 }
 
-type Domains struct {
-	Programs  []domains.Program  `json:"programs"`
-	Classes   []domains.Class    `json:"classes"`
-	Locations []domains.Location `json:"locations"`
-	Achieves  []domains.Achieve  `json:"achieves"`
-	Semesters []domains.Semester `json:"semesters"`
-	Sessions  []domains.Session  `json:"sessions"`
-}
-
-func callServices() (Domains, error) {
+func callServices() (domains.Domains, error) {
 	// programList, err := services.ProgramService.GetUnpublished()
 	// if err != nil {
-	// 	return Domains{}, err
+	// 	return domains.Domains{}, err
 	// }
 	// classList, err := services.ClassService.GetUnpublished()
 	// if err != nil {
-	// 	return Domains{}, err
+	// 	return domains.Domains{}, err
 	// }
 	// locationList, err := services.LocationService.GetUnpublished()
 	// if err != nil {
-	// 	return Domains{}, err
+	// 	return domains.Domains{}, err
 	// }
 	achieveList, err := services.AchieveService.GetUnpublished()
 	if err != nil {
-		return Domains{}, err
+		return domains.Domains{}, err
 	}
 	// semesterList, err := services.SemesterService.GetUnpublished()
 	// if err != nil {
-	// 	return Domains{}, err
+	// 	return domains.Domains{}, err
 	// }
 	// sessionList, err := services.SessionService.GetUnpublished()
 	// if err != nil {
-	// 	return Domains{}, err
+	// 	return domains.Domains{}, err
 	// }
 
-	domains := Domains{
+	allDomains := domains.Domains{
 		// Programs: programList,
 		// Classes:   classList,
 		// Locations: locationList,
@@ -73,15 +64,15 @@ func callServices() (Domains, error) {
 		// Sessions:  sessionList,
 	}
 
-	return domains, nil
+	return allDomains, nil
 }
 
 func GetAllUnpublished(c *gin.Context) {
-	domains, err := callServices()
+	allDomains, err := callServices()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, domains)
+		c.JSON(http.StatusOK, allDomains)
 	}
 }

@@ -11,13 +11,14 @@ import (
 	"io"
 	"net/http"
 	"testing"
+	"time"
 )
 
 //
 // Test Get All
 //
 func TestGetAllAchievements_Success(t *testing.T) {
-	achieveService.mockGetAll = func() ([]domains.Achieve, error) {
+	achieveService.mockGetAll = func(published bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			{
 				Id:      1,
@@ -49,6 +50,87 @@ func TestGetAllAchievements_Success(t *testing.T) {
 	assert.EqualValues(t, 2021, achieves[1].Year)
 	assert.EqualValues(t, "message2", achieves[1].Message)
 	assert.EqualValues(t, 2, len(achieves))
+}
+
+//
+// Test Get Published
+//
+func TestGetPublishedAchievements_Success(t *testing.T) {
+	achieveService.mockGetAll = func(published bool) ([]domains.Achieve, error) {
+		now := time.Now().UTC()
+		return []domains.Achieve{
+			{
+				Id:          1,
+				PublishedAt: sql.NullTime{Time: now, Valid: true},
+				Year:        2020,
+				Message:     "message1",
+			},
+			{
+				Id:          2,
+				PublishedAt: sql.NullTime{Time: now, Valid: true},
+				Year:        2021,
+				Message:     "message2",
+			},
+		}, nil
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var achieves []domains.Achieve
+	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, achieves[0].Id)
+	assert.EqualValues(t, 2020, achieves[0].Year)
+	assert.EqualValues(t, "message1", achieves[0].Message)
+	assert.EqualValues(t, 2, achieves[1].Id)
+	assert.EqualValues(t, 2021, achieves[1].Year)
+	assert.EqualValues(t, "message2", achieves[1].Message)
+	assert.EqualValues(t, 2, len(achieves))
+}
+
+//
+// Test Get Unpublished
+//
+func TestGetUnpublishedAchievements_Success(t *testing.T) {
+	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
+		return []domains.Achieve{
+			{
+				Id:          1,
+				PublishedAt: sql.NullTime{},
+				Year:        2020,
+				Message:     "message1",
+			},
+			{
+				Id:          2,
+				PublishedAt: sql.NullTime{},
+				Year:        2021,
+				Message:     "message2",
+			},
+		}, nil
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var allDomains domains.Domains
+	if err := json.Unmarshal(recorder.Body.Bytes(), &allDomains); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, allDomains.Achieves[0].Id)
+	assert.EqualValues(t, 2020, allDomains.Achieves[0].Year)
+	assert.EqualValues(t, "message1", allDomains.Achieves[0].Message)
+	assert.EqualValues(t, 2, allDomains.Achieves[1].Id)
+	assert.EqualValues(t, 2021, allDomains.Achieves[1].Year)
+	assert.EqualValues(t, "message2", allDomains.Achieves[1].Message)
+	assert.EqualValues(t, 2, len(allDomains.Achieves))
 }
 
 //
@@ -134,46 +216,6 @@ func TestGetAchievement_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
-}
-
-//
-// Test Get Unpublished
-//
-func TestGetUnpublishedAchievements_Success(t *testing.T) {
-	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
-		return []domains.Achieve{
-			{
-				Id:          1,
-				PublishedAt: sql.NullTime{},
-				Year:        2020,
-				Message:     "message1",
-			},
-			{
-				Id:          2,
-				PublishedAt: sql.NullTime{},
-				Year:        2021,
-				Message:     "message2",
-			},
-		}, nil
-	}
-	services.AchieveService = &achieveService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/publish", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var achieves []domains.Achieve
-	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, 1, achieves[0].Id)
-	assert.EqualValues(t, 2020, achieves[0].Year)
-	assert.EqualValues(t, "message1", achieves[0].Message)
-	assert.EqualValues(t, 2, achieves[1].Id)
-	assert.EqualValues(t, 2021, achieves[1].Year)
-	assert.EqualValues(t, "message2", achieves[1].Message)
-	assert.EqualValues(t, 2, len(achieves))
 }
 
 //
