@@ -336,8 +336,12 @@ func TestPublishAchievement_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	body := []byte(`{"ids": [1]}`)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(body))
+	ids := []uint{1}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -350,8 +354,12 @@ func TestPublishAchievement_Failure(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	body := []byte(`{"ids": [1]}`)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(body))
+	ids := []uint{1}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

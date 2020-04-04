@@ -99,13 +99,10 @@ func DeleteAchievement(c *gin.Context) {
 
 func PublishAchievements(c *gin.Context) {
 	// Incoming JSON
-	type Ids struct {
-		Ids []uint
-	}
-	var ids Ids
+	var ids []uint
 	c.BindJSON(&ids)
 
-	err := services.AchieveService.Publish(ids.Ids)
+	err := services.AchieveService.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
