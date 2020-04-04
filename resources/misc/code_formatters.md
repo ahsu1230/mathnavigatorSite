@@ -26,7 +26,11 @@ prettier --write "**/*.js"
 ```
 
 Look [here](https://prettier.io/docs/en/options.html) for more options.
-For consistency, we should use the following command to format our code:
+
+This command will search for custom standards in a `.prettierrc.yaml` file.
 ```
-prettier --tab-width=4 --write "**/*.js"
+prettier --write "**/*.js" --config ".prettierrc.yaml"
 ```
+This will re-write all your javascript files in this directory and conform them to the standards described in a `.prettierrc.yaml` file.
+
+In addition, you may use your TextEditor or IDE to help you. Atom and VSCode have Prettier plugins to help you keep track of your formatting.
