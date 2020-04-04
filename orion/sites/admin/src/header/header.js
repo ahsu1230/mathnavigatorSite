@@ -1,37 +1,36 @@
 "use strict";
 require("./header.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 
 const LinkMap = {
-  "site": [
-    {
-        title: "Programs",
-        url: "/programs"
-    },
-    {
-        title: "Classes",
-        url: "/classes"
-    },
-    {
-        title: "Announcements",
-        url: "/announcements"
-    },
-    {
-        title: "Achievements",
-        url: "/achievements"
-    },
-    {
-        title: "Locations",
-        url: "/locations"
-    },
-    {
-        title: "Semesters",
-        url: "/semesters"
-    }
-  ]
-}
+    site: [
+        {
+            title: "Programs",
+            url: "/programs"
+        },
+        {
+            title: "Classes",
+            url: "/classes"
+        },
+        {
+            title: "Announcements",
+            url: "/announcements"
+        },
+        {
+            title: "Achievements",
+            url: "/achievements"
+        },
+        {
+            title: "Locations",
+            url: "/locations"
+        },
+        {
+            title: "Semesters",
+            url: "/semesters"
+        }
+    ]
+};
 
 export class HeaderSection extends React.Component {
     render() {

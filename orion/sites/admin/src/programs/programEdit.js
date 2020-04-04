@@ -1,8 +1,6 @@
 "use strict";
 require("./programEdit.styl");
 import React from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
