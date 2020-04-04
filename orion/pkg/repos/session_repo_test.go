@@ -167,7 +167,7 @@ func TestUpdateSession(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE sessions SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
 		WillReturnResult(result)
 	session := domains.Session{
 		ClassId:  "id_1",

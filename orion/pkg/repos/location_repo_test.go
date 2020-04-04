@@ -169,7 +169,7 @@ func TestUpdateLocation(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE loc_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), "xkcd").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), "xkcd").
 		WillReturnResult(result)
 	location := domains.Location{
 		LocId:   "www",

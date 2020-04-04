@@ -121,6 +121,7 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"class_id=?, " +
 		"starts_at=?, " +
 		"ends_at=?, " +
@@ -135,6 +136,7 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
+		session.PublishedAt,
 		session.ClassId,
 		session.StartsAt,
 		session.EndsAt,

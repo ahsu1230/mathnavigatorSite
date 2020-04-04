@@ -125,6 +125,7 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"loc_id=?, " +
 		"street=?, " +
 		"city=?, " +
@@ -140,6 +141,7 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
+		location.PublishedAt,
 		location.LocId,
 		location.Street,
 		location.City,

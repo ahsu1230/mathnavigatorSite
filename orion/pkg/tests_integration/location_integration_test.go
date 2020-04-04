@@ -1,6 +1,7 @@
 package integration_tests
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
@@ -119,6 +120,60 @@ func Test_DeleteLocation(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/location/loc1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+}
+
+// Test: Get All Unpublished Locations, Publish a Few, then Get All Unpublished Again
+func Test_PublishLocations(t *testing.T) {
+	resetTable(t, domains.TABLE_LOCATIONS)
+
+	// Create
+	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location2 := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
+	location3 := createLocation("loc3", "4040 Location Blvd", "Eity", "ND", "08430-0302", "Room 3")
+	body1 := createJsonBody(&location1)
+	body2 := createJsonBody(&location2)
+	body3 := createJsonBody(&location3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Get All Unpublished
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	var locIds []string
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &locIds); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "loc1", locIds[0])
+	assert.EqualValues(t, "loc2", locIds[1])
+	assert.EqualValues(t, "loc3", locIds[2])
+	assert.EqualValues(t, 3, len(locIds))
+
+	// Publish loc1 and loc3
+	publishIds := []string{"loc1", "loc3"}
+	marshal, err := json.Marshal(publishIds)
+	if err != nil {
+		panic(err)
+	}
+	publishBody := bytes.NewBuffer(marshal)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", publishBody)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+
+	// Get All Unpublished Again
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder6.Code)
+	if err := json.Unmarshal(recorder6.Body.Bytes(), &locIds); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "loc2", locIds[0])
+	assert.EqualValues(t, 1, len(locIds))
 }
 
 // Helper methods
