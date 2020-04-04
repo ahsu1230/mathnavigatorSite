@@ -19,6 +19,7 @@ type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Achieve, error)
 	SelectById(uint) (domains.Achieve, error)
+	SelectUnpublished() ([]domains.Achieve, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -50,6 +51,7 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 			&achieve.CreatedAt,
 			&achieve.UpdatedAt,
 			&achieve.DeletedAt,
+			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message); errScan != nil {
 			return results, errScan
@@ -74,9 +76,41 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 		&achieve.CreatedAt,
 		&achieve.UpdatedAt,
 		&achieve.DeletedAt,
+		&achieve.PublishedAt,
 		&achieve.Year,
 		&achieve.Message)
 	return achieve, errScan
+}
+
+func (ar *achieveRepo) SelectUnpublished() ([]domains.Achieve, error) {
+	results := make([]domains.Achieve, 0)
+
+	stmt, err := ar.db.Prepare("SELECT * FROM achievements WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var achieve domains.Achieve
+		if errScan := rows.Scan(
+			&achieve.Id,
+			&achieve.CreatedAt,
+			&achieve.UpdatedAt,
+			&achieve.DeletedAt,
+			&achieve.PublishedAt,
+			&achieve.Year,
+			&achieve.Message); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, achieve)
+	}
+	return results, nil
 }
 
 func (ar *achieveRepo) Insert(achieve domains.Achieve) error {

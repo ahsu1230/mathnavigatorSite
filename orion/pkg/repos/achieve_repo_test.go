@@ -28,8 +28,8 @@ func TestSelectAllAchieves(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message"}).
-		AddRow(1, now, now, sql.NullTime{}, 2020, "message1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, 2020, "message1")
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements").ExpectQuery().WillReturnRows(rows)
 	got, err := repo.SelectAll()
 	if err != nil {
@@ -39,12 +39,13 @@ func TestSelectAllAchieves(t *testing.T) {
 	// Validate results
 	want := []domains.Achieve{
 		{
-			Id:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-			DeletedAt: sql.NullTime{},
-			Year:      2020,
-			Message:   "message1",
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   sql.NullTime{},
+			PublishedAt: sql.NullTime{},
+			Year:        2020,
+			Message:     "message1",
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -64,8 +65,8 @@ func TestSelectAchieve(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message"}).
-		AddRow(1, now, now, sql.NullTime{}, 2020, "message1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "DeletedAt", "Year", "Message"}).
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, 2020, "message1")
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -77,12 +78,50 @@ func TestSelectAchieve(t *testing.T) {
 
 	// Validate results
 	want := domains.Achieve{
-		Id:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		DeletedAt: sql.NullTime{},
-		Year:      2020,
-		Message:   "message1",
+		Id:          1,
+		CreatedAt:   now,
+		UpdatedAt:   now,
+		DeletedAt:   sql.NullTime{},
+		PublishedAt: sql.NullTime{},
+		Year:        2020,
+		Message:     "message1",
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select Unpublished
+//
+func TestSelectUnpublishedAchieves(t *testing.T) {
+	db, mock, repo := initAchieveTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, 2020, "message1")
+	mock.ExpectPrepare("^SELECT (.+) FROM achievements WHERE published_at IS NULL").ExpectQuery().WillReturnRows(rows)
+	got, err := repo.SelectUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Achieve{
+		{
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   sql.NullTime{},
+			PublishedAt: sql.NullTime{},
+			Year:        2020,
+			Message:     "message1",
+		},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -172,7 +211,7 @@ func TestDeleteAchieve(t *testing.T) {
 	}
 }
 
-func TestPublishAchieve(t *testing.T) {
+func TestPublishAchieves(t *testing.T) {
 	db, mock, repo := initAchieveTest(t)
 	defer db.Close()
 
