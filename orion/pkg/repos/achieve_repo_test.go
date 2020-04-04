@@ -65,9 +65,9 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message"}).
-		AddRow(2, now, now, sql.NullTime{}, 2021, "1600 on SAT").
-		AddRow(1, now, now, sql.NullTime{}, 2020, "message1")
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+		AddRow(2, now, now, sql.NullTime{}, sql.NullTime{}, 2021, "1600 on SAT").
+		AddRow(1, now, now, sql.NullTime{}, sql.NullTime{}, 2020, "message1")
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").ExpectQuery().WillReturnRows(rows)
 	got, err := repo.SelectAllGroupedByYear()
 	if err != nil {
@@ -80,12 +80,13 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			Year: 2021,
 			Achievements: []domains.Achieve{
 				{
-					Id:        2,
-					CreatedAt: now,
-					UpdatedAt: now,
-					DeletedAt: sql.NullTime{},
-					Year:      2021,
-					Message:   "1600 on SAT",
+					Id:          2,
+					CreatedAt:   now,
+					UpdatedAt:   now,
+					DeletedAt:   sql.NullTime{},
+					PublishedAt: sql.NullTime{},
+					Year:        2021,
+					Message:     "1600 on SAT",
 				},
 			},
 		},
@@ -93,12 +94,13 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			Year: 2020,
 			Achievements: []domains.Achieve{
 				{
-					Id:        1,
-					CreatedAt: now,
-					UpdatedAt: now,
-					DeletedAt: sql.NullTime{},
-					Year:      2020,
-					Message:   "message1",
+					Id:          1,
+					CreatedAt:   now,
+					UpdatedAt:   now,
+					DeletedAt:   sql.NullTime{},
+					PublishedAt: sql.NullTime{},
+					Year:        2020,
+					Message:     "message1",
 				},
 			},
 		},

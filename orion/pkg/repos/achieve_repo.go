@@ -18,8 +18,9 @@ type achieveRepo struct {
 type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Achieve, error)
-	SelectById(uint) (domains.Achieve, error)
 	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
+	SelectById(uint) (domains.Achieve, error)
+	SelectUnpublished() ([]domains.Achieve, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -61,27 +62,6 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 	return results, nil
 }
 
-func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
-	statement := "SELECT * FROM achievements WHERE id=?"
-	stmt, err := ar.db.Prepare(statement)
-	if err != nil {
-		return domains.Achieve{}, err
-	}
-	defer stmt.Close()
-
-	var achieve domains.Achieve
-	row := stmt.QueryRow(id)
-	errScan := row.Scan(
-		&achieve.Id,
-		&achieve.CreatedAt,
-		&achieve.UpdatedAt,
-		&achieve.DeletedAt,
-		&achieve.PublishedAt,
-		&achieve.Year,
-		&achieve.Message)
-	return achieve, errScan
-}
-
 func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
 	results := make([]domains.AchieveYearGroup, 0)
 
@@ -105,6 +85,7 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 			&achieve.CreatedAt,
 			&achieve.UpdatedAt,
 			&achieve.DeletedAt,
+			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message); errScan != nil {
 			return results, errScan
@@ -121,6 +102,27 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 	results = append(results, domains.AchieveYearGroup{Year: curYear, Achievements: row})
 
 	return results, nil
+}
+
+func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
+	statement := "SELECT * FROM achievements WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
+	if err != nil {
+		return domains.Achieve{}, err
+	}
+	defer stmt.Close()
+
+	var achieve domains.Achieve
+	row := stmt.QueryRow(id)
+	errScan := row.Scan(
+		&achieve.Id,
+		&achieve.CreatedAt,
+		&achieve.UpdatedAt,
+		&achieve.DeletedAt,
+		&achieve.PublishedAt,
+		&achieve.Year,
+		&achieve.Message)
+	return achieve, errScan
 }
 
 func (ar *achieveRepo) SelectUnpublished() ([]domains.Achieve, error) {
