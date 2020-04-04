@@ -7,33 +7,33 @@ import (
 	"net/http"
 )
 
-func callServices() (domains.Domains, error) {
+func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 	// programList, err := services.ProgramService.GetUnpublished()
 	// if err != nil {
-	// 	return domains.Domains{}, err
+	// 	return domains.UnpublishedDomains{}, err
 	// }
 	// classList, err := services.ClassService.GetUnpublished()
 	// if err != nil {
-	// 	return domains.Domains{}, err
+	// 	return domains.UnpublishedDomains{}, err
 	// }
 	// locationList, err := services.LocationService.GetUnpublished()
 	// if err != nil {
-	// 	return domains.Domains{}, err
+	// 	return domains.UnpublishedDomains{}, err
 	// }
 	achieveList, err := services.AchieveService.GetUnpublished()
 	if err != nil {
-		return domains.Domains{}, err
+		return domains.UnpublishedDomains{}, err
 	}
 	// semesterList, err := services.SemesterService.GetUnpublished()
 	// if err != nil {
-	// 	return domains.Domains{}, err
+	// 	return domains.UnpublishedDomains{}, err
 	// }
 	// sessionList, err := services.SessionService.GetUnpublished()
 	// if err != nil {
-	// 	return domains.Domains{}, err
+	// 	return domains.UnpublishedDomains{}, err
 	// }
 
-	allDomains := domains.Domains{
+	unpublishedDomains := domains.UnpublishedDomains{
 		// Programs: programList,
 		// Classes:   classList,
 		// Locations: locationList,
@@ -42,15 +42,15 @@ func callServices() (domains.Domains, error) {
 		// Sessions:  sessionList,
 	}
 
-	return allDomains, nil
+	return unpublishedDomains, nil
 }
 
 func GetAllUnpublished(c *gin.Context) {
-	allDomains, err := callServices()
+	unpublishedDomains, err := callGetUnpublishedServices()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, allDomains)
+		c.JSON(http.StatusOK, unpublishedDomains)
 	}
 }

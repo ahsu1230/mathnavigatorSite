@@ -1,6 +1,6 @@
 package domains
 
-type Domains struct {
+type UnpublishedDomains struct {
 	Programs  []Program  `json:"programs"`
 	Classes   []Class    `json:"classes"`
 	Locations []Location `json:"locations"`

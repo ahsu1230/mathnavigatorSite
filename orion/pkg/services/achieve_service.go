@@ -22,8 +22,8 @@ type achieveServiceInterface interface {
 // Struct that implements interface
 type achieveService struct{}
 
-func (as *achieveService) GetAll(published bool) ([]domains.Achieve, error) {
-	achieves, err := repos.AchieveRepo.SelectAll(published)
+func (as *achieveService) GetAll(publishedOnly bool) ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectAll(publishedOnly)
 	if err != nil {
 		return nil, err
 	}

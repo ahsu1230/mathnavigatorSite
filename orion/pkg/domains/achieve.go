@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,13 +9,13 @@ import (
 var TABLE_ACHIEVEMENTS = "achievements"
 
 type Achieve struct {
-	Id          uint         `json:"id"`
-	CreatedAt   time.Time    `json:"-" db:"created_at"`
-	UpdatedAt   time.Time    `json:"-" db:"updated_at"`
-	DeletedAt   sql.NullTime `json:"-" db:"deleted_at"`
-	PublishedAt sql.NullTime `json:"-" db:"published_at"`
-	Year        uint         `json:"year"`
-	Message     string       `json:"message"`
+	Id          uint      `json:"id"`
+	CreatedAt   time.Time `json:"-" db:"created_at"`
+	UpdatedAt   time.Time `json:"-" db:"updated_at"`
+	DeletedAt   NullTime  `json:"-" db:"deleted_at"`
+	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
+	Year        uint      `json:"year"`
+	Message     string    `json:"message"`
 }
 
 type AchieveYearGroup struct {

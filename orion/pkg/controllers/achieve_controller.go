@@ -9,9 +9,9 @@ import (
 
 func GetAllAchievements(c *gin.Context) {
 	// Incoming optional parameter
-	published := c.Query("published")
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	achieveList, err := services.AchieveService.GetAll(published == "true")
+	achieveList, err := services.AchieveService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -29,7 +29,7 @@ func GetAchievementById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, achieve)
+		c.JSON(http.StatusOK, &achieve)
 	}
 }
 
