@@ -31,11 +31,11 @@ func (ar *achieveRepo) Initialize(db *sql.DB) {
 	ar.db = db
 }
 
-func (ar *achieveRepo) SelectAll(published bool) ([]domains.Achieve, error) {
+func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) {
 	results := make([]domains.Achieve, 0)
 
 	var query string
-	if published {
+	if publishedOnly {
 		query = "SELECT * FROM achievements WHERE published_at IS NOT NULL"
 	} else {
 		query = "SELECT * FROM achievements"
