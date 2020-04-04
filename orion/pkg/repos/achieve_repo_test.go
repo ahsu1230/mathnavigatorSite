@@ -57,6 +57,61 @@ func TestSelectAllAchieves(t *testing.T) {
 }
 
 //
+// Select All By Year
+//
+func TestSelectAllGroupedByYear(t *testing.T) {
+	db, mock, repo := initAchieveTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message"}).
+		AddRow(2, now, now, sql.NullTime{}, 2021, "1600 on SAT").
+		AddRow(1, now, now, sql.NullTime{}, 2020, "message1")
+	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").ExpectQuery().WillReturnRows(rows)
+	got, err := repo.SelectAllGroupedByYear()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.AchieveYearGroup{
+		{
+			Year: 2021,
+			Achievements: []domains.Achieve{
+				{
+					Id:        2,
+					CreatedAt: now,
+					UpdatedAt: now,
+					DeletedAt: sql.NullTime{},
+					Year:      2021,
+					Message:   "1600 on SAT",
+				},
+			},
+		},
+		{
+			Year: 2020,
+			Achievements: []domains.Achieve{
+				{
+					Id:        1,
+					CreatedAt: now,
+					UpdatedAt: now,
+					DeletedAt: sql.NullTime{},
+					Year:      2020,
+					Message:   "message1",
+				},
+			},
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select One
 //
 func TestSelectAchieve(t *testing.T) {

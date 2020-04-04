@@ -34,7 +34,6 @@ const ProgramEdit = () => <ProgramEditPage/>;
 const ProgramEditMatch = ({match}) => <ProgramEditPage programId={match.params.programId}/>;
 const Location = () => <LocationPage/>;
 const LocationEdit = () => <LocationEditPage/>;
-const LocationEditMatch = ({match}) => <LocationEditPage locationId={match.params.locationId}/>;
 const LocationEditMatch = ({match}) => <LocationEditPage locId={match.params.locId}/>;
 const Semester = () => <SemesterPage/>;
 const SemesterEdit = () => <SemesterEditPage/>;

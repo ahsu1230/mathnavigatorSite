@@ -19,7 +19,7 @@ type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.Achieve, error)
 	SelectById(uint) (domains.Achieve, error)
-	SelectUnpublished() ([]domains.Achieve, error)
+	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
@@ -80,6 +80,47 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 		&achieve.Year,
 		&achieve.Message)
 	return achieve, errScan
+}
+
+func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
+	results := make([]domains.AchieveYearGroup, 0)
+
+	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var curYear uint = 0
+	row := make([]domains.Achieve, 0)
+	for rows.Next() {
+		var achieve domains.Achieve
+		if errScan := rows.Scan(
+			&achieve.Id,
+			&achieve.CreatedAt,
+			&achieve.UpdatedAt,
+			&achieve.DeletedAt,
+			&achieve.Year,
+			&achieve.Message); errScan != nil {
+			return results, errScan
+		}
+		if achieve.Year != curYear {
+			if len(row) > 0 {
+				results = append(results, domains.AchieveYearGroup{Year: curYear, Achievements: row})
+				row = nil
+			}
+			curYear = achieve.Year
+		}
+		row = append(row, achieve)
+	}
+	results = append(results, domains.AchieveYearGroup{Year: curYear, Achievements: row})
+
+	return results, nil
 }
 
 func (ar *achieveRepo) SelectUnpublished() ([]domains.Achieve, error) {

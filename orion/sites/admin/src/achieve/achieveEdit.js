@@ -4,6 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import API from '../api.js';
+import { Modal } from '../modals/modal.js';
+import { OkayModal } from '../modals/okayModal.js';
+import { YesNoModal } from '../modals/yesnoModal.js';
 
 export class AchieveEditPage extends React.Component {
     constructor(props) {
@@ -22,7 +25,7 @@ export class AchieveEditPage extends React.Component {
 
     this.onDeleted = this.onDeleted.bind(this);
     this.onSaved = this.onSaved.bind(this);
-
+    this.onDismissModal = this.onDismissModal.bind(this);
     }
 
     componentDidMount() {
@@ -49,19 +52,15 @@ export class AchieveEditPage extends React.Component {
     }
 
     onClickDelete() {
-        const Id = this.props.Id;
-        API.delete("api/achievements/v1/achievement/" + Id)
-        .then(res => {
-            window.location.hash = "achievements";
-        })
+        this.setState({ showDeleteModal: true });
     }
 
     onClickSave() {
         let achieve = {
             year: parseInt(this.state.inputYear),
-            message: this.state.inputMessage,
+            message: this.state.inputMessage
         };
-        let successCallback = () => this.onSaved();
+        let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) => alert("Could not save achievement: " + err.response.data);
         if (this.state.isEdit) {
             API.post("api/achievements/v1/achievement/" + this.props.Id, achieve)
@@ -75,6 +74,7 @@ export class AchieveEditPage extends React.Component {
     }
 
     onSaved() {
+        this.onDismissModal();
         window.location.hash = "achievements";
     }
 
@@ -84,6 +84,14 @@ export class AchieveEditPage extends React.Component {
         .then(res => {
             window.location.hash = "achievements";
         })
+        .finally(() => this.onDismissModal());
+    }
+
+    onDismissModal() {
+      this.setState({
+        showDeleteModal: false,
+        showSaveModal: false
+      });
     }
 
     render() {
@@ -100,8 +108,29 @@ export class AchieveEditPage extends React.Component {
           );
         }
 
+        let modalDiv;
+        let modalContent;
+        let showModal;
+        if (this.state.showDeleteModal) {
+          showModal = this.state.showDeleteModal;
+          modalContent = <YesNoModal text={"Are you sure you want to delete?"}
+                                  onAccept={this.onDeleted}
+                                  onReject={this.onDismissModal}/>
+        }
+        if (this.state.showSaveModal) {
+          showModal = this.state.showSaveModal;
+          modalContent = <OkayModal text={"Achievement information saved!"}
+                                  onOkay={this.onSaved}/>;
+        }
+        if (modalContent) {
+          modalDiv = <Modal content={modalContent}
+    								show={showModal}
+    								onDismiss={this.onDismissModal}/>;
+        }
+
         return (
             <div id="view-achieve-edit">
+            {modalDiv}
             <h2>{title}</h2>
             <h4>Year</h4>
             <input value={this.state.inputYear}

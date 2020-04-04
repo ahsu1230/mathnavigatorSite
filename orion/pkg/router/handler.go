@@ -52,6 +52,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAchieves := h.Engine.Group("api/achievements/")
 	{
 		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
+		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
 		apiAchieves.GET("/v1/publish", controllers.GetUnpublishedAchievements)
 		apiAchieves.POST("/v1/publish", controllers.PublishAchievements)
 		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
