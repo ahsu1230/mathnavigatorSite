@@ -52,4 +52,5 @@ jobs:
           name: Run Enzyme React tests
           command: |
             cd orion/sites/admin
+            npm install
             npm run test

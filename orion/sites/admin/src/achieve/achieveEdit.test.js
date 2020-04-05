@@ -73,7 +73,7 @@ describe("test", () => {
         expect(modal.prop("show")).toBe(true);
         expect(modal.prop("onDismiss")).toBeDefined();
         // TODO: Test if prop "content" is an OkayModal
-        expect(modal.prop("content1")).toBeDefined();
+        expect(modal.prop("content")).toBeDefined();
         // expect(modal.prop("content")).toContain(<OkayModal/>);
     });
 });
