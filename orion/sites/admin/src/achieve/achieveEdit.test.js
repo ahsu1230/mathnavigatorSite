@@ -1,6 +1,7 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import { AchieveEditPage } from "./achieveEdit.js";
+import { OkayModal } from "../modals/okayModal.js";
 
 describe("test", () => {
     const component = shallow(<AchieveEditPage />);
@@ -48,8 +49,10 @@ describe("test", () => {
         // After state
         let modal = component.find("Modal");
         expect(modal.prop("show")).toBe(true);
-        expect(modal.prop("content")).toBeDefined();
         expect(modal.prop("onDismiss")).toBeDefined();
+        // TODO: Test if prop "content" is a YesNoModal
+        expect(modal.prop("content")).toBeDefined();
+        // expect(modal.prop("content")).toContain(<YesNoModal/>);
     });
 
     test("renders saveModal", () => {
@@ -68,7 +71,9 @@ describe("test", () => {
         // After state
         let modal = component.find("Modal");
         expect(modal.prop("show")).toBe(true);
-        expect(modal.prop("content")).toBeDefined();
         expect(modal.prop("onDismiss")).toBeDefined();
+        // TODO: Test if prop "content" is an OkayModal
+        expect(modal.prop("content1")).toBeDefined();
+        // expect(modal.prop("content")).toContain(<OkayModal/>);
     });
 });
