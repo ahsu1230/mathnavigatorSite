@@ -10,6 +10,8 @@
     "build-local": "webpack --config webpack.local.js",
     "start": "webpack-dev-server --open --config webpack.local.js",
     "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "try": "webpack --display-error-details"
   },
   "repository": {
