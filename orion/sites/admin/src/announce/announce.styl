@@ -12,40 +12,42 @@
     margin: spacing4x 0
     line-height: lineHeight3
     font-size: fontSize3
+  
   & ul
+    margin: 0
     padding: 0
-
-  & .announce-lists
-    display: inline-block
     list-style: none
-    padding-left: 0
-    height: lineHeight6
+
+  & .announce-list-row
+    display: block
+    position: relative
+    padding: spacing2x 0
     border-bottom: 1px solid colorGrayLight
-    line-height: lineHeight6
+
+    &.subheader
+      border-bottom: 2px solid colorGrayLight
 
     & li
         display: inline-block
-    & div
-        display: inline-block
-    & p
-        display: inline-block
+        vertical-align: text-top
 
-#view-announce
-      & .li-small
-        width: spacing8x
-        color: colorTurquoise
+        &.li-med
+          width: spacing24x
+        &.li-large
+          width: spacing48x
 
-      & .li-med
-          width: spacing16x
+        & div
+          line-height: lineHeight1
 
-      & .li-large
-          width: spacing64x
+    & a
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
 
   .announcement-button
     display: inline-block
-    width: spacing32x
-    height: lineHeight6
-    line-height: lineHeight6
+    margin-top: spacing4x
+    padding: spacing2x spacing4x
     border-radius: spacing1x
     background-color: colorTurquoise
     text-align: center

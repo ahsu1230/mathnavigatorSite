@@ -25,7 +25,7 @@ const AchieveEditMatch = ({ match }) => (
 const Announce = () => <AnnouncePage />;
 const AnnounceEdit = () => <AnnounceEditPage />;
 const AnnounceEditMatch = ({ match }) => (
-    <AnnounceEditPage announceId={match.params.AnnounceId} />
+    <AnnounceEditPage announceId={match.params.announceId} />
 );
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
