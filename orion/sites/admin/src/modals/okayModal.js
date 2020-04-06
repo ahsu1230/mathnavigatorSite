@@ -1,7 +1,7 @@
-'use strict';
-require('./okayModal.styl');
-import React from 'react';
-import ReactDOM from 'react-dom';
+"use strict";
+require("./okayModal.styl");
+import React from "react";
+import ReactDOM from "react-dom";
 
 export class OkayModal extends React.Component {
   render() {

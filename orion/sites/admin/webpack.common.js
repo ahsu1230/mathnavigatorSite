@@ -1,10 +1,10 @@
-var webpack = require('webpack');
+var webpack = require("webpack");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    publicPath: '/dist',
-    filename: './bundle.js'
+    publicPath: "/dist",
+    filename: "./bundle.js",
   },
   module: {
     rules: [
@@ -12,13 +12,13 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.styl$/,
-        loader: "style-loader!css-loader!stylus-loader"
-      }
-    ]
-  }
+        loader: "style-loader!css-loader!stylus-loader",
+      },
+    ],
+  },
 };

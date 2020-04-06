@@ -1,7 +1,7 @@
-'use strict';
-require('./yesnoModal.styl');
-import React from 'react';
-import ReactDOM from 'react-dom';
+"use strict";
+require("./yesnoModal.styl");
+import React from "react";
+import ReactDOM from "react-dom";
 
 export class YesNoModal extends React.Component {
   render() {
@@ -13,8 +13,12 @@ export class YesNoModal extends React.Component {
     return (
       <div id="modal-view-yesno">
         <p>{text}</p>
-        <button className="reject" onClick={onReject}>{rejectText}</button>
-        <button className="accept" onClick={onAccept}>{acceptText}</button>
+        <button className="reject" onClick={onReject}>
+          {rejectText}
+        </button>
+        <button className="accept" onClick={onAccept}>
+          {acceptText}
+        </button>
       </div>
     );
   }

@@ -1,52 +1,54 @@
-'use strict';
-require('./header.styl');
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+"use strict";
+require("./header.styl");
+import React from "react";
+import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
 
 const LinkMap = {
-  "site": [
+  site: [
     {
       title: "Programs",
-      url: "/programs"
+      url: "/programs",
     },
     {
       title: "Classes",
-      url: "/classes"
+      url: "/classes",
     },
     {
       title: "Announcements",
-      url: "/announcements"
+      url: "/announcements",
     },
     {
       title: "Achievements",
-      url: "/achievements"
+      url: "/achievements",
     },
     {
       title: "Locations",
-      url: "/locations"
+      url: "/locations",
     },
     {
       title: "Semesters",
-      url: "/semester"
-    }
-  ]
-}
+      url: "/semester",
+    },
+  ],
+};
 
 export class HeaderSection extends React.Component {
-	render() {
-		return (
+  render() {
+    return (
       <div id="view-header">
-        <h2><Link to="/">Math Navigator Admin</Link></h2>
+        <h2>
+          <Link to="/">Math Navigator Admin</Link>
+        </h2>
         <div id="header-left">
-          <HeaderDropdown id={"site"} title={"Site"}/>
-          <HeaderLink title={"Accounts"} url={"/accounts"}/>
-          <HeaderLink title={"Emails"} url={"/emails"}/>
+          <HeaderDropdown id={"site"} title={"Site"} />
+          <HeaderLink title={"Accounts"} url={"/accounts"} />
+          <HeaderLink title={"Emails"} url={"/emails"} />
           <span>Sign Out</span>
         </div>
       </div>
-		);
-	}
+    );
+  }
 }
 
 class HeaderLink extends React.Component {
@@ -65,7 +67,7 @@ class HeaderDropdown extends React.Component {
   render() {
     const title = this.props.title;
     const links = LinkMap[this.props.id].map((link, index) => {
-      return <HeaderDropdownRow key={index} link={link}/>
+      return <HeaderDropdownRow key={index} link={link} />;
     });
 
     return (

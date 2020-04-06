@@ -1,12 +1,12 @@
-'use strict';
-require('./programEdit.styl');
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
-import API from '../api.js';
-import { Modal } from '../modals/modal.js';
-import { OkayModal } from '../modals/okayModal.js';
-import { YesNoModal } from '../modals/yesnoModal.js';
+"use strict";
+require("./programEdit.styl");
+import React from "react";
+import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
+import API from "../api.js";
+import { Modal } from "../modals/modal.js";
+import { OkayModal } from "../modals/okayModal.js";
+import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class ProgramEditPage extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export class ProgramEditPage extends React.Component {
       inputProgramName: "",
       inputGrade1: 0,
       inputGrade2: 0,
-      inputDescription: ""
+      inputDescription: "",
     };
 
     // input onChange
@@ -40,24 +40,23 @@ export class ProgramEditPage extends React.Component {
   componentDidMount() {
     const programId = this.props.programId;
     if (programId) {
-      API.get("api/programs/v1/program/" + programId)
-        .then(res => {
-          const program = res.data;
-          this.setState({
-            oldProgramId: program.programId,
-            inputProgramId: program.programId,
-            inputProgramName: program.name,
-            inputGrade1: program.grade1,
-            inputGrade2: program.grade2,
-            inputDescription: program.description,
-            isEdit: true
-          });
+      API.get("api/programs/v1/program/" + programId).then((res) => {
+        const program = res.data;
+        this.setState({
+          oldProgramId: program.programId,
+          inputProgramId: program.programId,
+          inputProgramName: program.name,
+          inputGrade1: program.grade1,
+          inputGrade2: program.grade2,
+          inputDescription: program.description,
+          isEdit: true,
         });
+      });
     }
   }
 
   handleChange(event, value) {
-    this.setState({[value]: event.target.value});
+    this.setState({ [value]: event.target.value });
   }
 
   onClickCancel() {
@@ -74,26 +73,27 @@ export class ProgramEditPage extends React.Component {
       name: this.state.inputProgramName,
       grade1: parseInt(this.state.inputGrade1),
       grade2: parseInt(this.state.inputGrade2),
-      description: this.state.inputDescription
+      description: this.state.inputDescription,
     };
 
     let successCallback = () => this.setState({ showSaveModal: true });
-    let failCallback = (err) => alert("Could not save program: " + err.response.data);
+    let failCallback = (err) =>
+      alert("Could not save program: " + err.response.data);
     if (this.state.isEdit) {
       API.post("api/programs/v1/program/" + this.state.oldProgramId, program)
-        .then(res => successCallback())
-        .catch(err => failCallback(err));
+        .then((res) => successCallback())
+        .catch((err) => failCallback(err));
     } else {
       API.post("api/programs/v1/create", program)
-        .then(res => successCallback())
-        .catch(err => failCallback(err));
+        .then((res) => successCallback())
+        .catch((err) => failCallback(err));
     }
   }
 
   onDeleted() {
     const programId = this.props.programId;
     API.delete("api/programs/v1/program/" + programId)
-      .then(res => {
+      .then((res) => {
         window.location.hash = "programs";
       })
       .finally(() => this.onDismissModal());
@@ -107,7 +107,7 @@ export class ProgramEditPage extends React.Component {
   onDismissModal() {
     this.setState({
       showDeleteModal: false,
-      showSaveModal: false
+      showSaveModal: false,
     });
   }
 
@@ -130,19 +130,28 @@ export class ProgramEditPage extends React.Component {
     let showModal;
     if (this.state.showDeleteModal) {
       showModal = this.state.showDeleteModal;
-      modalContent = <YesNoModal text={"Are you sure you want to delete?"}
-                              onAccept={this.onDeleted}
-                              onReject={this.onDismissModal}/>
+      modalContent = (
+        <YesNoModal
+          text={"Are you sure you want to delete?"}
+          onAccept={this.onDeleted}
+          onReject={this.onDismissModal}
+        />
+      );
     }
     if (this.state.showSaveModal) {
       showModal = this.state.showSaveModal;
-      modalContent = <OkayModal text={"Program information saved!"}
-                              onOkay={this.onSaved}/>;
+      modalContent = (
+        <OkayModal text={"Program information saved!"} onOkay={this.onSaved} />
+      );
     }
     if (modalContent) {
-      modalDiv = <Modal content={modalContent}
-								show={showModal}
-								onDismiss={this.onDismissModal}/>;
+      modalDiv = (
+        <Modal
+          content={modalContent}
+          show={showModal}
+          onDismiss={this.onDismissModal}
+        />
+      );
     }
 
     return (
@@ -150,24 +159,38 @@ export class ProgramEditPage extends React.Component {
         {modalDiv}
         <h2>{title}</h2>
         <h4>Program Id</h4>
-        <input value={this.state.inputProgramId}
-                onChange={(e) => this.handleChange(e, "inputProgramId")}/>
+        <input
+          value={this.state.inputProgramId}
+          onChange={(e) => this.handleChange(e, "inputProgramId")}
+        />
         <h4>Program Name</h4>
-        <input value={this.state.inputProgramName}
-                onChange={(e) => this.handleChange(e, "inputProgramName")}/>
+        <input
+          value={this.state.inputProgramName}
+          onChange={(e) => this.handleChange(e, "inputProgramName")}
+        />
         <h4>Grade1</h4>
-        <input value={this.state.inputGrade1}
-                onChange={(e) => this.handleChange(e, "inputGrade1")}/>
+        <input
+          value={this.state.inputGrade1}
+          onChange={(e) => this.handleChange(e, "inputGrade1")}
+        />
         <h4>Grade2</h4>
-        <input value={this.state.inputGrade2}
-                onChange={(e) => this.handleChange(e, "inputGrade2")}/>
+        <input
+          value={this.state.inputGrade2}
+          onChange={(e) => this.handleChange(e, "inputGrade2")}
+        />
         <h4>Description</h4>
-        <textarea value={this.state.inputDescription}
-                onChange={(e) => this.handleChange(e, "inputDescription")}/>
+        <textarea
+          value={this.state.inputDescription}
+          onChange={(e) => this.handleChange(e, "inputDescription")}
+        />
 
         <div className="buttons">
-          <button className="btn-save" onClick={this.onClickSave}>Save</button>
-          <button className="btn-cancel" onClick={this.onClickCancel}>Cancel</button>
+          <button className="btn-save" onClick={this.onClickSave}>
+            Save
+          </button>
+          <button className="btn-cancel" onClick={this.onClickCancel}>
+            Cancel
+          </button>
           {deleteButton}
         </div>
       </div>
