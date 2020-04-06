@@ -8,10 +8,10 @@
   color: colorBlackDark
 
   & h1
+    display: inline-block
     margin: spacing4x 0
     line-height: lineHeight3
     font-size: fontSize3
-    display: inline-block
 
   & p
     display: inline-block
@@ -39,6 +39,10 @@
   line-height: 60px
   border-bottom: 1px solid colorGrayLight
 
+  & input
+    position: relative
+    left: 25px
+
   & div
     display: inline-block
 
@@ -59,20 +63,17 @@
 #view-program #list-buttons div
     display: inline-block
 
+    & button
+        display: inline-block
+        margin: spacing2x 0
+        padding: 0.75em
+        border-radius: 10px
+        background-color: colorTurquoise
+        color: white
+
 a.add-program
     display: inline-block
-    margin: spacing2x 0
-    padding: 0.75em;
+    padding: 0
     border-radius: 10px;
     background-color: colorTurquoise
     color: white
-
-a.publish
-    display: inline-block
-    margin: spacing2x 0
-    padding: 0.75em;
-    border-radius: 10px
-    background-color: colorTurquoise
-    color: white
-    position: relative;
-    right: 5px;

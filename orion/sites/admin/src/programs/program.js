@@ -30,6 +30,10 @@ export class ProgramPage extends React.Component {
     }
   }
 
+  onClickPublish() {
+      console.log("clicked publish");
+  }
+
   render() {
     const rows = this.state.list.map((row, index) => {
       return <ProgramRow key={index} row={row} />;
@@ -66,10 +70,8 @@ export class ProgramPage extends React.Component {
             </button>
           </div>
           <div className="li-med">
-            <button>
-              <Link className="publish" to={"/programs/add"}>
+            <button className="publish" onClick={this.onClickPublish}>
                 Publish
-              </Link>
             </button>
           </div>
         </ul>
@@ -79,23 +81,19 @@ export class ProgramPage extends React.Component {
 }
 
 class ProgramRow extends React.Component {
+  renderCheckbox(isUnpublished) {
+      let checkbox = <div> </div>;
+      if (isUnpublished) {
+          return (checkbox = (<input className="li-small" type="checkbox" name="unpublished" onClick={this.onClickBox}/>));
+      } else {
+          return (checkbox = <div className="li-small"></div>);
+      }
+  }
+
   render() {
     const row = this.props.row;
     const url = "/program/" + row.programId + "/edit";
-    let isUnpublished = true;
-    let checkbox = <div></div>;
-    if (isUnpublished) {
-      checkbox = (
-        <input
-          className="li-small"
-          type="checkbox"
-          name="unpublished"
-          onClick={this.onClickBox}
-        />
-      );
-    } else {
-      checkbox = <div className="li-small"></div>;
-    }
+    let checkbox = this.renderCheckbox(true);
     return (
       <li className="program-row">
         {checkbox}
