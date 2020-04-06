@@ -152,33 +152,17 @@ export class AnnounceEditPage extends React.Component {
 
         return (
             <div id="view-announce-edit">
-<<<<<<< HEAD
-                <h2>Add Announcement</h2>
-                <h4>Date</h4> {/* TODO: will be post date later*/}
-                <input
-                    value={this.state.inputDate}
-                    onChange={(e) => this.handleChange(e, "inputDate")}
-                />
-=======
                 {modalDiv}
                 <h2>{title}</h2>
 
                 <h4>Post Date</h4>
                 <p>{this.state.inputPostedAt.toLocaleString()}</p>
 
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
                 <h4>Author</h4>
                 <input
                     value={this.state.inputAuthor}
                     onChange={(e) => this.handleChange(e, "inputAuthor")}
                 />
-<<<<<<< HEAD
-                <h4>Message</h4>
-                <input
-                    value={this.state.inputMessage}
-                    onChange={(e) => this.handleChange(e, "inputMessage")}
-                />
-=======
 
                 <h4>Message</h4>
                 <textarea
@@ -186,7 +170,6 @@ export class AnnounceEditPage extends React.Component {
                     onChange={(e) => this.handleChange(e, "inputMessage")}
                 />
 
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save

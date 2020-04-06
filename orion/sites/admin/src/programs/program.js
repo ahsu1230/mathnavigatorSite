@@ -21,7 +21,6 @@ export class ProgramPage extends React.Component {
         });
     }
 
-<<<<<<< HEAD
     onClickSelectAll() {
         var items = document.getElementsByName("unpublished");
         for (var i = 0; i < items.length; i++) {
@@ -35,14 +34,11 @@ export class ProgramPage extends React.Component {
         console.log("clicked publish");
     }
 
-=======
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
     render() {
         const rows = this.state.list.map((row, index) => {
             return <ProgramRow key={index} row={row} />;
         });
         const numRows = rows.length;
-<<<<<<< HEAD
         let numUnpublished = 0;
         let numSelected = 0;
         return (
@@ -58,23 +54,15 @@ export class ProgramPage extends React.Component {
                 <ul id="list-heading">
                     <button
                         className="li-small"
-                        onClick={this.onClickSelectAll}
-                    >
+                        onClick={this.onClickSelectAll}>
                         Select All
                     </button>
-=======
-        return (
-            <div id="view-program">
-                <h1>All Programs ({numRows})</h1>
-                <ul id="list-heading">
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
                     <li className="li-med">ProgramKey</li>
                     <li className="li-med">Name</li>
                     <li className="li-small">Grade1</li>
                     <li className="li-small">Grade2</li>
                 </ul>
                 <ul id="list-rows">{rows}</ul>
-<<<<<<< HEAD
                 <ul id="list-buttons">
                     <div className="li-med">
                         <button>
@@ -86,24 +74,17 @@ export class ProgramPage extends React.Component {
                     <div className="li-med">
                         <button
                             className="publish"
-                            onClick={this.onClickPublish}
-                        >
+                            onClick={this.onClickPublish}>
                             Publish
                         </button>
                     </div>
                 </ul>
-=======
-                <Link className="add-program" to={"/programs/add"}>
-                    Add Program
-                </Link>
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
             </div>
         );
     }
 }
 
 class ProgramRow extends React.Component {
-<<<<<<< HEAD
     renderCheckbox(isUnpublished) {
         let checkbox = <div> </div>;
         if (isUnpublished) {
@@ -127,13 +108,6 @@ class ProgramRow extends React.Component {
         return (
             <li className="program-row">
                 {checkbox}
-=======
-    render() {
-        const row = this.props.row;
-        const url = "/program/" + row.programId + "/edit";
-        return (
-            <li className="program-row">
->>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
                 <div className="li-med">{row.programId}</div>
                 <div className="li-med">{row.name}</div>
                 <div className="li-small">{row.grade1}</div>
