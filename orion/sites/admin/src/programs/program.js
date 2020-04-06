@@ -31,7 +31,7 @@ export class ProgramPage extends React.Component {
   }
 
   onClickPublish() {
-      console.log("clicked publish");
+    console.log("clicked publish");
   }
 
   render() {
@@ -71,7 +71,7 @@ export class ProgramPage extends React.Component {
           </div>
           <div className="li-med">
             <button className="publish" onClick={this.onClickPublish}>
-                Publish
+              Publish
             </button>
           </div>
         </ul>
@@ -82,12 +82,19 @@ export class ProgramPage extends React.Component {
 
 class ProgramRow extends React.Component {
   renderCheckbox(isUnpublished) {
-      let checkbox = <div> </div>;
-      if (isUnpublished) {
-          return (checkbox = (<input className="li-small" type="checkbox" name="unpublished" onClick={this.onClickBox}/>));
-      } else {
-          return (checkbox = <div className="li-small"></div>);
-      }
+    let checkbox = <div> </div>;
+    if (isUnpublished) {
+      return (checkbox = (
+        <input
+          className="li-small"
+          type="checkbox"
+          name="unpublished"
+          onClick={this.onClickBox}
+        />
+      ));
+    } else {
+      return (checkbox = <div className="li-small"></div>);
+    }
   }
 
   render() {
