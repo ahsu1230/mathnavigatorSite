@@ -51,7 +51,7 @@ export class AnnouncePage extends React.Component {
 
 class AnnounceRow extends React.Component {
     render() {
-        const announceId = this.props.row.Id;
+        const announceId = this.props.row.id;
         const date = new Date(this.props.row.postedAt);
         const dateLine1 = date.toDateString();
         const dateLine2 = date.toLocaleTimeString();
@@ -67,7 +67,7 @@ class AnnounceRow extends React.Component {
                 </li>
                 <li className="li-med"> {author} </li>
                 <li className="li-large"> {message} </li>
-                <Link to={url}> Edit </Link>
+                <Link to={url}>Edit</Link>
             </ul>
         );
     }

@@ -35,7 +35,7 @@ export class AnnounceEditPage extends React.Component {
                 (res) => {
                     const announce = res.data;
                     this.setState({
-                        announceId: announce.Id,
+                        announceId: announce.id,
                         inputPostedAt: new Date(announce.postedAt),
                         inputAuthor: announce.author,
                         inputMessage: announce.message,
@@ -153,7 +153,7 @@ export class AnnounceEditPage extends React.Component {
         return (
             <div id="view-announce-edit">
                 {modalDiv}
-                <h2>Add Announcement</h2>
+                <h2>{title}</h2>
 
                 <h4>Post Date</h4>
                 <p>{this.state.inputPostedAt.toLocaleString()}</p>
