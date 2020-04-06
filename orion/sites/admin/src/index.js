@@ -14,8 +14,8 @@ import { AnnouncePage } from "./announce/announce.js";
 import { AnnounceEditPage } from "./announce/announceEdit.js";
 import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
-import { SemesterPage } from "./semesters/semester.js";
-import { SemesterEditPage } from "./semesters/semesterEdit.js";
+import { SemesterPage } from "./semester/semester.js";
+import { SemesterEditPage } from "./semester/semesterEdit.js";
 
 const Achieve = () => <AchievePage />;
 const AchieveEdit = () => <AchieveEditPage />;
@@ -25,7 +25,7 @@ const AchieveEditMatch = ({ match }) => (
 const Announce = () => <AnnouncePage />;
 const AnnounceEdit = () => <AnnounceEditPage />;
 const AnnounceEditMatch = ({ match }) => (
-    <AnnounceEditPage announceId={match.params.AnnounceId} />
+    <AnnounceEditPage announceId={match.params.announceId} />
 );
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -87,7 +87,7 @@ class App extends React.Component {
                     <Route path="/locations/add" component={LocationEdit} />
                     <Route path="/locations" component={Location} />
                     <Route
-                        path="/semesters/:locationId/edit"
+                        path="/semesters/:semesterId/edit"
                         component={SemesterEditMatch}
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />

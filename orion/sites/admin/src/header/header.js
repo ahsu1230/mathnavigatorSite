@@ -28,7 +28,7 @@ const LinkMap = {
         },
         {
             title: "Semesters",
-            url: "/semester",
+            url: "/semesters",
         },
     ],
 };

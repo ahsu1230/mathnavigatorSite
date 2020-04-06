@@ -10,17 +10,17 @@ import (
 var TABLE_USERS = "users"
 
 type User struct {
-	Id         uint
-	CreatedAt  time.Time    `db:"created_at"`
-	UpdatedAt  time.Time    `db:"updated_at"`
-	DeletedAt  sql.NullTime `db:"deleted_at" json:"-"`
-	FirstName  string       `json:"firstName"`
-	LastName   string       `json:"lastName"`
-	MiddleName NullString   `json:"middleName"`
+	Id         uint         `json:"id"`
+	CreatedAt  time.Time    `json:"-" db:"created_at"`
+	UpdatedAt  time.Time    `json:"-" db:"updated_at"`
+	DeletedAt  sql.NullTime `json:"-" db:"deleted_at"`
+	FirstName  string       `json:"firstName" db:"first_name"`
+	LastName   string       `json:"lastName" db:"last_name"`
+	MiddleName NullString   `json:"middleName" db:"middle_name"`
 	Email      string       `json:"email"`
 	Phone      string       `json:"phone"`
-	IsGuardian bool         `db:"is_guardian" json:"isGuardian"`
-	GuardianId NullUint     `db:"guardian_id" json:"guardianId"`
+	IsGuardian bool         `json:"isGuardian" db:"is_guardian"`
+	GuardianId NullUint     `json:"guardianId" db:"guardian_id"`
 }
 
 // Class Methods
