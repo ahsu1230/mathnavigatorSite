@@ -9,7 +9,8 @@
     "build": "webpack --config webpack.prod.js",
     "build-local": "webpack --config webpack.local.js",
     "start": "webpack-dev-server --open --config webpack.local.js",
-    "try": "webpack --display-error-details"
+    "try": "webpack --display-error-details",
+    "prettify": "prettier --config \".prettierrc.yaml\" --write \"**/*.js\""
   },
   "repository": {
     "type": "git",
