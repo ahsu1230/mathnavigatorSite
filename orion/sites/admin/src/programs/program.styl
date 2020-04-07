@@ -60,8 +60,9 @@
   & .li-large
     width: 240px
 
-#view-program #list-buttons div
-    display: inline-block
+#view-program #list-buttons
+    display: block
+    position: relative
 
     & button
         display: inline-block
@@ -70,10 +71,15 @@
         border-radius: 10px
         background-color: colorTurquoise
         color: white
+        position: absolute
 
 a.add-program
     display: inline-block
-    padding: 0
-    border-radius: 10px;
+    border-radius: 10px
     background-color: colorTurquoise
     color: white
+    position: relative
+
+#view-program #list-buttons #publish
+    position: absolute
+    right: 0
