@@ -26,10 +26,6 @@ export class AchieveEditPage extends React.Component {
         this.onDeleted = this.onDeleted.bind(this);
         this.onSaved = this.onSaved.bind(this);
         this.onDismissModal = this.onDismissModal.bind(this);
-    handleChange(event, value) {
-        this.setState({ [value]: event.target.value });
-    }
-
     }
 
     componentDidMount() {
