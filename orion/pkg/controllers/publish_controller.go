@@ -7,6 +7,16 @@ import (
 	"net/http"
 )
 
+func GetAllUnpublished(c *gin.Context) {
+	unpublishedDomains, err := callGetUnpublishedServices()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, unpublishedDomains)
+	}
+}
+
 func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 	// programList, err := services.ProgramService.GetUnpublished()
 	// if err != nil {
@@ -43,14 +53,4 @@ func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 	}
 
 	return unpublishedDomains, nil
-}
-
-func GetAllUnpublished(c *gin.Context) {
-	unpublishedDomains, err := callGetUnpublishedServices()
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, unpublishedDomains)
-	}
 }

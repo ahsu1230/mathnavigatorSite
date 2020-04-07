@@ -18,16 +18,8 @@ import (
 func TestGetAllAchievements_Success(t *testing.T) {
 	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
-			createMockAchievement(
-				1,
-				2020,
-				"message1",
-			),
-			createMockAchievement(
-				2,
-				2021,
-				"message2",
-			),
+			createMockAchievement(1, 2020, "message1"),
+			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
 	services.AchieveService = &achieveService
@@ -56,16 +48,8 @@ func TestGetAllAchievements_Success(t *testing.T) {
 func TestGetPublishedAchievements_Success(t *testing.T) {
 	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
-			createMockAchievement(
-				1,
-				2020,
-				"message1",
-			),
-			createMockAchievement(
-				2,
-				2021,
-				"message2",
-			),
+			createMockAchievement(1, 2020, "message1"),
+			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
 	services.AchieveService = &achieveService
@@ -91,46 +75,6 @@ func TestGetPublishedAchievements_Success(t *testing.T) {
 }
 
 //
-// Test Get Unpublished
-//
-func TestGetUnpublishedAchievements_Success(t *testing.T) {
-	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
-		return []domains.Achieve{
-			createMockAchievement(
-				1,
-				2020,
-				"message1",
-			),
-			createMockAchievement(
-				2,
-				2021,
-				"message2",
-			),
-		}, nil
-	}
-	services.AchieveService = &achieveService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
-	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)
-	assert.EqualValues(t, "message1", unpublishedDomains.Achieves[0].Message)
-
-	assert.EqualValues(t, 2, unpublishedDomains.Achieves[1].Id)
-	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
-	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
-
-	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
-}
-
-//
 // Test Get All Grouped By Year
 //
 func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
@@ -139,21 +83,13 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 			{
 				Year: 2021,
 				Achievements: []domains.Achieve{
-					createMockAchievement(
-						1,
-						2021,
-						"message1",
-					),
+					createMockAchievement(1, 2021, "message1"),
 				},
 			},
 			{
 				Year: 2020,
 				Achievements: []domains.Achieve{
-					createMockAchievement(
-						2,
-						2020,
-						"message2",
-					),
+					createMockAchievement(2, 2020, "message2"),
 				},
 			},
 		}, nil
