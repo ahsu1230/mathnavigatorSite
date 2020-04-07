@@ -88,7 +88,6 @@ export class ProgramEditPage extends React.Component {
         .then((res) => successCallback())
         .catch((err) => failCallback(err));
     }
-  }
 
   onDeleted() {
     const programId = this.props.programId;

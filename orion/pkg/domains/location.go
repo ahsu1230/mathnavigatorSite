@@ -10,11 +10,11 @@ import (
 var TABLE_LOCATIONS = "locations"
 
 type Location struct {
-	Id        uint
-	CreatedAt time.Time    `db:"created_at"`
-	UpdatedAt time.Time    `db:"update_at"`
-	DeletedAt sql.NullTime `db:"deleted_at"`
-	LocId     string       `db:"loc_id" json:"locId"`
+	Id        uint         `json:"id"`
+	CreatedAt time.Time    `json:"-" db:"created_at"`
+	UpdatedAt time.Time    `json:"-" db:"updated_at"`
+	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
+	LocId     string       `json:"locId" db:"loc_id"`
 	Street    string       `json:"street"`
 	City      string       `json:"city"`
 	State     string       `json:"state"`
