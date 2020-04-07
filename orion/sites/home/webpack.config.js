@@ -2,6 +2,7 @@ var webpack = require("webpack");
 
 module.exports = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   entry: "./src/index.js",
   output: {
     filename: "./bundle.js",
@@ -22,6 +23,8 @@ module.exports = {
     ],
   },
 =======
+=======
+>>>>>>> c15f24dc4318ffae807d39aef3ef62f1b6948b26
     entry: "./src/index.js",
     output: {
         filename: "./bundle.js"
@@ -41,5 +44,8 @@ module.exports = {
             }
         ]
     }
+<<<<<<< HEAD
 >>>>>>> a27fb3b5070f8e1928daed628fb9a9038d1e89b9
+=======
+>>>>>>> c15f24dc4318ffae807d39aef3ef62f1b6948b26
 };

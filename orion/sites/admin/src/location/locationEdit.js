@@ -52,15 +52,14 @@ export class LocationEditPage extends React.Component {
             });
         }
     }
-  }
 
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
     }
 
-  onClickCancel() {
-    window.location.hash = "locations";
-  }
+    onClickCancel() {
+        window.location.hash = "locations";
+    }
 
     onClickDelete() {
         this.setState({ showDeleteModal: true });
@@ -99,7 +98,11 @@ export class LocationEditPage extends React.Component {
             window.location.hash = "locations";
         });
     }
-  }
+
+    onSaved() {
+        this.onDismissModal();
+        window.location.hash = "locations";
+    }
 
     onDismissModal() {
         this.setState({
@@ -199,66 +202,4 @@ export class LocationEditPage extends React.Component {
             </div>
         );
     }
-    if (this.state.showSaveModal) {
-      showModal = this.state.showSaveModal;
-      modalContent = (
-        <OkayModal text={"Location information saved!"} onOkay={this.onSaved} />
-      );
-    }
-    if (modalContent) {
-      modalDiv = (
-        <Modal
-          content={modalContent}
-          show={showModal}
-          onDismiss={this.onDismissModal}
-        />
-      );
-    }
-
-    return (
-      <div id="view-location-edit">
-        {modalDiv}
-        <h2>{title}</h2>
-        <h4>Location ID</h4>
-        <input
-          value={this.state.inputLocId}
-          onChange={(e) => this.handleChange(e, "inputLocId")}
-        />
-        <h4>Street</h4>
-        <input
-          value={this.state.inputStreet}
-          onChange={(e) => this.handleChange(e, "inputStreet")}
-        />
-        <h4>City</h4>
-        <input
-          value={this.state.inputCity}
-          onChange={(e) => this.handleChange(e, "inputCity")}
-        />
-        <h4>State</h4>
-        <input
-          value={this.state.inputState}
-          onChange={(e) => this.handleChange(e, "inputState")}
-        />
-        <h4>Zipcode</h4>
-        <input
-          value={this.state.inputZip}
-          onChange={(e) => this.handleChange(e, "inputZip")}
-        />
-        <h4>Room</h4>
-        <input
-          value={this.state.inputRoom}
-          onChange={(e) => this.handleChange(e, "inputRoom")}
-        />
-        <div className="buttons">
-          <button className="btn-save" onClick={this.onClickSave}>
-            Save
-          </button>
-          <button className="btn-cancel" onClick={this.onClickCancel}>
-            Cancel
-          </button>
-          {deleteButton}
-        </div>
-      </div>
-    );
-  }
 }
