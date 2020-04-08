@@ -43,13 +43,13 @@ export class ProgramPage extends React.Component {
         let numSelected = 0;
         return (
             <div id="view-program">
-                <ul>
+                <div>
                     <h1>All Programs ({numRows}) </h1>
                     <p>
                         You have {numUnpublished} unpublished items. You have
                         selected {numSelected} items to publish.
                     </p>
-                </ul>
+                </div>
                 <ul id="list-heading">
                     <button
                         className="li-small"
