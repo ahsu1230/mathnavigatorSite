@@ -16,18 +16,10 @@ import (
 // Test Get All
 //
 func TestGetAllAchievements_Success(t *testing.T) {
-	achieveService.mockGetAll = func() ([]domains.Achieve, error) {
+	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
-			{
-				Id:      1,
-				Year:    2020,
-				Message: "message1",
-			},
-			{
-				Id:      2,
-				Year:    2021,
-				Message: "message2",
-			},
+			createMockAchievement(1, 2020, "message1"),
+			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
 	services.AchieveService = &achieveService
@@ -51,7 +43,79 @@ func TestGetAllAchievements_Success(t *testing.T) {
 }
 
 //
-// Test Get Achieve
+// Test Get Published
+//
+func TestGetPublishedAchievements_Success(t *testing.T) {
+	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
+		return []domains.Achieve{
+			createMockAchievement(1, 2020, "message1"),
+			createMockAchievement(2, 2021, "message2"),
+		}, nil
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var achieves []domains.Achieve
+	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, achieves[0].Id)
+	assert.EqualValues(t, 2020, achieves[0].Year)
+	assert.EqualValues(t, "message1", achieves[0].Message)
+
+	assert.EqualValues(t, 2, achieves[1].Id)
+	assert.EqualValues(t, 2021, achieves[1].Year)
+	assert.EqualValues(t, "message2", achieves[1].Message)
+
+	assert.EqualValues(t, 2, len(achieves))
+}
+
+//
+// Test Get All Grouped By Year
+//
+func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
+	achieveService.mockGetAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
+		return []domains.AchieveYearGroup{
+			{
+				Year: 2021,
+				Achievements: []domains.Achieve{
+					createMockAchievement(1, 2021, "message1"),
+				},
+			},
+			{
+				Year: 2020,
+				Achievements: []domains.Achieve{
+					createMockAchievement(2, 2020, "message2"),
+				},
+			},
+		}, nil
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var achieves []domains.AchieveYearGroup
+	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, achieves[0].Achievements[0].Id)
+	assert.EqualValues(t, 2021, achieves[0].Achievements[0].Year)
+	assert.EqualValues(t, "message1", achieves[0].Achievements[0].Message)
+	assert.EqualValues(t, 2, achieves[1].Achievements[0].Id)
+	assert.EqualValues(t, 2020, achieves[1].Achievements[0].Year)
+	assert.EqualValues(t, "message2", achieves[1].Achievements[0].Message)
+	assert.EqualValues(t, 2, len(achieves))
+}
+
+//
+// Test Get Achievement
 //
 func TestGetAchievement_Success(t *testing.T) {
 	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
@@ -88,54 +152,6 @@ func TestGetAchievement_Failure(t *testing.T) {
 }
 
 //
-// Test Get All Grouped By Year
-//
-func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
-	achieveService.mockGetAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
-		return []domains.AchieveYearGroup{
-			{
-				Year: 2021,
-				Achievements: []domains.Achieve{
-					{
-						Id:      1,
-						Year:    2021,
-						Message: "message1",
-					},
-				},
-			},
-			{
-				Year: 2020,
-				Achievements: []domains.Achieve{
-					{
-						Id:      2,
-						Year:    2020,
-						Message: "message2",
-					},
-				},
-			},
-		}, nil
-	}
-	services.AchieveService = &achieveService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var achieves []domains.AchieveYearGroup
-	if err := json.Unmarshal(recorder.Body.Bytes(), &achieves); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, 1, achieves[0].Achievements[0].Id)
-	assert.EqualValues(t, 2021, achieves[0].Achievements[0].Year)
-	assert.EqualValues(t, "message1", achieves[0].Achievements[0].Message)
-	assert.EqualValues(t, 2, achieves[1].Achievements[0].Id)
-	assert.EqualValues(t, 2020, achieves[1].Achievements[0].Year)
-	assert.EqualValues(t, "message2", achieves[1].Achievements[0].Message)
-	assert.EqualValues(t, 2, len(achieves))
-}
-
-//
 // Test Create
 //
 func TestCreateAchievement_Success(t *testing.T) {
@@ -146,8 +162,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
-	marshal, _ := json.Marshal(achieve)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromAchieve(achieve)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
 
 	// Validate results
@@ -160,8 +175,7 @@ func TestCreateAchievement_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
-	marshal, _ := json.Marshal(achieve)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromAchieve(achieve)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
 
 	// Validate results
@@ -244,6 +258,45 @@ func TestDeleteAchievement_Failure(t *testing.T) {
 }
 
 //
+// Test Publish
+//
+func TestPublishAchievement_Success(t *testing.T) {
+	achieveService.mockPublish = func(ids []uint) error {
+		return nil // Return no error, successful publish!
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestPublishAchievement_Failure(t *testing.T) {
+	achieveService.mockPublish = func(ids []uint) error {
+		return errors.New("not found")
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
 // Helper Methods
 //
 func createMockAchievement(id uint, year uint, message string) domains.Achieve {
@@ -255,7 +308,7 @@ func createMockAchievement(id uint, year uint, message string) domains.Achieve {
 }
 
 func createBodyFromAchieve(achieve domains.Achieve) io.Reader {
-	marshal, err := json.Marshal(achieve)
+	marshal, err := json.Marshal(&achieve)
 	if err != nil {
 		panic(err)
 	}
