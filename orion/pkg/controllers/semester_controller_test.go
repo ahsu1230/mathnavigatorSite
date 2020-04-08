@@ -18,22 +18,42 @@ import (
 func TestGetAllSemesters_Success(t *testing.T) {
 	semesterService.mockGetAll = func() ([]domains.Semester, error) {
 		return []domains.Semester{
-			{
-				Id:         1,
-				SemesterId: "2020_fall",
-				Title:      "Fall 2020",
-			},
-			{
-				Id:         2,
-				SemesterId: "2020_winter",
-				Title:      "Winter 2020",
-			},
+			createMockSemester("2020_fall", "Fall 2020"),
+			createMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
 	services.SemesterService = &semesterService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/all", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var semesters []domains.Semester
+	if err := json.Unmarshal(recorder.Body.Bytes(), &semesters); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "2020_fall", semesters[0].SemesterId)
+	assert.EqualValues(t, "Fall 2020", semesters[0].Title)
+	assert.EqualValues(t, "2020_winter", semesters[1].SemesterId)
+	assert.EqualValues(t, "Winter 2020", semesters[1].Title)
+	assert.EqualValues(t, 2, len(semesters))
+}
+
+//
+// Test Get Published
+//
+func TestGetPublishedSemesters_Success(t *testing.T) {
+	semesterService.mockGetAll = func(publishedOnly bool) ([]domains.Semester, error) {
+		return []domains.Semester{
+			createMockSemester("2020_fall", "Fall 2020"),
+			createMockSemester("2020_winter", "Winter 2020"),
+		}, nil
+	}
+	services.SemesterService = &semesterService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -187,6 +207,45 @@ func TestDeleteSemester_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/semesters/v1/semester/some_semester", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishSemesters_Success(t *testing.T) {
+	semesterService.mockPublish = func(ids []uint) error {
+		return nil // Return no error, successful publish!
+	}
+	services.SemesterService = &semesterService
+
+	// Create new HTTP request to endpoint
+	semesterIds := []string{"2020_fall"}
+	marshal, err := json.Marshal(semesterIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestPublishSemesters_Failure(t *testing.T) {
+	semesterService.mockPublish = func(ids []uint) error {
+		return errors.New("not found")
+	}
+	services.SemesterService = &semesterService
+
+	// Create new HTTP request to endpoint
+	semesterIds := []string{"2020_fall"}
+	marshal, err := json.Marshal(semesterIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
