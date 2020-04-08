@@ -15,7 +15,7 @@ type semesterServiceInterface interface {
 	Create(domains.Semester) error
 	Update(string, domains.Semester) error
 	Delete(string) error
-	Publish(string) error
+	Publish([]string) error
 }
 
 // Struct that implements interface

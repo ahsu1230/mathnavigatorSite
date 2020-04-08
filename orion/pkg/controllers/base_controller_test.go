@@ -152,8 +152,8 @@ type mockAchieveService struct {
 }
 
 // Implement methods of AchieveService interface with mocked implementations
-func (achieveService *mockAchieveService) GetAll(published bool) ([]domains.Achieve, error) {
-	return achieveService.mockGetAll(published)
+func (achieveService *mockAchieveService) GetAll(publishedOnly bool) ([]domains.Achieve, error) {
+	return achieveService.mockGetAll(publishedOnly)
 }
 func (achieveService *mockAchieveService) GetUnpublished() ([]domains.Achieve, error) {
 	return achieveService.mockGetUnpublished()
@@ -181,16 +181,21 @@ var semesterService mockSemesterService
 
 // Fake semesterService that implements SemesterService interface
 type mockSemesterService struct {
-	mockGetAll          func() ([]domains.Semester, error)
+	mockGetAll          func(bool) ([]domains.Semester, error)
+	mockGetUnpublished  func() ([]domains.Semester, error)
 	mockGetBySemesterId func(string) (domains.Semester, error)
 	mockCreate          func(domains.Semester) error
 	mockUpdate          func(string, domains.Semester) error
 	mockDelete          func(string) error
+	mockPublish         func([]string) error
 }
 
 // Implement methods of SemesterService interface with mocked implementations
-func (semesterService *mockSemesterService) GetAll() ([]domains.Semester, error) {
-	return semesterService.mockGetAll()
+func (semesterService *mockSemesterService) GetAll(publishedOnly bool) ([]domains.Semester, error) {
+	return semesterService.mockGetAll(publishedOnly)
+}
+func (semesterService *mockSemesterService) GetUnpublished() ([]domains.Semester, error) {
+	return semesterService.mockGetUnpublished()
 }
 func (semesterService *mockSemesterService) GetBySemesterId(semesterId string) (domains.Semester, error) {
 	return semesterService.mockGetBySemesterId(semesterId)
@@ -203,6 +208,9 @@ func (semesterService *mockSemesterService) Update(semesterId string, semester d
 }
 func (semesterService *mockSemesterService) Delete(semesterId string) error {
 	return semesterService.mockDelete(semesterId)
+}
+func (semesterService *mockSemesterService) Publish(semesterIds []string) error {
+	return semesterService.mockPublish(semesterIds)
 }
 
 var sessionService mockSessionService

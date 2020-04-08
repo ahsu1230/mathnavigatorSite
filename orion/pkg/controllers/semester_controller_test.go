@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllSemesters_Success(t *testing.T) {
-	semesterService.mockGetAll = func() ([]domains.Semester, error) {
+	semesterService.mockGetAll = func(publishedOnly bool) ([]domains.Semester, error) {
 		return []domains.Semester{
 			createMockSemester("2020_fall", "Fall 2020"),
 			createMockSemester("2020_winter", "Winter 2020"),
@@ -115,8 +115,7 @@ func TestCreateSemester_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	semester := createMockSemester("2020_fall", "Fall 2020")
-	marshal, _ := json.Marshal(semester)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromSemester(semester)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body)
 
 	// Validate results
@@ -129,8 +128,7 @@ func TestCreateSemester_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	semester := createMockSemester("2020_fall", "") // Empty title
-	marshal, _ := json.Marshal(semester)
-	body := bytes.NewBuffer(marshal)
+	body := createBodyFromSemester(semester)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body)
 
 	// Validate results
@@ -216,7 +214,7 @@ func TestDeleteSemester_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishSemesters_Success(t *testing.T) {
-	semesterService.mockPublish = func(ids []uint) error {
+	semesterService.mockPublish = func(semesterId []string) error {
 		return nil // Return no error, successful publish!
 	}
 	services.SemesterService = &semesterService
@@ -234,7 +232,7 @@ func TestPublishSemesters_Success(t *testing.T) {
 }
 
 func TestPublishSemesters_Failure(t *testing.T) {
-	semesterService.mockPublish = func(ids []uint) error {
+	semesterService.mockPublish = func(semesterId []string) error {
 		return errors.New("not found")
 	}
 	services.SemesterService = &semesterService
