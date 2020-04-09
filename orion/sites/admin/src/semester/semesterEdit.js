@@ -3,6 +3,10 @@ require("./semesterEdit.styl");
 import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
+import API from "../api.js";
+import { Modal } from "../modals/modal.js";
+import { OkayModal } from "../modals/okayModal.js";
+import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class SemesterEditPage extends React.Component {
     constructor(props) {
@@ -33,16 +37,16 @@ export class SemesterEditPage extends React.Component {
             <div id="view-semester-edit">
                 <h2>Add Semester</h2>
 
-                <h4>SemesterID</h4>
+                <h4>Semester ID</h4>
                 <input
                     value={this.state.inputDate}
-                    onChange={(e) => this.handleChange(e, "inputDate")}
+                    onChange={(e) => this.handleChange(e, "inputSemesterId")}
                 />
 
                 <h4>Title</h4>
                 <input
                     value={this.state.inputAuthor}
-                    onChange={(e) => this.handleChange(e, "inputAuthor")}
+                    onChange={(e) => this.handleChange(e, "inputTitle")}
                 />
 
                 <div className="buttons">

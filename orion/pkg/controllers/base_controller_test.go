@@ -157,17 +157,22 @@ var achieveService mockAchieveService
 
 // Fake achieveService that implements AchieveService interface
 type mockAchieveService struct {
-	mockGetAll              func() ([]domains.Achieve, error)
+	mockGetAll              func(bool) ([]domains.Achieve, error)
+	mockGetUnpublished      func() ([]domains.Achieve, error)
 	mockGetById             func(uint) (domains.Achieve, error)
 	mockGetAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	mockCreate              func(domains.Achieve) error
 	mockUpdate              func(uint, domains.Achieve) error
 	mockDelete              func(uint) error
+	mockPublish             func([]uint) error
 }
 
 // Implement methods of AchieveService interface with mocked implementations
-func (achieveService *mockAchieveService) GetAll() ([]domains.Achieve, error) {
-	return achieveService.mockGetAll()
+func (achieveService *mockAchieveService) GetAll(published bool) ([]domains.Achieve, error) {
+	return achieveService.mockGetAll(published)
+}
+func (achieveService *mockAchieveService) GetUnpublished() ([]domains.Achieve, error) {
+	return achieveService.mockGetUnpublished()
 }
 func (achieveService *mockAchieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieveService.mockGetById(id)
@@ -183,6 +188,9 @@ func (achieveService *mockAchieveService) Update(id uint, achieve domains.Achiev
 }
 func (achieveService *mockAchieveService) Delete(id uint) error {
 	return achieveService.mockDelete(id)
+}
+func (achieveService *mockAchieveService) Publish(ids []uint) error {
+	return achieveService.mockPublish(ids)
 }
 
 var semesterService mockSemesterService

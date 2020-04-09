@@ -9,7 +9,8 @@
     "build": "webpack --config webpack.prod.js",
     "build-local": "webpack --config webpack.local.js",
     "start": "webpack-dev-server --open --config webpack.local.js",
-    "try": "webpack --display-error-details"
+    "try": "webpack --display-error-details",
+    "prettify": "prettier --config \".prettierrc.yaml\" --write \"**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "css-loader": "^3.2.1",
     "cssnano": "^4.1.10",
     "eslint": "^6.3.0",
+    "prettier": "^2.0.2",
     "style-loader": "^1.0.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",

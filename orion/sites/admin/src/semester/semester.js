@@ -1,3 +1,4 @@
+"use strict";
 require("./semester.styl");
 import React from "react";
 import ReactDOM from "react-dom";
@@ -12,19 +13,34 @@ export class SemesterPage extends React.Component {
     }
 
     render() {
-        const rows = this.state.list.map((row, index) => {
-            return <SemesterRow key={index} row={row} />;
-        });
-        const numRows = rows.length;
+        var numSemesters = 3;
+        let fakeSemesterA = {
+            semesterId: "2020_fall",
+            title: "2020 Fall",
+        };
+        let fakeSemesterB = {
+            semesterId: "2021_spring",
+            title: "2021 Spring",
+        };
+        /* TODO: will use this to test text wrapping later */
+        let fakeSemesterC = {
+            semesterId: "2021_summer",
+            title: "2020 Summer",
+        };
+
         return (
             <div id="view-semester">
-                <h1>All Semesters ({numRows}) </h1>
+                <h1>All Semesters ({numSemesters})</h1>
                 <ul className="semester-lists">
-                    <li className="li-large">SemesterID</li>
-                    <li className="li-large">Title</li>
+                    <li className="li-large"> Semester ID </li>
+                    <li className="li-large"> Title </li>
                     <li className="li-small"> </li>
                 </ul>
-                <ul id="view-semester">{rows}</ul>
+                <ul>
+                    <SemesterRow semesterObj={fakeSemesterA} />
+                    <SemesterRow semesterObj={fakeSemesterB} />
+                    <SemesterRow semesterObj={fakeSemesterC} />
+                </ul>
                 <Link to={"/semesters/add"}>
                     {" "}
                     <button className="semester-button">
