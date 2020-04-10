@@ -9,7 +9,7 @@ var UserService userServiceInterface = &userService{}
 
 // Interface for UserService
 type userServiceInterface interface {
-	GetAll() ([]domains.User, error)
+	GetAll(string, int, int) ([]domains.User, error)
 	GetById(uint) (domains.User, error)
 	Create(domains.User) error
 	Update(uint, domains.User) error
@@ -19,8 +19,8 @@ type userServiceInterface interface {
 // Struct that implements interface
 type userService struct{}
 
-func (us *userService) GetAll() ([]domains.User, error) {
-	users, err := repos.UserRepo.SelectAll()
+func (us *userService) GetAll(search string, pageSize, offset int) ([]domains.User, error) {
+	users, err := repos.UserRepo.SelectAll(search, pageSize, offset)
 	if err != nil {
 		return nil, err
 	}

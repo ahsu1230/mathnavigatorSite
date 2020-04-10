@@ -9,7 +9,12 @@ import (
 )
 
 func GetAllUsers(c *gin.Context) {
-	userList, err := services.UserService.GetAll()
+	// Incoming optional parameter
+	search := c.Query("search")
+	pageSize := ParseParamInt(c.Query("pageSize"), 100)
+	offset := ParseParamInt(c.Query("offset"), 0)
+
+	userList, err := services.UserService.GetAll(search, pageSize, offset)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

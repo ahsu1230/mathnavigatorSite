@@ -55,7 +55,7 @@ func TestSelectAllUsers(t *testing.T) {
 		domains.NewNullUint(0),
 	)
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll("", 100, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
