@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -70,6 +71,15 @@ func resetTable(t *testing.T, tableName string) error {
 		t.Fatalf("Error altering table auto-increment: %s", err)
 	}
 	return nil
+}
+
+func resetAllTables(t *testing.T) {
+	resetTable(t, domains.TABLE_SESSIONS)
+	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Helper methods for Router

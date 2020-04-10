@@ -15,9 +15,9 @@ var later1 = now.Add(time.Hour * 24 * 30)
 var later2 = now.Add(time.Hour * 24 * 31)
 var later3 = now.Add(time.Hour * 24 * 60)
 
-// Test: Create 4 Classes and GetAll()
+// Test: Create 4 Classes and GetAll(false)
 func Test_CreateClasses(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -40,7 +40,7 @@ func Test_CreateClasses(t *testing.T) {
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
 func Test_UniqueClassId(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 
 	class1 := createClass(1)
@@ -68,7 +68,7 @@ func Test_UniqueClassId(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesByProgram()
 func Test_GetClassesByProgram(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -90,7 +90,7 @@ func Test_GetClassesByProgram(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesBySemester()
 func Test_GetClassesBySemester(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -111,7 +111,7 @@ func Test_GetClassesBySemester(t *testing.T) {
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
 func Test_GetClassesByProgramAndSemester(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -132,7 +132,7 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 
 	// Create 1 Class
@@ -163,7 +163,7 @@ func Test_UpdateClass(t *testing.T) {
 
 // Test: Create 1 Class, Delete it, GetByClassId()
 func Test_DeleteClass(t *testing.T) {
-	resetTables(t)
+	resetAllTables(t)
 	createAllProgramsSemestersLocations(t)
 
 	// Create
@@ -179,6 +179,51 @@ func Test_DeleteClass(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+}
+
+// Test: Create 2 Classes and Publish 1
+func Test_PublishClass(t *testing.T) {
+	resetTable(t, domains.TABLE_CLASSES)
+
+	// Create
+	class1 := createClass(1)
+	class2 := createClass(2)
+	body1 := createJsonBody(&class1)
+	body2 := createJsonBody(&class2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+
+	// Get
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Validate results
+	var classes1 []domains.Class
+	if err := json.Unmarshal(recorder3.Body.Bytes(), &classes1); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 0, len(classes1))
+
+	// Publish
+	classIds := []string{"program1_2020_spring_class2"}
+	body3 := createJsonBody(&classIds)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", body3)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+
+	// Get
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+
+	// Validate results
+	var classes2 []domains.Class
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &classes2); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assertClass(t, 2, classes2[0])
+	assert.EqualValues(t, 1, len(classes2))
 }
 
 // Helper methods
@@ -307,11 +352,4 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
 	}
-}
-
-func resetTables(t *testing.T) {
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
 }

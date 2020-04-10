@@ -11,7 +11,7 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
+	resetAllTables(t)
 
 	user1 := createUser(
 		"John",
@@ -90,7 +90,7 @@ func Test_CreateUsers(t *testing.T) {
 
 // Test: Create 1 User, Update it, GetByUserId()
 func Test_UpdateUser(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
+	resetAllTables(t)
 
 	// Create 1 User
 	user1 := createUser(
@@ -141,7 +141,7 @@ func Test_UpdateUser(t *testing.T) {
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
+	resetAllTables(t)
 
 	// Create
 	user1 := createUser(

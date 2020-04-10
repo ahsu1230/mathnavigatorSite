@@ -11,7 +11,7 @@ import (
 
 // Test: Create 3 Locations and GetAll()
 func Test_CreateLocations(t *testing.T) {
-	resetTable(t, domains.TABLE_LOCATIONS)
+	resetAllTables(t)
 
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	location2 := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
@@ -46,7 +46,7 @@ func Test_CreateLocations(t *testing.T) {
 
 // Test: Create 2 Locations with same locId. Then GetByLocationId()
 func Test_UniqueLocationId(t *testing.T) {
-	resetTable(t, domains.TABLE_LOCATIONS)
+	resetAllTables(t)
 
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	location2 := createLocation("loc1", "89 South Glen Rd", "City", "MD", "77294", "Room 43") // Same locId
@@ -73,7 +73,7 @@ func Test_UniqueLocationId(t *testing.T) {
 
 // Test: Create 1 Location, Update it, GetByLocationId()
 func Test_UpdateLocation(t *testing.T) {
-	resetTable(t, domains.TABLE_LOCATIONS)
+	resetAllTables(t)
 
 	// Create 1 Location
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
@@ -104,7 +104,7 @@ func Test_UpdateLocation(t *testing.T) {
 
 // Test: Create 1 Location, Delete it, GetByLocationId()
 func Test_DeleteLocation(t *testing.T) {
-	resetTable(t, domains.TABLE_LOCATIONS)
+	resetAllTables(t)
 
 	// Create
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")

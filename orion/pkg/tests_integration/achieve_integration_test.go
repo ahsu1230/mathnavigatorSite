@@ -10,7 +10,7 @@ import (
 
 // Test: Create 3 Achievements and GetAll(false)
 func Test_CreateAchievements(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetAllTables(t)
 
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
@@ -48,7 +48,7 @@ func Test_CreateAchievements(t *testing.T) {
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
 func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetAllTables(t)
 
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
@@ -93,7 +93,7 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 
 // Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetAllTables(t)
 
 	// Create 1 Achievement
 	achieve1 := createAchievement(2020, "message1")
@@ -123,7 +123,7 @@ func Test_UpdateAchievement(t *testing.T) {
 
 // Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetAllTables(t)
 
 	// Create
 	achieve1 := createAchievement(2020, "message1")
@@ -142,7 +142,7 @@ func Test_DeleteAchievement(t *testing.T) {
 
 // Test: Create 2 Achievements and Publish 1
 func Test_PublishAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetAllTables(t)
 
 	// Create
 	achieve1 := createAchievement(2020, "message1")

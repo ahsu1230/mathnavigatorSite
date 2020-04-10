@@ -9,17 +9,9 @@ import (
 	"time"
 )
 
-func resetSessionTables(t *testing.T) {
-	resetTable(t, domains.TABLE_SESSIONS)
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-	resetTable(t, domains.TABLE_PROGRAMS)
-}
-
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
 func Test_CreateSessions(t *testing.T) {
-	resetSessionTables(t)
+	resetAllTables(t)
 
 	// Create
 	start := time.Now().UTC()
@@ -84,7 +76,7 @@ func Test_CreateSessions(t *testing.T) {
 
 // Test: Create 1 Session, Update it, GetBySessionId()
 func Test_UpdateSession(t *testing.T) {
-	resetSessionTables(t)
+	resetAllTables(t)
 
 	// Create 1 Session
 	start := time.Now().UTC()
@@ -132,7 +124,7 @@ func Test_UpdateSession(t *testing.T) {
 
 // Test: Create 1 Session, Delete it, GetBySessionId()
 func Test_DeleteSession(t *testing.T) {
-	resetSessionTables(t)
+	resetAllTables(t)
 
 	// Create
 	start := time.Now().UTC()
