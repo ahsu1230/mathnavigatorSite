@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/stretchr/testify/assert"
@@ -43,6 +44,45 @@ func TestNullStringEmpty(t *testing.T) {
 		t.Errorf("Error %v", err)
 	}
 	assert.EqualValues(t, "", result.String)
+	assert.EqualValues(t, false, result.Valid)
+}
+
+func TestNullTime(t *testing.T) {
+	now := time.Now().UTC()
+	nullTime := domains.NewNullTime(now)
+	assert.EqualValues(t, now, nullTime.Time)
+	assert.EqualValues(t, true, nullTime.Valid)
+
+	bytes, err := json.Marshal(&nullTime)
+	if err != nil {
+		t.Errorf("Error %v", err)
+	}
+	fmt.Println("json", string(bytes))
+
+	var result domains.NullTime
+	err = json.Unmarshal(bytes, &result)
+	if err != nil {
+		t.Errorf("Error %v", err)
+	}
+	assert.EqualValues(t, now, result.Time)
+	assert.EqualValues(t, true, result.Valid)
+}
+
+func TestNullTimeEmpty(t *testing.T) {
+	zeroTime := time.Time{}
+	nullTime := domains.NewNullTime(zeroTime)
+	bytes, err := json.Marshal(&nullTime)
+	if err != nil {
+		t.Errorf("Error %v", err)
+	}
+	fmt.Println("json", string(bytes))
+
+	var result domains.NullTime
+	err = json.Unmarshal(bytes, &result)
+	if err != nil {
+		t.Errorf("Error %v", err)
+	}
+	assert.EqualValues(t, zeroTime, result.Time)
 	assert.EqualValues(t, false, result.Valid)
 }
 

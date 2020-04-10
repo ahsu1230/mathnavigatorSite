@@ -14,6 +14,7 @@ func (h *Handler) SetupApiEndpoints() {
 	// h.Engine.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
 	h.Engine.Use(static.Serve("/", static.LocalFile("./sites/admin", true)))
 
+	h.Engine.GET("/api/v1/unpublished", controllers.GetAllUnpublished)
 	apiPrograms := h.Engine.Group("/api/programs/")
 	{
 		apiPrograms.GET("/v1/all", controllers.GetAllPrograms)
@@ -52,11 +53,12 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAchieves := h.Engine.Group("api/achievements/")
 	{
 		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
+		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
+		apiAchieves.POST("/v1/publish", controllers.PublishAchievements)
 		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
 		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
-		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
 	}
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
