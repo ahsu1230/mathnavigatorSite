@@ -20,6 +20,8 @@ export class LocationEditPage extends React.Component {
             inputZip: "",
             inputRoom: "",
             isEdit: false,
+            showDeleteModal: false,
+            showSaveModal: false,
         };
         this.handleChange = this.handleChange.bind(this);
 
