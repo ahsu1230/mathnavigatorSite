@@ -22,10 +22,10 @@ func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 	// if err != nil {
 	// 	return domains.UnpublishedDomains{}, err
 	// }
-	// classList, err := services.ClassService.GetUnpublished()
-	// if err != nil {
-	// 	return domains.UnpublishedDomains{}, err
-	// }
+	classList, err := services.ClassService.GetUnpublished()
+	if err != nil {
+		return domains.UnpublishedDomains{}, err
+	}
 	// locationList, err := services.LocationService.GetUnpublished()
 	// if err != nil {
 	// 	return domains.UnpublishedDomains{}, err
@@ -45,7 +45,7 @@ func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 
 	unpublishedDomains := domains.UnpublishedDomains{
 		// Programs: programList,
-		// Classes:   classList,
+		Classes: classList,
 		// Locations: locationList,
 		Achieves: achieveList,
 		// Semesters: semesterList,
