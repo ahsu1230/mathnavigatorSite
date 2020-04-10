@@ -14,7 +14,7 @@ type sessionServiceInterface interface {
 	Create(domains.Session) error
 	Update(uint, domains.Session) error
 	Delete(uint) error
-	GetAllUnpublished() ([]uint, error)
+	GetAllUnpublished() ([]domains.Session, error)
 	Publish([]uint) error
 }
 
@@ -52,12 +52,12 @@ func (ss *sessionService) Delete(id uint) error {
 	return err
 }
 
-func (ss *sessionService) GetAllUnpublished() ([]uint, error) {
-	ids, err := repos.SessionRepo.SelectAllUnpublished()
+func (ss *sessionService) GetAllUnpublished() ([]domains.Session, error) {
+	sessions, err := repos.SessionRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
-	return ids, nil
+	return sessions, nil
 }
 
 func (ss *sessionService) Publish(ids []uint) error {

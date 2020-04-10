@@ -8,7 +8,9 @@ import (
 )
 
 func GetAllPrograms(c *gin.Context) {
-	programList, err := services.ProgramService.GetAll()
+	published := ParseParamPublishedOnly(c)
+
+	programList, err := services.ProgramService.GetAll(published)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -27,7 +29,7 @@ func GetProgramById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, program)
+		c.JSON(http.StatusOK, &program)
 	}
 	return
 }
@@ -85,17 +87,6 @@ func DeleteProgram(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func GetAllUnpublishedPrograms(c *gin.Context) {
-	programIds, err := services.ProgramService.GetAllUnpublished()
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, programIds)
 	}
 	return
 }

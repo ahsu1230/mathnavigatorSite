@@ -20,7 +20,7 @@ type SessionRepoInterface interface {
 	Insert(domains.Session) error
 	Update(uint, domains.Session) error
 	Delete(uint) error
-	SelectAllUnpublished() ([]uint, error)
+	SelectAllUnpublished() ([]domains.Session, error)
 	Publish([]uint) error
 }
 
@@ -165,10 +165,10 @@ func (sr *sessionRepo) Delete(id uint) error {
 	return handleSqlExecResult(result, 1, "session was not deleted")
 }
 
-func (sr *sessionRepo) SelectAllUnpublished() ([]uint, error) {
-	results := make([]uint, 0)
+func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
+	results := make([]domains.Session, 0)
 
-	stmt, err := sr.db.Prepare("SELECT id FROM sessions WHERE published_at IS NULL")
+	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE published_at IS NULL")
 	if err != nil {
 		return nil, err
 	}
@@ -180,11 +180,21 @@ func (sr *sessionRepo) SelectAllUnpublished() ([]uint, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var id uint
-		if errScan := rows.Scan(&id); errScan != nil {
+		var session domains.Session
+		if errScan := rows.Scan(
+			&session.Id,
+			&session.CreatedAt,
+			&session.UpdatedAt,
+			&session.DeletedAt,
+			&session.ClassId,
+			&session.StartsAt,
+			&session.EndsAt,
+			&session.Canceled,
+			&session.Notes,
+			&session.PublishedAt); errScan != nil {
 			return results, errScan
 		}
-		results = append(results, id)
+		results = append(results, session)
 	}
 	return results, nil
 }

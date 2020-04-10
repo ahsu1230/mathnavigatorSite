@@ -18,18 +18,18 @@ func GetAllUnpublished(c *gin.Context) {
 }
 
 func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
-	// programList, err := services.ProgramService.GetUnpublished()
-	// if err != nil {
-	// 	return domains.UnpublishedDomains{}, err
-	// }
+	programList, err := services.ProgramService.GetAllUnpublished()
+	if err != nil {
+		return domains.UnpublishedDomains{}, err
+	}
 	// classList, err := services.ClassService.GetUnpublished()
 	// if err != nil {
 	// 	return domains.UnpublishedDomains{}, err
 	// }
-	// locationList, err := services.LocationService.GetUnpublished()
-	// if err != nil {
-	// 	return domains.UnpublishedDomains{}, err
-	// }
+	locationList, err := services.LocationService.GetAllUnpublished()
+	if err != nil {
+		return domains.UnpublishedDomains{}, err
+	}
 	achieveList, err := services.AchieveService.GetUnpublished()
 	if err != nil {
 		return domains.UnpublishedDomains{}, err
@@ -38,18 +38,18 @@ func callGetUnpublishedServices() (domains.UnpublishedDomains, error) {
 	// if err != nil {
 	// 	return domains.UnpublishedDomains{}, err
 	// }
-	// sessionList, err := services.SessionService.GetUnpublished()
-	// if err != nil {
-	// 	return domains.UnpublishedDomains{}, err
-	// }
+	sessionList, err := services.SessionService.GetAllUnpublished()
+	if err != nil {
+		return domains.UnpublishedDomains{}, err
+	}
 
 	unpublishedDomains := domains.UnpublishedDomains{
-		// Programs: programList,
+		Programs: programList,
 		// Classes:   classList,
-		// Locations: locationList,
-		Achieves: achieveList,
+		Locations: locationList,
+		Achieves:  achieveList,
 		// Semesters: semesterList,
-		// Sessions:  sessionList,
+		Sessions: sessionList,
 	}
 
 	return unpublishedDomains, nil

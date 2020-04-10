@@ -8,7 +8,9 @@ import (
 )
 
 func GetAllLocations(c *gin.Context) {
-	locationList, err := services.LocationService.GetAll()
+	published := ParseParamPublishedOnly(c)
+
+	locationList, err := services.LocationService.GetAll(published)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -85,17 +87,6 @@ func DeleteLocation(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func GetAllUnpublishedLocations(c *gin.Context) {
-	locIds, err := services.LocationService.GetAllUnpublished()
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, locIds)
 	}
 	return
 }

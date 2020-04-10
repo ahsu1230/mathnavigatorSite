@@ -249,8 +249,8 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 	semester2 := createSemester("2020_summer", "Summer 2020")
 	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
 
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
 	body3 := createJsonBody(semester1)
 	body4 := createJsonBody(semester2)
 	body5 := createJsonBody(&location1)

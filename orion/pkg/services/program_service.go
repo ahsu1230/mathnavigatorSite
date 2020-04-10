@@ -9,20 +9,20 @@ var ProgramService programServiceInterface = &programService{}
 
 // Interface for ProgramService
 type programServiceInterface interface {
-	GetAll() ([]domains.Program, error)
+	GetAll(bool) ([]domains.Program, error)
 	GetByProgramId(string) (domains.Program, error)
 	Create(domains.Program) error
 	Update(string, domains.Program) error
 	Delete(string) error
-	GetAllUnpublished() ([]string, error)
+	GetAllUnpublished() ([]domains.Program, error)
 	Publish([]string) error
 }
 
 // Struct that implements interface
 type programService struct{}
 
-func (ps *programService) GetAll() ([]domains.Program, error) {
-	programs, err := repos.ProgramRepo.SelectAll()
+func (ps *programService) GetAll(published bool) ([]domains.Program, error) {
+	programs, err := repos.ProgramRepo.SelectAll(published)
 	if err != nil {
 		return nil, err
 	}
@@ -52,12 +52,12 @@ func (ps *programService) Delete(programId string) error {
 	return err
 }
 
-func (ps *programService) GetAllUnpublished() ([]string, error) {
-	programIds, err := repos.ProgramRepo.SelectAllUnpublished()
+func (ps *programService) GetAllUnpublished() ([]domains.Program, error) {
+	programs, err := repos.ProgramRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
-	return programIds, nil
+	return programs, nil
 }
 
 func (ps *programService) Publish(programIds []string) error {

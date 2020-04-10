@@ -39,7 +39,7 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		"Canceled",
 		"Notes",
 		"PublishedAt"}).
-		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sql.NullTime{})
+		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("id_1").
@@ -55,13 +55,13 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 			Id:          1,
 			CreatedAt:   now,
 			UpdatedAt:   now,
-			DeletedAt:   sql.NullTime{},
+			DeletedAt:   domains.NullTime{},
 			ClassId:     "id_1",
 			StartsAt:    now,
 			EndsAt:      now,
 			Canceled:    false,
 			Notes:       domains.NewNullString("special lecture from guest"),
-			PublishedAt: sql.NullTime{},
+			PublishedAt: domains.NullTime{},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -92,7 +92,7 @@ func TestSelectSession(t *testing.T) {
 		"Canceled",
 		"Notes",
 		"PublishedAt"}).
-		AddRow(1, now, now, sql.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sql.NullTime{})
+		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NullTime{})
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -107,13 +107,13 @@ func TestSelectSession(t *testing.T) {
 		Id:          1,
 		CreatedAt:   now,
 		UpdatedAt:   now,
-		DeletedAt:   sql.NullTime{},
+		DeletedAt:   domains.NullTime{},
 		ClassId:     "id_1",
 		StartsAt:    now,
 		EndsAt:      now,
 		Canceled:    false,
 		Notes:       domains.NewNullString("special lecture from guest"),
-		PublishedAt: sql.NullTime{},
+		PublishedAt: domains.NullTime{},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -219,17 +219,43 @@ func TestSelectAllUnpublishedSessions(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id"}).AddRow(1).AddRow(2)
-	mock.ExpectPrepare("^SELECT id FROM sessions WHERE published_at IS NULL").
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes",
+		"PublishedAt"}).
+		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NewNullTime(now))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
+		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
+	got, err := repo.SelectAllByClassId("id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := []uint{1, 2}
+	want := []domains.Session{
+		{
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   domains.NullTime{},
+			ClassId:     "id_1",
+			StartsAt:    now,
+			EndsAt:      now,
+			Canceled:    false,
+			Notes:       domains.NewNullString("special lecture from guest"),
+			PublishedAt: domains.NewNullTime(now),
+		},
+	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}

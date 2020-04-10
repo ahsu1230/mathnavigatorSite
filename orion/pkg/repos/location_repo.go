@@ -15,12 +15,12 @@ type locationRepo struct {
 
 type LocationRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Location, error)
+	SelectAll(bool) ([]domains.Location, error)
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
 	Update(string, domains.Location) error
 	Delete(string) error
-	SelectAllUnpublished() ([]string, error)
+	SelectAllUnpublished() ([]domains.Location, error)
 	Publish([]string) error
 }
 
@@ -28,10 +28,14 @@ func (lr *locationRepo) Initialize(db *sql.DB) {
 	lr.db = db
 }
 
-func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
+func (lr *locationRepo) SelectAll(published bool) ([]domains.Location, error) {
 	results := make([]domains.Location, 0)
 
-	stmt, err := lr.db.Prepare("SELECT * FROM locations")
+	statement := "SELECT * FROM locations"
+	if published {
+		statement += " WHERE published_at IS NOT NULL"
+	}
+	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
 		return nil, err
 	}
@@ -171,10 +175,10 @@ func (lr *locationRepo) Delete(locId string) error {
 	return handleSqlExecResult(result, 1, "location was not deleted")
 }
 
-func (lr *locationRepo) SelectAllUnpublished() ([]string, error) {
-	results := make([]string, 0)
+func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
+	results := make([]domains.Location, 0)
 
-	stmt, err := lr.db.Prepare("SELECT loc_id FROM locations WHERE published_at IS NULL")
+	stmt, err := lr.db.Prepare("SELECT * FROM locations WHERE published_at IS NULL")
 	if err != nil {
 		return nil, err
 	}
@@ -186,11 +190,22 @@ func (lr *locationRepo) SelectAllUnpublished() ([]string, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var locId string
-		if errScan := rows.Scan(&locId); errScan != nil {
+		var location domains.Location
+		if errScan := rows.Scan(
+			&location.Id,
+			&location.CreatedAt,
+			&location.UpdatedAt,
+			&location.DeletedAt,
+			&location.LocId,
+			&location.Street,
+			&location.City,
+			&location.State,
+			&location.Zipcode,
+			&location.Room,
+			&location.PublishedAt); errScan != nil {
 			return results, errScan
 		}
-		results = append(results, locId)
+		results = append(results, location)
 	}
 	return results, nil
 }

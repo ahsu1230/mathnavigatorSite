@@ -91,17 +91,6 @@ func DeleteSession(c *gin.Context) {
 	return
 }
 
-func GetAllUnpublishedSessions(c *gin.Context) {
-	ids, err := services.SessionService.GetAllUnpublished()
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, ids)
-	}
-	return
-}
-
 func PublishSessions(c *gin.Context) {
 	// Incoming JSON
 	var idsJson []uint

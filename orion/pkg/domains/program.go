@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,16 +9,16 @@ import (
 var TABLE_PROGRAMS = "programs"
 
 type Program struct {
-	Id          uint
-	CreatedAt   time.Time    `db:"created_at"`
-	UpdatedAt   time.Time    `db:"updated_at"`
-	DeletedAt   sql.NullTime `db:"deleted_at"`
-	PublishedAt sql.NullTime `db:"published_at" json:"publishedAt"`
-	ProgramId   string       `db:"program_id" json:"programId"`
-	Name        string       `json:"name"`
-	Grade1      uint         `json:"grade1"`
-	Grade2      uint         `json:"grade2"`
-	Description string       `json:"description"`
+	Id          uint      `json:"id"`
+	CreatedAt   time.Time `json:"-" db:"created_at"`
+	UpdatedAt   time.Time `json:"-" db:"updated_at"`
+	DeletedAt   NullTime  `json:"-" db:"deleted_at"`
+	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
+	ProgramId   string    `json:"programId" db:"program_id"`
+	Name        string    `json:"name"`
+	Grade1      uint      `json:"grade1"`
+	Grade2      uint      `json:"grade2"`
+	Description string    `json:"description"`
 }
 
 // Class Methods

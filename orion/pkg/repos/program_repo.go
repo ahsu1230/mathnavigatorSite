@@ -17,12 +17,12 @@ type programRepo struct {
 // Interface to implement
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Program, error)
+	SelectAll(bool) ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
 	Update(string, domains.Program) error
 	Delete(string) error
-	SelectAllUnpublished() ([]string, error)
+	SelectAllUnpublished() ([]domains.Program, error)
 	Publish([]string) error
 }
 
@@ -30,10 +30,14 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll() ([]domains.Program, error) {
+func (pr *programRepo) SelectAll(published bool) ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM programs")
+	statement := "SELECT * FROM programs"
+	if published {
+		statement += " WHERE published_at IS NOT NULL"
+	}
+	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return nil, err
 	}
@@ -167,10 +171,10 @@ func (pr *programRepo) Delete(programId string) error {
 	return handleSqlExecResult(execResult, 1, "program was not deleted")
 }
 
-func (pr *programRepo) SelectAllUnpublished() ([]string, error) {
-	results := make([]string, 0)
+func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
+	results := make([]domains.Program, 0)
 
-	stmt, err := pr.db.Prepare("SELECT program_id FROM programs WHERE published_at IS NULL")
+	stmt, err := pr.db.Prepare("SELECT * FROM programs WHERE published_at IS NULL")
 	if err != nil {
 		return nil, err
 	}
@@ -182,11 +186,21 @@ func (pr *programRepo) SelectAllUnpublished() ([]string, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var programId string
-		if errScan := rows.Scan(&programId); errScan != nil {
+		var program domains.Program
+		if errScan := rows.Scan(
+			&program.Id,
+			&program.CreatedAt,
+			&program.UpdatedAt,
+			&program.DeletedAt,
+			&program.ProgramId,
+			&program.Name,
+			&program.Grade1,
+			&program.Grade2,
+			&program.Description,
+			&program.PublishedAt); errScan != nil {
 			return results, errScan
 		}
-		results = append(results, programId)
+		results = append(results, program)
 	}
 	return results, nil
 }

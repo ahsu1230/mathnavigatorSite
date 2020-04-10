@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	programService.mockGetAll = func() ([]domains.Program, error) {
+	programService.mockGetAll = func(published bool) ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -101,7 +101,7 @@ func TestCreateProgram_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
-	marshal, _ := json.Marshal(program)
+	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
 
@@ -115,7 +115,7 @@ func TestCreateProgram_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "", 2, 3, "descript1") // Empty Name!
-	marshal, _ := json.Marshal(program)
+	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
 
@@ -199,29 +199,6 @@ func TestDeleteProgram_Failure(t *testing.T) {
 }
 
 //
-// Test Get All Unpublished
-//
-func TestGetAllUnpublishedPrograms_Success(t *testing.T) {
-	programService.mockGetAllUnpublished = func() ([]string, error) {
-		return []string{"prog1", "prog2"}, nil
-	}
-	services.ProgramService = &programService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var programIds []string
-	if err := json.Unmarshal(recorder.Body.Bytes(), &programIds); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog1", programIds[0])
-	assert.EqualValues(t, "prog2", programIds[1])
-	assert.EqualValues(t, 2, len(programIds))
-}
-
-//
 // Test Publish
 //
 func TestPublishPrograms_Success(t *testing.T) {
@@ -257,7 +234,7 @@ func createMockProgram(programId string, name string, grade1 uint, grade2 uint, 
 }
 
 func createBodyFromProgram(program domains.Program) io.Reader {
-	marshal, err := json.Marshal(program)
+	marshal, err := json.Marshal(&program)
 	if err != nil {
 		panic(err)
 	}

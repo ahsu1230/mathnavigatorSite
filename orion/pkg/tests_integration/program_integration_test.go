@@ -16,9 +16,9 @@ func Test_CreatePrograms(t *testing.T) {
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog2", "Program2", 2, 3, "descript2")
 	program3 := createProgram("prog3", "Program3", 2, 3, "descript3")
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
-	body3 := createJsonBody(program3)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
+	body3 := createJsonBody(&program3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body3)
@@ -50,8 +50,8 @@ func Test_UniqueProgramId(t *testing.T) {
 
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2") // Same programId
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -77,13 +77,13 @@ func Test_UpdateProgram(t *testing.T) {
 
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
-	body1 := createJsonBody(program1)
+	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123")
-	updatedBody := createJsonBody(updatedProgram)
+	updatedBody := createJsonBody(&updatedProgram)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
@@ -108,7 +108,7 @@ func Test_DeleteProgram(t *testing.T) {
 
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
-	body1 := createJsonBody(program1)
+	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -119,56 +119,6 @@ func Test_DeleteProgram(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
-}
-
-// Test: Get All Unpublished Programs, Publish a Few, then Get All Unpublished Again
-func Test_PublishPrograms(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
-	// Create
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
-	program2 := createProgram("prog2", "Program2", 8, 12, "descript2")
-	program3 := createProgram("prog3", "Program3", 1, 12, "descript3")
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
-	body3 := createJsonBody(program3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-
-	// Get All Unpublished
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-	var programIds []string
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &programIds); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog1", programIds[0])
-	assert.EqualValues(t, "prog2", programIds[1])
-	assert.EqualValues(t, "prog3", programIds[2])
-	assert.EqualValues(t, 3, len(programIds))
-
-	// Publish prog1 and prog3
-	publishIds := []string{"prog1", "prog3"}
-	publishBody := createJsonBody(publishIds)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", publishBody)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-
-	// Get All Unpublished Again
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder6.Code)
-	if err := json.Unmarshal(recorder6.Body.Bytes(), &programIds); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog2", programIds[0])
-	assert.EqualValues(t, 1, len(programIds))
 }
 
 // Helper methods
