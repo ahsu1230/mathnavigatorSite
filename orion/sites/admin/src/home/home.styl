@@ -5,15 +5,19 @@
   height: 400px
   background-color: colorWhite
 
+  & div
+    display: inline-block
+    float:left
+
 #view-home #view-content
-    display: block
+    display: inline-block
 
   & div
     display: inline-block
 
 .boxed
     border: 2px solid black
-    width: 400px
+    width: 360px
     height: 240px
     display: inline-block
     float: right
@@ -24,6 +28,9 @@
 
 #view-home #go-to-page
       display: inline-block
+      position: absolute
+      right: 0
+      bottom: 0
       margin: spacing2x 0
       background-color: colorTurquoise
       color: white

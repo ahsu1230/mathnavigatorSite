@@ -17,19 +17,16 @@ export class HomePage extends React.Component {
 				      <ul> New Users </ul>
 					  <ul> Questions </ul>
 					  <ul> Complaints </ul>
-				  <div className="boxed">
-				 	text
-				  </div>
 			  </div>
-		  </div>
-			 <div id="view-button">
+			  <div id="box-and-button">
+				  <div className="boxed">
+					text
+				 </div>
 				 <button id="go-to-page">
 					Go to Page
 				 </button>
 			 </div>
 		  </div>
-
-
 		);
 	}
 }
