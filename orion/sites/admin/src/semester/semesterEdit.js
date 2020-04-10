@@ -1,22 +1,20 @@
 "use strict";
-require("./achieveEdit.styl");
+require("./semesterEdit.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 
-export class AchieveEditPage extends React.Component {
+export class SemesterEditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            oldSemesterId: "",
+            inputSemesterId: "",
+            inputTitle: "",
             isEdit: false,
-            inputYear: 0,
-            inputMessage: "",
-            showDeleteModal: false,
-            showSaveModal: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -25,20 +23,23 @@ export class AchieveEditPage extends React.Component {
         this.onClickDelete = this.onClickDelete.bind(this);
         this.onClickSave = this.onClickSave.bind(this);
 
-        this.onDeleted = this.onDeleted.bind(this);
-        this.onSaved = this.onSaved.bind(this);
+        this.onConfirmDelete = this.onConfirmDelete.bind(this);
+        this.onSavedOk = this.onSavedOk.bind(this);
         this.onDismissModal = this.onDismissModal.bind(this);
     }
 
     componentDidMount() {
-        const Id = this.props.Id;
-        if (Id) {
-            API.get("api/achievements/v1/achievement/" + Id).then((res) => {
-                const achieve = res.data;
+        const semesterId = this.props.semesterId;
+        if (semesterId) {
+            API.get("api/semesters/v1/semester/" + semesterId).then((res) => {
+                const semester = res.data;
                 this.setState({
-                    inputYear: achieve.year,
-                    inputMessage: achieve.message,
+                    oldSemesterId: semester.semesterId,
+                    inputSemesterId: semester.semesterId,
+                    inputTitle: semester.title,
                     isEdit: true,
+                    showDeleteModal: false,
+                    showSaveModal: false,
                 });
             });
         }
@@ -48,48 +49,47 @@ export class AchieveEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     }
 
+    onClickSave() {
+        let semester = {
+            semesterId: this.state.inputSemesterId,
+            title: this.state.inputTitle,
+        };
+
+        let successCallback = () => this.setState({ showSaveModal: true });
+        let failCallback = (err) =>
+            alert("Could not save semester: " + err.response.data);
+        if (this.state.isEdit) {
+            API.post(
+                "api/semesters/v1/semester/" + this.state.oldSemesterId,
+                semester
+            )
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
+        } else {
+            API.post("api/semesters/v1/create", semester)
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
+        }
+    }
+
     onClickCancel() {
-        window.location.hash = "achievements";
+        window.location.hash = "semesters";
     }
 
     onClickDelete() {
         this.setState({ showDeleteModal: true });
     }
 
-    onClickSave() {
-        let achieve = {
-            year: parseInt(this.state.inputYear),
-            message: this.state.inputMessage,
-        };
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save achievement: " + err.response.data);
-        if (this.state.isEdit) {
-            API.post(
-                "api/achievements/v1/achievement/" + this.props.Id,
-                achieve
-            )
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
-        } else {
-            API.post("api/achievements/v1/create", achieve)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
-        }
+    onConfirmDelete() {
+        const semesterId = this.props.semesterId;
+        API.delete("api/semesters/v1/semester/" + semesterId).then((res) => {
+            window.location.hash = "semesters";
+        });
     }
 
-    onSaved() {
+    onSavedOk() {
         this.onDismissModal();
-        window.location.hash = "achievements";
-    }
-
-    onDeleted() {
-        const Id = this.props.Id;
-        API.delete("api/achievements/v1/achievement/" + Id)
-            .then((res) => {
-                window.location.hash = "achievements";
-            })
-            .finally(() => this.onDismissModal());
+        window.location.hash = "semesters";
     }
 
     onDismissModal() {
@@ -100,12 +100,9 @@ export class AchieveEditPage extends React.Component {
     }
 
     render() {
-        const isEdit = this.state.isEdit;
-        const achieve = this.state.achieve;
-        const title = isEdit ? "Edit Achievement" : "Add Achievement";
-
+        const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
         let deleteButton = <div></div>;
-        if (isEdit) {
+        if (this.state.isEdit) {
             deleteButton = (
                 <button className="btn-delete" onClick={this.onClickDelete}>
                     Delete
@@ -121,7 +118,7 @@ export class AchieveEditPage extends React.Component {
             modalContent = (
                 <YesNoModal
                     text={"Are you sure you want to delete?"}
-                    onAccept={this.onDeleted}
+                    onAccept={this.onConfirmDelete}
                     onReject={this.onDismissModal}
                 />
             );
@@ -130,8 +127,8 @@ export class AchieveEditPage extends React.Component {
             showModal = this.state.showSaveModal;
             modalContent = (
                 <OkayModal
-                    text={"Achievement information saved!"}
-                    onOkay={this.onSaved}
+                    text={"Semester information saved!"}
+                    onOkay={this.onSavedOk}
                 />
             );
         }
@@ -146,19 +143,22 @@ export class AchieveEditPage extends React.Component {
         }
 
         return (
-            <div id="view-achieve-edit">
+            <div id="view-semester-edit">
                 {modalDiv}
                 <h2>{title}</h2>
-                <h4>Year</h4>
+
+                <h4>Semester ID</h4>
                 <input
-                    value={this.state.inputYear}
-                    onChange={(e) => this.handleChange(e, "inputYear")}
+                    value={this.state.inputSemesterId}
+                    onChange={(e) => this.handleChange(e, "inputSemesterId")}
                 />
-                <h4>Message</h4>
+
+                <h4>Title</h4>
                 <input
-                    value={this.state.inputMessage}
-                    onChange={(e) => this.handleChange(e, "inputMessage")}
+                    value={this.state.inputTitle}
+                    onChange={(e) => this.handleChange(e, "inputTitle")}
                 />
+
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save
