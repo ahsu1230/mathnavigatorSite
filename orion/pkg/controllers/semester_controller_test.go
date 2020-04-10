@@ -260,7 +260,7 @@ func createMockSemester(semesterId string, title string) domains.Semester {
 }
 
 func createBodyFromSemester(semester domains.Semester) io.Reader {
-	marshal, err := json.Marshal(semester)
+	marshal, err := json.Marshal(&semester)
 	if err != nil {
 		panic(err)
 	}
