@@ -29,7 +29,7 @@ func GetSemesterById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, semester)
+		c.JSON(http.StatusOK, &semester)
 	}
 }
 
