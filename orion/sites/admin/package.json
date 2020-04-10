@@ -9,7 +9,11 @@
     "build": "webpack --config webpack.prod.js",
     "build-local": "webpack --config webpack.local.js",
     "start": "webpack-dev-server --open --config webpack.local.js",
-    "try": "webpack --display-error-details"
+    "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "try": "webpack --display-error-details",
+    "prettify": "prettier --config \".prettierrc.yaml\" --write \"**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -38,8 +42,14 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.1",
     "cssnano": "^4.1.10",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.3.0",
+    "jest": "^25.2.7",
+    "jest-svg-transformer": "^1.0.0",
+    "jest-transform-css": "^2.0.0",
     "prettier": "^2.0.2",
+    "react-test-renderer": "^16.13.1",
     "style-loader": "^1.0.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
@@ -47,5 +57,22 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      ".+\\.(css|styl)$": "jest-transform-css",
+      "^.+\\.svg$": "jest-svg-transformer"
+    },
+    "moduleNameMapper": {
+      "\\.(png|jpg|gif|ttf|eot|svg)$": "<rootDir>/tests/fileMock.js"
+    },
+    "setupFilesAfterEnv": [
+      "./tests/setupTestAdapter.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   }
 }

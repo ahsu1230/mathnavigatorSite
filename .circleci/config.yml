@@ -48,3 +48,9 @@ jobs:
           command: |
             sudo npm install -g prettier
             prettier --check "orion/sites/admin/**/*.js" --config "orion/sites/admin/.prettierrc.yaml"
+      - run:
+          name: Run Enzyme React tests
+          command: |
+            cd orion/sites/admin
+            npm install
+            npm run test
