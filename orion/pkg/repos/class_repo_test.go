@@ -30,7 +30,7 @@ func TestSelectAllClasses(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -57,7 +57,7 @@ func TestSelectClass(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("program1_2020_spring_final_review").
@@ -85,7 +85,7 @@ func TestSelectClassesByProgramId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE program_id=?").
 		ExpectQuery().
 		WithArgs("program1").
@@ -113,7 +113,7 @@ func TestSelectClassesBySemesterId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE semester_id=?").
 		ExpectQuery().
 		WithArgs("2020_spring").
@@ -141,7 +141,7 @@ func TestSelectClassesByProgramIdAndSemesterId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getRows()
+	rows := getClassRows()
 	mock.ExpectPrepare(`^SELECT (.+) FROM classes WHERE program_id=\? AND semester_id=?`).
 		ExpectQuery().
 		WithArgs("program1", "2020_spring").
@@ -267,12 +267,13 @@ func TestDeleteClass(t *testing.T) {
 //
 // Helper Methods
 //
-func getRows() *sqlmock.Rows {
+func getClassRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ProgramId",
 		"SemesterId",
 		"ClassKey",
@@ -285,7 +286,8 @@ func getRows() *sqlmock.Rows {
 		1,
 		now,
 		now,
-		sql.NullTime{},
+		domains.NewNullTime(time.Time{}),
+		domains.NewNullTime(time.Time{}),
 		"program1",
 		"2020_spring",
 		domains.NewNullString("final_review"),
@@ -299,17 +301,18 @@ func getRows() *sqlmock.Rows {
 
 func getClass() domains.Class {
 	return domains.Class{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
-		ProgramId:  "program1",
-		SemesterId: "2020_spring",
-		ClassKey:   domains.NewNullString("final_review"),
-		ClassId:    "program1_2020_spring_final_review",
-		LocId:      "churchill",
-		Times:      "3 pm - 5 pm",
-		StartDate:  now,
-		EndDate:    later,
+		Id:          1,
+		CreatedAt:   now,
+		UpdatedAt:   now,
+		DeletedAt:   domains.NewNullTime(time.Time{}),
+		PublishedAt: domains.NewNullTime(time.Time{}),
+		ProgramId:   "program1",
+		SemesterId:  "2020_spring",
+		ClassKey:    domains.NewNullString("final_review"),
+		ClassId:     "program1_2020_spring_final_review",
+		LocId:       "churchill",
+		Times:       "3 pm - 5 pm",
+		StartDate:   now,
+		EndDate:     later,
 	}
 }
