@@ -12,3 +12,7 @@ func ParseParamId(c *gin.Context) uint {
 	}
 	return uint(id)
 }
+
+func ParseParamPublishedOnly(c *gin.Context) bool {
+	return c.Query("published") == "true"
+}

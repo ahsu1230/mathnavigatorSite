@@ -81,7 +81,7 @@ class App extends React.Component {
                     <Route path="/achievements/add" component={AchieveEdit} />
                     <Route path="/achievements" component={Achieve} />
                     <Route
-                        path="/locations/:locationId/edit"
+                        path="/locations/:locId/edit"
                         component={LocationEditMatch}
                     />
                     <Route path="/locations/add" component={LocationEdit} />
