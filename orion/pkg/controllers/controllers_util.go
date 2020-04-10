@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -18,10 +17,10 @@ func ParseParamPublishedOnly(c *gin.Context) bool {
 	return c.Query("published") == "true"
 }
 
-func ParseParamNullUint(nullUint string) domains.NullUint {
-	id, err := strconv.ParseUint(nullUint, 10, 32)
+func ParseParamUint(num string) uint {
+	id, err := strconv.ParseUint(num, 10, 32)
 	if err != nil {
 		panic(err)
 	}
-	return domains.NewNullUint(uint(id))
+	return uint(id)
 }

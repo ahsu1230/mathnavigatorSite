@@ -11,7 +11,7 @@ var UserService userServiceInterface = &userService{}
 type userServiceInterface interface {
 	GetAll() ([]domains.User, error)
 	GetById(uint) (domains.User, error)
-	GetByGuardianId(domains.NullUint) ([]domains.User, error)
+	GetByGuardianId(uint) ([]domains.User, error)
 	Create(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -36,7 +36,7 @@ func (us *userService) GetById(id uint) (domains.User, error) {
 	return user, nil
 }
 
-func (us *userService) GetByGuardianId(guardianId domains.NullUint) ([]domains.User, error) {
+func (us *userService) GetByGuardianId(guardianId uint) ([]domains.User, error) {
 	user, err := repos.UserRepo.SelectByGuardianId(guardianId)
 	if err != nil {
 		return nil, err

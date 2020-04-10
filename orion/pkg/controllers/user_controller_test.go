@@ -112,7 +112,7 @@ func TestGetUser_Success(t *testing.T) {
 }
 
 func TestGetUserByGuardian_Success(t *testing.T) {
-	userService.mockGetByGuardianId = func(guardianId domains.NullUint) ([]domains.User, error) {
+	userService.mockGetByGuardianId = func(guardianId uint) ([]domains.User, error) {
 		return []domains.User{
 			createMockUser(
 				1,

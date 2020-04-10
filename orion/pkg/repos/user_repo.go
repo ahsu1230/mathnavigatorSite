@@ -20,7 +20,7 @@ type UserRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll() ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
-	SelectByGuardianId(domains.NullUint) ([]domains.User, error)
+	SelectByGuardianId(uint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -90,7 +90,7 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 	return user, errScan
 }
 
-func (ur *userRepo) SelectByGuardianId(guardianId domains.NullUint) ([]domains.User, error) {
+func (ur *userRepo) SelectByGuardianId(guardianId uint) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
 	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE guardian_id=?")
@@ -98,7 +98,7 @@ func (ur *userRepo) SelectByGuardianId(guardianId domains.NullUint) ([]domains.U
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query(guardianId)
+	rows, err := stmt.Query(domains.NewNullUint(guardianId))
 	if err != nil {
 		return nil, err
 	}

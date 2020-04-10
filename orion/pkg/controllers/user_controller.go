@@ -33,7 +33,7 @@ func GetUserById(c *gin.Context) {
 
 func GetUserByGuardian(c *gin.Context) {
 	// Incoming parameters
-	guardianId := ParseParamNullUint(c.Param("guardianId"))
+	guardianId := ParseParamUint(c.Param("guardianId"))
 
 	user, err := services.UserService.GetByGuardianId(guardianId)
 	if err != nil {

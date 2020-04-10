@@ -85,7 +85,7 @@ func TestSelectUsersByGuardianId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByGuardianId(domains.NewNullUint(2))
+	got, err := repo.SelectByGuardianId(2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
