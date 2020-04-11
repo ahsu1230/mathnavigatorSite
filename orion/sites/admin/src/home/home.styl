@@ -5,32 +5,32 @@
   height: 400px
   background-color: colorWhite
 
-  & div
+#view-home #view-content
     display: inline-block
     float:left
 
-#view-home #view-content
-    display: inline-block
+    & ul
+        list-style: none
 
-    & div
-      display: inline-block
-
-.boxed
-    border: 2px solid black
-    width: 360px
-    height: 240px
+#view-home #box-and-button
     display: inline-block
-    float: right
+    float: left
+    margin-left: spacing8x
+    margin-top: spacing2x
     position: relative
-    left: 100px
-    top: 30px
-    bottom: 30px
 
-#view-home #go-to-page
-      display: inline-block
+    .boxed
+        border: 2px solid black
+        width: 360px
+        height: 240px
+        float: right
+        margin-bottom: 60px
+
+#go-to-page
+      display: block
       position: absolute
-      right: 0
       bottom: 0
+      right: 0
       margin: spacing2x 0
       background-color: colorTurquoise
       color: white

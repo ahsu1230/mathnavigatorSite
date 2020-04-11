@@ -11,12 +11,14 @@ export class HomePage extends React.Component {
 		  	  <div id="view-content">
 			      <h2> Unpublished Content </h2>
 				  	  <ul>
-					      {unpubContent}
+					      <li>{unpubContent}</li>
 					  </ul>
 				  <h2> Registrations </h2>
-				      <ul> New Users </ul>
-					  <ul> Questions </ul>
-					  <ul> Complaints </ul>
+				      <ul>
+					  	  <li> New Users </li>
+						  <li> Questions </li>
+						  <li> Complaints </li>
+					  </ul>
 			  </div>
 			  <div id="box-and-button">
 				  <div className="boxed">
