@@ -1,7 +1,6 @@
 "use strict";
 require("./semesterEdit.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
@@ -12,40 +11,151 @@ export class SemesterEditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEdit: false,
+            oldSemesterId: "",
             inputSemesterId: "",
             inputTitle: "",
+            isEdit: false,
         };
+
+        this.handleChange = this.handleChange.bind(this);
+
+        this.onClickCancel = this.onClickCancel.bind(this);
+        this.onClickDelete = this.onClickDelete.bind(this);
+        this.onClickSave = this.onClickSave.bind(this);
+
+        this.onConfirmDelete = this.onConfirmDelete.bind(this);
+        this.onSavedOk = this.onSavedOk.bind(this);
+        this.onDismissModal = this.onDismissModal.bind(this);
+    }
+
+    componentDidMount() {
+        const semesterId = this.props.semesterId;
+        if (semesterId) {
+            API.get("api/semesters/v1/semester/" + semesterId).then((res) => {
+                const semester = res.data;
+                this.setState({
+                    oldSemesterId: semester.semesterId,
+                    inputSemesterId: semester.semesterId,
+                    inputTitle: semester.title,
+                    isEdit: true,
+                    showDeleteModal: false,
+                    showSaveModal: false,
+                });
+            });
+        }
+    }
+
+    handleChange(event, value) {
+        this.setState({ [value]: event.target.value });
     }
 
     onClickSave() {
-        console.log("save button clicked");
+        let semester = {
+            semesterId: this.state.inputSemesterId,
+            title: this.state.inputTitle,
+        };
+
+        let successCallback = () => this.setState({ showSaveModal: true });
+        let failCallback = (err) =>
+            alert("Could not save semester: " + err.response.data);
+        if (this.state.isEdit) {
+            API.post(
+                "api/semesters/v1/semester/" + this.state.oldSemesterId,
+                semester
+            )
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
+        } else {
+            API.post("api/semesters/v1/create", semester)
+                .then((res) => successCallback())
+                .catch((err) => failCallback(err));
+        }
     }
 
     onClickCancel() {
-        console.log("cancel button clicked");
+        window.location.hash = "semesters";
     }
 
-    handleChange() {
-        console.log("handle change");
+    onClickDelete() {
+        this.setState({ showDeleteModal: true });
+    }
+
+    onConfirmDelete() {
+        const semesterId = this.props.semesterId;
+        API.delete("api/semesters/v1/semester/" + semesterId).then((res) => {
+            window.location.hash = "semesters";
+        });
+    }
+
+    onSavedOk() {
+        this.onDismissModal();
+        window.location.hash = "semesters";
+    }
+
+    onDismissModal() {
+        this.setState({
+            showDeleteModal: false,
+            showSaveModal: false,
+        });
     }
 
     render() {
-        const title = "New Semester";
+        const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
         let deleteButton = <div></div>;
+        if (this.state.isEdit) {
+            deleteButton = (
+                <button className="btn-delete" onClick={this.onClickDelete}>
+                    Delete
+                </button>
+            );
+        }
+
+        let modalDiv;
+        let modalContent;
+        let showModal;
+        if (this.state.showDeleteModal) {
+            showModal = this.state.showDeleteModal;
+            modalContent = (
+                <YesNoModal
+                    text={"Are you sure you want to delete?"}
+                    onAccept={this.onConfirmDelete}
+                    onReject={this.onDismissModal}
+                />
+            );
+        }
+        if (this.state.showSaveModal) {
+            showModal = this.state.showSaveModal;
+            modalContent = (
+                <OkayModal
+                    text={"Semester information saved!"}
+                    onOkay={this.onSavedOk}
+                />
+            );
+        }
+        if (modalContent) {
+            modalDiv = (
+                <Modal
+                    content={modalContent}
+                    show={showModal}
+                    onDismiss={this.onDismissModal}
+                />
+            );
+        }
+
         return (
             <div id="view-semester-edit">
-                <h2>Add Semester</h2>
+                {modalDiv}
+                <h2>{title}</h2>
 
                 <h4>Semester ID</h4>
                 <input
-                    value={this.state.inputDate}
+                    value={this.state.inputSemesterId}
                     onChange={(e) => this.handleChange(e, "inputSemesterId")}
                 />
 
                 <h4>Title</h4>
                 <input
-                    value={this.state.inputAuthor}
+                    value={this.state.inputTitle}
                     onChange={(e) => this.handleChange(e, "inputTitle")}
                 />
 

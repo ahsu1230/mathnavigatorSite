@@ -141,17 +141,22 @@ var achieveService mockAchieveService
 
 // Fake achieveService that implements AchieveService interface
 type mockAchieveService struct {
-	mockGetAll              func() ([]domains.Achieve, error)
+	mockGetAll              func(bool) ([]domains.Achieve, error)
+	mockGetUnpublished      func() ([]domains.Achieve, error)
 	mockGetById             func(uint) (domains.Achieve, error)
 	mockGetAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	mockCreate              func(domains.Achieve) error
 	mockUpdate              func(uint, domains.Achieve) error
 	mockDelete              func(uint) error
+	mockPublish             func([]uint) error
 }
 
 // Implement methods of AchieveService interface with mocked implementations
-func (achieveService *mockAchieveService) GetAll() ([]domains.Achieve, error) {
-	return achieveService.mockGetAll()
+func (achieveService *mockAchieveService) GetAll(published bool) ([]domains.Achieve, error) {
+	return achieveService.mockGetAll(published)
+}
+func (achieveService *mockAchieveService) GetUnpublished() ([]domains.Achieve, error) {
+	return achieveService.mockGetUnpublished()
 }
 func (achieveService *mockAchieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieveService.mockGetById(id)
@@ -167,6 +172,9 @@ func (achieveService *mockAchieveService) Update(id uint, achieve domains.Achiev
 }
 func (achieveService *mockAchieveService) Delete(id uint) error {
 	return achieveService.mockDelete(id)
+}
+func (achieveService *mockAchieveService) Publish(ids []uint) error {
+	return achieveService.mockPublish(ids)
 }
 
 var semesterService mockSemesterService
@@ -229,11 +237,12 @@ var userService mockUserService
 
 // Fake userService that implements UserService interface
 type mockUserService struct {
-	mockGetAll  func() ([]domains.User, error)
-	mockGetById func(uint) (domains.User, error)
-	mockCreate  func(domains.User) error
-	mockUpdate  func(uint, domains.User) error
-	mockDelete  func(uint) error
+	mockGetAll          func() ([]domains.User, error)
+	mockGetById         func(uint) (domains.User, error)
+	mockGetByGuardianId func(uint) ([]domains.User, error)
+	mockCreate          func(domains.User) error
+	mockUpdate          func(uint, domains.User) error
+	mockDelete          func(uint) error
 }
 
 // Implement methods of UserService interface with mocked implementations
@@ -242,6 +251,9 @@ func (userService *mockUserService) GetAll() ([]domains.User, error) {
 }
 func (userService *mockUserService) GetById(id uint) (domains.User, error) {
 	return userService.mockGetById(id)
+}
+func (userService *mockUserService) GetByGuardianId(guardianId uint) ([]domains.User, error) {
+	return userService.mockGetByGuardianId(guardianId)
 }
 func (userService *mockUserService) Create(user domains.User) error {
 	return userService.mockCreate(user)
