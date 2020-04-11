@@ -180,51 +180,6 @@ func Test_DeleteClass(t *testing.T) {
 	resetClassTables(t)
 }
 
-// Test: Create 2 Classes and Publish 1
-func Test_PublishClass(t *testing.T) {
-	// Create
-	createAllProgramsSemestersLocations(t)
-	class1 := createClass(1)
-	class2 := createClass(2)
-	body1 := createJsonBody(&class1)
-	body2 := createJsonBody(&class2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-
-	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-
-	// Validate results
-	var classes1 []domains.Class
-	if err := json.Unmarshal(recorder3.Body.Bytes(), &classes1); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, 0, len(classes1))
-
-	// Publish
-	classIds := []string{"program1_2020_spring_class2"}
-	body3 := createJsonBody(&classIds)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", body3)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-
-	// Get
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-
-	// Validate results
-	var classes2 []domains.Class
-	if err := json.Unmarshal(recorder5.Body.Bytes(), &classes2); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assertClass(t, 2, classes2[0])
-	assert.EqualValues(t, 1, len(classes2))
-
-	resetClassTables(t)
-}
-
 // Helper methods
 func createClass(id int) domains.Class {
 	switch id {
