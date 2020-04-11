@@ -33,7 +33,6 @@ func Test_CreateUsers(t *testing.T) {
 
 // Test: Create 3 Users and search by pagination
 func Test_SearchUsers(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
 	createAllUsers(t)
 
 	// Call Get All Searching for "Smith" With Page Size 2 Offset 0
@@ -60,6 +59,8 @@ func Test_SearchUsers(t *testing.T) {
 	}
 	assertUser(t, 3, users2[0])
 	assert.EqualValues(t, 1, len(users2))
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 3 Users and GetUserByGuardianId

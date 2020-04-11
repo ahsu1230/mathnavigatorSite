@@ -22,8 +22,15 @@ func TestGetUnpublishedDomains_Success(t *testing.T) {
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
+	semesterService.mockGetUnpublished = func() ([]domains.Semester, error) {
+		return []domains.Semester{
+			createMockSemester("2020_fall", "Fall 2020"),
+			createMockSemester("2020_winter", "Winter 2020"),
+		}, nil
+	}
 	services.ClassService = &classService
 	services.AchieveService = &achieveService
+	services.SemesterService = &semesterService
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
@@ -46,4 +53,10 @@ func TestGetUnpublishedDomains_Success(t *testing.T) {
 	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
 	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
+
+	assert.EqualValues(t, "2020_fall", unpublishedDomains.Semesters[0].SemesterId)
+	assert.EqualValues(t, "Fall 2020", unpublishedDomains.Semesters[0].Title)
+	assert.EqualValues(t, "2020_winter", unpublishedDomains.Semesters[1].SemesterId)
+	assert.EqualValues(t, "Winter 2020", unpublishedDomains.Semesters[1].Title)
+	assert.EqualValues(t, 2, len(unpublishedDomains.Semesters))
 }

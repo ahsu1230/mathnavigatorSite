@@ -250,8 +250,8 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 
 	body1 := createJsonBody(program1)
 	body2 := createJsonBody(program2)
-	body3 := createJsonBody(semester1)
-	body4 := createJsonBody(semester2)
+	body3 := createJsonBody(&semester1)
+	body4 := createJsonBody(&semester2)
 	body5 := createJsonBody(&location1)
 
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
