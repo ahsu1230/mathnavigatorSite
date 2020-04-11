@@ -10,6 +10,8 @@ export class LocationPage extends React.Component {
         super(props);
         this.state = {
             list: [],
+            numUnpublished: 0,
+            numSelected: 0,
         };
     }
 
@@ -38,14 +40,12 @@ export class LocationPage extends React.Component {
             return <LocationRow key={index} location={location} />;
         });
         const numLocations = location.length;
-        let numUnpublished = 0;
-        let numSelected = 0;
         return (
             <div id="view-location">
                 <div>
                     <h1>All Locations ({numLocations})</h1>
                     <p>
-                        You have {numUnpublished} unpublished items. <br/>
+                        You have {numUnpublished} unpublished items. <br />
                         You have selected {numSelected} items to publish.
                     </p>
                 </div>
@@ -62,7 +62,9 @@ export class LocationPage extends React.Component {
                 <ul>{location}</ul>
                 <div id="list-buttons">
                     <button>
-                        <Link to={"/locations/add"} id="add-location">Add Location</Link>
+                        <Link to={"/locations/add"} id="add-location">
+                            Add Location
+                        </Link>
                     </button>
                     <button
                         id="publish"
@@ -77,9 +79,7 @@ export class LocationPage extends React.Component {
 }
 
 class LocationRow extends React.Component {
-    onClickBox() {
-        
-    }
+    onClickBox() {}
     renderCheckbox(isUnpublished) {
         let checkbox = <div> </div>;
         if (isUnpublished) {
