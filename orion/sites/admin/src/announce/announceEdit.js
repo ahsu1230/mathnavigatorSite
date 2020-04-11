@@ -3,7 +3,7 @@ require("./announceEdit.styl");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { AnnounceDateTimeSection } from "./announceEditDateTime.js";
+import { AnnounceEditDateTime } from "./announceEditDateTime.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
@@ -164,7 +164,7 @@ export class AnnounceEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
 
-                <AnnounceDateTimeSection
+                <AnnounceEditDateTime
                     postedAt={this.state.inputPostedAt}
                     onMomentChange={this.onMomentChange}
                 />

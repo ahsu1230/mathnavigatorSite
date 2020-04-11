@@ -12,7 +12,7 @@ import "react-dates/lib/css/_datepicker.css";
 import TimePicker from "react-times";
 import "react-times/css/classic/default.css";
 
-export class AnnounceDateTimeSection extends React.Component {
+export class AnnounceEditDateTime extends React.Component {
     render() {
         const postedAt = this.props.postedAt;
         const now = moment();

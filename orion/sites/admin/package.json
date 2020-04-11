@@ -67,11 +67,11 @@
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest",
-      ".+\\.(css|styl)$": "jest-transform-css",
+      "^.+\\.styl$": "jest-transform-css",
       "^.+\\.svg$": "jest-svg-transformer"
     },
     "moduleNameMapper": {
-      "\\.(png|jpg|gif|ttf|eot|svg)$": "<rootDir>/tests/fileMock.js"
+      "\\.(png|jpg|gif|ttf|eot|svg|css)$": "<rootDir>/tests/fileMock.js"
     },
     "setupFilesAfterEnv": [
       "./tests/setupTestAdapter.js"
