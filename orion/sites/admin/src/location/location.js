@@ -11,7 +11,7 @@ export class LocationPage extends React.Component {
         this.state = {
             list: [],
             numUnpublished: 0,
-            numSelected: 0,
+            numSelected: 0
         };
     }
 
@@ -29,6 +29,7 @@ export class LocationPage extends React.Component {
                 items[i].checked = true;
             }
         }
+        this.setState({numUnpublished: items.length});
     }
 
     onClickPublish() {
@@ -45,8 +46,8 @@ export class LocationPage extends React.Component {
                 <div>
                     <h1>All Locations ({numLocations})</h1>
                     <p>
-                        You have {numUnpublished} unpublished items. <br />
-                        You have selected {numSelected} items to publish.
+                        You have {this.state.numUnpublished} unpublished items. <br />
+                        You have selected {this.state.numSelected} items to publish.
                     </p>
                 </div>
                 <ul id="list-heading">
