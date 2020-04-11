@@ -77,6 +77,9 @@ export class LocationPage extends React.Component {
 }
 
 class LocationRow extends React.Component {
+    onClickBox() {
+        
+    }
     renderCheckbox(isUnpublished) {
         let checkbox = <div> </div>;
         if (isUnpublished) {
