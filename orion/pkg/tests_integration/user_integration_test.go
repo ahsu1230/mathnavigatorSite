@@ -11,109 +11,56 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	user1 := createUser(
-		"John",
-		"Smith",
-		"Middle",
-		"john_smith@example.com",
-		"555-555-0100",
-		false,
-		2,
-	)
-	user2 := createUser(
-		"Bob",
-		"Joe",
-		"",
-		"bob_joe@example.com",
-		"555-555-0101",
-		false,
-		1,
-	)
-	user3 := createUser(
-		"Foo",
-		"Bar",
-		"",
-		"foobar@example.com",
-		"555-555-0102",
-		false,
-		1,
-	)
-	body1 := createJsonBody(&user1)
-	body2 := createJsonBody(&user2)
-	body3 := createJsonBody(&user3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	createAllUsers(t)
 
 	// Call Get All!
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	var users []domains.User
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &users); err != nil {
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, users[0].Id)
-	assert.EqualValues(t, "John", users[0].FirstName)
-	assert.EqualValues(t, "Smith", users[0].LastName)
-	assert.EqualValues(t, "Middle", users[0].MiddleName.String)
-	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
-	assert.EqualValues(t, "555-555-0100", users[0].Phone)
-	assert.EqualValues(t, false, users[0].IsGuardian)
-	assert.EqualValues(t, 2, users[0].GuardianId.Uint)
 
-	assert.EqualValues(t, 2, users[1].Id)
-	assert.EqualValues(t, "Bob", users[1].FirstName)
-	assert.EqualValues(t, "Joe", users[1].LastName)
-	assert.EqualValues(t, "", users[1].MiddleName.String)
-	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
-	assert.EqualValues(t, "555-555-0101", users[1].Phone)
-	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 1, users[1].GuardianId.Uint)
-
-	assert.EqualValues(t, 3, users[2].Id)
-	assert.EqualValues(t, "Foo", users[2].FirstName)
-	assert.EqualValues(t, "Bar", users[2].LastName)
-	assert.EqualValues(t, "", users[2].MiddleName.String)
-	assert.EqualValues(t, "foobar@example.com", users[2].Email)
-	assert.EqualValues(t, "555-555-0102", users[2].Phone)
-	assert.EqualValues(t, false, users[2].IsGuardian)
-	assert.EqualValues(t, 1, users[2].GuardianId.Uint)
+	assertUser(t, 1, users[0])
+	assertUser(t, 2, users[1])
+	assertUser(t, 3, users[2])
 	assert.EqualValues(t, 3, len(users))
 
 	resetTable(t, domains.TABLE_USERS)
 }
 
-// Test: Create 1 User, Update it, GetByUserId()
+// Test: Create 3 Users and GetUserByGuardianId
+func Test_GetUsersByGuardian(t *testing.T) {
+	createAllUsers(t)
+
+	// Call Get All!
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/guardian/1", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assertUser(t, 2, users[0])
+	assertUser(t, 3, users[1])
+	assert.EqualValues(t, 2, len(users))
+
+	resetTable(t, domains.TABLE_USERS)
+}
+
+// Test: Create 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
 	// Create 1 User
-	user1 := createUser(
-		"John",
-		"Smith",
-		"",
-		"john_smith@example.com",
-		"555-555-0100",
-		true,
-		0,
-	)
+	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedUser := createUser(
-		"Bob",
-		"Joe",
-		"Middle",
-		"bob_joe@example.com",
-		"555-555-0101",
-		false,
-		1,
-	)
+	updatedUser := createUser(2)
 	updatedBody := createJsonBody(&updatedUser)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -127,14 +74,7 @@ func Test_UpdateUser(t *testing.T) {
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &user); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, user.Id)
-	assert.EqualValues(t, "Bob", user.FirstName)
-	assert.EqualValues(t, "Joe", user.LastName)
-	assert.EqualValues(t, "Middle", user.MiddleName.String)
-	assert.EqualValues(t, "bob_joe@example.com", user.Email)
-	assert.EqualValues(t, "555-555-0101", user.Phone)
-	assert.EqualValues(t, false, user.IsGuardian)
-	assert.EqualValues(t, 1, user.GuardianId.Uint)
+	assertUser(t, 2, user)
 
 	resetTable(t, domains.TABLE_USERS)
 }
@@ -142,15 +82,7 @@ func Test_UpdateUser(t *testing.T) {
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
 	// Create
-	user1 := createUser(
-		"John",
-		"Smith",
-		"",
-		"john_smith@example.com",
-		"555-555-0100",
-		true,
-		0,
-	)
+	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -167,14 +99,77 @@ func Test_DeleteUser(t *testing.T) {
 }
 
 // Helper methods
-func createUser(firstName, lastName, middleName, email, phone string, isGuardian bool, guardianId uint) domains.User {
-	return domains.User{
-		FirstName:  firstName,
-		LastName:   lastName,
-		MiddleName: domains.NewNullString(middleName),
-		Email:      email,
-		Phone:      phone,
-		IsGuardian: isGuardian,
-		GuardianId: domains.NewNullUint(guardianId),
+func createUser(id int) domains.User {
+	switch id {
+	case 1:
+		return domains.User{
+			FirstName:  "John",
+			LastName:   "Smith",
+			MiddleName: domains.NewNullString("Middle"),
+			Email:      "john_smith@example.com",
+			Phone:      "555-555-0100",
+			IsGuardian: true,
+			GuardianId: domains.NewNullUint(0),
+		}
+	case 2:
+		return domains.User{
+			FirstName:  "Bob",
+			LastName:   "Joe",
+			MiddleName: domains.NewNullString(""),
+			Email:      "bob_joe@example.com",
+			Phone:      "555-555-0101",
+			IsGuardian: false,
+			GuardianId: domains.NewNullUint(1),
+		}
+	case 3:
+		return domains.User{
+			FirstName:  "Foo",
+			LastName:   "Bar",
+			MiddleName: domains.NewNullString(""),
+			Email:      "foobar@example.com",
+			Phone:      "555-555-0102",
+			IsGuardian: false,
+			GuardianId: domains.NewNullUint(1),
+		}
+	default:
+		return domains.User{}
+	}
+}
+
+func createAllUsers(t *testing.T) {
+	for i := 1; i < 4; i++ {
+		user := createUser(i)
+		body := createJsonBody(&user)
+		recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
+		assert.EqualValues(t, http.StatusOK, recorder.Code)
+	}
+}
+
+func assertUser(t *testing.T, id int, user domains.User) {
+	switch id {
+	case 1:
+		assert.EqualValues(t, "John", user.FirstName)
+		assert.EqualValues(t, "Smith", user.LastName)
+		assert.EqualValues(t, "Middle", user.MiddleName.String)
+		assert.EqualValues(t, "john_smith@example.com", user.Email)
+		assert.EqualValues(t, "555-555-0100", user.Phone)
+		assert.EqualValues(t, true, user.IsGuardian)
+		assert.EqualValues(t, 0, user.GuardianId.Uint)
+	case 2:
+		assert.EqualValues(t, "Bob", user.FirstName)
+		assert.EqualValues(t, "Joe", user.LastName)
+		assert.EqualValues(t, "", user.MiddleName.String)
+		assert.EqualValues(t, "bob_joe@example.com", user.Email)
+		assert.EqualValues(t, "555-555-0101", user.Phone)
+		assert.EqualValues(t, false, user.IsGuardian)
+		assert.EqualValues(t, 1, user.GuardianId.Uint)
+	case 3:
+		assert.EqualValues(t, "Foo", user.FirstName)
+		assert.EqualValues(t, "Bar", user.LastName)
+		assert.EqualValues(t, "", user.MiddleName.String)
+		assert.EqualValues(t, "foobar@example.com", user.Email)
+		assert.EqualValues(t, "555-555-0102", user.Phone)
+		assert.EqualValues(t, false, user.IsGuardian)
+		assert.EqualValues(t, 1, user.GuardianId.Uint)
 	}
 }
