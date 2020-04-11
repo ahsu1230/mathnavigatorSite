@@ -1,8 +1,8 @@
 "use strict";
 require("./semester.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
+import API from "../api.js";
 
 export class SemesterPage extends React.Component {
     constructor(props) {
@@ -12,41 +12,28 @@ export class SemesterPage extends React.Component {
         };
     }
 
-    render() {
-        var numSemesters = 3;
-        let fakeSemesterA = {
-            semesterId: "2020_fall",
-            title: "2020 Fall",
-        };
-        let fakeSemesterB = {
-            semesterId: "2021_spring",
-            title: "2021 Spring",
-        };
-        /* TODO: will use this to test text wrapping later */
-        let fakeSemesterC = {
-            semesterId: "2021_summer",
-            title: "2020 Summer",
-        };
+    componentDidMount() {
+        API.get("api/semesters/v1/all").then((res) => {
+            const semesters = res.data;
+            this.setState({ list: semesters });
+        });
+    }
 
+    render() {
+        const numSemesters = this.state.list.length;
+        const rows = this.state.list.map((s, i) => (
+            <SemesterRow key={i} semesterObj={s} />
+        ));
         return (
             <div id="view-semester">
                 <h1>All Semesters ({numSemesters})</h1>
                 <ul className="semester-lists">
-                    <li className="li-large"> Semester ID </li>
-                    <li className="li-large"> Title </li>
-                    <li className="li-small"> </li>
+                    <li className="li-med">Semester ID</li>
+                    <li className="li-med">Title</li>
                 </ul>
-                <ul>
-                    <SemesterRow semesterObj={fakeSemesterA} />
-                    <SemesterRow semesterObj={fakeSemesterB} />
-                    <SemesterRow semesterObj={fakeSemesterC} />
-                </ul>
+                <ul>{rows}</ul>
                 <Link to={"/semesters/add"}>
-                    {" "}
-                    <button className="semester-button">
-                        {" "}
-                        Add Semester
-                    </button>{" "}
+                    <button className="semester-button">Add Semester</button>
                 </Link>
             </div>
         );
@@ -57,11 +44,11 @@ class SemesterRow extends React.Component {
     render() {
         const semesterId = this.props.semesterObj.semesterId;
         const title = this.props.semesterObj.title;
-        const url = "/semester/" + "/edit";
+        const url = "/semesters/" + semesterId + "/edit";
         return (
             <ul className="semester-lists">
-                <li className="li-large"> {semesterId} </li>
-                <li className="li-large"> {title} </li>
+                <li className="li-med"> {semesterId} </li>
+                <li className="li-med"> {title} </li>
                 <Link to={url}> Edit </Link>
             </ul>
         );

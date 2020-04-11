@@ -16,3 +16,11 @@ func ParseParamId(c *gin.Context) uint {
 func ParseParamPublishedOnly(c *gin.Context) bool {
 	return c.Query("published") == "true"
 }
+
+func ParseParamUint(num string) uint {
+	id, err := strconv.ParseUint(num, 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id)
+}

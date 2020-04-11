@@ -15,6 +15,8 @@ export class AchieveEditPage extends React.Component {
             isEdit: false,
             inputYear: 0,
             inputMessage: "",
+            showDeleteModal: false,
+            showSaveModal: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
