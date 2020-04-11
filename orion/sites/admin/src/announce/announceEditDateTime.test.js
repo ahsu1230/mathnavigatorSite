@@ -11,14 +11,16 @@ describe("test", () => {
     });
 
     test("renders past postedAt", () => {
-        let postedAt = moment().subtract(7, 'days');
+        let postedAt = moment().subtract(7, "days");
         component.setProps({ postedAt });
-        expect(component.find("h4").at(0).text()).toContain("This post was published");
+        expect(component.find("h4").at(0).text()).toContain(
+            "This post was published"
+        );
         expect(component.find("AnnounceDateTimePicker").exists()).toBe(false);
     });
 
     test("renders future postedAt", () => {
-        let postedAt = moment().add(7, 'days');
+        let postedAt = moment().add(7, "days");
         component.setProps({ postedAt });
         expect(component.find("h4").exists()).toBe(false);
         expect(component.find("AnnounceDateTimePicker").exists()).toBe(true);
