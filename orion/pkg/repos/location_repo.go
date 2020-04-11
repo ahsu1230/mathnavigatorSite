@@ -16,12 +16,12 @@ type locationRepo struct {
 type LocationRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Location, error)
+	SelectAllUnpublished() ([]domains.Location, error)
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
+	Publish([]string) []domains.LocationErrorBody
 	Update(string, domains.Location) error
 	Delete(string) error
-	SelectAllUnpublished() ([]domains.Location, error)
-	Publish([]string) []domains.LocationErrorBody
 }
 
 func (lr *locationRepo) Initialize(db *sql.DB) {
@@ -65,6 +65,41 @@ func (lr *locationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error
 		results = append(results, location)
 	}
 
+	return results, nil
+}
+
+func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
+	results := make([]domains.Location, 0)
+
+	stmt, err := lr.db.Prepare("SELECT * FROM locations WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var location domains.Location
+		if errScan := rows.Scan(
+			&location.Id,
+			&location.CreatedAt,
+			&location.UpdatedAt,
+			&location.DeletedAt,
+			&location.PublishedAt,
+			&location.LocId,
+			&location.Street,
+			&location.City,
+			&location.State,
+			&location.Zipcode,
+			&location.Room); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, location)
+	}
 	return results, nil
 }
 
@@ -126,6 +161,28 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not inserted")
 }
 
+func (lr *locationRepo) Publish(locIds []string) []domains.LocationErrorBody {
+	errors := make([]domains.LocationErrorBody, 0)
+
+	for _, locId := range locIds {
+		location, err := lr.SelectByLocationId(locId)
+		if err != nil {
+			errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+			continue
+		}
+		if !location.PublishedAt.Valid {
+			now := time.Now().UTC()
+			location.PublishedAt.Scan(now)
+			err = lr.Update(locId, location)
+			if err != nil {
+				errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+			}
+		}
+	}
+
+	return errors
+}
+
 func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
@@ -173,63 +230,6 @@ func (lr *locationRepo) Delete(locId string) error {
 	}
 
 	return handleSqlExecResult(result, 1, "location was not deleted")
-}
-
-func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
-	results := make([]domains.Location, 0)
-
-	stmt, err := lr.db.Prepare("SELECT * FROM locations WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var location domains.Location
-		if errScan := rows.Scan(
-			&location.Id,
-			&location.CreatedAt,
-			&location.UpdatedAt,
-			&location.DeletedAt,
-			&location.PublishedAt,
-			&location.LocId,
-			&location.Street,
-			&location.City,
-			&location.State,
-			&location.Zipcode,
-			&location.Room); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, location)
-	}
-	return results, nil
-}
-
-func (lr *locationRepo) Publish(locIds []string) []domains.LocationErrorBody {
-	errors := make([]domains.LocationErrorBody, 0)
-
-	for _, locId := range locIds {
-		location, err := lr.SelectByLocationId(locId)
-		if err != nil {
-			errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
-			continue
-		}
-		if !location.PublishedAt.Valid {
-			now := time.Now().UTC()
-			location.PublishedAt.Scan(now)
-			err = lr.Update(locId, location)
-			if err != nil {
-				errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
-			}
-		}
-	}
-
-	return errors
 }
 
 func CreateTestLocationRepo(db *sql.DB) LocationRepoInterface {

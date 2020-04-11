@@ -55,6 +55,23 @@ func CreateProgram(c *gin.Context) {
 	return
 }
 
+func PublishPrograms(c *gin.Context) {
+	// Incoming JSON
+	var programIdsJson []string
+	c.BindJSON(&programIdsJson)
+
+	errors := services.ProgramService.Publish(programIdsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
 func UpdateProgram(c *gin.Context) {
 	// Incoming JSON & Parameters
 	programId := c.Param("programId")
@@ -85,23 +102,6 @@ func DeleteProgram(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func PublishPrograms(c *gin.Context) {
-	// Incoming JSON
-	var programIdsJson []string
-	c.BindJSON(&programIdsJson)
-
-	errors := services.ProgramService.Publish(programIdsJson)
-	if len(errors) > 0 {
-		for _, err := range errors {
-			c.Error(err.Error)
-			c.String(http.StatusInternalServerError, err.Error.Error())
-		}
 	} else {
 		c.Status(http.StatusOK)
 	}

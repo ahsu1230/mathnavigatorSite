@@ -56,6 +56,23 @@ func CreateSession(c *gin.Context) {
 	return
 }
 
+func PublishSessions(c *gin.Context) {
+	// Incoming JSON
+	var idsJson []uint
+	c.BindJSON(&idsJson)
+
+	errors := services.SessionService.Publish(idsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
 func UpdateSession(c *gin.Context) {
 	// Incoming JSON & Parameters
 	id := ParseParamId(c)
@@ -86,23 +103,6 @@ func DeleteSession(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func PublishSessions(c *gin.Context) {
-	// Incoming JSON
-	var idsJson []uint
-	c.BindJSON(&idsJson)
-
-	errors := services.SessionService.Publish(idsJson)
-	if len(errors) > 0 {
-		for _, err := range errors {
-			c.Error(err.Error)
-			c.String(http.StatusInternalServerError, err.Error.Error())
-		}
 	} else {
 		c.Status(http.StatusOK)
 	}

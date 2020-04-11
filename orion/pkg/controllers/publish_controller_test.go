@@ -45,7 +45,7 @@ func setupMock() {
 //
 // Test Get Unpublished
 //
-func TestGetUnpublishedAchievements_Success(t *testing.T) {
+func TestGetUnpublished_Success(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint
@@ -64,39 +64,13 @@ func TestGetUnpublishedAchievements_Success(t *testing.T) {
 	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
 	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
-}
 
-func TestGetAllUnpublishedPrograms_Success(t *testing.T) {
-	setupMock()
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
 	assert.EqualValues(t, "prog1", unpublishedDomains.Programs[0].ProgramId)
 	assert.EqualValues(t, "Program1", unpublishedDomains.Programs[0].Name)
 	assert.EqualValues(t, "prog2", unpublishedDomains.Programs[1].ProgramId)
 	assert.EqualValues(t, "Program2", unpublishedDomains.Programs[1].Name)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Programs))
-}
 
-func TestGetAllUnpublishedLocations_Success(t *testing.T) {
-	setupMock()
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
 	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocId)
 	assert.EqualValues(t, "4040 Location Rd", unpublishedDomains.Locations[0].Street)
 	assert.EqualValues(t, "MA", unpublishedDomains.Locations[0].State)
@@ -104,20 +78,7 @@ func TestGetAllUnpublishedLocations_Success(t *testing.T) {
 	assert.EqualValues(t, "4040 Sesame St", unpublishedDomains.Locations[1].Street)
 	assert.EqualValues(t, "MD", unpublishedDomains.Locations[1].State)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Locations))
-}
 
-func TestGetAllUnpublishedSessions_Success(t *testing.T) {
-	setupMock()
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
 	assert.EqualValues(t, 1, unpublishedDomains.Sessions[0].Id)
 	assert.EqualValues(t, "id_1", unpublishedDomains.Sessions[0].ClassId)
 	assert.EqualValues(t, 2, unpublishedDomains.Sessions[1].Id)

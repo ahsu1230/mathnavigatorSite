@@ -129,6 +129,28 @@ func TestCreateSession_Failure(t *testing.T) {
 }
 
 //
+// Test Publish
+//
+func TestPublishSessions_Success(t *testing.T) {
+	sessionService.mockPublish = func(ids []uint) []domains.SessionErrorBody {
+		return nil // Successful update
+	}
+	services.SessionService = &sessionService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1, 2}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+//
 // Test Update
 //
 func TestUpdateSession_Success(t *testing.T) {
@@ -204,28 +226,6 @@ func TestDeleteSession_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
-// Test Publish
-//
-func TestPublishSessions_Success(t *testing.T) {
-	sessionService.mockPublish = func(ids []uint) []domains.SessionErrorBody {
-		return nil // Successful update
-	}
-	services.SessionService = &sessionService
-
-	// Create new HTTP request to endpoint
-	ids := []uint{1, 2}
-	marshal, err := json.Marshal(ids)
-	if err != nil {
-		panic(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

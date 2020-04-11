@@ -128,6 +128,60 @@ func TestSelectAllPublishedLocations(t *testing.T) {
 }
 
 //
+// Select All Unpublished
+//
+func TestSelectAllUnpublishedLocations(t *testing.T) {
+	db, mock, repo := initLocationTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"PublishedAt",
+		"LocId",
+		"Street",
+		"City",
+		"State",
+		"Zipcode",
+		"Room"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
+	mock.ExpectPrepare("^SELECT (.+) FROM locations").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAllUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Location{
+		{
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   domains.NullTime{},
+			PublishedAt: domains.NullTime{},
+			LocId:       "xkcd",
+			Street:      "4040 Cherry Rd",
+			City:        "Potomac",
+			State:       "MD",
+			Zipcode:     "20854",
+			Room:        domains.NewNullString("Room 2"),
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select One
 //
 func TestSelectLocation(t *testing.T) {
@@ -263,60 +317,6 @@ func TestDeleteLocation(t *testing.T) {
 	}
 
 	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Select All Unpublished
-//
-func TestSelectAllUnpublishedLocations(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"PublishedAt",
-		"LocId",
-		"Street",
-		"City",
-		"State",
-		"Zipcode",
-		"Room"}).
-		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
-	mock.ExpectPrepare("^SELECT (.+) FROM locations").
-		ExpectQuery().
-		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Location{
-		{
-			Id:          1,
-			CreatedAt:   now,
-			UpdatedAt:   now,
-			DeletedAt:   domains.NullTime{},
-			PublishedAt: domains.NullTime{},
-			LocId:       "xkcd",
-			Street:      "4040 Cherry Rd",
-			City:        "Potomac",
-			State:       "MD",
-			Zipcode:     "20854",
-			Room:        domains.NewNullString("Room 2"),
-		},
-	}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}

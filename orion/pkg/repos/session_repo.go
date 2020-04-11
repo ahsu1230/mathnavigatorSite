@@ -16,12 +16,12 @@ type sessionRepo struct {
 type SessionRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAllByClassId(string, bool) ([]domains.Session, error)
+	SelectAllUnpublished() ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert(domains.Session) error
+	Publish([]uint) []domains.SessionErrorBody
 	Update(uint, domains.Session) error
 	Delete(uint) error
-	SelectAllUnpublished() ([]domains.Session, error)
-	Publish([]uint) []domains.SessionErrorBody
 }
 
 func (sr *sessionRepo) Initialize(db *sql.DB) {
@@ -66,6 +66,40 @@ func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([
 		results = append(results, session)
 	}
 
+	return results, nil
+}
+
+func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
+	results := make([]domains.Session, 0)
+
+	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var session domains.Session
+		if errScan := rows.Scan(
+			&session.Id,
+			&session.CreatedAt,
+			&session.UpdatedAt,
+			&session.DeletedAt,
+			&session.PublishedAt,
+			&session.ClassId,
+			&session.StartsAt,
+			&session.EndsAt,
+			&session.Canceled,
+			&session.Notes); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, session)
+	}
 	return results, nil
 }
 
@@ -124,6 +158,28 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 	return handleSqlExecResult(result, 1, "session was not inserted")
 }
 
+func (sr *sessionRepo) Publish(ids []uint) []domains.SessionErrorBody {
+	errors := make([]domains.SessionErrorBody, 0)
+
+	for _, id := range ids {
+		session, err := sr.SelectBySessionId(id)
+		if err != nil {
+			errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+			continue
+		}
+		if !session.PublishedAt.Valid {
+			now := time.Now().UTC()
+			session.PublishedAt.Scan(now)
+			err = sr.Update(id, session)
+			if err != nil {
+				errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+			}
+		}
+	}
+
+	return errors
+}
+
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
 		"updated_at=?, " +
@@ -169,62 +225,6 @@ func (sr *sessionRepo) Delete(id uint) error {
 	}
 
 	return handleSqlExecResult(result, 1, "session was not deleted")
-}
-
-func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
-	results := make([]domains.Session, 0)
-
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var session domains.Session
-		if errScan := rows.Scan(
-			&session.Id,
-			&session.CreatedAt,
-			&session.UpdatedAt,
-			&session.DeletedAt,
-			&session.PublishedAt,
-			&session.ClassId,
-			&session.StartsAt,
-			&session.EndsAt,
-			&session.Canceled,
-			&session.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, session)
-	}
-	return results, nil
-}
-
-func (sr *sessionRepo) Publish(ids []uint) []domains.SessionErrorBody {
-	errors := make([]domains.SessionErrorBody, 0)
-
-	for _, id := range ids {
-		session, err := sr.SelectBySessionId(id)
-		if err != nil {
-			errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
-			continue
-		}
-		if !session.PublishedAt.Valid {
-			now := time.Now().UTC()
-			session.PublishedAt.Scan(now)
-			err = sr.Update(id, session)
-			if err != nil {
-				errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
-			}
-		}
-	}
-
-	return errors
 }
 
 func CreateTestSessionRepo(db *sql.DB) SessionRepoInterface {

@@ -19,10 +19,10 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiPrograms.GET("/v1/all", controllers.GetAllPrograms)
 		apiPrograms.POST("/v1/create", controllers.CreateProgram)
+		apiPrograms.POST("/v1/publish", controllers.PublishPrograms)
 		apiPrograms.GET("/v1/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
-		apiPrograms.POST("/v1/publish", controllers.PublishPrograms)
 	}
 	apiClasses := h.Engine.Group("api/classes/")
 	{
@@ -39,10 +39,10 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiLocations.GET("/v1/all", controllers.GetAllLocations)
 		apiLocations.POST("/v1/create", controllers.CreateLocation)
+		apiLocations.POST("/v1/publish", controllers.PublishLocations)
 		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
 		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
 		apiLocations.DELETE("/v1/location/:locId", controllers.DeleteLocation)
-		apiLocations.POST("/v1/publish", controllers.PublishLocations)
 	}
 	apiAnnounces := h.Engine.Group("api/announcements/")
 	{
@@ -73,11 +73,11 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSessions := h.Engine.Group("api/sessions/")
 	{
 		apiSessions.POST("/v1/create", controllers.CreateSession)
+		apiSessions.POST("/v1/publish", controllers.PublishSessions)
 		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
 		apiSessions.GET("/v1/class/:classId", controllers.GetAllSessionsByClassId)
-		apiSessions.POST("/v1/publish", controllers.PublishSessions)
 	}
 	apiUsers := h.Engine.Group("api/users/")
 	{

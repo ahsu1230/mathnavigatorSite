@@ -18,12 +18,12 @@ type programRepo struct {
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Program, error)
+	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
+	Publish([]string) []domains.ProgramErrorBody
 	Update(string, domains.Program) error
 	Delete(string) error
-	SelectAllUnpublished() ([]domains.Program, error)
-	Publish([]string) []domains.ProgramErrorBody
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
@@ -38,6 +38,40 @@ func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) 
 		statement += " WHERE published_at IS NOT NULL"
 	}
 	stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var program domains.Program
+		if errScan := rows.Scan(
+			&program.Id,
+			&program.CreatedAt,
+			&program.UpdatedAt,
+			&program.DeletedAt,
+			&program.PublishedAt,
+			&program.ProgramId,
+			&program.Name,
+			&program.Grade1,
+			&program.Grade2,
+			&program.Description); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, program)
+	}
+	return results, nil
+}
+
+func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
+	results := make([]domains.Program, 0)
+
+	stmt, err := pr.db.Prepare("SELECT * FROM programs WHERE published_at IS NULL")
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +158,28 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
+func (pr *programRepo) Publish(programIds []string) []domains.ProgramErrorBody {
+	errors := make([]domains.ProgramErrorBody, 0)
+
+	for _, programId := range programIds {
+		program, err := pr.SelectByProgramId(programId)
+		if err != nil {
+			errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+			continue
+		}
+		if !program.PublishedAt.Valid {
+			now := time.Now().UTC()
+			program.PublishedAt.Scan(now)
+			err = pr.Update(programId, program)
+			if err != nil {
+				errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+			}
+		}
+	}
+
+	return errors
+}
+
 func (pr *programRepo) Update(programId string, program domains.Program) error {
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
@@ -169,62 +225,6 @@ func (pr *programRepo) Delete(programId string) error {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "program was not deleted")
-}
-
-func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
-	results := make([]domains.Program, 0)
-
-	stmt, err := pr.db.Prepare("SELECT * FROM programs WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var program domains.Program
-		if errScan := rows.Scan(
-			&program.Id,
-			&program.CreatedAt,
-			&program.UpdatedAt,
-			&program.DeletedAt,
-			&program.PublishedAt,
-			&program.ProgramId,
-			&program.Name,
-			&program.Grade1,
-			&program.Grade2,
-			&program.Description); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, program)
-	}
-	return results, nil
-}
-
-func (pr *programRepo) Publish(programIds []string) []domains.ProgramErrorBody {
-	errors := make([]domains.ProgramErrorBody, 0)
-
-	for _, programId := range programIds {
-		program, err := pr.SelectByProgramId(programId)
-		if err != nil {
-			errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
-			continue
-		}
-		if !program.PublishedAt.Valid {
-			now := time.Now().UTC()
-			program.PublishedAt.Scan(now)
-			err = pr.Update(programId, program)
-			if err != nil {
-				errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
-			}
-		}
-	}
-
-	return errors
 }
 
 // For Tests Only

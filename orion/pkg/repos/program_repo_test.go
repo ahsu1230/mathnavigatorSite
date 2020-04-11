@@ -104,6 +104,48 @@ func TestSelectAllPublishedPrograms(t *testing.T) {
 }
 
 //
+// Select All Unpublished
+//
+func TestSelectAllUnpublishedPrograms(t *testing.T) {
+	db, mock, repo := initProgramTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
+	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE published_at IS NULL").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAllUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Program{
+		{
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   domains.NullTime{},
+			PublishedAt: domains.NullTime{},
+			ProgramId:   "prog1",
+			Name:        "Program1",
+			Grade1:      2,
+			Grade2:      3,
+			Description: "descript1",
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select One
 //
 func TestSelectProgram(t *testing.T) {
@@ -225,48 +267,6 @@ func TestDeleteProgram(t *testing.T) {
 	}
 
 	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Select All Unpublished
-//
-func TestSelectAllUnpublishedPrograms(t *testing.T) {
-	db, mock, repo := initProgramTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "ProgramId", "Name", "Grade1", "Grade2", "Description"}).
-		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "prog1", "Program1", 2, 3, "descript1")
-	mock.ExpectPrepare("^SELECT (.+) FROM programs WHERE published_at IS NULL").
-		ExpectQuery().
-		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Program{
-		{
-			Id:          1,
-			CreatedAt:   now,
-			UpdatedAt:   now,
-			DeletedAt:   domains.NullTime{},
-			PublishedAt: domains.NullTime{},
-			ProgramId:   "prog1",
-			Name:        "Program1",
-			Grade1:      2,
-			Grade2:      3,
-			Description: "descript1",
-		},
-	}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}

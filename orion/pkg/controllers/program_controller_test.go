@@ -124,6 +124,28 @@ func TestCreateProgram_Failure(t *testing.T) {
 }
 
 //
+// Test Publish
+//
+func TestPublishPrograms_Success(t *testing.T) {
+	programService.mockPublish = func(programIds []string) []domains.ProgramErrorBody {
+		return nil // Successful update
+	}
+	services.ProgramService = &programService
+
+	// Create new HTTP request to endpoint
+	programIds := []string{"prog1", "prog2"}
+	marshal, err := json.Marshal(programIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+//
 // Test Update
 //
 func TestUpdateProgram_Success(t *testing.T) {
@@ -196,28 +218,6 @@ func TestDeleteProgram_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
-// Test Publish
-//
-func TestPublishPrograms_Success(t *testing.T) {
-	programService.mockPublish = func(programIds []string) []domains.ProgramErrorBody {
-		return nil // Successful update
-	}
-	services.ProgramService = &programService
-
-	// Create new HTTP request to endpoint
-	programIds := []string{"prog1", "prog2"}
-	marshal, err := json.Marshal(programIds)
-	if err != nil {
-		panic(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

@@ -55,6 +55,23 @@ func CreateLocation(c *gin.Context) {
 	return
 }
 
+func PublishLocations(c *gin.Context) {
+	// Incoming JSON
+	var locIdsJson []string
+	c.BindJSON(&locIdsJson)
+
+	errors := services.LocationService.Publish(locIdsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
 func UpdateLocation(c *gin.Context) {
 	// Incoming JSON & Parameters
 	locId := c.Param("locId")
@@ -85,23 +102,6 @@ func DeleteLocation(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func PublishLocations(c *gin.Context) {
-	// Incoming JSON
-	var locIdsJson []string
-	c.BindJSON(&locIdsJson)
-
-	errors := services.LocationService.Publish(locIdsJson)
-	if len(errors) > 0 {
-		for _, err := range errors {
-			c.Error(err.Error)
-			c.String(http.StatusInternalServerError, err.Error.Error())
-		}
 	} else {
 		c.Status(http.StatusOK)
 	}
