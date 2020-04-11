@@ -11,8 +11,6 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	resetAllTables(t)
-
 	user1 := createUser(
 		"John",
 		"Smith",
@@ -86,12 +84,12 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, false, users[2].IsGuardian)
 	assert.EqualValues(t, 1, users[2].GuardianId.Uint)
 	assert.EqualValues(t, 3, len(users))
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 1 User, Update it, GetByUserId()
 func Test_UpdateUser(t *testing.T) {
-	resetAllTables(t)
-
 	// Create 1 User
 	user1 := createUser(
 		"John",
@@ -137,12 +135,12 @@ func Test_UpdateUser(t *testing.T) {
 	assert.EqualValues(t, "555-555-0101", user.Phone)
 	assert.EqualValues(t, false, user.IsGuardian)
 	assert.EqualValues(t, 1, user.GuardianId.Uint)
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	resetAllTables(t)
-
 	// Create
 	user1 := createUser(
 		"John",
@@ -164,6 +162,8 @@ func Test_DeleteUser(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Helper methods

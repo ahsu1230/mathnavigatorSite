@@ -10,8 +10,7 @@ import (
 
 // Test: GetUnpublished()
 func Test_GetUnpublished(t *testing.T) {
-	resetAllTables(t)
-
+	// Create Classes
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(2)
@@ -22,6 +21,7 @@ func Test_GetUnpublished(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, classRecorder1.Code)
 	assert.EqualValues(t, http.StatusOK, classRecorder2.Code)
 
+	// Create Achieves
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
 	achieveBody1 := createJsonBody(&achieve1)
@@ -52,4 +52,6 @@ func Test_GetUnpublished(t *testing.T) {
 	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
 	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
+
+	resetAllTables(t)
 }

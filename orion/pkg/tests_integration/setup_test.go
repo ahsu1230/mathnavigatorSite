@@ -80,6 +80,7 @@ func resetAllTables(t *testing.T) {
 	resetTable(t, domains.TABLE_SEMESTERS)
 	resetTable(t, domains.TABLE_LOCATIONS)
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Helper methods for Router
