@@ -55,7 +55,7 @@ func Test_PublishSemesters(t *testing.T) {
 
 	// Get All Unpublished
 	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Validate results
 	var unpublishedDomains domains.UnpublishedDomains
