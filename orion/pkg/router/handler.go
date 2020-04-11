@@ -27,6 +27,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes/")
 	{
 		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/publish", controllers.PublishClasses)
 		apiClasses.POST("/v1/create", controllers.CreateClass)
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
@@ -65,6 +66,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
 		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
+		apiSemesters.POST("/v1/publish", controllers.PublishSemesters)
 		apiSemesters.POST("/v1/create", controllers.CreateSemester)
 		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
 		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)

@@ -15,7 +15,7 @@ var later1 = now.Add(time.Hour * 24 * 30)
 var later2 = now.Add(time.Hour * 24 * 31)
 var later3 = now.Add(time.Hour * 24 * 60)
 
-// Test: Create 4 Classes and GetAll()
+// Test: Create 4 Classes and GetAll(false)
 func Test_CreateClasses(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
@@ -29,20 +29,18 @@ func Test_CreateClasses(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assertClass(t, 3, classes[2])
 	assertClass(t, 4, classes[3])
 	assert.EqualValues(t, 4, len(classes))
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
 func Test_UniqueClassId(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
-
 	class1 := createClass(1)
 	class2 := createClass(1)
 	body1 := createJsonBody(&class1)
@@ -62,10 +60,9 @@ func Test_UniqueClassId(t *testing.T) {
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &class); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, class)
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesByProgram()
@@ -82,13 +79,12 @@ func Test_GetClassesByProgram(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assertClass(t, 3, classes[2])
 	assert.EqualValues(t, 3, len(classes))
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesBySemester()
@@ -105,12 +101,11 @@ func Test_GetClassesBySemester(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 3, classes[0])
 	assertClass(t, 4, classes[1])
 	assert.EqualValues(t, 2, len(classes))
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
@@ -127,19 +122,17 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assert.EqualValues(t, 2, len(classes))
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
-	createAllProgramsSemestersLocations(t)
-
 	// Create 1 Class
+	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
@@ -164,14 +157,13 @@ func Test_UpdateClass(t *testing.T) {
 	}
 	assertClass(t, 2, class)
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Test: Create 1 Class, Delete it, GetByClassId()
 func Test_DeleteClass(t *testing.T) {
-	createAllProgramsSemestersLocations(t)
-
 	// Create
+	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
@@ -185,7 +177,7 @@ func Test_DeleteClass(t *testing.T) {
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	resetTables(t)
+	resetClassTables(t)
 }
 
 // Helper methods
@@ -258,8 +250,8 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
-	body3 := createJsonBody(semester1)
-	body4 := createJsonBody(semester2)
+	body3 := createJsonBody(&semester1)
+	body4 := createJsonBody(&semester2)
 	body5 := createJsonBody(&location1)
 
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
@@ -316,7 +308,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 	}
 }
 
-func resetTables(t *testing.T) {
+func resetClassTables(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 	resetTable(t, domains.TABLE_PROGRAMS)
 	resetTable(t, domains.TABLE_SEMESTERS)

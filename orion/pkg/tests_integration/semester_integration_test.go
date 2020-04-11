@@ -9,14 +9,14 @@ import (
 	"testing"
 )
 
-// Test: Create 3 Semesters and GetAll()
+// Test: Create 3 Semesters and GetAll(false)
 func Test_CreateSemesters(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
 	semester3 := createSemester("2020_winter", "Winter 2020")
-	body1 := createJsonBody(semester1)
-	body2 := createJsonBody(semester2)
-	body3 := createJsonBody(semester3)
+	body1 := createJsonBody(&semester1)
+	body2 := createJsonBody(&semester2)
+	body3 := createJsonBody(&semester3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
@@ -26,9 +26,9 @@ func Test_CreateSemesters(t *testing.T) {
 
 	// Call Get All!
 	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/all", nil)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 	var semesters []domains.Semester
 	if err := json.Unmarshal(recorder4.Body.Bytes(), &semesters); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
@@ -48,8 +48,8 @@ func Test_CreateSemesters(t *testing.T) {
 func Test_UniqueSemesterId(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_spring", "Fall 2020") // Same semesterId
-	body1 := createJsonBody(semester1)
-	body2 := createJsonBody(semester2)
+	body1 := createJsonBody(&semester1)
+	body2 := createJsonBody(&semester2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -75,13 +75,13 @@ func Test_UniqueSemesterId(t *testing.T) {
 func Test_UpdateSemester(t *testing.T) {
 	// Create 1 Semester
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	body1 := createJsonBody(semester1)
+	body1 := createJsonBody(&semester1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedSemester := createSemester("2020_fall", "Fall 2020")
-	updatedBody := createJsonBody(updatedSemester)
+	updatedBody := createJsonBody(&updatedSemester)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/semester/2020_spring", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
@@ -106,7 +106,7 @@ func Test_UpdateSemester(t *testing.T) {
 func Test_DeleteSemester(t *testing.T) {
 	// Create
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	body1 := createJsonBody(semester1)
+	body1 := createJsonBody(&semester1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 

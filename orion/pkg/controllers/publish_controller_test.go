@@ -23,10 +23,19 @@ func setupMock() {
 			createMockLocation("loc2", "4040 Sesame St", "City", "MD", "77294", "Room 2"),
 		}, nil
 	}
+	classService.mockGetUnpublished = func() ([]domains.Class, error) {
+		return createMockClasses(1, 2), nil
+	}
 	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
+		}, nil
+	}
+	semesterService.mockGetUnpublished = func() ([]domains.Semester, error) {
+		return []domains.Semester{
+			createMockSemester("2020_fall", "Fall 2020"),
+			createMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
 	sessionService.mockGetAllUnpublished = func() ([]domains.Session, error) {
@@ -38,7 +47,9 @@ func setupMock() {
 	}
 	services.ProgramService = &programService
 	services.LocationService = &locationService
+	services.ClassService = &classService
 	services.AchieveService = &achieveService
+	services.SemesterService = &semesterService
 	services.SessionService = &sessionService
 }
 
@@ -57,13 +68,6 @@ func TestGetUnpublished_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
-	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)
-	assert.EqualValues(t, "message1", unpublishedDomains.Achieves[0].Message)
-	assert.EqualValues(t, 2, unpublishedDomains.Achieves[1].Id)
-	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
-	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
-	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
 
 	assert.EqualValues(t, "prog1", unpublishedDomains.Programs[0].ProgramId)
 	assert.EqualValues(t, "Program1", unpublishedDomains.Programs[0].Name)
@@ -78,6 +82,24 @@ func TestGetUnpublished_Success(t *testing.T) {
 	assert.EqualValues(t, "4040 Sesame St", unpublishedDomains.Locations[1].Street)
 	assert.EqualValues(t, "MD", unpublishedDomains.Locations[1].State)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Locations))
+
+	assertMockClasses(t, 1, unpublishedDomains.Classes[0])
+	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
+	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
+
+	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
+	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)
+	assert.EqualValues(t, "message1", unpublishedDomains.Achieves[0].Message)
+	assert.EqualValues(t, 2, unpublishedDomains.Achieves[1].Id)
+	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
+	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
+	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
+
+	assert.EqualValues(t, "2020_fall", unpublishedDomains.Semesters[0].SemesterId)
+	assert.EqualValues(t, "Fall 2020", unpublishedDomains.Semesters[0].Title)
+	assert.EqualValues(t, "2020_winter", unpublishedDomains.Semesters[1].SemesterId)
+	assert.EqualValues(t, "Winter 2020", unpublishedDomains.Semesters[1].Title)
+	assert.EqualValues(t, 2, len(unpublishedDomains.Semesters))
 
 	assert.EqualValues(t, 1, unpublishedDomains.Sessions[0].Id)
 	assert.EqualValues(t, "id_1", unpublishedDomains.Sessions[0].ClassId)

@@ -7,7 +7,6 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func initAchieveTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AchieveRepoInterface) {
@@ -111,8 +110,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			2,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2021,
 			"1600 on SAT",
 		).
@@ -120,8 +119,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			1,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2020,
 			"message1",
 		)
@@ -142,8 +141,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 					Id:          2,
 					CreatedAt:   now,
 					UpdatedAt:   now,
-					DeletedAt:   domains.NewNullTime(time.Time{}),
-					PublishedAt: domains.NewNullTime(time.Time{}),
+					DeletedAt:   domains.NullTime{},
+					PublishedAt: domains.NullTime{},
 					Year:        2021,
 					Message:     "1600 on SAT",
 				},
@@ -279,7 +278,7 @@ func TestPublishAchieves(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\?`).
+	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
@@ -303,8 +302,8 @@ func getAchieveRows() *sqlmock.Rows {
 			1,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2020,
 			"message1",
 		)
@@ -315,8 +314,8 @@ func getAchieve() domains.Achieve {
 		Id:          1,
 		CreatedAt:   now,
 		UpdatedAt:   now,
-		DeletedAt:   domains.NewNullTime(time.Time{}),
-		PublishedAt: domains.NewNullTime(time.Time{}),
+		DeletedAt:   domains.NullTime{},
+		PublishedAt: domains.NullTime{},
 		Year:        2020,
 		Message:     "message1",
 	}

@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,12 +9,13 @@ import (
 var TABLE_SEMESTERS = "semesters"
 
 type Semester struct {
-	Id         uint         `json:"id"`
-	CreatedAt  time.Time    `json:"-" db:"created_at"`
-	UpdatedAt  time.Time    `json:"-" db:"updated_at"`
-	DeletedAt  sql.NullTime `json:"-" db:"deleted_at"`
-	SemesterId string       `json:"semesterId" db:"semester_id"`
-	Title      string       `json:"title"`
+	Id          uint      `json:"id"`
+	CreatedAt   time.Time `json:"-" db:"created_at"`
+	UpdatedAt   time.Time `json:"-" db:"updated_at"`
+	DeletedAt   NullTime  `json:"-" db:"deleted_at"`
+	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
+	SemesterId  string    `json:"semesterId" db:"semester_id"`
+	Title       string    `json:"title"`
 }
 
 // Class Methods

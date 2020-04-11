@@ -17,7 +17,8 @@ type classRepo struct {
 // Interface to implement
 type ClassRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Class, error)
+	SelectAll(bool) ([]domains.Class, error)
+	SelectUnpublished() ([]domains.Class, error)
 	SelectByClassId(string) (domains.Class, error)
 	SelectByProgramId(string) ([]domains.Class, error)
 	SelectBySemesterId(string) ([]domains.Class, error)
@@ -25,16 +26,23 @@ type ClassRepoInterface interface {
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
 	Delete(string) error
+	Publish(string) error
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
 	cr.db = db
 }
 
-func (cr *classRepo) SelectAll() ([]domains.Class, error) {
+func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
-	stmt, err := cr.db.Prepare("SELECT * FROM classes")
+	var query string
+	if publishedOnly {
+		query = "SELECT * FROM classes WHERE published_at IS NOT NULL"
+	} else {
+		query = "SELECT * FROM classes"
+	}
+	stmt, err := cr.db.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +60,44 @@ func (cr *classRepo) SelectAll() ([]domains.Class, error) {
 			&class.CreatedAt,
 			&class.UpdatedAt,
 			&class.DeletedAt,
+			&class.PublishedAt,
+			&class.ProgramId,
+			&class.SemesterId,
+			&class.ClassKey,
+			&class.ClassId,
+			&class.LocId,
+			&class.Times,
+			&class.StartDate,
+			&class.EndDate); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, class)
+	}
+	return results, nil
+}
+
+func (cr *classRepo) SelectUnpublished() ([]domains.Class, error) {
+	results := make([]domains.Class, 0)
+
+	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var class domains.Class
+		if errScan := rows.Scan(
+			&class.Id,
+			&class.CreatedAt,
+			&class.UpdatedAt,
+			&class.DeletedAt,
+			&class.PublishedAt,
 			&class.ProgramId,
 			&class.SemesterId,
 			&class.ClassKey,
@@ -82,6 +128,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.CreatedAt,
 		&class.UpdatedAt,
 		&class.DeletedAt,
+		&class.PublishedAt,
 		&class.ProgramId,
 		&class.SemesterId,
 		&class.ClassKey,
@@ -114,6 +161,7 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.CreatedAt,
 			&class.UpdatedAt,
 			&class.DeletedAt,
+			&class.PublishedAt,
 			&class.ProgramId,
 			&class.SemesterId,
 			&class.ClassKey,
@@ -150,6 +198,7 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.CreatedAt,
 			&class.UpdatedAt,
 			&class.DeletedAt,
+			&class.PublishedAt,
 			&class.ProgramId,
 			&class.SemesterId,
 			&class.ClassKey,
@@ -186,6 +235,7 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.CreatedAt,
 			&class.UpdatedAt,
 			&class.DeletedAt,
+			&class.PublishedAt,
 			&class.ProgramId,
 			&class.SemesterId,
 			&class.ClassKey,
@@ -288,6 +338,22 @@ func (cr *classRepo) Delete(classId string) error {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "class was not deleted")
+}
+
+func (cr *classRepo) Publish(classId string) error {
+	statement := "UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, classId)
+	if err != nil {
+		return err
+	}
+	return handleSqlExecResult(execResult, 1, "classes were not published")
 }
 
 // For Tests Only

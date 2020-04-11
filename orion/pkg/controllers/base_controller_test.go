@@ -53,7 +53,8 @@ var classService mockClassService
 
 // Fake classService that implements ClassService interface
 type mockClassService struct {
-	mockGetAll                    func() ([]domains.Class, error)
+	mockGetAll                    func(bool) ([]domains.Class, error)
+	mockGetUnpublished            func() ([]domains.Class, error)
 	mockGetByClassId              func(string) (domains.Class, error)
 	mockGetByProgramId            func(string) ([]domains.Class, error)
 	mockGetBySemesterId           func(string) ([]domains.Class, error)
@@ -61,11 +62,15 @@ type mockClassService struct {
 	mockCreate                    func(domains.Class) error
 	mockUpdate                    func(string, domains.Class) error
 	mockDelete                    func(string) error
+	mockPublish                   func([]string) error
 }
 
 // Implement methods of ClassService interface with mocked implementations
-func (classService *mockClassService) GetAll() ([]domains.Class, error) {
-	return classService.mockGetAll()
+func (classService *mockClassService) GetAll(publishedOnly bool) ([]domains.Class, error) {
+	return classService.mockGetAll(publishedOnly)
+}
+func (classService *mockClassService) GetUnpublished() ([]domains.Class, error) {
+	return classService.mockGetUnpublished()
 }
 func (classService *mockClassService) GetByClassId(classId string) (domains.Class, error) {
 	return classService.mockGetByClassId(classId)
@@ -87,6 +92,9 @@ func (classService *mockClassService) Update(classId string, class domains.Class
 }
 func (classService *mockClassService) Delete(classId string) error {
 	return classService.mockDelete(classId)
+}
+func (classService *mockClassService) Publish(classIds []string) error {
+	return classService.mockPublish(classIds)
 }
 
 var locationService mockLocationService
@@ -168,8 +176,8 @@ type mockAchieveService struct {
 }
 
 // Implement methods of AchieveService interface with mocked implementations
-func (achieveService *mockAchieveService) GetAll(published bool) ([]domains.Achieve, error) {
-	return achieveService.mockGetAll(published)
+func (achieveService *mockAchieveService) GetAll(publishedOnly bool) ([]domains.Achieve, error) {
+	return achieveService.mockGetAll(publishedOnly)
 }
 func (achieveService *mockAchieveService) GetUnpublished() ([]domains.Achieve, error) {
 	return achieveService.mockGetUnpublished()
@@ -197,16 +205,21 @@ var semesterService mockSemesterService
 
 // Fake semesterService that implements SemesterService interface
 type mockSemesterService struct {
-	mockGetAll          func() ([]domains.Semester, error)
+	mockGetAll          func(bool) ([]domains.Semester, error)
+	mockGetUnpublished  func() ([]domains.Semester, error)
 	mockGetBySemesterId func(string) (domains.Semester, error)
 	mockCreate          func(domains.Semester) error
 	mockUpdate          func(string, domains.Semester) error
 	mockDelete          func(string) error
+	mockPublish         func([]string) error
 }
 
 // Implement methods of SemesterService interface with mocked implementations
-func (semesterService *mockSemesterService) GetAll() ([]domains.Semester, error) {
-	return semesterService.mockGetAll()
+func (semesterService *mockSemesterService) GetAll(publishedOnly bool) ([]domains.Semester, error) {
+	return semesterService.mockGetAll(publishedOnly)
+}
+func (semesterService *mockSemesterService) GetUnpublished() ([]domains.Semester, error) {
+	return semesterService.mockGetUnpublished()
 }
 func (semesterService *mockSemesterService) GetBySemesterId(semesterId string) (domains.Semester, error) {
 	return semesterService.mockGetBySemesterId(semesterId)
@@ -219,6 +232,9 @@ func (semesterService *mockSemesterService) Update(semesterId string, semester d
 }
 func (semesterService *mockSemesterService) Delete(semesterId string) error {
 	return semesterService.mockDelete(semesterId)
+}
+func (semesterService *mockSemesterService) Publish(semesterIds []string) error {
+	return semesterService.mockPublish(semesterIds)
 }
 
 var sessionService mockSessionService
@@ -261,7 +277,7 @@ var userService mockUserService
 
 // Fake userService that implements UserService interface
 type mockUserService struct {
-	mockGetAll          func() ([]domains.User, error)
+	mockGetAll          func(string, int, int) ([]domains.User, error)
 	mockGetById         func(uint) (domains.User, error)
 	mockGetByGuardianId func(uint) ([]domains.User, error)
 	mockCreate          func(domains.User) error
@@ -270,8 +286,8 @@ type mockUserService struct {
 }
 
 // Implement methods of UserService interface with mocked implementations
-func (userService *mockUserService) GetAll() ([]domains.User, error) {
-	return userService.mockGetAll()
+func (userService *mockUserService) GetAll(search string, pageSize, offset int) ([]domains.User, error) {
+	return userService.mockGetAll(search, pageSize, offset)
 }
 func (userService *mockUserService) GetById(id uint) (domains.User, error) {
 	return userService.mockGetById(id)

@@ -17,7 +17,7 @@ import (
 // Test Get All
 //
 func TestGetAllUsers_Success(t *testing.T) {
-	userService.mockGetAll = func() ([]domains.User, error) {
+	userService.mockGetAll = func(search string, pageSize, offset int) ([]domains.User, error) {
 		return []domains.User{
 			createMockUser(
 				1,

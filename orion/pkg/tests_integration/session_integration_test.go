@@ -9,14 +9,6 @@ import (
 	"time"
 )
 
-func resetSessionTables(t *testing.T) {
-	resetTable(t, domains.TABLE_SESSIONS)
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
-	resetTable(t, domains.TABLE_PROGRAMS)
-}
-
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
 func Test_CreateSessions(t *testing.T) {
 	// Create
@@ -36,8 +28,8 @@ func Test_CreateSessions(t *testing.T) {
 	body1 := createJsonBody(&prog1)
 	body2 := createJsonBody(&prog2)
 	body3 := createJsonBody(&loc1)
-	body4 := createJsonBody(semester1)
-	body5 := createJsonBody(semester2)
+	body4 := createJsonBody(&semester1)
+	body5 := createJsonBody(&semester2)
 	body6 := createJsonBody(&class1)
 	body7 := createJsonBody(&class2)
 	body8 := createJsonBody(&session1)
@@ -94,7 +86,7 @@ func Test_UpdateSession(t *testing.T) {
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := createJsonBody(&prog1)
 	body2 := createJsonBody(&loc1)
-	body3 := createJsonBody(semester1)
+	body3 := createJsonBody(&semester1)
 	body4 := createJsonBody(&class1)
 	body5 := createJsonBody(&session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
@@ -142,7 +134,7 @@ func Test_DeleteSession(t *testing.T) {
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := createJsonBody(&prog1)
 	body2 := createJsonBody(&loc1)
-	body3 := createJsonBody(semester1)
+	body3 := createJsonBody(&semester1)
 	body4 := createJsonBody(&class1)
 	body5 := createJsonBody(&session1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
@@ -188,4 +180,12 @@ func createClassUtil(programId, semesterId, classKey, locId, times string, start
 		StartDate:  startDate,
 		EndDate:    endDate,
 	}
+}
+
+func resetSessionTables(t *testing.T) {
+	resetTable(t, domains.TABLE_SESSIONS)
+	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
 }

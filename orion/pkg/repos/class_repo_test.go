@@ -31,10 +31,62 @@ func TestSelectAllClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	rows := getClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM classes").
+	mock.ExpectPrepare("^SELECT (.+) FROM classes").ExpectQuery().WillReturnRows(rows)
+	got, err := repo.SelectAll(false)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Class{getClass()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Test Select Published
+//
+func TestSelectPublishedClasses(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getClassRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NOT NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(true)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Class{getClass()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select Unpublished
+//
+func TestSelectUnpublishedClasses(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getClassRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NULL").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -265,6 +317,30 @@ func TestDeleteClass(t *testing.T) {
 }
 
 //
+// Publish
+//
+func TestPublishClasses(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare(`^UPDATE classes SET published_at=\? WHERE class_id=\? AND published_at IS NULL`).
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
+		WillReturnResult(result)
+	err := repo.Publish("program1_2020_spring_final_review")
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Helper Methods
 //
 func getClassRows() *sqlmock.Rows {
@@ -273,6 +349,7 @@ func getClassRows() *sqlmock.Rows {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ProgramId",
 		"SemesterId",
 		"ClassKey",
@@ -285,7 +362,8 @@ func getClassRows() *sqlmock.Rows {
 		1,
 		now,
 		now,
-		sql.NullTime{},
+		domains.NullTime{},
+		domains.NullTime{},
 		"program1",
 		"2020_spring",
 		domains.NewNullString("final_review"),
@@ -299,17 +377,18 @@ func getClassRows() *sqlmock.Rows {
 
 func getClass() domains.Class {
 	return domains.Class{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
-		ProgramId:  "program1",
-		SemesterId: "2020_spring",
-		ClassKey:   domains.NewNullString("final_review"),
-		ClassId:    "program1_2020_spring_final_review",
-		LocId:      "churchill",
-		Times:      "3 pm - 5 pm",
-		StartDate:  now,
-		EndDate:    later,
+		Id:          1,
+		CreatedAt:   now,
+		UpdatedAt:   now,
+		DeletedAt:   domains.NullTime{},
+		PublishedAt: domains.NullTime{},
+		ProgramId:   "program1",
+		SemesterId:  "2020_spring",
+		ClassKey:    domains.NewNullString("final_review"),
+		ClassId:     "program1_2020_spring_final_review",
+		LocId:       "churchill",
+		Times:       "3 pm - 5 pm",
+		StartDate:   now,
+		EndDate:     later,
 	}
 }
