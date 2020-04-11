@@ -46,8 +46,8 @@ export class ProgramPage extends React.Component {
                 <div>
                     <h1>All Programs ({numRows}) </h1>
                     <p>
-                        You have {numUnpublished} unpublished items. You have
-                        selected {numSelected} items to publish.
+                        You have {numUnpublished} unpublished items. <br/>
+                        You have selected {numSelected} items to publish.
                     </p>
                 </div>
                 <ul id="list-heading">
