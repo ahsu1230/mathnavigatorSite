@@ -6,11 +6,22 @@
     padding: 0 spacing2x
     box-sizing: border-box
     color: colorBlackDark
+    position: relative
 
     & h1
+        display: inline-block
         margin: spacing4x 0
         line-height: lineHeight3
         font-size: fontSize3
+
+    & p
+        display: inline-block
+        position: absolute
+        right: 0
+        top: 10%
+        transform: translateY(-10%)
+        margin: 0
+        text-align: right
 
     & ul
         list-style: none
@@ -34,6 +45,10 @@
         line-height: spacing4x
         position: relative
 
+    & input
+        position: relative
+        left: 25px
+
  #view-location
      & .li-small
        width: spacing10x
@@ -42,11 +57,22 @@
      & .li-large
        width: spacing30x
 
-#add-location
-    & a
+#view-location #list-buttons
+    display: block
+    position: relative
+
+    & button
         display: inline-block
         margin: spacing2x 0
+        padding: 0.75em
+        border-radius: 10px
         background-color: colorTurquoise
         color: white
-        padding: 0.75em;
-        border-radius: 10px;
+        position: absolute
+
+#view-location #list-buttons #add-location
+    color: white
+
+#view-location #list-buttons #publish
+    position: absolute
+    right: 0
