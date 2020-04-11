@@ -11,7 +11,6 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
 	createAllUsers(t)
 
 	// Call Get All!
@@ -28,6 +27,8 @@ func Test_CreateUsers(t *testing.T) {
 	assertUser(t, 2, users[1])
 	assertUser(t, 3, users[2])
 	assert.EqualValues(t, 3, len(users))
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 3 Users and search by pagination
@@ -63,7 +64,6 @@ func Test_SearchUsers(t *testing.T) {
 
 // Test: Create 3 Users and GetUserByGuardianId
 func Test_GetUsersByGuardian(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
 	createAllUsers(t)
 
 	// Call Get All!
@@ -75,16 +75,15 @@ func Test_GetUsersByGuardian(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertUser(t, 2, users[0])
 	assertUser(t, 3, users[1])
 	assert.EqualValues(t, 2, len(users))
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
-
 	// Create 1 User
 	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
@@ -106,14 +105,13 @@ func Test_UpdateUser(t *testing.T) {
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &user); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertUser(t, 2, user)
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	resetTable(t, domains.TABLE_USERS)
-
 	// Create
 	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
@@ -127,6 +125,8 @@ func Test_DeleteUser(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Helper methods

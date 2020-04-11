@@ -11,8 +11,6 @@ import (
 
 // Test: Create 3 Semesters and GetAll()
 func Test_CreateSemesters(t *testing.T) {
-	resetTable(t, domains.TABLE_SEMESTERS)
-
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
 	semester3 := createSemester("2020_winter", "Winter 2020")
@@ -42,12 +40,12 @@ func Test_CreateSemesters(t *testing.T) {
 	assert.EqualValues(t, "2020_winter", semesters[2].SemesterId)
 	assert.EqualValues(t, "Winter 2020", semesters[2].Title)
 	assert.EqualValues(t, 3, len(semesters))
+
+	resetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
 func Test_UniqueSemesterId(t *testing.T) {
-	resetTable(t, domains.TABLE_SEMESTERS)
-
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_spring", "Fall 2020") // Same semesterId
 	body1 := createJsonBody(semester1)
@@ -69,12 +67,12 @@ func Test_UniqueSemesterId(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_spring", semester.SemesterId)
 	assert.EqualValues(t, "Spring 2020", semester.Title)
+
+	resetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 1 Semester, Update it, GetBySemesterId()
 func Test_UpdateSemester(t *testing.T) {
-	resetTable(t, domains.TABLE_SEMESTERS)
-
 	// Create 1 Semester
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	body1 := createJsonBody(semester1)
@@ -100,12 +98,12 @@ func Test_UpdateSemester(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_fall", semester.SemesterId)
 	assert.EqualValues(t, "Fall 2020", semester.Title)
+
+	resetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
 func Test_DeleteSemester(t *testing.T) {
-	resetTable(t, domains.TABLE_SEMESTERS)
-
 	// Create
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	body1 := createJsonBody(semester1)
@@ -119,6 +117,8 @@ func Test_DeleteSemester(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Helper methods

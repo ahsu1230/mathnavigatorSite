@@ -26,6 +26,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes/")
 	{
 		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/publish", controllers.PublishClasses)
 		apiClasses.POST("/v1/create", controllers.CreateClass)
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
