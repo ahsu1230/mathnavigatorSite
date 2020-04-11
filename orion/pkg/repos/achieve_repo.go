@@ -228,7 +228,7 @@ func (ar *achieveRepo) Delete(id uint) error {
 }
 
 func (ar *achieveRepo) Publish(id uint) error {
-	statement := "UPDATE achievements SET published_at=? WHERE id=?"
+	statement := "UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return err

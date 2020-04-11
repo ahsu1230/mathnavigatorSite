@@ -12,7 +12,10 @@ import (
 //
 // Test Get Unpublished
 //
-func TestGetUnpublishedAchievements_Success(t *testing.T) {
+func TestGetUnpublishedDomains_Success(t *testing.T) {
+	classService.mockGetUnpublished = func() ([]domains.Class, error) {
+		return createMockClasses(1, 2), nil
+	}
 	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
@@ -25,6 +28,7 @@ func TestGetUnpublishedAchievements_Success(t *testing.T) {
 			createMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
+	services.ClassService = &classService
 	services.AchieveService = &achieveService
 	services.SemesterService = &semesterService
 
@@ -37,6 +41,10 @@ func TestGetUnpublishedAchievements_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
+
+	assertMockClasses(t, 1, unpublishedDomains.Classes[0])
+	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
+	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
 
 	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
 	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)

@@ -18,7 +18,7 @@ type userRepo struct {
 // Interface to implement
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.User, error)
+	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
 	SelectByGuardianId(uint) ([]domains.User, error)
 	Insert(domains.User) error
@@ -30,15 +30,28 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 	ur.db = db
 }
 
-func (ur *userRepo) SelectAll() ([]domains.User, error) {
+func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users")
+	getAll := len(search) == 0
+	var query string
+	if getAll {
+		query = "SELECT * FROM users LIMIT ? OFFSET ?"
+	} else {
+		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
+	}
+	stmt, err := ur.db.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query()
+
+	var rows *sql.Rows
+	if getAll {
+		rows, err = stmt.Query(pageSize, offset)
+	} else {
+		rows, err = stmt.Query(search, pageSize, offset)
+	}
 	if err != nil {
 		return nil, err
 	}
