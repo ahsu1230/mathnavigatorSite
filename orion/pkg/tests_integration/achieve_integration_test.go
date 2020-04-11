@@ -10,8 +10,6 @@ import (
 
 // Test: Create 3 Achievements and GetAll(false)
 func Test_CreateAchievements(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
 	achieve3 := createAchievement(2022, "message3")
@@ -44,12 +42,12 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 2022, achieves[2].Year)
 	assert.EqualValues(t, "message3", achieves[2].Message)
 	assert.EqualValues(t, 3, len(achieves))
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
 func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
 	achieve3 := createAchievement(2022, "message3")
@@ -89,12 +87,12 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 	assert.EqualValues(t, 2020, achieves[2].Achievements[0].Year)
 	assert.EqualValues(t, "message1", achieves[2].Achievements[0].Message)
 	assert.EqualValues(t, 3, len(achieves))
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	// Create 1 Achievement
 	achieve1 := createAchievement(2020, "message1")
 	body1 := createJsonBody(&achieve1)
@@ -119,12 +117,12 @@ func Test_UpdateAchievement(t *testing.T) {
 	assert.EqualValues(t, 1, achieve.Id)
 	assert.EqualValues(t, 2021, achieve.Year)
 	assert.EqualValues(t, "message2", achieve.Message)
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	// Create
 	achieve1 := createAchievement(2020, "message1")
 	body1 := createJsonBody(&achieve1)
@@ -138,12 +136,12 @@ func Test_DeleteAchievement(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Test: Create 2 Achievements and Publish 1
 func Test_PublishAchievement(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	// Create
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
@@ -184,6 +182,8 @@ func Test_PublishAchievement(t *testing.T) {
 	assert.EqualValues(t, 2020, achieves2[0].Year)
 	assert.EqualValues(t, "message1", achieves2[0].Message)
 	assert.EqualValues(t, 1, len(achieves2))
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Helper methods

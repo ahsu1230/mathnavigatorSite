@@ -11,8 +11,6 @@ import (
 
 // Test: GetUnpublished()
 func Test_GetUnpublishedAchievements(t *testing.T) {
-	resetTable(t, domains.TABLE_ACHIEVEMENTS)
-
 	achieve1 := createAchievement(2020, "message1")
 	achieve2 := createAchievement(2021, "message2")
 	body1 := createJsonBody(&achieve1)
@@ -38,12 +36,12 @@ func Test_GetUnpublishedAchievements(t *testing.T) {
 	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
 	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
+
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
 
 // Test: Get All Unpublished Programs, Publish a Few, then Get All Unpublished Again
 func Test_PublishPrograms(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog2", "Program2", 8, 12, "descript2")
@@ -101,12 +99,12 @@ func Test_PublishPrograms(t *testing.T) {
 	assert.EqualValues(t, "prog1", programs[0].ProgramId)
 	assert.EqualValues(t, "prog3", programs[1].ProgramId)
 	assert.EqualValues(t, 2, len(programs))
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Get All Unpublished Locations, Publish a Few, then Get All Unpublished Again
 func Test_PublishLocations(t *testing.T) {
-	resetTable(t, domains.TABLE_LOCATIONS)
-
 	// Create
 	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	location2 := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
@@ -164,12 +162,12 @@ func Test_PublishLocations(t *testing.T) {
 	assert.EqualValues(t, "loc1", locations[0].LocId)
 	assert.EqualValues(t, "loc3", locations[1].LocId)
 	assert.EqualValues(t, 2, len(locations))
+
+	resetTable(t, domains.TABLE_LOCATIONS)
 }
 
 // Test: Get All Unpublished Sessions, Publish a Few, then Get All Unpublished Again
 func Test_PublishSessions(t *testing.T) {
-	resetSessionTables(t)
-
 	// Create
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
@@ -257,4 +255,6 @@ func Test_PublishSessions(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, sessions[0].Id)
 	assert.EqualValues(t, 1, len(sessions))
+
+	resetSessionTables(t)
 }

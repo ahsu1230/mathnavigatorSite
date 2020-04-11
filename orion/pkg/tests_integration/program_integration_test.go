@@ -11,8 +11,6 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func Test_CreatePrograms(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog2", "Program2", 2, 3, "descript2")
 	program3 := createProgram("prog3", "Program3", 2, 3, "descript3")
@@ -42,12 +40,12 @@ func Test_CreatePrograms(t *testing.T) {
 	assert.EqualValues(t, "Program3", programs[2].Name)
 	assert.EqualValues(t, "prog3", programs[2].ProgramId)
 	assert.EqualValues(t, 3, len(programs))
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
 func Test_UniqueProgramId(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2") // Same programId
 	body1 := createJsonBody(&program1)
@@ -69,12 +67,12 @@ func Test_UniqueProgramId(t *testing.T) {
 	}
 	assert.EqualValues(t, "prog1", program.ProgramId)
 	assert.EqualValues(t, "Program1", program.Name)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 1 Program, Update it, GetByProgramId()
 func Test_UpdateProgram(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	body1 := createJsonBody(&program1)
@@ -100,12 +98,12 @@ func Test_UpdateProgram(t *testing.T) {
 	}
 	assert.EqualValues(t, "prog2", program.ProgramId)
 	assert.EqualValues(t, "Program2a", program.Name)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func Test_DeleteProgram(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
 	body1 := createJsonBody(&program1)
@@ -119,6 +117,8 @@ func Test_DeleteProgram(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Helper methods

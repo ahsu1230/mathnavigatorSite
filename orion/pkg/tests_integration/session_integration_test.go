@@ -19,8 +19,6 @@ func resetSessionTables(t *testing.T) {
 
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
 func Test_CreateSessions(t *testing.T) {
-	resetSessionTables(t)
-
 	// Create
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
@@ -80,12 +78,12 @@ func Test_CreateSessions(t *testing.T) {
 	assert.EqualValues(t, 1, sessions[1].Id)
 	assert.EqualValues(t, "fast_track_2020_spring_class_A", sessions[1].ClassId)
 	assert.EqualValues(t, 2, len(sessions))
+
+	resetSessionTables(t)
 }
 
 // Test: Create 1 Session, Update it, GetBySessionId()
 func Test_UpdateSession(t *testing.T) {
-	resetSessionTables(t)
-
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -128,12 +126,12 @@ func Test_UpdateSession(t *testing.T) {
 	assert.EqualValues(t, 1, session.Id)
 	assert.EqualValues(t, "fast_track_2020_spring_class_A", session.ClassId)
 	assert.EqualValues(t, domains.NewNullString("cancelled due to corona"), session.Notes)
+
+	resetSessionTables(t)
 }
 
 // Test: Create 1 Session, Delete it, GetBySessionId()
 func Test_DeleteSession(t *testing.T) {
-	resetSessionTables(t)
-
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -165,6 +163,8 @@ func Test_DeleteSession(t *testing.T) {
 	// Get
 	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/session/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder7.Code)
+
+	resetSessionTables(t)
 }
 
 // Helper methods
