@@ -96,10 +96,12 @@ func PublishPrograms(c *gin.Context) {
 	var programIdsJson []string
 	c.BindJSON(&programIdsJson)
 
-	err := services.ProgramService.Publish(programIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+	errors := services.ProgramService.Publish(programIdsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
 	} else {
 		c.Status(http.StatusOK)
 	}

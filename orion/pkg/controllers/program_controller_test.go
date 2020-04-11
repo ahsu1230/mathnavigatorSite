@@ -202,7 +202,7 @@ func TestDeleteProgram_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishPrograms_Success(t *testing.T) {
-	programService.mockPublish = func(programIds []string) error {
+	programService.mockPublish = func(programIds []string) []domains.ProgramErrorBody {
 		return nil // Successful update
 	}
 	services.ProgramService = &programService

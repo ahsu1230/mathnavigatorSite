@@ -21,7 +21,7 @@ type LocationRepoInterface interface {
 	Update(string, domains.Location) error
 	Delete(string) error
 	SelectAllUnpublished() ([]domains.Location, error)
-	Publish([]string) error
+	Publish([]string) []domains.LocationErrorBody
 }
 
 func (lr *locationRepo) Initialize(db *sql.DB) {
@@ -210,19 +210,26 @@ func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
 	return results, nil
 }
 
-func (lr *locationRepo) Publish(locIds []string) error {
+func (lr *locationRepo) Publish(locIds []string) []domains.LocationErrorBody {
+	errors := make([]domains.LocationErrorBody, 0)
+
 	for _, locId := range locIds {
 		location, err := lr.SelectByLocationId(locId)
 		if err != nil {
-			return err
+			errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+			continue
 		}
 		if !location.PublishedAt.Valid {
 			now := time.Now().UTC()
 			location.PublishedAt.Scan(now)
-			lr.Update(locId, location)
+			err = lr.Update(locId, location)
+			if err != nil {
+				errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+			}
 		}
 	}
-	return nil
+
+	return errors
 }
 
 func CreateTestLocationRepo(db *sql.DB) LocationRepoInterface {

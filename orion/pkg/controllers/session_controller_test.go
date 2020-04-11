@@ -210,7 +210,7 @@ func TestDeleteSession_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishSessions_Success(t *testing.T) {
-	sessionService.mockPublish = func(ids []uint) error {
+	sessionService.mockPublish = func(ids []uint) []domains.SessionErrorBody {
 		return nil // Successful update
 	}
 	services.SessionService = &sessionService

@@ -97,10 +97,12 @@ func PublishSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Publish(idsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+	errors := services.SessionService.Publish(idsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
 	} else {
 		c.Status(http.StatusOK)
 	}

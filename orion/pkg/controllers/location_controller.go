@@ -96,10 +96,12 @@ func PublishLocations(c *gin.Context) {
 	var locIdsJson []string
 	c.BindJSON(&locIdsJson)
 
-	err := services.LocationService.Publish(locIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+	errors := services.LocationService.Publish(locIdsJson)
+	if len(errors) > 0 {
+		for _, err := range errors {
+			c.Error(err.Error)
+			c.String(http.StatusInternalServerError, err.Error.Error())
+		}
 	} else {
 		c.Status(http.StatusOK)
 	}

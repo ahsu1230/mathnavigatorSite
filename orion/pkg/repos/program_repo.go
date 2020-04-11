@@ -23,7 +23,7 @@ type ProgramRepoInterface interface {
 	Update(string, domains.Program) error
 	Delete(string) error
 	SelectAllUnpublished() ([]domains.Program, error)
-	Publish([]string) error
+	Publish([]string) []domains.ProgramErrorBody
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
@@ -205,19 +205,26 @@ func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
 	return results, nil
 }
 
-func (pr *programRepo) Publish(programIds []string) error {
+func (pr *programRepo) Publish(programIds []string) []domains.ProgramErrorBody {
+	errors := make([]domains.ProgramErrorBody, 0)
+
 	for _, programId := range programIds {
 		program, err := pr.SelectByProgramId(programId)
 		if err != nil {
-			return err
+			errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+			continue
 		}
 		if !program.PublishedAt.Valid {
 			now := time.Now().UTC()
 			program.PublishedAt.Scan(now)
-			pr.Update(programId, program)
+			err = pr.Update(programId, program)
+			if err != nil {
+				errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+			}
 		}
 	}
-	return nil
+
+	return errors
 }
 
 // For Tests Only

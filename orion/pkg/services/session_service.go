@@ -15,7 +15,7 @@ type sessionServiceInterface interface {
 	Update(uint, domains.Session) error
 	Delete(uint) error
 	GetAllUnpublished() ([]domains.Session, error)
-	Publish([]uint) error
+	Publish([]uint) []domains.SessionErrorBody
 }
 
 // Struct that implements interface
@@ -60,7 +60,7 @@ func (ss *sessionService) GetAllUnpublished() ([]domains.Session, error) {
 	return sessions, nil
 }
 
-func (ss *sessionService) Publish(ids []uint) error {
-	err := repos.SessionRepo.Publish(ids)
-	return err
+func (ss *sessionService) Publish(ids []uint) []domains.SessionErrorBody {
+	errors := repos.SessionRepo.Publish(ids)
+	return errors
 }

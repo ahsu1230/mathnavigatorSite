@@ -15,7 +15,7 @@ type locationServiceInterface interface {
 	Update(string, domains.Location) error
 	Delete(string) error
 	GetAllUnpublished() ([]domains.Location, error)
-	Publish([]string) error
+	Publish([]string) []domains.LocationErrorBody
 }
 
 // Struct that implements interface
@@ -60,7 +60,7 @@ func (ls *locationService) GetAllUnpublished() ([]domains.Location, error) {
 	return locations, nil
 }
 
-func (ls *locationService) Publish(locIds []string) error {
-	err := repos.LocationRepo.Publish(locIds)
-	return err
+func (ls *locationService) Publish(locIds []string) []domains.LocationErrorBody {
+	errors := repos.LocationRepo.Publish(locIds)
+	return errors
 }

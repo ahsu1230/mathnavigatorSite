@@ -21,7 +21,7 @@ type SessionRepoInterface interface {
 	Update(uint, domains.Session) error
 	Delete(uint) error
 	SelectAllUnpublished() ([]domains.Session, error)
-	Publish([]uint) error
+	Publish([]uint) []domains.SessionErrorBody
 }
 
 func (sr *sessionRepo) Initialize(db *sql.DB) {
@@ -205,19 +205,26 @@ func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
 	return results, nil
 }
 
-func (sr *sessionRepo) Publish(ids []uint) error {
+func (sr *sessionRepo) Publish(ids []uint) []domains.SessionErrorBody {
+	errors := make([]domains.SessionErrorBody, 0)
+
 	for _, id := range ids {
 		session, err := sr.SelectBySessionId(id)
 		if err != nil {
-			return err
+			errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+			continue
 		}
 		if !session.PublishedAt.Valid {
 			now := time.Now().UTC()
 			session.PublishedAt.Scan(now)
-			sr.Update(id, session)
+			err = sr.Update(id, session)
+			if err != nil {
+				errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+			}
 		}
 	}
-	return nil
+
+	return errors
 }
 
 func CreateTestSessionRepo(db *sql.DB) SessionRepoInterface {

@@ -22,6 +22,11 @@ type Location struct {
 	Room        NullString `json:"room"`
 }
 
+type LocationErrorBody struct {
+	LocId string `json:"locId"`
+	Error error  `json:"error"`
+}
+
 func (location *Location) Validate() error {
 	// Retrieves the inputted values
 	locId := location.LocId
