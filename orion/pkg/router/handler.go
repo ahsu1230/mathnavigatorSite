@@ -84,6 +84,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.GET("/v1/user/:id", controllers.GetUserById)
 		apiUsers.POST("/v1/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/v1/user/:id", controllers.DeleteUser)
+		apiUsers.GET("/v1/guardian/:guardianId", controllers.GetUserByGuardian)
 	}
 	// apiAccounts := router.Group("api/accounts/")
 }
