@@ -1,7 +1,9 @@
 "use strict";
 require("./announceEdit.styl");
 import React from "react";
+import moment from "moment";
 import API from "../api.js";
+import { AnnounceEditDateTime } from "./announceEditDateTime.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
@@ -11,7 +13,8 @@ export class AnnounceEditPage extends React.Component {
         super(props);
         this.state = {
             announceId: 0,
-            inputPostedAt: new Date(Date.now()),
+            datePickerFocused: false,
+            inputPostedAt: null,
             inputAuthor: "",
             inputMessage: "",
             isEdit: false,
@@ -26,6 +29,8 @@ export class AnnounceEditPage extends React.Component {
         this.onConfirmDelete = this.onConfirmDelete.bind(this);
         this.onSavedOk = this.onSavedOk.bind(this);
         this.onDismissModal = this.onDismissModal.bind(this);
+
+        this.onMomentChange = this.onMomentChange.bind(this);
     }
 
     componentDidMount() {
@@ -36,7 +41,7 @@ export class AnnounceEditPage extends React.Component {
                     const announce = res.data;
                     this.setState({
                         announceId: announce.id,
-                        inputPostedAt: new Date(announce.postedAt),
+                        inputPostedAt: moment(announce.postedAt),
                         inputAuthor: announce.author,
                         inputMessage: announce.message,
                         isEdit: true,
@@ -105,6 +110,10 @@ export class AnnounceEditPage extends React.Component {
         });
     }
 
+    onMomentChange(newMoment) {
+        this.setState({ inputPostedAt: newMoment });
+    }
+
     render() {
         const title = this.state.isEdit
             ? "Edit Announcement"
@@ -155,8 +164,10 @@ export class AnnounceEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
 
-                <h4>Post Date</h4>
-                <p>{this.state.inputPostedAt.toLocaleString()}</p>
+                <AnnounceEditDateTime
+                    postedAt={this.state.inputPostedAt}
+                    onMomentChange={this.onMomentChange}
+                />
 
                 <h4>Author</h4>
                 <input
