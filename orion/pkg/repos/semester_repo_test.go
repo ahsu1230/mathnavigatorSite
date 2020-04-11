@@ -215,7 +215,7 @@ func TestPublishSemesters(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\?`).
+	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "2020_fall").
 		WillReturnResult(result)

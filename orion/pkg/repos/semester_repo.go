@@ -185,7 +185,7 @@ func (sr *semesterRepo) Delete(semesterId string) error {
 }
 
 func (sr *semesterRepo) Publish(semesterId string) error {
-	statement := "UPDATE semesters SET published_at=? WHERE semester_id=?"
+	statement := "UPDATE semesters SET published_at=? WHERE semester_id=? AND published_at IS NULL"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return err
