@@ -28,11 +28,11 @@ func (lr *locationRepo) Initialize(db *sql.DB) {
 	lr.db = db
 }
 
-func (lr *locationRepo) SelectAll(published bool) ([]domains.Location, error) {
+func (lr *locationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error) {
 	results := make([]domains.Location, 0)
 
 	statement := "SELECT * FROM locations"
-	if published {
+	if publishedOnly {
 		statement += " WHERE published_at IS NOT NULL"
 	}
 	stmt, err := lr.db.Prepare(statement)
@@ -53,13 +53,13 @@ func (lr *locationRepo) SelectAll(published bool) ([]domains.Location, error) {
 			&location.CreatedAt,
 			&location.UpdatedAt,
 			&location.DeletedAt,
+			&location.PublishedAt,
 			&location.LocId,
 			&location.Street,
 			&location.City,
 			&location.State,
 			&location.Zipcode,
-			&location.Room,
-			&location.PublishedAt); errScan != nil {
+			&location.Room); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, location)
@@ -82,13 +82,13 @@ func (lr *locationRepo) SelectByLocationId(locId string) (domains.Location, erro
 		&location.CreatedAt,
 		&location.UpdatedAt,
 		&location.DeletedAt,
+		&location.PublishedAt,
 		&location.LocId,
 		&location.Street,
 		&location.City,
 		&location.State,
 		&location.Zipcode,
-		&location.Room,
-		&location.PublishedAt)
+		&location.Room)
 
 	return location, errScan
 }
@@ -129,13 +129,13 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"loc_id=?, " +
 		"street=?, " +
 		"city=?, " +
 		"state=?, " +
 		"zipcode=?, " +
-		"room=?, " +
-		"published_at=? " +
+		"room=? " +
 		"WHERE loc_id=?")
 	if err != nil {
 		return err
@@ -145,13 +145,13 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
+		location.PublishedAt,
 		location.LocId,
 		location.Street,
 		location.City,
 		location.State,
 		location.Zipcode,
 		location.Room,
-		location.PublishedAt,
 		locId)
 	if err != nil {
 		return err
@@ -196,13 +196,13 @@ func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
 			&location.CreatedAt,
 			&location.UpdatedAt,
 			&location.DeletedAt,
+			&location.PublishedAt,
 			&location.LocId,
 			&location.Street,
 			&location.City,
 			&location.State,
 			&location.Zipcode,
-			&location.Room,
-			&location.PublishedAt); errScan != nil {
+			&location.Room); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, location)

@@ -21,8 +21,8 @@ type programServiceInterface interface {
 // Struct that implements interface
 type programService struct{}
 
-func (ps *programService) GetAll(published bool) ([]domains.Program, error) {
-	programs, err := repos.ProgramRepo.SelectAll(published)
+func (ps *programService) GetAll(publishedOnly bool) ([]domains.Program, error) {
+	programs, err := repos.ProgramRepo.SelectAll(publishedOnly)
 	if err != nil {
 		return nil, err
 	}

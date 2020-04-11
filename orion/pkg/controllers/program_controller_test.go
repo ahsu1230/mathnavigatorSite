@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	programService.mockGetAll = func(published bool) ([]domains.Program, error) {
+	programService.mockGetAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,

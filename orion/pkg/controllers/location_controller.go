@@ -8,9 +8,9 @@ import (
 )
 
 func GetAllLocations(c *gin.Context) {
-	published := ParseParamPublishedOnly(c)
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	locationList, err := services.LocationService.GetAll(published)
+	locationList, err := services.LocationService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

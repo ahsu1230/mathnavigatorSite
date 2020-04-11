@@ -8,9 +8,9 @@ import (
 )
 
 func GetAllPrograms(c *gin.Context) {
-	published := ParseParamPublishedOnly(c)
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	programList, err := services.ProgramService.GetAll(published)
+	programList, err := services.ProgramService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

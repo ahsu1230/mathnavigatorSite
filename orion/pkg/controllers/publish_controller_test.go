@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func SetupMock() {
+func setupMock() {
 	programService.mockGetAllUnpublished = func() ([]domains.Program, error) {
 		return []domains.Program{
 			createMockProgram("prog1", "Program1", 2, 3, "descript1"),
@@ -46,7 +46,7 @@ func SetupMock() {
 // Test Get Unpublished
 //
 func TestGetUnpublishedAchievements_Success(t *testing.T) {
-	SetupMock()
+	setupMock()
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
@@ -67,7 +67,7 @@ func TestGetUnpublishedAchievements_Success(t *testing.T) {
 }
 
 func TestGetAllUnpublishedPrograms_Success(t *testing.T) {
-	SetupMock()
+	setupMock()
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
@@ -86,7 +86,7 @@ func TestGetAllUnpublishedPrograms_Success(t *testing.T) {
 }
 
 func TestGetAllUnpublishedLocations_Success(t *testing.T) {
-	SetupMock()
+	setupMock()
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
@@ -107,7 +107,7 @@ func TestGetAllUnpublishedLocations_Success(t *testing.T) {
 }
 
 func TestGetAllUnpublishedSessions_Success(t *testing.T) {
-	SetupMock()
+	setupMock()
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)

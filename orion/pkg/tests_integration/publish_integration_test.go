@@ -88,6 +88,19 @@ func Test_PublishPrograms(t *testing.T) {
 	}
 	assert.EqualValues(t, "prog2", unpublishedDomains.Programs[0].ProgramId)
 	assert.EqualValues(t, 1, len(unpublishedDomains.Programs))
+
+	// Get Published Only
+	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder7.Code)
+	var programs []domains.Program
+	if err := json.Unmarshal(recorder7.Body.Bytes(), &programs); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "prog1", programs[0].ProgramId)
+	assert.EqualValues(t, "prog3", programs[1].ProgramId)
+	assert.EqualValues(t, 2, len(programs))
 }
 
 // Test: Get All Unpublished Locations, Publish a Few, then Get All Unpublished Again
@@ -138,6 +151,19 @@ func Test_PublishLocations(t *testing.T) {
 	}
 	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[0].LocId)
 	assert.EqualValues(t, 1, len(unpublishedDomains.Locations))
+
+	// Get Published Only
+	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder7.Code)
+	var locations []domains.Location
+	if err := json.Unmarshal(recorder7.Body.Bytes(), &locations); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "loc1", locations[0].LocId)
+	assert.EqualValues(t, "loc3", locations[1].LocId)
+	assert.EqualValues(t, 2, len(locations))
 }
 
 // Test: Get All Unpublished Sessions, Publish a Few, then Get All Unpublished Again
@@ -219,4 +245,16 @@ func Test_PublishSessions(t *testing.T) {
 	}
 	assert.EqualValues(t, 2, unpublishedDomains.Sessions[0].Id)
 	assert.EqualValues(t, 1, len(unpublishedDomains.Sessions))
+
+	// Get Published Only
+	recorder14 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/fast_track_2020_spring_class_A?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder14.Code)
+	var sessions []domains.Session
+	if err := json.Unmarshal(recorder14.Body.Bytes(), &sessions); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, sessions[0].Id)
+	assert.EqualValues(t, 1, len(sessions))
 }

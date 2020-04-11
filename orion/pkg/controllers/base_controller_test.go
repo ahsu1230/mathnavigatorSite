@@ -27,8 +27,8 @@ type mockProgramService struct {
 }
 
 // Implement methods of ProgramService interface with mocked implementations
-func (programService *mockProgramService) GetAll(published bool) ([]domains.Program, error) {
-	return programService.mockGetAll(published)
+func (programService *mockProgramService) GetAll(publishedOnly bool) ([]domains.Program, error) {
+	return programService.mockGetAll(publishedOnly)
 }
 func (programService *mockProgramService) GetByProgramId(programId string) (domains.Program, error) {
 	return programService.mockGetByProgramId(programId)
@@ -103,8 +103,8 @@ type mockLocationService struct {
 }
 
 // Implement methods of LocationService interface with mocked implementations
-func (locationService *mockLocationService) GetAll(published bool) ([]domains.Location, error) {
-	return locationService.mockGetAll(published)
+func (locationService *mockLocationService) GetAll(publishedOnly bool) ([]domains.Location, error) {
+	return locationService.mockGetAll(publishedOnly)
 }
 func (locationService *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
 	return locationService.mockGetByLocationId(locId)
@@ -225,7 +225,7 @@ var sessionService mockSessionService
 
 // Fake sessionService that implements SessionService interface
 type mockSessionService struct {
-	mockGetAllByClassId   func(string) ([]domains.Session, error)
+	mockGetAllByClassId   func(string, bool) ([]domains.Session, error)
 	mockGetBySessionId    func(uint) (domains.Session, error)
 	mockCreate            func(domains.Session) error
 	mockUpdate            func(uint, domains.Session) error
@@ -235,8 +235,8 @@ type mockSessionService struct {
 }
 
 // Implement methods of SessionService interface with mocked implementations
-func (sessionService *mockSessionService) GetAllByClassId(classId string) ([]domains.Session, error) {
-	return sessionService.mockGetAllByClassId(classId)
+func (sessionService *mockSessionService) GetAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
+	return sessionService.mockGetAllByClassId(classId, publishedOnly)
 }
 func (sessionService *mockSessionService) GetBySessionId(id uint) (domains.Session, error) {
 	return sessionService.mockGetBySessionId(id)

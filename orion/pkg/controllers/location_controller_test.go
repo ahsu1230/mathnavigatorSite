@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllLocations_Success(t *testing.T) {
-	locationService.mockGetAll = func(published bool) ([]domains.Location, error) {
+	locationService.mockGetAll = func(publishedOnly bool) ([]domains.Location, error) {
 		return []domains.Location{
 			{
 				Id:      1,

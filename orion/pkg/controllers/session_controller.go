@@ -9,8 +9,9 @@ import (
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := services.SessionService.GetAllByClassId(classId)
+	sessionList, err := services.SessionService.GetAllByClassId(classId, publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

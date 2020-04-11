@@ -21,8 +21,8 @@ type locationServiceInterface interface {
 // Struct that implements interface
 type locationService struct{}
 
-func (ls *locationService) GetAll(published bool) ([]domains.Location, error) {
-	locations, err := repos.LocationRepo.SelectAll(published)
+func (ls *locationService) GetAll(publishedOnly bool) ([]domains.Location, error) {
+	locations, err := repos.LocationRepo.SelectAll(publishedOnly)
 	if err != nil {
 		return nil, err
 	}

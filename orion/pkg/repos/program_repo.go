@@ -30,11 +30,11 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll(published bool) ([]domains.Program, error) {
+func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
-	if published {
+	if publishedOnly {
 		statement += " WHERE published_at IS NOT NULL"
 	}
 	stmt, err := pr.db.Prepare(statement)
@@ -55,12 +55,12 @@ func (pr *programRepo) SelectAll(published bool) ([]domains.Program, error) {
 			&program.CreatedAt,
 			&program.UpdatedAt,
 			&program.DeletedAt,
+			&program.PublishedAt,
 			&program.ProgramId,
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description,
-			&program.PublishedAt); errScan != nil {
+			&program.Description); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)
@@ -83,12 +83,12 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.CreatedAt,
 		&program.UpdatedAt,
 		&program.DeletedAt,
+		&program.PublishedAt,
 		&program.ProgramId,
 		&program.Name,
 		&program.Grade1,
 		&program.Grade2,
-		&program.Description,
-		&program.PublishedAt)
+		&program.Description)
 	return program, errScan
 }
 
@@ -127,12 +127,12 @@ func (pr *programRepo) Insert(program domains.Program) error {
 func (pr *programRepo) Update(programId string, program domains.Program) error {
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"program_id=?, " +
 		"name=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
-		"description=?, " +
-		"published_at=? " +
+		"description=? " +
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -143,12 +143,12 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
+		program.PublishedAt,
 		program.ProgramId,
 		program.Name,
 		program.Grade1,
 		program.Grade2,
 		program.Description,
-		program.PublishedAt,
 		programId)
 	if err != nil {
 		return err
@@ -192,12 +192,12 @@ func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
 			&program.CreatedAt,
 			&program.UpdatedAt,
 			&program.DeletedAt,
+			&program.PublishedAt,
 			&program.ProgramId,
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description,
-			&program.PublishedAt); errScan != nil {
+			&program.Description); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)

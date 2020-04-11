@@ -33,18 +33,18 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
-		"Notes",
-		"PublishedAt"}).
-		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NullTime{})
+		"Notes"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAllByClassId("id_1")
+	got, err := repo.SelectAllByClassId("id_1", false)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -56,12 +56,12 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   domains.NullTime{},
+			PublishedAt: domains.NullTime{},
 			ClassId:     "id_1",
 			StartsAt:    now,
 			EndsAt:      now,
 			Canceled:    false,
 			Notes:       domains.NewNullString("special lecture from guest"),
-			PublishedAt: domains.NullTime{},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -86,13 +86,13 @@ func TestSelectSession(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
-		"Notes",
-		"PublishedAt"}).
-		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NullTime{})
+		"Notes"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
 	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -108,12 +108,12 @@ func TestSelectSession(t *testing.T) {
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		DeletedAt:   domains.NullTime{},
+		PublishedAt: domains.NullTime{},
 		ClassId:     "id_1",
 		StartsAt:    now,
 		EndsAt:      now,
 		Canceled:    false,
 		Notes:       domains.NewNullString("special lecture from guest"),
-		PublishedAt: domains.NullTime{},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -167,7 +167,7 @@ func TestUpdateSession(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE sessions SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), sqlmock.AnyArg(), 1).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest"), 1).
 		WillReturnResult(result)
 	session := domains.Session{
 		ClassId:  "id_1",
@@ -225,18 +225,17 @@ func TestSelectAllUnpublishedSessions(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"PublishedAt",
 		"ClassId",
 		"StartsAt",
 		"EndsAt",
 		"Canceled",
-		"Notes",
-		"PublishedAt"}).
-		AddRow(1, now, now, domains.NullTime{}, "id_1", now, now, false, domains.NewNullString("special lecture from guest"), domains.NewNullTime(now))
-	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE class_id=?").
+		"Notes"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NewNullTime(now), "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE published_at IS NULL").
 		ExpectQuery().
-		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAllByClassId("id_1")
+	got, err := repo.SelectAllUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -248,12 +247,12 @@ func TestSelectAllUnpublishedSessions(t *testing.T) {
 			CreatedAt:   now,
 			UpdatedAt:   now,
 			DeletedAt:   domains.NullTime{},
+			PublishedAt: domains.NewNullTime(now),
 			ClassId:     "id_1",
 			StartsAt:    now,
 			EndsAt:      now,
 			Canceled:    false,
 			Notes:       domains.NewNullString("special lecture from guest"),
-			PublishedAt: domains.NewNullTime(now),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
