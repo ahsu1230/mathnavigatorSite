@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import Enzyme, { shallow } from "enzyme";
 import { AnnounceEditPage } from "./announceEdit.js";
 
@@ -19,4 +20,12 @@ describe("test", () => {
     // TODO: test renders with isEdit
     // TODO: test renders with delete button
     // TODO: test renders with both modals
+
+    test("renders DateTime", () => {
+        let now = moment();
+        component.setState({ inputPostedAt: now });
+        let announceEditDateTime = component.find("AnnounceEditDateTime");
+        expect(announceEditDateTime.prop("postedAt").isSame(now)).toBe(true);
+        expect(announceEditDateTime.prop("onMomentChange")).toBeDefined();
+    });
 });
