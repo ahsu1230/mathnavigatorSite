@@ -38,7 +38,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 	if getAll {
 		query = "SELECT * FROM users LIMIT ? OFFSET ?"
 	} else {
-		query = "SELECT * FROM users WHERE ? IN (first_name, last_name, middle_name) LIMIT ? OFFSET ?"
+		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
 	}
 	stmt, err := ur.db.Prepare(query)
 	if err != nil {

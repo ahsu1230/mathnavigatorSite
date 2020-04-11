@@ -44,6 +44,33 @@ func TestSelectAllUsers(t *testing.T) {
 }
 
 //
+// Test Search
+//
+func TestSearchUsers(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare(`^SELECT (.+) FROM users WHERE (.+) LIMIT (.+) OFFSET (.+)`).
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAll("Smith", 2, 0)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.User{getUser()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select One
 //
 func TestSelectUser(t *testing.T) {
@@ -118,7 +145,7 @@ func TestInsertUser(t *testing.T) {
 			"John",
 			"Smith",
 			domains.NewNullString(""),
-			"john.smith@example.com",
+			"john_smith@example.com",
 			"555-555-0100",
 			false,
 			domains.NewNullUint(2),
@@ -151,7 +178,7 @@ func TestUpdateUser(t *testing.T) {
 			"Bob",
 			"Joe",
 			domains.NewNullString("Oliver"),
-			"bob.joe@example.com",
+			"bob_joe@example.com",
 			"555-555-0199",
 			true,
 			domains.NewNullUint(0),
@@ -165,7 +192,7 @@ func TestUpdateUser(t *testing.T) {
 		FirstName:  "Bob",
 		LastName:   "Joe",
 		MiddleName: domains.NewNullString("Oliver"),
-		Email:      "bob.joe@example.com",
+		Email:      "bob_joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
 		GuardianId: domains.NewNullUint(0),
@@ -229,7 +256,7 @@ func getUserRows() *sqlmock.Rows {
 		"John",
 		"Smith",
 		domains.NewNullString(""),
-		"john.smith@example.com",
+		"john_smith@example.com",
 		"555-555-0100",
 		false,
 		domains.NewNullUint(2),
@@ -245,7 +272,7 @@ func getUser() domains.User {
 		FirstName:  "John",
 		LastName:   "Smith",
 		MiddleName: domains.NewNullString(""),
-		Email:      "john.smith@example.com",
+		Email:      "john_smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: false,
 		GuardianId: domains.NewNullUint(2),

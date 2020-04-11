@@ -30,7 +30,7 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, 3, len(users))
 }
 
-// Test: Create 3 Users and GetAll()
+// Test: Create 3 Users and search by pagination
 func Test_SearchUsers(t *testing.T) {
 	resetTable(t, domains.TABLE_USERS)
 	createAllUsers(t)
