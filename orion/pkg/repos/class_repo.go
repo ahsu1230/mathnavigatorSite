@@ -341,7 +341,7 @@ func (cr *classRepo) Delete(classId string) error {
 }
 
 func (cr *classRepo) Publish(classId string) error {
-	statement := "UPDATE classes SET published_at=? WHERE class_id=?"
+	statement := "UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return err

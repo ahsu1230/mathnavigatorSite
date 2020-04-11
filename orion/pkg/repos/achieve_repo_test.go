@@ -279,7 +279,7 @@ func TestPublishAchieves(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\?`).
+	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
