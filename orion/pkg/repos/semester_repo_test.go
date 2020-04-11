@@ -7,7 +7,6 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func initSemesterTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SemesterRepoInterface) {
@@ -239,8 +238,8 @@ func getSemesterRows() *sqlmock.Rows {
 			1,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			"2020_fall",
 			"Fall 2020",
 		)
@@ -251,8 +250,8 @@ func getSemester() domains.Semester {
 		Id:          1,
 		CreatedAt:   now,
 		UpdatedAt:   now,
-		DeletedAt:   domains.NewNullTime(time.Time{}),
-		PublishedAt: domains.NewNullTime(time.Time{}),
+		DeletedAt:   domains.NullTime{},
+		PublishedAt: domains.NullTime{},
 		SemesterId:  "2020_fall",
 		Title:       "Fall 2020",
 	}
