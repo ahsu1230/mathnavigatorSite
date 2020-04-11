@@ -36,6 +36,19 @@ func GetUserById(c *gin.Context) {
 	}
 }
 
+func GetUserByGuardian(c *gin.Context) {
+	// Incoming parameters
+	guardianId := ParseParamUint(c.Param("guardianId"))
+
+	user, err := services.UserService.GetByGuardianId(guardianId)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, &user)
+	}
+}
+
 func CreateUser(c *gin.Context) {
 	// Incoming JSON
 	var userJson domains.User
