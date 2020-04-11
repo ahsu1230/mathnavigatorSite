@@ -35,8 +35,8 @@ func Test_SearchUsers(t *testing.T) {
 	resetTable(t, domains.TABLE_USERS)
 	createAllUsers(t)
 
-	// Call Get All Searching for "Middle" With Page Size 2 Offset 0
-	recorder1 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Middle&pageSize=2&offset=0", nil)
+	// Call Get All Searching for "Smith" With Page Size 2 Offset 0
+	recorder1 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Smith&pageSize=2&offset=0", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -44,12 +44,12 @@ func Test_SearchUsers(t *testing.T) {
 	if err := json.Unmarshal(recorder1.Body.Bytes(), &users1); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, 2, users1[0])
-	assertUser(t, 3, users1[1])
+	assertUser(t, 1, users1[0])
+	assertUser(t, 2, users1[1])
 	assert.EqualValues(t, 2, len(users1))
 
-	// Call Get All Searching for "Middle" With Page Size 2 Offset 1
-	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Middle&pageSize=2&offset=1", nil)
+	// Call Get All Searching for "Smith" With Page Size 2 Offset 2
+	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Smith&pageSize=2&offset=2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -136,7 +136,7 @@ func createUser(id int) domains.User {
 		return domains.User{
 			FirstName:  "John",
 			LastName:   "Smith",
-			MiddleName: domains.NewNullString(""),
+			MiddleName: domains.NewNullString("Middle"),
 			Email:      "john_smith@example.com",
 			Phone:      "555-555-0100",
 			IsGuardian: true,
@@ -145,9 +145,9 @@ func createUser(id int) domains.User {
 	case 2:
 		return domains.User{
 			FirstName:  "Bob",
-			LastName:   "Joe",
-			MiddleName: domains.NewNullString("Middle"),
-			Email:      "bob_joe@example.com",
+			LastName:   "Smith",
+			MiddleName: domains.NewNullString(""),
+			Email:      "bob_smith@example.com",
 			Phone:      "555-555-0101",
 			IsGuardian: false,
 			GuardianId: domains.NewNullUint(1),
@@ -156,7 +156,7 @@ func createUser(id int) domains.User {
 		return domains.User{
 			FirstName:  "Foo",
 			LastName:   "Bar",
-			MiddleName: domains.NewNullString("Middle"),
+			MiddleName: domains.NewNullString("Smith"),
 			Email:      "foobar@example.com",
 			Phone:      "555-555-0102",
 			IsGuardian: false,
@@ -181,23 +181,23 @@ func assertUser(t *testing.T, id int, user domains.User) {
 	case 1:
 		assert.EqualValues(t, "John", user.FirstName)
 		assert.EqualValues(t, "Smith", user.LastName)
-		assert.EqualValues(t, "", user.MiddleName.String)
+		assert.EqualValues(t, "Middle", user.MiddleName.String)
 		assert.EqualValues(t, "john_smith@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0100", user.Phone)
 		assert.EqualValues(t, true, user.IsGuardian)
 		assert.EqualValues(t, 0, user.GuardianId.Uint)
 	case 2:
 		assert.EqualValues(t, "Bob", user.FirstName)
-		assert.EqualValues(t, "Joe", user.LastName)
-		assert.EqualValues(t, "Middle", user.MiddleName.String)
-		assert.EqualValues(t, "bob_joe@example.com", user.Email)
+		assert.EqualValues(t, "Smith", user.LastName)
+		assert.EqualValues(t, "", user.MiddleName.String)
+		assert.EqualValues(t, "bob_smith@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0101", user.Phone)
 		assert.EqualValues(t, false, user.IsGuardian)
 		assert.EqualValues(t, 1, user.GuardianId.Uint)
 	case 3:
 		assert.EqualValues(t, "Foo", user.FirstName)
 		assert.EqualValues(t, "Bar", user.LastName)
-		assert.EqualValues(t, "Middle", user.MiddleName.String)
+		assert.EqualValues(t, "Smith", user.MiddleName.String)
 		assert.EqualValues(t, "foobar@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0102", user.Phone)
 		assert.EqualValues(t, false, user.IsGuardian)
