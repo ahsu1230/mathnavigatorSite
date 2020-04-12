@@ -1,0 +1,53 @@
+@import "../static.styl"
+
+#view-class-edit
+  width: spacing96x
+  padding: spacing1x spacing8x spacing4x
+  box-sizing: border-box
+
+  & h2
+    margin: spacing4x 0
+  & h3
+    margin: spacing2x 0
+
+    &.class-id
+      color: colorTurquoise
+
+  & .edit-section
+    padding: spacing2x 0
+    border-bottom: 1px solid colorGrayLight
+
+  & input
+    width: 100%
+    height: spacing3x
+    box-sizing: border-box
+    font-size: fontSize0
+
+  & select
+    width: spacing20x
+    margin: spacing2x 0 spacing4x
+    font-size: fontSize0
+
+  & .buttons
+    margin-top: spacing2x
+    margin-bottom: spacing8x
+
+    & button
+      outline: none
+      border: none
+      border-radius: 6px
+      padding: spacing2x spacing4x
+      font-size: fontSize0
+      cursor: pointer
+
+      &:hover
+        filter: brightness(1.1)
+
+    & .btn-save
+      float: right
+      background-color: colorTurquoise
+      color: colorWhite
+
+    & .btn-cancel
+      float: left
+      background-color: colorGrayLight
