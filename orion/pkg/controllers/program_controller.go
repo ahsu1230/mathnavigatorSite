@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -60,12 +61,10 @@ func PublishPrograms(c *gin.Context) {
 	var programIdsJson []string
 	c.BindJSON(&programIdsJson)
 
-	errors := services.ProgramService.Publish(programIdsJson)
-	if len(errors) > 0 {
-		for _, err := range errors {
-			c.Error(err.Error)
-			c.String(http.StatusInternalServerError, err.Error.Error())
-		}
+	errorList := services.ProgramService.Publish(programIdsJson)
+	if len(errorList) > 0 {
+		c.Error(errors.New("one or more programs failed to publish"))
+		c.JSON(http.StatusInternalServerError, errorList)
 	} else {
 		c.Status(http.StatusOK)
 	}

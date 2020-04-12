@@ -21,11 +21,6 @@ type Session struct {
 	Notes       NullString `json:"notes" db:"notes"`
 }
 
-type SessionErrorBody struct {
-	Id    uint  `json:"id"`
-	Error error `json:"error"`
-}
-
 func (session *Session) Validate() error {
 	// Retrieves the inputted values
 	notes := session.Notes

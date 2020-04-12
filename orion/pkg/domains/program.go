@@ -21,11 +21,6 @@ type Program struct {
 	Description string    `json:"description"`
 }
 
-type ProgramErrorBody struct {
-	ProgramId string `json:"programId"`
-	Error     error  `json:"error"`
-}
-
 // Class Methods
 
 func (program *Program) Validate() error {

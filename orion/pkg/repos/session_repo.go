@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -19,7 +20,7 @@ type SessionRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert(domains.Session) error
-	Publish([]uint) []domains.SessionErrorBody
+	Publish([]uint) []domains.PublishErrorBody
 	Update(uint, domains.Session) error
 	Delete(uint) error
 }
@@ -158,13 +159,13 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 	return handleSqlExecResult(result, 1, "session was not inserted")
 }
 
-func (sr *sessionRepo) Publish(ids []uint) []domains.SessionErrorBody {
-	errors := make([]domains.SessionErrorBody, 0)
+func (sr *sessionRepo) Publish(ids []uint) []domains.PublishErrorBody {
+	errorList := make([]domains.PublishErrorBody, 0)
 
 	for _, id := range ids {
 		session, err := sr.SelectBySessionId(id)
 		if err != nil {
-			errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
 			continue
 		}
 		if !session.PublishedAt.Valid {
@@ -172,12 +173,14 @@ func (sr *sessionRepo) Publish(ids []uint) []domains.SessionErrorBody {
 			session.PublishedAt.Scan(now)
 			err = sr.Update(id, session)
 			if err != nil {
-				errors = append(errors, domains.SessionErrorBody{Id: id, Error: err})
+				errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
 			}
+		} else {
+			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: errors.New("session is already published")})
 		}
 	}
 
-	return errors
+	return errorList
 }
 
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {

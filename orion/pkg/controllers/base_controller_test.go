@@ -21,7 +21,7 @@ type mockProgramService struct {
 	mockGetAllUnpublished func() ([]domains.Program, error)
 	mockGetByProgramId    func(string) (domains.Program, error)
 	mockCreate            func(domains.Program) error
-	mockPublish           func([]string) []domains.ProgramErrorBody
+	mockPublish           func([]string) []domains.PublishErrorBody
 	mockUpdate            func(string, domains.Program) error
 	mockDelete            func(string) error
 }
@@ -39,7 +39,7 @@ func (programService *mockProgramService) GetByProgramId(programId string) (doma
 func (programService *mockProgramService) Create(program domains.Program) error {
 	return programService.mockCreate(program)
 }
-func (programService *mockProgramService) Publish(programIds []string) []domains.ProgramErrorBody {
+func (programService *mockProgramService) Publish(programIds []string) []domains.PublishErrorBody {
 	return programService.mockPublish(programIds)
 }
 func (programService *mockProgramService) Update(programId string, program domains.Program) error {
@@ -105,7 +105,7 @@ type mockLocationService struct {
 	mockGetAllUnpublished func() ([]domains.Location, error)
 	mockGetByLocationId   func(string) (domains.Location, error)
 	mockCreate            func(domains.Location) error
-	mockPublish           func([]string) []domains.LocationErrorBody
+	mockPublish           func([]string) []domains.PublishErrorBody
 	mockUpdate            func(string, domains.Location) error
 	mockDelete            func(string) error
 }
@@ -123,7 +123,7 @@ func (locationService *mockLocationService) GetByLocationId(locId string) (domai
 func (locationService *mockLocationService) Create(location domains.Location) error {
 	return locationService.mockCreate(location)
 }
-func (locationService *mockLocationService) Publish(locIds []string) []domains.LocationErrorBody {
+func (locationService *mockLocationService) Publish(locIds []string) []domains.PublishErrorBody {
 	return locationService.mockPublish(locIds)
 }
 func (locationService *mockLocationService) Update(locId string, location domains.Location) error {
@@ -245,7 +245,7 @@ type mockSessionService struct {
 	mockGetAllUnpublished func() ([]domains.Session, error)
 	mockGetBySessionId    func(uint) (domains.Session, error)
 	mockCreate            func(domains.Session) error
-	mockPublish           func([]uint) []domains.SessionErrorBody
+	mockPublish           func([]uint) []domains.PublishErrorBody
 	mockUpdate            func(uint, domains.Session) error
 	mockDelete            func(uint) error
 }
@@ -263,7 +263,7 @@ func (sessionService *mockSessionService) GetBySessionId(id uint) (domains.Sessi
 func (sessionService *mockSessionService) Create(session domains.Session) error {
 	return sessionService.mockCreate(session)
 }
-func (sessionService *mockSessionService) Publish(ids []uint) []domains.SessionErrorBody {
+func (sessionService *mockSessionService) Publish(ids []uint) []domains.PublishErrorBody {
 	return sessionService.mockPublish(ids)
 }
 func (sessionService *mockSessionService) Update(id uint, session domains.Session) error {

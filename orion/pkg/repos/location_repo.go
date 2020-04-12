@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -19,7 +20,7 @@ type LocationRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Location, error)
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
-	Publish([]string) []domains.LocationErrorBody
+	Publish([]string) []domains.PublishErrorBody
 	Update(string, domains.Location) error
 	Delete(string) error
 }
@@ -161,13 +162,13 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not inserted")
 }
 
-func (lr *locationRepo) Publish(locIds []string) []domains.LocationErrorBody {
-	errors := make([]domains.LocationErrorBody, 0)
+func (lr *locationRepo) Publish(locIds []string) []domains.PublishErrorBody {
+	errorList := make([]domains.PublishErrorBody, 0)
 
 	for _, locId := range locIds {
 		location, err := lr.SelectByLocationId(locId)
 		if err != nil {
-			errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+			errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: err})
 			continue
 		}
 		if !location.PublishedAt.Valid {
@@ -175,12 +176,14 @@ func (lr *locationRepo) Publish(locIds []string) []domains.LocationErrorBody {
 			location.PublishedAt.Scan(now)
 			err = lr.Update(locId, location)
 			if err != nil {
-				errors = append(errors, domains.LocationErrorBody{LocId: locId, Error: err})
+				errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: err})
 			}
+		} else {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: errors.New("location is already published")})
 		}
 	}
 
-	return errors
+	return errorList
 }
 
 func (lr *locationRepo) Update(locId string, location domains.Location) error {

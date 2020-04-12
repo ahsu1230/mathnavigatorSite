@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -61,12 +62,10 @@ func PublishSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	errors := services.SessionService.Publish(idsJson)
-	if len(errors) > 0 {
-		for _, err := range errors {
-			c.Error(err.Error)
-			c.String(http.StatusInternalServerError, err.Error.Error())
-		}
+	errorList := services.SessionService.Publish(idsJson)
+	if len(errorList) > 0 {
+		c.Error(errors.New("one or more sessions failed to publish"))
+		c.JSON(http.StatusInternalServerError, errorList)
 	} else {
 		c.Status(http.StatusOK)
 	}

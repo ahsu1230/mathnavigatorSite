@@ -129,7 +129,7 @@ func TestCreateLocation_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishLocations_Success(t *testing.T) {
-	locationService.mockPublish = func(locIds []string) []domains.LocationErrorBody {
+	locationService.mockPublish = func(locIds []string) []domains.PublishErrorBody {
 		return nil // Successful update
 	}
 	services.LocationService = &locationService

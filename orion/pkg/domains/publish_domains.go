@@ -8,3 +8,9 @@ type UnpublishedDomains struct {
 	Semesters []Semester `json:"semesters"`
 	Sessions  []Session  `json:"sessions"`
 }
+
+type PublishErrorBody struct {
+	RowId    uint   `json:"rowId,omitempty"`
+	StringId string `json:"stringId,omitempty"`
+	Error    error  `json:"error"`
+}

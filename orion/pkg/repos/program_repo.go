@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -21,7 +22,7 @@ type ProgramRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
-	Publish([]string) []domains.ProgramErrorBody
+	Publish([]string) []domains.PublishErrorBody
 	Update(string, domains.Program) error
 	Delete(string) error
 }
@@ -158,13 +159,13 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
-func (pr *programRepo) Publish(programIds []string) []domains.ProgramErrorBody {
-	errors := make([]domains.ProgramErrorBody, 0)
+func (pr *programRepo) Publish(programIds []string) []domains.PublishErrorBody {
+	errorList := make([]domains.PublishErrorBody, 0)
 
 	for _, programId := range programIds {
 		program, err := pr.SelectByProgramId(programId)
 		if err != nil {
-			errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
 			continue
 		}
 		if !program.PublishedAt.Valid {
@@ -172,12 +173,14 @@ func (pr *programRepo) Publish(programIds []string) []domains.ProgramErrorBody {
 			program.PublishedAt.Scan(now)
 			err = pr.Update(programId, program)
 			if err != nil {
-				errors = append(errors, domains.ProgramErrorBody{ProgramId: programId, Error: err})
+				errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
 			}
+		} else {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: errors.New("program is already published")})
 		}
 	}
 
-	return errors
+	return errorList
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {

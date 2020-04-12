@@ -15,7 +15,7 @@ type locationServiceInterface interface {
 	Update(string, domains.Location) error
 	Delete(string) error
 	GetAllUnpublished() ([]domains.Location, error)
-	Publish([]string) []domains.LocationErrorBody
+	Publish([]string) []domains.PublishErrorBody
 }
 
 // Struct that implements interface
@@ -23,6 +23,14 @@ type locationService struct{}
 
 func (ls *locationService) GetAll(publishedOnly bool) ([]domains.Location, error) {
 	locations, err := repos.LocationRepo.SelectAll(publishedOnly)
+	if err != nil {
+		return nil, err
+	}
+	return locations, nil
+}
+
+func (ls *locationService) GetAllUnpublished() ([]domains.Location, error) {
+	locations, err := repos.LocationRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +50,11 @@ func (ls *locationService) Create(location domains.Location) error {
 	return err
 }
 
+func (ls *locationService) Publish(locIds []string) []domains.PublishErrorBody {
+	errors := repos.LocationRepo.Publish(locIds)
+	return errors
+}
+
 func (ls *locationService) Update(locId string, location domains.Location) error {
 	err := repos.LocationRepo.Update(locId, location)
 	return err
@@ -50,17 +63,4 @@ func (ls *locationService) Update(locId string, location domains.Location) error
 func (ls *locationService) Delete(locId string) error {
 	err := repos.LocationRepo.Delete(locId)
 	return err
-}
-
-func (ls *locationService) GetAllUnpublished() ([]domains.Location, error) {
-	locations, err := repos.LocationRepo.SelectAllUnpublished()
-	if err != nil {
-		return nil, err
-	}
-	return locations, nil
-}
-
-func (ls *locationService) Publish(locIds []string) []domains.LocationErrorBody {
-	errors := repos.LocationRepo.Publish(locIds)
-	return errors
 }
