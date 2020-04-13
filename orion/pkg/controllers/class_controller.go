@@ -8,7 +8,10 @@ import (
 )
 
 func GetAllClasses(c *gin.Context) {
-	classList, err := services.ClassService.GetAll()
+	// Incoming optional parameter
+	publishedOnly := ParseParamPublishedOnly(c)
+
+	classList, err := services.ClassService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -27,7 +30,7 @@ func GetClassById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, class)
+		c.JSON(http.StatusOK, &class)
 	}
 	return
 }
@@ -79,7 +82,6 @@ func CreateClass(c *gin.Context) {
 	// Incoming JSON
 	var classJson domains.Class
 	c.BindJSON(&classJson)
-
 	if err := classJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
@@ -130,4 +132,18 @@ func DeleteClass(c *gin.Context) {
 		c.Status(http.StatusOK)
 	}
 	return
+}
+
+func PublishClasses(c *gin.Context) {
+	// Incoming JSON
+	var classIds []string
+	c.BindJSON(&classIds)
+
+	err := services.ClassService.Publish(classIds)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
 }

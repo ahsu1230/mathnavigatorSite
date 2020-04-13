@@ -2,9 +2,9 @@ package repos
 
 import (
 	"database/sql"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 )
 
 // Global variable
@@ -18,8 +18,9 @@ type userRepo struct {
 // Interface to implement
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.User, error)
+	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
+	SelectByGuardianId(uint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -29,15 +30,28 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 	ur.db = db
 }
 
-func (ur *userRepo) SelectAll() ([]domains.User, error) {
+func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users")
+	getAll := len(search) == 0
+	var query string
+	if getAll {
+		query = "SELECT * FROM users LIMIT ? OFFSET ?"
+	} else {
+		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
+	}
+	stmt, err := ur.db.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query()
+
+	var rows *sql.Rows
+	if getAll {
+		rows, err = stmt.Query(pageSize, offset)
+	} else {
+		rows, err = stmt.Query(search, pageSize, offset)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -89,16 +103,51 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 	return user, errScan
 }
 
+func (ur *userRepo) SelectByGuardianId(guardianId uint) ([]domains.User, error) {
+	results := make([]domains.User, 0)
+
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE guardian_id=?")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(domains.NewNullUint(guardianId))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.DeletedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.MiddleName,
+			&user.Email,
+			&user.Phone,
+			&user.IsGuardian,
+			&user.GuardianId); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, user)
+	}
+	return results, nil
+}
+
 func (ur *userRepo) Insert(user domains.User) error {
 	statement := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
 		"first_name, " +
-		"last_name" +
+		"last_name," +
 		"middle_name, " +
-		"email" +
+		"email," +
 		"phone, " +
-		"is_guardian" +
+		"is_guardian," +
 		"guardian_id" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
@@ -114,11 +163,12 @@ func (ur *userRepo) Insert(user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
+		user.MiddleName,
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0})
+		user.GuardianId,
+	)
 	if err != nil {
 		return err
 	}
@@ -147,11 +197,11 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		now,
 		user.FirstName,
 		user.LastName,
-		sql.NullString{String: user.MiddleName, Valid: user.MiddleName != ""},
+		user.MiddleName,
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		sql_helper.NullUint{Uint: user.GuardianId, Valid: user.GuardianId != 0},
+		user.GuardianId,
 		id)
 	if err != nil {
 		return err

@@ -27,7 +27,7 @@ func GetLocationById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, location)
+		c.JSON(http.StatusOK, &location)
 	}
 	return
 }

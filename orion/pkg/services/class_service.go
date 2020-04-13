@@ -9,7 +9,8 @@ var ClassService classServiceInterface = &classService{}
 
 // Interface for ClassService
 type classServiceInterface interface {
-	GetAll() ([]domains.Class, error)
+	GetAll(bool) ([]domains.Class, error)
+	GetUnpublished() ([]domains.Class, error)
 	GetByClassId(string) (domains.Class, error)
 	GetByProgramId(string) ([]domains.Class, error)
 	GetBySemesterId(string) ([]domains.Class, error)
@@ -17,13 +18,22 @@ type classServiceInterface interface {
 	Create(domains.Class) error
 	Update(string, domains.Class) error
 	Delete(string) error
+	Publish([]string) error
 }
 
 // Struct that implements interface
 type classService struct{}
 
-func (cs *classService) GetAll() ([]domains.Class, error) {
-	classes, err := repos.ClassRepo.SelectAll()
+func (cs *classService) GetAll(publishedOnly bool) ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
+	if err != nil {
+		return nil, err
+	}
+	return classes, nil
+}
+
+func (cs *classService) GetUnpublished() ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -75,4 +85,15 @@ func (cs *classService) Update(classId string, class domains.Class) error {
 func (cs *classService) Delete(classId string) error {
 	err := repos.ClassRepo.Delete(classId)
 	return err
+}
+
+// TODO: Use DB Transactions
+func (cs *classService) Publish(classIds []string) error {
+	for _, classId := range classIds {
+		err := repos.ClassRepo.Publish(classId)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

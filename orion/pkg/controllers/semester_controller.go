@@ -8,13 +8,16 @@ import (
 )
 
 func GetAllSemesters(c *gin.Context) {
-	semesterList, err := services.SemesterService.GetAll()
+	// Incoming optional parameter
+	publishedOnly := ParseParamPublishedOnly(c)
+
+	semesterList, err := services.SemesterService.GetAll(publishedOnly)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, semesterList)
 	}
-	return
 }
 
 func GetSemesterById(c *gin.Context) {
@@ -23,11 +26,11 @@ func GetSemesterById(c *gin.Context) {
 
 	semester, err := services.SemesterService.GetBySemesterId(semesterId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, semester)
+		c.JSON(http.StatusOK, &semester)
 	}
-	return
 }
 
 func CreateSemester(c *gin.Context) {
@@ -36,17 +39,18 @@ func CreateSemester(c *gin.Context) {
 	c.BindJSON(&semesterJson)
 
 	if err := semesterJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.SemesterService.Create(semesterJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
-	return
 }
 
 func UpdateSemester(c *gin.Context) {
@@ -56,17 +60,18 @@ func UpdateSemester(c *gin.Context) {
 	c.BindJSON(&semesterJson)
 
 	if err := semesterJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.SemesterService.Update(semesterId, semesterJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
-	return
 }
 
 func DeleteSemester(c *gin.Context) {
@@ -75,9 +80,24 @@ func DeleteSemester(c *gin.Context) {
 
 	err := services.SemesterService.Delete(semesterId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
 	return
+}
+
+func PublishSemesters(c *gin.Context) {
+	// Incoming JSON
+	var semesterIds []string
+	c.BindJSON(&semesterIds)
+
+	err := services.SemesterService.Publish(semesterIds)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
 }

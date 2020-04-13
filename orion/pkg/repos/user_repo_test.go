@@ -5,10 +5,8 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/sql_helper"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterface) {
@@ -28,54 +26,42 @@ func TestSelectAllUsers(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"FirstName",
-		"LastName",
-		"MiddleName",
-		"Email",
-		"Phone",
-		"IsGuardian",
-		"GuardianId",
-	}).AddRow(
-		1,
-		now,
-		now,
-		sql.NullTime{},
-		"John",
-		"Smith",
-		"Middle",
-		"john.smith@example.com",
-		"555-555-0100",
-		true,
-		0,
-	)
+	rows := getUserRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll("", 100, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
-	want := []domains.User{
-		{
-			Id:         1,
-			CreatedAt:  now,
-			UpdatedAt:  now,
-			DeletedAt:  sql.NullTime{},
-			FirstName:  "John",
-			LastName:   "Smith",
-			MiddleName: "Middle",
-			Email:      "john.smith@example.com",
-			Phone:      "555-555-0100",
-			IsGuardian: true,
-			GuardianId: 0,
-		},
+	want := []domains.User{getUser()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Test Search
+//
+func TestSearchUsers(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare(`^SELECT (.+) FROM users WHERE (.+) LIMIT (.+) OFFSET (.+)`).
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAll("Smith", 2, 0)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.User{getUser()}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
@@ -92,32 +78,7 @@ func TestSelectUser(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"FirstName",
-		"LastName",
-		"MiddleName",
-		"Email",
-		"Phone",
-		"IsGuardian",
-		"GuardianId",
-	}).AddRow(
-		1,
-		now,
-		now,
-		sql.NullTime{},
-		"John",
-		"Smith",
-		"Middle",
-		"john.smith@example.com",
-		"555-555-0100",
-		true,
-		0,
-	)
+	rows := getUserRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -128,19 +89,36 @@ func TestSelectUser(t *testing.T) {
 	}
 
 	// Validate results
-	want := domains.User{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
-		FirstName:  "John",
-		LastName:   "Smith",
-		MiddleName: "Middle",
-		Email:      "john.smith@example.com",
-		Phone:      "555-555-0100",
-		IsGuardian: true,
-		GuardianId: 0,
+	want := getUser()
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select One By Guardian ID
+//
+func TestSelectUsersByGuardianId(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE guardian_id=?").
+		ExpectQuery().
+		WithArgs(2).
+		WillReturnRows(rows)
+	got, err := repo.SelectByGuardianId(2)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.User{getUser()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -166,21 +144,13 @@ func TestInsertUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"John",
 			"Smith",
-			sql.NullString{String: "Middle", Valid: true},
-			"john.smith@example.com",
+			domains.NewNullString(""),
+			"john_smith@example.com",
 			"555-555-0100",
-			true,
-			sql_helper.NullUint{},
+			false,
+			domains.NewNullUint(2),
 		).WillReturnResult(result)
-	user := domains.User{
-		FirstName:  "John",
-		LastName:   "Smith",
-		MiddleName: "Middle",
-		Email:      "john.smith@example.com",
-		Phone:      "555-555-0100",
-		IsGuardian: true,
-		GuardianId: 0,
-	}
+	user := getUser()
 	err := repo.Insert(user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -207,21 +177,25 @@ func TestUpdateUser(t *testing.T) {
 			sqlmock.AnyArg(),
 			"Bob",
 			"Joe",
-			sql.NullString{},
-			"bob.joe@example.com",
+			domains.NewNullString("Oliver"),
+			"bob_joe@example.com",
 			"555-555-0199",
 			true,
-			sql_helper.NullUint{},
+			domains.NewNullUint(0),
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
+		Id:         1,
+		CreatedAt:  now,
+		UpdatedAt:  now,
+		DeletedAt:  sql.NullTime{},
 		FirstName:  "Bob",
 		LastName:   "Joe",
-		MiddleName: "",
-		Email:      "bob.joe@example.com",
+		MiddleName: domains.NewNullString("Oliver"),
+		Email:      "bob_joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
-		GuardianId: 0,
+		GuardianId: domains.NewNullUint(0),
 	}
 	err := repo.Update(1, user)
 	if err != nil {
@@ -255,5 +229,52 @@ func TestDeleteUser(t *testing.T) {
 	// Validate results
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Helper Methods
+//
+func getUserRows() *sqlmock.Rows {
+	return sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"FirstName",
+		"LastName",
+		"MiddleName",
+		"Email",
+		"Phone",
+		"IsGuardian",
+		"GuardianId",
+	}).AddRow(
+		1,
+		now,
+		now,
+		sql.NullTime{},
+		"John",
+		"Smith",
+		domains.NewNullString(""),
+		"john_smith@example.com",
+		"555-555-0100",
+		false,
+		domains.NewNullUint(2),
+	)
+}
+
+func getUser() domains.User {
+	return domains.User{
+		Id:         1,
+		CreatedAt:  now,
+		UpdatedAt:  now,
+		DeletedAt:  sql.NullTime{},
+		FirstName:  "John",
+		LastName:   "Smith",
+		MiddleName: domains.NewNullString(""),
+		Email:      "john_smith@example.com",
+		Phone:      "555-555-0100",
+		IsGuardian: false,
+		GuardianId: domains.NewNullUint(2),
 	}
 }

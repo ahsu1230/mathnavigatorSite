@@ -11,3 +11,4 @@
 **/*.project
 
 orion/configs/*
+orion/sites/**/coverage

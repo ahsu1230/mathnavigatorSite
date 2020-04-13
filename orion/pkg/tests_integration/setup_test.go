@@ -5,15 +5,17 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
-	"github.com/gin-gonic/gin"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
+	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
+	"github.com/gin-gonic/gin"
 )
 
 var db *sql.DB
@@ -69,6 +71,16 @@ func resetTable(t *testing.T, tableName string) error {
 		t.Fatalf("Error altering table auto-increment: %s", err)
 	}
 	return nil
+}
+
+func resetAllTables(t *testing.T) {
+	resetTable(t, domains.TABLE_SESSIONS)
+	resetTable(t, domains.TABLE_CLASSES)
+	resetTable(t, domains.TABLE_PROGRAMS)
+	resetTable(t, domains.TABLE_SEMESTERS)
+	resetTable(t, domains.TABLE_LOCATIONS)
+	resetTable(t, domains.TABLE_ACHIEVEMENTS)
+	resetTable(t, domains.TABLE_USERS)
 }
 
 // Helper methods for Router

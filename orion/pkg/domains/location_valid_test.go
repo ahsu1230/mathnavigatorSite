@@ -223,34 +223,34 @@ func TestValidLocationRoom(t *testing.T) {
 		City:    "Potomac",
 		State:   "MD",
 		Zipcode: "20854",
-		Room:    "Room 2",
+		Room:    domains.NewNullString("Room 2"),
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.Room = "124"
+	location.Room = domains.NewNullString("124")
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.Room = "Auditorium"
+	location.Room = domains.NewNullString("Auditorium")
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.Room = ""
+	location.Room = domains.NewNullString("")
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid rooms
-	location.Room = "@@@"
+	location.Room = domains.NewNullString("@@@")
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid room")
 	}
 
-	location.Room = "#@!*"
+	location.Room = domains.NewNullString("#@!*")
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid room")
 	}
