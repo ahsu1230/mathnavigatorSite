@@ -13,6 +13,7 @@ export class LocationPage extends React.Component {
             numUnpublished: 0,
             numSelected: 0,
         };
+        this.onClickSelectAll = this.onClickSelectAll.bind(this);
     }
 
     componentDidMount() {
@@ -22,6 +23,10 @@ export class LocationPage extends React.Component {
         });
     }
 
+    onClickBox() {
+        this.state.numSelected++;
+    }
+
     onClickSelectAll() {
         var items = document.getElementsByName("unpublished");
         for (var i = 0; i < items.length; i++) {
@@ -29,7 +34,7 @@ export class LocationPage extends React.Component {
                 items[i].checked = true;
             }
         }
-        this.setState({ numUnpublished: items.length });
+        this.setState({ numSelected: items.length });
     }
 
     onClickPublish() {
@@ -82,7 +87,11 @@ export class LocationPage extends React.Component {
 }
 
 class LocationRow extends React.Component {
-    onClickBox() {}
+    onClickBox() {
+        numSelected++;
+        return numSelected;
+    }
+
     renderCheckbox(isUnpublished) {
         let checkbox = <div> </div>;
         if (isUnpublished) {
