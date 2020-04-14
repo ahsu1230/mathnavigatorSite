@@ -6,6 +6,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func GetAllPrograms(c *gin.Context) {
@@ -63,8 +64,14 @@ func PublishPrograms(c *gin.Context) {
 
 	errorList := services.ProgramService.Publish(programIdsJson)
 	if len(errorList) > 0 {
-		c.Error(errors.New("one or more programs failed to publish"))
-		c.JSON(http.StatusInternalServerError, errorList)
+		var errorStrings []string
+		errorStrings = append(errorStrings, "one or more programs failed to publish")
+		for _, errorBody := range errorList {
+			errorStrings = append(errorStrings, errorBody.StringId+": "+errorBody.Error.Error())
+		}
+		err := strings.Join(errorStrings, "\n")
+		c.Error(errors.New(err))
+		c.String(http.StatusInternalServerError, err)
 	} else {
 		c.Status(http.StatusOK)
 	}
