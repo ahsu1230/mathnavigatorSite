@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -175,8 +174,6 @@ func (pr *programRepo) Publish(programIds []string) []domains.PublishErrorBody {
 			if err != nil {
 				errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
 			}
-		} else {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: errors.New("program is already published")})
 		}
 	}
 

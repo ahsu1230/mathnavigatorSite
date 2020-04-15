@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -178,8 +177,6 @@ func (lr *locationRepo) Publish(locIds []string) []domains.PublishErrorBody {
 			if err != nil {
 				errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: err})
 			}
-		} else {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: errors.New("location is already published")})
 		}
 	}
 

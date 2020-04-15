@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -175,8 +174,6 @@ func (sr *sessionRepo) Publish(ids []uint) []domains.PublishErrorBody {
 			if err != nil {
 				errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
 			}
-		} else {
-			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: errors.New("session is already published")})
 		}
 	}
 
