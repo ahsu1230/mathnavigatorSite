@@ -248,35 +248,6 @@ func TestUpdateClass_Failure(t *testing.T) {
 }
 
 //
-// Test Delete
-//
-func TestDeleteClass_Success(t *testing.T) {
-	classService.mockDelete = func(classId string) error {
-		return nil // Return no error, successful delete!
-	}
-	services.ClassService = &classService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestDeleteClass_Failure(t *testing.T) {
-	classService.mockDelete = func(classId string) error {
-		return errors.New("not found")
-	}
-	services.ClassService = &classService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
 // Test Publish
 //
 func TestPublishClasses_Success(t *testing.T) {
@@ -310,6 +281,35 @@ func TestPublishClasses_Failure(t *testing.T) {
 		panic(err)
 	}
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Delete
+//
+func TestDeleteClass_Success(t *testing.T) {
+	classService.mockDelete = func(classId string) error {
+		return nil // Return no error, successful delete!
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestDeleteClass_Failure(t *testing.T) {
+	classService.mockDelete = func(classId string) error {
+		return errors.New("not found")
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

@@ -18,15 +18,15 @@ type classRepo struct {
 type ClassRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Class, error)
-	SelectUnpublished() ([]domains.Class, error)
+	SelectAllUnpublished() ([]domains.Class, error)
 	SelectByClassId(string) (domains.Class, error)
 	SelectByProgramId(string) ([]domains.Class, error)
 	SelectBySemesterId(string) ([]domains.Class, error)
 	SelectByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
-	Delete(string) error
 	Publish([]string) error
+	Delete(string) error
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
@@ -76,7 +76,7 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 	return results, nil
 }
 
-func (cr *classRepo) SelectUnpublished() ([]domains.Class, error) {
+func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
 	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE published_at IS NULL")
@@ -325,21 +325,6 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 	return handleSqlExecResult(execResult, 1, "class was not updated")
 }
 
-func (cr *classRepo) Delete(classId string) error {
-	statement := "DELETE FROM classes WHERE class_id=?"
-	stmt, err := cr.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	execResult, err := stmt.Exec(classId)
-	if err != nil {
-		return err
-	}
-	return handleSqlExecResult(execResult, 1, "class was not deleted")
-}
-
 func (cr *classRepo) Publish(classIds []string) error {
 	errorList := make([]domains.PublishErrorBody, 0)
 
@@ -363,6 +348,21 @@ func (cr *classRepo) Publish(classIds []string) error {
 	tx.Commit()
 
 	return domains.ConcatErrors(errorList)
+}
+
+func (cr *classRepo) Delete(classId string) error {
+	statement := "DELETE FROM classes WHERE class_id=?"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	execResult, err := stmt.Exec(classId)
+	if err != nil {
+		return err
+	}
+	return handleSqlExecResult(execResult, 1, "class was not deleted")
 }
 
 // For Tests Only

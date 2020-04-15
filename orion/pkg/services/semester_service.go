@@ -10,12 +10,12 @@ var SemesterService semesterServiceInterface = &semesterService{}
 // Interface for SemesterService
 type semesterServiceInterface interface {
 	GetAll(bool) ([]domains.Semester, error)
-	GetUnpublished() ([]domains.Semester, error)
+	GetAllUnpublished() ([]domains.Semester, error)
 	GetBySemesterId(string) (domains.Semester, error)
 	Create(domains.Semester) error
 	Update(string, domains.Semester) error
-	Delete(string) error
 	Publish([]string) error
+	Delete(string) error
 }
 
 // Struct that implements interface
@@ -29,8 +29,8 @@ func (ss *semesterService) GetAll(publishedOnly bool) ([]domains.Semester, error
 	return semesters, nil
 }
 
-func (ss *semesterService) GetUnpublished() ([]domains.Semester, error) {
-	semesters, err := repos.SemesterRepo.SelectUnpublished()
+func (ss *semesterService) GetAllUnpublished() ([]domains.Semester, error) {
+	semesters, err := repos.SemesterRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -55,12 +55,12 @@ func (ss *semesterService) Update(semesterId string, semester domains.Semester) 
 	return err
 }
 
-func (ss *semesterService) Delete(semesterId string) error {
-	err := repos.SemesterRepo.Delete(semesterId)
+func (ss *semesterService) Publish(semesterIds []string) error {
+	err := repos.SemesterRepo.Publish(semesterIds)
 	return err
 }
 
-func (ss *semesterService) Publish(semesterIds []string) error {
-	err := repos.SemesterRepo.Publish(semesterIds)
+func (ss *semesterService) Delete(semesterId string) error {
+	err := repos.SemesterRepo.Delete(semesterId)
 	return err
 }

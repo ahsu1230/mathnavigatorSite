@@ -182,35 +182,6 @@ func TestUpdateSemester_Failure(t *testing.T) {
 }
 
 //
-// Test Delete
-//
-func TestDeleteSemester_Success(t *testing.T) {
-	semesterService.mockDelete = func(semesterId string) error {
-		return nil // Return no error, successful delete!
-	}
-	services.SemesterService = &semesterService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/semesters/v1/semester/some_semester", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestDeleteSemester_Failure(t *testing.T) {
-	semesterService.mockDelete = func(semesterId string) error {
-		return errors.New("not found")
-	}
-	services.SemesterService = &semesterService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/semesters/v1/semester/some_semester", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
 // Test Publish
 //
 func TestPublishSemesters_Success(t *testing.T) {
@@ -244,6 +215,35 @@ func TestPublishSemesters_Failure(t *testing.T) {
 		panic(err)
 	}
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Delete
+//
+func TestDeleteSemester_Success(t *testing.T) {
+	semesterService.mockDelete = func(semesterId string) error {
+		return nil // Return no error, successful delete!
+	}
+	services.SemesterService = &semesterService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/semesters/v1/semester/some_semester", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestDeleteSemester_Failure(t *testing.T) {
+	semesterService.mockDelete = func(semesterId string) error {
+		return errors.New("not found")
+	}
+	services.SemesterService = &semesterService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/semesters/v1/semester/some_semester", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

@@ -18,13 +18,13 @@ type achieveRepo struct {
 type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Achieve, error)
-	SelectUnpublished() ([]domains.Achieve, error)
+	SelectAllUnpublished() ([]domains.Achieve, error)
 	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
 	SelectById(uint) (domains.Achieve, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
-	Delete(uint) error
 	Publish([]uint) error
+	Delete(uint) error
 }
 
 func (ar *achieveRepo) Initialize(db *sql.DB) {
@@ -68,7 +68,7 @@ func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) 
 	return results, nil
 }
 
-func (ar *achieveRepo) SelectUnpublished() ([]domains.Achieve, error) {
+func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
 	results := make([]domains.Achieve, 0)
 
 	stmt, err := ar.db.Prepare("SELECT * FROM achievements WHERE published_at IS NULL")
@@ -212,21 +212,6 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 	return handleSqlExecResult(execResult, 1, "achievement was not updated")
 }
 
-func (ar *achieveRepo) Delete(id uint) error {
-	statement := "DELETE FROM achievements WHERE id=?"
-	stmt, err := ar.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	execResult, err := stmt.Exec(id)
-	if err != nil {
-		return err
-	}
-	return handleSqlExecResult(execResult, 1, "achievement was not deleted")
-}
-
 func (ar *achieveRepo) Publish(ids []uint) error {
 	errorList := make([]domains.PublishErrorBody, 0)
 
@@ -250,6 +235,21 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 	tx.Commit()
 
 	return domains.ConcatErrors(errorList)
+}
+
+func (ar *achieveRepo) Delete(id uint) error {
+	statement := "DELETE FROM achievements WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	execResult, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	return handleSqlExecResult(execResult, 1, "achievement was not deleted")
 }
 
 // For Tests Only

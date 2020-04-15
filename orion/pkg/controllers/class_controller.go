@@ -120,20 +120,6 @@ func UpdateClass(c *gin.Context) {
 	return
 }
 
-func DeleteClass(c *gin.Context) {
-	// Incoming Parameters
-	classId := c.Param("classId")
-
-	err := services.ClassService.Delete(classId)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func PublishClasses(c *gin.Context) {
 	// Incoming JSON
 	var classIds []string
@@ -146,4 +132,18 @@ func PublishClasses(c *gin.Context) {
 	} else {
 		c.Status(http.StatusOK)
 	}
+}
+
+func DeleteClass(c *gin.Context) {
+	// Incoming Parameters
+	classId := c.Param("classId")
+
+	err := services.ClassService.Delete(classId)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
 }

@@ -74,20 +74,6 @@ func UpdateSemester(c *gin.Context) {
 	}
 }
 
-func DeleteSemester(c *gin.Context) {
-	// Incoming Parameters
-	semesterId := c.Param("semesterId")
-
-	err := services.SemesterService.Delete(semesterId)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func PublishSemesters(c *gin.Context) {
 	// Incoming JSON
 	var semesterIds []string
@@ -100,4 +86,18 @@ func PublishSemesters(c *gin.Context) {
 	} else {
 		c.Status(http.StatusOK)
 	}
+}
+
+func DeleteSemester(c *gin.Context) {
+	// Incoming Parameters
+	semesterId := c.Param("semesterId")
+
+	err := services.SemesterService.Delete(semesterId)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
 }

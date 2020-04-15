@@ -73,7 +73,7 @@ func TestSelectPublishedAchieves(t *testing.T) {
 //
 // Select Unpublished
 //
-func TestSelectUnpublishedAchieves(t *testing.T) {
+func TestSelectAllUnpublishedAchieves(t *testing.T) {
 	db, mock, repo := initAchieveTest(t)
 	defer db.Close()
 
@@ -82,7 +82,7 @@ func TestSelectUnpublishedAchieves(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements WHERE published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectUnpublished()
+	got, err := repo.SelectAllUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -246,30 +246,6 @@ func TestUpdateAchieve(t *testing.T) {
 }
 
 //
-// Delete
-//
-func TestDeleteAchieve(t *testing.T) {
-	db, mock, repo := initAchieveTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM achievements WHERE id=?").
-		ExpectExec().
-		WithArgs(1).
-		WillReturnResult(result)
-	err := repo.Delete(1)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Publish
 //
 func TestPublishAchieves(t *testing.T) {
@@ -283,6 +259,30 @@ func TestPublishAchieves(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
 	err := repo.Publish([]uint{1})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Delete
+//
+func TestDeleteAchieve(t *testing.T) {
+	db, mock, repo := initAchieveTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^DELETE FROM achievements WHERE id=?").
+		ExpectExec().
+		WithArgs(1).
+		WillReturnResult(result)
+	err := repo.Delete(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

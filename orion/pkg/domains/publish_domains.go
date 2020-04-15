@@ -2,6 +2,7 @@ package domains
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -45,4 +46,17 @@ func getId(errorBody PublishErrorBody) string {
 	} else {
 		return errorBody.StringId
 	}
+}
+
+func Concatenate(initMessage string, errorList []PublishErrorBody, isString bool) error {
+	var errorStrings []string
+	errorStrings = append(errorStrings, initMessage)
+	for _, errorBody := range errorList {
+		if isString {
+			errorStrings = append(errorStrings, errorBody.StringId+": "+errorBody.Error.Error())
+		} else {
+			errorStrings = append(errorStrings, fmt.Sprint(errorBody.RowId)+": "+errorBody.Error.Error())
+		}
+	}
+	return errors.New(strings.Join(errorStrings, "\n"))
 }

@@ -8,7 +8,9 @@ import (
 )
 
 func GetAllLocations(c *gin.Context) {
-	locationList, err := services.LocationService.GetAll()
+	publishedOnly := ParseParamPublishedOnly(c)
+
+	locationList, err := services.LocationService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -67,6 +69,22 @@ func UpdateLocation(c *gin.Context) {
 
 	err := services.LocationService.Update(locId, locationJson)
 	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func PublishLocations(c *gin.Context) {
+	// Incoming JSON
+	var locIdsJson []string
+	c.BindJSON(&locIdsJson)
+
+	errorList := services.LocationService.Publish(locIdsJson)
+	if len(errorList) > 0 {
+		err := domains.Concatenate("one or more locations failed to publish", errorList, true)
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {

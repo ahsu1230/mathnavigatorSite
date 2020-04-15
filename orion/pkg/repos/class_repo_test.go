@@ -77,7 +77,7 @@ func TestSelectPublishedClasses(t *testing.T) {
 //
 // Select Unpublished
 //
-func TestSelectUnpublishedClasses(t *testing.T) {
+func TestSelectAllUnpublishedClasses(t *testing.T) {
 	db, mock, repo := initClassTest(t)
 	defer db.Close()
 
@@ -86,7 +86,7 @@ func TestSelectUnpublishedClasses(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectUnpublished()
+	got, err := repo.SelectAllUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -293,30 +293,6 @@ func TestUpdateClass(t *testing.T) {
 }
 
 //
-// Delete
-//
-func TestDeleteClass(t *testing.T) {
-	db, mock, repo := initClassTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM classes WHERE class_id=?").
-		ExpectExec().
-		WithArgs("program1_2020_spring_final_review").
-		WillReturnResult(result)
-	err := repo.Delete("program1_2020_spring_final_review")
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Publish
 //
 func TestPublishClasses(t *testing.T) {
@@ -330,6 +306,30 @@ func TestPublishClasses(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
 		WillReturnResult(result)
 	err := repo.Publish([]string{"program1_2020_spring_final_review"})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Delete
+//
+func TestDeleteClass(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^DELETE FROM classes WHERE class_id=?").
+		ExpectExec().
+		WithArgs("program1_2020_spring_final_review").
+		WillReturnResult(result)
+	err := repo.Delete("program1_2020_spring_final_review")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

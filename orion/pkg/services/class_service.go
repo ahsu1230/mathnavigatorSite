@@ -10,15 +10,15 @@ var ClassService classServiceInterface = &classService{}
 // Interface for ClassService
 type classServiceInterface interface {
 	GetAll(bool) ([]domains.Class, error)
-	GetUnpublished() ([]domains.Class, error)
+	GetAllUnpublished() ([]domains.Class, error)
 	GetByClassId(string) (domains.Class, error)
 	GetByProgramId(string) ([]domains.Class, error)
 	GetBySemesterId(string) ([]domains.Class, error)
 	GetByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Create(domains.Class) error
 	Update(string, domains.Class) error
-	Delete(string) error
 	Publish([]string) error
+	Delete(string) error
 }
 
 // Struct that implements interface
@@ -32,8 +32,8 @@ func (cs *classService) GetAll(publishedOnly bool) ([]domains.Class, error) {
 	return classes, nil
 }
 
-func (cs *classService) GetUnpublished() ([]domains.Class, error) {
-	classes, err := repos.ClassRepo.SelectUnpublished()
+func (cs *classService) GetAllUnpublished() ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -82,12 +82,12 @@ func (cs *classService) Update(classId string, class domains.Class) error {
 	return err
 }
 
-func (cs *classService) Delete(classId string) error {
-	err := repos.ClassRepo.Delete(classId)
+func (cs *classService) Publish(classIds []string) error {
+	err := repos.ClassRepo.Publish(classIds)
 	return err
 }
 
-func (cs *classService) Publish(classIds []string) error {
-	err := repos.ClassRepo.Publish(classIds)
+func (cs *classService) Delete(classId string) error {
+	err := repos.ClassRepo.Delete(classId)
 	return err
 }

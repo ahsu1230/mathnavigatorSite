@@ -18,12 +18,12 @@ type semesterRepo struct {
 type SemesterRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Semester, error)
-	SelectUnpublished() ([]domains.Semester, error)
+	SelectAllUnpublished() ([]domains.Semester, error)
 	SelectBySemesterId(string) (domains.Semester, error)
 	Insert(domains.Semester) error
 	Update(string, domains.Semester) error
-	Delete(string) error
 	Publish([]string) error
+	Delete(string) error
 }
 
 func (sr *semesterRepo) Initialize(db *sql.DB) {
@@ -67,7 +67,7 @@ func (sr *semesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error
 	return results, nil
 }
 
-func (sr *semesterRepo) SelectUnpublished() ([]domains.Semester, error) {
+func (sr *semesterRepo) SelectAllUnpublished() ([]domains.Semester, error) {
 	results := make([]domains.Semester, 0)
 
 	stmt, err := sr.db.Prepare("SELECT * FROM semesters WHERE published_at IS NULL")
@@ -169,21 +169,6 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	return handleSqlExecResult(execResult, 1, "semester was not updated")
 }
 
-func (sr *semesterRepo) Delete(semesterId string) error {
-	statement := "DELETE FROM semesters WHERE semester_id=?"
-	stmt, err := sr.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	execResult, err := stmt.Exec(semesterId)
-	if err != nil {
-		return err
-	}
-	return handleSqlExecResult(execResult, 1, "semester was not deleted")
-}
-
 func (sr *semesterRepo) Publish(semesterIds []string) error {
 	errorList := make([]domains.PublishErrorBody, 0)
 
@@ -207,6 +192,21 @@ func (sr *semesterRepo) Publish(semesterIds []string) error {
 	tx.Commit()
 
 	return domains.ConcatErrors(errorList)
+}
+
+func (sr *semesterRepo) Delete(semesterId string) error {
+	statement := "DELETE FROM semesters WHERE semester_id=?"
+	stmt, err := sr.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	execResult, err := stmt.Exec(semesterId)
+	if err != nil {
+		return err
+	}
+	return handleSqlExecResult(execResult, 1, "semester was not deleted")
 }
 
 // For Tests Only
