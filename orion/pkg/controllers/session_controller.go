@@ -1,13 +1,10 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 )
 
 func GetAllSessionsByClassId(c *gin.Context) {
@@ -66,14 +63,9 @@ func PublishSessions(c *gin.Context) {
 
 	errorList := services.SessionService.Publish(idsJson)
 	if len(errorList) > 0 {
-		var errorStrings []string
-		errorStrings = append(errorStrings, "one or more sessions failed to publish")
-		for _, errorBody := range errorList {
-			errorStrings = append(errorStrings, fmt.Sprint(errorBody.RowId)+": "+errorBody.Error.Error())
-		}
-		err := strings.Join(errorStrings, "\n")
-		c.Error(errors.New(err))
-		c.String(http.StatusInternalServerError, err)
+		err := domains.Concatenate("one or more sessions failed to publish", errorList, false)
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
