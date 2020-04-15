@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	programService.mockGetAll = func() ([]domains.Program, error) {
+	programService.mockGetAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -101,7 +101,7 @@ func TestCreateProgram_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
-	marshal, _ := json.Marshal(program)
+	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
 
@@ -115,12 +115,34 @@ func TestCreateProgram_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "", 2, 3, "descript1") // Empty Name!
-	marshal, _ := json.Marshal(program)
+	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishPrograms_Success(t *testing.T) {
+	programService.mockPublish = func(programIds []string) []domains.PublishErrorBody {
+		return nil // Successful update
+	}
+	services.ProgramService = &programService
+
+	// Create new HTTP request to endpoint
+	programIds := []string{"prog1", "prog2"}
+	marshal, err := json.Marshal(programIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //
@@ -212,7 +234,7 @@ func createMockProgram(programId string, name string, grade1 uint, grade2 uint, 
 }
 
 func createBodyFromProgram(program domains.Program) io.Reader {
-	marshal, err := json.Marshal(program)
+	marshal, err := json.Marshal(&program)
 	if err != nil {
 		panic(err)
 	}

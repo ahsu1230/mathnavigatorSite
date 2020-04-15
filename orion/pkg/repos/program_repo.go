@@ -17,9 +17,11 @@ type programRepo struct {
 // Interface to implement
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Program, error)
+	SelectAll(bool) ([]domains.Program, error)
+	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
+	Publish([]string) []domains.PublishErrorBody
 	Update(string, domains.Program) error
 	Delete(string) error
 }
@@ -28,10 +30,14 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll() ([]domains.Program, error) {
+func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM programs")
+	statement := "SELECT * FROM programs"
+	if publishedOnly {
+		statement += " WHERE published_at IS NOT NULL"
+	}
+	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +55,41 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 			&program.CreatedAt,
 			&program.UpdatedAt,
 			&program.DeletedAt,
+			&program.PublishedAt,
+			&program.ProgramId,
+			&program.Name,
+			&program.Grade1,
+			&program.Grade2,
+			&program.Description); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, program)
+	}
+	return results, nil
+}
+
+func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
+	results := make([]domains.Program, 0)
+
+	stmt, err := pr.db.Prepare("SELECT * FROM programs WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var program domains.Program
+		if errScan := rows.Scan(
+			&program.Id,
+			&program.CreatedAt,
+			&program.UpdatedAt,
+			&program.DeletedAt,
+			&program.PublishedAt,
 			&program.ProgramId,
 			&program.Name,
 			&program.Grade1,
@@ -76,6 +117,7 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.CreatedAt,
 		&program.UpdatedAt,
 		&program.DeletedAt,
+		&program.PublishedAt,
 		&program.ProgramId,
 		&program.Name,
 		&program.Grade1,
@@ -116,9 +158,32 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
+func (pr *programRepo) Publish(programIds []string) []domains.PublishErrorBody {
+	errorList := make([]domains.PublishErrorBody, 0)
+
+	for _, programId := range programIds {
+		program, err := pr.SelectByProgramId(programId)
+		if err != nil {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
+			continue
+		}
+		if !program.PublishedAt.Valid {
+			now := time.Now().UTC()
+			program.PublishedAt.Scan(now)
+			err = pr.Update(programId, program)
+			if err != nil {
+				errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
+			}
+		}
+	}
+
+	return errorList
+}
+
 func (pr *programRepo) Update(programId string, program domains.Program) error {
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"program_id=?, " +
 		"name=?, " +
 		"grade1=?, " +
@@ -134,6 +199,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
+		program.PublishedAt,
 		program.ProgramId,
 		program.Name,
 		program.Grade1,

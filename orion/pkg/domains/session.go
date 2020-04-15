@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,15 +9,16 @@ import (
 var TABLE_SESSIONS = "sessions"
 
 type Session struct {
-	Id        uint         `json:"id"`
-	CreatedAt time.Time    `json:"-" db:"created_at"`
-	UpdatedAt time.Time    `json:"-" db:"updated_at"`
-	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
-	ClassId   string       `json:"classId" db:"class_id"`
-	StartsAt  time.Time    `json:"startsAt" db:"starts_at"`
-	EndsAt    time.Time    `json:"endsAt" db:"ends_at"`
-	Canceled  bool         `json:"canceled"`
-	Notes     NullString   `json:"notes"`
+	Id          uint       `json:"id"`
+	CreatedAt   time.Time  `json:"-" db:"created_at"`
+	UpdatedAt   time.Time  `json:"-" db:"updated_at"`
+	DeletedAt   NullTime   `json:"-" db:"deleted_at"`
+	PublishedAt NullTime   `json:"publishedAt" db:"published_at"`
+	ClassId     string     `json:"classId" db:"class_id"`
+	StartsAt    time.Time  `json:"startsAt" db:"starts_at"`
+	EndsAt      time.Time  `json:"endsAt" db:"ends_at"`
+	Canceled    bool       `json:"canceled" db:"canceled"`
+	Notes       NullString `json:"notes" db:"notes"`
 }
 
 func (session *Session) Validate() error {

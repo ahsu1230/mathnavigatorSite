@@ -9,18 +9,28 @@ var LocationService locationServiceInterface = &locationService{}
 
 // Interface for LocationService
 type locationServiceInterface interface {
-	GetAll() ([]domains.Location, error)
+	GetAll(bool) ([]domains.Location, error)
 	GetByLocationId(string) (domains.Location, error)
 	Create(domains.Location) error
 	Update(string, domains.Location) error
 	Delete(string) error
+	GetAllUnpublished() ([]domains.Location, error)
+	Publish([]string) []domains.PublishErrorBody
 }
 
 // Struct that implements interface
 type locationService struct{}
 
-func (ls *locationService) GetAll() ([]domains.Location, error) {
-	locations, err := repos.LocationRepo.SelectAll()
+func (ls *locationService) GetAll(publishedOnly bool) ([]domains.Location, error) {
+	locations, err := repos.LocationRepo.SelectAll(publishedOnly)
+	if err != nil {
+		return nil, err
+	}
+	return locations, nil
+}
+
+func (ls *locationService) GetAllUnpublished() ([]domains.Location, error) {
+	locations, err := repos.LocationRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +48,11 @@ func (ls *locationService) GetByLocationId(locId string) (domains.Location, erro
 func (ls *locationService) Create(location domains.Location) error {
 	err := repos.LocationRepo.Insert(location)
 	return err
+}
+
+func (ls *locationService) Publish(locIds []string) []domains.PublishErrorBody {
+	errors := repos.LocationRepo.Publish(locIds)
+	return errors
 }
 
 func (ls *locationService) Update(locId string, location domains.Location) error {

@@ -17,22 +17,30 @@ var programService mockProgramService
 
 // Fake programService that implements ProgramService interface
 type mockProgramService struct {
-	mockGetAll         func() ([]domains.Program, error)
-	mockGetByProgramId func(string) (domains.Program, error)
-	mockCreate         func(domains.Program) error
-	mockUpdate         func(string, domains.Program) error
-	mockDelete         func(string) error
+	mockGetAll            func(bool) ([]domains.Program, error)
+	mockGetAllUnpublished func() ([]domains.Program, error)
+	mockGetByProgramId    func(string) (domains.Program, error)
+	mockCreate            func(domains.Program) error
+	mockPublish           func([]string) []domains.PublishErrorBody
+	mockUpdate            func(string, domains.Program) error
+	mockDelete            func(string) error
 }
 
 // Implement methods of ProgramService interface with mocked implementations
-func (programService *mockProgramService) GetAll() ([]domains.Program, error) {
-	return programService.mockGetAll()
+func (programService *mockProgramService) GetAll(publishedOnly bool) ([]domains.Program, error) {
+	return programService.mockGetAll(publishedOnly)
+}
+func (programService *mockProgramService) GetAllUnpublished() ([]domains.Program, error) {
+	return programService.mockGetAllUnpublished()
 }
 func (programService *mockProgramService) GetByProgramId(programId string) (domains.Program, error) {
 	return programService.mockGetByProgramId(programId)
 }
 func (programService *mockProgramService) Create(program domains.Program) error {
 	return programService.mockCreate(program)
+}
+func (programService *mockProgramService) Publish(programIds []string) []domains.PublishErrorBody {
+	return programService.mockPublish(programIds)
 }
 func (programService *mockProgramService) Update(programId string, program domains.Program) error {
 	return programService.mockUpdate(programId, program)
@@ -93,22 +101,30 @@ var locationService mockLocationService
 
 // Fake locationService that implements LocationService interface
 type mockLocationService struct {
-	mockGetAll          func() ([]domains.Location, error)
-	mockGetByLocationId func(string) (domains.Location, error)
-	mockCreate          func(domains.Location) error
-	mockUpdate          func(string, domains.Location) error
-	mockDelete          func(string) error
+	mockGetAll            func(bool) ([]domains.Location, error)
+	mockGetAllUnpublished func() ([]domains.Location, error)
+	mockGetByLocationId   func(string) (domains.Location, error)
+	mockCreate            func(domains.Location) error
+	mockPublish           func([]string) []domains.PublishErrorBody
+	mockUpdate            func(string, domains.Location) error
+	mockDelete            func(string) error
 }
 
 // Implement methods of LocationService interface with mocked implementations
-func (locationService *mockLocationService) GetAll() ([]domains.Location, error) {
-	return locationService.mockGetAll()
+func (locationService *mockLocationService) GetAll(publishedOnly bool) ([]domains.Location, error) {
+	return locationService.mockGetAll(publishedOnly)
+}
+func (locationService *mockLocationService) GetAllUnpublished() ([]domains.Location, error) {
+	return locationService.mockGetAllUnpublished()
 }
 func (locationService *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
 	return locationService.mockGetByLocationId(locId)
 }
 func (locationService *mockLocationService) Create(location domains.Location) error {
 	return locationService.mockCreate(location)
+}
+func (locationService *mockLocationService) Publish(locIds []string) []domains.PublishErrorBody {
+	return locationService.mockPublish(locIds)
 }
 func (locationService *mockLocationService) Update(locId string, location domains.Location) error {
 	return locationService.mockUpdate(locId, location)
@@ -225,22 +241,30 @@ var sessionService mockSessionService
 
 // Fake sessionService that implements SessionService interface
 type mockSessionService struct {
-	mockGetAllByClassId func(string) ([]domains.Session, error)
-	mockGetBySessionId  func(uint) (domains.Session, error)
-	mockCreate          func(domains.Session) error
-	mockUpdate          func(uint, domains.Session) error
-	mockDelete          func(uint) error
+	mockGetAllByClassId   func(string, bool) ([]domains.Session, error)
+	mockGetAllUnpublished func() ([]domains.Session, error)
+	mockGetBySessionId    func(uint) (domains.Session, error)
+	mockCreate            func(domains.Session) error
+	mockPublish           func([]uint) []domains.PublishErrorBody
+	mockUpdate            func(uint, domains.Session) error
+	mockDelete            func(uint) error
 }
 
 // Implement methods of SessionService interface with mocked implementations
-func (sessionService *mockSessionService) GetAllByClassId(classId string) ([]domains.Session, error) {
-	return sessionService.mockGetAllByClassId(classId)
+func (sessionService *mockSessionService) GetAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
+	return sessionService.mockGetAllByClassId(classId, publishedOnly)
+}
+func (sessionService *mockSessionService) GetAllUnpublished() ([]domains.Session, error) {
+	return sessionService.mockGetAllUnpublished()
 }
 func (sessionService *mockSessionService) GetBySessionId(id uint) (domains.Session, error) {
 	return sessionService.mockGetBySessionId(id)
 }
 func (sessionService *mockSessionService) Create(session domains.Session) error {
 	return sessionService.mockCreate(session)
+}
+func (sessionService *mockSessionService) Publish(ids []uint) []domains.PublishErrorBody {
+	return sessionService.mockPublish(ids)
 }
 func (sessionService *mockSessionService) Update(id uint, session domains.Session) error {
 	return sessionService.mockUpdate(id, session)

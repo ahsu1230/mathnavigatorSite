@@ -18,7 +18,7 @@ import (
 //
 func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionService.mockGetAllByClassId = func(classId string) ([]domains.Session, error) {
+	sessionService.mockGetAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -126,6 +126,28 @@ func TestCreateSession_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishSessions_Success(t *testing.T) {
+	sessionService.mockPublish = func(ids []uint) []domains.PublishErrorBody {
+		return nil // Successful update
+	}
+	services.SessionService = &sessionService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1, 2}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

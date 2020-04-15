@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllLocations_Success(t *testing.T) {
-	locationService.mockGetAll = func() ([]domains.Location, error) {
+	locationService.mockGetAll = func(publishedOnly bool) ([]domains.Location, error) {
 		return []domains.Location{
 			{
 				Id:      1,
@@ -123,6 +123,28 @@ func TestCreateLocation_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishLocations_Success(t *testing.T) {
+	locationService.mockPublish = func(locIds []string) []domains.PublishErrorBody {
+		return nil // Successful update
+	}
+	services.LocationService = &locationService
+
+	// Create new HTTP request to endpoint
+	locIds := []string{"loc1", "loc2"}
+	marshal, err := json.Marshal(locIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //
