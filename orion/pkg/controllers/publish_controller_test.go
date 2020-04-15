@@ -13,8 +13,8 @@ import (
 func setupMock() {
 	programService.mockGetAllUnpublished = func() ([]domains.Program, error) {
 		return []domains.Program{
-			createMockProgram("prog1", "Program1", 2, 3, "descript1"),
-			createMockProgram("prog2", "Program2", 8, 12, "descript2"),
+			createMockProgram("prog1", "Program1", 2, 3, "descript1", 0),
+			createMockProgram("prog2", "Program2", 8, 12, "descript2", 0),
 		}, nil
 	}
 	locationService.mockGetAllUnpublished = func() ([]domains.Location, error) {

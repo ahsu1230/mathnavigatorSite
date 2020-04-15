@@ -11,9 +11,9 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func Test_CreatePrograms(t *testing.T) {
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
-	program2 := createProgram("prog2", "Program2", 2, 3, "descript2")
-	program3 := createProgram("prog3", "Program3", 2, 3, "descript3")
+	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
+	program2 := createProgram("prog2", "Program2", 2, 3, "descript2", 1)
+	program3 := createProgram("prog3", "Program3", 2, 3, "descript3", 0)
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
 	body3 := createJsonBody(&program3)
@@ -46,8 +46,8 @@ func Test_CreatePrograms(t *testing.T) {
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
 func Test_UniqueProgramId(t *testing.T) {
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
-	program2 := createProgram("prog1", "Program2", 2, 3, "descript2") // Same programId
+	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
+	program2 := createProgram("prog1", "Program2", 2, 3, "descript2", 1) // Same programId
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
@@ -74,13 +74,13 @@ func Test_UniqueProgramId(t *testing.T) {
 // Test: Create 1 Program, Update it, GetByProgramId()
 func Test_UpdateProgram(t *testing.T) {
 	// Create 1 Program
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
+	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123")
+	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123", 1)
 	updatedBody := createJsonBody(&updatedProgram)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -105,7 +105,7 @@ func Test_UpdateProgram(t *testing.T) {
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func Test_DeleteProgram(t *testing.T) {
 	// Create
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1")
+	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -122,12 +122,13 @@ func Test_DeleteProgram(t *testing.T) {
 }
 
 // Helper methods
-func createProgram(programId string, name string, grade1 uint, grade2 uint, description string) domains.Program {
+func createProgram(programId string, name string, grade1 uint, grade2 uint, description string, featured uint) domains.Program {
 	return domains.Program{
 		ProgramId:   programId,
 		Name:        name,
 		Grade1:      grade1,
 		Grade2:      grade2,
 		Description: description,
+		Featured:    featured,
 	}
 }

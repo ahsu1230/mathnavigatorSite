@@ -19,6 +19,7 @@ type Program struct {
 	Grade1      uint      `json:"grade1"`
 	Grade2      uint      `json:"grade2"`
 	Description string    `json:"description"`
+	Featured    uint      `json:"featured"`
 }
 
 // Class Methods

@@ -15,8 +15,8 @@ func Test_CreateSessions(t *testing.T) {
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1")
-	prog2 := createProgram("slow_track", "Slow Track", 1, 12, "descript1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
+	prog2 := createProgram("slow_track", "Slow Track", 1, 12, "descript1", 1)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
@@ -79,7 +79,7 @@ func Test_UpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
@@ -127,7 +127,7 @@ func Test_DeleteSession(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)

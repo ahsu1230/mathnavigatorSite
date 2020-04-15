@@ -25,6 +25,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
 				Grade1:      2,
 				Grade2:      3,
 				Description: "Description1",
+				Featured:    0,
 			},
 			{
 				Id:          2,
@@ -33,6 +34,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
 				Grade1:      2,
 				Grade2:      3,
 				Description: "Description2",
+				Featured:    1,
 			},
 		}, nil
 	}
@@ -59,7 +61,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
 //
 func TestGetProgram_Success(t *testing.T) {
 	programService.mockGetByProgramId = func(programId string) (domains.Program, error) {
-		program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
+		program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 		return program, nil
 	}
 	services.ProgramService = &programService
@@ -100,7 +102,7 @@ func TestCreateProgram_Success(t *testing.T) {
 	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog1", "Program1", 2, 3, "descript1")
+	program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
@@ -114,7 +116,7 @@ func TestCreateProgram_Failure(t *testing.T) {
 	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog1", "", 2, 3, "descript1") // Empty Name!
+	program := createMockProgram("prog1", "", 2, 3, "descript1", 0) // Empty Name!
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
@@ -155,7 +157,7 @@ func TestUpdateProgram_Success(t *testing.T) {
 	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
+	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
 
@@ -168,7 +170,7 @@ func TestUpdateProgram_Invalid(t *testing.T) {
 	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "", 2, 3, "descript2") // Empty Name!
+	program := createMockProgram("prog2", "", 2, 3, "descript2", 0) // Empty Name!
 	body := createBodyFromProgram(program)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
 
@@ -183,7 +185,7 @@ func TestUpdateProgram_Failure(t *testing.T) {
 	services.ProgramService = &programService
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "Program2", 2, 3, "descript2")
+	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
 
@@ -223,13 +225,14 @@ func TestDeleteProgram_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockProgram(programId string, name string, grade1 uint, grade2 uint, description string) domains.Program {
+func createMockProgram(programId string, name string, grade1 uint, grade2 uint, description string, featured uint) domains.Program {
 	return domains.Program{
 		ProgramId:   programId,
 		Name:        name,
 		Grade1:      grade1,
 		Grade2:      grade2,
 		Description: description,
+		Featured:    featured,
 	}
 }
 
