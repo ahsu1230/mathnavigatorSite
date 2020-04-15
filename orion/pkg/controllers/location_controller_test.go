@@ -16,7 +16,7 @@ import (
 // Test Get All
 //
 func TestGetAllLocations_Success(t *testing.T) {
-	locationService.mockGetAll = func() ([]domains.Location, error) {
+	locationService.mockGetAll = func(publishedOnly bool) ([]domains.Location, error) {
 		return []domains.Location{
 			{
 				Id:      1,
@@ -25,7 +25,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "City",
 				State:   "MA",
 				Zipcode: "77294",
-				Room:    "Room 1",
+				Room:    domains.NewNullString("Room 1"),
 			},
 			{
 				Id:      2,
@@ -34,7 +34,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 				City:    "Dity",
 				State:   "MD",
 				Zipcode: "12353",
-				Room:    "Room 2",
+				Room:    domains.NewNullString("Room 2"),
 			},
 		}, nil
 	}
@@ -103,7 +103,7 @@ func TestCreateLocation_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	marshal, _ := json.Marshal(location)
+	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body)
 
@@ -117,12 +117,34 @@ func TestCreateLocation_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
-	marshal, _ := json.Marshal(location)
+	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishLocations_Success(t *testing.T) {
+	locationService.mockPublish = func(locIds []string) []domains.PublishErrorBody {
+		return nil // Successful update
+	}
+	services.LocationService = &locationService
+
+	// Create new HTTP request to endpoint
+	locIds := []string{"loc1", "loc2"}
+	marshal, err := json.Marshal(locIds)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //
@@ -210,12 +232,12 @@ func createMockLocation(locId string, street string, city string, state string, 
 		City:    city,
 		State:   state,
 		Zipcode: zipcode,
-		Room:    room,
+		Room:    domains.NewNullString(room),
 	}
 }
 
 func createBodyFromLocation(location domains.Location) io.Reader {
-	marshal, err := json.Marshal(location)
+	marshal, err := json.Marshal(&location)
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,18 +9,19 @@ import (
 var TABLE_CLASSES = "classes"
 
 type Class struct {
-	Id         uint
-	CreatedAt  time.Time    `db:"created_at"`
-	UpdatedAt  time.Time    `db:"updated_at"`
-	DeletedAt  sql.NullTime `db:"deleted_at"`
-	ProgramId  string       `db:"program_id" json:"programId"`
-	SemesterId string       `db:"semester_id" json:"semesterId"`
-	ClassKey   NullString   `db:"class_key" json:"classKey"`
-	ClassId    string       `db:"class_id" json:"classId"`
-	LocationId string       `db:"location_id" json:"locationId"`
-	Times      string       `json:"times"`
-	StartDate  time.Time    `json:"startDate"`
-	EndDate    time.Time    `json:"endDate"`
+	Id          uint       `json:"id"`
+	CreatedAt   time.Time  `json:"-" db:"created_at"`
+	UpdatedAt   time.Time  `json:"-" db:"updated_at"`
+	DeletedAt   NullTime   `json:"-" db:"deleted_at"`
+	PublishedAt NullTime   `json:"publishedAt" db:"published_at"`
+	ProgramId   string     `json:"programId" db:"program_id"`
+	SemesterId  string     `json:"semesterId" db:"semester_id"`
+	ClassKey    NullString `json:"classKey" db:"class_key"`
+	ClassId     string     `json:"classId" db:"class_id"`
+	LocId       string     `json:"locId" db:"loc_id"`
+	Times       string     `json:"times"`
+	StartDate   time.Time  `json:"startDate" db:"start_date"`
+	EndDate     time.Time  `json:"endDate" db:"end_date"`
 }
 
 // Class Methods

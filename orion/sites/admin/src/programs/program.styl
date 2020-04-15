@@ -8,9 +8,13 @@
   color: colorBlackDark
 
   & h1
+    display: inline-block
     margin: spacing4x 0
     line-height: lineHeight3
     font-size: fontSize3
+
+  & p
+    display: inline-block
 
   & ul
     list-style: none
@@ -35,6 +39,10 @@
   line-height: 60px
   border-bottom: 1px solid colorGrayLight
 
+  & input
+    position: relative
+    left: 25px
+
   & div
     display: inline-block
 
@@ -52,6 +60,26 @@
   & .li-large
     width: 240px
 
+#view-program #list-buttons
+    display: block
+    position: relative
+
+    & button
+        display: inline-block
+        margin: spacing2x 0
+        padding: 0.75em
+        border-radius: 10px
+        background-color: colorTurquoise
+        color: white
+        position: absolute
+
 a.add-program
-  display: inline-block
-  margin: spacing2x 0
+    display: inline-block
+    border-radius: 10px
+    background-color: colorTurquoise
+    color: white
+    position: relative
+
+#view-program #list-buttons #publish
+    position: absolute
+    right: 0

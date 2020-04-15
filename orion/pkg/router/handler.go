@@ -14,10 +14,12 @@ func (h *Handler) SetupApiEndpoints() {
 	// h.Engine.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
 	h.Engine.Use(static.Serve("/", static.LocalFile("./sites/admin", true)))
 
+	h.Engine.GET("/api/v1/unpublished", controllers.GetAllUnpublished)
 	apiPrograms := h.Engine.Group("/api/programs/")
 	{
 		apiPrograms.GET("/v1/all", controllers.GetAllPrograms)
 		apiPrograms.POST("/v1/create", controllers.CreateProgram)
+		apiPrograms.POST("/v1/publish", controllers.PublishPrograms)
 		apiPrograms.GET("/v1/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/v1/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/v1/program/:programId", controllers.DeleteProgram)
@@ -25,6 +27,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes/")
 	{
 		apiClasses.GET("/v1/all", controllers.GetAllClasses)
+		apiClasses.POST("/v1/publish", controllers.PublishClasses)
 		apiClasses.POST("/v1/create", controllers.CreateClass)
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
@@ -37,6 +40,7 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiLocations.GET("/v1/all", controllers.GetAllLocations)
 		apiLocations.POST("/v1/create", controllers.CreateLocation)
+		apiLocations.POST("/v1/publish", controllers.PublishLocations)
 		apiLocations.GET("/v1/location/:locId", controllers.GetLocationById)
 		apiLocations.POST("/v1/location/:locId", controllers.UpdateLocation)
 		apiLocations.DELETE("/v1/location/:locId", controllers.DeleteLocation)
@@ -52,6 +56,8 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAchieves := h.Engine.Group("api/achievements/")
 	{
 		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
+		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
+		apiAchieves.POST("/v1/publish", controllers.PublishAchievements)
 		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
 		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
@@ -60,6 +66,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
 		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
+		apiSemesters.POST("/v1/publish", controllers.PublishSemesters)
 		apiSemesters.POST("/v1/create", controllers.CreateSemester)
 		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
 		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
@@ -68,6 +75,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSessions := h.Engine.Group("api/sessions/")
 	{
 		apiSessions.POST("/v1/create", controllers.CreateSession)
+		apiSessions.POST("/v1/publish", controllers.PublishSessions)
 		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
@@ -80,6 +88,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.GET("/v1/user/:id", controllers.GetUserById)
 		apiUsers.POST("/v1/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/v1/user/:id", controllers.DeleteUser)
+		apiUsers.GET("/v1/guardian/:guardianId", controllers.GetUserByGuardian)
 	}
 	// apiAccounts := router.Group("api/accounts/")
 }

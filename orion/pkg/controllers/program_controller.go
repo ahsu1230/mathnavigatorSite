@@ -8,8 +8,11 @@ import (
 )
 
 func GetAllPrograms(c *gin.Context) {
-	programList, err := services.ProgramService.GetAll()
+	publishedOnly := ParseParamPublishedOnly(c)
+
+	programList, err := services.ProgramService.GetAll(publishedOnly)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.JSON(http.StatusOK, programList)
@@ -23,9 +26,10 @@ func GetProgramById(c *gin.Context) {
 
 	program, err := services.ProgramService.GetByProgramId(programId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, program)
+		c.JSON(http.StatusOK, &program)
 	}
 	return
 }
@@ -36,15 +40,33 @@ func CreateProgram(c *gin.Context) {
 	c.BindJSON(&programJson)
 
 	if err := programJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.ProgramService.Create(programJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func PublishPrograms(c *gin.Context) {
+	// Incoming JSON
+	var programIdsJson []string
+	c.BindJSON(&programIdsJson)
+
+	errorList := services.ProgramService.Publish(programIdsJson)
+	if len(errorList) > 0 {
+		err := domains.Concatenate("one or more programs failed to publish", errorList, true)
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -56,15 +78,17 @@ func UpdateProgram(c *gin.Context) {
 	c.BindJSON(&programJson)
 
 	if err := programJson.Validate(); err != nil {
+		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err := services.ProgramService.Update(programId, programJson)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, nil)
+		c.Status(http.StatusOK)
 	}
 	return
 }
@@ -75,6 +99,7 @@ func DeleteProgram(c *gin.Context) {
 
 	err := services.ProgramService.Delete(programId)
 	if err != nil {
+		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.Status(http.StatusOK)

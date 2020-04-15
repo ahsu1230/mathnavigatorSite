@@ -15,9 +15,8 @@ var later1 = now.Add(time.Hour * 24 * 30)
 var later2 = now.Add(time.Hour * 24 * 31)
 var later3 = now.Add(time.Hour * 24 * 60)
 
-// Test: Create 4 Classes and GetAll()
+// Test: Create 4 Classes and GetAll(false)
 func Test_CreateClasses(t *testing.T) {
-	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -30,19 +29,18 @@ func Test_CreateClasses(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assertClass(t, 3, classes[2])
 	assertClass(t, 4, classes[3])
 	assert.EqualValues(t, 4, len(classes))
+
+	resetClassTables(t)
 }
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
 func Test_UniqueClassId(t *testing.T) {
-	resetTables(t)
 	createAllProgramsSemestersLocations(t)
-
 	class1 := createClass(1)
 	class2 := createClass(1)
 	body1 := createJsonBody(&class1)
@@ -62,13 +60,13 @@ func Test_UniqueClassId(t *testing.T) {
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &class); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, class)
+
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesByProgram()
 func Test_GetClassesByProgram(t *testing.T) {
-	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -81,16 +79,16 @@ func Test_GetClassesByProgram(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assertClass(t, 3, classes[2])
 	assert.EqualValues(t, 3, len(classes))
+
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesBySemester()
 func Test_GetClassesBySemester(t *testing.T) {
-	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -103,15 +101,15 @@ func Test_GetClassesBySemester(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 3, classes[0])
 	assertClass(t, 4, classes[1])
 	assert.EqualValues(t, 2, len(classes))
+
+	resetClassTables(t)
 }
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
 func Test_GetClassesByProgramAndSemester(t *testing.T) {
-	resetTables(t)
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -124,18 +122,17 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
 	assertClass(t, 1, classes[0])
 	assertClass(t, 2, classes[1])
 	assert.EqualValues(t, 2, len(classes))
+
+	resetClassTables(t)
 }
 
 // Test: Create 1 Class, Update it, GetByClassId()
 func Test_UpdateClass(t *testing.T) {
-	resetTables(t)
-	createAllProgramsSemestersLocations(t)
-
 	// Create 1 Class
+	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
@@ -159,14 +156,14 @@ func Test_UpdateClass(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assertClass(t, 2, class)
+
+	resetClassTables(t)
 }
 
 // Test: Create 1 Class, Delete it, GetByClassId()
 func Test_DeleteClass(t *testing.T) {
-	resetTables(t)
-	createAllProgramsSemestersLocations(t)
-
 	// Create
+	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
@@ -179,6 +176,8 @@ func Test_DeleteClass(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetClassTables(t)
 }
 
 // Helper methods
@@ -190,7 +189,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_spring",
 			ClassKey:   domains.NewNullString("class1"),
 			ClassId:    "program1_2020_spring_class1",
-			LocationId: "churchill",
+			LocId:      "churchill",
 			Times:      "3 pm - 5 pm",
 			StartDate:  now,
 			EndDate:    later1,
@@ -201,7 +200,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_spring",
 			ClassKey:   domains.NewNullString("class2"),
 			ClassId:    "program1_2020_spring_class2",
-			LocationId: "churchill",
+			LocId:      "churchill",
 			Times:      "5 pm - 7 pm",
 			StartDate:  now,
 			EndDate:    later1,
@@ -212,7 +211,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_summer",
 			ClassKey:   domains.NewNullString("final_review"),
 			ClassId:    "program1_2020_summer_final_review",
-			LocationId: "churchill",
+			LocId:      "churchill",
 			Times:      "5 pm - 8 pm",
 			StartDate:  later1,
 			EndDate:    later2,
@@ -223,7 +222,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_summer",
 			ClassKey:   domains.NewNullString(""),
 			ClassId:    "program2_2020_summer",
-			LocationId: "churchill",
+			LocId:      "churchill",
 			Times:      "4 pm - 6 pm",
 			StartDate:  later2,
 			EndDate:    later3,
@@ -249,10 +248,10 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 	semester2 := createSemester("2020_summer", "Summer 2020")
 	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
 
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
-	body3 := createJsonBody(semester1)
-	body4 := createJsonBody(semester2)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
+	body3 := createJsonBody(&semester1)
+	body4 := createJsonBody(&semester2)
 	body5 := createJsonBody(&location1)
 
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
@@ -275,7 +274,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -284,7 +283,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -293,7 +292,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
@@ -302,14 +301,14 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
 	}
 }
 
-func resetTables(t *testing.T) {
+func resetClassTables(t *testing.T) {
 	resetTable(t, domains.TABLE_CLASSES)
 	resetTable(t, domains.TABLE_PROGRAMS)
 	resetTable(t, domains.TABLE_SEMESTERS)

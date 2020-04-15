@@ -11,14 +11,12 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func Test_CreatePrograms(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	program2 := createProgram("prog2", "Program2", 2, 3, "descript2", 1)
 	program3 := createProgram("prog3", "Program3", 2, 3, "descript3", 0)
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
-	body3 := createJsonBody(program3)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
+	body3 := createJsonBody(&program3)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body3)
@@ -42,16 +40,16 @@ func Test_CreatePrograms(t *testing.T) {
 	assert.EqualValues(t, "Program3", programs[2].Name)
 	assert.EqualValues(t, "prog3", programs[2].ProgramId)
 	assert.EqualValues(t, 3, len(programs))
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
 func Test_UniqueProgramId(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2", 1) // Same programId
-	body1 := createJsonBody(program1)
-	body2 := createJsonBody(program2)
+	body1 := createJsonBody(&program1)
+	body2 := createJsonBody(&program2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -69,21 +67,21 @@ func Test_UniqueProgramId(t *testing.T) {
 	}
 	assert.EqualValues(t, "prog1", program.ProgramId)
 	assert.EqualValues(t, "Program1", program.Name)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 1 Program, Update it, GetByProgramId()
 func Test_UpdateProgram(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
-	body1 := createJsonBody(program1)
+	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123", 1)
-	updatedBody := createJsonBody(updatedProgram)
+	updatedBody := createJsonBody(&updatedProgram)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
@@ -100,15 +98,15 @@ func Test_UpdateProgram(t *testing.T) {
 	}
 	assert.EqualValues(t, "prog2", program.ProgramId)
 	assert.EqualValues(t, "Program2a", program.Name)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func Test_DeleteProgram(t *testing.T) {
-	resetTable(t, domains.TABLE_PROGRAMS)
-
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
-	body1 := createJsonBody(program1)
+	body1 := createJsonBody(&program1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -119,6 +117,8 @@ func Test_DeleteProgram(t *testing.T) {
 	// Get
 	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetTable(t, domains.TABLE_PROGRAMS)
 }
 
 // Helper methods

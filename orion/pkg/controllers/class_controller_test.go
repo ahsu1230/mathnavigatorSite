@@ -22,7 +22,7 @@ var later3 = now.Add(time.Hour * 24 * 60)
 // Test Get All
 //
 func TestGetAllClasses_Success(t *testing.T) {
-	classService.mockGetAll = func() ([]domains.Class, error) {
+	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3, 4), nil
 	}
 	services.ClassService = &classService
@@ -42,6 +42,30 @@ func TestGetAllClasses_Success(t *testing.T) {
 	assertMockClasses(t, 3, classes[2])
 	assertMockClasses(t, 4, classes[3])
 	assert.EqualValues(t, 4, len(classes))
+}
+
+//
+// Test Get Published
+//
+func TestGetPublishedClasses_Success(t *testing.T) {
+	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(2, 3), nil
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assertMockClasses(t, 2, classes[0])
+	assertMockClasses(t, 3, classes[1])
+	assert.EqualValues(t, 2, len(classes))
 }
 
 //
@@ -253,15 +277,54 @@ func TestDeleteClass_Failure(t *testing.T) {
 }
 
 //
+// Test Publish
+//
+func TestPublishClasses_Success(t *testing.T) {
+	classService.mockPublish = func(classIds []string) error {
+		return nil // Return no error, successful publish!
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	classIds := []string{"program1_2020_spring_class1"}
+	marshal, err := json.Marshal(classIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestPublishClasses_Failure(t *testing.T) {
+	classService.mockPublish = func(classIds []string) error {
+		return errors.New("not found")
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	classIds := []string{"program1_2020_spring_class1"}
+	marshal, err := json.Marshal(classIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
 // Helper Methods
 //
-func createMockClass(programId, semesterId, classKey, classId, locationId, times string, startDate, endDate time.Time) domains.Class {
+func createMockClass(programId, semesterId, classKey, classId, locId, times string, startDate, endDate time.Time) domains.Class {
 	return domains.Class{
 		ProgramId:  programId,
 		SemesterId: semesterId,
 		ClassKey:   domains.NewNullString(classKey),
 		ClassId:    classId,
-		LocationId: locationId,
+		LocId:      locId,
 		Times:      times,
 		StartDate:  startDate,
 		EndDate:    endDate,
@@ -331,7 +394,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -340,7 +403,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -349,7 +412,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
@@ -358,7 +421,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
+		assert.EqualValues(t, "churchill", class.LocId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)

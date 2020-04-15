@@ -20,11 +20,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install MySQL CLI;
+          name: Install MySQL CLI
           command: |
             sudo apt-get update
             sudo apt-get install default-mysql-client
-
       - run: go get -v -t -d ./...
       - run:
           name: Format Go codebase
@@ -34,3 +33,24 @@ jobs:
           command: |
             go vet ./...
             go test -v ./...
+      - run:
+          name: Install npm
+          command: |
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt install nodejs
+            nodejs --version
+            npm --version
+      - run:
+          name: Install packages
+          command: npm install
+      - run:
+          name: Check Javascript Format
+          command: |
+            sudo npm install -g prettier
+            prettier --check "orion/sites/admin/**/*.js" --config "orion/sites/admin/.prettierrc.yaml"
+      - run:
+          name: Run Enzyme React tests
+          command: |
+            cd orion/sites/admin
+            npm install
+            npm run test
