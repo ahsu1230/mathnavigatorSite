@@ -329,7 +329,7 @@ func TestPublishClasses(t *testing.T) {
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
 		WillReturnResult(result)
-	err := repo.Publish("program1_2020_spring_final_review")
+	err := repo.Publish([]string{"program1_2020_spring_final_review"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

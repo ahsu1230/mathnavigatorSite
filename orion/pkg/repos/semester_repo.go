@@ -23,7 +23,7 @@ type SemesterRepoInterface interface {
 	Insert(domains.Semester) error
 	Update(string, domains.Semester) error
 	Delete(string) error
-	Publish(string) error
+	Publish([]string) error
 }
 
 func (sr *semesterRepo) Initialize(db *sql.DB) {
@@ -184,20 +184,29 @@ func (sr *semesterRepo) Delete(semesterId string) error {
 	return handleSqlExecResult(execResult, 1, "semester was not deleted")
 }
 
-func (sr *semesterRepo) Publish(semesterId string) error {
-	statement := "UPDATE semesters SET published_at=? WHERE semester_id=? AND published_at IS NULL"
-	stmt, err := sr.db.Prepare(statement)
+func (sr *semesterRepo) Publish(semesterIds []string) error {
+	errorList := make([]domains.PublishErrorBody, 0)
+
+	// Begin Transaction
+	tx, err := sr.db.Begin()
+	stmt, err := tx.Prepare("UPDATE semesters SET published_at=? WHERE id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	execResult, err := stmt.Exec(now, semesterId)
-	if err != nil {
-		return err
+	for _, semesterId := range semesterIds {
+		_, err := stmt.Exec(now, semesterId)
+		if err != nil {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: semesterId, Error: err})
+		}
 	}
-	return handleSqlExecResult(execResult, 1, "semesters were not published")
+
+	// End Transaction
+	tx.Commit()
+
+	return domains.ConcatErrors(errorList)
 }
 
 // For Tests Only

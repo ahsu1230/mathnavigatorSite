@@ -218,7 +218,7 @@ func TestPublishSemesters(t *testing.T) {
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "2020_fall").
 		WillReturnResult(result)
-	err := repo.Publish("2020_fall")
+	err := repo.Publish([]string{"2020_fall"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

@@ -60,13 +60,7 @@ func (ss *semesterService) Delete(semesterId string) error {
 	return err
 }
 
-// TODO: Use DB Transactions
 func (ss *semesterService) Publish(semesterIds []string) error {
-	for _, semesterId := range semesterIds {
-		err := repos.SemesterRepo.Publish(semesterId)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	err := repos.SemesterRepo.Publish(semesterIds)
+	return err
 }

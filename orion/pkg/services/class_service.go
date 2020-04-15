@@ -87,13 +87,7 @@ func (cs *classService) Delete(classId string) error {
 	return err
 }
 
-// TODO: Use DB Transactions
 func (cs *classService) Publish(classIds []string) error {
-	for _, classId := range classIds {
-		err := repos.ClassRepo.Publish(classId)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	err := repos.ClassRepo.Publish(classIds)
+	return err
 }

@@ -24,7 +24,7 @@ type AchieveRepoInterface interface {
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
 	Delete(uint) error
-	Publish(uint) error
+	Publish([]uint) error
 }
 
 func (ar *achieveRepo) Initialize(db *sql.DB) {
@@ -227,20 +227,30 @@ func (ar *achieveRepo) Delete(id uint) error {
 	return handleSqlExecResult(execResult, 1, "achievement was not deleted")
 }
 
-func (ar *achieveRepo) Publish(id uint) error {
-	statement := "UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL"
-	stmt, err := ar.db.Prepare(statement)
+func (ar *achieveRepo) Publish(ids []uint) error {
+	errorList := make([]domains.PublishErrorBody, 0)
+
+	// Begin Transaction
+	tx, err := ar.db.Begin()
+	stmt, err := tx.Prepare("UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	execResult, err := stmt.Exec(now, id)
-	if err != nil {
-		return err
+	for _, id := range ids {
+		fmt.Println(id)
+		_, err := stmt.Exec(now, id)
+		if err != nil {
+			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
+		}
 	}
-	return handleSqlExecResult(execResult, 1, "achievements were not published")
+
+	// End Transaction
+	tx.Commit()
+
+	return domains.ConcatErrors(errorList)
 }
 
 // For Tests Only

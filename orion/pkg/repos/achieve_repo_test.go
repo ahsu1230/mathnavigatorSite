@@ -282,7 +282,7 @@ func TestPublishAchieves(t *testing.T) {
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
-	err := repo.Publish(1)
+	err := repo.Publish([]uint{1})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

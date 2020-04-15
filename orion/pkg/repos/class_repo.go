@@ -26,7 +26,7 @@ type ClassRepoInterface interface {
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
 	Delete(string) error
-	Publish(string) error
+	Publish([]string) error
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
@@ -340,20 +340,29 @@ func (cr *classRepo) Delete(classId string) error {
 	return handleSqlExecResult(execResult, 1, "class was not deleted")
 }
 
-func (cr *classRepo) Publish(classId string) error {
-	statement := "UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL"
-	stmt, err := cr.db.Prepare(statement)
+func (cr *classRepo) Publish(classIds []string) error {
+	errorList := make([]domains.PublishErrorBody, 0)
+
+	// Begin Transaction
+	tx, err := cr.db.Begin()
+	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	execResult, err := stmt.Exec(now, classId)
-	if err != nil {
-		return err
+	for _, classId := range classIds {
+		_, err := stmt.Exec(now, classId)
+		if err != nil {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: classId, Error: err})
+		}
 	}
-	return handleSqlExecResult(execResult, 1, "classes were not published")
+
+	// End Transaction
+	tx.Commit()
+
+	return domains.ConcatErrors(errorList)
 }
 
 // For Tests Only
