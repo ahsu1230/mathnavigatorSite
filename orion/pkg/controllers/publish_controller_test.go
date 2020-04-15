@@ -17,7 +17,7 @@ func setupMock() {
 			createMockProgram("prog2", "Program2", 8, 12, "descript2"),
 		}, nil
 	}
-	classService.mockGetUnpublished = func() ([]domains.Class, error) {
+	classService.mockGetAllUnpublished = func() ([]domains.Class, error) {
 		return createMockClasses(1, 2), nil
 	}
 	locationService.mockGetAllUnpublished = func() ([]domains.Location, error) {
@@ -26,13 +26,13 @@ func setupMock() {
 			createMockLocation("loc2", "4040 Sesame St", "City", "MD", "77294", "Room 2"),
 		}, nil
 	}
-	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
+	achieveService.mockGetAllUnpublished = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
-	semesterService.mockGetUnpublished = func() ([]domains.Semester, error) {
+	semesterService.mockGetAllUnpublished = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			createMockSemester("2020_fall", "Fall 2020"),
 			createMockSemester("2020_winter", "Winter 2020"),
@@ -56,7 +56,7 @@ func setupMock() {
 //
 // Test Get Unpublished
 //
-func TestGetUnpublished_Success(t *testing.T) {
+func TestGetAllUnpublished_Success(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint

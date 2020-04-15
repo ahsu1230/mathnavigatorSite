@@ -54,7 +54,7 @@ var classService mockClassService
 // Fake classService that implements ClassService interface
 type mockClassService struct {
 	mockGetAll                    func(bool) ([]domains.Class, error)
-	mockGetUnpublished            func() ([]domains.Class, error)
+	mockGetAllUnpublished            func() ([]domains.Class, error)
 	mockGetByClassId              func(string) (domains.Class, error)
 	mockGetByProgramId            func(string) ([]domains.Class, error)
 	mockGetBySemesterId           func(string) ([]domains.Class, error)
@@ -69,8 +69,8 @@ type mockClassService struct {
 func (classService *mockClassService) GetAll(publishedOnly bool) ([]domains.Class, error) {
 	return classService.mockGetAll(publishedOnly)
 }
-func (classService *mockClassService) GetUnpublished() ([]domains.Class, error) {
-	return classService.mockGetUnpublished()
+func (classService *mockClassService) GetAllUnpublished() ([]domains.Class, error) {
+	return classService.mockGetAllUnpublished()
 }
 func (classService *mockClassService) GetByClassId(classId string) (domains.Class, error) {
 	return classService.mockGetByClassId(classId)
@@ -166,7 +166,7 @@ var achieveService mockAchieveService
 // Fake achieveService that implements AchieveService interface
 type mockAchieveService struct {
 	mockGetAll              func(bool) ([]domains.Achieve, error)
-	mockGetUnpublished      func() ([]domains.Achieve, error)
+	mockGetAllUnpublished      func() ([]domains.Achieve, error)
 	mockGetById             func(uint) (domains.Achieve, error)
 	mockGetAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	mockCreate              func(domains.Achieve) error
@@ -179,8 +179,8 @@ type mockAchieveService struct {
 func (achieveService *mockAchieveService) GetAll(publishedOnly bool) ([]domains.Achieve, error) {
 	return achieveService.mockGetAll(publishedOnly)
 }
-func (achieveService *mockAchieveService) GetUnpublished() ([]domains.Achieve, error) {
-	return achieveService.mockGetUnpublished()
+func (achieveService *mockAchieveService) GetAllUnpublished() ([]domains.Achieve, error) {
+	return achieveService.mockGetAllUnpublished()
 }
 func (achieveService *mockAchieveService) GetById(id uint) (domains.Achieve, error) {
 	return achieveService.mockGetById(id)
@@ -206,7 +206,7 @@ var semesterService mockSemesterService
 // Fake semesterService that implements SemesterService interface
 type mockSemesterService struct {
 	mockGetAll          func(bool) ([]domains.Semester, error)
-	mockGetUnpublished  func() ([]domains.Semester, error)
+	mockGetAllUnpublished  func() ([]domains.Semester, error)
 	mockGetBySemesterId func(string) (domains.Semester, error)
 	mockCreate          func(domains.Semester) error
 	mockUpdate          func(string, domains.Semester) error
@@ -218,8 +218,8 @@ type mockSemesterService struct {
 func (semesterService *mockSemesterService) GetAll(publishedOnly bool) ([]domains.Semester, error) {
 	return semesterService.mockGetAll(publishedOnly)
 }
-func (semesterService *mockSemesterService) GetUnpublished() ([]domains.Semester, error) {
-	return semesterService.mockGetUnpublished()
+func (semesterService *mockSemesterService) GetAllUnpublished() ([]domains.Semester, error) {
+	return semesterService.mockGetAllUnpublished()
 }
 func (semesterService *mockSemesterService) GetBySemesterId(semesterId string) (domains.Semester, error) {
 	return semesterService.mockGetBySemesterId(semesterId)
