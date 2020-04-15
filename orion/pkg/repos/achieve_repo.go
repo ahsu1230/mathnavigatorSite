@@ -240,7 +240,6 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 
 	now := time.Now().UTC()
 	for _, id := range ids {
-		fmt.Println(id)
 		_, err := stmt.Exec(now, id)
 		if err != nil {
 			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
