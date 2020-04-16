@@ -184,7 +184,7 @@ func (sr *semesterRepo) Publish(semesterIds []string) error {
 	for _, semesterId := range semesterIds {
 		_, err := stmt.Exec(now, semesterId)
 		if err != nil {
-			errorString += " " +  semesterId + ": " + err.Error()
+			errorString += " " + semesterId + ": " + err.Error()
 		}
 	}
 

@@ -228,7 +228,7 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		_, err := stmt.Exec(now, id)
 		if err != nil {
-			errorString += " " +  strconv.Itoa(int(id)) + ": " + err.Error()
+			errorString += " " + strconv.Itoa(int(id)) + ": " + err.Error()
 		}
 	}
 

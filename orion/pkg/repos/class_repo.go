@@ -340,7 +340,7 @@ func (cr *classRepo) Publish(classIds []string) error {
 	for _, classId := range classIds {
 		_, err := stmt.Exec(now, classId)
 		if err != nil {
-			errorString += " " +  classId + ": " + err.Error()
+			errorString += " " + classId + ": " + err.Error()
 		}
 	}
 
