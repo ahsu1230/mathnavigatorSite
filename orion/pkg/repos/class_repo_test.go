@@ -301,10 +301,12 @@ func TestPublishClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare(`^UPDATE classes SET published_at=\? WHERE class_id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Publish([]string{"program1_2020_spring_final_review"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

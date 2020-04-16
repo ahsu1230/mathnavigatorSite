@@ -54,7 +54,7 @@ var classService mockClassService
 // Fake classService that implements ClassService interface
 type mockClassService struct {
 	mockGetAll                    func(bool) ([]domains.Class, error)
-	mockGetAllUnpublished            func() ([]domains.Class, error)
+	mockGetAllUnpublished         func() ([]domains.Class, error)
 	mockGetByClassId              func(string) (domains.Class, error)
 	mockGetByProgramId            func(string) ([]domains.Class, error)
 	mockGetBySemesterId           func(string) ([]domains.Class, error)
@@ -166,7 +166,7 @@ var achieveService mockAchieveService
 // Fake achieveService that implements AchieveService interface
 type mockAchieveService struct {
 	mockGetAll              func(bool) ([]domains.Achieve, error)
-	mockGetAllUnpublished      func() ([]domains.Achieve, error)
+	mockGetAllUnpublished   func() ([]domains.Achieve, error)
 	mockGetById             func(uint) (domains.Achieve, error)
 	mockGetAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	mockCreate              func(domains.Achieve) error
@@ -205,13 +205,13 @@ var semesterService mockSemesterService
 
 // Fake semesterService that implements SemesterService interface
 type mockSemesterService struct {
-	mockGetAll          func(bool) ([]domains.Semester, error)
-	mockGetAllUnpublished  func() ([]domains.Semester, error)
-	mockGetBySemesterId func(string) (domains.Semester, error)
-	mockCreate          func(domains.Semester) error
-	mockUpdate          func(string, domains.Semester) error
-	mockPublish         func([]string) error
-	mockDelete          func(string) error
+	mockGetAll            func(bool) ([]domains.Semester, error)
+	mockGetAllUnpublished func() ([]domains.Semester, error)
+	mockGetBySemesterId   func(string) (domains.Semester, error)
+	mockCreate            func(domains.Semester) error
+	mockUpdate            func(string, domains.Semester) error
+	mockPublish           func([]string) error
+	mockDelete            func(string) error
 }
 
 // Implement methods of SemesterService interface with mocked implementations

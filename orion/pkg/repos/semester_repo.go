@@ -174,7 +174,7 @@ func (sr *semesterRepo) Publish(semesterIds []string) error {
 
 	// Begin Transaction
 	tx, err := sr.db.Begin()
-	stmt, err := tx.Prepare("UPDATE semesters SET published_at=? WHERE id=? AND published_at IS NULL")
+	stmt, err := tx.Prepare("UPDATE semesters SET published_at=? WHERE semester_id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}

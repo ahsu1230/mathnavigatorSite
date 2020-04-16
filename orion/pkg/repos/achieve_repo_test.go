@@ -254,10 +254,12 @@ func TestPublishAchieves(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Publish([]uint{1})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

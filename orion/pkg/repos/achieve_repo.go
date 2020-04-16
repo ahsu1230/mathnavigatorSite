@@ -217,7 +217,8 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 
 	// Begin Transaction
 	tx, err := ar.db.Begin()
-	stmt, err := tx.Prepare("UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL")
+	str := "UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL"
+	stmt, err := tx.Prepare(str)
 	if err != nil {
 		return err
 	}

@@ -190,10 +190,12 @@ func TestPublishSemesters(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\? AND published_at IS NULL`).
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "2020_fall").
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Publish([]string{"2020_fall"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

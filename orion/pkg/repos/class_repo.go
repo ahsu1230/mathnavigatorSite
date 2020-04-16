@@ -330,7 +330,7 @@ func (cr *classRepo) Publish(classIds []string) error {
 
 	// Begin Transaction
 	tx, err := cr.db.Begin()
-	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE id=? AND published_at IS NULL")
+	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
