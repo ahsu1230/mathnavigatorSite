@@ -1,0 +1,38 @@
+@import "../static.styl"
+
+#session-list-container
+    margin-top: spacing4x
+    border-top: 2px solid colorGrayLight
+
+    & h2.list-header
+        margin: spacing4x 0
+    
+    & .list-row
+
+        &.sub-header
+            width: 100%
+            padding-bottom: spacing2x
+        & span
+            display: inline-block
+            &.small
+                width: spacing12x
+            &.med
+                width: spacing20x
+            &.big
+                width: spacing24x
+
+#session-list
+    list-style: none
+    margin: 0
+    padding: 0
+    border-top: 1px solid colorGrayLight
+
+    & li
+        padding: spacing2x 0
+        border-bottom: 1px solid colorGrayLight
+
+        & button
+            color: colorTurquoise
+
+            &:hover
+                text-decoration: underline

@@ -4,6 +4,7 @@ import axios from "axios";
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
+import { ClassSessions } from "./classSessions.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
@@ -17,7 +18,7 @@ export class ClassEditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            classObj: undefined,
+            classObj: {},
             isEdit: false,
             selectProgramId: "",
             selectSemesterId: "",
@@ -29,7 +30,7 @@ export class ClassEditPage extends React.Component {
             listLocations: [],
             startDate: moment(),
             endDate: moment(),
-            focusedInput: undefined,
+            focusedInput: undefined
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,6 +42,8 @@ export class ClassEditPage extends React.Component {
         this.onModalDeleteConfirm = this.onModalDeleteConfirm.bind(this);
         this.onModalOkSaved = this.onModalOkSaved.bind(this);
         this.onModalDismiss = this.onModalDismiss.bind(this);
+
+        this.onSaveSessions = this.onSaveSessions.bind(this);
     }
 
     componentDidMount() {
@@ -66,13 +69,15 @@ export class ClassEditPage extends React.Component {
                         semesters.length > 0 ? semesters[0] : "";
                     const firstLocations =
                         locations.length > 0 ? locations[0] : "";
-                    let response3 =
-                        responses.length > 3 ? responses[3].data : undefined;
+
+                    const hasClassId = responses.length > 3;
+                    let classObj = hasClassId ? responses[3].data : {};
+                    
                     this.setState({
                         listPrograms: programs,
                         listSemesters: semesters,
                         listLocations: locations,
-                        classObj: response3,
+                        classObj: classObj,
                         selectProgramId: firstProgram.programId,
                         selectSemesterId: firstSemester.semesterId,
                         selectLocationId: firstLocations.locId,
@@ -149,6 +154,10 @@ export class ClassEditPage extends React.Component {
         });
     }
 
+    onSaveSessions() {
+        console.log("API - send sessions!");
+    }
+
     render() {
         const title = this.state.isEdit ? "Edit Class" : "Add Class";
 
@@ -174,6 +183,15 @@ export class ClassEditPage extends React.Component {
         );
         return (
             <div id="view-class-edit">
+                <div className="buttons upper-right">
+                    <button className="btn-save" onClick={this.onClickSave}>
+                        Save
+                    </button>
+                    <button className="btn-cancel" onClick={this.onClickCancel}>
+                        Cancel
+                    </button>
+                    {deleteButton}
+                </div>
                 {modalDiv}
                 <h2>{title}</h2>
 
@@ -252,6 +270,8 @@ export class ClassEditPage extends React.Component {
                         } // PropTypes.func.isRequired,
                     />
                 </div>
+
+                <ClassSessions classId={classId} isSaving={this.state.isSavingToRemote}/>
 
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>

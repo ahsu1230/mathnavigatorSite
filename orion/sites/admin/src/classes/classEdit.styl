@@ -1,12 +1,13 @@
 @import "../static.styl"
 
 #view-class-edit
-  width: spacing96x
+  position: relative
+  width: spacing128x
   padding: spacing1x spacing8x spacing4x
   box-sizing: border-box
 
   & h2
-    margin: spacing4x 0
+    margin: spacing4x 0 0
   & h3
     margin: spacing2x 0
 
@@ -14,7 +15,7 @@
       color: colorTurquoise
 
   & .edit-section
-    padding: spacing2x 0
+    padding: spacing4x 0
     border-bottom: 1px solid colorGrayLight
 
   & input
@@ -31,6 +32,18 @@
   & .buttons
     margin-top: spacing2x
     margin-bottom: spacing8x
+
+    &.upper-right
+      position: absolute
+      top: spacing3x
+      right: 0
+
+      & button
+        display: block
+        float: none
+
+        &.btn-cancel
+          background-color: transparent
 
     & button
       outline: none
