@@ -129,8 +129,8 @@ func TestCreateProgram_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishPrograms_Success(t *testing.T) {
-	programService.mockPublish = func(programIds []string) []domains.PublishErrorBody {
-		return nil // Successful update
+	programService.mockPublish = func(programIds []string) ([]domains.PublishErrorBody, error) {
+		return nil, nil // Successful update
 	}
 	services.ProgramService = &programService
 

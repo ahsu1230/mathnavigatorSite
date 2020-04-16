@@ -60,8 +60,11 @@ func PublishPrograms(c *gin.Context) {
 	var programIdsJson []string
 	c.BindJSON(&programIdsJson)
 
-	errorList := services.ProgramService.Publish(programIdsJson)
-	if len(errorList) > 0 {
+	errorList, err := services.ProgramService.Publish(programIdsJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else if len(errorList) > 0 {
 		err := domains.Concatenate("one or more programs failed to publish", errorList, true)
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

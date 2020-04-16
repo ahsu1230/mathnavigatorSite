@@ -21,7 +21,7 @@ type mockProgramService struct {
 	mockGetAllUnpublished func() ([]domains.Program, error)
 	mockGetByProgramId    func(string) (domains.Program, error)
 	mockCreate            func(domains.Program) error
-	mockPublish           func([]string) []domains.PublishErrorBody
+	mockPublish           func([]string) ([]domains.PublishErrorBody, error)
 	mockUpdate            func(string, domains.Program) error
 	mockDelete            func(string) error
 }
@@ -39,7 +39,7 @@ func (programService *mockProgramService) GetByProgramId(programId string) (doma
 func (programService *mockProgramService) Create(program domains.Program) error {
 	return programService.mockCreate(program)
 }
-func (programService *mockProgramService) Publish(programIds []string) []domains.PublishErrorBody {
+func (programService *mockProgramService) Publish(programIds []string) ([]domains.PublishErrorBody, error) {
 	return programService.mockPublish(programIds)
 }
 func (programService *mockProgramService) Update(programId string, program domains.Program) error {

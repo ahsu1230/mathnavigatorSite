@@ -21,7 +21,7 @@ type ProgramRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
-	Publish([]string) []domains.PublishErrorBody
+	Publish([]string) ([]domains.PublishErrorBody, error)
 	Update(string, domains.Program) error
 	Delete(string) error
 }
@@ -163,26 +163,34 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
-func (pr *programRepo) Publish(programIds []string) []domains.PublishErrorBody {
+func (pr *programRepo) Publish(programIds []string) ([]domains.PublishErrorBody, error) {
 	errorList := make([]domains.PublishErrorBody, 0)
 
+	tx, err := pr.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
 	for _, programId := range programIds {
-		program, err := pr.SelectByProgramId(programId)
+		execResult, err := stmt.Exec(now, programId)
 		if err != nil {
 			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
 			continue
 		}
-		if !program.PublishedAt.Valid {
-			now := time.Now().UTC()
-			program.PublishedAt.Scan(now)
-			err = pr.Update(programId, program)
-			if err != nil {
-				errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
-			}
+		err = handleSqlExecResult(execResult, 1, "program was not published")
+		if err != nil {
+			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
 		}
 	}
+	err = tx.Commit()
 
-	return errorList
+	return errorList, err
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
