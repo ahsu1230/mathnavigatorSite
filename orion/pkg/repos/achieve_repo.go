@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"strconv"
 	"time"
