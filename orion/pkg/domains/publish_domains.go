@@ -3,7 +3,6 @@ package domains
 import (
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -22,32 +21,7 @@ type PublishErrorBody struct {
 	Error    error  `json:"error"`
 }
 
-func ConcatErrors(errorList []PublishErrorBody) error {
-	switch len(errorList) {
-	case 0:
-		return nil
-	case 1:
-		return errors.New(getId(errorList[0]) + ": " + errorList[0].Error.Error())
-	default:
-		var errorString strings.Builder
-		errorString.WriteString("one or more programs failed to publish:")
-
-		for _, errorBody := range errorList {
-			errorString.WriteString(" " + getId(errorBody) + ": " + errorBody.Error.Error())
-		}
-
-		return errors.New(errorString.String())
-	}
-}
-
-func getId(errorBody PublishErrorBody) string {
-	if errorBody.StringId == "" {
-		return strconv.Itoa(int(errorBody.RowId))
-	} else {
-		return errorBody.StringId
-	}
-}
-
+// TODO: Delete when location, program, and semester repos are updated
 func Concatenate(initMessage string, errorList []PublishErrorBody, isString bool) error {
 	var errorStrings []string
 	errorStrings = append(errorStrings, initMessage)

@@ -2,7 +2,9 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"strconv"
 	"time"
 )
 
@@ -213,12 +215,11 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 }
 
 func (ar *achieveRepo) Publish(ids []uint) error {
-	errorList := make([]domains.PublishErrorBody, 0)
+	var errorString string
 
 	// Begin Transaction
 	tx, err := ar.db.Begin()
-	str := "UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL"
-	stmt, err := tx.Prepare(str)
+	stmt, err := tx.Prepare("UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
@@ -228,14 +229,14 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		_, err := stmt.Exec(now, id)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
+			errorString += " " +  strconv.Itoa(int(id)) + ": " + err.Error()
 		}
 	}
 
 	// End Transaction
 	tx.Commit()
 
-	return domains.ConcatErrors(errorList)
+	return getPublishError(errorString)
 }
 
 func (ar *achieveRepo) Delete(id uint) error {

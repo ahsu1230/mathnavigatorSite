@@ -3,6 +3,7 @@ package repos
 import (
 	"database/sql"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"strconv"
 	"time"
 )
 
@@ -326,7 +327,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 }
 
 func (cr *classRepo) Publish(classIds []string) error {
-	errorList := make([]domains.PublishErrorBody, 0)
+	var errorString string
 
 	// Begin Transaction
 	tx, err := cr.db.Begin()
@@ -340,14 +341,14 @@ func (cr *classRepo) Publish(classIds []string) error {
 	for _, classId := range classIds {
 		_, err := stmt.Exec(now, classId)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: classId, Error: err})
+			errorString += " " +  classId + ": " + err.Error()
 		}
 	}
 
 	// End Transaction
 	tx.Commit()
 
-	return domains.ConcatErrors(errorList)
+	return getPublishError(errorString)
 }
 
 func (cr *classRepo) Delete(classId string) error {

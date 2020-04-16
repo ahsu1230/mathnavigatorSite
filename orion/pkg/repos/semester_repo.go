@@ -170,7 +170,7 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 }
 
 func (sr *semesterRepo) Publish(semesterIds []string) error {
-	errorList := make([]domains.PublishErrorBody, 0)
+	var errorString string
 
 	// Begin Transaction
 	tx, err := sr.db.Begin()
@@ -184,14 +184,14 @@ func (sr *semesterRepo) Publish(semesterIds []string) error {
 	for _, semesterId := range semesterIds {
 		_, err := stmt.Exec(now, semesterId)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: semesterId, Error: err})
+			errorString += " " +  semesterId + ": " + err.Error()
 		}
 	}
 
 	// End Transaction
 	tx.Commit()
 
-	return domains.ConcatErrors(errorList)
+	return getPublishError(errorString)
 }
 
 func (sr *semesterRepo) Delete(semesterId string) error {

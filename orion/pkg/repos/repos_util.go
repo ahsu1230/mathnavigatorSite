@@ -27,3 +27,14 @@ func handleSqlExecResult(result sql.Result, expected int64, errorMessage string)
 	}
 	return nil
 }
+
+func getPublishError(errorString string) error {
+	switch len(errorString) {
+	case 0:
+		return nil
+	case 1:
+		return errors.New("one domain failed to publish: " + errorString)
+	default:
+		return errors.New("one or more domains failed to publish:" + errorString)
+	}
+}
