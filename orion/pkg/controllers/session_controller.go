@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -35,21 +36,29 @@ func GetSessionById(c *gin.Context) {
 	return
 }
 
-func CreateSession(c *gin.Context) {
+func CreateSessions(c *gin.Context) {
 	// Incoming JSON
-	var sessionJson domains.Session
-	c.BindJSON(&sessionJson)
+	var sessionsJson, validatedSessions []domains.Session
+	c.BindJSON(&sessionsJson)
 
-	if err := sessionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
+	var errorString string
+	for _, session := range sessionsJson {
+		if err := session.Validate(); err != nil {
+			errorString = appendError(errorString, "", session.Id, err)
+		} else {
+			validatedSessions = append(validatedSessions, session)
+		}
 	}
 
-	err := services.SessionService.Create(sessionJson)
+	err := services.SessionService.Create(validatedSessions)
 	if err != nil {
+		errorString = err.Error() + "\n" + errorString
+	}
+
+	if len(errorString) > 0 {
+		err := errors.New(errorString)
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
@@ -94,14 +103,15 @@ func UpdateSession(c *gin.Context) {
 	return
 }
 
-func DeleteSession(c *gin.Context) {
+func DeleteSessions(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	var idsJson []uint
+	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Delete(id)
+	err := services.SessionService.Delete(idsJson)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}

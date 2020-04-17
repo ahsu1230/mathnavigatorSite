@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -18,10 +19,10 @@ type SessionRepoInterface interface {
 	SelectAllByClassId(string, bool) ([]domains.Session, error)
 	SelectAllUnpublished() ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
-	Insert(domains.Session) error
+	Insert([]domains.Session) error
 	Publish([]uint) []domains.PublishErrorBody
 	Update(uint, domains.Session) error
-	Delete(uint) error
+	Delete([]uint) error
 }
 
 func (sr *sessionRepo) Initialize(db *sql.DB) {
@@ -127,8 +128,14 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 	return session, errScan
 }
 
-func (sr *sessionRepo) Insert(session domains.Session) error {
-	stmt, err := sr.db.Prepare("INSERT INTO sessions (" +
+func (sr *sessionRepo) Insert(sessions []domains.Session) error {
+	var errorString string
+
+	tx, err := sr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("INSERT INTO sessions (" +
 		"created_at, " +
 		"updated_at, " +
 		"class_id, " +
@@ -143,19 +150,30 @@ func (sr *sessionRepo) Insert(session domains.Session) error {
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	result, err := stmt.Exec(
-		now,
-		now,
-		session.ClassId,
-		session.StartsAt,
-		session.EndsAt,
-		session.Canceled,
-		session.Notes)
-	if err != nil {
-		return err
+	for _, session := range sessions {
+		result, err := stmt.Exec(
+			now,
+			now,
+			session.ClassId,
+			session.StartsAt,
+			session.EndsAt,
+			session.Canceled,
+			session.Notes)
+		if err != nil {
+			errorString = appendError(errorString, "", session.Id, err)
+			continue
+		}
+		err = handleSqlExecResult(result, 1, "session was not inserted")
+		if err != nil {
+			errorString = appendError(errorString, "", session.Id, err)
+		}
 	}
+	errorString = appendError(errorString, "", 0, tx.Commit())
 
-	return handleSqlExecResult(result, 1, "session was not inserted")
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (sr *sessionRepo) Publish(ids []uint) []domains.PublishErrorBody {
@@ -212,19 +230,37 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	return handleSqlExecResult(result, 1, "session was not updated")
 }
 
-func (sr *sessionRepo) Delete(id uint) error {
-	stmt, err := sr.db.Prepare("DELETE FROM sessions WHERE id=?")
+func (sr *sessionRepo) Delete(ids []uint) error {
+	var errorString string
+
+	tx, err := sr.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	stmt, err := tx.Prepare("DELETE FROM sessions WHERE id=?")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(id)
-	if err != nil {
-		return err
+	for _, id := range ids {
+		result, err := stmt.Exec(id)
+		if err != nil {
+			errorString = appendError(errorString, "", id, err)
+			continue
+		}
+		err = handleSqlExecResult(result, 1, "session was not deleted")
+		if err != nil {
+			errorString = appendError(errorString, "", id, err)
+		}
 	}
+	errorString = appendError(errorString, "", 0, tx.Commit())
 
-	return handleSqlExecResult(result, 1, "session was not deleted")
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func CreateTestSessionRepo(db *sql.DB) SessionRepoInterface {

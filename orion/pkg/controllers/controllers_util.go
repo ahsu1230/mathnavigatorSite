@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -35,4 +36,17 @@ func ParseParamInt(str string, preset int) int {
 		panic(err)
 	}
 	return int(integer)
+}
+
+func appendError(errorString string, stringId string, rowId uint, err error) string {
+	if len(stringId) > 0 {
+		errorString += stringId + ": "
+	}
+	if rowId > 0 {
+		errorString += fmt.Sprint(rowId) + ": "
+	}
+	if err != nil {
+		errorString += err.Error() + "\n"
+	}
+	return errorString
 }

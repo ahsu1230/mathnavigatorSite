@@ -74,11 +74,11 @@ func (h *Handler) SetupApiEndpoints() {
 	}
 	apiSessions := h.Engine.Group("api/sessions/")
 	{
-		apiSessions.POST("/v1/create", controllers.CreateSession)
+		apiSessions.POST("/v1/create", controllers.CreateSessions)
 		apiSessions.POST("/v1/publish", controllers.PublishSessions)
 		apiSessions.GET("/v1/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/v1/session/:id", controllers.UpdateSession)
-		apiSessions.DELETE("/v1/session/:id", controllers.DeleteSession)
+		apiSessions.DELETE("/v1/delete", controllers.DeleteSessions)
 		apiSessions.GET("/v1/class/:classId", controllers.GetAllSessionsByClassId)
 	}
 	apiUsers := h.Engine.Group("api/users/")

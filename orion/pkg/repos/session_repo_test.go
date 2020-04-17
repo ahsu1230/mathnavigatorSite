@@ -133,18 +133,33 @@ func TestInsertSession(t *testing.T) {
 	// Mock DB statements and execute
 	now := time.Now().UTC()
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^INSERT INTO sessions").
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_1", now, now, false, domains.NewNullString("special lecture from guest")).
 		WillReturnResult(result)
-	session := domains.Session{
-		ClassId:  "id_1",
-		StartsAt: now,
-		EndsAt:   now,
-		Canceled: false,
-		Notes:    domains.NewNullString("special lecture from guest"),
+	mock.ExpectExec("^INSERT INTO sessions").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "id_2", now, now, true, domains.NewNullString("regular meeting")).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	sessions := []domains.Session{
+		{
+			ClassId:  "id_1",
+			StartsAt: now,
+			EndsAt:   now,
+			Canceled: false,
+			Notes:    domains.NewNullString("special lecture from guest"),
+		},
+		{
+			ClassId:  "id_2",
+			StartsAt: now,
+			EndsAt:   now,
+			Canceled: true,
+			Notes:    domains.NewNullString("regular meeting"),
+		},
 	}
-	err := repo.Insert(session)
+
+	err := repo.Insert(sessions)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -196,11 +211,16 @@ func TestDeleteSession(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^DELETE FROM sessions WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	mock.ExpectExec("^DELETE FROM sessions WHERE id=?").
+		WithArgs(2).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Delete([]uint{1, 2})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

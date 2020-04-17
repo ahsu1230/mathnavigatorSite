@@ -335,9 +335,7 @@ func Test_PublishSessions(t *testing.T) {
 	body5 := createJsonBody(&semester2)
 	body6 := createJsonBody(&class1)
 	body7 := createJsonBody(&class2)
-	body8 := createJsonBody(&session1)
-	body9 := createJsonBody(&session2)
-	body10 := createJsonBody(&session3)
+	body8 := createJsonBody([]domains.Session{session1, session2, session3})
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
@@ -346,8 +344,6 @@ func Test_PublishSessions(t *testing.T) {
 	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body6)
 	recorder7 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body7)
 	recorder8 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body8)
-	recorder9 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body9)
-	recorder10 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body10)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -356,16 +352,14 @@ func Test_PublishSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 	assert.EqualValues(t, http.StatusOK, recorder7.Code)
 	assert.EqualValues(t, http.StatusOK, recorder8.Code)
-	assert.EqualValues(t, http.StatusOK, recorder9.Code)
-	assert.EqualValues(t, http.StatusOK, recorder10.Code)
 
 	// Get All Unpublished
-	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder9 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder11.Code)
+	assert.EqualValues(t, http.StatusOK, recorder9.Code)
 	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder11.Body.Bytes(), &unpublishedDomains); err != nil {
+	if err := json.Unmarshal(recorder9.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, unpublishedDomains.Sessions[0].Id)
@@ -376,27 +370,27 @@ func Test_PublishSessions(t *testing.T) {
 	// Publish first and third session
 	publishIds := []uint{1, 3}
 	publishBody := createJsonBody(publishIds)
-	recorder12 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", publishBody)
-	assert.EqualValues(t, http.StatusOK, recorder12.Code)
+	recorder10 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", publishBody)
+	assert.EqualValues(t, http.StatusOK, recorder10.Code)
 
 	// Get All Unpublished Again
-	recorder13 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder13.Code)
-	if err := json.Unmarshal(recorder13.Body.Bytes(), &unpublishedDomains); err != nil {
+	assert.EqualValues(t, http.StatusOK, recorder11.Code)
+	if err := json.Unmarshal(recorder11.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 2, unpublishedDomains.Sessions[0].Id)
 	assert.EqualValues(t, 1, len(unpublishedDomains.Sessions))
 
 	// Get Published Only
-	recorder14 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/fast_track_2020_spring_class_A?published=true", nil)
+	recorder12 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/fast_track_2020_spring_class_A?published=true", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder14.Code)
+	assert.EqualValues(t, http.StatusOK, recorder12.Code)
 	var sessions []domains.Session
-	if err := json.Unmarshal(recorder14.Body.Bytes(), &sessions); err != nil {
+	if err := json.Unmarshal(recorder12.Body.Bytes(), &sessions); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, sessions[0].Id)
