@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -44,7 +45,7 @@ func CreateSessions(c *gin.Context) {
 	var errorString string
 	for _, session := range sessionsJson {
 		if err := session.Validate(); err != nil {
-			errorString = appendError(errorString, "", session.Id, err)
+			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
 		} else {
 			validatedSessions = append(validatedSessions, session)
 		}

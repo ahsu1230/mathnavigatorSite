@@ -3,6 +3,7 @@ package repos
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -160,15 +161,15 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 			session.Canceled,
 			session.Notes)
 		if err != nil {
-			errorString = appendError(errorString, "", session.Id, err)
+			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
 			continue
 		}
 		err = handleSqlExecResult(result, 1, "session was not inserted")
 		if err != nil {
-			errorString = appendError(errorString, "", session.Id, err)
+			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
 		}
 	}
-	errorString = appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -247,15 +248,15 @@ func (sr *sessionRepo) Delete(ids []uint) error {
 	for _, id := range ids {
 		result, err := stmt.Exec(id)
 		if err != nil {
-			errorString = appendError(errorString, "", id, err)
+			errorString = appendError(errorString, fmt.Sprint(id), err)
 			continue
 		}
 		err = handleSqlExecResult(result, 1, "session was not deleted")
 		if err != nil {
-			errorString = appendError(errorString, "", id, err)
+			errorString = appendError(errorString, fmt.Sprint(id), err)
 		}
 	}
-	errorString = appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
