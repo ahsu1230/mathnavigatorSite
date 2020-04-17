@@ -10,12 +10,12 @@ var LocationService locationServiceInterface = &locationService{}
 // Interface for LocationService
 type locationServiceInterface interface {
 	GetAll(bool) ([]domains.Location, error)
+	GetAllUnpublished() ([]domains.Location, error)
 	GetByLocationId(string) (domains.Location, error)
 	Create(domains.Location) error
+	Publish([]string) error
 	Update(string, domains.Location) error
 	Delete(string) error
-	GetAllUnpublished() ([]domains.Location, error)
-	Publish([]string) []domains.PublishErrorBody
 }
 
 // Struct that implements interface
@@ -50,9 +50,9 @@ func (ls *locationService) Create(location domains.Location) error {
 	return err
 }
 
-func (ls *locationService) Publish(locIds []string) []domains.PublishErrorBody {
-	errors := repos.LocationRepo.Publish(locIds)
-	return errors
+func (ls *locationService) Publish(locIds []string) error {
+	err := repos.LocationRepo.Publish(locIds)
+	return err
 }
 
 func (ls *locationService) Update(locId string, location domains.Location) error {

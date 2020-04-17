@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -21,7 +22,7 @@ type ProgramRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
-	Publish([]string) ([]domains.PublishErrorBody, error)
+	Publish([]string) error
 	Update(string, domains.Program) error
 	Delete(string) error
 }
@@ -163,16 +164,16 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
-func (pr *programRepo) Publish(programIds []string) ([]domains.PublishErrorBody, error) {
-	errorList := make([]domains.PublishErrorBody, 0)
+func (pr *programRepo) Publish(programIds []string) error {
+	var errorString string
 
 	tx, err := pr.db.Begin()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer stmt.Close()
 
@@ -180,17 +181,21 @@ func (pr *programRepo) Publish(programIds []string) ([]domains.PublishErrorBody,
 	for _, programId := range programIds {
 		execResult, err := stmt.Exec(now, programId)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
+			appendError(errorString, programId, 0, err)
 			continue
 		}
-		err = handleSqlExecResult(execResult, 1, "program was not published")
-		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
+		err1 := handleSqlExecResult(execResult, 0, "program was not published") // program is already published, 0 rows affected
+		err2 := handleSqlExecResult(execResult, 1, "program was not published") // program was not published, 1 row affected
+		if err1 != nil && err2 != nil {
+			appendError(errorString, programId, 0, err1)
 		}
 	}
-	err = tx.Commit()
+	appendError(errorString, "", 0, tx.Commit())
 
-	return errorList, err
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {

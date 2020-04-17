@@ -240,11 +240,7 @@ func TestPublishProgram(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), "prog2").
 		WillReturnResult(result)
 	mock.ExpectCommit()
-	errorList, err := repo.Publish([]string{"prog1", "prog2"})
-	if len(errorList) > 0 {
-		err := domains.Concatenate("Unexpected errors:", errorList, true)
-		t.Error(err)
-	}
+	err := repo.Publish([]string{"prog1", "prog2"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
