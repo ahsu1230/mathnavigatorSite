@@ -25,72 +25,16 @@ export class ClassSessions extends React.Component {
             dateFocused: false,
             inputNumRepeat: 1,
             inputStartDateTime: now,
-            inputEndDateTime: now.add(2, "h"),
-            listSessionsLocal: [],
-            listSessionsRemote: []
+            inputEndDateTime: now.add(2, "h")
         }
-        this.refreshSessionList = this.refreshSessionList.bind(this);
 
         this.onDateChange = this.onDateChange.bind(this);
-        this.onAddSessions = this.onAddSessions.bind(this);
-        this.onDeleteSession = this.onDeleteSession.bind(this);
-
         this.onFocusChange = this.onFocusChange.bind(this)
         this.onTimeChange = this.onTimeChange.bind(this);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.classId != "_" && this.props.classId !== prevProps.classId) {
-            this.refreshSessionList();
-        }
-    }
-
-    refreshSessionList() {
-        console.log("before render: " + this.props.classId);
-        API.get("api/sessions/v1/class/" + this.props.classId).then((res) => {
-            const sessions = res.data;
-            console.log("returned: " + sessions.length);
-            this.setState({ 
-                listSessionsLocal: sessions,
-                listSessionsRemote: sessions
-            });
-        });
-    }
-
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
-    }
-
-    onAddSessions() {
-        const sessions = this.state.listSessionsLocal;
-        const newSession = {
-            id: "new" + sessions.length, // must generate a fake id because not yet persisted to database
-            classId: this.props.classId,
-            startsAt: this.state.inputStartDateTime,
-            endsAt: this.state.inputEndDateTime,
-            canceled: false
-        };
-
-        // Save to local list
-        const newList = _.concat(sessions, newSession);
-        this.setState({ listSessionsLocal: newList });
-
-
-        // API.post("api/sessions/v1/create", session).then((res) => {
-        //     this.refreshSessionList();
-        //     console.log("Sessions added! refreshing");
-        // }).catch((err) => {
-        //     debugger;
-        //     alert("Did not add sessions: " + err);
-        // });
-    }
-
-    onDeleteSession(sessionId) {
-        let sessions = this.state.listSessionsLocal;
-        _.remove(sessions, {id: sessionId});
-        this.setState({
-            listSessionsLocal: sessions
-        });
     }
 
     onDateChange(date) {
@@ -202,13 +146,13 @@ export class ClassSessions extends React.Component {
                     </span>
                 </div>
                 
-                <button className="btn-add" onClick={this.onAddSessions}>
+                <button className="btn-add" onClick={this.props.onAddSessions}>
                     Add Sessions
                 </button>
                 <ClassSessionList 
                     classId={this.props.classId} 
-                    sessions={this.state.listSessionsLocal}
-                    onDeleteSession={this.onDeleteSession}
+                    sessions={this.props.sessions}
+                    onDeleteSession={this.props.onDeleteSession}
                 />
             </div>
         );

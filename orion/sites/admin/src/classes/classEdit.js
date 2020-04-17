@@ -17,19 +17,27 @@ import "react-dates/lib/css/_datepicker.css";
 export class ClassEditPage extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            classObj: {},
             isEdit: false,
+
+            // class object
+            oldClassId: "",
+            inputClassKey: "", 
+            inputTimeString: "", 
+            startDate: moment(), 
+            endDate: moment(),
+
             selectProgramId: "",
             selectSemesterId: "",
             selectLocationId: "",
-            inputClassKey: "",
-            inputTimeString: "",
             listPrograms: [],
             listSemesters: [],
             listLocations: [],
-            startDate: moment(),
-            endDate: moment(),
+            listSessionsLocal: [],
+            listSessionsRemote: [],
+
+            // other
             focusedInput: undefined
         };
 
@@ -43,7 +51,8 @@ export class ClassEditPage extends React.Component {
         this.onModalOkSaved = this.onModalOkSaved.bind(this);
         this.onModalDismiss = this.onModalDismiss.bind(this);
 
-        this.onSaveSessions = this.onSaveSessions.bind(this);
+        this.onAddSessions = this.onAddSessions.bind(this);
+        this.onDeleteSession = this.onDeleteSession.bind(this);
     }
 
     componentDidMount() {
@@ -55,6 +64,7 @@ export class ClassEditPage extends React.Component {
         ];
         if (classId) {
             apiCalls.push(API.get("api/classes/v1/class/" + classId));
+            apiCalls.push(API.get("api/sessions/v1/class/" + classId));
         }
 
         axios
@@ -64,23 +74,31 @@ export class ClassEditPage extends React.Component {
                     const programs = responses[0].data;
                     const semesters = responses[1].data;
                     const locations = responses[2].data;
-                    const firstProgram = programs.length > 0 ? programs[0] : "";
-                    const firstSemester =
-                        semesters.length > 0 ? semesters[0] : "";
-                    const firstLocations =
-                        locations.length > 0 ? locations[0] : "";
 
                     const hasClassId = responses.length > 3;
                     let classObj = hasClassId ? responses[3].data : {};
+                    let sessions = hasClassId ? responses[4].data : [];
+
+                    let selectedProgramId = hasClassId ? classObj.programId : programs[0].programId;
+                    let selectedSemesterId = hasClassId ? classObj.semesterId : semesters[0].semesterId;
+                    let selectedLocationId = hasClassId ? classObj.locId : locations[0].locId;
                     
                     this.setState({
+                        isEdit: true,
+                        oldClassId: classObj.classId,
+                        inputClassKey: classObj.classKey || "", 
+                        inputTimeString: classObj.times || "", 
+                        startDate: moment(classObj.startDate), 
+                        endDate: moment(classObj.endDate),
+
                         listPrograms: programs,
                         listSemesters: semesters,
                         listLocations: locations,
-                        classObj: classObj,
-                        selectProgramId: firstProgram.programId,
-                        selectSemesterId: firstSemester.semesterId,
-                        selectLocationId: firstLocations.locId,
+                        listSessionsRemote: sessions,
+                        listSessionsLocal: sessions,
+                        selectProgramId: selectedProgramId,
+                        selectSemesterId: selectedSemesterId,
+                        selectLocationId: selectedLocationId,
                     });
                 })
             )
@@ -89,14 +107,35 @@ export class ClassEditPage extends React.Component {
             });
     }
 
+    onAddSessions() {
+        const sessions = this.state.listSessionsLocal;
+        const newSession = {
+            id: "new" + sessions.length, // must generate a fake id because not yet persisted to database
+            classId: this.props.classId,
+            startsAt: this.state.inputStartDateTime,
+            endsAt: this.state.inputEndDateTime,
+            canceled: false
+        };
+
+        // Save to local list
+        const newList = _.concat(sessions, newSession);
+        this.setState({ listSessionsLocal: newList });
+    }
+
+    onDeleteSession(sessionId) {
+        let sessions = this.state.listSessionsLocal;
+        _.remove(sessions, {id: sessionId});
+        this.setState({
+            listSessionsLocal: sessions
+        });
+    }
+
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
     }
 
     onClickSave() {
-        const oldClassId = this.state.classObj
-            ? this.state.classObj.classId
-            : undefined;
+        const oldClassId = this.state.oldClassId;
         const newClassId = createClassId(
             this.state.selectProgramId,
             this.state.selectSemesterId,
@@ -116,15 +155,42 @@ export class ClassEditPage extends React.Component {
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
             alert("Could not save class: " + err.response.data);
+
+        let apiCalls = [];
         if (this.state.isEdit) {
-            API.post("api/classes/v1/class/" + oldClassId, classObj)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            apiCalls.push(API.post("api/classes/v1/class/" + oldClassId, classObj));
         } else {
-            API.post("api/classes/v1/create", classObj)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            apiCalls.push(API.post("api/classes/v1/create", classObj));
         }
+        // find the sessions to persist and add to apiCalls
+
+        let allApis = new Promise(function(resolve, reject) {
+
+        });
+        let numCalled = 0;
+        _.forEach(apiCalls, (api) => {
+            console.log("save begin");
+            api.then((res) => {
+
+            }).catch((res) => {
+
+            }).finally(() => {
+                numCalled++;
+                if (numCalled == apiCalls.length) {
+                    console.log("finished");
+                }
+            });
+
+            // axios.all(apiCalls).then(axios.spread((...responses) => {
+            //     console.log("all succeed!");
+            //     debugger;
+            // })).catch(axios.spread((...responses) => {
+            //     console.log("one error");
+            //     debugger;
+            // })).finally(() => {
+            //     console.log("save finished");
+            // });
+        });
     }
 
     onClickCancel() {
@@ -152,10 +218,6 @@ export class ClassEditPage extends React.Component {
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
-
-    onSaveSessions() {
-        console.log("API - send sessions!");
     }
 
     render() {
@@ -219,6 +281,7 @@ export class ClassEditPage extends React.Component {
                     <h4>ClassKey</h4>
                     <input
                         value={this.state.inputClassKey}
+                        placeholder="Optional"
                         onChange={(e) => this.handleChange(e, "inputClassKey")}
                     />
 
@@ -271,7 +334,12 @@ export class ClassEditPage extends React.Component {
                     />
                 </div>
 
-                <ClassSessions classId={classId} isSaving={this.state.isSavingToRemote}/>
+                <ClassSessions 
+                    classId={classId} 
+                    sessions={this.state.listSessionsLocal}
+                    onAddSessions={this.onAddSessions}
+                    onDeleteSession={this.onDeleteSession}
+                />
 
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
