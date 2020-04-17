@@ -28,6 +28,7 @@ export class ClassSessions extends React.Component {
             inputEndDateTime: now.add(2, "h")
         }
 
+        this.onClickAddSessions = this.onClickAddSessions.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         this.onFocusChange = this.onFocusChange.bind(this)
         this.onTimeChange = this.onTimeChange.bind(this);
@@ -35,6 +36,19 @@ export class ClassSessions extends React.Component {
 
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
+    }
+
+    onClickAddSessions() {
+        const startDateTime = this.state.inputStartDateTime;
+        const endDateTime = this.state.inputEndDateTime;
+        const newSession = {
+            id: "new" + this.props.sessions.length, // must generate a fake id because not yet persisted to database
+            classId: this.props.classId,
+            startsAt: startDateTime,
+            endsAt: endDateTime,
+            canceled: false
+        };
+        this.props.onAddSessions([newSession]);
     }
 
     onDateChange(date) {
@@ -55,6 +69,7 @@ export class ClassSessions extends React.Component {
         if (inputField == "inputStartDateTime") {
             const newStartDateTime = this.state.inputStartDateTime.hour(hour).minute(minute).second(0);
             const newEndDateTime = moment(newStartDateTime).add(2, "h")
+            this.props.on
             this.setState({
                 inputStartDateTime: newStartDateTime,
                 inputEndDateTime: newEndDateTime
@@ -126,7 +141,7 @@ export class ClassSessions extends React.Component {
                 </div>
                 
                 <div className="repeat-block">
-                    <span>Repeat Every Week: </span>
+                    {/* <span>Repeat Every Week: </span>
                     <input
                         className="num-repeat"
                         value={this.state.inputNumRepeat}
@@ -143,10 +158,10 @@ export class ClassSessions extends React.Component {
                             " to " + 
                             this.state.inputEndDateTime.format("h:mm a").toString()
                         }
-                    </span>
+                    </span> */}
                 </div>
                 
-                <button className="btn-add" onClick={this.props.onAddSessions}>
+                <button className="btn-add" onClick={this.onClickAddSessions}>
                     Add Sessions
                 </button>
                 <ClassSessionList 

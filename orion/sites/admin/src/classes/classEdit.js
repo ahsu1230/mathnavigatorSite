@@ -24,9 +24,7 @@ export class ClassEditPage extends React.Component {
             // class object
             oldClassId: "",
             inputClassKey: "", 
-            inputTimeString: "", 
-            startDate: moment(), 
-            endDate: moment(),
+            inputTimeString: "",
 
             selectProgramId: "",
             selectSemesterId: "",
@@ -78,13 +76,18 @@ export class ClassEditPage extends React.Component {
                     const hasClassId = responses.length > 3;
                     let classObj = hasClassId ? responses[3].data : {};
                     let sessions = hasClassId ? responses[4].data : [];
+                    sessions = sessions.map((s) => {
+                        s.startsAt = moment(s.startsAt);
+                        s.endsAt = moment(s.endsAt);
+                        return s;
+                    });
 
                     let selectedProgramId = hasClassId ? classObj.programId : programs[0].programId;
                     let selectedSemesterId = hasClassId ? classObj.semesterId : semesters[0].semesterId;
                     let selectedLocationId = hasClassId ? classObj.locId : locations[0].locId;
-                    
+
                     this.setState({
-                        isEdit: true,
+                        isEdit: !!classId,
                         oldClassId: classObj.classId,
                         inputClassKey: classObj.classKey || "", 
                         inputTimeString: classObj.times || "", 
@@ -107,24 +110,15 @@ export class ClassEditPage extends React.Component {
             });
     }
 
-    onAddSessions() {
-        const sessions = this.state.listSessionsLocal;
-        const newSession = {
-            id: "new" + sessions.length, // must generate a fake id because not yet persisted to database
-            classId: this.props.classId,
-            startsAt: this.state.inputStartDateTime,
-            endsAt: this.state.inputEndDateTime,
-            canceled: false
-        };
-
-        // Save to local list
-        const newList = _.concat(sessions, newSession);
+    onAddSessions(newSessions) {
+        const newList = _.concat(this.state.listSessionsLocal, newSessions);
         this.setState({ listSessionsLocal: newList });
     }
 
     onDeleteSession(sessionId) {
-        let sessions = this.state.listSessionsLocal;
-        _.remove(sessions, {id: sessionId});
+        let sessions = _.filter(this.state.listSessionsLocal, (session) => {
+            return session.id != sessionId;
+        });
         this.setState({
             listSessionsLocal: sessions
         });
@@ -148,13 +142,12 @@ export class ClassEditPage extends React.Component {
             locId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
+            startDate: moment().toJSON(),   // TODO: need to remove
+            endDate: moment().toJSON(),     // TODO: need to remove
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save class: " + err.response.data);
+        let failCallback = (err) => alert("Could not save class: " + err.response.data);
 
         let apiCalls = [];
         if (this.state.isEdit) {
@@ -162,34 +155,42 @@ export class ClassEditPage extends React.Component {
         } else {
             apiCalls.push(API.post("api/classes/v1/create", classObj));
         }
-        // find the sessions to persist and add to apiCalls
 
-        let allApis = new Promise(function(resolve, reject) {
+        // Find the sessions to persist and add to apiCalls
+        let sessionsToAdd = _.difference(this.state.listSessionsLocal, this.state.listSessionsRemote);
+        let sessionsToRemove = _.difference(this.state.listSessionsRemote, this.state.listSessionsLocal);
 
+        _.forEach(sessionsToAdd, (session) => {
+            session.startsAt = session.startsAt.toJSON();   // are moment objects
+            session.endsAt = session.endsAt.toJSON();       // are moment objects
+            apiCalls.push(API.post("/api/sessions/v1/create", session));
         });
-        let numCalled = 0;
-        _.forEach(apiCalls, (api) => {
-            console.log("save begin");
-            api.then((res) => {
 
-            }).catch((res) => {
+        _.forEach(sessionsToRemove, (session) => {
+            apiCalls.push(API.delete("/api/sessions/v1/session/" + session.id));
+        });
 
-            }).finally(() => {
-                numCalled++;
-                if (numCalled == apiCalls.length) {
-                    console.log("finished");
-                }
-            });
-
-            // axios.all(apiCalls).then(axios.spread((...responses) => {
-            //     console.log("all succeed!");
-            //     debugger;
-            // })).catch(axios.spread((...responses) => {
-            //     console.log("one error");
-            //     debugger;
-            // })).finally(() => {
-            //     console.log("save finished");
-            // });
+        let numSuccess = 0;
+        let numErrors = 0;
+        apiCalls.reduce((promiseChain, currentTask) => {
+            return promiseChain.then(chainResults => {
+                currentTask.then(currentResult => {
+                    console.log("current task " + currentResult);
+                    numSuccess++;
+                }).catch(res => {
+                    numErrors++;
+                });
+            }); 
+        }, Promise.resolve([])).then(arrayOfResults => {
+            // Do something with all results
+            console.log("finally finished " + numSuccess + " vs. " + numErrors);
+            if (numErrors == 0) {
+                console.log("All success!");
+                // successCallback();
+            } else {
+                console.log(numErrors + " errors occured");
+                // failCallback();
+            }
         });
     }
 
@@ -231,6 +232,9 @@ export class ClassEditPage extends React.Component {
             this.state.selectSemesterId,
             this.state.inputClassKey
         );
+        const listSessionsLocal = this.state.listSessionsLocal;
+        const startDateString = listSessionsLocal.length > 0 ? listSessionsLocal[0].startsAt.format("dddd, MMMM Do YYYY, h:mm a") : "Not scheduled yet. Please add new sessions.";
+        const endDateString = listSessionsLocal.length > 0 ? listSessionsLocal[listSessionsLocal.length - 1].endsAt.format("dddd, MMMM Do YYYY, h:mm a") : "Not scheduled yet. Please add new sessions.";
 
         const deleteButton = renderDeleteButton(
             this.state.isEdit,
@@ -319,19 +323,8 @@ export class ClassEditPage extends React.Component {
 
                 <div className="edit-section">
                     <h4>Dates</h4>
-                    <DateRangePicker
-                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                        startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                        endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                        onDatesChange={({ startDate, endDate }) =>
-                            this.setState({ startDate, endDate })
-                        } // PropTypes.func.isRequired,
-                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                        onFocusChange={(focusedInput) =>
-                            this.setState({ focusedInput })
-                        } // PropTypes.func.isRequired,
-                    />
+                    <p><b>Start:</b> {startDateString}</p>
+                    <p><b>End:</b> {endDateString}</p>
                 </div>
 
                 <ClassSessions 
@@ -415,7 +408,7 @@ function renderModal(
         showModal = showSaveModal;
         modalContent = (
             <OkayModal
-                text={"class information saved!"}
+                text={"Class information saved!"}
                 onOkay={onModalOkSaved}
             />
         );
