@@ -176,16 +176,16 @@ func (sr *sessionRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		execResult, err := stmt.Exec(now, id)
 		if err != nil {
-			appendError(errorString, "", id, err)
+			errorString = appendError(errorString, "", id, err)
 			continue
 		}
 		err1 := handleSqlExecResult(execResult, 0, "session was not published") // session is already published, 0 rows affected
 		err2 := handleSqlExecResult(execResult, 1, "session was not published") // session was not published, 1 row affected
 		if err1 != nil && err2 != nil {
-			appendError(errorString, "", id, err1)
+			errorString = appendError(errorString, "", id, err1)
 		}
 	}
-	appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", 0, tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
