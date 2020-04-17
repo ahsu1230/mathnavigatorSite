@@ -3,7 +3,6 @@ package repos
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 )
 
 func SetupRepos(db *sql.DB) {
@@ -29,14 +28,13 @@ func handleSqlExecResult(result sql.Result, expected int64, errorMessage string)
 	return nil
 }
 
-func appendError(errorString string, stringId string, rowId uint, err error) string {
-	if len(stringId) > 0 {
-		errorString += stringId + ": "
+func appendError(errorString string, id string, err error) string {
+	if err == nil {
+		return errorString
 	}
-	if rowId > 0 {
-		errorString += fmt.Sprint(rowId) + ": "
-	}
-	if err != nil {
+	if len(id) > 0 {
+		errorString += "id: " + id + ", error: " + err.Error() + "\n"
+	} else {
 		errorString += err.Error() + "\n"
 	}
 	return errorString

@@ -3,6 +3,7 @@ package repos
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -176,16 +177,16 @@ func (sr *sessionRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		execResult, err := stmt.Exec(now, id)
 		if err != nil {
-			errorString = appendError(errorString, "", id, err)
+			errorString = appendError(errorString, fmt.Sprint(id), err)
 			continue
 		}
 		err1 := handleSqlExecResult(execResult, 0, "session was not published") // session is already published, 0 rows affected
 		err2 := handleSqlExecResult(execResult, 1, "session was not published") // session was not published, 1 row affected
 		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, "", id, err1)
+			errorString = appendError(errorString, fmt.Sprint(id), err1)
 		}
 	}
-	errorString = appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil

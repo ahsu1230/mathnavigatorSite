@@ -179,16 +179,16 @@ func (lr *locationRepo) Publish(locIds []string) error {
 	for _, locId := range locIds {
 		execResult, err := stmt.Exec(now, locId)
 		if err != nil {
-			errorString = appendError(errorString, locId, 0, err)
+			errorString = appendError(errorString, locId, err)
 			continue
 		}
 		err1 := handleSqlExecResult(execResult, 0, "location was not published") // location is already published, 0 rows affected
 		err2 := handleSqlExecResult(execResult, 1, "location was not published") // location was not published, 1 row affected
 		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, locId, 0, err1)
+			errorString = appendError(errorString, locId, err1)
 		}
 	}
-	errorString = appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil

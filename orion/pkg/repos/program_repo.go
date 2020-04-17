@@ -181,16 +181,16 @@ func (pr *programRepo) Publish(programIds []string) error {
 	for _, programId := range programIds {
 		execResult, err := stmt.Exec(now, programId)
 		if err != nil {
-			errorString = appendError(errorString, programId, 0, err)
+			errorString = appendError(errorString, programId, err)
 			continue
 		}
 		err1 := handleSqlExecResult(execResult, 0, "program was not published") // program is already published, 0 rows affected
 		err2 := handleSqlExecResult(execResult, 1, "program was not published") // program was not published, 1 row affected
 		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, programId, 0, err1)
+			errorString = appendError(errorString, programId, err1)
 		}
 	}
-	errorString = appendError(errorString, "", 0, tx.Commit())
+	errorString = appendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
