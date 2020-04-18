@@ -71,9 +71,8 @@ func PublishSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	errorList := services.SessionService.Publish(idsJson)
-	if len(errorList) > 0 {
-		err := domains.Concatenate("one or more sessions failed to publish", errorList, false)
+	err := services.SessionService.Publish(idsJson)
+	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
