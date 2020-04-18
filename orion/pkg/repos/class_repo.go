@@ -341,15 +341,9 @@ func (cr *classRepo) Publish(classIds []string) error {
 
 	now := time.Now().UTC()
 	for _, classId := range classIds {
-		execResult, err := stmt.Exec(now, classId)
+		_, err := stmt.Exec(now, classId)
 		if err != nil {
 			errorString = appendError(errorString, classId, err)
-			continue
-		}
-		err1 := handleSqlExecResult(execResult, 0, "") // more than 1 row affected
-		err2 := handleSqlExecResult(execResult, 1, "") // 0 or multiple rows affected
-		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, classId, errors.New("multiple rows changed"))
 		}
 	}
 	errorString = appendError(errorString, "", tx.Commit())
