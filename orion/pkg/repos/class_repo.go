@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -328,8 +329,10 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 func (cr *classRepo) Publish(classIds []string) error {
 	var errorString string
 
-	// Begin Transaction
 	tx, err := cr.db.Begin()
+	if err != nil {
+		return err
+	}
 	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL")
 	if err != nil {
 		return err
@@ -338,16 +341,23 @@ func (cr *classRepo) Publish(classIds []string) error {
 
 	now := time.Now().UTC()
 	for _, classId := range classIds {
-		_, err := stmt.Exec(now, classId)
+		execResult, err := stmt.Exec(now, classId)
 		if err != nil {
-			errorString += " " + classId + ": " + err.Error()
+			errorString = appendError(errorString, classId, err)
+			continue
+		}
+		err1 := handleSqlExecResult(execResult, 0, "") // more than 1 row affected
+		err2 := handleSqlExecResult(execResult, 1, "") // 0 or multiple rows affected
+		if err1 != nil && err2 != nil {
+			errorString = appendError(errorString, classId, errors.New("multiple rows changed"))
 		}
 	}
+	errorString = appendError(errorString, "", tx.Commit())
 
-	// End Transaction
-	tx.Commit()
-
-	return getPublishError(errorString)
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (cr *classRepo) Delete(classId string) error {

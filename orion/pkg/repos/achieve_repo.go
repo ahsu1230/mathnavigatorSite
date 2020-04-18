@@ -2,8 +2,9 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"strconv"
 	"time"
 )
 
@@ -216,8 +217,10 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 func (ar *achieveRepo) Publish(ids []uint) error {
 	var errorString string
 
-	// Begin Transaction
 	tx, err := ar.db.Begin()
+	if err != nil {
+		return err
+	}
 	stmt, err := tx.Prepare("UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL")
 	if err != nil {
 		return err
@@ -226,16 +229,23 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 
 	now := time.Now().UTC()
 	for _, id := range ids {
-		_, err := stmt.Exec(now, id)
+		execResult, err := stmt.Exec(now, id)
 		if err != nil {
-			errorString += " " + strconv.Itoa(int(id)) + ": " + err.Error()
+			errorString = appendError(errorString, fmt.Sprint(id), err)
+			continue
+		}
+		err1 := handleSqlExecResult(execResult, 0, "") // more than 1 row affected
+		err2 := handleSqlExecResult(execResult, 1, "") // 0 or multiple rows affected
+		if err1 != nil && err2 != nil {
+			errorString = appendError(errorString, fmt.Sprint(id), errors.New("multiple rows changed"))
 		}
 	}
+	errorString = appendError(errorString, "", tx.Commit())
 
-	// End Transaction
-	tx.Commit()
-
-	return getPublishError(errorString)
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (ar *achieveRepo) Delete(id uint) error {
