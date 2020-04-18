@@ -116,8 +116,8 @@ func Test_UpdateSession(t *testing.T) {
 	resetSessionTables(t)
 }
 
-// Test: Create 1 Session, Delete it, GetBySessionId()
-func Test_DeleteSession(t *testing.T) {
+// Test: Create 2 Sessions, Delete them, GetBySessionId()
+func Test_DeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -126,11 +126,12 @@ func Test_DeleteSession(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
+	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	body1 := createJsonBody(&prog1)
 	body2 := createJsonBody(&loc1)
 	body3 := createJsonBody(&semester1)
 	body4 := createJsonBody(&class1)
-	body5 := createJsonBody([]domains.Session{session1})
+	body5 := createJsonBody([]domains.Session{session1, session2})
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
 	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
@@ -143,13 +144,15 @@ func Test_DeleteSession(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Delete
-	body6 := createJsonBody([]uint{1})
+	body6 := createJsonBody([]uint{1, 2})
 	recorder6 := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", body6)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Get
 	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/session/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder7.Code)
+	recorder8 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/session/2", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder8.Code)
 
 	resetSessionTables(t)
 }

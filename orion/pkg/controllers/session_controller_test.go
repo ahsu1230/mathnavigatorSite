@@ -143,7 +143,7 @@ func TestPublishSessions_Success(t *testing.T) {
 	ids := []uint{1, 2}
 	marshal, err := json.Marshal(ids)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
@@ -214,7 +214,7 @@ func TestDeleteSessions_Success(t *testing.T) {
 	ids := []uint{1, 2, 3}
 	marshal, err := json.Marshal(ids)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", body)
