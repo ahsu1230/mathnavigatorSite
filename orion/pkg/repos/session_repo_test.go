@@ -73,6 +73,58 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 }
 
 //
+// Select All Unpublished
+//
+func TestSelectAllUnpublishedSessions(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	now := time.Now().UTC()
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"PublishedAt",
+		"ClassId",
+		"StartsAt",
+		"EndsAt",
+		"Canceled",
+		"Notes"}).
+		AddRow(1, now, now, domains.NullTime{}, domains.NewNullTime(now), "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
+	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE published_at IS NULL").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectAllUnpublished()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.Session{
+		{
+			Id:          1,
+			CreatedAt:   now,
+			UpdatedAt:   now,
+			DeletedAt:   domains.NullTime{},
+			PublishedAt: domains.NewNullTime(now),
+			ClassId:     "id_1",
+			StartsAt:    now,
+			EndsAt:      now,
+			Canceled:    false,
+			Notes:       domains.NewNullString("special lecture from guest"),
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select One
 //
 func TestSelectSession(t *testing.T) {
@@ -255,58 +307,6 @@ func TestDeleteSession(t *testing.T) {
 	}
 
 	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Select All Unpublished
-//
-func TestSelectAllUnpublishedSessions(t *testing.T) {
-	db, mock, repo := initSessionTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	now := time.Now().UTC()
-	rows := sqlmock.NewRows([]string{
-		"Id",
-		"CreatedAt",
-		"UpdatedAt",
-		"DeletedAt",
-		"PublishedAt",
-		"ClassId",
-		"StartsAt",
-		"EndsAt",
-		"Canceled",
-		"Notes"}).
-		AddRow(1, now, now, domains.NullTime{}, domains.NewNullTime(now), "id_1", now, now, false, domains.NewNullString("special lecture from guest"))
-	mock.ExpectPrepare("^SELECT (.+) FROM sessions WHERE published_at IS NULL").
-		ExpectQuery().
-		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Session{
-		{
-			Id:          1,
-			CreatedAt:   now,
-			UpdatedAt:   now,
-			DeletedAt:   domains.NullTime{},
-			PublishedAt: domains.NewNullTime(now),
-			ClassId:     "id_1",
-			StartsAt:    now,
-			EndsAt:      now,
-			Canceled:    false,
-			Notes:       domains.NewNullString("special lecture from guest"),
-		},
-	}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
