@@ -27,3 +27,15 @@ func handleSqlExecResult(result sql.Result, expected int64, errorMessage string)
 	}
 	return nil
 }
+
+func appendError(errorString string, id string, err error) string {
+	if err == nil {
+		return errorString
+	}
+	if len(id) > 0 {
+		errorString += "id: " + id + ", error: " + err.Error() + "\n"
+	} else {
+		errorString += err.Error() + "\n"
+	}
+	return errorString
+}

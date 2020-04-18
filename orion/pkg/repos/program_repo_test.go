@@ -223,6 +223,35 @@ func TestInsertProgram(t *testing.T) {
 }
 
 //
+// Publish
+//
+func TestPublishProgram(t *testing.T) {
+	db, mock, repo := initProgramTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^UPDATE programs SET published_at=(.*) WHERE program_id=(.*)  AND published_at IS NULL").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), "prog1").
+		WillReturnResult(result)
+	mock.ExpectExec("^UPDATE programs SET published_at=(.*) WHERE program_id=(.*)  AND published_at IS NULL").
+		WithArgs(sqlmock.AnyArg(), "prog2").
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Publish([]string{"prog1", "prog2"})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Update
 //
 func TestUpdateProgram(t *testing.T) {
