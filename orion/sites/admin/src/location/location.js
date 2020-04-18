@@ -26,9 +26,9 @@ export class LocationPage extends React.Component {
 
     onCheckRow() {
         if (document.getElementById("unpublished").checked) {
-            this.setState({ numSelected: this.state.numSelected + 1});
+            this.setState({ numSelected: this.state.numSelected + 1 });
         } else {
-            this.setState({ numSelected: this.state.numSelected - 1});
+            this.setState({ numSelected: this.state.numSelected - 1 });
         }
     }
 
@@ -48,7 +48,13 @@ export class LocationPage extends React.Component {
 
     render() {
         const location = this.state.list.map((location, index) => {
-            return <LocationRow key={index} location={location} onCheckRow={this.onCheckRow}/>;
+            return (
+                <LocationRow
+                    key={index}
+                    location={location}
+                    onCheckRow={this.onCheckRow}
+                />
+            );
         });
         const numLocations = location.length;
         return (
