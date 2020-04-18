@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 export class ClassAllPage extends React.Component {
     constructor(props) {
         super(props);
-        console.log("created");
         this.state = {
             list: [],
         };

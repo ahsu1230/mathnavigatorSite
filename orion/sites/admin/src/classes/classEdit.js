@@ -23,7 +23,7 @@ export class ClassEditPage extends React.Component {
 
             // class object
             oldClassId: "",
-            inputClassKey: "", 
+            inputClassKey: "",
             inputTimeString: "",
 
             selectProgramId: "",
@@ -36,7 +36,7 @@ export class ClassEditPage extends React.Component {
             listSessionsRemote: [],
 
             // other
-            focusedInput: undefined
+            focusedInput: undefined,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -82,16 +82,22 @@ export class ClassEditPage extends React.Component {
                         return s;
                     });
 
-                    let selectedProgramId = hasClassId ? classObj.programId : programs[0].programId;
-                    let selectedSemesterId = hasClassId ? classObj.semesterId : semesters[0].semesterId;
-                    let selectedLocationId = hasClassId ? classObj.locId : locations[0].locId;
+                    let selectedProgramId = hasClassId
+                        ? classObj.programId
+                        : programs[0].programId;
+                    let selectedSemesterId = hasClassId
+                        ? classObj.semesterId
+                        : semesters[0].semesterId;
+                    let selectedLocationId = hasClassId
+                        ? classObj.locId
+                        : locations[0].locId;
 
                     this.setState({
                         isEdit: !!classId,
                         oldClassId: classObj.classId,
-                        inputClassKey: classObj.classKey || "", 
-                        inputTimeString: classObj.times || "", 
-                        startDate: moment(classObj.startDate), 
+                        inputClassKey: classObj.classKey || "",
+                        inputTimeString: classObj.times || "",
+                        startDate: moment(classObj.startDate),
                         endDate: moment(classObj.endDate),
 
                         listPrograms: programs,
@@ -120,7 +126,7 @@ export class ClassEditPage extends React.Component {
             return session.id != sessionId;
         });
         this.setState({
-            listSessionsLocal: sessions
+            listSessionsLocal: sessions,
         });
     }
 
@@ -142,56 +148,45 @@ export class ClassEditPage extends React.Component {
             locId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
-            startDate: moment().toJSON(),   // TODO: need to remove
-            endDate: moment().toJSON(),     // TODO: need to remove
+            startDate: moment().toJSON(), // TODO: need to remove
+            endDate: moment().add(30,'d').toJSON(), // TODO: need to remove
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) => alert("Could not save class: " + err.response.data);
+        let failCallback = (err) => alert("Could not save class: " + err);
 
         let apiCalls = [];
         if (this.state.isEdit) {
-            apiCalls.push(API.post("api/classes/v1/class/" + oldClassId, classObj));
+            apiCalls.push(
+                API.post("api/classes/v1/class/" + oldClassId, classObj)
+            );
         } else {
             apiCalls.push(API.post("api/classes/v1/create", classObj));
         }
 
         // Find the sessions to persist and add to apiCalls
-        let sessionsToAdd = _.difference(this.state.listSessionsLocal, this.state.listSessionsRemote);
-        let sessionsToRemove = _.difference(this.state.listSessionsRemote, this.state.listSessionsLocal);
+        let sessionsToAdd = _.difference(
+            this.state.listSessionsLocal,
+            this.state.listSessionsRemote
+        );
+        let sessionsToRemove = _.difference(
+            this.state.listSessionsRemote,
+            this.state.listSessionsLocal
+        );
 
         _.forEach(sessionsToAdd, (session) => {
-            session.startsAt = session.startsAt.toJSON();   // are moment objects
-            session.endsAt = session.endsAt.toJSON();       // are moment objects
-            apiCalls.push(API.post("/api/sessions/v1/create", session));
+            let apiSession = _.cloneDeep(session);
+            apiSession.startsAt = apiSession.startsAt.toJSON(); // are moment objects
+            apiSession.endsAt = apiSession.endsAt.toJSON(); // are moment objects
+            apiSession.id = undefined;
+            apiCalls.push(API.post("/api/sessions/v1/create", apiSession));
         });
 
         _.forEach(sessionsToRemove, (session) => {
             apiCalls.push(API.delete("/api/sessions/v1/session/" + session.id));
         });
 
-        let numSuccess = 0;
-        let numErrors = 0;
-        apiCalls.reduce((promiseChain, currentTask) => {
-            return promiseChain.then(chainResults => {
-                currentTask.then(currentResult => {
-                    console.log("current task " + currentResult);
-                    numSuccess++;
-                }).catch(res => {
-                    numErrors++;
-                });
-            }); 
-        }, Promise.resolve([])).then(arrayOfResults => {
-            // Do something with all results
-            console.log("finally finished " + numSuccess + " vs. " + numErrors);
-            if (numErrors == 0) {
-                console.log("All success!");
-                // successCallback();
-            } else {
-                console.log(numErrors + " errors occured");
-                // failCallback();
-            }
-        });
+        executeApiCalls(apiCalls, successCallback, failCallback);
     }
 
     onClickCancel() {
@@ -233,8 +228,18 @@ export class ClassEditPage extends React.Component {
             this.state.inputClassKey
         );
         const listSessionsLocal = this.state.listSessionsLocal;
-        const startDateString = listSessionsLocal.length > 0 ? listSessionsLocal[0].startsAt.format("dddd, MMMM Do YYYY, h:mm a") : "Not scheduled yet. Please add new sessions.";
-        const endDateString = listSessionsLocal.length > 0 ? listSessionsLocal[listSessionsLocal.length - 1].endsAt.format("dddd, MMMM Do YYYY, h:mm a") : "Not scheduled yet. Please add new sessions.";
+        const startDateString =
+            listSessionsLocal.length > 0
+                ? listSessionsLocal[0].startsAt.format(
+                      "dddd, MMMM Do YYYY, h:mm a"
+                  )
+                : "Not scheduled yet. Please add new sessions.";
+        const endDateString =
+            listSessionsLocal.length > 0
+                ? listSessionsLocal[listSessionsLocal.length - 1].endsAt.format(
+                      "dddd, MMMM Do YYYY, h:mm a"
+                  )
+                : "Not scheduled yet. Please add new sessions.";
 
         const deleteButton = renderDeleteButton(
             this.state.isEdit,
@@ -323,12 +328,16 @@ export class ClassEditPage extends React.Component {
 
                 <div className="edit-section">
                     <h4>Dates</h4>
-                    <p><b>Start:</b> {startDateString}</p>
-                    <p><b>End:</b> {endDateString}</p>
+                    <p>
+                        <b>Start:</b> {startDateString}
+                    </p>
+                    <p>
+                        <b>End:</b> {endDateString}
+                    </p>
                 </div>
 
-                <ClassSessions 
-                    classId={classId} 
+                <ClassSessions
+                    classId={classId}
                     sessions={this.state.listSessionsLocal}
                     onAddSessions={this.onAddSessions}
                     onDeleteSession={this.onDeleteSession}
@@ -423,4 +432,31 @@ function renderModal(
         );
     }
     return modalDiv;
+}
+
+function executeApiCalls(apiCalls, successCallback, failCallback) {
+    console.log("Reducing " + apiCalls.length);
+    apiCalls
+        .reduce((accumulatorPromise, nextApi) => {
+            console.log(`Loop! ${moment().format("hh:mm:ss")}`);
+            return accumulatorPromise.then(() => {
+                return new Promise((resolve, reject) => {
+                    nextApi
+                        .then((resp) => {
+                            console.log("Success: " + moment().format("hh:mm:ss"));
+                            resolve(resp.data);
+                        })
+                        .catch((res) => {
+                            console.log("Failure: " + moment().format("hh:mm:ss"));
+                            reject(res.response.data);
+                        });
+                });
+            });
+        }, Promise.resolve()).then(results => {
+            console.log("All success!");
+            successCallback(results);
+        }).catch(results => {
+            console.log("One error?");
+            failCallback(results);
+        });
 }

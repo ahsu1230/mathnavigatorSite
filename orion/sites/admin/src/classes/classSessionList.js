@@ -5,9 +5,13 @@ import moment from "moment";
 
 export class ClassSessionList extends React.Component {
     render() {
-        const list = this.props.sessions.map((session, index) => 
-            (<ClassSessionRow key={index} session={session} onDeleteSession={this.props.onDeleteSession}/>)
-        );
+        const list = this.props.sessions.map((session, index) => (
+            <ClassSessionRow
+                key={index}
+                session={session}
+                onDeleteSession={this.props.onDeleteSession}
+            />
+        ));
         let content;
         if (list.length > 0) {
             content = (
@@ -23,7 +27,7 @@ export class ClassSessionList extends React.Component {
                 </div>
             );
         } else {
-            content = (<h4>No sessions scheduled yet</h4>);
+            content = <h4>No sessions scheduled yet</h4>;
         }
 
         return (
@@ -31,7 +35,6 @@ export class ClassSessionList extends React.Component {
                 <h2 className="list-header">Sessions</h2>
                 {content}
             </div>
-
         );
     }
 }
@@ -45,7 +48,9 @@ class ClassSessionRow extends React.Component {
         const notes = session.notes || "";
         return (
             <li className="list-row">
-                <span className="med">{startsAt.format("ddd, MM/DD/YYYY")}</span>
+                <span className="med">
+                    {startsAt.format("ddd, MM/DD/YYYY")}
+                </span>
                 <span className="med">{startsAt.format("hh:mm a")}</span>
                 <span className="med">{endsAt.format("hh:mm a")}</span>
                 <span className="small">{canceled}</span>

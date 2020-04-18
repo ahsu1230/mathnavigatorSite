@@ -25,12 +25,12 @@ export class ClassSessions extends React.Component {
             dateFocused: false,
             inputNumRepeat: 1,
             inputStartDateTime: now,
-            inputEndDateTime: now.add(2, "h")
-        }
+            inputEndDateTime: now.add(2, "h"),
+        };
 
         this.onClickAddSessions = this.onClickAddSessions.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
-        this.onFocusChange = this.onFocusChange.bind(this)
+        this.onFocusChange = this.onFocusChange.bind(this);
         this.onTimeChange = this.onTimeChange.bind(this);
     }
 
@@ -39,14 +39,14 @@ export class ClassSessions extends React.Component {
     }
 
     onClickAddSessions() {
-        const startDateTime = this.state.inputStartDateTime;
-        const endDateTime = this.state.inputEndDateTime;
+        const startDateTime = moment(this.state.inputStartDateTime);
+        const endDateTime = moment(this.state.inputEndDateTime);
         const newSession = {
             id: "new" + this.props.sessions.length, // must generate a fake id because not yet persisted to database
             classId: this.props.classId,
             startsAt: startDateTime,
             endsAt: endDateTime,
-            canceled: false
+            canceled: false,
         };
         this.props.onAddSessions([newSession]);
     }
@@ -57,27 +57,34 @@ export class ClassSessions extends React.Component {
             .month(date.month())
             .year(date.year());
         this.setState({
-            inputStartDateTime: newDate
+            inputStartDateTime: newDate,
         });
     }
 
     onTimeChange(inputField, options) {
-        let newHour = parseInt(options.hour);
-        let hour = options.meridiem == "AM" ? newHour : newHour + 12;
-        let minute = parseInt(options.minute);
+        let { hour, minute, meridiem } = options;
+        hour = parseInt(hour);
+        minute = parseInt(minute);
+        let newHour =
+            meridiem == "PM" && parseInt(hour) < 12 ? hour + 12 : hour;
 
-        if (inputField == "inputStartDateTime") {
-            const newStartDateTime = this.state.inputStartDateTime.hour(hour).minute(minute).second(0);
-            const newEndDateTime = moment(newStartDateTime).add(2, "h")
-            this.props.on
+        if (inputField == "start") {
+            const newStartDateTime = moment(this.state.inputStartDateTime)
+                .hour(newHour)
+                .minute(minute)
+                .second(0);
+            const newEndDateTime = moment(newStartDateTime).add(2, "h");
             this.setState({
                 inputStartDateTime: newStartDateTime,
-                inputEndDateTime: newEndDateTime
+                inputEndDateTime: newEndDateTime,
             });
-        } else {
-            const newEndDateTime = this.state.inputEndDateTime.hour(hour).minute(minute).second(0);
+        } else if (inputField == "end") {
+            const newEndDateTime = this.state.inputEndDateTime
+                .hour(newHour)
+                .minute(minute)
+                .second(0);
             this.setState({
-                inputEndDateTime: newEndDateTime
+                inputEndDateTime: newEndDateTime,
             });
         }
     }
@@ -96,11 +103,13 @@ export class ClassSessions extends React.Component {
                         date={this.state.inputStartDateTime}
                         onDateChange={(date) => this.onDateChange(date)}
                         focused={this.state.dateFocused}
-                        onFocusChange={({ focused }) => this.setState({ dateFocused: focused })}
+                        onFocusChange={({ focused }) =>
+                            this.setState({ dateFocused: focused })
+                        }
                         id="sessions-date-picker"
                         showDefaultInputIcon
                     />
-                </div> 
+                </div>
 
                 <div className="time-block start">
                     <h4>Start Time</h4>
@@ -108,13 +117,15 @@ export class ClassSessions extends React.Component {
                         time={this.state.inputStartDateTime.format("HH:mm")}
                         theme="classic"
                         showTimezone={true}
-                        timeMode="12"
                         onFocusChange={this.onFocusChange}
-                        onTimeChange={(options) => this.onTimeChange("inputStartDateTime", options)}
+                        onTimeChange={(options) =>
+                            this.onTimeChange("start", options)
+                        }
+                        timeMode="12"
                         minuteStep={15}
                         timeConfig={{
-                            from: "7:00 AM",
-                            to: "11:45 PM",
+                            from: "8:00 AM",
+                            to: "10:00 PM",
                             step: 15,
                             unit: "minutes",
                         }}
@@ -127,19 +138,21 @@ export class ClassSessions extends React.Component {
                         time={this.state.inputEndDateTime.format("HH:mm")}
                         theme="classic"
                         showTimezone={true}
-                        timeMode="12"
                         onFocusChange={this.onFocusChange}
-                        onTimeChange={(options) => this.onTimeChange("inputEndDateTime", options)}
+                        onTimeChange={(options) =>
+                            this.onTimeChange("end", options)
+                        }
+                        timeMode="12"
                         minuteStep={15}
                         timeConfig={{
-                            from: "7:00 AM",
-                            to: "11:45 PM",
+                            from: "8:00 AM",
+                            to: "10:00 PM",
                             step: 15,
                             unit: "minutes",
                         }}
                     />
                 </div>
-                
+
                 <div className="repeat-block">
                     {/* <span>Repeat Every Week: </span>
                     <input
@@ -160,12 +173,12 @@ export class ClassSessions extends React.Component {
                         }
                     </span> */}
                 </div>
-                
+
                 <button className="btn-add" onClick={this.onClickAddSessions}>
                     Add Sessions
                 </button>
-                <ClassSessionList 
-                    classId={this.props.classId} 
+                <ClassSessionList
+                    classId={this.props.classId}
                     sessions={this.props.sessions}
                     onDeleteSession={this.props.onDeleteSession}
                 />
