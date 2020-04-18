@@ -55,21 +55,6 @@ func CreateLocation(c *gin.Context) {
 	return
 }
 
-func PublishLocations(c *gin.Context) {
-	// Incoming JSON
-	var locIdsJson []string
-	c.BindJSON(&locIdsJson)
-
-	err := services.LocationService.Publish(locIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func UpdateLocation(c *gin.Context) {
 	// Incoming JSON & Parameters
 	locId := c.Param("locId")
@@ -83,6 +68,21 @@ func UpdateLocation(c *gin.Context) {
 	}
 
 	err := services.LocationService.Update(locId, locationJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func PublishLocations(c *gin.Context) {
+	// Incoming JSON
+	var locIdsJson []string
+	c.BindJSON(&locIdsJson)
+
+	err := services.LocationService.Publish(locIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

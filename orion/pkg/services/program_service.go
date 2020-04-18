@@ -13,8 +13,8 @@ type programServiceInterface interface {
 	GetAllUnpublished() ([]domains.Program, error)
 	GetByProgramId(string) (domains.Program, error)
 	Create(domains.Program) error
-	Publish([]string) error
 	Update(string, domains.Program) error
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -50,13 +50,13 @@ func (ps *programService) Create(program domains.Program) error {
 	return err
 }
 
-func (ps *programService) Publish(programIds []string) error {
-	err := repos.ProgramRepo.Publish(programIds)
+func (ps *programService) Update(programId string, program domains.Program) error {
+	err := repos.ProgramRepo.Update(programId, program)
 	return err
 }
 
-func (ps *programService) Update(programId string, program domains.Program) error {
-	err := repos.ProgramRepo.Update(programId, program)
+func (ps *programService) Publish(programIds []string) error {
+	err := repos.ProgramRepo.Publish(programIds)
 	return err
 }
 

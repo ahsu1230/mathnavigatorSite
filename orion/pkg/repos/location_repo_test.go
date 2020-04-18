@@ -2,7 +2,7 @@ package repos_test
 
 import (
 	"database/sql"
-	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
@@ -267,35 +267,6 @@ func TestInsertLocation(t *testing.T) {
 }
 
 //
-// Publish
-//
-func TestPublishLocation(t *testing.T) {
-	db, mock, repo := initLocationTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectBegin()
-	mock.ExpectPrepare("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
-		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "loc1").
-		WillReturnResult(result)
-	mock.ExpectExec("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
-		WithArgs(sqlmock.AnyArg(), "loc2").
-		WillReturnResult(result)
-	mock.ExpectCommit()
-	err := repo.Publish([]string{"loc1", "loc2"})
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Update
 //
 func TestUpdateLocation(t *testing.T) {
@@ -317,6 +288,35 @@ func TestUpdateLocation(t *testing.T) {
 		Room:    domains.NewNullString("Room 41"),
 	}
 	err := repo.Update("xkcd", location)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Publish
+//
+func TestPublishLocation(t *testing.T) {
+	db, mock, repo := initLocationTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), "loc1").
+		WillReturnResult(result)
+	mock.ExpectExec("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
+		WithArgs(sqlmock.AnyArg(), "loc2").
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Publish([]string{"loc1", "loc2"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

@@ -13,8 +13,8 @@ type sessionServiceInterface interface {
 	GetAllUnpublished() ([]domains.Session, error)
 	GetBySessionId(uint) (domains.Session, error)
 	Create(domains.Session) error
-	Publish([]uint) error
 	Update(uint, domains.Session) error
+	Publish([]uint) error
 	Delete(uint) error
 }
 
@@ -50,13 +50,13 @@ func (ss *sessionService) Create(session domains.Session) error {
 	return err
 }
 
-func (ss *sessionService) Publish(ids []uint) error {
-	err := repos.SessionRepo.Publish(ids)
+func (ss *sessionService) Update(id uint, session domains.Session) error {
+	err := repos.SessionRepo.Update(id, session)
 	return err
 }
 
-func (ss *sessionService) Update(id uint, session domains.Session) error {
-	err := repos.SessionRepo.Update(id, session)
+func (ss *sessionService) Publish(ids []uint) error {
+	err := repos.SessionRepo.Publish(ids)
 	return err
 }
 

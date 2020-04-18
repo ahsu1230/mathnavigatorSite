@@ -1,1 +1,2 @@
-ALTER TABLE programs DROP COLUMN featured;
+ALTER TABLE programs
+    DROP COLUMN featured;

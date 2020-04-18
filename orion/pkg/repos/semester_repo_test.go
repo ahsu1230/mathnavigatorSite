@@ -73,7 +73,7 @@ func TestSelectPublishedSemesters(t *testing.T) {
 //
 // Select Unpublished
 //
-func TestSelectUnpublishedSemesters(t *testing.T) {
+func TestSelectAllUnpublishedSemesters(t *testing.T) {
 	db, mock, repo := initSemesterTest(t)
 	defer db.Close()
 
@@ -82,7 +82,7 @@ func TestSelectUnpublishedSemesters(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM semesters WHERE published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectUnpublished()
+	got, err := repo.SelectAllUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -182,6 +182,32 @@ func TestUpdateSemester(t *testing.T) {
 }
 
 //
+// Publish
+//
+func TestPublishSemesters(t *testing.T) {
+	db, mock, repo := initSemesterTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\? AND published_at IS NULL`).
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), "2020_fall").
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Publish([]string{"2020_fall"})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Delete
 //
 func TestDeleteSemester(t *testing.T) {
@@ -195,30 +221,6 @@ func TestDeleteSemester(t *testing.T) {
 		WithArgs("2020_fall").
 		WillReturnResult(result)
 	err := repo.Delete("2020_fall")
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Publish
-//
-func TestPublishSemesters(t *testing.T) {
-	db, mock, repo := initSemesterTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\? AND published_at IS NULL`).
-		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "2020_fall").
-		WillReturnResult(result)
-	err := repo.Publish("2020_fall")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

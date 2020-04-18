@@ -22,8 +22,8 @@ type ProgramRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
-	Publish([]string) error
 	Update(string, domains.Program) error
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -164,40 +164,6 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
-func (pr *programRepo) Publish(programIds []string) error {
-	var errorString string
-
-	tx, err := pr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, programId := range programIds {
-		execResult, err := stmt.Exec(now, programId)
-		if err != nil {
-			errorString = appendError(errorString, programId, err)
-			continue
-		}
-		err1 := handleSqlExecResult(execResult, 0, "program was not published") // program is already published, 0 rows affected
-		err2 := handleSqlExecResult(execResult, 1, "program was not published") // program was not published, 1 row affected
-		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, programId, err1)
-		}
-	}
-	errorString = appendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
-}
-
 func (pr *programRepo) Update(programId string, program domains.Program) error {
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
@@ -230,6 +196,34 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "program was not updated")
+}
+
+func (pr *programRepo) Publish(programIds []string) error {
+	var errorString string
+
+	tx, err := pr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, programId := range programIds {
+		_, err := stmt.Exec(now, programId)
+		if err != nil {
+			errorString = appendError(errorString, programId, err)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (pr *programRepo) Delete(programId string) error {
