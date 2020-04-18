@@ -25,11 +25,14 @@ export class LocationPage extends React.Component {
     }
 
     onCheckRow() {
-        if (document.getElementById("unpublished").checked) {
-            this.setState({ numSelected: this.state.numSelected + 1 });
-        } else {
-            this.setState({ numSelected: this.state.numSelected - 1 });
+        const elements = document.getElementsByName("unpublished") || [];
+        let numChecked = 0;
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].checked) {
+                numChecked++;
+            }
         }
+        this.setState({ numSelected: numChecked });
     }
 
     onClickSelectAll() {
