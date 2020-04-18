@@ -149,7 +149,7 @@ export class ClassEditPage extends React.Component {
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
             startDate: moment().toJSON(), // TODO: need to remove
-            endDate: moment().add(30,'d').toJSON(), // TODO: need to remove
+            endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
@@ -436,26 +436,33 @@ function renderModal(
 
 function executeApiCalls(apiCalls, successCallback, failCallback) {
     console.log("Reducing " + apiCalls.length);
-    apiCalls
-        .reduce((accumulatorPromise, nextApi) => {
-            console.log(`Loop! ${moment().format("hh:mm:ss")}`);
-            return accumulatorPromise.then(() => {
-                return new Promise((resolve, reject) => {
-                    nextApi
-                        .then((resp) => {
-                            console.log("Success: " + moment().format("hh:mm:ss"));
-                            resolve(resp.data);
-                        })
-                        .catch((res) => {
-                            console.log("Failure: " + moment().format("hh:mm:ss"));
-                            reject(res.response.data);
-                        });
+
+    let fnResolveTask = function () {
+        return new Promise((resolve, reject) => {
+            nextApi
+                .then((resp) => {
+                    console.log("Success: " + moment().format("hh:mm:ss"));
+                    resolve(resp.data);
+                })
+                .catch((res) => {
+                    console.log("Failure: " + moment().format("hh:mm:ss"));
+                    reject(res.response.data);
                 });
-            });
-        }, Promise.resolve()).then(results => {
+        });
+    };
+
+    let sequence = apiCalls.reduce((accumulatorPromise, nextApi) => {
+        console.log(`Loop! ${moment().format("hh:mm:ss")}`);
+        return accumulatorPromise.then(() => {
+            return fnResolveTask(nextApi);
+        });
+    }, Promise.resolve());
+    sequence
+        .then((results) => {
             console.log("All success!");
             successCallback(results);
-        }).catch(results => {
+        })
+        .catch((results) => {
             console.log("One error?");
             failCallback(results);
         });
