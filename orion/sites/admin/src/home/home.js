@@ -14,9 +14,8 @@ export class HomePage extends React.Component {
             achieves: [],
             semesters: [],
             sessions: [],
-            row: [],
+            rows: [],
             selection: "",
-            num: 0,
             noUnpub: "",
             switch: false,
         };
@@ -43,105 +42,115 @@ export class HomePage extends React.Component {
     }
 
     onClickPrograms() {
-        this.setState({ noUnpub: "" });
         let programs = this.state.programs.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.name} />;
         });
-        this.setState({ row: programs });
-        this.setState({ selection: "programs" });
-        this.setState({ num: programs.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: programs,
+            selection: "programs",
+            switch: true,
+        });
         if (programs.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
     }
 
     onClickClasses() {
-        this.setState({ noUnpub: "" });
         let classes = this.state.classes.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.classId} />;
         });
-        this.setState({ row: classes });
-        this.setState({ selection: "classes" });
-        this.setState({ num: classes.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: classes,
+            selection: "classes",
+            switch: true,
+        });
         if (classes.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
     }
 
     onClickLocations() {
-        this.setState({ noUnpub: "" });
         let locations = this.state.locations.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.locId} />;
         });
-        this.setState({ row: locations });
-        this.setState({ selection: "locations" });
-        this.setState({ num: locations.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: locations,
+            selection: "locations",
+            switch: true,
+        });
         if (locations.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
     }
 
     onClickAchievements() {
-        this.setState({ noUnpub: "" });
         let achieves = this.state.achieves.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.message} />;
         });
-        this.setState({ row: achieves });
-        this.setState({ selection: "achievements" });
-        this.setState({ num: achieves.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: achieves,
+            selection: "achievements",
+            switch: true,
+        });
         if (achieves.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
     }
 
     onClickSemesters() {
-        this.setState({ noUnpub: "" });
         let semesters = this.state.semesters.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.semesterId} />;
         });
-        this.setState({ row: semesters });
-        this.setState({ selection: "semesters" });
-        this.setState({ num: semesters.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: semesters,
+            selection: "semesters",
+            switch: true,
+        });
         if (semesters.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
     }
 
     onClickSessions() {
-        this.setState({ noUnpub: "" });
         let sessions = this.state.sessions.map((row, index) => {
-            return <DashboardRow key={index} row={row} />;
+            return <DashboardRow key={index} title={row.sessionId} />;
         });
-        this.setState({ row: sessions });
-        this.setState({ selection: "sessions" });
-        this.setState({ num: sessions.length });
-        this.state.switch = true;
+        this.setState({
+            noUnpub: "",
+            rows: sessions,
+            selection: "sessions",
+            switch: true,
+        });
         if (sessions.length == 0) {
             this.setState({
                 noUnpub: "All items are published! Your website is up to date!",
+                switch: false,
             });
-            this.state.switch = false;
         }
+    }
+
+    onClickPage() {
+        console.log("Go to Page clicked");
     }
 
     render() {
@@ -150,7 +159,8 @@ export class HomePage extends React.Component {
             unpubMessage = (
                 <h4>
                     {" "}
-                    You have {this.state.num} unpublished {this.state.selection}{" "}
+                    You have {this.state.rows.length} unpublished{" "}
+                    {this.state.selection}{" "}
                 </h4>
             );
         }
@@ -182,10 +192,12 @@ export class HomePage extends React.Component {
                 <div id="box-and-button">
                     <div className="boxed">
                         {unpubMessage}
-                        {this.state.row}
+                        {this.state.rows}
                         {this.state.noUnpub}
                     </div>
-                    <button id="go-to-page">Go to Page</button>
+                    <button id="go-to-page" onClick={this.onClickPage}>
+                        Go to Page
+                    </button>
                 </div>
             </div>
         );
@@ -194,18 +206,7 @@ export class HomePage extends React.Component {
 
 class DashboardRow extends React.Component {
     render() {
-        const row = this.props.row;
-        return (
-            <div id="dashboard-row">
-                <div>
-                    {row.name}
-                    {row.classId}
-                    {row.locId}
-                    {row.message}
-                    {row.semesterId}
-                    {row.sessionId}
-                </div>
-            </div>
-        );
+        const rows = this.props.title;
+        return <div className="dashboard-row">{rows}</div>;
     }
 }
