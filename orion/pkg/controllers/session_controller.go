@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -39,25 +37,11 @@ func GetSessionById(c *gin.Context) {
 
 func CreateSessions(c *gin.Context) {
 	// Incoming JSON
-	var sessionsJson, validatedSessions []domains.Session
+	var sessionsJson []domains.Session
 	c.BindJSON(&sessionsJson)
 
-	var errorString string
-	for _, session := range sessionsJson {
-		if err := session.Validate(); err != nil {
-			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
-		} else {
-			validatedSessions = append(validatedSessions, session)
-		}
-	}
-
-	err := services.SessionService.Create(validatedSessions)
+	err := services.SessionService.Create(sessionsJson)
 	if err != nil {
-		errorString = err.Error() + "\n" + errorString
-	}
-
-	if len(errorString) > 0 {
-		err := errors.New(errorString)
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 	} else {

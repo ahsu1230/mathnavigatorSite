@@ -152,6 +152,10 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 
 	now := time.Now().UTC()
 	for _, session := range sessions {
+		if err := session.Validate(); err != nil {
+			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
+			continue
+		}
 		result, err := stmt.Exec(
 			now,
 			now,
@@ -164,8 +168,7 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
 			continue
 		}
-		err = handleSqlExecResult(result, 1, "session was not inserted")
-		if err != nil {
+		if err = handleSqlExecResult(result, 1, "session was not inserted"); err != nil {
 			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
 		}
 	}
@@ -263,8 +266,7 @@ func (sr *sessionRepo) Delete(ids []uint) error {
 			errorString = appendError(errorString, fmt.Sprint(id), err)
 			continue
 		}
-		err = handleSqlExecResult(result, 1, "session was not deleted")
-		if err != nil {
+		if err = handleSqlExecResult(result, 1, "session was not deleted"); err != nil {
 			errorString = appendError(errorString, fmt.Sprint(id), err)
 		}
 	}

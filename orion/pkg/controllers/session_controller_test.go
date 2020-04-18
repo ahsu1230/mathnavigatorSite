@@ -114,7 +114,9 @@ func TestCreateSessions_Success(t *testing.T) {
 }
 
 func TestCreateSessions_Failure(t *testing.T) {
-	// no mock needed
+	sessionService.mockCreate = func(session []domains.Session) error {
+		return errors.New("invalid notes")
+	}
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
