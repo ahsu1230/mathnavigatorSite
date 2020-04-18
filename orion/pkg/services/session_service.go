@@ -14,7 +14,7 @@ type sessionServiceInterface interface {
 	GetBySessionId(uint) (domains.Session, error)
 	Create(domains.Session) error
 	Update(uint, domains.Session) error
-	Publish([]uint) []domains.PublishErrorBody
+	Publish([]uint) error
 	Delete(uint) error
 }
 
@@ -55,9 +55,9 @@ func (ss *sessionService) Update(id uint, session domains.Session) error {
 	return err
 }
 
-func (ss *sessionService) Publish(ids []uint) []domains.PublishErrorBody {
-	errors := repos.SessionRepo.Publish(ids)
-	return errors
+func (ss *sessionService) Publish(ids []uint) error {
+	err := repos.SessionRepo.Publish(ids)
+	return err
 }
 
 func (ss *sessionService) Delete(id uint) error {

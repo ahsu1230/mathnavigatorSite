@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -20,7 +21,7 @@ type LocationRepoInterface interface {
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
 	Update(string, domains.Location) error
-	Publish([]string) []domains.PublishErrorBody
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -195,26 +196,38 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not updated")
 }
 
-func (lr *locationRepo) Publish(locIds []string) []domains.PublishErrorBody {
-	errorList := make([]domains.PublishErrorBody, 0)
+func (lr *locationRepo) Publish(locIds []string) error {
+	var errorString string
 
+	tx, err := lr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE locations SET published_at=? WHERE loc_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
 	for _, locId := range locIds {
-		location, err := lr.SelectByLocationId(locId)
+		execResult, err := stmt.Exec(now, locId)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: err})
+			errorString = appendError(errorString, locId, err)
 			continue
 		}
-		if !location.PublishedAt.Valid {
-			now := time.Now().UTC()
-			location.PublishedAt.Scan(now)
-			err = lr.Update(locId, location)
-			if err != nil {
-				errorList = append(errorList, domains.PublishErrorBody{StringId: locId, Error: err})
-			}
+		err1 := handleSqlExecResult(execResult, 0, "location was not published") // location is already published, 0 rows affected
+		err2 := handleSqlExecResult(execResult, 1, "location was not published") // location was not published, 1 row affected
+		if err1 != nil && err2 != nil {
+			errorString = appendError(errorString, locId, err1)
 		}
 	}
+	errorString = appendError(errorString, "", tx.Commit())
 
-	return errorList
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (lr *locationRepo) Delete(locId string) error {

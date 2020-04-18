@@ -14,7 +14,7 @@ type locationServiceInterface interface {
 	GetByLocationId(string) (domains.Location, error)
 	Create(domains.Location) error
 	Update(string, domains.Location) error
-	Publish([]string) []domains.PublishErrorBody
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -49,17 +49,14 @@ func (ls *locationService) Create(location domains.Location) error {
 	err := repos.LocationRepo.Insert(location)
 	return err
 }
-
 func (ls *locationService) Update(locId string, location domains.Location) error {
 	err := repos.LocationRepo.Update(locId, location)
 	return err
 }
-
-func (ls *locationService) Publish(locIds []string) []domains.PublishErrorBody {
-	errors := repos.LocationRepo.Publish(locIds)
-	return errors
+func (ls *locationService) Publish(locIds []string) error {
+	err := repos.LocationRepo.Publish(locIds)
+	return err
 }
-
 func (ls *locationService) Delete(locId string) error {
 	err := repos.LocationRepo.Delete(locId)
 	return err

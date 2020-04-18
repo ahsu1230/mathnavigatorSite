@@ -13,8 +13,8 @@ import (
 func setupMock() {
 	programService.mockGetAllUnpublished = func() ([]domains.Program, error) {
 		return []domains.Program{
-			createMockProgram("prog1", "Program1", 2, 3, "descript1"),
-			createMockProgram("prog2", "Program2", 8, 12, "descript2"),
+			createMockProgram("prog1", "Program1", 2, 3, "descript1", 0),
+			createMockProgram("prog2", "Program2", 8, 12, "descript2", 0),
 		}, nil
 	}
 	classService.mockGetAllUnpublished = func() ([]domains.Class, error) {
@@ -46,8 +46,8 @@ func setupMock() {
 		}, nil
 	}
 	services.ProgramService = &programService
-	services.LocationService = &locationService
 	services.ClassService = &classService
+	services.LocationService = &locationService
 	services.AchieveService = &achieveService
 	services.SemesterService = &semesterService
 	services.SessionService = &sessionService

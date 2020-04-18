@@ -181,8 +181,8 @@ func TestUpdateSession_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishSessions_Success(t *testing.T) {
-	sessionService.mockPublish = func(ids []uint) []domains.PublishErrorBody {
-		return nil // Successful update
+	sessionService.mockPublish = func(ids []uint) error {
+		return nil // Successful publish
 	}
 	services.SessionService = &sessionService
 

@@ -38,3 +38,15 @@ func getPublishError(errorString string) error {
 		return errors.New("one or more domains failed to publish:" + errorString)
 	}
 }
+
+func appendError(errorString string, id string, err error) string {
+	if err == nil {
+		return errorString
+	}
+	if len(id) > 0 {
+		errorString += "id: " + id + ", error: " + err.Error() + "\n"
+	} else {
+		errorString += err.Error() + "\n"
+	}
+	return errorString
+}

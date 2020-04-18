@@ -22,7 +22,7 @@ type mockProgramService struct {
 	mockGetByProgramId    func(string) (domains.Program, error)
 	mockCreate            func(domains.Program) error
 	mockUpdate            func(string, domains.Program) error
-	mockPublish           func([]string) []domains.PublishErrorBody
+	mockPublish           func([]string) error
 	mockDelete            func(string) error
 }
 
@@ -42,7 +42,7 @@ func (programService *mockProgramService) Create(program domains.Program) error 
 func (programService *mockProgramService) Update(programId string, program domains.Program) error {
 	return programService.mockUpdate(programId, program)
 }
-func (programService *mockProgramService) Publish(programIds []string) []domains.PublishErrorBody {
+func (programService *mockProgramService) Publish(programIds []string) error {
 	return programService.mockPublish(programIds)
 }
 func (programService *mockProgramService) Delete(programId string) error {
@@ -106,7 +106,7 @@ type mockLocationService struct {
 	mockGetByLocationId   func(string) (domains.Location, error)
 	mockCreate            func(domains.Location) error
 	mockUpdate            func(string, domains.Location) error
-	mockPublish           func([]string) []domains.PublishErrorBody
+	mockPublish           func([]string) error
 	mockDelete            func(string) error
 }
 
@@ -126,7 +126,7 @@ func (locationService *mockLocationService) Create(location domains.Location) er
 func (locationService *mockLocationService) Update(locId string, location domains.Location) error {
 	return locationService.mockUpdate(locId, location)
 }
-func (locationService *mockLocationService) Publish(locIds []string) []domains.PublishErrorBody {
+func (locationService *mockLocationService) Publish(locIds []string) error {
 	return locationService.mockPublish(locIds)
 }
 func (locationService *mockLocationService) Delete(locId string) error {
@@ -246,7 +246,7 @@ type mockSessionService struct {
 	mockGetBySessionId    func(uint) (domains.Session, error)
 	mockCreate            func(domains.Session) error
 	mockUpdate            func(uint, domains.Session) error
-	mockPublish           func([]uint) []domains.PublishErrorBody
+	mockPublish           func([]uint) error
 	mockDelete            func(uint) error
 }
 
@@ -266,7 +266,7 @@ func (sessionService *mockSessionService) Create(session domains.Session) error 
 func (sessionService *mockSessionService) Update(id uint, session domains.Session) error {
 	return sessionService.mockUpdate(id, session)
 }
-func (sessionService *mockSessionService) Publish(ids []uint) []domains.PublishErrorBody {
+func (sessionService *mockSessionService) Publish(ids []uint) error {
 	return sessionService.mockPublish(ids)
 }
 func (sessionService *mockSessionService) Delete(id uint) error {

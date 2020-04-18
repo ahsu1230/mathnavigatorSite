@@ -2,6 +2,8 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -20,7 +22,7 @@ type SessionRepoInterface interface {
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert(domains.Session) error
 	Update(uint, domains.Session) error
-	Publish([]uint) []domains.PublishErrorBody
+	Publish([]uint) error
 	Delete(uint) error
 }
 
@@ -190,26 +192,38 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	return handleSqlExecResult(result, 1, "session was not updated")
 }
 
-func (sr *sessionRepo) Publish(ids []uint) []domains.PublishErrorBody {
-	errorList := make([]domains.PublishErrorBody, 0)
+func (sr *sessionRepo) Publish(ids []uint) error {
+	var errorString string
 
+	tx, err := sr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE sessions SET published_at=? WHERE id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
 	for _, id := range ids {
-		session, err := sr.SelectBySessionId(id)
+		execResult, err := stmt.Exec(now, id)
 		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
+			errorString = appendError(errorString, fmt.Sprint(id), err)
 			continue
 		}
-		if !session.PublishedAt.Valid {
-			now := time.Now().UTC()
-			session.PublishedAt.Scan(now)
-			err = sr.Update(id, session)
-			if err != nil {
-				errorList = append(errorList, domains.PublishErrorBody{RowId: id, Error: err})
-			}
+		err1 := handleSqlExecResult(execResult, 0, "session was not published") // session is already published, 0 rows affected
+		err2 := handleSqlExecResult(execResult, 1, "session was not published") // session was not published, 1 row affected
+		if err1 != nil && err2 != nil {
+			errorString = appendError(errorString, fmt.Sprint(id), err1)
 		}
 	}
+	errorString = appendError(errorString, "", tx.Commit())
 
-	return errorList
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (sr *sessionRepo) Delete(id uint) error {

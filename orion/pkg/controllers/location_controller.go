@@ -82,9 +82,8 @@ func PublishLocations(c *gin.Context) {
 	var locIdsJson []string
 	c.BindJSON(&locIdsJson)
 
-	errorList := services.LocationService.Publish(locIdsJson)
-	if len(errorList) > 0 {
-		err := domains.Concatenate("one or more locations failed to publish", errorList, true)
+	err := services.LocationService.Publish(locIdsJson)
+	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {

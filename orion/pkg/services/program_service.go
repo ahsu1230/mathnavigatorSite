@@ -14,7 +14,7 @@ type programServiceInterface interface {
 	GetByProgramId(string) (domains.Program, error)
 	Create(domains.Program) error
 	Update(string, domains.Program) error
-	Publish([]string) []domains.PublishErrorBody
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -55,9 +55,9 @@ func (ps *programService) Update(programId string, program domains.Program) erro
 	return err
 }
 
-func (ps *programService) Publish(programIds []string) []domains.PublishErrorBody {
-	errors := repos.ProgramRepo.Publish(programIds)
-	return errors
+func (ps *programService) Publish(programIds []string) error {
+	err := repos.ProgramRepo.Publish(programIds)
+	return err
 }
 
 func (ps *programService) Delete(programId string) error {

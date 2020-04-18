@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -21,8 +22,8 @@ type ProgramRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
-	Publish([]string) []domains.PublishErrorBody
 	Update(string, domains.Program) error
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -60,7 +61,8 @@ func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) 
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description); errScan != nil {
+			&program.Description,
+			&program.Featured); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)
@@ -94,7 +96,8 @@ func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description); errScan != nil {
+			&program.Description,
+			&program.Featured); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)
@@ -122,7 +125,8 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.Name,
 		&program.Grade1,
 		&program.Grade2,
-		&program.Description)
+		&program.Description,
+		&program.Featured)
 	return program, errScan
 }
 
@@ -134,8 +138,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		"name, " +
 		"grade1, " +
 		"grade2, " +
-		"description" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)"
+		"description, " +
+		"featured" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -151,33 +156,12 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Name,
 		program.Grade1,
 		program.Grade2,
-		program.Description)
+		program.Description,
+		program.Featured)
 	if err != nil {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "program was not inserted")
-}
-
-func (pr *programRepo) Publish(programIds []string) []domains.PublishErrorBody {
-	errorList := make([]domains.PublishErrorBody, 0)
-
-	for _, programId := range programIds {
-		program, err := pr.SelectByProgramId(programId)
-		if err != nil {
-			errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
-			continue
-		}
-		if !program.PublishedAt.Valid {
-			now := time.Now().UTC()
-			program.PublishedAt.Scan(now)
-			err = pr.Update(programId, program)
-			if err != nil {
-				errorList = append(errorList, domains.PublishErrorBody{StringId: programId, Error: err})
-			}
-		}
-	}
-
-	return errorList
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
@@ -188,7 +172,8 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		"name=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
-		"description=? " +
+		"description=?, " +
+		"featured=? " +
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -205,11 +190,46 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		program.Grade1,
 		program.Grade2,
 		program.Description,
+		program.Featured,
 		programId)
 	if err != nil {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "program was not updated")
+}
+
+func (pr *programRepo) Publish(programIds []string) error {
+	var errorString string
+
+	tx, err := pr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, programId := range programIds {
+		execResult, err := stmt.Exec(now, programId)
+		if err != nil {
+			errorString = appendError(errorString, programId, err)
+			continue
+		}
+		err1 := handleSqlExecResult(execResult, 0, "program was not published") // program is already published, 0 rows affected
+		err2 := handleSqlExecResult(execResult, 1, "program was not published") // program was published, 1 row affected
+		if err1 != nil && err2 != nil {
+			errorString = appendError(errorString, programId, err1)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (pr *programRepo) Delete(programId string) error {
