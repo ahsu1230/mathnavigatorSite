@@ -47,10 +47,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.name} />;
         });
         this.setState({
-            noUnpub: (programs.length == 0) ? "All items are published! Your website is up to date!" : "",
+            noUnpub:
+                programs.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: programs,
             selection: "programs",
-            switch: (programs.length == 0) ? false: true,
+            switch: programs.length == 0 ? false : true,
         });
     }
 
@@ -59,10 +62,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.classId} />;
         });
         this.setState({
-            noUnpub: (classes.length == 0) ? "All items are published! Your website is up to date!": "",
+            noUnpub:
+                classes.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: classes,
             selection: "classes",
-            switch: (classes.length == 0) ? false : true,
+            switch: classes.length == 0 ? false : true,
         });
     }
 
@@ -71,10 +77,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.locId} />;
         });
         this.setState({
-            noUnpub: (locations.length == 0) ? "All items are published! Your website is up to date!" : "",
+            noUnpub:
+                locations.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: locations,
             selection: "locations",
-            switch: (locations.length == 0) ? false : true,
+            switch: locations.length == 0 ? false : true,
         });
     }
 
@@ -83,10 +92,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.message} />;
         });
         this.setState({
-            noUnpub: (achieves.length == 0) ? "All items are published! Your website is up to date!" : "",
+            noUnpub:
+                achieves.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: achieves,
             selection: "achievements",
-            switch: (achieves.length == 0) ? false : true,
+            switch: achieves.length == 0 ? false : true,
         });
     }
 
@@ -95,10 +107,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.semesterId} />;
         });
         this.setState({
-            noUnpub: (semesters.length == 0) ? "All items are published! Your website is up to date!" : "",
+            noUnpub:
+                semesters.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: semesters,
             selection: "semesters",
-            switch: (semesters.length == 0) ? false : true,
+            switch: semesters.length == 0 ? false : true,
         });
     }
 
@@ -107,10 +122,13 @@ export class HomePage extends React.Component {
             return <DashboardRow key={index} title={row.sessionId} />;
         });
         this.setState({
-            noUnpub: (sessions.length == 0) ? "All items are published! Your website is up to date!" : "",
+            noUnpub:
+                sessions.length == 0
+                    ? "All items are published! Your website is up to date!"
+                    : "",
             rows: sessions,
             selection: "sessions",
-            switch: (sessions.length == 0) ? false : true,
+            switch: sessions.length == 0 ? false : true,
         });
     }
 
