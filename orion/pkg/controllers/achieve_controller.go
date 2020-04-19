@@ -84,11 +84,12 @@ func UpdateAchievement(c *gin.Context) {
 	}
 }
 
-func DeleteAchievement(c *gin.Context) {
-	// Incoming Parameters
-	id := ParseParamId(c)
+func PublishAchievements(c *gin.Context) {
+	// Incoming JSON
+	var ids []uint
+	c.BindJSON(&ids)
 
-	err := services.AchieveService.Delete(id)
+	err := services.AchieveService.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -97,12 +98,11 @@ func DeleteAchievement(c *gin.Context) {
 	}
 }
 
-func PublishAchievements(c *gin.Context) {
-	// Incoming JSON
-	var ids []uint
-	c.BindJSON(&ids)
+func DeleteAchievement(c *gin.Context) {
+	// Incoming Parameters
+	id := ParseParamId(c)
 
-	err := services.AchieveService.Publish(ids)
+	err := services.AchieveService.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

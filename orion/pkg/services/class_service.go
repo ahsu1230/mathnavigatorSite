@@ -9,21 +9,31 @@ var ClassService classServiceInterface = &classService{}
 
 // Interface for ClassService
 type classServiceInterface interface {
-	GetAll() ([]domains.Class, error)
+	GetAll(bool) ([]domains.Class, error)
+	GetAllUnpublished() ([]domains.Class, error)
 	GetByClassId(string) (domains.Class, error)
 	GetByProgramId(string) ([]domains.Class, error)
 	GetBySemesterId(string) ([]domains.Class, error)
 	GetByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Create(domains.Class) error
 	Update(string, domains.Class) error
+	Publish([]string) error
 	Delete(string) error
 }
 
 // Struct that implements interface
 type classService struct{}
 
-func (cs *classService) GetAll() ([]domains.Class, error) {
-	classes, err := repos.ClassRepo.SelectAll()
+func (cs *classService) GetAll(publishedOnly bool) ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
+	if err != nil {
+		return nil, err
+	}
+	return classes, nil
+}
+
+func (cs *classService) GetAllUnpublished() ([]domains.Class, error) {
+	classes, err := repos.ClassRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -69,6 +79,11 @@ func (cs *classService) Create(class domains.Class) error {
 
 func (cs *classService) Update(classId string, class domains.Class) error {
 	err := repos.ClassRepo.Update(classId, class)
+	return err
+}
+
+func (cs *classService) Publish(classIds []string) error {
+	err := repos.ClassRepo.Publish(classIds)
 	return err
 }
 

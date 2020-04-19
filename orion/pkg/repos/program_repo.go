@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -17,10 +18,12 @@ type programRepo struct {
 // Interface to implement
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Program, error)
+	SelectAll(bool) ([]domains.Program, error)
+	SelectAllUnpublished() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
 	Update(string, domains.Program) error
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -28,10 +31,14 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll() ([]domains.Program, error) {
+func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
-	stmt, err := pr.db.Prepare("SELECT * FROM programs")
+	statement := "SELECT * FROM programs"
+	if publishedOnly {
+		statement += " WHERE published_at IS NOT NULL"
+	}
+	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return nil, err
 	}
@@ -49,11 +56,48 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 			&program.CreatedAt,
 			&program.UpdatedAt,
 			&program.DeletedAt,
+			&program.PublishedAt,
 			&program.ProgramId,
 			&program.Name,
 			&program.Grade1,
 			&program.Grade2,
-			&program.Description); errScan != nil {
+			&program.Description,
+			&program.Featured); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, program)
+	}
+	return results, nil
+}
+
+func (pr *programRepo) SelectAllUnpublished() ([]domains.Program, error) {
+	results := make([]domains.Program, 0)
+
+	stmt, err := pr.db.Prepare("SELECT * FROM programs WHERE published_at IS NULL")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var program domains.Program
+		if errScan := rows.Scan(
+			&program.Id,
+			&program.CreatedAt,
+			&program.UpdatedAt,
+			&program.DeletedAt,
+			&program.PublishedAt,
+			&program.ProgramId,
+			&program.Name,
+			&program.Grade1,
+			&program.Grade2,
+			&program.Description,
+			&program.Featured); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, program)
@@ -76,11 +120,13 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.CreatedAt,
 		&program.UpdatedAt,
 		&program.DeletedAt,
+		&program.PublishedAt,
 		&program.ProgramId,
 		&program.Name,
 		&program.Grade1,
 		&program.Grade2,
-		&program.Description)
+		&program.Description,
+		&program.Featured)
 	return program, errScan
 }
 
@@ -92,8 +138,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		"name, " +
 		"grade1, " +
 		"grade2, " +
-		"description" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)"
+		"description, " +
+		"featured" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -109,7 +156,8 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Name,
 		program.Grade1,
 		program.Grade2,
-		program.Description)
+		program.Description,
+		program.Featured)
 	if err != nil {
 		return err
 	}
@@ -119,11 +167,13 @@ func (pr *programRepo) Insert(program domains.Program) error {
 func (pr *programRepo) Update(programId string, program domains.Program) error {
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
+		"published_at=?, " +
 		"program_id=?, " +
 		"name=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
-		"description=? " +
+		"description=?, " +
+		"featured=? " +
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -134,16 +184,46 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
+		program.PublishedAt,
 		program.ProgramId,
 		program.Name,
 		program.Grade1,
 		program.Grade2,
 		program.Description,
+		program.Featured,
 		programId)
 	if err != nil {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "program was not updated")
+}
+
+func (pr *programRepo) Publish(programIds []string) error {
+	var errorString string
+
+	tx, err := pr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE programs SET published_at=? WHERE program_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, programId := range programIds {
+		_, err := stmt.Exec(now, programId)
+		if err != nil {
+			errorString = appendError(errorString, programId, err)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (pr *programRepo) Delete(programId string) error {

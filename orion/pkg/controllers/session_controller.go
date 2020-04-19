@@ -9,8 +9,9 @@ import (
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := services.SessionService.GetAllByClassId(classId)
+	sessionList, err := services.SessionService.GetAllByClassId(classId, publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -68,6 +69,21 @@ func UpdateSession(c *gin.Context) {
 	}
 
 	err := services.SessionService.Update(id, sessionJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func PublishSessions(c *gin.Context) {
+	// Incoming JSON
+	var idsJson []uint
+	c.BindJSON(&idsJson)
+
+	err := services.SessionService.Publish(idsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

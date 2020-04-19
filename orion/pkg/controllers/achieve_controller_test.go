@@ -229,35 +229,6 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 }
 
 //
-// Test Delete
-//
-func TestDeleteAchievement_Success(t *testing.T) {
-	achieveService.mockDelete = func(id uint) error {
-		return nil // Return no error, successful delete!
-	}
-	services.AchieveService = &achieveService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestDeleteAchievement_Failure(t *testing.T) {
-	achieveService.mockDelete = func(id uint) error {
-		return errors.New("not found")
-	}
-	services.AchieveService = &achieveService
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
 // Test Publish
 //
 func TestPublishAchievement_Success(t *testing.T) {
@@ -291,6 +262,35 @@ func TestPublishAchievement_Failure(t *testing.T) {
 		panic(err)
 	}
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Delete
+//
+func TestDeleteAchievement_Success(t *testing.T) {
+	achieveService.mockDelete = func(id uint) error {
+		return nil // Return no error, successful delete!
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestDeleteAchievement_Failure(t *testing.T) {
+	achieveService.mockDelete = func(id uint) error {
+		return errors.New("not found")
+	}
+	services.AchieveService = &achieveService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

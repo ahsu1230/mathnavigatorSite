@@ -7,7 +7,6 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func initAchieveTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AchieveRepoInterface) {
@@ -74,7 +73,7 @@ func TestSelectPublishedAchieves(t *testing.T) {
 //
 // Select Unpublished
 //
-func TestSelectUnpublishedAchieves(t *testing.T) {
+func TestSelectAllUnpublishedAchieves(t *testing.T) {
 	db, mock, repo := initAchieveTest(t)
 	defer db.Close()
 
@@ -83,7 +82,7 @@ func TestSelectUnpublishedAchieves(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements WHERE published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectUnpublished()
+	got, err := repo.SelectAllUnpublished()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -111,8 +110,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			2,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2021,
 			"1600 on SAT",
 		).
@@ -120,8 +119,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			1,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2020,
 			"message1",
 		)
@@ -142,8 +141,8 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 					Id:          2,
 					CreatedAt:   now,
 					UpdatedAt:   now,
-					DeletedAt:   domains.NewNullTime(time.Time{}),
-					PublishedAt: domains.NewNullTime(time.Time{}),
+					DeletedAt:   domains.NullTime{},
+					PublishedAt: domains.NullTime{},
 					Year:        2021,
 					Message:     "1600 on SAT",
 				},
@@ -247,6 +246,32 @@ func TestUpdateAchieve(t *testing.T) {
 }
 
 //
+// Publish
+//
+func TestPublishAchieves(t *testing.T) {
+	db, mock, repo := initAchieveTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\? AND published_at IS NULL`).
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), 1).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Publish([]uint{1})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Delete
 //
 func TestDeleteAchieve(t *testing.T) {
@@ -271,30 +296,6 @@ func TestDeleteAchieve(t *testing.T) {
 }
 
 //
-// Publish
-//
-func TestPublishAchieves(t *testing.T) {
-	db, mock, repo := initAchieveTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare(`^UPDATE achievements SET published_at=\? WHERE id=\?`).
-		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 1).
-		WillReturnResult(result)
-	err := repo.Publish(1)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Helper Methods
 //
 func getAchieveRows() *sqlmock.Rows {
@@ -303,8 +304,8 @@ func getAchieveRows() *sqlmock.Rows {
 			1,
 			now,
 			now,
-			domains.NewNullTime(time.Time{}),
-			domains.NewNullTime(time.Time{}),
+			domains.NullTime{},
+			domains.NullTime{},
 			2020,
 			"message1",
 		)
@@ -315,8 +316,8 @@ func getAchieve() domains.Achieve {
 		Id:          1,
 		CreatedAt:   now,
 		UpdatedAt:   now,
-		DeletedAt:   domains.NewNullTime(time.Time{}),
-		PublishedAt: domains.NewNullTime(time.Time{}),
+		DeletedAt:   domains.NullTime{},
+		PublishedAt: domains.NullTime{},
 		Year:        2020,
 		Message:     "message1",
 	}

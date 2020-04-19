@@ -24,3 +24,15 @@ func ParseParamUint(num string) uint {
 	}
 	return uint(id)
 }
+
+func ParseParamInt(str string, preset int) int {
+	if len(str) == 0 {
+		return preset
+	}
+
+	integer, err := strconv.ParseUint(str, 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return int(integer)
+}

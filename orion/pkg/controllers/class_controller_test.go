@@ -22,7 +22,7 @@ var later3 = now.Add(time.Hour * 24 * 60)
 // Test Get All
 //
 func TestGetAllClasses_Success(t *testing.T) {
-	classService.mockGetAll = func() ([]domains.Class, error) {
+	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3, 4), nil
 	}
 	services.ClassService = &classService
@@ -42,6 +42,30 @@ func TestGetAllClasses_Success(t *testing.T) {
 	assertMockClasses(t, 3, classes[2])
 	assertMockClasses(t, 4, classes[3])
 	assert.EqualValues(t, 4, len(classes))
+}
+
+//
+// Test Get Published
+//
+func TestGetPublishedClasses_Success(t *testing.T) {
+	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(2, 3), nil
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assertMockClasses(t, 2, classes[0])
+	assertMockClasses(t, 3, classes[1])
+	assert.EqualValues(t, 2, len(classes))
 }
 
 //
@@ -218,6 +242,45 @@ func TestUpdateClass_Failure(t *testing.T) {
 	class := createMockClasses(2)[0]
 	body := createBodyFromClass(class)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishClasses_Success(t *testing.T) {
+	classService.mockPublish = func(classIds []string) error {
+		return nil // Return no error, successful publish!
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	classIds := []string{"program1_2020_spring_class1"}
+	marshal, err := json.Marshal(classIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestPublishClasses_Failure(t *testing.T) {
+	classService.mockPublish = func(classIds []string) error {
+		return errors.New("not found")
+	}
+	services.ClassService = &classService
+
+	// Create new HTTP request to endpoint
+	classIds := []string{"program1_2020_spring_class1"}
+	marshal, err := json.Marshal(classIds)
+	if err != nil {
+		panic(err)
+	}
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
