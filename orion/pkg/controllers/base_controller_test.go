@@ -244,10 +244,10 @@ type mockSessionService struct {
 	mockGetAllByClassId   func(string, bool) ([]domains.Session, error)
 	mockGetAllUnpublished func() ([]domains.Session, error)
 	mockGetBySessionId    func(uint) (domains.Session, error)
-	mockCreate            func(domains.Session) error
+	mockCreate            func([]domains.Session) error
 	mockUpdate            func(uint, domains.Session) error
 	mockPublish           func([]uint) error
-	mockDelete            func(uint) error
+	mockDelete            func([]uint) error
 }
 
 // Implement methods of SessionService interface with mocked implementations
@@ -260,8 +260,8 @@ func (sessionService *mockSessionService) GetAllUnpublished() ([]domains.Session
 func (sessionService *mockSessionService) GetBySessionId(id uint) (domains.Session, error) {
 	return sessionService.mockGetBySessionId(id)
 }
-func (sessionService *mockSessionService) Create(session domains.Session) error {
-	return sessionService.mockCreate(session)
+func (sessionService *mockSessionService) Create(sessions []domains.Session) error {
+	return sessionService.mockCreate(sessions)
 }
 func (sessionService *mockSessionService) Update(id uint, session domains.Session) error {
 	return sessionService.mockUpdate(id, session)
@@ -269,8 +269,8 @@ func (sessionService *mockSessionService) Update(id uint, session domains.Sessio
 func (sessionService *mockSessionService) Publish(ids []uint) error {
 	return sessionService.mockPublish(ids)
 }
-func (sessionService *mockSessionService) Delete(id uint) error {
-	return sessionService.mockDelete(id)
+func (sessionService *mockSessionService) Delete(ids []uint) error {
+	return sessionService.mockDelete(ids)
 }
 
 var userService mockUserService

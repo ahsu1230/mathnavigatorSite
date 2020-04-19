@@ -12,10 +12,10 @@ type sessionServiceInterface interface {
 	GetAllByClassId(string, bool) ([]domains.Session, error)
 	GetAllUnpublished() ([]domains.Session, error)
 	GetBySessionId(uint) (domains.Session, error)
-	Create(domains.Session) error
+	Create([]domains.Session) error
 	Update(uint, domains.Session) error
 	Publish([]uint) error
-	Delete(uint) error
+	Delete([]uint) error
 }
 
 // Struct that implements interface
@@ -45,8 +45,8 @@ func (ss *sessionService) GetBySessionId(id uint) (domains.Session, error) {
 	return session, nil
 }
 
-func (ss *sessionService) Create(session domains.Session) error {
-	err := repos.SessionRepo.Insert(session)
+func (ss *sessionService) Create(sessions []domains.Session) error {
+	err := repos.SessionRepo.Insert(sessions)
 	return err
 }
 
@@ -60,7 +60,7 @@ func (ss *sessionService) Publish(ids []uint) error {
 	return err
 }
 
-func (ss *sessionService) Delete(id uint) error {
-	err := repos.SessionRepo.Delete(id)
+func (ss *sessionService) Delete(ids []uint) error {
+	err := repos.SessionRepo.Delete(ids)
 	return err
 }

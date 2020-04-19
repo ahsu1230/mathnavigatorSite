@@ -184,7 +184,7 @@ func TestPublishLocations_Success(t *testing.T) {
 	locIds := []string{"loc1", "loc2"}
 	marshal, err := json.Marshal(locIds)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)

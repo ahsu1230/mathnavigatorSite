@@ -184,7 +184,7 @@ func TestPublishPrograms_Success(t *testing.T) {
 	programIds := []string{"prog1", "prog2"}
 	marshal, err := json.Marshal(programIds)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)

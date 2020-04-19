@@ -35,21 +35,15 @@ func GetSessionById(c *gin.Context) {
 	return
 }
 
-func CreateSession(c *gin.Context) {
+func CreateSessions(c *gin.Context) {
 	// Incoming JSON
-	var sessionJson domains.Session
-	c.BindJSON(&sessionJson)
+	var sessionsJson []domains.Session
+	c.BindJSON(&sessionsJson)
 
-	if err := sessionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	err := services.SessionService.Create(sessionJson)
+	err := services.SessionService.Create(sessionsJson)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
@@ -93,14 +87,15 @@ func PublishSessions(c *gin.Context) {
 	return
 }
 
-func DeleteSession(c *gin.Context) {
+func DeleteSessions(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	var idsJson []uint
+	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Delete(id)
+	err := services.SessionService.Delete(idsJson)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
