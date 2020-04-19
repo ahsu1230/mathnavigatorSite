@@ -5,7 +5,12 @@ VS Code, or Visual Studio Code, is a source code editor that is available for Wi
 To install VS Code on Mac, first go to https://code.visualstudio.com/. On that page, there is a blue button on the left side of the page titled "Download for Mac." After clicking on the button, a zip file should appear. Click on the zip file to open VSCode in the "Downloads" folder on your computer.
 
 ### What are some key features?
-VS Code offers syntax highlighting (with customizable colors), bracket-matching, and auto-indentation. It also includes an interactive debugger to inspect variables, look at source code, view call stacks, and execute commands in the console. In addtion, VS Code's integrated terminal makes committing and pushing files to Github go even smoother. 
+VS Code offers:
+- syntax highlighting (with customizable colors)
+- bracket-matching
+- auto-indentation
+- an interactive debugger to inspect variables, look at source code, view call stacks, and execute commands in the console 
+- an integrated terminal to allow committing and pushing files to Github go smoothly
 
 ### What are extensions?
 VS Code extensions allow you to add languages, debuggers, and other tools to your VS Code Installation. Extension authors are able to directly plug into the VS Code User Interface, which allows new extensions to have the same functionality as the original APIs. 
