@@ -88,9 +88,7 @@ export class LocationPage extends React.Component {
                             Add Location
                         </Link>
                     </button>
-                    <button
-                        id="publish"
-                        onClick={this.onClickPublish}>
+                    <button id="publish" onClick={this.onClickPublish}>
                         Publish
                     </button>
                 </div>
