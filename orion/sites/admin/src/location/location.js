@@ -90,7 +90,6 @@ export class LocationPage extends React.Component {
                     </button>
                     <button
                         id="publish"
-                        className="publish"
                         onClick={this.onClickPublish}>
                         Publish
                     </button>
@@ -109,7 +108,6 @@ class LocationRow extends React.Component {
                     className="li-small"
                     type="checkbox"
                     name="unpublished"
-                    id="unpublished"
                     onClick={this.props.onCheckRow}
                 />
             ));
