@@ -27,8 +27,8 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes/")
 	{
 		apiClasses.GET("/v1/all", controllers.GetAllClasses)
-		apiClasses.POST("/v1/publish", controllers.PublishClasses)
 		apiClasses.POST("/v1/create", controllers.CreateClass)
+		apiClasses.POST("/v1/publish", controllers.PublishClasses)
 		apiClasses.GET("/v1/class/:classId", controllers.GetClassById)
 		apiClasses.POST("/v1/class/:classId", controllers.UpdateClass)
 		apiClasses.DELETE("/v1/class/:classId", controllers.DeleteClass)
@@ -57,8 +57,8 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiAchieves.GET("/v1/all", controllers.GetAllAchievements)
 		apiAchieves.GET("/v1/years", controllers.GetAllAchievementsGroupedByYear)
-		apiAchieves.POST("/v1/publish", controllers.PublishAchievements)
 		apiAchieves.POST("/v1/create", controllers.CreateAchievement)
+		apiAchieves.POST("/v1/publish", controllers.PublishAchievements)
 		apiAchieves.GET("/v1/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/v1/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/v1/achievement/:id", controllers.DeleteAchievement)
@@ -66,8 +66,8 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSemesters := h.Engine.Group("api/semesters/")
 	{
 		apiSemesters.GET("/v1/all", controllers.GetAllSemesters)
-		apiSemesters.POST("/v1/publish", controllers.PublishSemesters)
 		apiSemesters.POST("/v1/create", controllers.CreateSemester)
+		apiSemesters.POST("/v1/publish", controllers.PublishSemesters)
 		apiSemesters.GET("/v1/semester/:semesterId", controllers.GetSemesterById)
 		apiSemesters.POST("/v1/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/v1/semester/:semesterId", controllers.DeleteSemester)

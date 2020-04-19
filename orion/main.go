@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"os"
 
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"

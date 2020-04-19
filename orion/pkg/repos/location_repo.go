@@ -20,8 +20,8 @@ type LocationRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Location, error)
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
-	Publish([]string) error
 	Update(string, domains.Location) error
+	Publish([]string) error
 	Delete(string) error
 }
 
@@ -162,40 +162,6 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not inserted")
 }
 
-func (lr *locationRepo) Publish(locIds []string) error {
-	var errorString string
-
-	tx, err := lr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE locations SET published_at=? WHERE loc_id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, locId := range locIds {
-		execResult, err := stmt.Exec(now, locId)
-		if err != nil {
-			errorString = appendError(errorString, locId, err)
-			continue
-		}
-		err1 := handleSqlExecResult(execResult, 0, "location was not published") // location is already published, 0 rows affected
-		err2 := handleSqlExecResult(execResult, 1, "location was not published") // location was not published, 1 row affected
-		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, locId, err1)
-		}
-	}
-	errorString = appendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
-}
-
 func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
@@ -228,6 +194,34 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	}
 
 	return handleSqlExecResult(result, 1, "location was not updated")
+}
+
+func (lr *locationRepo) Publish(locIds []string) error {
+	var errorString string
+
+	tx, err := lr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE locations SET published_at=? WHERE loc_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, locId := range locIds {
+		_, err := stmt.Exec(now, locId)
+		if err != nil {
+			errorString = appendError(errorString, locId, err)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
 }
 
 func (lr *locationRepo) Delete(locId string) error {

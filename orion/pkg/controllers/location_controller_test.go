@@ -126,28 +126,6 @@ func TestCreateLocation_Failure(t *testing.T) {
 }
 
 //
-// Test Publish
-//
-func TestPublishLocations_Success(t *testing.T) {
-	locationService.mockPublish = func(locIds []string) error {
-		return nil // Successful publish
-	}
-	services.LocationService = &locationService
-
-	// Create new HTTP request to endpoint
-	locIds := []string{"loc1", "loc2"}
-	marshal, err := json.Marshal(locIds)
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-//
 // Test Update
 //
 func TestUpdateLocation_Success(t *testing.T) {
@@ -191,6 +169,28 @@ func TestUpdateLocation_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+//
+// Test Publish
+//
+func TestPublishLocations_Success(t *testing.T) {
+	locationService.mockPublish = func(locIds []string) error {
+		return nil // Successful publish
+	}
+	services.LocationService = &locationService
+
+	// Create new HTTP request to endpoint
+	locIds := []string{"loc1", "loc2"}
+	marshal, err := json.Marshal(locIds)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

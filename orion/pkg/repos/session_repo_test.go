@@ -2,7 +2,7 @@ package repos_test
 
 import (
 	"database/sql"
-	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
@@ -223,35 +223,6 @@ func TestInsertSession(t *testing.T) {
 }
 
 //
-// Publish
-//
-func TestPublishSession(t *testing.T) {
-	db, mock, repo := initSessionTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectBegin()
-	mock.ExpectPrepare("^UPDATE sessions SET published_at=(.*) WHERE id=(.*)  AND published_at IS NULL").
-		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 1).
-		WillReturnResult(result)
-	mock.ExpectExec("^UPDATE sessions SET published_at=(.*) WHERE id=(.*)  AND published_at IS NULL").
-		WithArgs(sqlmock.AnyArg(), 2).
-		WillReturnResult(result)
-	mock.ExpectCommit()
-	err := repo.Publish([]uint{1, 2})
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Update
 //
 func TestUpdateSession(t *testing.T) {
@@ -273,6 +244,35 @@ func TestUpdateSession(t *testing.T) {
 		Notes:    domains.NewNullString("special lecture from guest"),
 	}
 	err := repo.Update(1, session)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Publish
+//
+func TestPublishSession(t *testing.T) {
+	db, mock, repo := initSessionTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^UPDATE sessions SET published_at=(.*) WHERE id=(.*)  AND published_at IS NULL").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), 1).
+		WillReturnResult(result)
+	mock.ExpectExec("^UPDATE sessions SET published_at=(.*) WHERE id=(.*)  AND published_at IS NULL").
+		WithArgs(sqlmock.AnyArg(), 2).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.Publish([]uint{1, 2})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

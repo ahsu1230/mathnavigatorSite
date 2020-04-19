@@ -17,22 +17,22 @@ func setupMock() {
 			createMockProgram("prog2", "Program2", 8, 12, "descript2", 0),
 		}, nil
 	}
+	classService.mockGetAllUnpublished = func() ([]domains.Class, error) {
+		return createMockClasses(1, 2), nil
+	}
 	locationService.mockGetAllUnpublished = func() ([]domains.Location, error) {
 		return []domains.Location{
 			createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1"),
 			createMockLocation("loc2", "4040 Sesame St", "City", "MD", "77294", "Room 2"),
 		}, nil
 	}
-	classService.mockGetUnpublished = func() ([]domains.Class, error) {
-		return createMockClasses(1, 2), nil
-	}
-	achieveService.mockGetUnpublished = func() ([]domains.Achieve, error) {
+	achieveService.mockGetAllUnpublished = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
-	semesterService.mockGetUnpublished = func() ([]domains.Semester, error) {
+	semesterService.mockGetAllUnpublished = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			createMockSemester("2020_fall", "Fall 2020"),
 			createMockSemester("2020_winter", "Winter 2020"),
@@ -46,8 +46,8 @@ func setupMock() {
 		}, nil
 	}
 	services.ProgramService = &programService
-	services.LocationService = &locationService
 	services.ClassService = &classService
+	services.LocationService = &locationService
 	services.AchieveService = &achieveService
 	services.SemesterService = &semesterService
 	services.SessionService = &sessionService
@@ -56,7 +56,7 @@ func setupMock() {
 //
 // Test Get Unpublished
 //
-func TestGetUnpublished_Success(t *testing.T) {
+func TestGetAllUnpublished_Success(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint
@@ -75,6 +75,10 @@ func TestGetUnpublished_Success(t *testing.T) {
 	assert.EqualValues(t, "Program2", unpublishedDomains.Programs[1].Name)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Programs))
 
+	assertMockClasses(t, 1, unpublishedDomains.Classes[0])
+	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
+	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
+
 	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocId)
 	assert.EqualValues(t, "4040 Location Rd", unpublishedDomains.Locations[0].Street)
 	assert.EqualValues(t, "MA", unpublishedDomains.Locations[0].State)
@@ -82,10 +86,6 @@ func TestGetUnpublished_Success(t *testing.T) {
 	assert.EqualValues(t, "4040 Sesame St", unpublishedDomains.Locations[1].Street)
 	assert.EqualValues(t, "MD", unpublishedDomains.Locations[1].State)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Locations))
-
-	assertMockClasses(t, 1, unpublishedDomains.Classes[0])
-	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
-	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
 
 	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
 	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)

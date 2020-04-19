@@ -55,21 +55,6 @@ func CreateProgram(c *gin.Context) {
 	return
 }
 
-func PublishPrograms(c *gin.Context) {
-	// Incoming JSON
-	var programIdsJson []string
-	c.BindJSON(&programIdsJson)
-
-	err := services.ProgramService.Publish(programIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func UpdateProgram(c *gin.Context) {
 	// Incoming JSON & Parameters
 	programId := c.Param("programId")
@@ -83,6 +68,21 @@ func UpdateProgram(c *gin.Context) {
 	}
 
 	err := services.ProgramService.Update(programId, programJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func PublishPrograms(c *gin.Context) {
+	// Incoming JSON
+	var programIdsJson []string
+	c.BindJSON(&programIdsJson)
+
+	err := services.ProgramService.Publish(programIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"time"
 )
@@ -18,15 +19,15 @@ type classRepo struct {
 type ClassRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Class, error)
-	SelectUnpublished() ([]domains.Class, error)
+	SelectAllUnpublished() ([]domains.Class, error)
 	SelectByClassId(string) (domains.Class, error)
 	SelectByProgramId(string) ([]domains.Class, error)
 	SelectBySemesterId(string) ([]domains.Class, error)
 	SelectByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
+	Publish([]string) error
 	Delete(string) error
-	Publish(string) error
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
@@ -76,7 +77,7 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 	return results, nil
 }
 
-func (cr *classRepo) SelectUnpublished() ([]domains.Class, error) {
+func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
 	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE published_at IS NULL")
@@ -325,6 +326,34 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 	return handleSqlExecResult(execResult, 1, "class was not updated")
 }
 
+func (cr *classRepo) Publish(classIds []string) error {
+	var errorString string
+
+	tx, err := cr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, classId := range classIds {
+		_, err := stmt.Exec(now, classId)
+		if err != nil {
+			errorString = appendError(errorString, classId, err)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
+}
+
 func (cr *classRepo) Delete(classId string) error {
 	statement := "DELETE FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
@@ -338,22 +367,6 @@ func (cr *classRepo) Delete(classId string) error {
 		return err
 	}
 	return handleSqlExecResult(execResult, 1, "class was not deleted")
-}
-
-func (cr *classRepo) Publish(classId string) error {
-	statement := "UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL"
-	stmt, err := cr.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(now, classId)
-	if err != nil {
-		return err
-	}
-	return handleSqlExecResult(execResult, 1, "classes were not published")
 }
 
 // For Tests Only

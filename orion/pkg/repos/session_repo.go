@@ -21,8 +21,8 @@ type SessionRepoInterface interface {
 	SelectAllUnpublished() ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert([]domains.Session) error
-	Publish([]uint) error
 	Update(uint, domains.Session) error
+	Publish([]uint) error
 	Delete([]uint) error
 }
 
@@ -180,40 +180,6 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 	return errors.New(errorString)
 }
 
-func (sr *sessionRepo) Publish(ids []uint) error {
-	var errorString string
-
-	tx, err := sr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE sessions SET published_at=? WHERE id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, id := range ids {
-		execResult, err := stmt.Exec(now, id)
-		if err != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err)
-			continue
-		}
-		err1 := handleSqlExecResult(execResult, 0, "session was not published") // session is already published, 0 rows affected
-		err2 := handleSqlExecResult(execResult, 1, "session was not published") // session was not published, 1 row affected
-		if err1 != nil && err2 != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err1)
-		}
-	}
-	errorString = appendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
-}
-
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
 		"updated_at=?, " +
@@ -246,6 +212,34 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	return handleSqlExecResult(result, 1, "session was not updated")
 }
 
+func (sr *sessionRepo) Publish(ids []uint) error {
+	var errorString string
+
+	tx, err := sr.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE sessions SET published_at=? WHERE id=? AND published_at IS NULL")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	for _, id := range ids {
+		_, err := stmt.Exec(now, id)
+		if err != nil {
+			errorString = appendError(errorString, fmt.Sprint(id), err)
+		}
+	}
+	errorString = appendError(errorString, "", tx.Commit())
+
+	if len(errorString) == 0 {
+		return nil
+	}
+	return errors.New(errorString)
+}
+
 func (sr *sessionRepo) Delete(ids []uint) error {
 	var errorString string
 
@@ -253,7 +247,6 @@ func (sr *sessionRepo) Delete(ids []uint) error {
 	if err != nil {
 		return err
 	}
-
 	stmt, err := tx.Prepare("DELETE FROM sessions WHERE id=?")
 	if err != nil {
 		return err
