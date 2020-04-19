@@ -53,7 +53,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: programs,
             selection: "programs",
-            switch: programs.length == 0 ? false : true,
+            switch: programs.length != 0
         });
     }
 
@@ -68,7 +68,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: classes,
             selection: "classes",
-            switch: classes.length == 0 ? false : true,
+            switch: classes.length != 0
         });
     }
 
@@ -83,7 +83,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: locations,
             selection: "locations",
-            switch: locations.length == 0 ? false : true,
+            switch: locations.length != 0
         });
     }
 
@@ -98,7 +98,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: achieves,
             selection: "achievements",
-            switch: achieves.length == 0 ? false : true,
+            switch: achieves.length != 0
         });
     }
 
@@ -113,7 +113,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: semesters,
             selection: "semesters",
-            switch: semesters.length == 0 ? false : true,
+            switch: semesters.length != 0
         });
     }
 
@@ -128,7 +128,7 @@ export class HomePage extends React.Component {
                     : "",
             rows: sessions,
             selection: "sessions",
-            switch: sessions.length == 0 ? false : true,
+            switch: sessions.length != 0
         });
     }
 
