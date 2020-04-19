@@ -1,0 +1,51 @@
+[
+  {
+    "afhId": 1,
+    "date": "2/3/2020",
+    "time": "Monday 9:00pm - 10:00pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 2,
+    "date": "2/6/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 3,
+    "date": "2/10/2020",
+    "time": "Monday 9:00pm - 10:00pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 4,
+    "date": "2/13/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 5,
+    "date": "2/20/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 6,
+    "date": "2/24/2020",
+    "time": "Monday 9:00pm - 10:00pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  },
+  {
+    "afhId": 7,
+    "date": "2/27/2020",
+    "time": "Thursday 8:30pm - 9:30pm",
+    "locationId": "loc_wchs",
+    "notes": "For All classes students"
+  }
+]
