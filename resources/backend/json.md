@@ -33,7 +33,11 @@ type Example struct {
 }
 ```
 
-In this struct, when we serialize, the `Id` field will have a JSON field of `id`. The `omitempty` means that if `Empty` is empty, it will not show up in the JSON. `-` means that this field will be omitted from the JSON no matter what.
+The code above has the following implications:
+
+ - `Id` will have a JSON field of `id`
+ - `omitempty` means that if `Empty` is empty, it will not show up in the JSON
+ - `-` means that `CreatedAt` will not show up in the JSON no matter what
 
 # Uses in Our Codebase
 
