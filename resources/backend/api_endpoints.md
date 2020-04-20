@@ -50,7 +50,11 @@ An endpoint can also return a JSON body. For example, the aforementioned query f
 ## References/Extra Resources
 
 https://www.smashingmagazine.com/2018/01/understanding-using-rest-api/
+
 https://www.tutorialspoint.com/http/http_methods.htm
+
 https://restfulapi.net/http-status-codes/
+
 https://dzone.com/articles/understanding-the-uri-param-and-query-param-with-r
+
 http://dummy.restapiexample.com/
