@@ -19,3 +19,16 @@ JSON deserializing is the opposite. When frontend sends data to the backend in t
 `func Unmarshal(data []byte, v interface{}) error`,
 
 which takes in a slice of bytes and inserts them into the `v` parameter.
+
+# Uses in Our Codebase
+
+In our codebase, [gin](https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/backend/04_gin.md) handles the JSON serializing and deserialization for us. However, for testing, we need to use `Marshal` and `Unmarshal`.
+
+[Here](https://github.com/ahsu1230/mathnavigatorSite/blob/master/orion/pkg/tests_integration/setup_test.go#L106) is an example of a helper function that serializes structs into JSON:
+
+```
+func createJsonBody(v interface{}) io.Reader {
+	marshal, _ := json.Marshal(v)
+	return bytes.NewBuffer(marshal)
+}
+```
