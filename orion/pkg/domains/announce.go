@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"database/sql"
 	"errors"
 	"regexp"
 	"time"
@@ -10,13 +9,13 @@ import (
 var TABLE_ANNOUNCEMENTS = "announcements"
 
 type Announce struct {
-	Id        uint         `json:"id"`
-	CreatedAt time.Time    `json:"-" db:"created_at"`
-	UpdatedAt time.Time    `json:"-" db:"updated_at"`
-	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
-	PostedAt  time.Time    `json:"postedAt" db:"posted_at"`
-	Author    string       `json:"author"`
-	Message   string       `json:"message"`
+	Id        uint      `json:"id"`
+	CreatedAt time.Time `json:"-" db:"created_at"`
+	UpdatedAt time.Time `json:"-" db:"updated_at"`
+	DeletedAt NullTime  `json:"-" db:"deleted_at"`
+	PostedAt  time.Time `json:"postedAt" db:"posted_at"`
+	Author    string    `json:"author"`
+	Message   string    `json:"message"`
 }
 
 func (announce *Announce) Validate() error {
