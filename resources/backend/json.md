@@ -20,13 +20,28 @@ JSON deserializing is the opposite. When frontend sends data to the backend in t
 
 which takes in a slice of bytes and inserts them into the `v` parameter.
 
+# Golang Tags
+
+In Golang, field declarations in a struct may be followed by an optional [string literal tag](https://golang.org/ref/spec#Struct_types). When serializing structs into JSON, we can specify the name of the field in JSON. 
+
+Here is an example:
+```go
+type Example struct {
+	Id        uint      `json:"id"`
+	Empty     string    `json:"empty,omitempty"`
+	CreatedAt time.Time `json:"-"`
+}
+```
+
+In this struct, when we serialize, the `Id` field will have a JSON field of `id`. The `omitempty` means that if `Empty` is empty, it will not show up in the JSON. `-` means that this field will be omitted from the JSON no matter what.
+
 # Uses in Our Codebase
 
 In our codebase, [gin](https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/backend/04_gin.md) handles the JSON serializing and deserialization for us. However, for testing, we need to use `Marshal` and `Unmarshal`.
 
 [Here](https://github.com/ahsu1230/mathnavigatorSite/blob/master/orion/pkg/tests_integration/setup_test.go#L106) is an example of a helper function that serializes structs into JSON:
 
-```
+```go
 func createJsonBody(v interface{}) io.Reader {
 	marshal, _ := json.Marshal(v)
 	return bytes.NewBuffer(marshal)

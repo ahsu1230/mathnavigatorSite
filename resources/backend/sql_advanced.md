@@ -75,7 +75,38 @@ and
 
 `ERROR 3730 (HY000): Cannot drop table 'example' referenced by a foreign key constraint 'foreign_example_ibfk_1' on table 'foreign_example'.`
 
-respectively.
+respectively. In order to delete a row that is being referenced in a foreign key, all the foreign key references must be deleted.
+
+In this example, let's say we create an `example` row with an `id` of 1 and then create several `foreign_example` rows referencing the `example` row. In order to delete the `example` row, all the `foreign_example` rows referencing the `example` row must be deleted first.
+
+#### Examples in Our Codebase
+
+In Math Navigator, classes have a program, semester, and a location. Since multiple classes can refer to a program, semester, or a location, it makes sense to use foreign keys.
+
+This also ensures that if any program, semester, or location is being referenced by a class, it cannot be updated or deleted. This ensures the integrity of the database. [Here](https://github.com/ahsu1230/mathnavigatorSite/blob/master/orion/pkg/repos/migrations/000006_create_table_classes.up.sql) is the `classes table`:
+
+```mysql
+CREATE TABLE classes
+(
+    id          int unsigned NOT NULL AUTO_INCREMENT,
+    created_at  datetime     NOT NULL,
+    updated_at  datetime     NOT NULL,
+    deleted_at  datetime,
+    program_id  varchar(64)  NOT NULL,
+    semester_id varchar(64)  NOT NULL,
+    class_key   varchar(64),
+    class_id    varchar(192) NOT NULL UNIQUE,
+    loc_id      varchar(64)  NOT NULL,
+    times       varchar(64)  NOT NULL,
+    start_date  date         NOT NULL,
+    end_date    date         NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (program_id) REFERENCES programs (program_id),
+    FOREIGN KEY (semester_id) REFERENCES semesters (semester_id),
+    FOREIGN KEY (loc_id) REFERENCES locations (loc_id)
+) AUTO_INCREMENT = 1
+  DEFAULT CHARSET = UTF8MB4;
+```
 
 ## What is a JOIN?
 ## There are actually 4 types of JOINS!
