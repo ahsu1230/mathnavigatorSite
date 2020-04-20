@@ -1,38 +1,24 @@
 "use strict";
 require("./locationEdit.styl");
 import React from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class LocationEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            oldLocId: "",
-            inputLocId: "",
-            inputStreet: "",
-            inputCity: "",
-            inputState: "",
-            inputZip: "",
-            inputRoom: "",
-            isEdit: false,
-            showDeleteModal: false,
-            showSaveModal: false,
-        };
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onDeleted = this.onDeleted.bind(this);
-        this.onSaved = this.onSaved.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-    }
+    state = {
+        oldLocId: "",
+        inputLocId: "",
+        inputStreet: "",
+        inputCity: "",
+        inputState: "",
+        inputZip: "",
+        inputRoom: "",
+        isEdit: false,
+        showDeleteModal: false,
+        showSaveModal: false,
+    };
 
     componentDidMount() {
         const locId = this.props.locId;
@@ -46,26 +32,26 @@ export class LocationEditPage extends React.Component {
                     inputCity: location.city,
                     inputState: location.state,
                     inputZip: location.zipcode,
-                    inputRoom: location.room,
+                    inputRoom: location.room || "",
                     isEdit: true,
                 });
             });
         }
     }
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
-    onClickCancel() {
+    onClickCancel = () => {
         window.location.hash = "locations";
-    }
+    };
 
-    onClickDelete() {
+    onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    }
+    };
 
-    onClickSave() {
+    onClickSave = () => {
         let location = {
             locId: this.state.inputLocId,
             street: this.state.inputStreet,
@@ -90,71 +76,41 @@ export class LocationEditPage extends React.Component {
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
-    }
+    };
 
-    onDeleted() {
+    onDeleted = () => {
         const locId = this.props.locId;
         API.delete("api/locations/v1/location/" + locId).then((res) => {
             window.location.hash = "locations";
         });
-    }
+    };
 
-    onSaved() {
+    onSaved = () => {
         this.onDismissModal();
         window.location.hash = "locations";
-    }
+    };
 
-    onDismissModal() {
+    onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
     render() {
-        const isEdit = this.state.isEdit;
-        const location = this.state.location;
         const title = this.state.isEdit ? "Edit Location" : "Add Location";
-        let deleteButton = <div></div>;
-        if (this.state.isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
 
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onDeleted}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Location information saved!"}
-                    onOkay={this.onSaved}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
+        const deleteButton = renderDeleteButton(
+            this.state.isEdit,
+            this.onClickDelete
+        );
+        const modalDiv = renderModalDiv(
+            this.state.showDeleteModal,
+            this.state.showSaveModal,
+            this.onDismissModal,
+            this.onSaved,
+            this.onDeleted
+        );
 
         return (
             <div id="view-location-edit">
@@ -202,4 +158,54 @@ export class LocationEditPage extends React.Component {
             </div>
         );
     }
+}
+
+function renderDeleteButton(isEdit, onClickDelete) {
+    let deleteButton = <div />;
+    if (isEdit) {
+        deleteButton = (
+            <button className="btn-delete" onClick={onClickDelete}>
+                Delete
+            </button>
+        );
+    }
+    return deleteButton;
+}
+
+function renderModalDiv(
+    showDeleteModal,
+    showSaveModal,
+    onDismissModal,
+    onSaved,
+    onDeleted
+) {
+    let modalDiv;
+    let modalContent;
+    let showModal;
+    if (showDeleteModal) {
+        showModal = showDeleteModal;
+        modalContent = (
+            <YesNoModal
+                text={"Are you sure you want to delete?"}
+                onAccept={onDeleted}
+                onReject={onDismissModal}
+            />
+        );
+    }
+    if (showSaveModal) {
+        showModal = showSaveModal;
+        modalContent = (
+            <OkayModal text={"Location information saved!"} onOkay={onSaved} />
+        );
+    }
+    if (modalContent) {
+        modalDiv = (
+            <Modal
+                content={modalContent}
+                show={showModal}
+                onDismiss={onDismissModal}
+            />
+        );
+    }
+    return modalDiv;
 }

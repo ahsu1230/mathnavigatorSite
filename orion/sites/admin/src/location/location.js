@@ -1,21 +1,15 @@
 "use strict";
 require("./location.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import API from "../api.js";
 import { Link } from "react-router-dom";
 
 export class LocationPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            list: [],
-            numUnpublished: 0,
-            numSelected: 0,
-        };
-        this.onClickSelectAll = this.onClickSelectAll.bind(this);
-        this.onCheckRow = this.onCheckRow.bind(this);
-    }
+    state = {
+        list: [],
+        numUnpublished: 0,
+        numSelected: 0,
+    };
 
     componentDidMount() {
         API.get("api/locations/v1/all").then((res) => {
