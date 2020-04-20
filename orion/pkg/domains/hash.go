@@ -8,13 +8,12 @@ type Hash struct {
 	HashBytes []byte
 }
 
-func (hash *Hash) GetHash(str string) error {
+func NewHash(str string) (Hash, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(str), bcrypt.DefaultCost)
 	if err != nil {
-		return err
+		return Hash{}, err
 	}
-	hash.HashBytes = bytes
-	return nil
+	return Hash{bytes}, nil
 }
 
 func (hash *Hash) Compare(str string) (bool, error) {

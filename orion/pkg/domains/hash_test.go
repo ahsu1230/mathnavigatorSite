@@ -5,8 +5,7 @@ import (
 )
 
 func TestHash(t *testing.T) {
-	var hash Hash
-	err := hash.GetHash("potato")
+	hash, err := NewHash("potato")
 	if err != nil {
 		t.Errorf("Error: %v", err)
 	}
