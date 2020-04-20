@@ -41,7 +41,7 @@ A comprehensive list can be found [here](https://en.wikipedia.org/wiki/List_of_H
 
 ### JSON Bodies
 
-If you are unfamiliar with JSON, you can read about them [here](https://www.w3schools.com/whatis/whatis_json.asp).
+If you are unfamiliar with JSON, you can read about them [here](../02_protocols.md#what-is-json).
 
 JSON bodies can be sent both ways. A request could send a JSON body to the endpoint. For example, creating a program via the API endpoint `/api/programs/v1/create` requires the user to also send a JSON body of a program with the request.
 
