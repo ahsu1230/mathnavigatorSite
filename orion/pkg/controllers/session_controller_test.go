@@ -18,7 +18,7 @@ import (
 //
 func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionService.mockGetAllByClassId = func(classId string) ([]domains.Session, error) {
+	sessionService.mockGetAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -96,16 +96,16 @@ func TestGetSession_Failure(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateSession_Success(t *testing.T) {
-	sessionService.mockCreate = func(session domains.Session) error {
+func TestCreateSessions_Success(t *testing.T) {
+	sessionService.mockCreate = func(session []domains.Session) error {
 		return nil
 	}
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
-	marshal, _ := json.Marshal(&session)
+	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "special lecture from guest")}
+	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body)
 
@@ -113,14 +113,16 @@ func TestCreateSession_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateSession_Failure(t *testing.T) {
-	// no mock needed
+func TestCreateSessions_Failure(t *testing.T) {
+	sessionService.mockCreate = func(session []domains.Session) error {
+		return errors.New("invalid notes")
+	}
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "@@")
-	marshal, _ := json.Marshal(&session)
+	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "@@")}
+	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body)
 
@@ -178,32 +180,60 @@ func TestUpdateSession_Failure(t *testing.T) {
 }
 
 //
-// Test Delete
+// Test Publish
 //
-func TestDeleteSession_Success(t *testing.T) {
-	sessionService.mockDelete = func(id uint) error {
-		return nil // Return no error, successful delete!
+func TestPublishSessions_Success(t *testing.T) {
+	sessionService.mockPublish = func(ids []uint) error {
+		return nil // Successful publish
 	}
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/session/1", nil)
+	ids := []uint{1, 2}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestDeleteSession_Failure(t *testing.T) {
-	sessionService.mockDelete = func(id uint) error {
+//
+// Test Delete
+//
+func TestDeleteSessions_Success(t *testing.T) {
+	sessionService.mockDelete = func(ids []uint) error {
+		return nil // Return no error, successful delete!
+	}
+	services.SessionService = &sessionService
+
+	// Create new HTTP request to endpoint
+	ids := []uint{1, 2, 3}
+	marshal, err := json.Marshal(ids)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestDeleteSessions_Failure(t *testing.T) {
+	sessionService.mockDelete = func(id []uint) error {
 		return errors.New("not found")
 	}
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/session/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 //

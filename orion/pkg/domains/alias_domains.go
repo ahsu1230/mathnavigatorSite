@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
+	"time"
 )
 
 // Alias data types for handling sql.Nullxxx & JSON Marshaling
@@ -29,6 +30,30 @@ func (nullString *NullString) MarshalJSON() ([]byte, error) {
 func (nullString *NullString) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &nullString.String)
 	nullString.Valid = err == nil && nullString.String != ""
+	return err
+}
+
+// NullTime - alias data type wrapper around sql.NullTime
+type NullTime struct {
+	sql.NullTime
+}
+
+func NewNullTime(t time.Time) NullTime {
+	return NullTime{sql.NullTime{Time: t, Valid: t != time.Time{}}}
+}
+
+// MarshalJSON for NullTime
+func (nullTime *NullTime) MarshalJSON() ([]byte, error) {
+	if !nullTime.Valid {
+		return []byte("null"), nil
+	}
+	return json.Marshal(nullTime.Time)
+}
+
+// UnmarshalJSON for NullString
+func (nullTime *NullTime) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &nullTime.Time)
+	nullTime.Valid = err == nil && nullTime.Time != time.Time{}
 	return err
 }
 

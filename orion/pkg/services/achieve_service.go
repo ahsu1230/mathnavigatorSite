@@ -9,19 +9,29 @@ var AchieveService achieveServiceInterface = &achieveService{}
 
 // Interface for AchieveService
 type achieveServiceInterface interface {
-	GetAll() ([]domains.Achieve, error)
+	GetAll(bool) ([]domains.Achieve, error)
+	GetAllUnpublished() ([]domains.Achieve, error)
 	GetById(uint) (domains.Achieve, error)
 	GetAllGroupedByYear() ([]domains.AchieveYearGroup, error)
 	Create(domains.Achieve) error
 	Update(uint, domains.Achieve) error
+	Publish([]uint) error
 	Delete(uint) error
 }
 
 // Struct that implements interface
 type achieveService struct{}
 
-func (as *achieveService) GetAll() ([]domains.Achieve, error) {
-	achieves, err := repos.AchieveRepo.SelectAll()
+func (as *achieveService) GetAll(publishedOnly bool) ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectAll(publishedOnly)
+	if err != nil {
+		return nil, err
+	}
+	return achieves, nil
+}
+
+func (as *achieveService) GetAllUnpublished() ([]domains.Achieve, error) {
+	achieves, err := repos.AchieveRepo.SelectAllUnpublished()
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +61,11 @@ func (as *achieveService) Create(achieve domains.Achieve) error {
 
 func (as *achieveService) Update(id uint, achieve domains.Achieve) error {
 	err := repos.AchieveRepo.Update(id, achieve)
+	return err
+}
+
+func (as *achieveService) Publish(ids []uint) error {
+	err := repos.AchieveRepo.Publish(ids)
 	return err
 }
 

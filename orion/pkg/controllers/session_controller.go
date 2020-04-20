@@ -9,8 +9,9 @@ import (
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
+	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := services.SessionService.GetAllByClassId(classId)
+	sessionList, err := services.SessionService.GetAllByClassId(classId, publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -34,21 +35,15 @@ func GetSessionById(c *gin.Context) {
 	return
 }
 
-func CreateSession(c *gin.Context) {
+func CreateSessions(c *gin.Context) {
 	// Incoming JSON
-	var sessionJson domains.Session
-	c.BindJSON(&sessionJson)
+	var sessionsJson []domains.Session
+	c.BindJSON(&sessionsJson)
 
-	if err := sessionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	err := services.SessionService.Create(sessionJson)
+	err := services.SessionService.Create(sessionsJson)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}
@@ -77,14 +72,30 @@ func UpdateSession(c *gin.Context) {
 	return
 }
 
-func DeleteSession(c *gin.Context) {
-	// Incoming Parameters
-	id := ParseParamId(c)
+func PublishSessions(c *gin.Context) {
+	// Incoming JSON
+	var idsJson []uint
+	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Delete(id)
+	err := services.SessionService.Publish(idsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+	return
+}
+
+func DeleteSessions(c *gin.Context) {
+	// Incoming Parameters
+	var idsJson []uint
+	c.BindJSON(&idsJson)
+
+	err := services.SessionService.Delete(idsJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, err.Error())
 	} else {
 		c.Status(http.StatusOK)
 	}

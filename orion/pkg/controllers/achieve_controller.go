@@ -8,7 +8,10 @@ import (
 )
 
 func GetAllAchievements(c *gin.Context) {
-	achieveList, err := services.AchieveService.GetAll()
+	// Incoming optional parameter
+	publishedOnly := ParseParamPublishedOnly(c)
+
+	achieveList, err := services.AchieveService.GetAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -26,7 +29,7 @@ func GetAchievementById(c *gin.Context) {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, achieve)
+		c.JSON(http.StatusOK, &achieve)
 	}
 }
 
@@ -73,6 +76,20 @@ func UpdateAchievement(c *gin.Context) {
 	}
 
 	err := services.AchieveService.Update(id, achieveJson)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+}
+
+func PublishAchievements(c *gin.Context) {
+	// Incoming JSON
+	var ids []uint
+	c.BindJSON(&ids)
+
+	err := services.AchieveService.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

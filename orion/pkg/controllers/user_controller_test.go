@@ -17,7 +17,7 @@ import (
 // Test Get All
 //
 func TestGetAllUsers_Success(t *testing.T) {
-	userService.mockGetAll = func() ([]domains.User, error) {
+	userService.mockGetAll = func(search string, pageSize, offset int) ([]domains.User, error) {
 		return []domains.User{
 			createMockUser(
 				1,
@@ -60,6 +60,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, true, users[0].IsGuardian)
 	assert.EqualValues(t, 0, users[0].GuardianId.Uint)
+
 	assert.EqualValues(t, 2, users[1].Id)
 	assert.EqualValues(t, "Bob", users[1].FirstName)
 	assert.EqualValues(t, "Joe", users[1].LastName)
@@ -108,6 +109,64 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, "555-555-0199", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
 	assert.EqualValues(t, 0, user.GuardianId.Uint)
+}
+
+func TestGetUserByGuardian_Success(t *testing.T) {
+	userService.mockGetByGuardianId = func(guardianId uint) ([]domains.User, error) {
+		return []domains.User{
+			createMockUser(
+				1,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				false,
+				2,
+			),
+			createMockUser(
+				2,
+				"Bob",
+				"Joe",
+				"Middle",
+				"bob_joe@example.com",
+				"555-555-0199",
+				false,
+				2,
+			),
+		}, nil
+	}
+	services.UserService = &userService
+
+	// Create new HTTP request to endpoint
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/guardian/2", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, 1, users[0].Id)
+	assert.EqualValues(t, "John", users[0].FirstName)
+	assert.EqualValues(t, "Smith", users[0].LastName)
+	assert.EqualValues(t, "", users[0].MiddleName.String)
+	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone)
+	assert.EqualValues(t, false, users[0].IsGuardian)
+	assert.EqualValues(t, 2, users[0].GuardianId.Uint)
+
+	assert.EqualValues(t, 2, users[1].Id)
+	assert.EqualValues(t, "Bob", users[1].FirstName)
+	assert.EqualValues(t, "Joe", users[1].LastName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
+	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone)
+	assert.EqualValues(t, false, users[1].IsGuardian)
+	assert.EqualValues(t, 2, users[1].GuardianId.Uint)
+
+	assert.EqualValues(t, 2, len(users))
 }
 
 func TestGetUser_Failure(t *testing.T) {
