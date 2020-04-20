@@ -9,15 +9,15 @@ import { YesNoModal } from "../modals/yesnoModal.js";
 export class LocationEditPage extends React.Component {
     state = {
         oldLocId: "",
-            inputLocId: "",
-            inputStreet: "",
-            inputCity: "",
-            inputState: "",
-            inputZip: "",
-            inputRoom: "",
-            isEdit: false,
-            showDeleteModal: false,
-            showSaveModal: false,
+        inputLocId: "",
+        inputStreet: "",
+        inputCity: "",
+        inputState: "",
+        inputZip: "",
+        inputRoom: "",
+        isEdit: false,
+        showDeleteModal: false,
+        showSaveModal: false,
     };
 
     componentDidMount() {

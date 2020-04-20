@@ -8,7 +8,7 @@ export class LocationPage extends React.Component {
     state = {
         list: [],
         numUnpublished: 0,
-        numSelected: 0
+        numSelected: 0,
     };
 
     componentDidMount() {
