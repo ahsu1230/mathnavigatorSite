@@ -2,7 +2,7 @@ package repos_test
 
 import (
 	"database/sql"
-	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
 	"reflect"
@@ -37,8 +37,8 @@ func TestSelectAllAnnouncements(t *testing.T) {
 		"PostedAt",
 		"Author",
 		"Message"}).
-		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message").
-		AddRow(2, early, early, sql.NullTime{}, early, "Author Name 2", "Valid Message 2")
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message").
+		AddRow(2, early, early, domains.NullTime{}, early, "Author Name 2", "Valid Message 2")
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -53,7 +53,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 			Id:        1,
 			CreatedAt: now,
 			UpdatedAt: now,
-			DeletedAt: sql.NullTime{},
+			DeletedAt: domains.NullTime{},
 			PostedAt:  now,
 			Author:    "Author Name",
 			Message:   "Valid Message",
@@ -62,7 +62,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 			Id:        2,
 			CreatedAt: early,
 			UpdatedAt: early,
-			DeletedAt: sql.NullTime{},
+			DeletedAt: domains.NullTime{},
 			PostedAt:  early,
 			Author:    "Author Name 2",
 			Message:   "Valid Message 2",
@@ -93,7 +93,7 @@ func TestSelectAnnouncement(t *testing.T) {
 		"PostedAt",
 		"Author",
 		"Message"}).
-		AddRow(1, now, now, sql.NullTime{}, now, "Author Name", "Valid Message")
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message")
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -108,7 +108,7 @@ func TestSelectAnnouncement(t *testing.T) {
 		Id:        1,
 		CreatedAt: now,
 		UpdatedAt: now,
-		DeletedAt: sql.NullTime{},
+		DeletedAt: domains.NullTime{},
 		PostedAt:  now,
 		Author:    "Author Name",
 		Message:   "Valid Message",
