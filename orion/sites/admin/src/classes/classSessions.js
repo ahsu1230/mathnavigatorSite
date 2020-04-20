@@ -39,20 +39,27 @@ export class ClassSessions extends React.Component {
     }
 
     onClickAddSessions() {
-        const startDateTime = moment(this.state.inputStartDateTime);
-        const endDateTime = moment(this.state.inputEndDateTime);
-        const newSession = {
-            id: "new" + this.props.sessions.length, // must generate a fake id because not yet persisted to database
-            classId: this.props.classId,
-            startsAt: startDateTime,
-            endsAt: endDateTime,
-            canceled: false,
-        };
-        this.props.onAddSessions([newSession]);
+        let sessions = [];
+        for (let i = 0; i < this.state.inputNumRepeat; i++) {
+            let startDateTime = moment(this.state.inputStartDateTime).add(
+                i,
+                "w"
+            );
+            let endDateTime = moment(this.state.inputEndDateTime).add(i, "w");
+
+            sessions.push({
+                id: "new" + this.props.sessions.length, // must generate a fake id because not yet persisted to database
+                classId: this.props.classId,
+                startsAt: startDateTime,
+                endsAt: endDateTime,
+                canceled: false,
+            });
+        }
+        this.props.onAddSessions(sessions);
     }
 
     onDateChange(date) {
-        let newDate = this.state.inputStartDateTime
+        let newDate = moment(this.state.inputStartDateTime)
             .date(date.date())
             .month(date.month())
             .year(date.year());
@@ -79,7 +86,7 @@ export class ClassSessions extends React.Component {
                 inputEndDateTime: newEndDateTime,
             });
         } else if (inputField == "end") {
-            const newEndDateTime = this.state.inputEndDateTime
+            const newEndDateTime = moment(this.state.inputEndDateTime)
                 .hour(newHour)
                 .minute(minute)
                 .second(0);

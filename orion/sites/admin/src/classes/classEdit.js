@@ -117,7 +117,8 @@ export class ClassEditPage extends React.Component {
     }
 
     onAddSessions(newSessions) {
-        const newList = _.concat(this.state.listSessionsLocal, newSessions);
+        let newList = _.concat(this.state.listSessionsLocal, newSessions);
+        newList = _.sortBy(newList, ["startsAt"]);
         this.setState({ listSessionsLocal: newList });
     }
 
@@ -437,7 +438,7 @@ function renderModal(
 function executeApiCalls(apiCalls, successCallback, failCallback) {
     console.log("Reducing " + apiCalls.length);
 
-    let fnResolveTask = function () {
+    let fnResolveTask = function (nextApi) {
         return new Promise((resolve, reject) => {
             nextApi
                 .then((resp) => {

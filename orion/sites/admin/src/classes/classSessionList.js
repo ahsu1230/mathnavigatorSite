@@ -20,7 +20,7 @@ export class ClassSessionList extends React.Component {
                         <span className="med">Date</span>
                         <span className="med">Start Time</span>
                         <span className="med">End Time</span>
-                        <span className="small">Status</span>
+                        <span className="med">Status</span>
                         <span className="big">Notes</span>
                     </div>
                     <ul id="session-list">{list}</ul>
@@ -44,7 +44,11 @@ class ClassSessionRow extends React.Component {
         const session = this.props.session;
         const startsAt = moment(session.startsAt);
         const endsAt = moment(session.endsAt);
-        const canceled = session.canceled ? "Canceled" : "Normal";
+        let status = session.canceled
+            ? "Canceled"
+            : moment().isAfter(startsAt)
+            ? "Done"
+            : "Scheduled";
         const notes = session.notes || "";
         return (
             <li className="list-row">
@@ -53,8 +57,8 @@ class ClassSessionRow extends React.Component {
                 </span>
                 <span className="med">{startsAt.format("hh:mm a")}</span>
                 <span className="med">{endsAt.format("hh:mm a")}</span>
-                <span className="small">{canceled}</span>
-                <span className="big">{notes}</span>
+                <span className="med">{status}</span>
+                <span className="big notes">{notes}</span>
                 <button onClick={() => this.props.onDeleteSession(session.id)}>
                     Delete
                 </button>
