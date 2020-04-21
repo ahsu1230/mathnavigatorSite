@@ -29,11 +29,15 @@ jobs:
           name: Format Go codebase
           command: ./constellations/go_formatter.sh constellations
       - run:
-          name: Run Go tests
+          name: Verify Go Modules
           command: |
+            cd constellations/orion
             go mod verify
-            go vet ./constellations/orion/...
-            go test -v ./constellations/orion/...
+      - run:
+          name: Run Orion Go tests
+          command: |
+            go vet ./...
+            go test -v ./...
       - run:
           name: Install npm
           command: |
