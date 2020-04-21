@@ -5,16 +5,16 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/middlewares"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/router"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/router"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,7 +1,7 @@
 package domains_test
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"testing"
 )
 

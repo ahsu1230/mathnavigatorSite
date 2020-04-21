@@ -3,7 +3,7 @@ package repos
 import (
 	"database/sql"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"time"
 )
 

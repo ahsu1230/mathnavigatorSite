@@ -3,11 +3,12 @@ package integration_tests
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/stretchr/testify/assert"
 )
 
 var now = time.Date(2020, 3, 1, 0, 0, 0, 0, time.UTC)

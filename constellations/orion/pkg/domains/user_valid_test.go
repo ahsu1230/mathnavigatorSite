@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 )
 
 func TestValidFirstName(t *testing.T) {

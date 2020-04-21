@@ -1,8 +1,9 @@
 package domains_test
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/orion/pkg/domains"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 )
 
 func TestValidAuthor(t *testing.T) {
