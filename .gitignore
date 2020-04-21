@@ -1,14 +1,13 @@
 **/node_modules
+**/coverage
 **/build
 **/dist
 **/.cache
 **/tmp
 **/*.tmp
 **/*/package-lock.json
-**/*/go.sum
 **/*.idea
 **/*.iml
 **/*.project
 
-orion/configs/*
-orion/sites/**/coverage
+constellations/orion/configs/*

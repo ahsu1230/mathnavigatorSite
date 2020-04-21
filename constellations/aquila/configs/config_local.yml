@@ -1,0 +1,9 @@
+app:
+  build: "development"
+  corsOrigin: "*"
+database:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  pass: "localpass"
+  dbName: "mathnavdb"
