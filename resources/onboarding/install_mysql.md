@@ -69,12 +69,12 @@ Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). 
    - `High Availability` Select Standalone MySQL Server.
    - `Type and Networking` Make sure the Config Type is `Development Computer` and make sure you have TCP/IP checked, and Port: `3306`.
 
-<img src="onboarding/mysql_1_installer_networking.png" width="480" alt="Type and Networking">
+<img src="images/mysql_1_installer_networking.png" width="480" alt="Type and Networking">
 
    - `Authentication Method` Select the Recommended Strong Password Encryption.
    - `Account and Roles` Create a MySQL password. **Please remember this password!**
 
-<img src="onboarding/mysql_2_installer_accounts.png" width="480" alt="Accounts and Roles">
+<img src="images/mysql_2_installer_accounts.png" width="480" alt="Accounts and Roles">
 
    - `Windows Service` Under Windows Service Name, remove the numbers and just have the name be: `MYSQL`. In addition, you can uncheck the `Start the MySQL Server at System Startup`. You can also run the Windows Service as the Standard system.
    - `Apply Configuration` Execute! Finish.
@@ -88,7 +88,7 @@ There two commands will start or stop your MySQL local server. If the local serv
 
 You can go ahead and open the application MySQL Command Line Client. It will prompt you to enter your MySQL password.
 
-<img src="onboarding/mysql_8_shell.png" width="480" alt="MySQL Shell">
+<img src="images/mysql_8_shell.png" width="480" alt="MySQL Shell">
 
 Once you're in, run this command:
 ```
@@ -107,7 +107,7 @@ Congratulations! MySQL is successfully installed.
    - Paste the copied MySQL Location folder
    - Save by pressing OK
 
-<img src="onboarding/mysql_6_env_var.png" width="480" alt="Environment Variables">
+<img src="images/mysql_6_env_var.png" width="480" alt="Environment Variables">
 
    - Open Command Prompt and type `mysql --version` to see if `mysql` is recognized by the Command Prompt.
 
