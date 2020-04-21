@@ -1,31 +1,4 @@
-# Orion
-The most famous constellation that can be seen all around the world. This will be our core API service. The user and admin websites will both funnel through this service in order for users to interact with our database.
-
-## Onboarding Steps:
-By the end of these steps, you should be able to run a local webserver to both host the back-end golang servers and a front-end web application.
-
-
-## Install NodeJs and NPM
-Install [NodeJs](https://nodejs.org/en/download/).
-Please follow instructions to correctly install.
-Once finished, in your Terminal / DOS, run:
-```
-node -v
-npm -v
-```
-These commands should respond with the versioning of your node and npm without errors.
-When you are finished, you should be able to run the following commands in Terminal:
-
-## Install Go
-The language of choice we're using is Google's programming language [Golang](https://golang.org/).
-Please follow the instructions to download and install Go onto your machine.
-Once finished, in your Terminal / DOS, run:
-```
-go version
-```
-This will print out the OS and library version of your Golang.
-
-## Install MySQL
+# Install MySQL
 The following instructions differ between MacOS and Windows developers. Please skip to the appropriate section.
 
 ### Installing MySQL (MacOS)
@@ -138,76 +111,6 @@ Congratulations! MySQL is successfully installed.
 
    - Open Command Prompt and type `mysql --version` to see if `mysql` is recognized by the Command Prompt.
 
-------
-## Test back-end webserver
-Before proceeding, double check to make sure your MySQL server is running. For MacOs, it is the `mysql.server start` command and for Windows, it is the `net start MySQL`. **Note (Windows):** In order to run this, you need to run Command Prompt as administrator. To do so, right click the Command Prompt application and select "Run as administrator."
-
-In your Terminal, go to the `orion` directory. Use `cd` to traverse around your file system.
-
-To run all tests of the back-end web server, run:
-```
-go test ./...
-```
-You should see `ok`s and no failures.
-
-In the `orion` folder,
- * Create a new folder called `configs`.
- * Inside this folder, create a new file called `config_local.yaml`.
- * Paste the following content into this file and save.
-```
-app:
-  build: "development"
-  corsOrigin: "*"
-database:
-  host: "localhost"
-  port: 3306
-  user: "root"
-  pass: "<YOUR_PASSWORD_GOES_HERE>"
-```
-Remember the password you saved for MySql? Paste that password where it says `<YOUR_PASSWORD_GOES_HERE>`!
-
-After that, go back to the `orion` directory and start the web server with this:
-```
-go run main.go configs/config_local.yaml
-```
-You should see a `Listening and serving HTTP on :8080` message. It worked! Now, you are running the Math Navigator webserver locally on your machine. Any HTTP requests to the port number 8080 will be received and responded to by the local webserver!
-
-## Test front-end web application (Admin)
-From here, open a new Terminal tab/window.
-Use `cd` to traverse to `sites/admin`.
-
-Run these commands:
-```
-npm install
-npm run start
-```
-This will run another webserver (this time on port 8081) which will host this website.
-Now, if you go to http://localhost:8081 in an Internet browser, you should be able to see the Admin website!
-
-For future reference, `npm run start` creates a development version of the website application.
-If you need to create a "production" version (in other words, a version for consumers), run this command:
-```
-npm run build
-```
-This will create the production version and will NOT start the webserver.
-
-
-## Run the entire environment
-Great job getting here! You've built 2 local webservers to host the web application and the backend API server.
-
-To make it easier on yourself in the future and to develop faster, you can use this script here in the `orion` folder.
-Before doing so, close the other Terminal tabs so we don't end up creating multiple web servers with conflicting port numbers.
-
-*Mac users only*
-```
-./run_admin_local.sh
-```
-*Windows Users only*
-```
-run_admin_local.bat
-```
-
-Use Control+C to stop all webservers and run the script to spin it up again!
 
 ## MySQL GUI
 To view your MySQL database, you can either use the Terminal or download a MySQL GUI. The most popular free GUI is [MySQL Workbench](https://dev.mysql.com/downloads/workbench/).

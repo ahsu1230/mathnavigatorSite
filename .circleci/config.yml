@@ -27,12 +27,12 @@ jobs:
       - run: go get -v -t -d ./...
       - run:
           name: Format Go codebase
-          command: ./orion/formatter.sh
+          command: ./constellations/go_formatter.sh constellations
       - run:
           name: Run Go tests
           command: |
-            go vet ./...
-            go test -v ./...
+            go vet ./constellations/orion/...
+            go test -v ./constellations/orion/...
       - run:
           name: Install npm
           command: |
@@ -47,10 +47,10 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "orion/sites/admin/**/*.js" --config "orion/sites/admin/.prettierrc.yaml"
+            prettier --check "constellations/gemini/**/*.js" --config "constellations/gemini/.prettierrc.yml"
       - run:
           name: Run Enzyme React tests
           command: |
-            cd orion/sites/admin
+            cd constellations/orion/admin
             npm install
             npm run test
