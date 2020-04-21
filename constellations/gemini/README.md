@@ -1,10 +1,12 @@
 # Gemini
 
-The Admin site is one of the main web clients that interact with Orion. This site allows MathNavigator administrators to manage student/parent information, available programs, and schedule classes and announcements.
+Gemini consists of two websites, the Admin and User site. Both of these web clients interact with the Orion webserver to provide services. The Admin site allows MathNavigator administrators to manage student/parent information, available programs, and schedule classes and announcements.On the other hand, the User site is the actual site that students and parents will interact with.
+
+For instance, the admin site allows an administrator to schedule new programs and classes for the upcoming semester while a student/parent can register for those classes.
 
 ## Onboarding Steps:
 
-By the end of these steps, you should be able to run a local webserver to both host the back-end golang servers and a front-end web application.
+Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/onboarding/install_npm.md)
 
 ## Run the front-end web application (For both Admin and User)
 

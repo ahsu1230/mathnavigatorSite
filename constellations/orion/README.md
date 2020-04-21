@@ -1,6 +1,6 @@
 # Orion
 
-Our core API service. This webserver will provide 
+Our core API service. This webserver will provide the main API to allow web clients to interact with our MySQL database. This is where users, programs, classes, announcements are created and persisted into the database.
 
 ## How to run the Orion webserver
 
@@ -11,7 +11,7 @@ Our core API service. This webserver will provide
 
 Ensure your MySQL server is running. For MacOs, it is the `mysql.server start` command and for Windows, it is the `net start MySQL`. **Note (Windows):** In order to run this, you need to run Command Prompt as administrator. To do so, right click the Command Prompt application and select "Run as administrator."
 
-------
+---
 
 ### Run Tests
 
