@@ -56,7 +56,8 @@ mysql.server restart
 ```
 Alternatively, if that doesn't work, you can use the MySQL Notifier app that comes with installation and appears in the taskbar:
 
-![MySQL Notifier](onboarding/mysql_notifier.png "MySQL Notifier")
+<img src="images/mysql_notifier.png" width="480" alt="MySQL Notifier">
+
 ------
 ### Installing MySQL (Windows)
 Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). Download the latest and smaller MSI Installer.
