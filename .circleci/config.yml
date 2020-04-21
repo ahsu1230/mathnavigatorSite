@@ -31,6 +31,7 @@ jobs:
       - run:
           name: Run Go tests
           command: |
+            go mod verify
             go vet ./constellations/orion/...
             go test -v ./constellations/orion/...
       - run:
