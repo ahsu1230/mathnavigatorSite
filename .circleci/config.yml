@@ -49,8 +49,8 @@ jobs:
             sudo npm install -g prettier
             prettier --check "constellations/gemini" --config "constellations/gemini/.prettierrc.yml"
       - run:
-          name: Run Enzyme React tests
+          name: Run Admin Enzyme React tests
           command: |
-            cd constellations/orion/admin
+            cd constellations/gemini/admin
             npm install
             npm run test
