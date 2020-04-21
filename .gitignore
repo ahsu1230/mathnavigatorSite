@@ -11,4 +11,3 @@
 **/*.project
 
 constellations/orion/configs/*
-constellations/orion/sites/**/coverage
