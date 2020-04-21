@@ -47,7 +47,7 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "constellations/gemini/**/*.js" --config "constellations/gemini/.prettierrc.yml"
+            prettier --check "constellations/gemini" --config "constellations/gemini/.prettierrc.yml"
       - run:
           name: Run Enzyme React tests
           command: |
