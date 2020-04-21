@@ -36,6 +36,7 @@ database:
   port: 3306
   user: "root"
   pass: "<YOUR_PASSWORD_GOES_HERE>"
+  dbName: "mathnavdb"
 ```
 Remember the password you saved for MySql? Paste that password where it says `<YOUR_PASSWORD_GOES_HERE>`!
 
