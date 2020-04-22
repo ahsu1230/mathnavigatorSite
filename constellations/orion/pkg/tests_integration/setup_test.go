@@ -5,12 +5,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
@@ -23,7 +24,7 @@ var handler router.Handler
 
 func TestMain(m *testing.M) {
 	fmt.Println("Setting up Test Environment...")
-	config := middlewares.RetrieveConfigurations("./config_integrations.yaml")
+	config := middlewares.RetrieveConfigurations("./configs/config_integrations.yaml")
 	configDb := config.Database
 	db = setupTestDatabase(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
 	defer db.Close()
