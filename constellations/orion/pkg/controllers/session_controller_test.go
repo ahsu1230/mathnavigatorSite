@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
 )
 
 //
@@ -41,7 +42,7 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/id_1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/class/id_1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -68,7 +69,7 @@ func TestGetSession_Success(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/session/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -87,7 +88,7 @@ func TestGetSession_Failure(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/session/2", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -107,7 +108,7 @@ func TestCreateSessions_Success(t *testing.T) {
 	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "special lecture from guest")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -124,7 +125,7 @@ func TestCreateSessions_Failure(t *testing.T) {
 	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "@@")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -143,7 +144,7 @@ func TestUpdateSession_Success(t *testing.T) {
 	now := time.Now().UTC()
 	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -157,7 +158,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 	now := time.Now().UTC()
 	session := createMockSession(1, "id_1", now, now, true, "@@")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -173,7 +174,7 @@ func TestUpdateSession_Failure(t *testing.T) {
 	now := time.Now().UTC()
 	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/session/2", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/2", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -195,7 +196,7 @@ func TestPublishSessions_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/publish", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -217,7 +218,7 @@ func TestDeleteSessions_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", body)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -230,7 +231,7 @@ func TestDeleteSessions_Failure(t *testing.T) {
 	services.SessionService = &sessionService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/v1/delete", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)

@@ -40,7 +40,7 @@ export class ProgramEditPage extends React.Component {
     componentDidMount() {
         const programId = this.props.programId;
         if (programId) {
-            API.get("api/programs/v1/program/" + programId).then((res) => {
+            API.get("api/programs/program/" + programId).then((res) => {
                 const program = res.data;
                 this.setState({
                     oldProgramId: program.programId,
@@ -80,14 +80,11 @@ export class ProgramEditPage extends React.Component {
         let failCallback = (err) =>
             alert("Could not save program: " + err.response.data);
         if (this.state.isEdit) {
-            API.post(
-                "api/programs/v1/program/" + this.state.oldProgramId,
-                program
-            )
+            API.post("api/programs/program/" + this.state.oldProgramId, program)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         } else {
-            API.post("api/programs/v1/create", program)
+            API.post("api/programs/create", program)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
@@ -95,7 +92,7 @@ export class ProgramEditPage extends React.Component {
 
     onDeleted() {
         const programId = this.props.programId;
-        API.delete("api/programs/v1/program/" + programId)
+        API.delete("api/programs/program/" + programId)
             .then((res) => {
                 window.location.hash = "programs";
             })

@@ -14,7 +14,7 @@ type Location struct {
 	UpdatedAt   time.Time  `json:"-" db:"update_at"`
 	DeletedAt   NullTime   `json:"-" db:"deleted_at"`
 	PublishedAt NullTime   `json:"publishedAt" db:"published_at"`
-	LocId       string     `json:"locId" db:"loc_id"`
+	LocationId  string     `json:"locationId" db:"location_id"`
 	Street      string     `json:"street"`
 	City        string     `json:"city"`
 	State       string     `json:"state"`
@@ -24,7 +24,7 @@ type Location struct {
 
 func (location *Location) Validate() error {
 	// Retrieves the inputted values
-	locId := location.LocId
+	locationId := location.LocationId
 	street := location.Street
 	city := location.City
 	state := location.State
@@ -32,7 +32,7 @@ func (location *Location) Validate() error {
 	room := location.Room
 
 	// Location ID validation
-	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, locId); !matches {
+	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, locationId); !matches {
 		return errors.New("invalid location id")
 	}
 

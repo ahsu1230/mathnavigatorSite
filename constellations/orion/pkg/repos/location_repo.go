@@ -3,8 +3,9 @@ package repos
 import (
 	"database/sql"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 )
 
 // Global variable
@@ -55,7 +56,7 @@ func (lr *locationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error
 			&location.UpdatedAt,
 			&location.DeletedAt,
 			&location.PublishedAt,
-			&location.LocId,
+			&location.LocationId,
 			&location.Street,
 			&location.City,
 			&location.State,
@@ -91,7 +92,7 @@ func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
 			&location.UpdatedAt,
 			&location.DeletedAt,
 			&location.PublishedAt,
-			&location.LocId,
+			&location.LocationId,
 			&location.Street,
 			&location.City,
 			&location.State,
@@ -104,22 +105,22 @@ func (lr *locationRepo) SelectAllUnpublished() ([]domains.Location, error) {
 	return results, nil
 }
 
-func (lr *locationRepo) SelectByLocationId(locId string) (domains.Location, error) {
-	stmt, err := lr.db.Prepare("SELECT * FROM locations WHERE loc_id=?")
+func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location, error) {
+	stmt, err := lr.db.Prepare("SELECT * FROM locations WHERE location_id=?")
 	if err != nil {
 		return domains.Location{}, err
 	}
 	defer stmt.Close()
 
 	var location domains.Location
-	row := stmt.QueryRow(locId)
+	row := stmt.QueryRow(locationId)
 	errScan := row.Scan(
 		&location.Id,
 		&location.CreatedAt,
 		&location.UpdatedAt,
 		&location.DeletedAt,
 		&location.PublishedAt,
-		&location.LocId,
+		&location.LocationId,
 		&location.Street,
 		&location.City,
 		&location.State,
@@ -133,7 +134,7 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	stmt, err := lr.db.Prepare("INSERT INTO locations (" +
 		"created_at, " +
 		"updated_at, " +
-		"loc_id, " +
+		"location_id, " +
 		"street, " +
 		"city, " +
 		"state, " +
@@ -149,7 +150,7 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	result, err := stmt.Exec(
 		now,
 		now,
-		location.LocId,
+		location.LocationId,
 		location.Street,
 		location.City,
 		location.State,
@@ -162,17 +163,17 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not inserted")
 }
 
-func (lr *locationRepo) Update(locId string, location domains.Location) error {
+func (lr *locationRepo) Update(locationId string, location domains.Location) error {
 	stmt, err := lr.db.Prepare("UPDATE locations SET " +
 		"updated_at=?, " +
 		"published_at=?, " +
-		"loc_id=?, " +
+		"location_id=?, " +
 		"street=?, " +
 		"city=?, " +
 		"state=?, " +
 		"zipcode=?, " +
 		"room=? " +
-		"WHERE loc_id=?")
+		"WHERE location_id=?")
 	if err != nil {
 		return err
 	}
@@ -182,13 +183,13 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	result, err := stmt.Exec(
 		now,
 		location.PublishedAt,
-		location.LocId,
+		location.LocationId,
 		location.Street,
 		location.City,
 		location.State,
 		location.Zipcode,
 		location.Room,
-		locId)
+		locationId)
 	if err != nil {
 		return err
 	}
@@ -196,24 +197,24 @@ func (lr *locationRepo) Update(locId string, location domains.Location) error {
 	return handleSqlExecResult(result, 1, "location was not updated")
 }
 
-func (lr *locationRepo) Publish(locIds []string) error {
+func (lr *locationRepo) Publish(locationIds []string) error {
 	var errorString string
 
 	tx, err := lr.db.Begin()
 	if err != nil {
 		return err
 	}
-	stmt, err := tx.Prepare("UPDATE locations SET published_at=? WHERE loc_id=? AND published_at IS NULL")
+	stmt, err := tx.Prepare("UPDATE locations SET published_at=? WHERE location_id=? AND published_at IS NULL")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	for _, locId := range locIds {
-		_, err := stmt.Exec(now, locId)
+	for _, locationId := range locationIds {
+		_, err := stmt.Exec(now, locationId)
 		if err != nil {
-			errorString = appendError(errorString, locId, err)
+			errorString = appendError(errorString, locationId, err)
 		}
 	}
 	errorString = appendError(errorString, "", tx.Commit())
@@ -224,14 +225,14 @@ func (lr *locationRepo) Publish(locIds []string) error {
 	return errors.New(errorString)
 }
 
-func (lr *locationRepo) Delete(locId string) error {
-	stmt, err := lr.db.Prepare("DELETE FROM locations WHERE loc_id=?")
+func (lr *locationRepo) Delete(locationId string) error {
+	stmt, err := lr.db.Prepare("DELETE FROM locations WHERE location_id=?")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(locId)
+	result, err := stmt.Exec(locationId)
 	if err != nil {
 		return err
 	}

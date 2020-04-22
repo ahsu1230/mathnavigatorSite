@@ -8,13 +8,13 @@ CREATE TABLE classes
     semester_id varchar(64)  NOT NULL,
     class_key   varchar(64),
     class_id    varchar(192) NOT NULL UNIQUE,
-    loc_id      varchar(64)  NOT NULL,
+    location_id      varchar(64)  NOT NULL,
     times       varchar(64)  NOT NULL,
     start_date  date         NOT NULL,
     end_date    date         NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (program_id) REFERENCES programs (program_id),
     FOREIGN KEY (semester_id) REFERENCES semesters (semester_id),
-    FOREIGN KEY (loc_id) REFERENCES locations (loc_id)
+    FOREIGN KEY (location_id) REFERENCES locations (location_id)
 ) AUTO_INCREMENT = 1
   DEFAULT CHARSET = UTF8MB4;

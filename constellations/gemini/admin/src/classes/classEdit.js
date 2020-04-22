@@ -56,13 +56,13 @@ export class ClassEditPage extends React.Component {
     componentDidMount() {
         const classId = this.props.classId;
         const apiCalls = [
-            API.get("api/programs/v1/all"),
-            API.get("api/semesters/v1/all"),
-            API.get("api/locations/v1/all"),
+            API.get("api/programs/all"),
+            API.get("api/semesters/all"),
+            API.get("api/locations/all"),
         ];
         if (classId) {
-            apiCalls.push(API.get("api/classes/v1/class/" + classId));
-            apiCalls.push(API.get("api/sessions/v1/class/" + classId));
+            apiCalls.push(API.get("api/classes/class/" + classId));
+            apiCalls.push(API.get("api/sessions/class/" + classId));
         }
 
         axios
@@ -89,8 +89,8 @@ export class ClassEditPage extends React.Component {
                         ? classObj.semesterId
                         : semesters[0].semesterId;
                     let selectedLocationId = hasClassId
-                        ? classObj.locId
-                        : locations[0].locId;
+                        ? classObj.locationId
+                        : locations[0].locationId;
 
                     this.setState({
                         isEdit: !!classId,
@@ -146,7 +146,7 @@ export class ClassEditPage extends React.Component {
             classId: newClassId,
             programId: this.state.selectProgramId,
             semesterId: this.state.selectSemesterId,
-            locId: this.state.selectLocationId,
+            locationId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
             startDate: moment().toJSON(), // TODO: need to remove
@@ -159,10 +159,10 @@ export class ClassEditPage extends React.Component {
         let apiCalls = [];
         if (this.state.isEdit) {
             apiCalls.push(
-                API.post("api/classes/v1/class/" + oldClassId, classObj)
+                API.post("api/classes/class/" + oldClassId, classObj)
             );
         } else {
-            apiCalls.push(API.post("api/classes/v1/create", classObj));
+            apiCalls.push(API.post("api/classes/create", classObj));
         }
 
         // Find the sessions to persist and add to apiCalls
@@ -180,11 +180,11 @@ export class ClassEditPage extends React.Component {
             apiSession.startsAt = apiSession.startsAt.toJSON(); // are moment objects
             apiSession.endsAt = apiSession.endsAt.toJSON(); // are moment objects
             apiSession.id = undefined;
-            apiCalls.push(API.post("/api/sessions/v1/create", apiSession));
+            apiCalls.push(API.post("/api/sessions/create", apiSession));
         });
 
         _.forEach(sessionsToRemove, (session) => {
-            apiCalls.push(API.delete("/api/sessions/v1/session/" + session.id));
+            apiCalls.push(API.delete("/api/sessions/session/" + session.id));
         });
 
         executeApiCalls(apiCalls, successCallback, failCallback);
@@ -200,7 +200,7 @@ export class ClassEditPage extends React.Component {
 
     onModalDeleteConfirm() {
         const classId = this.props.classId;
-        API.delete("api/classes/v1/class/" + classId).then((res) => {
+        API.delete("api/classes/class/" + classId).then((res) => {
             window.location.hash = "classes";
         });
     }
@@ -378,7 +378,7 @@ function renderOptionsSemesters(semesters) {
 
 function renderOptionsLocations(locations) {
     return locations.map((loc, index) => (
-        <option key={index}>{loc.locId}</option>
+        <option key={index}>{loc.locationId}</option>
     ));
 }
 

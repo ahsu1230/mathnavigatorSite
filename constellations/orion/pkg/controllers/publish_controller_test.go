@@ -2,12 +2,13 @@ package controllers_test
 
 import (
 	"encoding/json"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
 )
 
 func setupMock() {
@@ -60,7 +61,7 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -79,10 +80,10 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
 	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
 
-	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocId)
+	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocationId)
 	assert.EqualValues(t, "4040 Location Rd", unpublishedDomains.Locations[0].Street)
 	assert.EqualValues(t, "MA", unpublishedDomains.Locations[0].State)
-	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocId)
+	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocationId)
 	assert.EqualValues(t, "4040 Sesame St", unpublishedDomains.Locations[1].Street)
 	assert.EqualValues(t, "MD", unpublishedDomains.Locations[1].State)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Locations))

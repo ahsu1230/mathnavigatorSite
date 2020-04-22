@@ -36,7 +36,7 @@ export class AnnounceEditPage extends React.Component {
     componentDidMount() {
         const announceId = this.props.announceId;
         if (announceId) {
-            API.get("api/announcements/v1/announcement/" + announceId).then(
+            API.get("api/announcements/announcement/" + announceId).then(
                 (res) => {
                     const announce = res.data;
                     this.setState({
@@ -69,13 +69,13 @@ export class AnnounceEditPage extends React.Component {
             alert("Could not save announcement: " + err.response.data);
         if (this.state.isEdit) {
             API.post(
-                "api/announcements/v1/announcement/" + this.state.announceId,
+                "api/announcements/announcement/" + this.state.announceId,
                 announcement
             )
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         } else {
-            API.post("api/announcements/v1/create", announcement)
+            API.post("api/announcements/create", announcement)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
@@ -91,7 +91,7 @@ export class AnnounceEditPage extends React.Component {
 
     onConfirmDelete() {
         const announceId = this.props.announceId;
-        API.delete("api/announcements/v1/announcement/" + announceId).then(
+        API.delete("api/announcements/announcement/" + announceId).then(
             (res) => {
                 window.location.hash = "announcements";
             }

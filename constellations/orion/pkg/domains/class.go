@@ -18,7 +18,7 @@ type Class struct {
 	SemesterId  string     `json:"semesterId" db:"semester_id"`
 	ClassKey    NullString `json:"classKey" db:"class_key"`
 	ClassId     string     `json:"classId" db:"class_id"`
-	LocId       string     `json:"locId" db:"loc_id"`
+	LocationId  string     `json:"locationId" db:"location_id"`
 	Times       string     `json:"times"`
 	StartDate   time.Time  `json:"startDate" db:"start_date"`
 	EndDate     time.Time  `json:"endDate" db:"end_date"`

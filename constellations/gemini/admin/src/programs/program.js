@@ -15,7 +15,7 @@ export class ProgramPage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/programs/v1/all").then((res) => {
+        API.get("api/programs/all").then((res) => {
             const programs = res.data;
             this.setState({ list: programs });
         });

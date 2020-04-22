@@ -14,7 +14,7 @@ export class AnnouncePage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/announcements/v1/all").then((res) => {
+        API.get("api/announcements/all").then((res) => {
             const announcements = res.data;
             this.setState({ list: announcements });
         });

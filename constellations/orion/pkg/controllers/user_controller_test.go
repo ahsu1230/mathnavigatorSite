@@ -44,7 +44,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -92,7 +92,7 @@ func TestGetUser_Success(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -139,7 +139,7 @@ func TestGetUserByGuardian_Success(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/guardian/2", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/guardian/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -176,7 +176,7 @@ func TestGetUser_Failure(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -203,7 +203,7 @@ func TestCreateUser_Success(t *testing.T) {
 		0,
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -225,7 +225,7 @@ func TestCreateUser_Failure(t *testing.T) {
 		0,
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -252,7 +252,7 @@ func TestUpdateUser_Success(t *testing.T) {
 		0,
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -274,7 +274,7 @@ func TestUpdateUser_Invalid(t *testing.T) {
 		0,
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -298,7 +298,7 @@ func TestUpdateUser_Failure(t *testing.T) {
 		0,
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -314,7 +314,7 @@ func TestDeleteUser_Success(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/v1/user/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -327,7 +327,7 @@ func TestDeleteUser_Failure(t *testing.T) {
 	services.UserService = &userService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/v1/user/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

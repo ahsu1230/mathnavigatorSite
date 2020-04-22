@@ -2,12 +2,13 @@ package repos_test
 
 import (
 	"database/sql"
-	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
 )
 
 var now = time.Now().UTC()
@@ -276,7 +277,7 @@ func TestUpdateClass(t *testing.T) {
 		SemesterId: "2020_summer",
 		ClassKey:   domains.NewNullString(""),
 		ClassId:    "program2_2020_summer",
-		LocId:      "churchill",
+		LocationId: "churchill",
 		Times:      "5 pm - 7 pm",
 		StartDate:  now,
 		EndDate:    later,
@@ -356,7 +357,7 @@ func getClassRows() *sqlmock.Rows {
 		"SemesterId",
 		"ClassKey",
 		"ClassId",
-		"LocId",
+		"locationId",
 		"Times",
 		"StartDate",
 		"EndDate",
@@ -388,7 +389,7 @@ func getClass() domains.Class {
 		SemesterId:  "2020_spring",
 		ClassKey:    domains.NewNullString("final_review"),
 		ClassId:     "program1_2020_spring_final_review",
-		LocId:       "churchill",
+		LocationId:  "churchill",
 		Times:       "3 pm - 5 pm",
 		StartDate:   now,
 		EndDate:     later,

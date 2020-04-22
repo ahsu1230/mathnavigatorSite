@@ -8,8 +8,8 @@ import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class LocationEditPage extends React.Component {
     state = {
-        oldLocId: "",
-        inputLocId: "",
+        oldlocationId: "",
+        inputlocationId: "",
         inputStreet: "",
         inputCity: "",
         inputState: "",
@@ -21,13 +21,13 @@ export class LocationEditPage extends React.Component {
     };
 
     componentDidMount() {
-        const locId = this.props.locId;
-        if (locId) {
-            API.get("api/locations/v1/location/" + locId).then((res) => {
+        const locationId = this.props.locationId;
+        if (locationId) {
+            API.get("api/locations/location/" + locationId).then((res) => {
                 const location = res.data;
                 this.setState({
-                    oldLocId: location.locId,
-                    inputLocId: location.locId,
+                    oldlocationId: location.locationId,
+                    inputlocationId: location.locationId,
                     inputStreet: location.street,
                     inputCity: location.city,
                     inputState: location.state,
@@ -53,7 +53,7 @@ export class LocationEditPage extends React.Component {
 
     onClickSave = () => {
         let location = {
-            locId: this.state.inputLocId,
+            locationId: this.state.inputlocationId,
             street: this.state.inputStreet,
             city: this.state.inputCity,
             state: this.state.inputState,
@@ -66,21 +66,21 @@ export class LocationEditPage extends React.Component {
             alert("Could not save location: " + err.response.data);
         if (this.state.isEdit) {
             API.post(
-                "api/locations/v1/location/" + this.state.oldLocId,
+                "api/locations/location/" + this.state.oldlocationId,
                 location
             )
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         } else {
-            API.post("api/locations/v1/create", location)
+            API.post("api/locations/create", location)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
     };
 
     onDeleted = () => {
-        const locId = this.props.locId;
-        API.delete("api/locations/v1/location/" + locId).then((res) => {
+        const locationId = this.props.locationId;
+        API.delete("api/locations/location/" + locationId).then((res) => {
             window.location.hash = "locations";
         });
     };
@@ -118,8 +118,8 @@ export class LocationEditPage extends React.Component {
                 <h2>{title}</h2>
                 <h4>Location ID</h4>
                 <input
-                    value={this.state.inputLocId}
-                    onChange={(e) => this.handleChange(e, "inputLocId")}
+                    value={this.state.inputlocationId}
+                    onChange={(e) => this.handleChange(e, "inputlocationId")}
                 />
                 <h4>Street</h4>
                 <input

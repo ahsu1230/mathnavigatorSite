@@ -12,7 +12,7 @@ export class LocationPage extends React.Component {
     };
 
     componentDidMount() {
-        API.get("api/locations/v1/all").then((res) => {
+        API.get("api/locations/all").then((res) => {
             const locations = res.data;
             this.setState({ list: locations });
         });
@@ -109,7 +109,7 @@ class LocationRow extends React.Component {
     }
 
     render() {
-        const locId = this.props.location.locId;
+        const locationId = this.props.location.locationId;
         const address1 = this.props.location.street;
         const address2 =
             this.props.location.city +
@@ -118,12 +118,12 @@ class LocationRow extends React.Component {
             " " +
             this.props.location.zipcode;
         const room = this.props.location.room;
-        const url = "/locations/" + locId + "/edit";
+        const url = "/locations/" + locationId + "/edit";
         let checkbox = this.renderCheckbox(true);
         return (
             <ul id="location-row">
                 {checkbox}
-                <li className="li-med">{locId}</li>
+                <li className="li-med">{locationId}</li>
                 <li className="li-large">
                     <div> {address1} </div>
                     <div> {address2} </div>

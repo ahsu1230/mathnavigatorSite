@@ -29,7 +29,7 @@ export class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/v1/unpublished").then((res) => {
+        API.get("api/unpublished").then((res) => {
             const unpublishedList = res.data;
             this.setState({
                 programs: unpublishedList.programs,
@@ -74,7 +74,7 @@ export class HomePage extends React.Component {
 
     onClickLocations() {
         let locations = this.state.locations.map((row, index) => {
-            return <DashboardRow key={index} title={row.locId} />;
+            return <DashboardRow key={index} title={row.locationId} />;
         });
         this.setState({
             noUnpub:

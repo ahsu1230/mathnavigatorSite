@@ -2,12 +2,13 @@ package repos_test
 
 import (
 	"database/sql"
-	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
 )
 
 func initLocationTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.LocationRepoInterface) {
@@ -34,7 +35,7 @@ func TestSelectAllLocations(t *testing.T) {
 		"UpdatedAt",
 		"DeletedAt",
 		"PublishedAt",
-		"LocId",
+		"LocationId",
 		"Street",
 		"City",
 		"State",
@@ -57,7 +58,7 @@ func TestSelectAllLocations(t *testing.T) {
 			UpdatedAt:   now,
 			DeletedAt:   domains.NullTime{},
 			PublishedAt: domains.NullTime{},
-			LocId:       "xkcd",
+			LocationId:  "xkcd",
 			Street:      "4040 Cherry Rd",
 			City:        "Potomac",
 			State:       "MD",
@@ -88,7 +89,7 @@ func TestSelectAllPublishedLocations(t *testing.T) {
 		"UpdatedAt",
 		"DeletedAt",
 		"PublishedAt",
-		"LocId",
+		"LocationId",
 		"Street",
 		"City",
 		"State",
@@ -111,7 +112,7 @@ func TestSelectAllPublishedLocations(t *testing.T) {
 			UpdatedAt:   now,
 			DeletedAt:   domains.NullTime{},
 			PublishedAt: domains.NewNullTime(now),
-			LocId:       "xkcd",
+			LocationId:  "xkcd",
 			Street:      "4040 Cherry Rd",
 			City:        "Potomac",
 			State:       "MD",
@@ -142,7 +143,7 @@ func TestSelectAllUnpublishedLocations(t *testing.T) {
 		"UpdatedAt",
 		"DeletedAt",
 		"PublishedAt",
-		"LocId",
+		"LocationId",
 		"Street",
 		"City",
 		"State",
@@ -165,7 +166,7 @@ func TestSelectAllUnpublishedLocations(t *testing.T) {
 			UpdatedAt:   now,
 			DeletedAt:   domains.NullTime{},
 			PublishedAt: domains.NullTime{},
-			LocId:       "xkcd",
+			LocationId:  "xkcd",
 			Street:      "4040 Cherry Rd",
 			City:        "Potomac",
 			State:       "MD",
@@ -196,14 +197,14 @@ func TestSelectLocation(t *testing.T) {
 		"UpdatedAt",
 		"DeletedAt",
 		"PublishedAt",
-		"LocId",
+		"LocationId",
 		"Street",
 		"City",
 		"State",
 		"Zipcode",
 		"Room"}).
 		AddRow(1, now, now, domains.NullTime{}, domains.NullTime{}, "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2"))
-	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE loc_id=?").
+	mock.ExpectPrepare("^SELECT (.+) FROM locations WHERE location_id=?").
 		ExpectQuery().
 		WithArgs("xkcd").
 		WillReturnRows(rows)
@@ -219,7 +220,7 @@ func TestSelectLocation(t *testing.T) {
 		UpdatedAt:   now,
 		DeletedAt:   domains.NullTime{},
 		PublishedAt: domains.NullTime{},
-		LocId:       "xkcd",
+		LocationId:  "xkcd",
 		Street:      "4040 Cherry Rd",
 		City:        "Potomac",
 		State:       "MD",
@@ -248,12 +249,12 @@ func TestInsertLocation(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "xkcd", "4040 Cherry Rd", "Potomac", "MD", "20854", domains.NewNullString("Room 2")).
 		WillReturnResult(result)
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
-		Room:    domains.NewNullString("Room 2"),
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
+		Room:       domains.NewNullString("Room 2"),
 	}
 	err := repo.Insert(location)
 	if err != nil {
@@ -275,17 +276,17 @@ func TestUpdateLocation(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE loc_id=?").
+	mock.ExpectPrepare("^UPDATE locations SET (.*) WHERE location_id=?").
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "www", "4041 Cherry Rd", "San Francisco", "CA", "94016", domains.NewNullString("Room 41"), "xkcd").
 		WillReturnResult(result)
 	location := domains.Location{
-		LocId:   "www",
-		Street:  "4041 Cherry Rd",
-		City:    "San Francisco",
-		State:   "CA",
-		Zipcode: "94016",
-		Room:    domains.NewNullString("Room 41"),
+		LocationId: "www",
+		Street:     "4041 Cherry Rd",
+		City:       "San Francisco",
+		State:      "CA",
+		Zipcode:    "94016",
+		Room:       domains.NewNullString("Room 41"),
 	}
 	err := repo.Update("xkcd", location)
 	if err != nil {
@@ -308,11 +309,11 @@ func TestPublishLocation(t *testing.T) {
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectBegin()
-	mock.ExpectPrepare("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
+	mock.ExpectPrepare("^UPDATE locations SET published_at=(.*) WHERE location_id=(.*)  AND published_at IS NULL").
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), "loc1").
 		WillReturnResult(result)
-	mock.ExpectExec("^UPDATE locations SET published_at=(.*) WHERE loc_id=(.*)  AND published_at IS NULL").
+	mock.ExpectExec("^UPDATE locations SET published_at=(.*) WHERE location_id=(.*)  AND published_at IS NULL").
 		WithArgs(sqlmock.AnyArg(), "loc2").
 		WillReturnResult(result)
 	mock.ExpectCommit()
@@ -336,7 +337,7 @@ func TestDeleteLocation(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM locations WHERE loc_id=?").
+	mock.ExpectPrepare("^DELETE FROM locations WHERE location_id=?").
 		ExpectExec().
 		WithArgs("xkcd").
 		WillReturnResult(result)

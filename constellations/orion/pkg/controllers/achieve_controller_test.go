@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
+	"github.com/stretchr/testify/assert"
 )
 
 //
@@ -25,7 +26,7 @@ func TestGetAllAchievements_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -55,7 +56,7 @@ func TestGetPublishedAchievements_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -97,7 +98,7 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/years", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -125,7 +126,7 @@ func TestGetAchievement_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -145,7 +146,7 @@ func TestGetAchievement_Failure(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -163,7 +164,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -176,7 +177,7 @@ func TestCreateAchievement_Failure(t *testing.T) {
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -194,7 +195,7 @@ func TestUpdateAchievement_Success(t *testing.T) {
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -207,7 +208,7 @@ func TestUpdateAchievement_Invalid(t *testing.T) {
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -222,7 +223,7 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -243,7 +244,7 @@ func TestPublishAchievement_Success(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -261,7 +262,7 @@ func TestPublishAchievement_Failure(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -277,7 +278,7 @@ func TestDeleteAchievement_Success(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -290,7 +291,7 @@ func TestDeleteAchievement_Failure(t *testing.T) {
 	services.AchieveService = &achieveService
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

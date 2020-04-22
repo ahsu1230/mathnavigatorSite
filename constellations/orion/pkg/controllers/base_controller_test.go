@@ -1,13 +1,14 @@
 package controllers_test
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/router"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/router"
+	"github.com/gin-gonic/gin"
 )
 
 // Global test variables
@@ -117,20 +118,20 @@ func (locationService *mockLocationService) GetAll(publishedOnly bool) ([]domain
 func (locationService *mockLocationService) GetAllUnpublished() ([]domains.Location, error) {
 	return locationService.mockGetAllUnpublished()
 }
-func (locationService *mockLocationService) GetByLocationId(locId string) (domains.Location, error) {
-	return locationService.mockGetByLocationId(locId)
+func (locationService *mockLocationService) GetByLocationId(locationId string) (domains.Location, error) {
+	return locationService.mockGetByLocationId(locationId)
 }
 func (locationService *mockLocationService) Create(location domains.Location) error {
 	return locationService.mockCreate(location)
 }
-func (locationService *mockLocationService) Update(locId string, location domains.Location) error {
-	return locationService.mockUpdate(locId, location)
+func (locationService *mockLocationService) Update(locationId string, location domains.Location) error {
+	return locationService.mockUpdate(locationId, location)
 }
-func (locationService *mockLocationService) Publish(locIds []string) error {
-	return locationService.mockPublish(locIds)
+func (locationService *mockLocationService) Publish(locationIds []string) error {
+	return locationService.mockPublish(locationIds)
 }
-func (locationService *mockLocationService) Delete(locId string) error {
-	return locationService.mockDelete(locId)
+func (locationService *mockLocationService) Delete(locationId string) error {
+	return locationService.mockDelete(locationId)
 }
 
 var announceService mockAnnounceService

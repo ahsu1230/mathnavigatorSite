@@ -6,13 +6,13 @@ Imagine the backend is an island with multiple ship ports. If a frontend user wa
 
 ## What does an endpoint look like?
 
-API endpoints are identified with a URL very similar to website URLs (e.g. `http://andymathnavigator.com/api/programs/v1/...`). The specific syntax of the API URL depends on how the backend developers designed it.
+API endpoints are identified with a URL very similar to website URLs (e.g. `http://andymathnavigator.com/api/programs/...`). The specific syntax of the API URL depends on how the backend developers designed it.
 
 To demonstrate, the programs domain of this project will be used as an example.
 
-API endpoints can receive URI parameters. For example, if you want to access a program with id "prog1", the syntax for this specific API is `/api/programs/v1/program/prog1`. If you want to access the program with id "prog2", send a HTTP request to `/api/programs/v1/program/prog2`.
+API endpoints can receive URI parameters. For example, if you want to access a program with id "prog1", the syntax for this specific API is `/api/programs/program/prog1`. If you want to access the program with id "prog2", send a HTTP request to `/api/programs/program/prog2`.
 
-API endpoints can also receive query parameters. For example, if you want to access all published programs from this sample API, you would use `/api/programs/v1/all?published=true`. You've probably seen query parameters in website URLs before. For example, if you search something in Google, the URL will look something like `https://www.google.com/search?source=hp&ei=DFKbXvqAIPCIytMP...`. The stuff after the question mark is a query parameter.
+API endpoints can also receive query parameters. For example, if you want to access all published programs from this sample API, you would use `/api/programs/all?published=true`. You've probably seen query parameters in website URLs before. For example, if you search something in Google, the URL will look something like `https://www.google.com/search?source=hp&ei=DFKbXvqAIPCIytMP...`. The stuff after the question mark is a query parameter.
 
 We use URI parameters when we want to identify a specific resource(s), and we use query parameters as to sort or filter resources.
 
@@ -43,7 +43,7 @@ A comprehensive list can be found [here](https://en.wikipedia.org/wiki/List_of_H
 
 If you are unfamiliar with JSON, you can read about them [here](../02_protocols.md#what-is-json).
 
-JSON bodies can be sent both ways. A request could send a JSON body to the endpoint. For example, creating a program via the API endpoint `/api/programs/v1/create` requires the user to also send a JSON body of a program with the request.
+JSON bodies can be sent both ways. A request could send a JSON body to the endpoint. For example, creating a program via the API endpoint `/api/programs/create` requires the user to also send a JSON body of a program with the request.
 
 An endpoint can also return a JSON body. For example, the aforementioned query for a program with a specific id returns a JSON body representing the program with that id in the database.
 

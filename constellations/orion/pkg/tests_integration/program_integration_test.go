@@ -3,10 +3,11 @@ package integration_tests
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/stretchr/testify/assert"
 )
 
 // Test: Create 3 Programs and GetAll()
@@ -17,15 +18,15 @@ func Test_CreatePrograms(t *testing.T) {
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
 	body3 := createJsonBody(&program3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Call Get All!
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
@@ -50,14 +51,14 @@ func Test_UniqueProgramId(t *testing.T) {
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2", 1) // Same programId
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
 	errBody := recorder2.Body.String()
 	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -76,19 +77,19 @@ func Test_UpdateProgram(t *testing.T) {
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := createJsonBody(&program1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123", 1)
 	updatedBody := createJsonBody(&updatedProgram)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", updatedBody)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog2", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog2", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
@@ -107,15 +108,15 @@ func Test_DeleteProgram(t *testing.T) {
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := createJsonBody(&program1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/prog1", nil)
+	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/programs/program/prog1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetTable(t, domains.TABLE_PROGRAMS)

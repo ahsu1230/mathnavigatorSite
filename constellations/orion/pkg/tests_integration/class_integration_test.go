@@ -22,7 +22,7 @@ func Test_CreateClasses(t *testing.T) {
 	createAllClasses(t)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -46,14 +46,14 @@ func Test_UniqueClassId(t *testing.T) {
 	class2 := createClass(1)
 	body1 := createJsonBody(&class1)
 	body2 := createJsonBody(&class2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
 	errBody := recorder2.Body.String()
 	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -72,7 +72,7 @@ func Test_GetClassesByProgram(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesByProgram()
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -94,7 +94,7 @@ func Test_GetClassesBySemester(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesBySemester()
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/semester/2020_summer", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -115,7 +115,7 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesByProgramAndSemester()
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_spring", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -136,19 +136,19 @@ func Test_UpdateClass(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedClass := createClass(2)
 	updatedBody := createJsonBody(&updatedClass)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1_2020_spring_class1", updatedBody)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/class/program1_2020_spring_class1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class2", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class2", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
@@ -167,15 +167,15 @@ func Test_DeleteClass(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	body1 := createJsonBody(&class1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/program1_2020_spring_class1", nil)
+	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetClassTables(t)
@@ -190,7 +190,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_spring",
 			ClassKey:   domains.NewNullString("class1"),
 			ClassId:    "program1_2020_spring_class1",
-			LocId:      "churchill",
+			LocationId: "churchill",
 			Times:      "3 pm - 5 pm",
 			StartDate:  now,
 			EndDate:    later1,
@@ -201,7 +201,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_spring",
 			ClassKey:   domains.NewNullString("class2"),
 			ClassId:    "program1_2020_spring_class2",
-			LocId:      "churchill",
+			LocationId: "churchill",
 			Times:      "5 pm - 7 pm",
 			StartDate:  now,
 			EndDate:    later1,
@@ -212,7 +212,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_summer",
 			ClassKey:   domains.NewNullString("final_review"),
 			ClassId:    "program1_2020_summer_final_review",
-			LocId:      "churchill",
+			LocationId: "churchill",
 			Times:      "5 pm - 8 pm",
 			StartDate:  later1,
 			EndDate:    later2,
@@ -223,7 +223,7 @@ func createClass(id int) domains.Class {
 			SemesterId: "2020_summer",
 			ClassKey:   domains.NewNullString(""),
 			ClassId:    "program2_2020_summer",
-			LocId:      "churchill",
+			LocationId: "churchill",
 			Times:      "4 pm - 6 pm",
 			StartDate:  later2,
 			EndDate:    later3,
@@ -237,7 +237,7 @@ func createAllClasses(t *testing.T) {
 	for i := 1; i < 5; i++ {
 		class := createClass(i)
 		body := createJsonBody(&class)
-		recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
+		recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
 }
@@ -255,11 +255,11 @@ func createAllProgramsSemestersLocations(t *testing.T) {
 	body4 := createJsonBody(&semester2)
 	body5 := createJsonBody(&location1)
 
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body4)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body5)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body5)
 
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -275,7 +275,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -284,7 +284,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -293,7 +293,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
@@ -302,7 +302,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)

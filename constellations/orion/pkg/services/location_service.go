@@ -37,8 +37,8 @@ func (ls *locationService) GetAllUnpublished() ([]domains.Location, error) {
 	return locations, nil
 }
 
-func (ls *locationService) GetByLocationId(locId string) (domains.Location, error) {
-	location, err := repos.LocationRepo.SelectByLocationId(locId)
+func (ls *locationService) GetByLocationId(locationId string) (domains.Location, error) {
+	location, err := repos.LocationRepo.SelectByLocationId(locationId)
 	if err != nil {
 		return domains.Location{}, err
 	}
@@ -49,15 +49,15 @@ func (ls *locationService) Create(location domains.Location) error {
 	err := repos.LocationRepo.Insert(location)
 	return err
 }
-func (ls *locationService) Update(locId string, location domains.Location) error {
-	err := repos.LocationRepo.Update(locId, location)
+func (ls *locationService) Update(locationId string, location domains.Location) error {
+	err := repos.LocationRepo.Update(locationId, location)
 	return err
 }
-func (ls *locationService) Publish(locIds []string) error {
-	err := repos.LocationRepo.Publish(locIds)
+func (ls *locationService) Publish(locationIds []string) error {
+	err := repos.LocationRepo.Publish(locationIds)
 	return err
 }
-func (ls *locationService) Delete(locId string) error {
-	err := repos.LocationRepo.Delete(locId)
+func (ls *locationService) Delete(locationId string) error {
+	err := repos.LocationRepo.Delete(locationId)
 	return err
 }
