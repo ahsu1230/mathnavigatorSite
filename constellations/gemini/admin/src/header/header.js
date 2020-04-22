@@ -64,16 +64,16 @@ class HeaderLink extends React.Component {
 
 class HeaderDropdown extends React.Component {
     state = {
-        hover: false
-    }
+        hover: false,
+    };
 
     onHoverHeader = () => {
-        this.setState({hover: true});
-    }
+        this.setState({ hover: true });
+    };
 
     onExitHeader = () => {
-        this.setState({hover: false});
-    }
+        this.setState({ hover: false });
+    };
 
     render() {
         const title = this.props.title;
@@ -81,11 +81,14 @@ class HeaderDropdown extends React.Component {
             return <HeaderDropdownRow key={index} link={link} />;
         });
         const listStyle = {
-            height: this.state.hover ? (32 * links.length + "px") : "0px"
+            height: this.state.hover ? 32 * links.length + "px" : "0px",
         };
 
         return (
-            <div className="header-dropdown header-section" onMouseOver={this.onHoverHeader} onMouseOut={this.onExitHeader}>
+            <div
+                className="header-dropdown header-section"
+                onMouseOver={this.onHoverHeader}
+                onMouseOut={this.onExitHeader}>
                 <div className="title">{title}</div>
                 <ul style={listStyle}>{links}</ul>
             </div>
