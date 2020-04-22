@@ -25,7 +25,7 @@ You should see `ok`s and no failures.
 
 In the `orion` folder,
  * Create a new folder called `configs`.
- * Inside this folder, create a new file called `config_local.yaml`.
+ * Inside this folder, create a new file called `local.yml`.
  * Paste the following content into this file and save.
 ```
 app:
@@ -42,6 +42,6 @@ Remember the password you saved for MySql? Paste that password where it says `<Y
 
 After that, go back to the `orion` directory and start the web server with this:
 ```
-go run main.go configs/config_local.yml
+go run main.go configs/local.yml
 ```
 You should see a `Listening and serving HTTP on :8080` message. It worked! Now, you are running the Math Navigator webserver locally on your machine. Any HTTP requests to the port number 8080 will be received and responded to by the local webserver!
