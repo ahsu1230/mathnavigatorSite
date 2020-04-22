@@ -1,16 +1,17 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllPrograms(c *gin.Context) {
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	programList, err := services.ProgramService.GetAll(publishedOnly)
+	programList, err := repos.ProgramRepo.SelectAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -24,7 +25,7 @@ func GetProgramById(c *gin.Context) {
 	// Incoming parameters
 	programId := c.Param("programId")
 
-	program, err := services.ProgramService.GetByProgramId(programId)
+	program, err := repos.ProgramRepo.SelectByProgramId(programId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -45,7 +46,7 @@ func CreateProgram(c *gin.Context) {
 		return
 	}
 
-	err := services.ProgramService.Create(programJson)
+	err := repos.ProgramRepo.Insert(programJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -67,7 +68,7 @@ func UpdateProgram(c *gin.Context) {
 		return
 	}
 
-	err := services.ProgramService.Update(programId, programJson)
+	err := repos.ProgramRepo.Update(programId, programJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -82,7 +83,7 @@ func PublishPrograms(c *gin.Context) {
 	var programIdsJson []string
 	c.BindJSON(&programIdsJson)
 
-	err := services.ProgramService.Publish(programIdsJson)
+	err := repos.ProgramRepo.Publish(programIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -96,7 +97,7 @@ func DeleteProgram(c *gin.Context) {
 	// Incoming Parameters
 	programId := c.Param("programId")
 
-	err := services.ProgramService.Delete(programId)
+	err := repos.ProgramRepo.Delete(programId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

@@ -1,17 +1,18 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllSemesters(c *gin.Context) {
 	// Incoming optional parameter
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	semesterList, err := services.SemesterService.GetAll(publishedOnly)
+	semesterList, err := repos.SemesterRepo.SelectAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -24,7 +25,7 @@ func GetSemesterById(c *gin.Context) {
 	// Incoming parameters
 	semesterId := c.Param("semesterId")
 
-	semester, err := services.SemesterService.GetBySemesterId(semesterId)
+	semester, err := repos.SemesterRepo.SelectBySemesterId(semesterId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -44,7 +45,7 @@ func CreateSemester(c *gin.Context) {
 		return
 	}
 
-	err := services.SemesterService.Create(semesterJson)
+	err := repos.SemesterRepo.Insert(semesterJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -65,7 +66,7 @@ func UpdateSemester(c *gin.Context) {
 		return
 	}
 
-	err := services.SemesterService.Update(semesterId, semesterJson)
+	err := repos.SemesterRepo.Update(semesterId, semesterJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -79,7 +80,7 @@ func PublishSemesters(c *gin.Context) {
 	var semesterIds []string
 	c.BindJSON(&semesterIds)
 
-	err := services.SemesterService.Publish(semesterIds)
+	err := repos.SemesterRepo.Publish(semesterIds)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -92,7 +93,7 @@ func DeleteSemester(c *gin.Context) {
 	// Incoming Parameters
 	semesterId := c.Param("semesterId")
 
-	err := services.SemesterService.Delete(semesterId)
+	err := repos.SemesterRepo.Delete(semesterId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

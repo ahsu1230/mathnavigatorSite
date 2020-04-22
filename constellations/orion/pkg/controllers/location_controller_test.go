@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +17,7 @@ import (
 // Test Get All
 //
 func TestGetAllLocations_Success(t *testing.T) {
-	locationService.mockGetAll = func(publishedOnly bool) ([]domains.Location, error) {
+	locationRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Location, error) {
 		return []domains.Location{
 			{
 				Id:         1,
@@ -39,7 +39,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/locations/all", nil)
@@ -61,11 +61,11 @@ func TestGetAllLocations_Success(t *testing.T) {
 // Test Get Location
 //
 func TestGetLocation_Success(t *testing.T) {
-	locationService.mockGetByLocationId = func(LocationId string) (domains.Location, error) {
+	locationRepo.mockSelectByLocationId = func(LocationId string) (domains.Location, error) {
 		location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 		return location, nil
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/locations/location/loc1", nil)
@@ -81,10 +81,10 @@ func TestGetLocation_Success(t *testing.T) {
 }
 
 func TestGetLocation_Failure(t *testing.T) {
-	locationService.mockGetByLocationId = func(LocationId string) (domains.Location, error) {
+	locationRepo.mockSelectByLocationId = func(LocationId string) (domains.Location, error) {
 		return domains.Location{}, errors.New("Not Found")
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/locations/location/loc2", nil)
@@ -97,10 +97,10 @@ func TestGetLocation_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateLocation_Success(t *testing.T) {
-	locationService.mockCreate = func(location domains.Location) error {
+	locationRepo.mockInsert = func(location domains.Location) error {
 		return nil
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
@@ -114,7 +114,7 @@ func TestCreateLocation_Success(t *testing.T) {
 
 func TestCreateLocation_Failure(t *testing.T) {
 	// no mock needed
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
@@ -130,10 +130,10 @@ func TestCreateLocation_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateLocation_Success(t *testing.T) {
-	locationService.mockUpdate = func(LocationId string, location domains.Location) error {
+	locationRepo.mockUpdate = func(LocationId string, location domains.Location) error {
 		return nil // Successful update
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
@@ -146,7 +146,7 @@ func TestUpdateLocation_Success(t *testing.T) {
 
 func TestUpdateLocation_Invalid(t *testing.T) {
 	// no mock needed
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
@@ -158,10 +158,10 @@ func TestUpdateLocation_Invalid(t *testing.T) {
 }
 
 func TestUpdateLocation_Failure(t *testing.T) {
-	locationService.mockUpdate = func(LocationId string, location domains.Location) error {
+	locationRepo.mockUpdate = func(LocationId string, location domains.Location) error {
 		return errors.New("not found")
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
@@ -176,10 +176,10 @@ func TestUpdateLocation_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishLocations_Success(t *testing.T) {
-	locationService.mockPublish = func(LocationIds []string) error {
+	locationRepo.mockPublish = func(LocationIds []string) error {
 		return nil // Successful publish
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	LocationIds := []string{"loc1", "loc2"}
@@ -198,10 +198,10 @@ func TestPublishLocations_Success(t *testing.T) {
 // Test Delete
 //
 func TestDeleteLocation_Success(t *testing.T) {
-	locationService.mockDelete = func(LocationId string) error {
+	locationRepo.mockDelete = func(LocationId string) error {
 		return nil // Return no error, successful delete!
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/locations/location/some_location", nil)
@@ -211,10 +211,10 @@ func TestDeleteLocation_Success(t *testing.T) {
 }
 
 func TestDeleteLocation_Failure(t *testing.T) {
-	locationService.mockDelete = func(LocationId string) error {
+	locationRepo.mockDelete = func(LocationId string) error {
 		return errors.New("not found")
 	}
-	services.LocationService = &locationService
+	repos.LocationRepo = &locationRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodDelete, "/api/locations/location/some_location", nil)

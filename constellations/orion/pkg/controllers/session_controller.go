@@ -1,17 +1,18 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := services.SessionService.GetAllByClassId(classId, publishedOnly)
+	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId, publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -25,7 +26,7 @@ func GetSessionById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
 
-	session, err := services.SessionService.GetBySessionId(id)
+	session, err := repos.SessionRepo.SelectBySessionId(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -40,7 +41,7 @@ func CreateSessions(c *gin.Context) {
 	var sessionsJson []domains.Session
 	c.BindJSON(&sessionsJson)
 
-	err := services.SessionService.Create(sessionsJson)
+	err := repos.SessionRepo.Insert(sessionsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
@@ -62,7 +63,7 @@ func UpdateSession(c *gin.Context) {
 		return
 	}
 
-	err := services.SessionService.Update(id, sessionJson)
+	err := repos.SessionRepo.Update(id, sessionJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -77,7 +78,7 @@ func PublishSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Publish(idsJson)
+	err := repos.SessionRepo.Publish(idsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -92,7 +93,7 @@ func DeleteSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	err := services.SessionService.Delete(idsJson)
+	err := repos.SessionRepo.Delete(idsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
