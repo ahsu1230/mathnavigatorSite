@@ -45,7 +45,7 @@ var userRepo mockUserRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize           func(*sql.DB)
 	mockSelectAll            func(bool) ([]domains.Program, error)
 	mockSelectAllUnpublished func() ([]domains.Program, error)
 	mockSelectByProgramId    func(string) (domains.Program, error)
@@ -81,7 +81,7 @@ func (programRepo *mockProgramRepo) Delete(programId string) error {
 
 // Fake classRepo that implements ClassRepo interface
 type mockClassRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize                   func(*sql.DB)
 	mockSelectAll                    func(bool) ([]domains.Class, error)
 	mockSelectAllUnpublished         func() ([]domains.Class, error)
 	mockSelectByClassId              func(string) (domains.Class, error)
@@ -129,7 +129,7 @@ func (classRepo *mockClassRepo) Delete(classId string) error {
 
 // Fake locationRepo that implements LocationRepo interface
 type mockLocationRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize           func(*sql.DB)
 	mockSelectAll            func(bool) ([]domains.Location, error)
 	mockSelectAllUnpublished func() ([]domains.Location, error)
 	mockSelectByLocationId   func(string) (domains.Location, error)
@@ -165,7 +165,7 @@ func (locationRepo *mockLocationRepo) Delete(locationId string) error {
 
 // Fake announceRepo that implements AnnounceRepo interface
 type mockAnnounceRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize         func(*sql.DB)
 	mockSelectAll          func() ([]domains.Announce, error)
 	mockSelectByAnnounceId func(uint) (domains.Announce, error)
 	mockInsert             func(domains.Announce) error
@@ -193,7 +193,7 @@ func (announceRepo *mockAnnounceRepo) Delete(id uint) error {
 
 // Fake achieveRepo that implements AchieveRepo interface
 type mockAchieveRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize             func(*sql.DB)
 	mockSelectAll              func(bool) ([]domains.Achieve, error)
 	mockSelectAllUnpublished   func() ([]domains.Achieve, error)
 	mockSelectById             func(uint) (domains.Achieve, error)
@@ -233,7 +233,7 @@ func (achieveRepo *mockAchieveRepo) Delete(id uint) error {
 
 // Fake semesterRepo that implements SemesterRepo interface
 type mockSemesterRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize           func(*sql.DB)
 	mockSelectAll            func(bool) ([]domains.Semester, error)
 	mockSelectAllUnpublished func() ([]domains.Semester, error)
 	mockSelectBySemesterId   func(string) (domains.Semester, error)
@@ -269,7 +269,7 @@ func (semesterRepo *mockSemesterRepo) Delete(semesterId string) error {
 
 // Fake sessionRepo that implements SessionRepo interface
 type mockSessionRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize           func(*sql.DB)
 	mockSelectAllByClassId   func(string, bool) ([]domains.Session, error)
 	mockSelectAllUnpublished func() ([]domains.Session, error)
 	mockSelectBySessionId    func(uint) (domains.Session, error)
@@ -305,7 +305,7 @@ func (sessionRepo *mockSessionRepo) Delete(ids []uint) error {
 
 // Fake userRepo that implements UserRepo interface
 type mockUserRepo struct {
-	mockInitialize			 func(*sql.DB)
+	mockInitialize         func(*sql.DB)
 	mockSelectAll          func(string, int, int) ([]domains.User, error)
 	mockSelectById         func(uint) (domains.User, error)
 	mockSelectByGuardianId func(uint) ([]domains.User, error)
