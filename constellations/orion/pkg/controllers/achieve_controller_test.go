@@ -4,28 +4,29 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/stretchr/testify/assert"
 )
 
 //
 // Test Get All
 //
 func TestGetAllAchievements_Success(t *testing.T) {
-	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
+	achieveRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -46,16 +47,16 @@ func TestGetAllAchievements_Success(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedAchievements_Success(t *testing.T) {
-	achieveService.mockGetAll = func(publishedOnly bool) ([]domains.Achieve, error) {
+	achieveRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -78,7 +79,7 @@ func TestGetPublishedAchievements_Success(t *testing.T) {
 // Test Get All Grouped By Year
 //
 func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
-	achieveService.mockGetAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
+	achieveRepo.mockSelectAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
 		return []domains.AchieveYearGroup{
 			{
 				Year: 2021,
@@ -94,10 +95,10 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/years", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -118,14 +119,14 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 // Test Get Achievement
 //
 func TestGetAchievement_Success(t *testing.T) {
-	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
+	achieveRepo.mockSelectById = func(id uint) (domains.Achieve, error) {
 		achieve := createMockAchievement(1, 2020, "message1")
 		return achieve, nil
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -139,13 +140,13 @@ func TestGetAchievement_Success(t *testing.T) {
 }
 
 func TestGetAchievement_Failure(t *testing.T) {
-	achieveService.mockGetById = func(id uint) (domains.Achieve, error) {
+	achieveRepo.mockSelectById = func(id uint) (domains.Achieve, error) {
 		return domains.Achieve{}, errors.New("not found")
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -155,15 +156,15 @@ func TestGetAchievement_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateAchievement_Success(t *testing.T) {
-	achieveService.mockCreate = func(achieve domains.Achieve) error {
+	achieveRepo.mockInsert = func(achieve domains.Achieve) error {
 		return nil
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -171,12 +172,12 @@ func TestCreateAchievement_Success(t *testing.T) {
 
 func TestCreateAchievement_Failure(t *testing.T) {
 	// no mock needed
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -186,15 +187,15 @@ func TestCreateAchievement_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateAchievement_Success(t *testing.T) {
-	achieveService.mockUpdate = func(id uint, achieve domains.Achieve) error {
+	achieveRepo.mockUpdate = func(id uint, achieve domains.Achieve) error {
 		return nil // Successful update
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -202,27 +203,27 @@ func TestUpdateAchievement_Success(t *testing.T) {
 
 func TestUpdateAchievement_Invalid(t *testing.T) {
 	// no mock needed
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 func TestUpdateAchievement_Failure(t *testing.T) {
-	achieveService.mockUpdate = func(id uint, achieve domains.Achieve) error {
+	achieveRepo.mockUpdate = func(id uint, achieve domains.Achieve) error {
 		return errors.New("not found")
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	achieve := createMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -232,10 +233,10 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishAchievement_Success(t *testing.T) {
-	achieveService.mockPublish = func(ids []uint) error {
+	achieveRepo.mockPublish = func(ids []uint) error {
 		return nil // Return no error, successful publish!
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	ids := []uint{1}
@@ -243,17 +244,17 @@ func TestPublishAchievement_Success(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestPublishAchievement_Failure(t *testing.T) {
-	achieveService.mockPublish = func(ids []uint) error {
+	achieveRepo.mockPublish = func(ids []uint) error {
 		return errors.New("not found")
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
 	ids := []uint{1}
@@ -261,7 +262,7 @@ func TestPublishAchievement_Failure(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/achievements/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -271,26 +272,26 @@ func TestPublishAchievement_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteAchievement_Success(t *testing.T) {
-	achieveService.mockDelete = func(id uint) error {
+	achieveRepo.mockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteAchievement_Failure(t *testing.T) {
-	achieveService.mockDelete = func(id uint) error {
+	achieveRepo.mockDelete = func(id uint) error {
 		return errors.New("not found")
 	}
-	services.AchieveService = &achieveService
+	repos.AchieveRepo = &achieveRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

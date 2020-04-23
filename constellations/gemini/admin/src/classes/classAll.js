@@ -14,7 +14,7 @@ export class ClassAllPage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/classes/v1/all").then((res) => {
+        API.get("api/classes/all").then((res) => {
             const classList = res.data;
             this.setState({ list: classList });
         });
@@ -58,7 +58,7 @@ class ClassRow extends React.Component {
         return (
             <ul className="class-list-row">
                 <li className="li-med">{classId}</li>
-                <li className="li-small">{classObj.locId}</li>
+                <li className="li-small">{classObj.locationId}</li>
                 <li className="li-small">
                     <div>{moment(classObj.startDate).format("M/D/YYYY")}</div>
                     <div>{moment(classObj.endDate).format("M/D/YYYY")}</div>

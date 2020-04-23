@@ -1,16 +1,17 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllLocations(c *gin.Context) {
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	locationList, err := services.LocationService.GetAll(publishedOnly)
+	locationList, err := repos.LocationRepo.SelectAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -22,9 +23,9 @@ func GetAllLocations(c *gin.Context) {
 
 func GetLocationById(c *gin.Context) {
 	// Incoming parameters
-	locId := c.Param("locId")
+	locationId := c.Param("locationId")
 
-	location, err := services.LocationService.GetByLocationId(locId)
+	location, err := repos.LocationRepo.SelectByLocationId(locationId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -45,7 +46,7 @@ func CreateLocation(c *gin.Context) {
 		return
 	}
 
-	err := services.LocationService.Create(locationJson)
+	err := repos.LocationRepo.Insert(locationJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -57,7 +58,7 @@ func CreateLocation(c *gin.Context) {
 
 func UpdateLocation(c *gin.Context) {
 	// Incoming JSON & Parameters
-	locId := c.Param("locId")
+	locationId := c.Param("locationId")
 	var locationJson domains.Location
 	c.BindJSON(&locationJson)
 
@@ -67,7 +68,7 @@ func UpdateLocation(c *gin.Context) {
 		return
 	}
 
-	err := services.LocationService.Update(locId, locationJson)
+	err := repos.LocationRepo.Update(locationId, locationJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -79,10 +80,10 @@ func UpdateLocation(c *gin.Context) {
 
 func PublishLocations(c *gin.Context) {
 	// Incoming JSON
-	var locIdsJson []string
-	c.BindJSON(&locIdsJson)
+	var locationIdsJson []string
+	c.BindJSON(&locationIdsJson)
 
-	err := services.LocationService.Publish(locIdsJson)
+	err := repos.LocationRepo.Publish(locationIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -94,9 +95,9 @@ func PublishLocations(c *gin.Context) {
 
 func DeleteLocation(c *gin.Context) {
 	// Incoming Parameters
-	locId := c.Param("locId")
+	locationId := c.Param("locationId")
 
-	err := services.LocationService.Delete(locId)
+	err := repos.LocationRepo.Delete(locationId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

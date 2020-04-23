@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/stretchr/testify/assert"
 )
 
 var now = time.Now().UTC()
@@ -22,13 +23,13 @@ var later3 = now.Add(time.Hour * 24 * 60)
 // Test Get All
 //
 func TestGetAllClasses_Success(t *testing.T) {
-	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
+	classRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3, 4), nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -48,13 +49,13 @@ func TestGetAllClasses_Success(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedClasses_Success(t *testing.T) {
-	classService.mockGetAll = func(publishedOnly bool) ([]domains.Class, error) {
+	classRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return createMockClasses(2, 3), nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -72,13 +73,13 @@ func TestGetPublishedClasses_Success(t *testing.T) {
 // Test Get Class
 //
 func TestGetClass_Success(t *testing.T) {
-	classService.mockGetByClassId = func(classId string) (domains.Class, error) {
+	classRepo.mockSelectByClassId = func(classId string) (domains.Class, error) {
 		return createMockClasses(1)[0], nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program1_2020_spring_class1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -91,13 +92,13 @@ func TestGetClass_Success(t *testing.T) {
 }
 
 func TestGetClass_Failure(t *testing.T) {
-	classService.mockGetByClassId = func(classId string) (domains.Class, error) {
+	classRepo.mockSelectByClassId = func(classId string) (domains.Class, error) {
 		return domains.Class{}, errors.New("not found")
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/class/program2_2020_summer", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/class/program2_2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -107,13 +108,13 @@ func TestGetClass_Failure(t *testing.T) {
 // Test Get Classes by other properties
 //
 func TestGetClassesByProgram_Success(t *testing.T) {
-	classService.mockGetByProgramId = func(programId string) ([]domains.Class, error) {
+	classRepo.mockSelectByProgramId = func(programId string) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3), nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -129,13 +130,13 @@ func TestGetClassesByProgram_Success(t *testing.T) {
 }
 
 func TestGetClassesBySemester_Success(t *testing.T) {
-	classService.mockGetBySemesterId = func(semesterId string) ([]domains.Class, error) {
+	classRepo.mockSelectBySemesterId = func(semesterId string) ([]domains.Class, error) {
 		return createMockClasses(3, 4), nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/semester/2020_summer", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -150,13 +151,13 @@ func TestGetClassesBySemester_Success(t *testing.T) {
 }
 
 func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
-	classService.mockGetByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
+	classRepo.mockSelectByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
 		return createMockClasses(1, 2), nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/classes/program/program1/semester/2020_spring", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -174,15 +175,15 @@ func TestGetClassesByProgramAndSemester_Success(t *testing.T) {
 // Test Create
 //
 func TestCreateClass_Success(t *testing.T) {
-	classService.mockCreate = func(class domains.Class) error {
+	classRepo.mockInsert = func(class domains.Class) error {
 		return nil
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	class := createMockClasses(1)[0]
 	body := createBodyFromClass(class)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -190,12 +191,12 @@ func TestCreateClass_Success(t *testing.T) {
 
 func TestCreateClass_Failure(t *testing.T) {
 	// no mock needed
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -205,15 +206,15 @@ func TestCreateClass_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateClass_Success(t *testing.T) {
-	classService.mockUpdate = func(classId string, class domains.Class) error {
+	classRepo.mockUpdate = func(classId string, class domains.Class) error {
 		return nil // Successful update
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	class := createMockClasses(2)[0]
 	body := createBodyFromClass(class)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -221,27 +222,27 @@ func TestUpdateClass_Success(t *testing.T) {
 
 func TestUpdateClass_Invalid(t *testing.T) {
 	// no mock needed
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 func TestUpdateClass_Failure(t *testing.T) {
-	classService.mockUpdate = func(classId string, class domains.Class) error {
+	classRepo.mockUpdate = func(classId string, class domains.Class) error {
 		return errors.New("not found")
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	class := createMockClasses(2)[0]
 	body := createBodyFromClass(class)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/class/program1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -251,10 +252,10 @@ func TestUpdateClass_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishClasses_Success(t *testing.T) {
-	classService.mockPublish = func(classIds []string) error {
+	classRepo.mockPublish = func(classIds []string) error {
 		return nil // Return no error, successful publish!
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	classIds := []string{"program1_2020_spring_class1"}
@@ -262,17 +263,17 @@ func TestPublishClasses_Success(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestPublishClasses_Failure(t *testing.T) {
-	classService.mockPublish = func(classIds []string) error {
+	classRepo.mockPublish = func(classIds []string) error {
 		return errors.New("not found")
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
 	classIds := []string{"program1_2020_spring_class1"}
@@ -280,7 +281,7 @@ func TestPublishClasses_Failure(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", bytes.NewBuffer(marshal))
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/classes/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -290,26 +291,26 @@ func TestPublishClasses_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteClass_Success(t *testing.T) {
-	classService.mockDelete = func(classId string) error {
+	classRepo.mockDelete = func(classId string) error {
 		return nil // Return no error, successful delete!
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/class/some_class", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteClass_Failure(t *testing.T) {
-	classService.mockDelete = func(classId string) error {
+	classRepo.mockDelete = func(classId string) error {
 		return errors.New("not found")
 	}
-	services.ClassService = &classService
+	repos.ClassRepo = &classRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/v1/class/some_class", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/classes/class/some_class", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -318,13 +319,13 @@ func TestDeleteClass_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockClass(programId, semesterId, classKey, classId, locId, times string, startDate, endDate time.Time) domains.Class {
+func createMockClass(programId, semesterId, classKey, classId, locationId, times string, startDate, endDate time.Time) domains.Class {
 	return domains.Class{
 		ProgramId:  programId,
 		SemesterId: semesterId,
 		ClassKey:   domains.NewNullString(classKey),
 		ClassId:    classId,
-		LocId:      locId,
+		LocationId: locationId,
 		Times:      times,
 		StartDate:  startDate,
 		EndDate:    endDate,
@@ -394,7 +395,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -403,7 +404,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
@@ -412,7 +413,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
@@ -421,7 +422,7 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocId)
+		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)

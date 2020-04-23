@@ -33,7 +33,7 @@ export class AchieveEditPage extends React.Component {
     componentDidMount() {
         const Id = this.props.Id;
         if (Id) {
-            API.get("api/achievements/v1/achievement/" + Id).then((res) => {
+            API.get("api/achievements/achievement/" + Id).then((res) => {
                 const achieve = res.data;
                 this.setState({
                     inputYear: achieve.year,
@@ -65,14 +65,11 @@ export class AchieveEditPage extends React.Component {
         let failCallback = (err) =>
             alert("Could not save achievement: " + err.response.data);
         if (this.state.isEdit) {
-            API.post(
-                "api/achievements/v1/achievement/" + this.props.Id,
-                achieve
-            )
+            API.post("api/achievements/achievement/" + this.props.Id, achieve)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         } else {
-            API.post("api/achievements/v1/create", achieve)
+            API.post("api/achievements/create", achieve)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
@@ -85,7 +82,7 @@ export class AchieveEditPage extends React.Component {
 
     onDeleted() {
         const Id = this.props.Id;
-        API.delete("api/achievements/v1/achievement/" + Id)
+        API.delete("api/achievements/achievement/" + Id)
             .then((res) => {
                 window.location.hash = "achievements";
             })

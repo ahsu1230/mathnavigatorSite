@@ -2,10 +2,11 @@ package integration_tests
 
 import (
 	"encoding/json"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/stretchr/testify/assert"
 )
 
 // Test: Create 3 Achievements and GetAll(false)
@@ -16,15 +17,15 @@ func Test_CreateAchievements(t *testing.T) {
 	body1 := createJsonBody(&achieve1)
 	body2 := createJsonBody(&achieve2)
 	body3 := createJsonBody(&achieve3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Call Get All!
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/achievements/all", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
@@ -56,17 +57,17 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 	body2 := createJsonBody(&achieve2)
 	body3 := createJsonBody(&achieve3)
 	body4 := createJsonBody(&achieve4)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body4)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body4)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Call Get All!
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/years", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/years", nil)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Validate results
@@ -96,17 +97,17 @@ func Test_UpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
 	achieve1 := createAchievement(2020, "message1")
 	body1 := createJsonBody(&achieve1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedAchieve := createAchievement(2021, "message2")
 	updatedBody := createJsonBody(&updatedAchieve)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/achievement/1", updatedBody)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -126,15 +127,15 @@ func Test_DeleteAchievement(t *testing.T) {
 	// Create
 	achieve1 := createAchievement(2020, "message1")
 	body1 := createJsonBody(&achieve1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/achievements/v1/achievement/1", nil)
+	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/achievement/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)

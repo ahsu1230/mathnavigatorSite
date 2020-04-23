@@ -1,17 +1,18 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllClasses(c *gin.Context) {
 	// Incoming optional parameter
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	classList, err := services.ClassService.GetAll(publishedOnly)
+	classList, err := repos.ClassRepo.SelectAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -25,7 +26,7 @@ func GetClassById(c *gin.Context) {
 	// Incoming parameters
 	classId := c.Param("classId")
 
-	class, err := services.ClassService.GetByClassId(classId)
+	class, err := repos.ClassRepo.SelectByClassId(classId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -39,7 +40,7 @@ func GetClassesByProgram(c *gin.Context) {
 	// Incoming parameters
 	programId := c.Param("programId")
 
-	classes, err := services.ClassService.GetByProgramId(programId)
+	classes, err := repos.ClassRepo.SelectByProgramId(programId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -53,7 +54,7 @@ func GetClassesBySemester(c *gin.Context) {
 	// Incoming parameters
 	semesterId := c.Param("semesterId")
 
-	classes, err := services.ClassService.GetBySemesterId(semesterId)
+	classes, err := repos.ClassRepo.SelectBySemesterId(semesterId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -68,7 +69,7 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 	programId := c.Param("programId")
 	semesterId := c.Param("semesterId")
 
-	classes, err := services.ClassService.GetByProgramAndSemesterId(programId, semesterId)
+	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(programId, semesterId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -88,7 +89,7 @@ func CreateClass(c *gin.Context) {
 		return
 	}
 
-	err := services.ClassService.Create(classJson)
+	err := repos.ClassRepo.Insert(classJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -110,7 +111,7 @@ func UpdateClass(c *gin.Context) {
 		return
 	}
 
-	err := services.ClassService.Update(classId, classJson)
+	err := repos.ClassRepo.Update(classId, classJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -125,7 +126,7 @@ func PublishClasses(c *gin.Context) {
 	var classIds []string
 	c.BindJSON(&classIds)
 
-	err := services.ClassService.Publish(classIds)
+	err := repos.ClassRepo.Publish(classIds)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -138,7 +139,7 @@ func DeleteClass(c *gin.Context) {
 	// Incoming Parameters
 	classId := c.Param("classId")
 
-	err := services.ClassService.Delete(classId)
+	err := repos.ClassRepo.Delete(classId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

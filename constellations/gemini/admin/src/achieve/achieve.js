@@ -14,7 +14,7 @@ export class AchievePage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/achievements/v1/all").then((res) => {
+        API.get("api/achievements/all").then((res) => {
             const achievements = res.data;
             this.setState({ list: achievements });
         });

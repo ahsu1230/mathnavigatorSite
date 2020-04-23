@@ -14,7 +14,7 @@ func Test_CreateUsers(t *testing.T) {
 	createAllUsers(t)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -36,7 +36,7 @@ func Test_SearchUsers(t *testing.T) {
 	createAllUsers(t)
 
 	// Call Get All Searching for "Smith" With Page Size 2 Offset 0
-	recorder1 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Smith&pageSize=2&offset=0", nil)
+	recorder1 := sendHttpRequest(t, http.MethodGet, "/api/users/all?search=Smith&pageSize=2&offset=0", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -49,7 +49,7 @@ func Test_SearchUsers(t *testing.T) {
 	assert.EqualValues(t, 2, len(users1))
 
 	// Call Get All Searching for "Smith" With Page Size 2 Offset 2
-	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/all?search=Smith&pageSize=2&offset=2", nil)
+	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/users/all?search=Smith&pageSize=2&offset=2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -68,7 +68,7 @@ func Test_GetUsersByGuardian(t *testing.T) {
 	createAllUsers(t)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/v1/guardian/1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/guardian/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -88,17 +88,17 @@ func Test_UpdateUser(t *testing.T) {
 	// Create 1 User
 	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedUser := createUser(2)
 	updatedBody := createJsonBody(&updatedUser)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/user/1", updatedBody)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -116,15 +116,15 @@ func Test_DeleteUser(t *testing.T) {
 	// Create
 	user1 := createUser(1)
 	body1 := createJsonBody(&user1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/users/v1/user/1", nil)
+	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/v1/user/1", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetTable(t, domains.TABLE_USERS)
@@ -172,7 +172,7 @@ func createAllUsers(t *testing.T) {
 	for i := 1; i < 4; i++ {
 		user := createUser(i)
 		body := createJsonBody(&user)
-		recorder := sendHttpRequest(t, http.MethodPost, "/api/users/v1/create", body)
+		recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
 }

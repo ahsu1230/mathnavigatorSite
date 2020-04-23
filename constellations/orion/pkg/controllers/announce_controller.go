@@ -1,14 +1,15 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllAnnouncements(c *gin.Context) {
-	announceList, err := services.AnnounceService.GetAll()
+	announceList, err := repos.AnnounceRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -21,7 +22,7 @@ func GetAnnouncementById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
 
-	announce, err := services.AnnounceService.GetByAnnounceId(id)
+	announce, err := repos.AnnounceRepo.SelectByAnnounceId(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -41,7 +42,7 @@ func CreateAnnouncement(c *gin.Context) {
 		return
 	}
 
-	err := services.AnnounceService.Create(announceJson)
+	err := repos.AnnounceRepo.Insert(announceJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -62,7 +63,7 @@ func UpdateAnnouncement(c *gin.Context) {
 		return
 	}
 
-	err := services.AnnounceService.Update(id, announceJson)
+	err := repos.AnnounceRepo.Update(id, announceJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -75,7 +76,7 @@ func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
 	id := ParseParamId(c)
 
-	err := services.AnnounceService.Delete(id)
+	err := repos.AnnounceRepo.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

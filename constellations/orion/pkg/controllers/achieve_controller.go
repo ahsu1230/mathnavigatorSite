@@ -1,17 +1,18 @@
 package controllers
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllAchievements(c *gin.Context) {
 	// Incoming optional parameter
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	achieveList, err := services.AchieveService.GetAll(publishedOnly)
+	achieveList, err := repos.AchieveRepo.SelectAll(publishedOnly)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -24,7 +25,7 @@ func GetAchievementById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
 
-	achieve, err := services.AchieveService.GetById(id)
+	achieve, err := repos.AchieveRepo.SelectById(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -34,7 +35,7 @@ func GetAchievementById(c *gin.Context) {
 }
 
 func GetAllAchievementsGroupedByYear(c *gin.Context) {
-	achieveYearGroup, err := services.AchieveService.GetAllGroupedByYear()
+	achieveYearGroup, err := repos.AchieveRepo.SelectAllGroupedByYear()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -54,7 +55,7 @@ func CreateAchievement(c *gin.Context) {
 		return
 	}
 
-	err := services.AchieveService.Create(achieveJson)
+	err := repos.AchieveRepo.Insert(achieveJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -75,7 +76,7 @@ func UpdateAchievement(c *gin.Context) {
 		return
 	}
 
-	err := services.AchieveService.Update(id, achieveJson)
+	err := repos.AchieveRepo.Update(id, achieveJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -89,7 +90,7 @@ func PublishAchievements(c *gin.Context) {
 	var ids []uint
 	c.BindJSON(&ids)
 
-	err := services.AchieveService.Publish(ids)
+	err := repos.AchieveRepo.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -102,7 +103,7 @@ func DeleteAchievement(c *gin.Context) {
 	// Incoming Parameters
 	id := ParseParamId(c)
 
-	err := services.AchieveService.Delete(id)
+	err := repos.AchieveRepo.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

@@ -2,55 +2,56 @@ package controllers_test
 
 import (
 	"encoding/json"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/stretchr/testify/assert"
 )
 
 func setupMock() {
-	programService.mockGetAllUnpublished = func() ([]domains.Program, error) {
+	programRepo.mockSelectAllUnpublished = func() ([]domains.Program, error) {
 		return []domains.Program{
 			createMockProgram("prog1", "Program1", 2, 3, "descript1", 0),
 			createMockProgram("prog2", "Program2", 8, 12, "descript2", 0),
 		}, nil
 	}
-	classService.mockGetAllUnpublished = func() ([]domains.Class, error) {
+	classRepo.mockSelectAllUnpublished = func() ([]domains.Class, error) {
 		return createMockClasses(1, 2), nil
 	}
-	locationService.mockGetAllUnpublished = func() ([]domains.Location, error) {
+	locationRepo.mockSelectAllUnpublished = func() ([]domains.Location, error) {
 		return []domains.Location{
 			createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1"),
 			createMockLocation("loc2", "4040 Sesame St", "City", "MD", "77294", "Room 2"),
 		}, nil
 	}
-	achieveService.mockGetAllUnpublished = func() ([]domains.Achieve, error) {
+	achieveRepo.mockSelectAllUnpublished = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			createMockAchievement(1, 2020, "message1"),
 			createMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
-	semesterService.mockGetAllUnpublished = func() ([]domains.Semester, error) {
+	semesterRepo.mockSelectAllUnpublished = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			createMockSemester("2020_fall", "Fall 2020"),
 			createMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
-	sessionService.mockGetAllUnpublished = func() ([]domains.Session, error) {
+	sessionRepo.mockSelectAllUnpublished = func() ([]domains.Session, error) {
 		now := time.Now().UTC()
 		return []domains.Session{
 			createMockSession(1, "id_1", now, now, true, "special lecture from guest"),
 			createMockSession(2, "id_2", now, now, false, "daily meeting"),
 		}, nil
 	}
-	services.ProgramService = &programService
-	services.ClassService = &classService
-	services.LocationService = &locationService
-	services.AchieveService = &achieveService
-	services.SemesterService = &semesterService
-	services.SessionService = &sessionService
+	repos.ProgramRepo = &programRepo
+	repos.ClassRepo = &classRepo
+	repos.LocationRepo = &locationRepo
+	repos.AchieveRepo = &achieveRepo
+	repos.SemesterRepo = &semesterRepo
+	repos.SessionRepo = &sessionRepo
 }
 
 //
@@ -60,7 +61,7 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -79,10 +80,10 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	assertMockClasses(t, 2, unpublishedDomains.Classes[1])
 	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
 
-	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocId)
+	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocationId)
 	assert.EqualValues(t, "4040 Location Rd", unpublishedDomains.Locations[0].Street)
 	assert.EqualValues(t, "MA", unpublishedDomains.Locations[0].State)
-	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocId)
+	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocationId)
 	assert.EqualValues(t, "4040 Sesame St", unpublishedDomains.Locations[1].Street)
 	assert.EqualValues(t, "MD", unpublishedDomains.Locations[1].State)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Locations))

@@ -2,11 +2,12 @@ package integration_tests
 
 import (
 	"encoding/json"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/stretchr/testify/assert"
 )
 
 // Test: Get All Unpublished Programs, Publish a Few, then Get All Unpublished Again
@@ -18,15 +19,15 @@ func Test_PublishPrograms(t *testing.T) {
 	body1 := createJsonBody(&program1)
 	body2 := createJsonBody(&program2)
 	body3 := createJsonBody(&program3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Get All Unpublished
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
@@ -42,11 +43,11 @@ func Test_PublishPrograms(t *testing.T) {
 	// Publish prog1 and prog3
 	publishIds := []string{"prog1", "prog3"}
 	publishBody := createJsonBody(publishIds)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", publishBody)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/programs/publish", publishBody)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Get All Unpublished Again
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
@@ -57,7 +58,7 @@ func Test_PublishPrograms(t *testing.T) {
 	assert.EqualValues(t, 1, len(unpublishedDomains.Programs))
 
 	// Get Published Only
-	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all?published=true", nil)
+	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/programs/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder7.Code)
@@ -80,13 +81,13 @@ func Test_PublishClasses(t *testing.T) {
 	class2 := createClass(2)
 	body1 := createJsonBody(&class1)
 	body2 := createJsonBody(&class2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get All Published
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -99,11 +100,11 @@ func Test_PublishClasses(t *testing.T) {
 	// Publish
 	classIds := []string{"program1_2020_spring_class2"}
 	body3 := createJsonBody(&classIds)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/publish", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/publish", body3)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Get All Published
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/classes/v1/all?published=true", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Validate results
@@ -115,7 +116,7 @@ func Test_PublishClasses(t *testing.T) {
 	assert.EqualValues(t, 1, len(classes2))
 
 	// Get All Unpublished
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Validate results
@@ -138,15 +139,15 @@ func Test_PublishLocations(t *testing.T) {
 	body1 := createJsonBody(&location1)
 	body2 := createJsonBody(&location2)
 	body3 := createJsonBody(&location3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Get All Unpublished
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
@@ -154,30 +155,30 @@ func Test_PublishLocations(t *testing.T) {
 	if err := json.Unmarshal(recorder4.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocId)
-	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocId)
-	assert.EqualValues(t, "loc3", unpublishedDomains.Locations[2].LocId)
+	assert.EqualValues(t, "loc1", unpublishedDomains.Locations[0].LocationId)
+	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[1].LocationId)
+	assert.EqualValues(t, "loc3", unpublishedDomains.Locations[2].LocationId)
 	assert.EqualValues(t, 3, len(unpublishedDomains.Locations))
 
 	// Publish loc1 and loc3
 	publishIds := []string{"loc1", "loc3"}
 	publishBody := createJsonBody(publishIds)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/publish", publishBody)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/locations/publish", publishBody)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Get All Unpublished Again
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 	if err := json.Unmarshal(recorder6.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[0].LocId)
+	assert.EqualValues(t, "loc2", unpublishedDomains.Locations[0].LocationId)
 	assert.EqualValues(t, 1, len(unpublishedDomains.Locations))
 
 	// Get Published Only
-	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/locations/v1/all?published=true", nil)
+	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/locations/all?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder7.Code)
@@ -185,8 +186,8 @@ func Test_PublishLocations(t *testing.T) {
 	if err := json.Unmarshal(recorder7.Body.Bytes(), &locations); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "loc1", locations[0].LocId)
-	assert.EqualValues(t, "loc3", locations[1].LocId)
+	assert.EqualValues(t, "loc1", locations[0].LocationId)
+	assert.EqualValues(t, "loc3", locations[1].LocationId)
 	assert.EqualValues(t, 2, len(locations))
 
 	resetTable(t, domains.TABLE_LOCATIONS)
@@ -199,13 +200,13 @@ func Test_PublishAchievements(t *testing.T) {
 	achieve2 := createAchievement(2021, "message2")
 	body1 := createJsonBody(&achieve1)
 	body2 := createJsonBody(&achieve2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/create", body2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get All Published
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/achievements/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -218,11 +219,11 @@ func Test_PublishAchievements(t *testing.T) {
 	// Publish
 	ids := []uint{1}
 	body3 := createJsonBody(&ids)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/v1/publish", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/publish", body3)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Get All Published
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/v1/all?published=true", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/achievements/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Validate results
@@ -236,7 +237,7 @@ func Test_PublishAchievements(t *testing.T) {
 	assert.EqualValues(t, 1, len(achieves2))
 
 	// Get All Unpublished
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Validate results
@@ -259,13 +260,13 @@ func Test_PublishSemesters(t *testing.T) {
 	semester2 := createSemester("2020_winter", "Winter 2020")
 	body1 := createJsonBody(&semester1)
 	body2 := createJsonBody(&semester2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body2)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get All Published
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/all?published=true", nil)
+	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -278,11 +279,11 @@ func Test_PublishSemesters(t *testing.T) {
 	// Publish
 	semesterIds := []string{"2020_fall"}
 	body3 := createJsonBody(&semesterIds)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/publish", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/publish", body3)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Get All Published
-	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/semesters/v1/all?published=true", nil)
+	recorder5 := sendHttpRequest(t, http.MethodGet, "/api/semesters/all?published=true", nil)
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Validate results
@@ -296,7 +297,7 @@ func Test_PublishSemesters(t *testing.T) {
 	assert.EqualValues(t, 1, len(semesters2))
 
 	// Get All Unpublished
-	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder6 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Validate results
@@ -336,14 +337,14 @@ func Test_PublishSessions(t *testing.T) {
 	body6 := createJsonBody(&class1)
 	body7 := createJsonBody(&class2)
 	body8 := createJsonBody([]domains.Session{session1, session2, session3})
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/v1/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body4)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/semesters/v1/create", body5)
-	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body6)
-	recorder7 := sendHttpRequest(t, http.MethodPost, "/api/classes/v1/create", body7)
-	recorder8 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/create", body8)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
+	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
+	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
+	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body5)
+	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body6)
+	recorder7 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body7)
+	recorder8 := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body8)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -354,7 +355,7 @@ func Test_PublishSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder8.Code)
 
 	// Get All Unpublished
-	recorder9 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder9 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder9.Code)
@@ -370,11 +371,11 @@ func Test_PublishSessions(t *testing.T) {
 	// Publish first and third session
 	publishIds := []uint{1, 3}
 	publishBody := createJsonBody(publishIds)
-	recorder10 := sendHttpRequest(t, http.MethodPost, "/api/sessions/v1/publish", publishBody)
+	recorder10 := sendHttpRequest(t, http.MethodPost, "/api/sessions/publish", publishBody)
 	assert.EqualValues(t, http.StatusOK, recorder10.Code)
 
 	// Get All Unpublished Again
-	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/v1/unpublished", nil)
+	recorder11 := sendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder11.Code)
@@ -385,7 +386,7 @@ func Test_PublishSessions(t *testing.T) {
 	assert.EqualValues(t, 1, len(unpublishedDomains.Sessions))
 
 	// Get Published Only
-	recorder12 := sendHttpRequest(t, http.MethodGet, "/api/sessions/v1/class/fast_track_2020_spring_class_A?published=true", nil)
+	recorder12 := sendHttpRequest(t, http.MethodGet, "/api/sessions/class/fast_track_2020_spring_class_A?published=true", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder12.Code)

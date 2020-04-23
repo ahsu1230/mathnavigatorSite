@@ -13,7 +13,7 @@ export class SemesterPage extends React.Component {
     }
 
     componentDidMount() {
-        API.get("api/semesters/v1/all").then((res) => {
+        API.get("api/semesters/all").then((res) => {
             const semesters = res.data;
             this.setState({ list: semesters });
         });

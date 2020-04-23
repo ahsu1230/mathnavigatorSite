@@ -31,7 +31,7 @@ export class SemesterEditPage extends React.Component {
     componentDidMount() {
         const semesterId = this.props.semesterId;
         if (semesterId) {
-            API.get("api/semesters/v1/semester/" + semesterId).then((res) => {
+            API.get("api/semesters/semester/" + semesterId).then((res) => {
                 const semester = res.data;
                 this.setState({
                     oldSemesterId: semester.semesterId,
@@ -60,13 +60,13 @@ export class SemesterEditPage extends React.Component {
             alert("Could not save semester: " + err.response.data);
         if (this.state.isEdit) {
             API.post(
-                "api/semesters/v1/semester/" + this.state.oldSemesterId,
+                "api/semesters/semester/" + this.state.oldSemesterId,
                 semester
             )
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         } else {
-            API.post("api/semesters/v1/create", semester)
+            API.post("api/semesters/create", semester)
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
@@ -82,7 +82,7 @@ export class SemesterEditPage extends React.Component {
 
     onConfirmDelete() {
         const semesterId = this.props.semesterId;
-        API.delete("api/semesters/v1/semester/" + semesterId).then((res) => {
+        API.delete("api/semesters/semester/" + semesterId).then((res) => {
             window.location.hash = "semesters";
         });
     }

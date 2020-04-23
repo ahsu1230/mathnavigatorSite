@@ -4,19 +4,20 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/services"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
+	"github.com/stretchr/testify/assert"
 )
 
 //
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	programService.mockGetAll = func(publishedOnly bool) ([]domains.Program, error) {
+	programRepo.mockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -38,10 +39,10 @@ func TestGetAllPrograms_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/all", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -60,14 +61,14 @@ func TestGetAllPrograms_Success(t *testing.T) {
 // Test Get Program
 //
 func TestGetProgram_Success(t *testing.T) {
-	programService.mockGetByProgramId = func(programId string) (domains.Program, error) {
+	programRepo.mockSelectByProgramId = func(programId string) (domains.Program, error) {
 		program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 		return program, nil
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog1", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -80,13 +81,13 @@ func TestGetProgram_Success(t *testing.T) {
 }
 
 func TestGetProgram_Failure(t *testing.T) {
-	programService.mockGetByProgramId = func(programId string) (domains.Program, error) {
+	programRepo.mockSelectByProgramId = func(programId string) (domains.Program, error) {
 		return domains.Program{}, errors.New("not found")
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/v1/program/prog2", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/api/programs/program/prog2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -96,16 +97,16 @@ func TestGetProgram_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateProgram_Success(t *testing.T) {
-	programService.mockCreate = func(program domains.Program) error {
+	programRepo.mockInsert = func(program domains.Program) error {
 		return nil
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -113,13 +114,13 @@ func TestCreateProgram_Success(t *testing.T) {
 
 func TestCreateProgram_Failure(t *testing.T) {
 	// no mock needed
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog1", "", 2, 3, "descript1", 0) // Empty Name!
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/create", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -129,15 +130,15 @@ func TestCreateProgram_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateProgram_Success(t *testing.T) {
-	programService.mockUpdate = func(programId string, program domains.Program) error {
+	programRepo.mockUpdate = func(programId string, program domains.Program) error {
 		return nil // Successful update
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -145,27 +146,27 @@ func TestUpdateProgram_Success(t *testing.T) {
 
 func TestUpdateProgram_Invalid(t *testing.T) {
 	// no mock needed
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "", 2, 3, "descript2", 0) // Empty Name!
 	body := createBodyFromProgram(program)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 func TestUpdateProgram_Failure(t *testing.T) {
-	programService.mockUpdate = func(programId string, program domains.Program) error {
+	programRepo.mockUpdate = func(programId string, program domains.Program) error {
 		return errors.New("not found")
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/program/prog1", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -175,10 +176,10 @@ func TestUpdateProgram_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishPrograms_Success(t *testing.T) {
-	programService.mockPublish = func(programIds []string) error {
+	programRepo.mockPublish = func(programIds []string) error {
 		return nil // Successful publish
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
 	programIds := []string{"prog1", "prog2"}
@@ -187,7 +188,7 @@ func TestPublishPrograms_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/v1/publish", body)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/programs/publish", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -197,26 +198,26 @@ func TestPublishPrograms_Success(t *testing.T) {
 // Test Delete
 //
 func TestDeleteProgram_Success(t *testing.T) {
-	programService.mockDelete = func(programId string) error {
+	programRepo.mockDelete = func(programId string) error {
 		return nil // Return no error, successful delete!
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/program/some_program", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteProgram_Failure(t *testing.T) {
-	programService.mockDelete = func(programId string) error {
+	programRepo.mockDelete = func(programId string) error {
 		return errors.New("not found")
 	}
-	services.ProgramService = &programService
+	repos.ProgramRepo = &programRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/v1/program/some_program", nil)
+	recorder := sendHttpRequest(t, http.MethodDelete, "/api/programs/program/some_program", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

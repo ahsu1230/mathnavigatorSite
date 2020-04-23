@@ -11,7 +11,7 @@
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
         "try": "webpack --display-error-details",
-        "prettify": "prettier --config \".prettierrc.yaml\" --write \"**/*.js\""
+        "prettify": "prettier --config \"../.prettierrc.yml\" --write \"**/*.js\""
     },
     "repository": {
         "type": "git",

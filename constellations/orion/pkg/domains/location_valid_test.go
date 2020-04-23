@@ -1,55 +1,56 @@
 package domains_test
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/domains"
 )
 
 func TestValidLocationId(t *testing.T) {
 	// Checks for valid location IDs
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.LocId = "I_am_a_legitimate_id"
+	location.LocationId = "I_am_a_legitimate_id"
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.LocId = "a"
+	location.LocationId = "a"
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	location.LocId = "23T"
+	location.LocationId = "23T"
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid location IDs
-	location.LocId = "spaces are not allowed"
+	location.LocationId = "spaces are not allowed"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid location id")
 	}
 
-	location.LocId = "112@_asdf"
+	location.LocationId = "112@_asdf"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid location id")
 	}
 
-	location.LocId = "a_A_id_9__"
+	location.LocationId = "a_A_id_9__"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid location id")
 	}
 
-	location.LocId = "__k__"
+	location.LocationId = "__k__"
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid location id")
 	}
@@ -58,11 +59,11 @@ func TestValidLocationId(t *testing.T) {
 func TestValidLocationStreet(t *testing.T) {
 	// Checks for valid streets
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -108,11 +109,11 @@ func TestValidLocationStreet(t *testing.T) {
 func TestValidLocationCity(t *testing.T) {
 	// Checks for valid cities
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -158,11 +159,11 @@ func TestValidLocationCity(t *testing.T) {
 func TestValidLocationState(t *testing.T) {
 	// Checks for valid states
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -188,11 +189,11 @@ func TestValidLocationState(t *testing.T) {
 func TestValidLocationZipcode(t *testing.T) {
 	// Checks for valid zipcodes
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -218,12 +219,12 @@ func TestValidLocationZipcode(t *testing.T) {
 func TestValidLocationRoom(t *testing.T) {
 	// Checks for valid rooms
 	location := domains.Location{
-		LocId:   "xkcd",
-		Street:  "4040 Cherry Rd",
-		City:    "Potomac",
-		State:   "MD",
-		Zipcode: "20854",
-		Room:    domains.NewNullString("Room 2"),
+		LocationId: "xkcd",
+		Street:     "4040 Cherry Rd",
+		City:       "Potomac",
+		State:      "MD",
+		Zipcode:    "20854",
+		Room:       domains.NewNullString("Room 2"),
 	}
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
