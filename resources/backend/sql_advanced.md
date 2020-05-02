@@ -109,8 +109,40 @@ CREATE TABLE classes
 ```
 
 ## What is a JOIN?
+
+SQL JOIN clauses allow us to combine rows from different tables as long as those rows share a common column. If two rows in two different tables have the same value in some common column, then we can select any other column values of that row from either table.
+
+If our two tables are named `table1` and `table2` respectively, then the syntax is as follows:
+
+```
+SELECT table1.column1, table1.column2, ..., table2.columnA, table2.columnB, ...
+FROM table1 (TYPE OF JOIN) table2
+ON table1.sharedColumn=table2.sharedColumn;
+```
+
+Let's break this down line by line.
+
+`SELECT table1.column1, table1.column2, ..., table2.columnA, table2.columnB, ...`
+
+This is pretty standard SELECT syntax. We are indicating which columns we want to return. The only difference here is that we are mixing two different tables, and we are attempting to grab different columns from both tables.
+
+`FROM table1 (TYPE OF JOIN) table2`
+
+First off, `table1` and `table2` are the two tables we are joining. Next is `(TYPE OF JOIN)`: there is more than one type of JOIN clause. The `(TYPE OF JOIN)` is simply a filler; you don't literally type `(TYPE OF JOIN)`, but instead put whatever JOIN clause you are using (without the parenthesis). For example, if I use FULL OUTER JOIN, the syntax will look like this:
+
+`FROM table1 FULL OUTER JOIN table2`
+
+The types of joins will be explained in the next section.
+
+`ON table1.sharedColumn=table2.sharedColumn;`
+
+Here is where we designate our shared column. There is actually no requirement for the shared column to have the same name in both tables. As long as they share the same data type, then your SELECT statement will successfully return all rows with the same value in that shared column in both tables.
+
 ## There are actually 4 types of JOINS!
- - Inner
- - Outer Left
- - Outer Right
- - Outer
+
+ - Inner - Returns all records with matching values in both tables.
+ - Left (Outer) - Returns all records in the left table and all records with matching values in the right table.
+ - Right (Outer) - Returns all records in the right table and all records with matching values in the left table.
+ - Full Outer - Returns all records with a match in either the left or right table.
+
+The specific syntax for each of these can be found on [w3schools](https://www.w3schools.com/sql/sql_join.asp) (the syntax for all four are very similar, so I won't copy paste them here).
