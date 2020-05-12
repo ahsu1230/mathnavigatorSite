@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db-mysql:
+    image: mysql
+    container_name: db-mysql
+    ports:
+    - "3308:3306" # host port 3308 links to container port 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mathnavdb
+
+  orion:
+    build: ./orion
+    container_name: orion
+    ports:
+      - "6000:8080" # host port 6000 links to container port 8080
+    depends_on:
+      - "db-mysql"
+    links:
+      - "db-mysql"
+    environment:
+      BUILD: development
+      WAIT_HOSTS: db-mysql:3306
+      DB_HOST: db-mysql # these db_ env variables should match the env variables in mysql
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_DEFAULT: mathnavdb
+      CORS_ORIGIN: "*"
+  

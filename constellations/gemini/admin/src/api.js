@@ -9,7 +9,7 @@ if (process.env.NODE_ENV == "production") {
     BASE_HOST =
         "http://lb-dev-webserver-2018209767.us-west-2.elb.amazonaws.com";
 } else {
-    BASE_HOST = "http://localhost:8080";
+    BASE_HOST = "http://localhost:6000";
 }
 
 export default axios.create({

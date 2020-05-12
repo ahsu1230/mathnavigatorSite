@@ -1,14 +1,6 @@
 # MathNavigator Site
 
-This website application uses ReactJs (https://reactjs.org/).
-
-Toolchain:
- - npm (https://www.npmjs.com/)
- - Parcel (https://parceljs.org/)
- - ReactJs (https://reactjs.org/)
- - Stylus (http://stylus-lang.com/
- - Lodash (https://lodash.com/)
-
+This is the repository for the current publicly available website.
 
  ## Setting up
 
