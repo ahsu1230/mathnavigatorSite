@@ -16,9 +16,6 @@ import (
 func main() {
 	fmt.Println("Orion service starting...")
 
-	appBuild := os.Getenv("BUILD")
-	fmt.Println("Building server in mode: ", appBuild)
-
 	// App Repos
 	fmt.Println("Setting up Repos...")
 	dbHost := os.Getenv("DB_HOST")

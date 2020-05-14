@@ -15,13 +15,12 @@ services:
     build: ./orion
     container_name: orion
     ports:
-      - "6000:8080" # host port 6000 links to container port 8080
+      - "6001:8080" # host port 6001 links to container port 8080
     depends_on:
       - "db-mysql"
     links:
       - "db-mysql"
     environment:
-      BUILD: development
       WAIT_HOSTS: db-mysql:3306
       DB_HOST: db-mysql # these db_ env variables should match the env variables in mysql
       DB_PORT: 3306
@@ -29,4 +28,20 @@ services:
       DB_PASSWORD: password
       DB_DEFAULT: mathnavdb
       CORS_ORIGIN: "*"
+  
+  gemini-user:
+    build: 
+      context: ./gemini/user
+      # args:
+        # - ORION_HOST=orion:8080
+    container_name: gemini-user
+    ports: 
+      - 8000:9000 # host port 8000 links to container port 9000
+    depends_on:
+      - "orion"
+    links:
+      - "orion"
+    environment:
+      ORION_HOST: "orion:8080"
+    stdin_open: true
   

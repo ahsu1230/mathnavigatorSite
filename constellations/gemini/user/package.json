@@ -1,12 +1,12 @@
 {
-    "name": "siteHome",
+    "name": "gemini-user",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
         "build": "webpack --mode production",
         "start": "webpack-dev-server --open --mode development",
-        "try": "webpack --display-error-details"
+        "prettify": "prettier --config \"../.prettierrc.yml\" --write \"**/*.js\""
     },
     "repository": {
         "type": "git",
@@ -20,6 +20,8 @@
     },
     "homepage": "https://github.com/ahsu1230/mathnavigatorSite#readme",
     "dependencies": {
+        "@babel/polyfill": "^7.8.7",
+        "axios": "^0.19.2",
         "classnames": "^2.2.6",
         "lodash": "^4.17.15",
         "react": "^16.12.0",
@@ -29,15 +31,15 @@
     },
     "devDependencies": {
         "@babel/core": "^7.7.5",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
         "@babel/preset-env": "^7.7.6",
         "@babel/preset-react": "^7.7.4",
         "babel-loader": "^8.0.6",
         "css-loader": "^3.2.1",
-        "cssnano": "^4.1.10",
         "eslint": "^6.3.0",
+        "sass": "^1.26.5",
+        "sass-loader": "^8.0.2",
         "style-loader": "^1.0.1",
-        "stylus": "^0.54.7",
-        "stylus-loader": "^3.0.2",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10",
         "webpack-dev-server": "^3.9.0"
