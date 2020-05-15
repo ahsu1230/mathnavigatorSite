@@ -27,7 +27,7 @@ services:
       DB_USER: user
       DB_PASSWORD: password
       DB_DEFAULT: mathnavdb
-      CORS_ORIGIN: "*"
+      CORS_ORIGIN: "'*'"
   
   gemini-user:
     build: 

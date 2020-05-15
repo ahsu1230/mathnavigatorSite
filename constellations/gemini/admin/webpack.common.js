@@ -16,8 +16,8 @@ module.exports = {
                 },
             },
             {
-                test: /\.(styl|css)$/,
-                loader: "style-loader!css-loader!stylus-loader",
+                test: /\.(css|styl|sass)$/,
+                loader: "style-loader!css-loader!stylus-loader!sass-loader",
             },
         ],
     },
