@@ -34,7 +34,7 @@ jobs:
           name: Start all containers
           command: |
             set -x
-            docker-compose up -f constellations/docker-compose.yml -d
+            docker-compose --file constellations/docker-compose.yml up -d
 
       - run: go get -v -t -d ./...
       - run:
