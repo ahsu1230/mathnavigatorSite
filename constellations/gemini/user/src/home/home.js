@@ -9,7 +9,7 @@ export class HomePage extends React.Component {
     };
 
     componentDidMount() {
-        console.log("api attempt");
+        console.log("api attempt ");
         API.get("api/programs/all").then((res) => {
             const programsList = res.data;
             console.log("api success!");
@@ -21,6 +21,7 @@ export class HomePage extends React.Component {
         return (
             <div id="view-home">
                 <h1>Math Navigator</h1>
+                <p>{"node env: " + process.env.NODE_ENV}</p>
                 <p>{JSON.stringify(this.state.programsList)}</p>
             </div>
         );

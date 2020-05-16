@@ -2,7 +2,6 @@ var webpack = require("webpack");
 var path = require("path");
 
 module.exports = (env) => {
-    console.log("app environment: " + env.APP_ENV);
     return {
         entry: [path.resolve(__dirname, "src/index.js")],
         output: {
