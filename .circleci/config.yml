@@ -43,13 +43,15 @@ jobs:
       - run:
           name: Verify Go Modules
           command: |
-            cd orion
+            cd constellations/orion
             go mod verify
+      
       - run:
           name: Run Orion Go tests
           command: |
-            go vet ./...
-            go test -v ./...
+            go vet ./constellations/orion/...
+            go test -v ./constellations/orion/...
+      
       - run:
           name: Install npm
           command: |
@@ -57,9 +59,7 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
-      - run:
-          name: Install packages
-          command: npm install
+            
       - run:
           name: Check Javascript Format
           command: |
