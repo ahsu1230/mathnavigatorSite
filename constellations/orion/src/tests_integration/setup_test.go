@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strconv"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -52,8 +53,8 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	// Must close db connection and open a new one with dbName
 	dbConn.Close()
 	fmt.Println("Reopening test database...")
-	fmt.Println("host: "+host, "port: "+string(port), "username: "+username, "password: "+password, "dbName: ", dbName)
-	dbConn = repos.Open(host, port, username, password, "")
+	fmt.Println("host: "+host, "port: "+strconv.Itoa(port), "username: "+username, "password: "+password, "dbName: ", dbName)
+	dbConn = repos.Open(host, port, username, password, dbName)
 	if err := dbConn.Ping(); err != nil {
 		fmt.Println(err.Error())
 		panic(err.Error())

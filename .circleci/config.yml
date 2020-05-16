@@ -6,35 +6,46 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
-      # - image: circleci/mysql:8.0
-      #   environment:
-      #     MYSQL_ROOT_USER: root
-      #     MYSQL_ROOT_PASSWORD: password
-      #     MYSQL_HOST: 127.0.0.1
-      #     MYSQL_PORT: 3308
-      #     MYSQL_DATABASE: mathnavdb_test
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_ROOT_USER: root
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_PORT: 3306
+          MYSQL_USER: ci_tester
+          MYSQL_PASSWORD: test
+          MYSQL_DATABASE: mathnavdb_test
 
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
       - checkout
+      - run:
+          name: Install MySQL CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install default-mysql-client
+      
+      
+      
       # - run:
-      #     name: Install MySQL CLI
+      #     name: Install Docker Compose
       #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install default-mysql-client
-      - run:
-          name: Install Docker Compose
-          command: |
-            set -x
-            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - setup_remote_docker
-      - run:
-          name: Start all containers
-          command: |
-            set -x
-            docker-compose --file constellations/docker-compose.yml up -d
+      #       set -x
+      #       curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      # - setup_remote_docker
+      # - run:
+      #     name: Start all containers
+      #     command: |
+      #       set -x
+      #       docker-compose --file constellations/docker-compose.yml up -d
+
+
+
+
+
+
 
       - run: go get -v -t -d ./...
       - run:
@@ -59,7 +70,7 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
-            
+
       - run:
           name: Check Javascript Format
           command: |
