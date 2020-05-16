@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build": "webpack --mode production",
-        "start": "webpack-dev-server --open --mode development",
+        "build": "webpack --mode production --env.APP_ENV=production",
+        "start": "webpack-dev-server --open --mode development --env.APP_ENV=development",
         "test": "jest --verbose",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",

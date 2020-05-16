@@ -2,6 +2,14 @@
 # and a workspace (GOPATH) configured at /go.
 FROM golang:1.13
 
+ARG app_env
+ENV APP_ENV $app_env
+ENV DB_HOST "db-mysql"
+ENV DB_PORT "3306"
+ENV DB_USER "user"
+ENV DB_PASSWORD "password"
+ENV CORS_ORIGIN "*"
+
 # Copy the local package files to the container's workspace.
 ADD . /go/src/github.com/ahsu1230/mathnavigatorSite/constellations/orion
 WORKDIR /go/src/github.com/ahsu1230/mathnavigatorSite/constellations/orion
