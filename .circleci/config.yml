@@ -14,7 +14,7 @@ jobs:
       #     MYSQL_PORT: 3308
       #     MYSQL_DATABASE: mathnavdb_test
 
-    working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
+    working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite/constellations
     steps:
       - checkout
       # - run:
@@ -39,11 +39,11 @@ jobs:
       - run: go get -v -t -d ./...
       - run:
           name: Format Go codebase
-          command: ./constellations/go_formatter.sh constellations
+          command: ./go_formatter.sh .
       - run:
           name: Verify Go Modules
           command: |
-            cd constellations/orion
+            cd orion
             go mod verify
       - run:
           name: Run Orion Go tests
@@ -64,16 +64,16 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "constellations/gemini" --config "constellations/gemini/.prettierrc.yml"
+            prettier --check "gemini" --config "gemini/.prettierrc.yml"
       - run:
           name: Run Gemini-Admin Enzyme React tests
           command: |
-            cd constellations/gemini/admin
+            cd gemini/admin
             npm install
             npm run test
       - run:
           name: Run Gemini-User Enzyme React tests
           command: |
-            cd constellations/gemini/user
+            cd gemini/user
             npm install
             npm run test
