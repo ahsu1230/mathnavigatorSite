@@ -53,7 +53,7 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	dbConn.Close()
 	fmt.Println("Reopening test database...")
 	fmt.Println("host: "+host, "port: "+string(port), "username: "+username, "password: "+password, "dbName: ", dbName)
-	dbConn = repos.Open(host, port, username, password)
+	dbConn = repos.Open(host, port, username, password, "")
 	if err := dbConn.Ping(); err != nil {
 		fmt.Println(err.Error())
 		panic(err.Error())
