@@ -54,13 +54,15 @@ jobs:
           name: Check Javascript format and run Gemini-Admin Enzyme tests
           command: |
             cd constellations/gemini-admin
-            npm install
+            sudo npm install -g prettier
             prettier --check "./**/*.js"
+            npm install
             npm run test
       - run:
           name: Check Javascript format and run Gemini-User Enzyme tests
           command: |
             cd constellations/gemini-user
-            npm install
+            sudo npm install -g prettier
             prettier --check "./**/*.js"
+            npm install
             npm run test
