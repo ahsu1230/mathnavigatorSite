@@ -25,4 +25,18 @@ You should see `ok`s and no failures.
 
 ## Navigating the codebase
 
-Coming Soon...
+There are 3 architecture "layers" to Orion.
+
+- Domains - simple objects that represent an entity (i.e. a Program, a Class, a User, etc.)
+  - Domains are very simple and don't have much logic to them.
+  - All domains do are describe attributes of an entity.
+
+- Controllers - objects that handle network stuff (JSON, HTTP Request & Responses, Serializing & Deserializing, etc.)
+  - The controller layer is built on top of `gin` - a golang http framework.
+
+- Repos - objects that handle database stuff (MySQL connections, Database queries, reads & writes, etc.)
+  - For testing, database queries are checked via Datadog's SQL query validation.
+
+Both Controllers and Repos are often declared as interfaces. The reasoning is to promote mock unit testing. Essentially, there are usually two implementations of every Controller and Repo. One implementation is for the business logic (works as you would expect), the other implementation is done by test classes which help simply unit testing.
+
+Finally you can find all integration tests inside the folder `tests_integration`.

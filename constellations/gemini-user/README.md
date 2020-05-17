@@ -16,3 +16,9 @@ npm run start
 ```
 
 This will run the `gemini-user` website at <http://localhost:9000>. Open this url with an Internet browser.
+
+## Navigating the codebase
+
+Take a look at the "scripts" section of `package.json`. You can see all available commands when working on this project.
+
+In general, style sheets and unit tests should be kept within the same component folder so they can easily be referenced via relative pathing.

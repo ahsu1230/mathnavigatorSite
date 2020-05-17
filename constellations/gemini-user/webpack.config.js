@@ -5,7 +5,8 @@ module.exports = (env) => {
     return {
         entry: [path.resolve(__dirname, "src/index.js")],
         output: {
-            filename: "./dist/bundle.js",
+            publicPath: "/dist",
+            filename: "./bundle.js",
         },
         devServer: {
             host: "localhost",
