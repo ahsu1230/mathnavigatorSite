@@ -1,10 +1,4 @@
-# Starting services with Docker
-
-The MathNavigator repository follows a microservice architecture. This means that the application is made up of many "services", each service haivng a particular role. And together, the services make up the entire application.
-
-We use a service called **Docker** to manage our microservices. Please refer to the Docker resources [here](https://github.com/ahsu1230/mathnavigatorSite/tree/master/resources/docker) to learn how to use Docker. You should install Docker onto your computer (DockerDesktop also recommended) and learn the basics of Containerization. Once Docker is installed, follow the below instructions.
-
-## Starting services with Docker-Compose
+# Starting services with Docker-Compose
 
 In the `constellations` folder, use `docker-compose` to manage your services. Run this command to start all services.
 
@@ -16,7 +10,7 @@ Once it is done running, you should be able to see all services as healthy in th
 
 ![SCREENSHOT_DOCKER_ALL_SERVICES](https://github.com/ahsu1230/mathnavigatorSite/tree/master/resources/images/docker/desktop_all_services.png)
 
-When you are finished working with these services, you can use this command to deactive all of them
+When you are finished working with these services, you can use this command to deactive all of them.
 
 ```unix
 docker-compose rm

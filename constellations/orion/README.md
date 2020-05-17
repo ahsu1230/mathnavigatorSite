@@ -2,6 +2,10 @@
 
 Our core API service. This webserver will provide the main API to allow web clients to interact with our MySQL database. This is where users, programs, classes, announcements are created and persisted into the database.
 
+## Pre-requirements
+
+Make sure that Go is installed before proceeding: (https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/onboarding/install_go.md)
+
 ## How to run the Orion webserver
 
 ```unix

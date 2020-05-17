@@ -23,4 +23,4 @@ Ursa is our logging service. Whenever failures happen, Ursa will help us track d
 
 ------
 
-To learn how to start these services together, view [this](./starting_services.md).
+To learn how to start these services together, view [this](./onboarding.md).
