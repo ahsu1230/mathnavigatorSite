@@ -12,9 +12,9 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
-          MYSQL_DATABASE: mathnavdb_test
           MYSQL_USER: ci_tester
           MYSQL_PASSWORD: test
+          MYSQL_DATABASE: mathnavdb_test
 
     working_directory: /go/src/github.com/ahsu1230/mathnavigatorSite
     steps:
@@ -24,10 +24,13 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install default-mysql-client
-      - run: go get -v -t -d ./...
+      
+      - run: 
+          name: Retrieve Go codebase
+          command: go get -v -t -d ./...
       - run:
           name: Format Go codebase
-          command: ./constellations/go_formatter.sh constellations
+          command: ./constellations/go_formatter.sh .
       - run:
           name: Verify Go Modules
           command: |
@@ -36,8 +39,9 @@ jobs:
       - run:
           name: Run Orion Go tests
           command: |
-            go vet ./...
-            go test -v ./...
+            go vet ./constellations/orion/...
+            go test -v ./constellations/orion/...
+      
       - run:
           name: Install npm
           command: |
@@ -45,17 +49,20 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
+            
       - run:
-          name: Install packages
-          command: npm install
-      - run:
-          name: Check Javascript Format
+          name: Check Javascript format and run Gemini-Admin Enzyme tests
           command: |
+            cd constellations/gemini-admin
             sudo npm install -g prettier
-            prettier --check "constellations/gemini" --config "constellations/gemini/.prettierrc.yml"
+            prettier --check "./**/*.js"
+            npm install
+            npm run test
       - run:
-          name: Run Admin Enzyme React tests
+          name: Check Javascript format and run Gemini-User Enzyme tests
           command: |
-            cd constellations/gemini/admin
+            cd constellations/gemini-user
+            sudo npm install -g prettier
+            prettier --check "./**/*.js"
             npm install
             npm run test

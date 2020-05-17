@@ -6,9 +6,9 @@ Our technology stack includes:
 - ReactJs (Javascript Website Framework, https://reactjs.org/)
 - Golang (Google Programming Language, https://golang.org/)
 - MySQL (relational SQL database, https://www.mysql.com/)
+- Docker (Containerization, https://www.docker.com/)
 - CircleCI (Continuous Integration, https://circleci.com/)
 - AWS (Amazon Web Services, https://aws.amazon.com/)
-- Docker (Containerization, https://www.docker.com/)
 
 ## Software Developer Internships
 

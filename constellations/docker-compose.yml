@@ -1,0 +1,43 @@
+version: '3'
+services:
+  db-mysql:
+    image: mysql
+    container_name: db-mysql
+    ports:
+    - "3308:3306" # host port 3308 links to container port 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mathnavdb
+
+  orion:
+    build: 
+      context: ./orion
+      args:
+        app_env: "develop"
+    container_name: orion
+    ports:
+      - "6001:8080" # host port 6001 links to container port 8080
+    depends_on:
+      - "db-mysql"
+    links:
+      - "db-mysql"
+    environment:
+      WAIT_HOSTS: db-mysql:3306
+      DB_DEFAULT: mathnavdb
+  
+  # gemini-user:
+  #   build: 
+  #     context: ./gemini-user
+  #     args:
+  #       app_env: "develop"
+  #   container_name: gemini-user
+  #   ports: 
+  #     - 8000:9000 # host port 8000 links to container port 9000
+  #   depends_on:
+  #     - "orion"
+  #   links:
+  #     - "orion"
+  #   stdin_open: true
+  

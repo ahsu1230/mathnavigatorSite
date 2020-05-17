@@ -3,28 +3,29 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/middlewares"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/repos"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/pkg/router"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/middlewares"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 )
 
 func main() {
 	fmt.Println("Orion service starting...")
 
-	// App Configurations
-	configFile := os.Args[1]
-	config := middlewares.RetrieveConfigurations(configFile)
-	fmt.Println("Building server in mode: ", config.App.Build)
-
 	// App Repos
 	fmt.Println("Setting up Repos...")
-	configDb := config.Database
-	db := repos.Open(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
-	repos.Migrate(db, "file://pkg/repos/migrations")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbDefault := os.Getenv("DB_DEFAULT")
+
+	db := repos.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
+	repos.Migrate(db, "file://src/repos/migrations")
 	repos.SetupRepos(db)
 	defer repos.Close(db)
 	fmt.Println("Database started!")
@@ -33,7 +34,8 @@ func main() {
 	fmt.Println("Setting up Router...")
 	engine := gin.Default()
 	fmt.Println("Setting up Middlewares...")
-	corsOrigins := []string{config.App.CorsOrigin}
+	corsOriginEnvVar := os.Getenv("CORS_ORIGIN")
+	corsOrigins := []string{corsOriginEnvVar}
 	configCors := middlewares.CreateCorsConfig(corsOrigins)
 	engine.Use(cors.New(configCors))
 	handler := router.Handler{Engine: engine}
