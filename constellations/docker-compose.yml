@@ -29,7 +29,7 @@ services:
   
   # gemini-user:
   #   build: 
-  #     context: ./gemini/user
+  #     context: ./gemini-user
   #     args:
   #       app_env: "develop"
   #   container_name: gemini-user

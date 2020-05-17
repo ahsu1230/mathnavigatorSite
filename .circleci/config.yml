@@ -25,29 +25,9 @@ jobs:
             sudo apt-get update
             sudo apt-get install default-mysql-client
       
-      
-      
-      # - run:
-      #     name: Install Docker Compose
-      #     command: |
-      #       set -x
-      #       curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-      #       chmod +x ~/docker-compose
-      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      # - setup_remote_docker
-      # - run:
-      #     name: Start all containers
-      #     command: |
-      #       set -x
-      #       docker-compose --file constellations/docker-compose.yml up -d
-
-
-
-
-
-
-
-      - run: go get -v -t -d ./...
+      - run: 
+          name: Retrieve Go codebase
+          command: go get -v -t -d ./...
       - run:
           name: Format Go codebase
           command: ./constellations/go_formatter.sh .
@@ -56,7 +36,6 @@ jobs:
           command: |
             cd constellations/orion
             go mod verify
-      
       - run:
           name: Run Orion Go tests
           command: |
@@ -75,16 +54,18 @@ jobs:
           name: Check Javascript Format
           command: |
             sudo npm install -g prettier
-            prettier --check "constellations/gemini" --config "constellations/gemini/.prettierrc.yml"
+            prettier --check "constellations/gemini-admin"
+            prettier --check "constellations/gemini-user"
+            
       - run:
           name: Run Gemini-Admin Enzyme React tests
           command: |
-            cd constellations/gemini/admin
+            cd constellations/gemini-admin
             npm install
             npm run test
       - run:
           name: Run Gemini-User Enzyme React tests
           command: |
-            cd constellations/gemini/user
+            cd constellations/gemini-user
             npm install
             npm run test
