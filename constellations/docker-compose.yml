@@ -26,6 +26,23 @@ services:
     environment:
       WAIT_HOSTS: db-mysql:3306
       DB_DEFAULT: mathnavdb
+
+  aquila:
+    build: 
+      context: ./aquila
+      args:
+        app_env: "develop"
+    container_name: aquila
+    ports:
+      - "6002:8080" # host port 6002 links to container port 8080
+    depends_on:
+      - "db-mysql"
+      - "orion"
+    links:
+      - "db-mysql"
+    environment:
+      WAIT_HOSTS: db-mysql:3306
+      DB_DEFAULT: mathnavdb
   
   # gemini-user:
   #   build: 
