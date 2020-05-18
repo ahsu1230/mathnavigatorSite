@@ -23,8 +23,10 @@ docker-compose rm
 - `docker-compose start SERVICE` to start a specified service
 - `docker-compose stop SERVICE` to stop a specified service
 - `docker-compose restart SERVICE` to stop then start a specified service
-- `docker-compose kill SERVICE` to stop a service and kill the container
-- `docker-compose rm` to kill all active containers
+- `docker-compose logs SERVICE` to view the logs of a specified service
+- `docker-compose down` to stop and delete all active containers
+
+Use `docker-compose -h` for more information about commands.
 
 ## Math Navigator services and ports
 
