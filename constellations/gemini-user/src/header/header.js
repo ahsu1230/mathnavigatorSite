@@ -1,11 +1,9 @@
 "use strict";
-require("./header.styl");
+require("./header.sass");
 import React from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import { MenuSlim } from "./menuSlim.js";
 import MenuWide from "./menuWide.js";
-const headerIcon = require("../../assets/navigate_white.png");
+import headerIcon from "../../assets/navigate_white.png";
 
 export class Header extends React.Component {
     constructor(props) {

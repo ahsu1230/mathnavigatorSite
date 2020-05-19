@@ -1,12 +1,11 @@
 "use strict";
-require("./menuSlim.styl");
+require("./menuSlim.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import { NavLinks, isPathAt } from "../constants.js";
+import { Navigation, isPathAt } from "../utils/links.js";
+import srcArrowDown from "../../assets/arrow_down_black.svg";
+import srcClose from "../../assets/close_black.svg";
 const classnames = require("classnames");
-const srcArrowDown = require("../../assets/arrow_down_black.svg");
-const srcClose = require("../../assets/close_black.svg");
 
 export class MenuSlim extends React.Component {
     constructor() {
@@ -50,7 +49,7 @@ export class OverlayMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            links: NavLinks,
+            links: Navigation,
         };
     }
 

@@ -1,16 +1,16 @@
-@import "./header.styl"
+@import "./header.sass"
 
-colorGray1 = #f1f1f1
-colorGray2 = #ddd
-rowHeight = headerHeight / 2
+$colorGray1: #f1f1f1
+$colorGray2: #ddd
+$rowHeight: $headerHeight / 2
 
 #view-header-container .header-menu-slim
   display: none
 
-  @media screen and (max-width: media2)
+  @media screen and (max-width: $media2)
     display: inline-block
     position: absolute
-    bottom: spacing1x
+    bottom: $spacing1x
     left: 50%
     transform: translateX(-50%)
 
@@ -18,18 +18,18 @@ rowHeight = headerHeight / 2
   width: 120px
   height: 32px
   padding: 0
-  border: 1px solid colorPrimary
+  border: 1px solid $colorPrimary
   outline: none
   box-sizing: border-box
   background-color: transparent
-  color: colorWhite
-  font-family: fontFamilyRoboto
-  font-size: fontSize0
-  letter-spacing: letterSpacingRoboto
+  color: $colorWhite
+  font-family: $fontFamilyRoboto
+  font-size: $fontSize0
+  letter-spacing: $letterSpacingRoboto
   cursor: pointer
 
   &:hover
-    border: 1px solid colorWhite
+    border: 1px solid $colorWhite
 
 
 .header-slim-overlay-container
@@ -41,7 +41,7 @@ rowHeight = headerHeight / 2
     opacity: 1.0
     visibility: visible
 
-  @media screen and (min-width: media2)
+  @media screen and (min-width: $media2)
     display: none
 
 .header-slim-overlay
@@ -57,12 +57,12 @@ rowHeight = headerHeight / 2
   top: 0
   left: 0
   width: 100%
-  margin-top: headerHeight
+  margin-top: $headerHeight
 
   & button
     position: fixed
-    top: spacing4x
-    right: spacing4x
+    top: $spacing4x
+    right: $spacing4x
     padding: 0
     background-color: transparent
 
@@ -70,26 +70,26 @@ rowHeight = headerHeight / 2
       width: 24px
 
   & h1
-    line-height: headerHeight
-    padding: 0 spacing4x
-    font-family: fontFamilyRockwell
-    font-size: fontSize4
+    line-height: $headerHeight
+    padding: 0 $spacing4x
+    font-family: $fontFamilyRockwell
+    font-size: $fontSize4
 
   & .link-row
     display: block
-    line-height: rowHeight
-    padding: 0 spacing4x
+    line-height: $rowHeight
+    padding: 0 $spacing4x
     cursor: pointer
 
     & a
-      color: colorBlackDark
+      color: $colorBlackDark
 
       &.active
-        color: colorPrimary
+        color: $colorPrimary
 
     &:hover
-      color: colorPrimary
-      background-color: colorGray1
+      color: $colorPrimary
+      background-color: $colorGray1
 
       & a
         text-decoration: none
@@ -97,35 +97,35 @@ rowHeight = headerHeight / 2
   & .submenu
     & .submenu-head
       position: relative
-      line-height: rowHeight
-      padding: 0 spacing4x
+      line-height: $rowHeight
+      padding: 0 $spacing4x
       cursor: pointer
 
       &:hover
-        color: colorPrimary
-        background-color: colorGray1
+        $color: $colorPrimary
+        background-color: $colorGray1
 
       & img
         position: absolute
         top: 50%
-        right: spacing4x
+        right: $spacing4x
         transform: translateY(-50%)
         width: 18px
 
     & ul
       height: 0
-      padding-left: spacing4x
-      background-color: colorGray1
+      padding-left: $spacing4x
+      background-color: $colorGray1
       overflow: hidden
 
       & a:hover
-        color: colorPrimary
+        $color: $colorPrimary
 
     &.show
       & .submenu-head
-        background-color: colorGray2
+        background-color: $colorGray2
         &:hover
-          background-color: colorGray2 !important
+          background-color: $colorGray2 !important
 
       & .submenu-head img
         transform: translateY(-50%) rotate(180deg)

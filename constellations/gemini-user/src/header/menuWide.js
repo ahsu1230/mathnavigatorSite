@@ -1,16 +1,15 @@
 "use strict";
-require("./menuWide.styl");
+require("./menuWide.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import { NavLinks, isPathAt } from "../constants.js";
+import { Navigation, isPathAt } from "../utils/links.js";
 const classnames = require("classnames");
 
 export default class MenuWide extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            links: NavLinks,
+            links: Navigation,
         };
     }
     render() {

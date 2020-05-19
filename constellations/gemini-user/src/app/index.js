@@ -20,7 +20,7 @@ import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
 // import { ContactPage } from '../contact/contact.js';
 // import { ErrorPage } from '../errorPage/error.js';
 import Footer from "../footer/footer.js";
-// import { Header as HeaderComponent} from '../header/header.js';
+import { Header as HeaderComponent} from '../header/header.js';
 // import { HomePage } from '../home/home.js';
 // import { ProgramsPage } from '../programs/programs.js';
 // import { StudentProjectsPage } from '../student/studentProjects.js';
@@ -31,7 +31,7 @@ import Footer from "../footer/footer.js";
 // const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 // const Contact = () => <ContactPageRouter/>;
 // const ContactPageRouter = withRouter(ContactPage);
-// const Header = withRouter(HeaderComponent);
+const Header = withRouter(HeaderComponent);
 // const Home = () => <HomePage/>;
 // const Programs = () => <ProgramsPage/>;
 // const StudentWebDev = () => <StudentWebDevPage/>;
@@ -51,20 +51,20 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.history.listen((location, action) => {
-            var nav = getNavByUrl(location.pathname);
-            if (nav) {
-                document.title = createPageTitle(nav.name);
-            }
-            // if not in Nav, component must set it's own title!
-        });
-    }
+    // componentDidMount() {
+    //     this.props.history.listen((location, action) => {
+    //         var nav = getNavByUrl(location.pathname);
+    //         if (nav) {
+    //             document.title = createPageTitle(nav.name);
+    //         }
+    //         // if not in Nav, component must set it's own title!
+    //     });
+    // }
 
     render() {
         return (
             <div>
-                {/* <Header/> */}
+                <Header/>
                 {/* <Switch> */}
                 {/* <Route path="/" exact component={Home}/> */}
                 {/* <Route path="/announcements" component={Announce}/>

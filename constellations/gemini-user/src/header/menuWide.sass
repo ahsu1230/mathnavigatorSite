@@ -1,4 +1,4 @@
-@import "./header.styl"
+@import "./header.sass"
 
 #view-header-container .header-menu-wide
   position: absolute
@@ -6,36 +6,36 @@
   right: 0
   transform: translate(0, -50%)
 
-  @media screen and (max-width: media1)
+  @media screen and (max-width: $media1)
     position: absolute
     top: unset
     left: 50%
-    bottom: spacing1x
+    bottom: $spacing1x
     right: unset
     transform: translate(-50%, 0)
     width: 360px /* Not sure why this is needed */
 
-  @media screen and (max-width: media2)
+  @media screen and (max-width: $media2)
     display: none
 
   & li
     display: inline
-    margin-left: spacing2x
+    margin-left: $spacing2x
 
   & a
-    color: colorWhite
+    color: $colorWhite
     text-decoration: none
 
-    &.active
+    &:active
     &:hover
-      color: colorOrange
+      color: $colorOrange
 
-    @media screen and (max-width: media1)
+    @media screen and (max-width: $media1)
       font-size: 14px
 
 .header-menu-wide .menu-link-container
   display: inline-block
-  padding: spacing1x
+  padding: $spacing1x
 
 .header-menu-wide .sub-menu
   position: relative
@@ -50,7 +50,7 @@
     top: 100%
     left: 50%
     transform: translateX(-50%)
-    background-color: colorTurquoiseDark
+    background-color: $colorTurquoiseDark
 
     & li
       display: block !important
@@ -59,7 +59,7 @@
       & a
         display: block
         line-height: 20px
-        padding: spacing1x spacing2x
+        padding: $spacing1x $spacing2x
         box-sizing: border-box
         text-align: center
         font-size: 14px

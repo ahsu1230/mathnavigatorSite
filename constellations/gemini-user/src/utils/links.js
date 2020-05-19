@@ -1,3 +1,6 @@
+'use strict';
+import { concat, find } from 'lodash';
+
 export const Navigation = [
     { id: "home", name: "Home", url: "/" },
     {
@@ -38,3 +41,23 @@ const SubLinksAchieve = [
         url: "/student-projects",
     },
 ];
+
+const AllNavLinks = concat(Navigation, SubLinksPrograms, SubLinksAchieve);
+
+export function getNavById(id) {
+  return find(AllNavLinks, {id: id});
+}
+
+export function getNavByUrl(url) {
+  return find(AllNavLinks, {url: url});
+}
+
+/* not really used */
+export function isPathAt(currentPath, url) {
+    if (url == getNavById("home").url) {
+      // return currentPath == '/'; // Use with BrowserRouter
+      return currentPath == '#/';
+    } else {
+      return currentPath.indexOf(url) >= 0;
+    }
+}
