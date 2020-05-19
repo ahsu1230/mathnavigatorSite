@@ -14,7 +14,7 @@ docker-compose up -d
 
 Once it is done running, you should be able to see all services as healthy in the Docker Desktop app.
 
-![SCREENSHOT_DOCKER_ALL_SERVICES](https://github.com/ahsu1230/mathnavigatorSite/tree/master/resources/images/docker/desktop_all_services.png)
+![SCREENSHOT_DOCKER_ALL_SERVICES](../resources/images/docker/desktop_all_services.png)
 
 ***Note*** Even though our stack uses MySQL, you won't have to install it because Docker will already create a MySQL image for you (as done in `docker-compose.yml`).
 
