@@ -28,9 +28,9 @@ At this point, you should have backend-services active on DockerDesktop and two 
 
 ## Starting Development
 
-If you're a back-end developer, you will probably be working on `orion`. Go to the `orion` directory and read the README file there. You will also need to install Golang to start developing.
+If you're a back-end developer, you will probably be working on `orion`. Go to the [orion](./orion) directory and read the README file there. You will also need to install Golang to start developing.
 
-If you're a front-end developer, you won't need any more installation steps. Go to the `gemini-user` or `gemini-admin` directories to read more about developing in those projects.
+If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](./gemini-user) and [gemini-admin](./gemini-admin) directories to read more about developing in those projects.
 
 ---
 
