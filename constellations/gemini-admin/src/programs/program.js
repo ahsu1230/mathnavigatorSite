@@ -10,8 +10,8 @@ export class ProgramPage extends React.Component {
     state = {
         programs: [],
         selectedIds: {},
-        numUnpublished: 0
-    }
+        numUnpublished: 0,
+    };
 
     componentDidMount() {
         this.fetchData();
@@ -20,11 +20,12 @@ export class ProgramPage extends React.Component {
     fetchData() {
         API.get("api/programs/all").then((res) => {
             const programs = res.data;
-            const numUnpublished = programs.filter(p => !p.publishedAt).length;
-            this.setState({ 
+            const numUnpublished = programs.filter((p) => !p.publishedAt)
+                .length;
+            this.setState({
                 programs: programs,
                 selectedIds: {},
-                numUnpublished: numUnpublished
+                numUnpublished: numUnpublished,
             });
         });
     }
@@ -33,15 +34,15 @@ export class ProgramPage extends React.Component {
         if (currentlySelected) {
             delete this.state.selectedIds[programId];
             this.setState({
-                selectedIds: this.state.selectedIds
+                selectedIds: this.state.selectedIds,
             });
         } else {
             this.state.selectedIds[programId] = true;
             this.setState({
-                selectedIds: this.state.selectedIds
+                selectedIds: this.state.selectedIds,
             });
         }
-    }
+    };
 
     onClickSelectAll = () => {
         this.state.programs.forEach((program) => {
@@ -49,7 +50,7 @@ export class ProgramPage extends React.Component {
                 this.onSelectRow(program.programId, false);
             }
         });
-    }
+    };
 
     onClickPublish = () => {
         const publishList = keys(this.state.selectedIds);
@@ -64,12 +65,20 @@ export class ProgramPage extends React.Component {
         API.post("api/programs/publish", publishList)
             .then((res) => successCallback(res))
             .catch((err) => failCallback(err));
-    }
+    };
 
     render() {
         const rows = this.state.programs.map((row, index) => {
             const isSelected = !!this.state.selectedIds[row.programId];
-            return <ProgramRow key={index} row={row} onSelectRow={this.onSelectRow} selected={isSelected} numUnpublished={this.state.numUnpublished}/>;
+            return (
+                <ProgramRow
+                    key={index}
+                    row={row}
+                    onSelectRow={this.onSelectRow}
+                    selected={isSelected}
+                    numUnpublished={this.state.numUnpublished}
+                />
+            );
         });
         const numRows = rows.length;
         let numUnpublished = this.state.numUnpublished;
@@ -79,7 +88,10 @@ export class ProgramPage extends React.Component {
             <div id="view-program">
                 <h1>All Programs ({numRows}) </h1>
                 <ul id="list-heading">
-                    {renderSelectAllButton(numUnpublished, this.onClickSelectAll)}
+                    {renderSelectAllButton(
+                        numUnpublished,
+                        this.onClickSelectAll
+                    )}
                     <li className="li-med">State</li>
                     <li className="li-med">ProgramKey</li>
                     <li className="li-med">Name</li>
@@ -93,14 +105,22 @@ export class ProgramPage extends React.Component {
                             Add Program
                         </Link>
                     </button>
-                    {renderUnpublishedButtonSection(numUnpublished, numSelected, this.onClickPublish)}
+                    {renderUnpublishedButtonSection(
+                        numUnpublished,
+                        numSelected,
+                        this.onClickPublish
+                    )}
                 </div>
             </div>
         );
     }
 }
 
-function renderUnpublishedButtonSection(numUnpublished, numSelected, onClickPublish) {
+function renderUnpublishedButtonSection(
+    numUnpublished,
+    numSelected,
+    onClickPublish
+) {
     if (numUnpublished > 0) {
         return (
             <div className="publish">
@@ -108,27 +128,24 @@ function renderUnpublishedButtonSection(numUnpublished, numSelected, onClickPubl
                     You have {numUnpublished} unpublished items. <br />
                     You have selected {numSelected} items to publish.
                 </p>
-                <button
-                    onClick={onClickPublish}>
-                    Publish Selected
-                </button>
-            </div>      
+                <button onClick={onClickPublish}>Publish Selected</button>
+            </div>
         );
     } else {
-        return (<div></div>);
+        return <div></div>;
     }
 }
 
 function renderSelectAllButton(numUnpublished, onClickSelectAll) {
     if (numUnpublished > 0) {
         return (
-            <button
-                className="li-checkbox"
-                onClick={onClickSelectAll}>
-                Select<br/>All
+            <button className="li-checkbox" onClick={onClickSelectAll}>
+                Select
+                <br />
+                All
             </button>
         );
     } else {
-        return (<div></div>);
+        return <div></div>;
     }
 }

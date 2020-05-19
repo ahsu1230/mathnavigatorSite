@@ -8,14 +8,20 @@ export class ProgramRow extends React.Component {
         const row = this.props.row;
         const numUnpublished = this.props.numUnpublished;
         const isSelected = this.props.selected;
-        
+
         const url = "/program/" + row.programId + "/edit";
         const isUnpublished = !row.publishedAt;
-        const checkbox = renderCheckbox(row.programId, isUnpublished, isSelected, numUnpublished, this.props.onSelectRow);
+        const checkbox = renderCheckbox(
+            row.programId,
+            isUnpublished,
+            isSelected,
+            numUnpublished,
+            this.props.onSelectRow
+        );
         const publishedState = isUnpublished ? "Unpublished" : "Published";
 
         return (
-            <li className={(isUnpublished ? "unpublished" : "")}>
+            <li className={isUnpublished ? "unpublished" : ""}>
                 {checkbox}
                 <div className="li-med">{publishedState}</div>
                 <div className="li-med">{row.programId}</div>
@@ -28,7 +34,13 @@ export class ProgramRow extends React.Component {
     }
 }
 
-function renderCheckbox(programId, isUnpublished, currentlySelected, numUnpublished, onSelectRow) {
+function renderCheckbox(
+    programId,
+    isUnpublished,
+    currentlySelected,
+    numUnpublished,
+    onSelectRow
+) {
     if (numUnpublished > 0) {
         if (isUnpublished) {
             return (
@@ -41,9 +53,9 @@ function renderCheckbox(programId, isUnpublished, currentlySelected, numUnpublis
                 />
             );
         } else {
-            return (<div className="li-checkbox"></div>);
+            return <div className="li-checkbox"></div>;
         }
     } else {
-        return (<div></div>);
-    }   
+        return <div></div>;
+    }
 }

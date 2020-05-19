@@ -7,7 +7,7 @@ export class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            programs: [            ],
+            programs: [],
             classes: [],
             locations: [],
             achieves: [],
@@ -157,12 +157,8 @@ export class HomePage extends React.Component {
                 <div className="home-left">
                     <h2> Unpublished Content </h2>
                     <ul>
-                        <button onClick={this.onClickPrograms}>
-                            Programs
-                        </button>
-                        <button onClick={this.onClickClasses}>
-                            Classes
-                        </button>
+                        <button onClick={this.onClickPrograms}>Programs</button>
+                        <button onClick={this.onClickClasses}>Classes</button>
                         <button onClick={this.onClickLocations}>
                             Locations
                         </button>
@@ -172,9 +168,7 @@ export class HomePage extends React.Component {
                         <button onClick={this.onClickSemesters}>
                             Semesters
                         </button>
-                        <button onClick={this.onClickSessions}>
-                            Sessions
-                        </button>
+                        <button onClick={this.onClickSessions}>Sessions</button>
                     </ul>
                     <h2> Registrations </h2>
                     <ul>
@@ -186,13 +180,15 @@ export class HomePage extends React.Component {
                 <div className="home-right">
                     {unpubMessage}
                     {this.state.noUnpub}
-                    <ul>
-                        {this.state.rows}
-                    </ul>
-                    <button className="btn-go-to-page" onClick={this.onClickPage}>
+                    <ul>{this.state.rows}</ul>
+                    <button
+                        className="btn-go-to-page"
+                        onClick={this.onClickPage}>
                         Go to Page
                     </button>
-                    <button className="btn-publish-all" onClick={this.onClickPublishAll}>
+                    <button
+                        className="btn-publish-all"
+                        onClick={this.onClickPublishAll}>
                         Publish All
                     </button>
                 </div>
@@ -204,6 +200,6 @@ export class HomePage extends React.Component {
 class DashboardRow extends React.Component {
     render() {
         const title = this.props.title;
-        return (<li className="dashboard-row">{title}</li>);
+        return <li className="dashboard-row">{title}</li>;
     }
 }
