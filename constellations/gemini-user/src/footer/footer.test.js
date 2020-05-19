@@ -1,26 +1,27 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import { HashRouter as Router } from "react-router-dom";
-import { HomePage } from "./home.js";
+import Footer from "./footer.js";
 import renderer from "react-test-renderer";
 
 describe("test", () => {
-    const component = shallow(<HomePage />);
+    const component = shallow(<Footer />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.exists("HomeAnnounce"));
-        expect(component.exists("HomeBanner"));
-        expect(component.exists("HomeSectionPrograms"));
-        expect(component.exists("HomeSectionSuccess"));
-        expect(component.exists("HomeSectionStories"));
+    });
+
+    test("shows links", () => {
+        var ul = component.find("ul");
+        expect(ul.exists()).toBe(true);
+        expect(ul.children().length).toBe(4);
     });
 
     test("snapshot", () => {
         const tree = renderer
             .create(
                 <Router>
-                    <HomePage />
+                    <Footer />
                 </Router>
             )
             .toJSON();

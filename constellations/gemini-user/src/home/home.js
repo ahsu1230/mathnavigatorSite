@@ -1,28 +1,47 @@
 "use strict";
 require("./home.sass");
 import React from "react";
-import API from "../api.js";
+import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
+import { HomeAnnounce } from "./homeAnnounce.js";
+import { HomeSectionPrograms } from "./homePrograms.js";
+import { HomeSectionStories } from "./homeStories.js";
+import { HomeSectionSuccess } from "./homeSuccess.js";
+import { getNav } from "../constants.js";
 
 export class HomePage extends React.Component {
-    state = {
-        programsList: [],
-    };
-
-    componentDidMount() {
-        console.log("api attempt ");
-        API.get("api/programs/all").then((res) => {
-            const programsList = res.data;
-            console.log("api success!");
-            this.setState({ programsList });
-        });
-    }
-
     render() {
         return (
             <div id="view-home">
-                <h1>Math Navigator</h1>
-                <p>{"node env: " + process.env.NODE_ENV}</p>
-                <p>{JSON.stringify(this.state.programsList)}</p>
+                <div id="view-home-container">
+                    <HomeAnnounce />
+                    <HomeBanner />
+                    <HomeSectionPrograms />
+                    <HomeSectionSuccess />
+                    <HomeSectionStories />
+                </div>
+            </div>
+        );
+    }
+}
+
+class HomeBanner extends React.Component {
+    render() {
+        return (
+            <div id="home-banner-container">
+                <div id="banner-bg-img"></div>
+                <div id="banner-bg-overlay"></div>
+                <div id="banner-content">
+                    <h2>Montgomery County, MD</h2>
+                    <h1>
+                        Providing affordable, high quality education
+                        <br />
+                        to thousands of students for 15 years.
+                    </h1>
+                </div>
+                <Link to="/programs">
+                    <button>Join a Program today</button>
+                </Link>
             </div>
         );
     }

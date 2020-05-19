@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test snapshot 1`] = `
+<div
+  id="view-footer"
+>
+  <div
+    id="view-footer-container"
+  >
+    <div
+      className="logo-container"
+    >
+      <a
+        href="#/"
+        id="footer-logo"
+        onClick={[Function]}
+      >
+        <h1
+          className="logo"
+        />
+      </a>
+      <h2>
+        Montgomery County, MD
+      </h2>
+      <p>
+        Program sessions are held off-school hours at local public schools.
+        <br />
+        Math Navigator is not affiliated with those schools.
+      </p>
+    </div>
+  </div>
+</div>
+`;
