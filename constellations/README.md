@@ -7,13 +7,9 @@ A good example of microservices could be a music playing application, like Spoti
 
 Every microservice has a codename. It's often used to give different services codenames so each service may flexibly grow in responsibilities. It allows application infrastructure to grow without being bogged down by naming schematics... and it's just more fun :). Here, we name our services after star constellations because sailors used to use stars to NAVIGATE through the seas. GET IT?
 
-------
-
 ## Onboarding
 
 To learn how to start these services together, view [this](./onboarding.md).
-
-------
 
 ## Codenames
 
