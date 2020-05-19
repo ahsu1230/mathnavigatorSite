@@ -1,61 +1,98 @@
 "use strict";
 require("./program.styl");
 import React from "react";
-import ReactDOM from "react-dom";
-import API from "../api.js";
-import { Modal } from "../modals/modal.js";
 import { Link } from "react-router-dom";
+import { keys, size } from "lodash";
+import API from "../api.js";
+import { ProgramRow } from "./programRow.js";
 
 export class ProgramPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            list: [],
-        };
-    }
+    state = {
+        programs: [],
+        selectedIds: {},
+        numUnpublished: 0,
+    };
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData() {
         API.get("api/programs/all").then((res) => {
             const programs = res.data;
-            this.setState({ list: programs });
+            const numUnpublished = programs.filter((p) => !p.publishedAt)
+                .length;
+            this.setState({
+                programs: programs,
+                selectedIds: {},
+                numUnpublished: numUnpublished,
+            });
         });
     }
 
-    onClickSelectAll() {
-        var items = document.getElementsByName("unpublished");
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].type == "checkbox") {
-                items[i].checked = true;
-            }
+    onSelectRow = (programId, currentlySelected) => {
+        if (currentlySelected) {
+            delete this.state.selectedIds[programId];
+            this.setState({
+                selectedIds: this.state.selectedIds,
+            });
+        } else {
+            this.state.selectedIds[programId] = true;
+            this.setState({
+                selectedIds: this.state.selectedIds,
+            });
         }
-    }
+    };
 
-    onClickPublish() {
-        console.log("clicked publish");
-    }
+    onClickSelectAll = () => {
+        this.state.programs.forEach((program) => {
+            if (!program.publishedAt) {
+                this.onSelectRow(program.programId, false);
+            }
+        });
+    };
+
+    onClickPublish = () => {
+        const publishList = keys(this.state.selectedIds);
+        console.log("publishing...");
+        const successCallback = (res) => {
+            console.log("Successfully published programs!");
+            this.fetchData();
+        };
+        const failCallback = (err) => {
+            console.log("Publish failed. " + err);
+        };
+        API.post("api/programs/publish", publishList)
+            .then((res) => successCallback(res))
+            .catch((err) => failCallback(err));
+    };
 
     render() {
-        const rows = this.state.list.map((row, index) => {
-            return <ProgramRow key={index} row={row} />;
+        const rows = this.state.programs.map((row, index) => {
+            const isSelected = !!this.state.selectedIds[row.programId];
+            return (
+                <ProgramRow
+                    key={index}
+                    row={row}
+                    onSelectRow={this.onSelectRow}
+                    selected={isSelected}
+                    numUnpublished={this.state.numUnpublished}
+                />
+            );
         });
         const numRows = rows.length;
-        let numUnpublished = 0;
-        let numSelected = 0;
+        let numUnpublished = this.state.numUnpublished;
+        let numSelected = size(this.state.selectedIds);
+
         return (
             <div id="view-program">
-                <div>
-                    <h1>All Programs ({numRows}) </h1>
-                    <p>
-                        You have {numUnpublished} unpublished items. <br />
-                        You have selected {numSelected} items to publish.
-                    </p>
-                </div>
+                <h1>All Programs ({numRows}) </h1>
                 <ul id="list-heading">
-                    <button
-                        className="li-small"
-                        onClick={this.onClickSelectAll}>
-                        Select All
-                    </button>
+                    {renderSelectAllButton(
+                        numUnpublished,
+                        this.onClickSelectAll
+                    )}
+                    <li className="li-med">State</li>
                     <li className="li-med">ProgramKey</li>
                     <li className="li-med">Name</li>
                     <li className="li-small">Grade1</li>
@@ -68,48 +105,47 @@ export class ProgramPage extends React.Component {
                             Add Program
                         </Link>
                     </button>
-                    <button
-                        id="publish"
-                        className="publish"
-                        onClick={this.onClickPublish}>
-                        Publish
-                    </button>
+                    {renderUnpublishedButtonSection(
+                        numUnpublished,
+                        numSelected,
+                        this.onClickPublish
+                    )}
                 </div>
             </div>
         );
     }
 }
 
-class ProgramRow extends React.Component {
-    renderCheckbox(isUnpublished) {
-        let checkbox = <div> </div>;
-        if (isUnpublished) {
-            return (checkbox = (
-                <input
-                    className="li-small"
-                    type="checkbox"
-                    name="unpublished"
-                    onClick={this.onClickBox}
-                />
-            ));
-        } else {
-            return (checkbox = <div className="li-small"></div>);
-        }
-    }
-
-    render() {
-        const row = this.props.row;
-        const url = "/program/" + row.programId + "/edit";
-        let checkbox = this.renderCheckbox(true);
+function renderUnpublishedButtonSection(
+    numUnpublished,
+    numSelected,
+    onClickPublish
+) {
+    if (numUnpublished > 0) {
         return (
-            <li className="program-row">
-                {checkbox}
-                <div className="li-med">{row.programId}</div>
-                <div className="li-med">{row.name}</div>
-                <div className="li-small">{row.grade1}</div>
-                <div className="li-small">{row.grade2}</div>
-                <Link to={url}>Edit</Link>
-            </li>
+            <div className="publish">
+                <p>
+                    You have {numUnpublished} unpublished items. <br />
+                    You have selected {numSelected} items to publish.
+                </p>
+                <button onClick={onClickPublish}>Publish Selected</button>
+            </div>
         );
+    } else {
+        return <div></div>;
+    }
+}
+
+function renderSelectAllButton(numUnpublished, onClickSelectAll) {
+    if (numUnpublished > 0) {
+        return (
+            <button className="li-checkbox" onClick={onClickSelectAll}>
+                Select
+                <br />
+                All
+            </button>
+        );
+    } else {
+        return <div></div>;
     }
 }

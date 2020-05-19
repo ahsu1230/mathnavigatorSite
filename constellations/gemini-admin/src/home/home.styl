@@ -3,47 +3,66 @@
 #view-home
   width: 100%
   height: 400px
-  padding: 10px
-  background-color: colorWhite
+  padding: spacing4x
+  box-sizing: border-box
+  background-color: colorWhite 
 
-#view-home #view-content
+#view-home .home-left
     display: inline-block
-    float:left
+    width: 240px
+    margin-right: 60px
+    box-sizing: border-box
 
     & h2
-        margin: spacing2x
-
+        margin: spacing2x 0
+        color: colorTurquoise
     & button
-        display:block
+        display: block
+
+        &:hover
+            text-decoration: underline
 
 
-#view-home #box-and-button
+#view-home .home-right
     position: relative
-    float: left
     display: inline-block
-    margin-left: spacing8x
+    width: calc(100% - 304px)
+    height: 100%
+    padding: spacing2x
+    box-sizing: border-box
+    vertical-align: top
 
-    .boxed
-        float: right
-        width: 360px
-        height: 240px
-        padding: spacing1x
-        border: 2px solid black
-        margin-top: spacing2x
-        margin-bottom: 60px
+    & h4
+        margin-bottom: spacing2x
 
-#view-home
-    .dashboard-row
+    & ul
+        margin: 0
+        padding: 0
+        list-style: none
+
+    & li.dashboard-row
+        height: spacing6x
+        line-height: spacing6x
         border-bottom: 1px solid colorGrayDark
-        margin: spacing1x
 
-#go-to-page
-    position: absolute
-    bottom: 0
-    right: 0
-    display: block
-    padding: 0.75em
-    border-radius: 10px
-    margin: 0
-    background-color: colorTurquoise
-    color: white
+    & .btn-go-to-page
+        position: absolute
+        top: 'calc(100% + %s)' % spacing4x
+        left: 0
+        display: block
+        padding: 0.75em
+        border-radius: 10px
+        margin: 0
+        background-color: colorTurquoise
+        color: white
+
+    & .btn-publish-all
+        position: absolute
+        top: 'calc(100% + %s)' % spacing4x
+        right: 0
+        display: block
+        padding: 0.75em
+        border-radius: 10px
+        margin: 0
+        background-color: colorOrange
+        color: white

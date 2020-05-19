@@ -18,11 +18,7 @@ Once it is done running, you should be able to see all services as healthy in th
 
 ***Note*** Even though our stack uses MySQL, you won't have to install it because Docker will already create a MySQL image for you (as done in `docker-compose.yml`).
 
-When you are finished working with these services, you can use this command to deactive all of them:
-
-```unix
-docker-compose rm
-```
+When you are finished working with these services, you can use `docker-compose stop` to stop and deactivate all containers. To reactivate them, use `docker-compose start`. This will stop the services without destroying the containers. Use `docker-compose down` to stop and kill all containers. Be careful with using this command! This will destroy the containers, meaning you will lose all your data (if a MySQL image is destroyed, all data stored into MySQL will be lost).
 
 ## Starting Gemini services
 

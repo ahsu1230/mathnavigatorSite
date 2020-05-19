@@ -1,7 +1,6 @@
 "use strict";
 require("./home.styl");
 import React from "react";
-import ReactDOM from "react-dom";
 import API from "../api.js";
 
 export class HomePage extends React.Component {
@@ -26,6 +25,7 @@ export class HomePage extends React.Component {
         this.onClickSemesters = this.onClickSemesters.bind(this);
         this.onClickSessions = this.onClickSessions.bind(this);
         this.onClickPage = this.onClickPage.bind(this);
+        this.onClickPublishAll = this.onClickPublishAll(this);
     }
 
     componentDidMount() {
@@ -137,6 +137,10 @@ export class HomePage extends React.Component {
         console.log("Go to Page clicked");
     }
 
+    onClickPublishAll() {
+        console.log("Publish All!");
+    }
+
     render() {
         let unpubMessage = <div> </div>;
         if (this.state.switch) {
@@ -150,8 +154,8 @@ export class HomePage extends React.Component {
         }
         return (
             <div id="view-home">
-                <div id="view-content">
-                    <h2 id="unpublished-heading"> Unpublished Content </h2>
+                <div className="home-left">
+                    <h2> Unpublished Content </h2>
                     <ul>
                         <button onClick={this.onClickPrograms}>Programs</button>
                         <button onClick={this.onClickClasses}>Classes</button>
@@ -173,14 +177,19 @@ export class HomePage extends React.Component {
                         <button>Complaints</button>
                     </ul>
                 </div>
-                <div id="box-and-button">
-                    <div className="boxed">
-                        {unpubMessage}
-                        {this.state.rows}
-                        {this.state.noUnpub}
-                    </div>
-                    <button id="go-to-page" onClick={this.onClickPage}>
+                <div className="home-right">
+                    {unpubMessage}
+                    {this.state.noUnpub}
+                    <ul>{this.state.rows}</ul>
+                    <button
+                        className="btn-go-to-page"
+                        onClick={this.onClickPage}>
                         Go to Page
+                    </button>
+                    <button
+                        className="btn-publish-all"
+                        onClick={this.onClickPublishAll}>
+                        Publish All
                     </button>
                 </div>
             </div>
@@ -191,6 +200,6 @@ export class HomePage extends React.Component {
 class DashboardRow extends React.Component {
     render() {
         const title = this.props.title;
-        return <div className="dashboard-row">{title}</div>;
+        return <li className="dashboard-row">{title}</li>;
     }
 }
