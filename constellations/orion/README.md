@@ -15,8 +15,6 @@ docker-compose start orion
 
 View your DockerDesktop to check if the `orion` service is running and healthy.
 
----
-
 ## Running Tests
 
 To run all tests for the back-end web server, run:
@@ -24,8 +22,6 @@ To run all tests for the back-end web server, run:
 go test ./...
 ```
 You should see `ok`s and no failures.
-
----
 
 ## Navigating the codebase
 
@@ -44,3 +40,9 @@ There are 3 architecture "layers" to Orion.
 Both Controllers and Repos are often declared as interfaces. The reasoning is to promote mock unit testing. Essentially, there are usually two implementations of every Controller and Repo. One implementation is for the business logic (works as you would expect), the other implementation is done by test classes which help simply unit testing.
 
 Finally you can find all integration tests inside the folder `tests_integration`.
+
+## Formatting your code
+
+```
+go fmt ./...
+```

@@ -10,7 +10,7 @@ Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/
 
 In this directory, run these commands:
 
-```
+```unix
 npm install
 npm run start
 ```
@@ -31,3 +31,15 @@ The `src/index.js` file contains the `Router` which describes what browser urls 
 The `src/static.styl` and `/src/app.styl` are CSS styles that can be applied to multiple pages. `app.styl` conveys styles across all pages while the `static.styl` defines variables and constants which can be imported / inherited into other style sheets.
 
 In general, style sheets and unit tests should be kept within the same component folder so they can easily be referenced via relative pathing.
+
+## To Run Tests
+
+```unix
+npm run test
+```
+
+## To Format Your Code
+
+```unix
+npm run prettify
+```
