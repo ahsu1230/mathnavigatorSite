@@ -10,7 +10,7 @@ Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/
 
 In this directory, run these commands:
 
-```
+```unix
 npm install
 npm run start
 ```
@@ -22,3 +22,15 @@ This will run the `gemini-user` website at <http://localhost:9000>. Open this ur
 Take a look at the "scripts" section of `package.json`. You can see all available commands when working on this project.
 
 In general, style sheets and unit tests should be kept within the same component folder so they can easily be referenced via relative pathing.
+
+## To Run Tests
+
+```unix
+npm run test
+```
+
+## To Format Your Code
+
+```unix
+npm run prettify
+```
