@@ -24,7 +24,7 @@ Or follow this link [here](https://product.hubspot.com/blog/git-and-github-tutor
 
 3. Git clone this repository
 `git clone https://github.com/ahsu1230/mathnavigatorSite.git`
-And start the onboarding in the `constellations` directory
+And start the onboarding in the [constellations](./constellations) directory
 
 4. Create an account on [Asana](https://asana.com/). This will be our main tool to manage and divide tasks amongst our team. Ask Aaron for a team member invite.
 
