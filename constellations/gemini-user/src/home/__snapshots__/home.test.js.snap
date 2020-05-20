@@ -7,7 +7,6 @@ exports[`test snapshot 1`] = `
   <div
     id="view-home-container"
   >
-    <div />
     <div
       id="home-banner-container"
     >

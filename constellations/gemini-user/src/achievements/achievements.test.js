@@ -1,9 +1,9 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
-import { AchievePage } from "./achievements.js";
+import { AchievementPage } from "./achievements.js";
 
 describe("test", () => {
-    const component = shallow(<AchievePage />);
+    const component = shallow(<AchievementPage />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);

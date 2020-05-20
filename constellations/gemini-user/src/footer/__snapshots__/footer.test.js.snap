@@ -7,6 +7,40 @@ exports[`test snapshot 1`] = `
   <div
     id="view-footer-container"
   >
+    <ul>
+      <li>
+        <a
+          href="#/"
+          onClick={[Function]}
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="#/programs"
+          onClick={[Function]}
+        >
+          Programs
+        </a>
+      </li>
+      <li>
+        <a
+          href="#/student-achievements"
+          onClick={[Function]}
+        >
+          Accomplishments
+        </a>
+      </li>
+      <li>
+        <a
+          href="#/contact"
+          onClick={[Function]}
+        >
+          Contact
+        </a>
+      </li>
+    </ul>
     <div
       className="logo-container"
     >
@@ -15,6 +49,9 @@ exports[`test snapshot 1`] = `
         id="footer-logo"
         onClick={[Function]}
       >
+        <img
+          src="test-file-stub"
+        />
         <h1
           className="logo"
         />
