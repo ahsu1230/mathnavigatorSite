@@ -1,8 +1,10 @@
 # General Onboarding
 
-The MathNavigator repository follows a microservice architecture. This means that the application is made up of many "services", each service haivng a particular role. And together, the services make up the entire application.
+The MathNavigator repository follows a microservice architecture. This means that the application is made up of many "services" (mini-programs), each service having a particular role and perform dedicated functionalities. And together, the services collaborate to make up the entire application.
 
-We use a service called **Docker** to manage our microservices. Please refer to the Docker resources [here](../resources/docker) to learn how to use Docker. You should install Docker and DockerDesktop onto your computer and learn the basics of Containerization. 
+We use a software service called **Docker** to manage our microservices. Please refer to the Docker resources [here](../resources/docker) to learn how to use Docker. You should install Docker and DockerDesktop onto your computer and learn the basics of Containerization. 
+
+Before proceeding, please read the foundations of web applications and the roles of web-servers and web-clients. [Link here](https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/01_webapps.md).
 
 ## Overview
 
@@ -17,13 +19,13 @@ Let's get started!
 
 ## Docker-Compose
 
-If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. In the `constellations` folder, use `docker-compose` to build and create your services. Run this command to start all services.
+If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. Open up your computer's CLI and traverse to the `constellations` folder. Once there, use `docker-compose` to build and create your services. Run this command to start all services.
 
 ```unix
 docker-compose up -d
 ```
 
-Once it is done running, you should be able to see all services as healthy in the Docker Desktop app.
+When it's finished, you should be able to see all services as healthily running in the Docker Desktop app.
 
 ![SCREENSHOT_DOCKER_ALL_SERVICES](../resources/images/docker/desktop_all_services.png)
 
@@ -58,7 +60,7 @@ If the website builds correctly, you should see the website serving at `http://l
 
 Cool! So at this point, you should have two websites that somehow are connected to each other. The admin website allows administrators to write data, while the user website is supposed to display the data to students and parents.
 
-### So what's going on here?
+### Web-client and Web-server interactions
 
 The Gemini sites (admin & user) are both connected to the `orion` web server which has been created by Docker. Orion is the web server that serves data for requests sent by any web client. However, Orion doesn't actually store data. All data (user, programs, classes, etc.) is stored in a MySQL database. When a web client requests data from Orion, Orion connects to MySQL to retrieve the requested data, and then transforms the data to be more easily processed by the web client.
 
