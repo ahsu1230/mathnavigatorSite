@@ -20,7 +20,7 @@ import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
 // import { ContactPage } from '../contact/contact.js';
 // import { ErrorPage } from '../errorPage/error.js';
 import Footer from "../footer/footer.js";
-import { Header as HeaderComponent} from '../header/header.js';
+import { Header as HeaderComponent } from "../header/header.js";
 // import { HomePage } from '../home/home.js';
 // import { ProgramsPage } from '../programs/programs.js';
 // import { StudentProjectsPage } from '../student/studentProjects.js';
@@ -64,7 +64,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Header/>
+                <Header />
                 {/* <Switch> */}
                 {/* <Route path="/" exact component={Home}/> */}
                 {/* <Route path="/announcements" component={Announce}/>

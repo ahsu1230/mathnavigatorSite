@@ -2,7 +2,7 @@
 require("./menuSlim.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { Navigation, isPathAt } from "../utils/links.js";
+import { MainLinks, isPathAt } from "../utils/links.js";
 import srcArrowDown from "../../assets/arrow_down_black.svg";
 import srcClose from "../../assets/close_black.svg";
 const classnames = require("classnames");
@@ -49,7 +49,7 @@ export class OverlayMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            links: Navigation,
+            links: MainLinks,
         };
     }
 

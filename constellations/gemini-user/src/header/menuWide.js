@@ -2,19 +2,18 @@
 require("./menuWide.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { Navigation, isPathAt } from "../utils/links.js";
+import { MainLinks, isPathAt } from "../utils/links.js";
 const classnames = require("classnames");
 
 export default class MenuWide extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            links: Navigation,
+            links: MainLinks,
         };
     }
     render() {
         const location = this.props.location;
-        const onClick = this.props.onClick;
         const items = this.state.links.map((link, i) => {
             if (link.subLinks && link.subLinks.length > 0) {
                 return (

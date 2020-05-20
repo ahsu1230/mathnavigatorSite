@@ -2,7 +2,7 @@
 require("./footer.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { Navigation } from "../utils/links.js";
+import { MainLinks } from "../utils/links.js";
 import headerIcon from "../../assets/navigate_white.png";
 
 export default class Footer extends React.Component {
@@ -15,7 +15,7 @@ export default class Footer extends React.Component {
     }
 
     render() {
-        const links = Navigation.map((link, index) => (
+        const links = MainLinks.map((link, index) => (
             <li key={link.id}>
                 <Link to={link.url}>{link.name}</Link>
             </li>
