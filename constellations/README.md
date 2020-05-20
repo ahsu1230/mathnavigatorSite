@@ -5,7 +5,7 @@ The MathNavigator application follows the *microservice* architecture. A microse
 
 A good example of microservices could be a music playing application, like Spotify. If Spotify was implemented with a microservice architecture, you could have one service be dedicated to playing music, another service downloading the next song to play, and a third service dedicated to handling the user interface and allowing users to browse music libraries. Spotify is one application but you can think of it as several smaller programs working together, especially if they happen simultaneously (it's common for users to play music and browse for other music at the same time).
 
-Every microservice has a codename. It's often used to give different services codenames so each service may flexibly grow in responsibilities. It allows application infrastructure to grow without being bogged down by naming schematics... and it's just more fun :). Here, we name our services after star constellations because sailors used to use stars to NAVIGATE through the oceans. GET IT?
+Every microservice has a codename. It's often used to give different services codenames so each service may flexibly grow in responsibilities. It allows application infrastructure to grow without being bogged down by naming schematics... and it's just more fun :). Here, we name our services after star constellations because sailors used to use stars to NAVIGATE through the seas. GET IT?
 
 ## Onboarding
 
