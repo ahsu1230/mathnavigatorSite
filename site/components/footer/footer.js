@@ -1,5 +1,5 @@
 'use strict';
-require('./footer.styl');
+// require('./footer.styl');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';

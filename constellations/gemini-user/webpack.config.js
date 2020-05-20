@@ -3,7 +3,7 @@ var path = require("path");
 
 module.exports = (env) => {
     return {
-        entry: [path.resolve(__dirname, "src/index.js")],
+        entry: [path.resolve(__dirname, "src/app/index.js")],
         output: {
             publicPath: "/dist",
             filename: "./bundle.js",
@@ -24,6 +24,10 @@ module.exports = (env) => {
                 {
                     test: /\.(css|sass)$/,
                     loader: "style-loader!css-loader!sass-loader",
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg|ttf)$/i,
+                    use: [{ loader: "file-loader" }],
                 },
             ],
         },

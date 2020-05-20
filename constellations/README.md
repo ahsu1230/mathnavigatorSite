@@ -9,9 +9,9 @@ Every microservice has a codename. It's often used to give different services co
 
 ## Onboarding
 
-To learn how to start these services together, view [this](./onboarding.md).
+To learn how to start these services together, view the [Constellation Onboarding Guide](./onboarding.md).
 
-## Codenames
+## Constellations
 
 ### Orion
 The most famous constellation that can be seen all around the world. This will be our core API service. Most interactions with data (programs, users, class information, etc.) will be done through Orion's webserver.
