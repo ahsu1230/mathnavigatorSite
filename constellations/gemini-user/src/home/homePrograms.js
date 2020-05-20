@@ -1,9 +1,7 @@
 "use strict";
 require("./home.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import { getNav } from "../constants.js";
 import { programsText } from "./homeText.js";
 
 export class HomeSectionPrograms extends React.Component {

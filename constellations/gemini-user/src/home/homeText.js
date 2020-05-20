@@ -1,11 +1,11 @@
 "use strict";
 
-const srcSat = require("../../assets/cb_sat.jpg");
-const srcApCalc = require("../../assets/ap_calc.jpg");
-const srcAmc = require("../../assets/amc.jpg");
-const srcUserCheck = require("../../assets/user_check_white.svg");
-const srcLightBulb = require("../../assets/lightbulb_white.svg");
-const srcLibrary = require("../../assets/library_white.svg");
+import srcSat from "../../assets/cb_sat.jpg";
+import srcApCalc from "../../assets/ap_calc.jpg";
+import srcAmc from "../../assets/amc.jpg";
+import srcUserCheck from "../../assets/user_check_white.svg";
+import srcLightBulb from "../../assets/lightbulb_white.svg";
+import srcLibrary from "../../assets/library_white.svg";
 
 export const programsText = [
     {

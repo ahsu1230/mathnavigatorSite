@@ -1,14 +1,14 @@
-@import "../static.styl"
+@import "../utils/_constants.sass"
 
 #home-announce
   position: fixed
-  bottom: spacing4x
-  left: spacing4x
+  bottom: $spacing4x
+  left: $spacing4x
   transform: translate(-10%, 10%) scale(0.7)
-  width: propUnit12x
-  padding: spacing2x spacing4x
+  width: $propUnit12x
+  padding: $spacing2x $spacing4x
   box-sizing: border-box
-  background-color: colorYellow
+  background-color: $colorYellow
   opacity: 0.0
   visibility: hidden
   z-index: 10
@@ -19,16 +19,16 @@
     visibility: visible
     transform: translate(0, 0) scale(1.0)
 
-  @media screen and (max-width: mediaWidth1)
+  @media screen and (max-width: $mediaWidth1)
     bottom: 0
     left: 0
     width: 100%
 
   & button
     position: absolute
-    top: spacing2x
-    right: spacing2x
-    background-color: colorYellow
+    top: $spacing2x
+    right: $spacing2x
+    background-color: $colorYellow
     line-height: 0
     padding: 0
 
@@ -40,9 +40,9 @@
       height: 24px
 
   & h3
-    line-height: lineHeight0
-    margin: spacing1x 0
-    font-size: fontSize0
+    line-hei4ght: $lineHeight0
+    margin: $spacing1x 0
+    font-size: $fontSize0
     font-weight: bold
 
   & .text-container
@@ -50,13 +50,13 @@
 
   & p
     margin: 0
-    line-height: lineHeight0
-    font-size: fontSize0
+    line-height: $lineHeight0
+    font-size: $fontSize0
 
   & a
     display: block
     float: right
-    margin: spacing2x 0
+    margin: $spacing2x 0
 
 
 #fake-announce
@@ -64,7 +64,7 @@
   top: 0
   right: 0
   z-index: 10
-  width: propUnit12x
-  padding: spacing2x spacing4x
+  width: $propUnit12x
+  padding: $spacing2x $spacing4x
   box-sizing: border-box
-  background-color: colorYellow
+  background-color: $colorYellow

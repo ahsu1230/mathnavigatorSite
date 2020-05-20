@@ -30,7 +30,7 @@ export class AchievePage extends React.Component {
                 <h1>All Achievements ({numAchievements})</h1>
                 <ul id="list-heading">
                     <li className="li-med">Year</li>
-                    <li className="li-med"> Message</li>
+                    <li className="li-large"> Message</li>
                 </ul>
                 <ul>{achievements}</ul>
                 <button>
@@ -46,11 +46,11 @@ export class AchievePage extends React.Component {
 class AchieveRow extends React.Component {
     render() {
         const achieve = this.props.achieve;
-        const url = "/achievements/" + achieve.Id + "/edit";
+        const url = "/achievements/" + achieve.id + "/edit";
         return (
             <ul id="achieve-row">
                 <li className="li-med">{achieve.year}</li>
-                <li className="li-med">{achieve.message}</li>
+                <li className="li-large">{achieve.message}</li>
                 <Link to={url}>Edit</Link>
             </ul>
         );
