@@ -61,6 +61,10 @@ If you're a back-end developer, you will probably be working on `orion`. Go to t
 
 If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](./gemini-user) and [gemini-admin](./gemini-admin) directories to read more about developing in those projects.
 
+## Closing out the services
+
+This application will continue to run as long as the CLI processes for the websites and the Docker services continue to run. To quit out of the websites, close their corresponding CLI tab/window or use `Ctrl-C`. To stop the Docker services, use `docker-compose stop`.
+
 ---
 
 For more information about using `docker-compose`, go [here](./onboarding_docker-compose.md).

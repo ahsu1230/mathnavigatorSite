@@ -8,17 +8,16 @@ Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/
 
 ## Running Gemini-Admin
 
-In this directory, run these commands:
+Running this website requires an ongoing process, so you'll have to first create a new tab/window of your CLI. In this directory, run these commands:
 
 ```unix
 npm install
 npm run start
 ```
 
-This will run the `gemini-admin` website at <http://localhost:9001>. Open this url with an Internet browser.
+This will run the `gemini-admin` website at <http://localhost:9001>. Open this url with an Internet browser. This website will continue to run until the CLI is closed or you quit the process using `Ctrl-C`.
 
-Gemini consists of two websites, the Admin and User site. Both of these web clients interact with the Orion webserver to provide 
-services. The Admin site allows MathNavigator administrators to manage student/parent information, available programs, and schedule classes and announcements.On the other hand, the User site is the actual site that students and parents will interact with.
+Gemini consists of two websites, the Admin and User site. Both of these web clients interact with the Orion webserver to provide services. The Admin site allows MathNavigator administrators to manage student/parent information, available programs, and schedule classes and announcements. On the other hand, the User site is the actual site that students and parents will interact with.
 
 For instance, the admin site allows an administrator to schedule new programs and classes for the upcoming semester while a student/parent can register for those classes.
 

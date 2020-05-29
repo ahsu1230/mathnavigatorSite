@@ -8,14 +8,14 @@ Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/
 
 ## Running Gemini-User
 
-In this directory, run these commands:
+Running this website requires an ongoing process, so you'll have to first create a new tab/window of your CLI. In this directory, run these commands:
 
 ```unix
 npm install
 npm run start
 ```
 
-This will run the `gemini-user` website at <http://localhost:9000>. Open this url with an Internet browser.
+This will run the `gemini-user` website at <http://localhost:9000>. Open this url with an Internet browser. This website will continue to run until the CLI is closed or you quit the process using `Ctrl-C`.
 
 ## Navigating the codebase
 
