@@ -13,7 +13,7 @@ docker-compose build orion
 docker-compose start orion
 ```
 
-View your DockerDesktop to check if the `orion` service is running and healthy.
+View your DockerDesktop to check if the `orion` service is running and healthy. When you are finished, use `docker-compose stop orion` to stop all services.
 
 ## Running Tests
 
