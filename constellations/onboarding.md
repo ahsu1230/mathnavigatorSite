@@ -17,7 +17,7 @@ Let's get started!
 
 ## Docker-Compose
 
-If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. In the `constellations` folder, use `docker-compose` to build and create your services. Run this command to start all services.
+If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. Use your CLI and traverse to the `constellations` folder, use `docker-compose` to build and create your services. Run this command to start all services.
 
 ```unix
 docker-compose up -d
@@ -33,26 +33,15 @@ When you are finished working with these services, you can use `docker-compose s
 
 ## Starting Gemini Admin
 
-Go to the `constellations/gemini-admin` folder and follow the instructions.
-
-- Install Node and NPM
-- Install the node dependencies using `npm install` (in the `gemini-admin` folder)
-- Start the user web client by running `npm run start` in the same folder
-
-If the website builds correctly, you should see the website serving at `http://localhost:9001`.
-
-Go to Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
+View the [gemini-admin](./gemini-admin) directory and follow the instructions there. If the website builds correctly, you should see the website serving at `http://localhost:9001`. Go to the website, in the header, select Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
 
 ![SCREENSHOT_ADMIN_ACHIEVE](../resources/images/screenshot_admin_achieve.png)
 
 ## Starting Gemini User
 
-Go to the `constellations/gemini-user` folder and follow the instructions.
+View the [gemini-user](./gemini-user) directory and follow the instructions.
 
-- Install the node dependencies using `npm install` (in the `gemini-user` folder)
-- Start the user web client by running `npm run start` in the same folder
-
-If the website builds correctly, you should see the website serving at `http://localhost:9000`. At this point, you should have two websites running (admin and user). In the user site, go to Accomplishments > Student Achievements and you should see the same information as you input in the Admin site.
+If the website builds correctly, you should see the website serving at `http://localhost:9000`. At this point, you should have two websites running (admin and user). In the user website, in the header, go to Accomplishments > Student Achievements and you should see the same information as you input in the Admin site.
 
 ## Testing the Backend Services
 
