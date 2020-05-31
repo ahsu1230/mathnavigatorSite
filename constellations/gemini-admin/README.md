@@ -21,16 +21,6 @@ Gemini consists of two websites, the Admin and User site. Both of these web clie
 
 For instance, the admin site allows an administrator to schedule new programs and classes for the upcoming semester while a student/parent can register for those classes.
 
-## Navigating the codebase
-
-Take a look at the "scripts" section of `package.json`. You can see all available commands when working on this project.
-
-The `src/index.js` file contains the `Router` which describes what browser urls will link to which components to display. Most of the folders in the `src` folder are separate pages (i.e. the `src/programs` folder contains different components about the `Programs` page).
-
-The `src/static.styl` and `/src/app.styl` are CSS styles that can be applied to multiple pages. `app.styl` conveys styles across all pages while the `static.styl` defines variables and constants which can be imported / inherited into other style sheets.
-
-In general, style sheets and unit tests should be kept within the same component folder so they can easily be referenced via relative pathing.
-
 ## To Run Tests
 
 ```unix
@@ -42,3 +32,11 @@ npm run test
 ```unix
 npm run prettify
 ```
+
+## Navigating the codebase
+
+- Take a look at the "scripts" section of `package.json`. You can see all available commands when working on this project.
+- This project is managed and bundled by `webpack`. You can view webpack configurations inside `webpack.config.js`.
+- The `src/index.js` file contains the `Router` which describes what browser urls will link to which components to display. Most of the folders in the `src` folder are separate pages (i.e. the `src/programs` folder contains different components about the `Programs` page).
+- The `src/static.styl` and `/src/app.styl` are CSS styles that can be applied to multiple pages. `app.styl` conveys styles across all pages while the `static.styl` defines variables and constants which can be imported / inherited into other style sheets.
+- In general, style sheets and unit tests should be kept within the same component folder so they can easily be referenced via relative pathing.
