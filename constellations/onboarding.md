@@ -19,7 +19,7 @@ Let's get started!
 
 ## Docker-Compose
 
-If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. Open up your computer's CLI and traverse to the `constellations` folder. Once there, use `docker-compose` to build and create your services. Run this command to start all services.
+If DockerDesktop was installed correctly, you should be able to use `docker-compose` in a CLI. Use your CLI and traverse to the `constellations` folder. Once there, use `docker-compose` to build, create, and start the services by running this command.
 
 ```unix
 docker-compose up -d
@@ -35,26 +35,15 @@ When you are finished working with these services, you can use `docker-compose s
 
 ## Starting Gemini Admin
 
-Go to the `constellations/gemini-admin` folder and follow the instructions.
-
-- Install Node and NPM
-- Install the node dependencies using `npm install` (in the `gemini-admin` folder)
-- Start the user web client by running `npm run start` in the same folder
-
-If the website builds correctly, you should see the website serving at `http://localhost:9001`.
-
-Go to Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
+View the [gemini-admin](./gemini-admin) directory and follow the instructions there. If the website builds correctly, you should see the website serving at `http://localhost:9001`. Go to the website, in the header, select Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
 
 ![SCREENSHOT_ADMIN_ACHIEVE](../resources/images/screenshot_admin_achieve.png)
 
 ## Starting Gemini User
 
-Go to the `constellations/gemini-user` folder and follow the instructions.
+View the [gemini-user](./gemini-user) directory and follow the instructions.
 
-- Install the node dependencies using `npm install` (in the `gemini-user` folder)
-- Start the user web client by running `npm run start` in the same folder
-
-If the website builds correctly, you should see the website serving at `http://localhost:9000`. At this point, you should have two websites running (admin and user). In the user site, go to Accomplishments > Student Achievements and you should see the same information as you input in the Admin site.
+If the website builds correctly, you should see the website serving at `http://localhost:9000`. At this point, you should have two websites running (admin and user). In the user website, in the header, go to Accomplishments > Student Achievements and you should see the same information as you input in the Admin site.
 
 ## Testing the Backend Services
 
@@ -73,6 +62,10 @@ Anyway, you're finished! Now you know how to spin up Docker containers and run t
 If you're a back-end developer, you will probably be working on `orion`. Go to the [orion](./orion) directory and read the README file there. You will also need to install Golang to start developing.
 
 If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](./gemini-user) and [gemini-admin](./gemini-admin) directories to read more about developing in those projects.
+
+## Closing out the services
+
+This application will continue to run as long as the CLI processes for the websites and the Docker services continue to run. To quit out of the websites, close their corresponding CLI tab/window or use `Ctrl-C`. To stop the Docker services, use `docker-compose stop`.
 
 ---
 
