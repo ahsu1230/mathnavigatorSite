@@ -8,7 +8,7 @@ docker-compose up -d
 
 Once it is done running, you should be able to see all services as healthy in the Docker Desktop app.
 
-![SCREENSHOT_DOCKER_ALL_SERVICES](../resources/images/docker/desktop_all_services.png)
+![SCREENSHOT_DOCKER_ALL_SERVICES](./images/docker_all_services.png)
 
 When you are finished working with these services, you can use this command to deactive all of them.
 
