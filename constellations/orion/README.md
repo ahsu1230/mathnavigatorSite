@@ -15,6 +15,8 @@ docker-compose start orion
 
 View your DockerDesktop to check if the `orion` service is running and healthy. When you are finished, use `docker-compose stop orion` to stop all services.
 
+If you are not using Docker, use this command to continually run the Orion webserver `go run main.go`. Use `CTRL+C` to stop the webserver.
+
 ## Running Tests
 
 To run all tests for the back-end web server, run:
