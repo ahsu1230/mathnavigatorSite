@@ -2,9 +2,18 @@
 
 One of the Gemini website clients. This web client will interact with the Orion webserver by allowing MathNavigator administrators to manage student/parent information, available programs and schedule classes and announcements.
 
-## Onboarding Steps:
+## Install Node & NPM
 
-Make sure that npm is installed before proceeding: (https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/onboarding/install_npm.md)
+Make sure that npm is installed before proceeding. Install [NodeJs](https://nodejs.org/en/download/). Please follow instructions to correctly install.
+
+Once finished, in your Terminal / DOS, run:
+
+```
+node -v
+npm -v
+```
+
+These commands should respond with the versioning of your node and npm without errors.
 
 ## Running Gemini-Admin
 
