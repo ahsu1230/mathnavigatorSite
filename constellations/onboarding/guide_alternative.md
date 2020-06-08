@@ -43,7 +43,7 @@ export CORS_ORIGIN=*
 
 **For Windows users**
 
-Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You will create 5 new environment variables as follows:
+Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You simply need to create the following 5 environment variables.
 
 ```unix
 DB_HOST=localhost
