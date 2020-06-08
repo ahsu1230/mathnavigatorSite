@@ -18,7 +18,6 @@ type familyRepo struct {
 // Interface to implement
 type FamilyRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll(string, int, int) ([]domains.Family, error)
 	SelectById(uint) (domains.Family, error)
 	SelectByPrimaryEmail(string) (domains.Family, error)
 	Insert(domains.Family) error
@@ -30,49 +29,49 @@ func (fam *familyRepo) Initialize(db *sql.DB) {
 	fam.db = db
 }
 
-func (fam *familyRepo) SelectAll(search string, pageSize, offset int) ([]domains.Family, error) {
-	results := make([]domains.Family, 0)
+// func (fam *familyRepo) SelectAll(search string, pageSize, offset int) ([]domains.Family, error) {
+// 	results := make([]domains.Family, 0)
 
-	getAll := len(search) == 0
-	var query string
-	if getAll {
-		query = "SELECT * FROM users LIMIT ? OFFSET ?"
-	} else {
-		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
-	}
-	stmt, err := fam.db.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
+// 	getAll := len(search) == 0
+// 	var query string
+// 	if getAll {
+// 		query = "SELECT * FROM users LIMIT ? OFFSET ?"
+// 	} else {
+// 		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
+// 	}
+// 	stmt, err := fam.db.Prepare(query)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer stmt.Close()
 
-	var rows *sql.Rows
-	if getAll {
-		rows, err = stmt.Query(pageSize, offset)
-	} else {
-		rows, err = stmt.Query(search, pageSize, offset)
-	}
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
+// 	var rows *sql.Rows
+// 	if getAll {
+// 		rows, err = stmt.Query(pageSize, offset)
+// 	} else {
+// 		rows, err = stmt.Query(search, pageSize, offset)
+// 	}
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer rows.Close()
 
-	for rows.Next() {
-		var user domains.Family
-		if errScan := rows.Scan(
-			&family.Id,
-			&family.CreatedAt,
-			&family.UpdatedAt,
-			&family.DeletedAt,
-			&family.PrimaryEmail,
-			&family.Password
-			); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, family)
-	}
-	return results, nil
-}
+// 	for rows.Next() {
+// 		var user domains.Family
+// 		if errScan := rows.Scan(
+// 			&family.Id,
+// 			&family.CreatedAt,
+// 			&family.UpdatedAt,
+// 			&family.DeletedAt,
+// 			&family.PrimaryEmail,
+// 			&family.Password
+// 			); errScan != nil {
+// 			return results, errScan
+// 		}
+// 		results = append(results, family)
+// 	}
+// 	return results, nil
+// }
 
 func (fam *familyRepo) SelectById(id uint) (domains.Family, error) {
 	statement := "SELECT * FROM users WHERE id=?"

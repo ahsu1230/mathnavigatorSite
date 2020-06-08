@@ -8,21 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllFamily(c *gin.Context) {
-	// Incoming optional parameter
-	search := c.Query("search")
-	pageSize := ParseParamInt(c.Query("pageSize"), 100)
-	offset := ParseParamInt(c.Query("offset"), 0)
-
-	userList, err := repos.FamilyRepo.SelectAll(search, pageSize, offset)
-	if err != nil {
-		c.Error(err)\
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, userList)
-	}
-}
-
 func GetFamilyById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
@@ -38,7 +23,7 @@ func GetFamilyById(c *gin.Context) {
 
 func GetFamilyByPrimaryEmail(c *gin.Context) {
 	// Incoming parameters
-	primaryemail := ParseParamUint(c.Param("primaryEmail"))
+	primaryEmail := ParseParamUint(c.Param("primaryEmail"))
 
 	family, err := repos.FamilyRepo.SelectByPrimaryEmail(primaryemail)
 	if err != nil {

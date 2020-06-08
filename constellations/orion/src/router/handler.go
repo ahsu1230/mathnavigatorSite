@@ -91,10 +91,8 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.GET("/guardian/:guardianId", controllers.GetUserByGuardian)
 	}
 
-	apiFamilies := h.Engine.Group("api/families")
+	apiFamilies := h.Engine.Group("api/families/search")
 	{
-		api.Families.GET("/all", controllers.GetAllFamilies)
-		api.Families.POST("/create", controllers.CreateFamily)
 		api.Families.GET("/family/:id", controllers.GetFamilyById)
 		api.Families.POST("/family/:id", controllers.UpdateFamily)
 		api.Families.DELETE("/family/:id", controllers.DeleteFamily)

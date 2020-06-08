@@ -14,45 +14,6 @@ import (
 )
 
 //
-// Test Get All
-//
-func TestGetAllFamilies_Success(t *testing.T) {
-	familyRepo.mockSelectAll = func(search string, pageSize, offset int) ([]domains.Family, error) {
-		return []domains.Family{
-			createMockFam(
-				1,
-				"john_smith@example.com",
-				"password",
-			),
-			createMockFamily(
-				2,
-				"bob_joe@example.com",
-				"password2",
-			),
-		}, nil
-	}
-	repos.FamilyRepo = &familyRepo
-
-	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/family/all", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var families []domains.Family
-	if err := json.Unmarshal(recorder.Body.Bytes(), &families); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, 1, families[0].Id)
-	assert.EqualValues(t, "john_smith@example.com", families[0].PrimaryEmail)
-	assert.EqualValues(t, "password", families[0].Password)
-
-	assert.EqualValues(t, 2, users[1].Id)
-	assert.EqualValues(t, "bob_joe@example.com", families[1].PrimaryEmail)
-	assert.EqualValues(t, "password2", families[1].Password)
-	assert.EqualValues(t, 2, len(families))
-}
-
-//
 // Test Get Family
 //
 func TestGetFamily_Success(t *testing.T) {

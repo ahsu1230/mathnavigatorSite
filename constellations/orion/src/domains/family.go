@@ -26,7 +26,7 @@ func (family *Family) Validate() error {
 	// Retrieves the inputted values
 	password := family.Password
 
-	if password == "" || len(password) > 32 {
+	if password == "" {
 		return errors.New("invalid password")
 	}
 	return nil

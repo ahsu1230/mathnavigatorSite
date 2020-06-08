@@ -20,31 +20,6 @@ func initFamilyTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.FamilyRepoInt
 }
 
 //
-// Test Select All
-//
-func TestSelectAllUsers(t *testing.T) {
-	db, mock, repo := initUserTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	rows := getUserRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM family").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll("", 100, 0)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Family{getFamily()}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Test Search
 //
 func TestSearchFamily(t *testing.T) {
@@ -101,7 +76,7 @@ func TestSelectFamily(t *testing.T) {
 }
 
 //
-// Select One By Guardian ID
+// Select One By Primary Email
 //
 func TestSelectFamilyByPrimaryEmail(t *testing.T) {
 	db, mock, repo := initUserTest(t)
