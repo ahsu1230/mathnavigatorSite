@@ -39,12 +39,27 @@ There are 3 architecture "layers" to Orion.
 
 - Controllers - objects that handle network stuff (JSON, HTTP Request & Responses, Serializing & Deserializing, etc.)
   - The controller layer is built on top of `gin` - a golang http framework.
+  - Here, we define all the endpoints that allow a web-client to interact with our web-server.
 
 - Repos - objects that handle database stuff (MySQL connections, Database queries, reads & writes, etc.)
   - For testing, database queries are checked via Datadog's SQL query validation.
   - Database migrations can be found in the `repos/migrations` folder.
 
-Both Controllers and Repos are often declared as interfaces. The reasoning is to promote mock unit testing. Essentially, there are usually two implementations of every Controller and Repo. One implementation is for the business logic (works as you would expect), the other implementation is done by test classes which help simply unit testing.
+## Domains and Repos
+
+The entities are usually each represented by a single domain and an associated repo. Anytime you need to store or retrieve a `program`, you should use the `programRepo`. Take a look at this image to see a generic overview of how domains (represented by database tables) are related. Repos are the objects that handle read & write queries to these database tables. Note that there are more domains & relationships that are not included in this diagram for simplicity sake.
+
+![DIAGRAM_DOMAIN_REPO](../onboarding/images/diagram_programs_classes.png)
+
+![DIAGRAM_DOMAIN_REPO](../onboarding/images/diagram_family_persons.png)
+
+## Controllers
+
+We define all HTTP endpoints here to give web-clients the ability to interact with the orion web-server. HTTP requests must specify the correct destination (which must match the web-server endpoint) in order to receive valid data in a HTTP response. 
+
+For example, the `programController` can specify a "Create program" endpoint and a "Get all programs" endpoint. The "create program" endpoint requires a POST HTTP request to `/api/programs/create` while the "get all programs" endpoint requires a GET HTTP request to `/api/programs`. If you send correct data to the create endpoint (the full http request endpoint will look like: `http://localhost:8001/api/programs/create`), you can receive a 200 status code as the response, which means success. If you want the data for all programs, you can send a request to the "get all" endpoint and receive a 200 status code and a list of all programs in JSON format.
+
+## Developing in Orion
 
 When developing, I highly suggest following this 3 step process (I recommend each of these be a single git commit): 
 
@@ -59,3 +74,5 @@ When developing, I highly suggest following this 3 step process (I recommend eac
 
 - Testing the full interaction using integration tests
   - Add a few tests in the appropriate file under `tests_integration`.
+
+*Note with testing* Both Controllers and Repos are often declared as interfaces. The reasoning is to promote mock unit testing. Essentially, there are usually two implementations of every Controller and Repo. One implementation is for the business logic (works as you would expect), the other implementation is done by test classes which help simplify unit testing. This is called **mocking**.
