@@ -18,6 +18,7 @@ In this onboarding, you'll be doing the following:
 Let's get started!
 
 ***Warning for Mac users*** At this time, Docker-Desktop is not supported for Macs older than 2010 or OS versions earlier than 10.13. If you have an older Mac OS, please refer to the [alternative guide](./guide_alternative.md).
+
 ***Warning for Windows users*** At this time, Docker-Desktop is only supported for Windows 10 Pro/Enterprise. Docker is not supporting Windows 10 Home until version 2004 (coming in May/June 2020). If Docker-Desktop cannot be installed, please refer to the [alternative guide](./guide_alternative.md).
 
 ## Docker-Compose
@@ -38,13 +39,15 @@ When you are finished working with these services, you can use `docker-compose s
 
 ## Starting Gemini Admin
 
-View the [gemini-admin](./gemini-admin) directory and follow the instructions there. If the website builds correctly, you should see the website serving at `http://localhost:9001`. Go to the website, in the header, select Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
+View the [gemini-admin](./gemini-admin) directory and follow the instructions there to install npm and get the admin website running. 
+
+If the website builds correctly, you should see the website serving at `http://localhost:9001`. Go to the website, in the header, select Site > Achievements and click on Add an Achievement. Make sure all fields are filled and saved.
 
 ![SCREENSHOT_ADMIN_ACHIEVE](./images/screenshot_admin_achieve.png)
 
 ## Starting Gemini User
 
-View the [gemini-user](./gemini-user) directory and follow the instructions.
+View the [gemini-user](./gemini-user) directory and follow the instructions to get the user website running.
 
 If the website builds correctly, you should see the website serving at `http://localhost:9000`. At this point, you should have two websites running (admin and user). In the user website, in the header, go to Accomplishments > Student Achievements and you should see the same information as you input in the Admin site.
 
