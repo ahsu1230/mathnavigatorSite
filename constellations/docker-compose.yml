@@ -18,7 +18,7 @@ services:
         app_env: "develop"
     container_name: orion
     ports:
-      - "6001:8080" # host port 6001 links to container port 8080
+      - "8001:8001" # host port 8001 links to container port 8080
     depends_on:
       - "db-mysql"
     links:
@@ -34,7 +34,7 @@ services:
         app_env: "develop"
     container_name: aquila
     ports:
-      - "6002:8080" # host port 6002 links to container port 8080
+      - "8002:8080" # host port 8002 links to container port 8080
     depends_on:
       - "db-mysql"
       - "orion"

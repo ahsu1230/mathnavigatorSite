@@ -8,14 +8,17 @@ Before proceeding, please read the foundations of web applications and the roles
 
 ## Overview
 
-Once Docker is installed, you'll be doing the following:
+In this onboarding, you'll be doing the following:
  
-- Create and spin up all backend services with Docker (i.e. Orion & MySql)
+- Create and spin up all backend services (i.e. Orion & MySql)
 - Run the Gemini Admin web-client
 - Run the Gemini User web-client
 - Test the Admin - User - Services interaction
 
 Let's get started!
+
+***Warning for Mac users*** At this time, Docker-Desktop is not supported for Macs older than 2010 or OS versions earlier than 10.13. If you have an older Mac OS, please refer to the [alternative guide](./guide_alternative.md).
+***Warning for Windows users*** At this time, Docker-Desktop is only supported for Windows 10 Pro/Enterprise. Docker is not supporting Windows 10 Home until version 2004 (coming in May/June 2020). If Docker-Desktop cannot be installed, please refer to the [alternative guide](./guide_alternative.md).
 
 ## Docker-Compose
 

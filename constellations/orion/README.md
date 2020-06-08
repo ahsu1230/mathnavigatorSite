@@ -57,7 +57,7 @@ The entities are usually each represented by a single domain and an associated r
 
 We define all HTTP endpoints here to give web-clients the ability to interact with the orion web-server. HTTP requests must specify the correct destination (which must match the web-server endpoint) in order to receive valid data in a HTTP response. 
 
-For example, the `programController` can specify a "Create program" endpoint and a "Get all programs" endpoint. The "create program" endpoint requires a POST HTTP request to `/api/programs/create` while the "get all programs" endpoint requires a GET HTTP request to `/api/programs`. If you send correct data to the create endpoint (the full http request endpoint will look like: `http://localhost:6001/api/programs/create`), you can receive a 200 status code as the response, which means success. If you want the data for all programs, you can send a request to the "get all" endpoint and receive a 200 status code and a list of all programs in JSON format.
+For example, the `programController` can specify a "Create program" endpoint and a "Get all programs" endpoint. The "create program" endpoint requires a POST HTTP request to `/api/programs/create` while the "get all programs" endpoint requires a GET HTTP request to `/api/programs`. If you send correct data to the create endpoint (the full http request endpoint will look like: `http://localhost:8001/api/programs/create`), you can receive a 200 status code as the response, which means success. If you want the data for all programs, you can send a request to the "get all" endpoint and receive a 200 status code and a list of all programs in JSON format.
 
 ## Developing in Orion
 

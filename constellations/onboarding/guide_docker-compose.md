@@ -30,10 +30,10 @@ Use `docker-compose -h` for more information about commands.
 
 ## Math Navigator services and ports
 
-You can find the following services with their corresponding host/port locations. For webservers like `orion`, nothing will show up if you go to `localhost:6001`, but you can cUrl endpoints to `http://localhost:6001/api/...`.
+You can find the following services with their corresponding host/port locations. For webservers like `orion`, nothing will show up if you go to `localhost:8001`, but you can cUrl endpoints to `http://localhost:8001/api/...`.
 
 - db-mysql: `localhost:3308`
-- orion: `localhost:6001`
+- orion: `localhost:8001`
 
 ## Accessing the database
 
