@@ -37,6 +37,8 @@ When it's finished, you should be able to see all services as healthily running 
 
 When you are finished working with these services, you can use `docker-compose stop` to stop and deactivate all containers. To reactivate them, use `docker-compose start`. This will stop the services without destroying the containers. Use `docker-compose down` to stop and kill all containers. Be careful with using this command! This will destroy the containers, meaning you will lose all your data (if a MySQL image is destroyed, all data stored into MySQL will be lost).
 
+For more information about using `docker-compose`, go [here](./guide_docker-compose.md).
+
 ## Starting Gemini Admin
 
 View the [gemini-admin](./gemini-admin) directory and follow the instructions there to install npm and get the admin website running. 
@@ -65,6 +67,8 @@ The Gemini sites (admin & user) are both connected to the `orion` web server whi
 
 This application will continue to run as long as the CLI processes for the websites and the Docker services continue to run. To quit out of the websites, close their corresponding CLI tab/window or use `Ctrl-C`. To stop the Docker services, use `docker-compose stop`.
 
+For more information about using `docker-compose`, take a look [here](./guide_docker-compose.md).
+
 ## Explaining Entities
 
 Here, I'll explain the vernacular behind Math Navigator. This project is made up of many *entities* (think like objects in object-oriented programming). An *entity* could be a program, a class, a student, a teacher, etc. We'll talk about what they are and how they relate to each other.
@@ -80,10 +84,5 @@ There are more entities, but this is the fundamental vocabulary which will be ve
 
 ## Starting Development
 
-If you're a back-end developer, you will probably be working on `orion`. Go to the [orion](./orion) directory and read the README file there. You will also need to install Golang to start developing.
-
-If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](./gemini-user) and [gemini-admin](./gemini-admin) directories to read more about developing in those projects.
-
----
-
-For more information about using `docker-compose`, go [here](./guide_docker-compose.md).
+If you're a back-end developer, you will probably be working on `orion`. Go to the [orion](../orion) directory and read the README file there. You will also need to install Golang to start developing.
+If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](../gemini-user) and [gemini-admin](../gemini-admin) directories to read more about developing in those projects.

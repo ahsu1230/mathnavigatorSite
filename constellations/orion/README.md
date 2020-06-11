@@ -2,9 +2,15 @@
 
 Our core API service. This webserver will provide the main API to allow web clients to interact with our MySQL database. This is where users, programs, classes, announcements are created and persisted into the database.
 
-## Pre-requirements
+## Install Golang
 
-Make sure that Go is installed before proceeding: (https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/onboarding/install_go.md)
+Make sure that [Golang](https://golang.org/) is installed before proceeding. Please follow the instructions to download and install Go onto your machine.
+
+Once finished, in your Terminal / DOS, run:
+```
+go version
+```
+This will print out the OS and library version of your Golang.
 
 ## How to run the Orion webserver
 
@@ -14,6 +20,8 @@ docker-compose start orion
 ```
 
 View your DockerDesktop to check if the `orion` service is running and healthy. When you are finished, use `docker-compose stop orion` to stop all services.
+
+If you are not using Docker, use `go run main.go` to continually run the Orion webserver. Use `CTRL+C` to stop the webserver.
 
 ## Running Tests
 

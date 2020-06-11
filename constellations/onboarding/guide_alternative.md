@@ -2,9 +2,19 @@
 
 Use this guide if Docker-Desktop is not supported on your computer. The difference in this guide is the backend service setup. You will have to install MySql, get your local Mysql server running, and get the Orion webserver running.
 
+## Install Golang
+
+Make sure that [Golang](https://golang.org/) is installed before proceeding. Please follow the instructions to download and install Go onto your machine.
+
+Once finished, in your Terminal / DOS, run:
+```
+go version
+```
+This will print out the OS and library version of your Golang.
+
 ## Install MySQL
 
-To install MySQL, refer to this [guide](../../resources/onboarding/install_mysql.md).
+To install MySQL, refer to this [guide](../../resources/install_mysql/guide.md).
 
 ## Setting up your environment for Orion Integration Testing
 
@@ -12,11 +22,11 @@ Open MySQL with your CLI. You can use Terminal for Mac or use MySQL Shell for Wi
 
 Enter the following commands into the MySQL Shell.
 
-```
-CREATE USER 'ci_tester'@'localhost' IDENTIFIED BY 'test';
-GRANT ALL PRIVILEGES ON * . * TO 'ci_tester'@'localhost';
+```unix
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'user1'@'localhost';
 FLUSH PRIVILEGES;
-CREATE DATABASE mathnavdb_test;
+CREATE DATABASE mathnavdb;
 ```
 
 When you are finished, exit MySQL. And inside the `orion` folder, run this command to test the orion webserver is working properly.
@@ -38,32 +48,43 @@ export DB_HOST=localhost
 export DB_PORT=3306
 export DB_USER=root
 export DB_PASSWORD=<YOUR_MYSQL_PASSWORD>
+export DB_DEFAULT=mathnavdb
 export CORS_ORIGIN=*
 ```
 
 **For Windows users**
 
-Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You simply need to create the following 5 environment variables.
+Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You simply need to create the following 5 user environment variables.
 
 ```unix
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=<YOUR_MYSQL_PASSWORD>
-CORS_ORIGIN=*
+Key: DB_HOST
+Value: localhost
+
+Key: DB_PORT
+Value: 3306
+
+Key: DB_USER
+Value: root
+
+Key: DB_PASSWORD
+Value: <YOUR_MYSQL_PASSWORD>
+
+Key: DB_DEFAULT
+Value: mathnavdb
+
+Key: CORS_ORIGIN
+Value: *
 ```
 
 ## Running Orion
 
-Make sure Go is installed on your computer, which you can find information for [here](../../resources/onboarding/install_go.md).
-
-In the orion folder, run the following command:
+Now that environment variables are set, run the following command in the `orion` folder.
 
 ```unix
 go run main.go
 ```
 
-If things are running correctly, you should see a `Listening and serving HTTP on :6001` message. The webserver will continue to run as a process as long as the CLI tab is running. To stop it, use Ctrl+C to cancel the process and the webserver will stop running. If you want it to continue running, simply create a new CLI window/tab to work on other things while the web server is running.
+If things are running correctly, you should see a `Listening and serving HTTP on :8001` message. The webserver will continue to run as a process as long as the CLI tab is running. To stop it, use `Ctrl+C` to cancel the process and the webserver will stop running. If you want it to continue running, simply create a new CLI window/tab to work on other things while the web server is running.
 
 ## Continue the Guide
 

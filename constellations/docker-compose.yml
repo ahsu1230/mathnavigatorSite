@@ -4,10 +4,21 @@ services:
     image: mysql
     container_name: db-mysql
     ports:
-    - "3306:3306" # host port 3306 links to container port 3306
+    - "3308:3306" # host port 3308 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mathnavdb
+
+  db-mysql-test:  # another mysql instance only for integration tests
+    image: mysql
+    container_name: db-mysql-test
+    ports:
+    - "3306:3306" # host port 3306 links to container port 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user1
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mathnavdb
 
@@ -25,7 +36,6 @@ services:
       - "db-mysql"
     environment:
       WAIT_HOSTS: db-mysql:3306
-      DB_DEFAULT: mathnavdb
 
   aquila:
     build: 
@@ -42,7 +52,6 @@ services:
       - "db-mysql"
     environment:
       WAIT_HOSTS: db-mysql:3306
-      DB_DEFAULT: mathnavdb
   
   # gemini-user:
   #   build: 
