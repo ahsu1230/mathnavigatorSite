@@ -37,9 +37,10 @@ func TestSelectAllAnnouncements(t *testing.T) {
 		"DeletedAt",
 		"PostedAt",
 		"Author",
-		"Message"}).
-		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message").
-		AddRow(2, early, early, domains.NullTime{}, early, "Author Name 2", "Valid Message 2")
+		"Message",
+		"OnHomePage"}).
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message", false).
+		AddRow(2, early, early, domains.NullTime{}, early, "Author Name 2", "Valid Message 2", true)
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -58,6 +59,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 			PostedAt:  now,
 			Author:    "Author Name",
 			Message:   "Valid Message",
+			OnHomePage: false,
 		},
 		{
 			Id:        2,
@@ -67,6 +69,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 			PostedAt:  early,
 			Author:    "Author Name 2",
 			Message:   "Valid Message 2",
+			OnHomePage: true,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -93,8 +96,9 @@ func TestSelectAnnouncement(t *testing.T) {
 		"DeletedAt",
 		"PostedAt",
 		"Author",
-		"Message"}).
-		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message")
+		"Message",
+		"OnHomePage"}).
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message", false)
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -113,6 +117,7 @@ func TestSelectAnnouncement(t *testing.T) {
 		PostedAt:  now,
 		Author:    "Author Name",
 		Message:   "Valid Message",
+		OnHomePage: false,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)

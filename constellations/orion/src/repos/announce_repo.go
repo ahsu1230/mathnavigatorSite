@@ -50,7 +50,8 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 			&announce.DeletedAt,
 			&announce.PostedAt,
 			&announce.Author,
-			&announce.Message); errScan != nil {
+			&announce.Message,
+			&announce.OnHomePage,); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, announce)
@@ -75,7 +76,8 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 		&announce.DeletedAt,
 		&announce.PostedAt,
 		&announce.Author,
-		&announce.Message)
+		&announce.Message,
+		&announce.OnHomePage,)
 
 	return announce, errScan
 }
@@ -86,8 +88,9 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		"updated_at, " +
 		"posted_at, " +
 		"author, " +
-		"message" +
-		") VALUES (?, ?, ?, ?, ?)")
+		"message," +
+		"on_home_page" +
+		") VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -112,7 +115,8 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 		"updated_at=?, " +
 		"posted_at=?, " +
 		"author=?, " +
-		"message=? " +
+		"message=? " + 
+		"on_home_page=? " +
 		"WHERE id=?")
 	if err != nil {
 		return err
