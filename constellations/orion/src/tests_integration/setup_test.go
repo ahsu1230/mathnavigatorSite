@@ -24,7 +24,7 @@ var handler router.Handler
 
 func TestMain(m *testing.M) {
 	fmt.Println("Setting up Test Environment...")
-	
+
 	var configPath string
 	if os.Getenv("TEST_ENV") == "test_ci" {
 		configPath = "./configs/ci.yml"
