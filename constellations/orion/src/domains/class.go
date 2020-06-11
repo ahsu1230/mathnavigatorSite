@@ -22,6 +22,7 @@ type Class struct {
 	Times       string     `json:"times"`
 	StartDate   time.Time  `json:"startDate" db:"start_date"`
 	EndDate     time.Time  `json:"endDate" db:"end_date"`
+	GoogleClassCode string `json:"googleClassCode" db:"google_class_code"`
 }
 
 // Class Methods
