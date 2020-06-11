@@ -12,7 +12,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
-          MYSQL_USER: testuser
+          MYSQL_USER: test_user
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: mathnavdb
 
@@ -40,6 +40,7 @@ jobs:
           name: Run Orion Go tests
           command: |
             go vet ./constellations/orion/...
+            export TEST_ENV=test_ci
             go test -v ./constellations/orion/...
       
       - run:

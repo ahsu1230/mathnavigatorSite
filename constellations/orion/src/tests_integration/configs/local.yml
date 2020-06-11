@@ -3,7 +3,7 @@ app:
   corsOrigin: "*"
 database:
   host: "127.0.0.1"
-  port: 3306
-  user: "testuser"
+  port: 3307
+  user: "user1"
   pass: "password"
   dbName: "mathnavdb"

@@ -29,4 +29,4 @@ RUN chmod +x /wait
 ENTRYPOINT /wait && /go/bin/orion
 
 # Document that the container service listens on port 8080.
-EXPOSE 8080
+EXPOSE 8001

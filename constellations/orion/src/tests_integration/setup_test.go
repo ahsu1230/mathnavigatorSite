@@ -24,7 +24,14 @@ var handler router.Handler
 
 func TestMain(m *testing.M) {
 	fmt.Println("Setting up Test Environment...")
-	config := middlewares.RetrieveConfigurations("./setup_test_configs.yml")
+	
+	var configPath string
+	if os.Getenv("TEST_ENV") == "test_ci" {
+		configPath = "./configs/ci.yml"
+	} else {
+		configPath = "./configs/local.yml"
+	}
+	config := middlewares.RetrieveConfigurations(configPath)
 
 	fmt.Println("Connecting to database...")
 	configDb := config.Database

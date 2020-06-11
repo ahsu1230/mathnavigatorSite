@@ -17,7 +17,6 @@ func createConnectionInfo(host string, port int, user string, pass string, dbNam
 
 func Open(host string, port int, user string, pass string, dbName string) *sql.DB {
 	connection := createConnectionInfo(host, port, user, pass, dbName)
-	fmt.Println("connection--", connection)
 	db, err := sql.Open("mysql", connection)
 	if err != nil {
 		panic(err)
