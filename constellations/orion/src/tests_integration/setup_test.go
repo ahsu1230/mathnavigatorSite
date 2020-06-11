@@ -24,7 +24,14 @@ var handler router.Handler
 
 func TestMain(m *testing.M) {
 	fmt.Println("Setting up Test Environment...")
-	config := middlewares.RetrieveConfigurations("./setup_test_configs.yml")
+
+	var configPath string
+	if os.Getenv("TEST_ENV") == "test_ci" {
+		configPath = "./configs/ci.yml"
+	} else {
+		configPath = "./configs/local.yml"
+	}
+	config := middlewares.RetrieveConfigurations(configPath)
 
 	fmt.Println("Connecting to database...")
 	configDb := config.Database
@@ -39,9 +46,10 @@ func TestMain(m *testing.M) {
 // Helper methods for Database
 func setupTestDatabase(host string, port int, username string, password string, dbName string) *sql.DB {
 	// Open first connection to create database
-	dbConn := repos.Open(host, port, username, password, "")
+	dbConn := repos.Open(host, port, username, password, dbName)
 
 	fmt.Println("Creating test database...")
+	fmt.Println("host:"+host, "port:"+strconv.Itoa(port), "username:"+username, "password:"+password, "dbName:"+dbName)
 	tx, err := dbConn.Begin()
 	if err != nil {
 		panic(err.Error())
@@ -53,7 +61,6 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	// Must close db connection and open a new one with dbName
 	dbConn.Close()
 	fmt.Println("Reopening test database...")
-	fmt.Println("host: "+host, "port: "+strconv.Itoa(port), "username: "+username, "password: "+password, "dbName: ", dbName)
 	dbConn = repos.Open(host, port, username, password, dbName)
 	if err := dbConn.Ping(); err != nil {
 		fmt.Println(err.Error())

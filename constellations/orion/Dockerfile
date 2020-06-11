@@ -8,6 +8,7 @@ ENV DB_HOST "db-mysql"
 ENV DB_PORT "3306"
 ENV DB_USER "user"
 ENV DB_PASSWORD "password"
+ENV DB_DEFAULT "mathnavdb"
 ENV CORS_ORIGIN "*"
 
 # Copy the local package files to the container's workspace.
@@ -28,4 +29,4 @@ RUN chmod +x /wait
 ENTRYPOINT /wait && /go/bin/orion
 
 # Document that the container service listens on port 8080.
-EXPOSE 8080
+EXPOSE 8001

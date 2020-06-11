@@ -22,11 +22,11 @@ Open MySQL with your CLI. You can use Terminal for Mac or use MySQL Shell for Wi
 
 Enter the following commands into the MySQL Shell.
 
-```
-CREATE USER 'ci_tester'@'localhost' IDENTIFIED BY 'test';
-GRANT ALL PRIVILEGES ON * . * TO 'ci_tester'@'localhost';
+```unix
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'user1'@'localhost';
 FLUSH PRIVILEGES;
-CREATE DATABASE mathnavdb_test;
+CREATE DATABASE mathnavdb;
 ```
 
 When you are finished, exit MySQL. And inside the `orion` folder, run this command to test the orion webserver is working properly.
