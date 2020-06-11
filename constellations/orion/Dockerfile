@@ -5,7 +5,7 @@ FROM golang:1.13
 ARG app_env
 ENV APP_ENV $app_env
 ENV DB_HOST "db-mysql"
-ENV DB_PORT "3308"
+ENV DB_PORT "3306"
 ENV DB_USER "user"
 ENV DB_PASSWORD "password"
 ENV DB_DEFAULT "mathnavdb"

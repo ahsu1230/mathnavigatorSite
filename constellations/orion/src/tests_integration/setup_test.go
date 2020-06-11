@@ -39,7 +39,7 @@ func TestMain(m *testing.M) {
 // Helper methods for Database
 func setupTestDatabase(host string, port int, username string, password string, dbName string) *sql.DB {
 	// Open first connection to create database
-	dbConn := repos.Open(host, port, username, password, "")
+	dbConn := repos.Open(host, port, username, password, dbName)
 
 	fmt.Println("Creating test database...")
 	fmt.Println("host:"+host, "port:"+strconv.Itoa(port), "username:"+username, "password:"+password, "dbName:"+dbName)
