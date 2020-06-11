@@ -308,8 +308,8 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"location_id=?, " +
 		"times=?, " +
 		"start_date=?, " +
-		"end_date=? " +
-		"google_class_code=?" +
+		"end_date=?, " +
+		"google_class_code=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -328,6 +328,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.Times,
 		class.StartDate,
 		class.EndDate,
+		class.GoogleClassCode,
 		classId)
 	if err != nil {
 		return err
