@@ -48,7 +48,7 @@ func Test_CreateSemesters(t *testing.T) {
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
 func Test_UniqueSemesterId(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	semester2 := createSemester("2020_spring", "fall 2020") // Same semesterId
+	semester2 := createSemester("2020_spring", "Fall 2020") // Same semesterId
 	body1 := createJsonBody(&semester1)
 	body2 := createJsonBody(&semester2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
