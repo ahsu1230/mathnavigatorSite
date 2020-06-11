@@ -20,7 +20,7 @@ When you start `orion`, you should see something like this:
 ```
 The format of each line looks like this: `REQUEST_VERB` `API_ENDPOINT` --> `SERVER_FUNCTION`.
 So if we take the first line, it means that `orion` has an API endpoint at location: `/api/programs/all` that accepts a `GET` HTTP request.
-The full url would look like this: `http://localhost:8080/api/programs/all`.
+The full url would look like this: `http://localhost:8001/api/programs/all`.
 When this endpoint receives a valid request, the server then will:
  - call the function `GetPrograms()` somewhere in its server code.
  - create a HTTP response (i.e. `200 OK`)
@@ -53,7 +53,7 @@ Our browsers are actually doing the exact same thing, but then turning that HTML
 
 While Orion is still listening for HTTP requests, you can try the following command in a *separate* tab.
 ```
-curl -X GET http://localhost:8080/api/programs/all
+curl -X GET http://localhost:8001/api/programs/all
 ```
 What you get back should be a list of your current programs from the database in JSON format.
 Go back to your Orion tab and you should see something like this:
@@ -64,19 +64,19 @@ This tells us which endpoint was just hit, when, and how long it took (319 micro
 
 ### Other CURL examples with Orion
 
-Here's an example of a POST request. With a POST request, you will be sending JSON to api endpoint: `http://localhost:8080/api/programs/create`. The JSON (what we call body) contains information about the new program you want to create.
+Here's an example of a POST request. With a POST request, you will be sending JSON to api endpoint: `http://localhost:8001/api/programs/create`. The JSON (what we call body) contains information about the new program you want to create.
 ```
-curl -X POST -H "Content-Type: application/json" --data '{"programId": "createdProg1", "name": "Created Program", "grade1": 6, "grade2": 8, "description": "Some Newly Created Program"}' http://localhost:8080/api/programs/create
+curl -X POST -H "Content-Type: application/json" --data '{"programId": "createdProg1", "name": "Created Program", "grade1": 6, "grade2": 8, "description": "Some Newly Created Program"}' http://localhost:8001/api/programs/create
 ```
 
 Here's how to get a specific program. Observe how the `programId` we used in the Create endpoint is now here. `gin` uses url parsing to figure out that `createdProg1` is actually a variable value, which we can then use to retrieve database rows.
 ```
-curl -X GET http://localhost:8080/api/programs/program/programId
+curl -X GET http://localhost:8001/api/programs/program/programId
 ```
 
 Here's a DELETE example. Again, you can use `createdProg1` as the `PROGRAM_ID`.
 ```
-curl -X DELETE http://localhost:8080/api/programs/program/<PROGRAM_ID>
+curl -X DELETE http://localhost:8001/api/programs/program/<PROGRAM_ID>
 ```
 
 Check the website to see your changes.

@@ -42,6 +42,7 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	dbConn := repos.Open(host, port, username, password, "")
 
 	fmt.Println("Creating test database...")
+	fmt.Println("host:"+host, "port:"+strconv.Itoa(port), "username:"+username, "password:"+password, "dbName:"+dbName)
 	tx, err := dbConn.Begin()
 	if err != nil {
 		panic(err.Error())

@@ -4,21 +4,21 @@ services:
     image: mysql
     container_name: db-mysql
     ports:
-    - "3306:3306" # host port 3306 links to container port 3306
+    - "3308:3306" # host port 3308 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mathnavdb
 
-  db-mysql-test:
+  db-mysql-test:  # another mysql instance only for integration tests
     image: mysql
     container_name: db-mysql-test
     ports:
-    - "3308:3306" # host port 3306 links to container port 3306
+    - "3306:3306" # host port 3306 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: test_user
+      MYSQL_USER: testuser
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mathnavdb
 
