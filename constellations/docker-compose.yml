@@ -15,7 +15,7 @@ services:
     image: mysql
     container_name: db-mysql-test
     ports:
-    - "3307:3306" # host port 3307 links to container port 3306
+    - "3306:3306" # host port 3306 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: user1
@@ -51,7 +51,7 @@ services:
     links:
       - "db-mysql"
     environment:
-      WAIT_HOSTS: db-mysq:3306
+      WAIT_HOSTS: db-mysql:3306
   
   # gemini-user:
   #   build: 

@@ -12,11 +12,11 @@ Open MySQL with your CLI. You can use Terminal for Mac or use MySQL Shell for Wi
 
 Enter the following commands into the MySQL Shell.
 
-```
-CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON * . * TO 'test_user'@'localhost';
+```unix
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'user1'@'localhost';
 FLUSH PRIVILEGES;
-CREATE DATABASE mathnavdb_test;
+CREATE DATABASE mathnavdb;
 ```
 
 When you are finished, exit MySQL. And inside the `orion` folder, run this command to test the orion webserver is working properly.
@@ -63,7 +63,7 @@ In the orion folder, run the following command:
 go run main.go
 ```
 
-If things are running correctly, you should see a `Listening and serving HTTP on :6001` message. The webserver will continue to run as a process as long as the CLI tab is running. To stop it, use Ctrl+C to cancel the process and the webserver will stop running. If you want it to continue running, simply create a new CLI window/tab to work on other things while the web server is running.
+If things are running correctly, you should see a `Listening and serving HTTP on :6001` message. The webserver will continue to run as a process as long as the CLI tab is running. To stop it, use `Ctrl+C` to cancel the process and the webserver will stop running. If you want it to continue running, simply create a new CLI window/tab to work on other things while the web server is running.
 
 ## Continue the Guide
 

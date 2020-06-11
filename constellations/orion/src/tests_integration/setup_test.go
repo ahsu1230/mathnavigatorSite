@@ -61,7 +61,6 @@ func setupTestDatabase(host string, port int, username string, password string, 
 	// Must close db connection and open a new one with dbName
 	dbConn.Close()
 	fmt.Println("Reopening test database...")
-	fmt.Println("host: "+host, "port: "+strconv.Itoa(port), "username: "+username, "password: "+password, "dbName: ", dbName)
 	dbConn = repos.Open(host, port, username, password, dbName)
 	if err := dbConn.Ping(); err != nil {
 		fmt.Println(err.Error())
