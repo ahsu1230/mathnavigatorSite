@@ -186,47 +186,51 @@ func createClass(id int) domains.Class {
 	switch id {
 	case 1:
 		return domains.Class{
-			ProgramId:  "program1",
-			SemesterId: "2020_spring",
-			ClassKey:   domains.NewNullString("class1"),
-			ClassId:    "program1_2020_spring_class1",
-			LocationId: "churchill",
-			Times:      "3 pm - 5 pm",
-			StartDate:  now,
-			EndDate:    later1,
+			ProgramId:       "program1",
+			SemesterId:      "2020_spring",
+			ClassKey:        domains.NewNullString("class1"),
+			ClassId:         "program1_2020_spring_class1",
+			LocationId:      "churchill",
+			Times:           "3 pm - 5 pm",
+			StartDate:       now,
+			EndDate:         later1,
+			GoogleClassCode: "ab12cd34",
 		}
 	case 2:
 		return domains.Class{
-			ProgramId:  "program1",
-			SemesterId: "2020_spring",
-			ClassKey:   domains.NewNullString("class2"),
-			ClassId:    "program1_2020_spring_class2",
-			LocationId: "churchill",
-			Times:      "5 pm - 7 pm",
-			StartDate:  now,
-			EndDate:    later1,
+			ProgramId:       "program1",
+			SemesterId:      "2020_spring",
+			ClassKey:        domains.NewNullString("class2"),
+			ClassId:         "program1_2020_spring_class2",
+			LocationId:      "churchill",
+			Times:           "5 pm - 7 pm",
+			StartDate:       now,
+			EndDate:         later1,
+			GoogleClassCode: "ab12cd35",
 		}
 	case 3:
 		return domains.Class{
-			ProgramId:  "program1",
-			SemesterId: "2020_summer",
-			ClassKey:   domains.NewNullString("final_review"),
-			ClassId:    "program1_2020_summer_final_review",
-			LocationId: "churchill",
-			Times:      "5 pm - 8 pm",
-			StartDate:  later1,
-			EndDate:    later2,
+			ProgramId:       "program1",
+			SemesterId:      "2020_summer",
+			ClassKey:        domains.NewNullString("final_review"),
+			ClassId:         "program1_2020_summer_final_review",
+			LocationId:      "churchill",
+			Times:           "5 pm - 8 pm",
+			StartDate:       later1,
+			EndDate:         later2,
+			GoogleClassCode: "ab12cd36",
 		}
 	case 4:
 		return domains.Class{
-			ProgramId:  "program2",
-			SemesterId: "2020_summer",
-			ClassKey:   domains.NewNullString(""),
-			ClassId:    "program2_2020_summer",
-			LocationId: "churchill",
-			Times:      "4 pm - 6 pm",
-			StartDate:  later2,
-			EndDate:    later3,
+			ProgramId:       "program2",
+			SemesterId:      "2020_summer",
+			ClassKey:        domains.NewNullString(""),
+			ClassId:         "program2_2020_summer",
+			LocationId:      "churchill",
+			Times:           "4 pm - 6 pm",
+			StartDate:       later2,
+			EndDate:         later3,
+			GoogleClassCode: "ab12cd37",
 		}
 	default:
 		return domains.Class{}
@@ -279,6 +283,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
+		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
@@ -288,6 +293,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
+		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -297,6 +303,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
+		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -306,6 +313,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
+		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode)
 	}
 }
 
