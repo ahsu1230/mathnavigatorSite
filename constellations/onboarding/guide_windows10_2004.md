@@ -11,8 +11,10 @@ Hopefully, you will see an update for **Windows 10, version 2004**. Please insta
 ## Docker-Desktop Download for Windows
 Once your computer has restarted, please go online and download Docker-Desktop. There may be a problem when you first try and open the software. Docker-Desktop should give an error that you don't have a certain file. 
 When you open the link, Click on the link that says “Please download the latest WSL2 Linux kernel update package for x64 machines.” 
-This will then allow you to open the software and do the tutorial. After this is done, you will now be able to now follow the rest of this github guide. 
+This will then allow you to open the software and do the tutorial. After this is done, you will now be able to now follow the rest of this [github guide](./guide.md#docker-compose).
 
 ## Windows download for the rest of the Github Guide
+
+### Only need to do this step if you have installed and used MySQL before
 When you follow the commands in the rest of this github guide, make sure you run the **command prompt on Windows as an administrator**. This will allow you to open and stop MySQL from running so you can download these files. 
-When you first open command prompt as an administrator, run the command `net stop MySQL` (this will close all of the MySQL files already open). Now you can correctly download the following steps.
+When you first open command prompt as an administrator, run the command `net stop MySQL` (this will close all of the MySQL files already open). 
