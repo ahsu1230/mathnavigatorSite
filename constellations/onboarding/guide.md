@@ -19,7 +19,7 @@ Let's get started!
 
 ***Warning for Mac users*** At this time, Docker-Desktop is not supported for Macs older than 2010 or OS versions earlier than 10.13. If you have an older Mac OS, please refer to the [alternative guide](./guide_alternative.md).
 
-***Warning for Windows users*** We will be downloading Windows 10, version 2004. This will allow us to download docker-desktop. [Windows 10 version 2004 setup](constellations/onboarding/guide_windows10_2004.md) 
+***Warning for Windows users*** We will be downloading Windows 10, version 2004. This will allow us to download docker-desktop. [Windows 10 version 2004 setup](./guide_windows10_2004.md) 
 
 ## Docker-Compose
 
