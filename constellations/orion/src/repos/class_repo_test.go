@@ -274,14 +274,14 @@ func TestUpdateClass(t *testing.T) {
 			"program1_2020_spring_final_review",
 		).WillReturnResult(result)
 	class := domains.Class{
-		ProgramId:  "program2",
-		SemesterId: "2020_summer",
-		ClassKey:   domains.NewNullString(""),
-		ClassId:    "program2_2020_summer",
-		LocationId: "churchill",
-		Times:      "5 pm - 7 pm",
-		StartDate:  now,
-		EndDate:    later,
+		ProgramId:       "program2",
+		SemesterId:      "2020_summer",
+		ClassKey:        domains.NewNullString(""),
+		ClassId:         "program2_2020_summer",
+		LocationId:      "churchill",
+		Times:           "5 pm - 7 pm",
+		StartDate:       now,
+		EndDate:         later,
 		GoogleClassCode: "ab12cd34",
 	}
 	err := repo.Update("program1_2020_spring_final_review", class)
@@ -384,19 +384,19 @@ func getClassRows() *sqlmock.Rows {
 
 func getClass() domains.Class {
 	return domains.Class{
-		Id:          1,
-		CreatedAt:   now,
-		UpdatedAt:   now,
-		DeletedAt:   domains.NullTime{},
-		PublishedAt: domains.NullTime{},
-		ProgramId:   "program1",
-		SemesterId:  "2020_spring",
-		ClassKey:    domains.NewNullString("final_review"),
-		ClassId:     "program1_2020_spring_final_review",
-		LocationId:  "churchill",
-		Times:       "3 pm - 5 pm",
-		StartDate:   now,
-		EndDate:     later,
+		Id:              1,
+		CreatedAt:       now,
+		UpdatedAt:       now,
+		DeletedAt:       domains.NullTime{},
+		PublishedAt:     domains.NullTime{},
+		ProgramId:       "program1",
+		SemesterId:      "2020_spring",
+		ClassKey:        domains.NewNullString("final_review"),
+		ClassId:         "program1_2020_spring_final_review",
+		LocationId:      "churchill",
+		Times:           "3 pm - 5 pm",
+		StartDate:       now,
+		EndDate:         later,
 		GoogleClassCode: "ab12cd34",
 	}
 }
