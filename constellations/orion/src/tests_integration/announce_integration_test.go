@@ -49,6 +49,7 @@ func Test_CreateAnnouncements(t *testing.T) {
 	assert.EqualValues(t, "Author 1", announces[2].Author)
 	assert.EqualValues(t, "Message 1", announces[2].Message)
 	assert.EqualValues(t, false, announces[2].OnHomePage)
+	assert.EqualValues(t, 3, len(announces))
 
 	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
@@ -80,6 +81,7 @@ func Test_UpdateAnnouncement(t *testing.T) {
 	assert.EqualValues(t, 1, announce.Id)
 	assert.EqualValues(t, "Author 2", announce.Author)
 	assert.EqualValues(t, "Message 2", announce.Message)
+	assert.EqualValues(t, true, announce.OnHomePage)
 
 	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
