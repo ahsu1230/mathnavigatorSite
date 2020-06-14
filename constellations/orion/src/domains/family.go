@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var TABLE_FAMILY = "family"
+var TABLE_FAMILY = "families"
 
 //ID,password and primary contact email
 //possibly add family name?
@@ -24,7 +24,12 @@ type Family struct {
 
 func (family *Family) Validate() error {
 	// Retrieves the inputted values
+	email := family.PrimaryEmail
 	password := family.Password
+
+	if matches, _ := regexp.MatchString(REGEX_EMAIL, email); !matches || len(email) > 64 {
+		return errors.New("invalid email")
+	}
 
 	if password == "" {
 		return errors.New("invalid password")

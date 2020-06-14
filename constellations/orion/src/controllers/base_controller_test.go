@@ -42,6 +42,7 @@ var achieveRepo mockAchieveRepo
 var semesterRepo mockSemesterRepo
 var sessionRepo mockSessionRepo
 var userRepo mockUserRepo
+var familyRepo mockFamilyRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
@@ -333,4 +334,32 @@ func (userRepo *mockUserRepo) Update(id uint, user domains.User) error {
 }
 func (userRepo *mockUserRepo) Delete(id uint) error {
 	return userRepo.mockDelete(id)
+}
+
+type mockFamilyRepo struct {
+	mockInitialize           func(*sql.DB)
+	mockSelectById           func(uint) (domains.Family, error)
+	mockSelectByPrimaryEmail func(string) (domains.Family, error)
+	mockInsert               func(domains.Family) error
+	mockUpdate               func(uint, domains.Family) error
+	mockDelete               func(uint) error
+}
+
+// Implement methods of UserRepo interface with mocked implementations
+func (familyRepo *mockFamilyRepo) Initialize(db *sql.DB) {}
+
+func (familyRepo *mockFamilyRepo) SelectById(id uint) (domains.Family, error) {
+	return familyRepo.mockSelectById(id)
+}
+func (familyRepo *mockFamilyRepo) SelectByPrimaryEmail(primary_email string) (domains.Family, error) {
+	return familyRepo.mockSelectByPrimaryEmail(primary_email)
+}
+func (familyRepo *mockFamilyRepo) Insert(family domains.Family) error {
+	return familyRepo.mockInsert(family)
+}
+func (familyRepo *mockFamilyRepo) Update(id uint, family domains.Family) error {
+	return familyRepo.mockUpdate(id, family)
+}
+func (familyRepo *mockFamilyRepo) Delete(id uint) error {
+	return familyRepo.mockDelete(id)
 }

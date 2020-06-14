@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
@@ -42,42 +43,39 @@ func TestGetFamily_Success(t *testing.T) {
 	assert.EqualValues(t, "password", family.Password)
 }
 
-func TestGetFamilyByPrimaryEmail_Success(t *testing.T) {
-	familyRepo.mockSelectByGuardianId = func(primaryEmail string) (domains.Family, error) {
-		return domains.Family{
-			createMockFamily(
-				1,
-				"john_smith@example.com",
-				"password",
-			),
-			createMockUser(
-				2,
-				"bob_joe@example.com",
-				"password2",
-			),
-		}, nil
+func TestSearchFamily_Success(t *testing.T) {
+	familyRepo.mockSelectByPrimaryEmail = func(primaryEmail string) (domains.Family, error) {
+		return createMockFamily(
+			1,
+			"john_smith@example.com",
+			"password",
+		), nil
 	}
 	repos.FamilyRepo = &familyRepo
 
+	// Create search body for HTTP request
+	familySearchBody := controllers.FamilySearchBody{
+		"john_smith@example.com",
+	}
+	marshal, err := json.Marshal(&familySearchBody)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/families/family/john_smith@example.com", nil)
+	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/search", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var families []domains.Family
+	var families domains.Family
 	if err := json.Unmarshal(recorder.Body.Bytes(), &families); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
-	assert.EqualValues(t, 1, families[0].Id)
-	assert.EqualValues(t, "john_smith@example.com", families[0].PrimaryEmail)
-	assert.EqualValues(t, "password", families[0].Password)
-
-	assert.EqualValues(t, 2, families[1].Id)
-	assert.EqualValues(t, "bob_joe@example.com", families[1].PrimaryEmail)
-	assert.EqualValues(t, "password2", families[1].Password)
-
-	assert.EqualValues(t, 2, len(families))
+	assert.EqualValues(t, 1, families.Id)
+	assert.EqualValues(t, "john_smith@example.com", families.PrimaryEmail)
+	assert.EqualValues(t, "password", families.Password)
 }
 
 func TestGetFamily_Failure(t *testing.T) {
@@ -147,7 +145,7 @@ func TestUpdateFamily_Success(t *testing.T) {
 		"john_smith@example.com",
 		"password",
 	)
-	body := createBodyFromUser(family)
+	body := createBodyFromFamily(family)
 	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
 
 	// Validate results
@@ -172,7 +170,7 @@ func TestUpdateFamily_Invalid(t *testing.T) {
 }
 
 func TestUpdateFamily_Failure(t *testing.T) {
-	userRepo.mockUpdate = func(id uint, family domains.Family) error {
+	familyRepo.mockUpdate = func(id uint, family domains.Family) error {
 		return errors.New("not found")
 	}
 	repos.FamilyRepo = &familyRepo
@@ -224,9 +222,9 @@ func TestDeleteFamily_Failure(t *testing.T) {
 //
 func createMockFamily(id uint, primary_email string, password string) domains.Family {
 	return domains.Family{
-		Id:         id,
+		Id:           id,
 		PrimaryEmail: primary_email,
-		Password: password,
+		Password:     password,
 	}
 }
 

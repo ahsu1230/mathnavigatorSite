@@ -29,52 +29,8 @@ func (fam *familyRepo) Initialize(db *sql.DB) {
 	fam.db = db
 }
 
-// func (fam *familyRepo) SelectAll(search string, pageSize, offset int) ([]domains.Family, error) {
-// 	results := make([]domains.Family, 0)
-
-// 	getAll := len(search) == 0
-// 	var query string
-// 	if getAll {
-// 		query = "SELECT * FROM users LIMIT ? OFFSET ?"
-// 	} else {
-// 		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
-// 	}
-// 	stmt, err := fam.db.Prepare(query)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer stmt.Close()
-
-// 	var rows *sql.Rows
-// 	if getAll {
-// 		rows, err = stmt.Query(pageSize, offset)
-// 	} else {
-// 		rows, err = stmt.Query(search, pageSize, offset)
-// 	}
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer rows.Close()
-
-// 	for rows.Next() {
-// 		var user domains.Family
-// 		if errScan := rows.Scan(
-// 			&family.Id,
-// 			&family.CreatedAt,
-// 			&family.UpdatedAt,
-// 			&family.DeletedAt,
-// 			&family.PrimaryEmail,
-// 			&family.Password
-// 			); errScan != nil {
-// 			return results, errScan
-// 		}
-// 		results = append(results, family)
-// 	}
-// 	return results, nil
-// }
-
 func (fam *familyRepo) SelectById(id uint) (domains.Family, error) {
-	statement := "SELECT * FROM users WHERE id=?"
+	statement := "SELECT * FROM families WHERE id=?"
 	stmt, err := fam.db.Prepare(statement)
 	if err != nil {
 		return domains.Family{}, err
@@ -89,38 +45,30 @@ func (fam *familyRepo) SelectById(id uint) (domains.Family, error) {
 		&family.UpdatedAt,
 		&family.DeletedAt,
 		&family.PrimaryEmail,
-		&family.Password,
+		&family.Password)
 	return family, errScan
 }
 
-func (fam *familyRepo) SelectByPrimaryEmail(email string) (domains.Family, error) {
-	results := make(domains.Family, 0)
-
-	stmt, err := fam.db.Prepare("SELECT * FROM people WHERE email=?")
+func (fam *familyRepo) SelectByPrimaryEmail(primary_email string) (domains.Family, error) {
+	statement := "SELECT * FROM families WHERE primary_email=?"
+	stmt, err := fam.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return domains.Family{}, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullString(email))
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var user domains.Family
-		if errScan := rows.Scan(
-			&family.Id,
-			&family.CreatedAt,
-			&family.UpdatedAt,
-			&family.DeletedAt,
-			&family.PrimaryEmail,
-			&family.Password; errScan != nil {
-			return results, errScan
-		}
-		results = append(results, family)
-	}
-	return results, nil
+	var family domains.Family
+	row := stmt.QueryRow(primary_email)
+
+	errScan := row.Scan(
+		&family.Id,
+		&family.CreatedAt,
+		&family.UpdatedAt,
+		&family.DeletedAt,
+		&family.PrimaryEmail,
+		&family.Password,) 
+
+	return family, errScan
 }
 
 func (fam *familyRepo) Insert(family domains.Family) error {
@@ -142,7 +90,7 @@ func (fam *familyRepo) Insert(family domains.Family) error {
 		now,
 		now,
 		family.PrimaryEmail,
-		family.Password
+		family.Password,
 	)
 	if err != nil {
 		return err
@@ -151,7 +99,7 @@ func (fam *familyRepo) Insert(family domains.Family) error {
 }
 
 func (fam *familyRepo) Update(id uint, family domains.Family) error {
-	statement := "UPDATE users SET " +
+	statement := "UPDATE families SET " +
 		"updated_at=?, " +
 		"email=?, " +
 		"password=? " +
@@ -166,7 +114,7 @@ func (fam *familyRepo) Update(id uint, family domains.Family) error {
 	execResult, err := stmt.Exec(
 		now,
 		family.PrimaryEmail,
-		family.Password
+		family.Password,
 		id)
 	if err != nil {
 		return err
@@ -174,7 +122,7 @@ func (fam *familyRepo) Update(id uint, family domains.Family) error {
 	return handleSqlExecResult(execResult, 1, "family was not updated")
 }
 
-func (fam) *familyRepo) Delete(id uint) error {
+func (fam *familyRepo) Delete(id uint) error {
 	statement := "DELETE FROM family WHERE id=?"
 	stmt, err := fam.db.Prepare(statement)
 	if err != nil {

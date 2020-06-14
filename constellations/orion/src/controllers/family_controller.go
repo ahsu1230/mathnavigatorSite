@@ -1,5 +1,10 @@
 package controllers
 
+// type family struct {
+// 	tempid uint `form:"id"`
+// 	temppe string `form:"email"`
+// }
+
 import (
 	"net/http"
 
@@ -7,6 +12,10 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
+
+type FamilySearchBody struct {
+	Email string
+}
 
 func GetFamilyById(c *gin.Context) {
 	// Incoming parameters
@@ -21,11 +30,13 @@ func GetFamilyById(c *gin.Context) {
 	}
 }
 
-func GetFamilyByPrimaryEmail(c *gin.Context) {
+func SearchFamily(c *gin.Context) {
 	// Incoming parameters
-	primaryEmail := ParseParamUint(c.Param("primaryEmail"))
+	var body FamilySearchBody
+	c.BindJSON(&body)
+	primaryEmail := body.Email
 
-	family, err := repos.FamilyRepo.SelectByPrimaryEmail(primaryemail)
+	family, err := repos.FamilyRepo.SelectByPrimaryEmail(primaryEmail)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
