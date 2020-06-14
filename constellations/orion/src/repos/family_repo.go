@@ -66,7 +66,7 @@ func (fam *familyRepo) SelectByPrimaryEmail(primary_email string) (domains.Famil
 		&family.UpdatedAt,
 		&family.DeletedAt,
 		&family.PrimaryEmail,
-		&family.Password,) 
+		&family.Password)
 
 	return family, errScan
 }

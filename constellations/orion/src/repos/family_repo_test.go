@@ -31,7 +31,7 @@ func TestSearchFamily(t *testing.T) {
 	mock.ExpectPrepare(`^SELECT (.+) FROM families WHERE (.+)`).
 		ExpectQuery().
 		WillReturnRows(rows)
-	
+
 	//???
 	got, err := repo.SelectById(2)
 	if err != nil {
@@ -153,12 +153,12 @@ func TestUpdateFamily(t *testing.T) {
 			1,
 		).WillReturnResult(result)
 	family := domains.Family{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
+		Id:           1,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+		DeletedAt:    sql.NullTime{},
 		PrimaryEmail: "bob_joe@example.com",
-		Password:   "password2",
+		Password:     "password2",
 	}
 	err := repo.Update(1, family)
 	if err != nil {
@@ -218,11 +218,11 @@ func getFamilyRows() *sqlmock.Rows {
 
 func getFamily() domains.Family {
 	return domains.Family{
-		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
-		DeletedAt:  sql.NullTime{},
+		Id:           1,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+		DeletedAt:    sql.NullTime{},
 		PrimaryEmail: "john_smith@example.com",
-		Password:   "password",
+		Password:     "password",
 	}
 }

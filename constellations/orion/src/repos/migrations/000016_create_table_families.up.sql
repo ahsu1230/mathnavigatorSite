@@ -5,7 +5,7 @@ CREATE TABLE families
     updated_at  datetime     NOT NULL,
     deleted_at  datetime,
     primary_email varchar(64) NOT NULL,
-    password
+    pass_word varchar(64) NOT NULL,
 
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1

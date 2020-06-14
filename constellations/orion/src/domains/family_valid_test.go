@@ -13,7 +13,7 @@ func TestValidPrimaryEmail(t *testing.T) {
 	// Checks for valid emails
 	family := domains.Family{
 		PrimaryEmail: "gmail@gmail.com",
-		Password: "password",
+		Password:     "password",
 	}
 	if err := family.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -33,14 +33,14 @@ func TestValidPrimaryEmail(t *testing.T) {
 	family.PrimaryEmail = "email@email" + strings.Repeat("A", 64)
 	if err := family.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid email")
-	} 
+	}
 }
 
 func TestValidPassword(t *testing.T) {
 	// Checks for passwords
 	family := domains.Family{
 		PrimaryEmail: "gmail@gmail.com",
-		Password: "password",
+		Password:     "password",
 	}
 	if err := family.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -50,7 +50,6 @@ func TestValidPassword(t *testing.T) {
 	if err := family.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
-
 
 	family.Password = ""
 	if err := family.Validate(); err == nil {
