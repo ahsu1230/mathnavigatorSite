@@ -20,8 +20,8 @@ import (
 func TestGetAllAchievements_Success(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
-			createMockAchievement(1, 2020, "message1"),
-			createMockAchievement(2, 2021, "message2"),
+			testUtils.CreateMockAchievement(1, 2020, "message1"),
+			testUtils.CreateMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -50,8 +50,8 @@ func TestGetAllAchievements_Success(t *testing.T) {
 func TestGetPublishedAchievements_Success(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Achieve, error) {
 		return []domains.Achieve{
-			createMockAchievement(1, 2020, "message1"),
-			createMockAchievement(2, 2021, "message2"),
+			testUtils.CreateMockAchievement(1, 2020, "message1"),
+			testUtils.CreateMockAchievement(2, 2021, "message2"),
 		}, nil
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -85,13 +85,13 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 			{
 				Year: 2021,
 				Achievements: []domains.Achieve{
-					createMockAchievement(1, 2021, "message1"),
+					testUtils.CreateMockAchievement(1, 2021, "message1"),
 				},
 			},
 			{
 				Year: 2020,
 				Achievements: []domains.Achieve{
-					createMockAchievement(2, 2020, "message2"),
+					testUtils.CreateMockAchievement(2, 2020, "message2"),
 				},
 			},
 		}, nil
@@ -121,7 +121,7 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 //
 func TestGetAchievement_Success(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
-		achieve := createMockAchievement(1, 2020, "message1")
+		achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 		return achieve, nil
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -163,7 +163,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
 	// Create new HTTP request to endpoint
-	achieve := createMockAchievement(1, 2020, "message1")
+	achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
@@ -176,7 +176,7 @@ func TestCreateAchievement_Failure(t *testing.T) {
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
 	// Create new HTTP request to endpoint
-	achieve := createMockAchievement(1, 0, "")
+	achieve := testUtils.CreateMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body)
 
@@ -194,7 +194,7 @@ func TestUpdateAchievement_Success(t *testing.T) {
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
 	// Create new HTTP request to endpoint
-	achieve := createMockAchievement(1, 2020, "message1")
+	achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
@@ -207,7 +207,7 @@ func TestUpdateAchievement_Invalid(t *testing.T) {
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
 	// Create new HTTP request to endpoint
-	achieve := createMockAchievement(1, 0, "")
+	achieve := testUtils.CreateMockAchievement(1, 0, "")
 	body := createBodyFromAchieve(achieve)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
@@ -222,7 +222,7 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
 	// Create new HTTP request to endpoint
-	achieve := createMockAchievement(1, 2020, "message1")
+	achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 	body := createBodyFromAchieve(achieve)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
@@ -301,13 +301,6 @@ func TestDeleteAchievement_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockAchievement(id uint, year uint, message string) domains.Achieve {
-	return domains.Achieve{
-		Id:      id,
-		Year:    year,
-		Message: message,
-	}
-}
 
 func createBodyFromAchieve(achieve domains.Achieve) io.Reader {
 	marshal, err := json.Marshal(&achieve)

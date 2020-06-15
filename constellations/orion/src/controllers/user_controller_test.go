@@ -20,7 +20,7 @@ import (
 func TestGetAllUsers_Success(t *testing.T) {
 	testUtils.UserRepo.MockSelectAll = func(search string, pageSize, offset int) ([]domains.User, error) {
 		return []domains.User{
-			createMockUser(
+			testUtils.CreateMockUser(
 				1,
 				"John",
 				"Smith",
@@ -30,7 +30,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 				true,
 				0,
 			),
-			createMockUser(
+			testUtils.CreateMockUser(
 				2,
 				"Bob",
 				"Joe",
@@ -78,7 +78,7 @@ func TestGetAllUsers_Success(t *testing.T) {
 //
 func TestGetUser_Success(t *testing.T) {
 	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
-		user := createMockUser(
+		user := testUtils.CreateMockUser(
 			1,
 			"John",
 			"Smith",
@@ -115,7 +115,7 @@ func TestGetUser_Success(t *testing.T) {
 func TestGetUserByGuardian_Success(t *testing.T) {
 	testUtils.UserRepo.MockSelectByGuardianId = func(guardianId uint) ([]domains.User, error) {
 		return []domains.User{
-			createMockUser(
+			testUtils.CreateMockUser(
 				1,
 				"John",
 				"Smith",
@@ -125,7 +125,7 @@ func TestGetUserByGuardian_Success(t *testing.T) {
 				false,
 				2,
 			),
-			createMockUser(
+			testUtils.CreateMockUser(
 				2,
 				"Bob",
 				"Joe",
@@ -193,7 +193,7 @@ func TestCreateUser_Success(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -215,7 +215,7 @@ func TestCreateUser_Failure(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"",
 		"",
@@ -242,7 +242,7 @@ func TestUpdateUser_Success(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -264,7 +264,7 @@ func TestUpdateUser_Invalid(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"",
 		"",
@@ -288,7 +288,7 @@ func TestUpdateUser_Failure(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -337,18 +337,6 @@ func TestDeleteUser_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, guardianId uint) domains.User {
-	return domains.User{
-		Id:         id,
-		FirstName:  firstName,
-		LastName:   lastName,
-		MiddleName: domains.NewNullString(middleName),
-		Email:      email,
-		Phone:      phone,
-		IsGuardian: isGuardian,
-		GuardianId: domains.NewNullUint(guardianId),
-	}
-}
 
 func createBodyFromUser(user domains.User) io.Reader {
 	marshal, err := json.Marshal(&user)

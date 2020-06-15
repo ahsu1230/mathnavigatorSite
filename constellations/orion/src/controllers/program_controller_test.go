@@ -63,7 +63,7 @@ func TestGetAllPrograms_Success(t *testing.T) {
 //
 func TestGetProgram_Success(t *testing.T) {
 	testUtils.ProgramRepo.MockSelectByProgramId = func(programId string) (domains.Program, error) {
-		program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
+		program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 		return program, nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -104,7 +104,7 @@ func TestCreateProgram_Success(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
+	program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
@@ -118,7 +118,7 @@ func TestCreateProgram_Failure(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog1", "", 2, 3, "descript1", 0) // Empty Name!
+	program := testUtils.CreateMockProgram("prog1", "", 2, 3, "descript1", 0) // Empty Name!
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
@@ -137,7 +137,7 @@ func TestUpdateProgram_Success(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
+	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -150,7 +150,7 @@ func TestUpdateProgram_Invalid(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "", 2, 3, "descript2", 0) // Empty Name!
+	program := testUtils.CreateMockProgram("prog2", "", 2, 3, "descript2", 0) // Empty Name!
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -165,7 +165,7 @@ func TestUpdateProgram_Failure(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := createMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
+	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -227,16 +227,6 @@ func TestDeleteProgram_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockProgram(programId string, name string, grade1 uint, grade2 uint, description string, featured uint) domains.Program {
-	return domains.Program{
-		ProgramId:   programId,
-		Name:        name,
-		Grade1:      grade1,
-		Grade2:      grade2,
-		Description: description,
-		Featured:    featured,
-	}
-}
 
 func createBodyFromProgram(program domains.Program) io.Reader {
 	marshal, err := json.Marshal(&program)

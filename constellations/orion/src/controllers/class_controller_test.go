@@ -195,7 +195,7 @@ func TestCreateClass_Failure(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
+	class := testUtils.CreateMockClass("", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 
@@ -226,7 +226,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := createMockClass("", "", "", "", "", "", later1, now) // Empty fields and end time is before start time
+	class := testUtils.CreateMockClass("", "", "", "", "", later1, now) // Empty fields and end time is before start time
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
@@ -320,18 +320,6 @@ func TestDeleteClass_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockClass(programId, semesterId, classKey, classId, locationId, times string, startDate, endDate time.Time) domains.Class {
-	return domains.Class{
-		ProgramId:  programId,
-		SemesterId: semesterId,
-		ClassKey:   domains.NewNullString(classKey),
-		ClassId:    classId,
-		LocationId: locationId,
-		Times:      times,
-		StartDate:  startDate,
-		EndDate:    endDate,
-	}
-}
 
 func createMockClasses(ids ...int) []domains.Class {
 	classes := make([]domains.Class, len(ids))
@@ -339,44 +327,40 @@ func createMockClasses(ids ...int) []domains.Class {
 	for i, id := range ids {
 		switch id {
 		case 1:
-			classes[i] = createMockClass(
+			classes[i] = testUtils.CreateMockClass(
 				"program1",
 				"2020_spring",
 				"class1",
-				"program1_2020_spring_class1",
 				"churchill",
 				"3 pm - 5 pm",
 				now,
 				later1,
 			)
 		case 2:
-			classes[i] = createMockClass(
+			classes[i] = testUtils.CreateMockClass(
 				"program1",
 				"2020_spring",
 				"class2",
-				"program1_2020_spring_class2",
 				"churchill",
 				"5 pm - 7 pm",
 				now,
 				later1,
 			)
 		case 3:
-			classes[i] = createMockClass(
+			classes[i] = testUtils.CreateMockClass(
 				"program1",
 				"2020_summer",
 				"final_review",
-				"program1_2020_summer_final_review",
 				"churchill",
 				"5 pm - 8 pm",
 				later1,
 				later2,
 			)
 		case 4:
-			classes[i] = createMockClass(
+			classes[i] = testUtils.CreateMockClass(
 				"program2",
 				"2020_summer",
 				"",
-				"program2_2020_summer",
 				"churchill",
 				"4 pm - 6 pm",
 				later2,

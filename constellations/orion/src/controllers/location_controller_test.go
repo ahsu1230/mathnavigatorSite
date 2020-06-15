@@ -63,7 +63,7 @@ func TestGetAllLocations_Success(t *testing.T) {
 //
 func TestGetLocation_Success(t *testing.T) {
 	testUtils.LocationRepo.MockSelectByLocationId = func(LocationId string) (domains.Location, error) {
-		location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+		location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 		return location, nil
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -104,7 +104,7 @@ func TestCreateLocation_Success(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body)
@@ -118,7 +118,7 @@ func TestCreateLocation_Failure(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
+	location := testUtils.CreateMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
 	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body)
@@ -137,7 +137,7 @@ func TestUpdateLocation_Success(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc1", body)
 
@@ -150,7 +150,7 @@ func TestUpdateLocation_Invalid(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := createMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
+	location := testUtils.CreateMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc1", body)
 
@@ -165,7 +165,7 @@ func TestUpdateLocation_Failure(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := createMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc2", body)
 
@@ -227,16 +227,6 @@ func TestDeleteLocation_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockLocation(LocationId string, street string, city string, state string, zipcode string, room string) domains.Location {
-	return domains.Location{
-		LocationId: LocationId,
-		Street:     street,
-		City:       city,
-		State:      state,
-		Zipcode:    zipcode,
-		Room:       domains.NewNullString(room),
-	}
-}
 
 func createBodyFromLocation(location domains.Location) io.Reader {
 	marshal, err := json.Marshal(&location)

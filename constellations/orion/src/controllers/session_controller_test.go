@@ -64,7 +64,7 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 func TestGetSession_Success(t *testing.T) {
 	now := time.Now().UTC()
 	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
-		session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+		session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 		return session, nil
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -106,7 +106,7 @@ func TestCreateSessions_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "special lecture from guest")}
+	sessions := []domains.Session{testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
@@ -123,7 +123,7 @@ func TestCreateSessions_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "@@")}
+	sessions := []domains.Session{testUtils.CreateMockSession(1, "id_1", now, now, true, "@@")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
@@ -143,7 +143,7 @@ func TestUpdateSession_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
@@ -157,7 +157,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "@@")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "@@")
 	body := createBodyFromSession(session)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
@@ -173,7 +173,7 @@ func TestUpdateSession_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/2", body)
 
@@ -241,16 +241,6 @@ func TestDeleteSessions_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockSession(id uint, classId string, startsAt time.Time, endsAt time.Time, canceled bool, notes string) domains.Session {
-	return domains.Session{
-		Id:       id,
-		ClassId:  classId,
-		StartsAt: startsAt,
-		EndsAt:   endsAt,
-		Canceled: canceled,
-		Notes:    domains.NewNullString(notes),
-	}
-}
 
 func createBodyFromSession(session domains.Session) io.Reader {
 	marshal, err := json.Marshal(&session)

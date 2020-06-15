@@ -62,7 +62,7 @@ func TestGetAllAnnouncements_Success(t *testing.T) {
 func TestGetAnnouncement_Success(t *testing.T) {
 	now := time.Now().UTC()
 	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(id uint) (domains.Announce, error) {
-		announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
+		announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message")
 		return announce, nil
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -105,7 +105,7 @@ func TestCreateAnnounce_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
+	announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message")
 	marshal, _ := json.Marshal(announce)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body)
@@ -120,7 +120,7 @@ func TestCreateAnnounce_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	announce := createMockAnnounce(1, now, "", "Valid Message")
+	announce := testUtils.CreateMockAnnounce(1, now, "", "Valid Message")
 	marshal, _ := json.Marshal(announce)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body)
@@ -140,7 +140,7 @@ func TestUpdateAnnounce_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
+	announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message")
 	body := createBodyFromAnnounce(announce)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", body)
 
@@ -154,7 +154,7 @@ func TestUpdateAnnounce_Invalid(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	announce := createMockAnnounce(1, now, "", "Valid Message")
+	announce := testUtils.CreateMockAnnounce(1, now, "", "Valid Message")
 	body := createBodyFromAnnounce(announce)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", body)
 
@@ -170,7 +170,7 @@ func TestUpdateAnnounce_Failure(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	announce := createMockAnnounce(1, now, "Author Name", "Valid Message")
+	announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message")
 	body := createBodyFromAnnounce(announce)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", body)
 
@@ -210,14 +210,6 @@ func TestDeleteAnnounce_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockAnnounce(id uint, postedAt time.Time, author string, message string) domains.Announce {
-	return domains.Announce{
-		Id:       id,
-		PostedAt: postedAt,
-		Author:   author,
-		Message:  message,
-	}
-}
 
 func createBodyFromAnnounce(announce domains.Announce) io.Reader {
 	marshal, err := json.Marshal(announce)

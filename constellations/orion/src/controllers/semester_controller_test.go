@@ -20,8 +20,8 @@ import (
 func TestGetAllSemesters_Success(t *testing.T) {
 	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
 		return []domains.Semester{
-			createMockSemester("2020_fall", "Fall 2020"),
-			createMockSemester("2020_winter", "Winter 2020"),
+			testUtils.CreateMockSemester("2020_fall", "Fall 2020"),
+			testUtils.CreateMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -48,8 +48,8 @@ func TestGetAllSemesters_Success(t *testing.T) {
 func TestGetPublishedSemesters_Success(t *testing.T) {
 	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
 		return []domains.Semester{
-			createMockSemester("2020_fall", "Fall 2020"),
-			createMockSemester("2020_winter", "Winter 2020"),
+			testUtils.CreateMockSemester("2020_fall", "Fall 2020"),
+			testUtils.CreateMockSemester("2020_winter", "Winter 2020"),
 		}, nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -75,7 +75,7 @@ func TestGetPublishedSemesters_Success(t *testing.T) {
 //
 func TestGetSemester_Success(t *testing.T) {
 	testUtils.SemesterRepo.MockSelectBySemesterId = func(semesterId string) (domains.Semester, error) {
-		semester := createMockSemester("2020_fall", "Fall 2020")
+		semester := testUtils.CreateMockSemester("2020_fall", "Fall 2020")
 		return semester, nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -116,7 +116,7 @@ func TestCreateSemester_Success(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_fall", "Fall 2020")
+	semester := testUtils.CreateMockSemester("2020_fall", "Fall 2020")
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body)
 
@@ -129,7 +129,7 @@ func TestCreateSemester_Failure(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_fall", "") // Empty title
+	semester := testUtils.CreateMockSemester("2020_fall", "") // Empty title
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body)
 
@@ -147,7 +147,7 @@ func TestUpdateSemester_Success(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_winter", "Winter 2020")
+	semester := testUtils.CreateMockSemester("2020_winter", "Winter 2020")
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_fall", body)
 
@@ -160,7 +160,7 @@ func TestUpdateSemester_Invalid(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_winter", "") // Empty title
+	semester := testUtils.CreateMockSemester("2020_winter", "") // Empty title
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_fall", body)
 
@@ -175,7 +175,7 @@ func TestUpdateSemester_Failure(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	// Create new HTTP request to endpoint
-	semester := createMockSemester("2020_winter", "Winter 2020")
+	semester := testUtils.CreateMockSemester("2020_winter", "Winter 2020")
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_fall", body)
 
@@ -254,12 +254,6 @@ func TestDeleteSemester_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockSemester(semesterId string, title string) domains.Semester {
-	return domains.Semester{
-		SemesterId: semesterId,
-		Title:      title,
-	}
-}
 
 func createBodyFromSemester(semester domains.Semester) io.Reader {
 	marshal, err := json.Marshal(&semester)
