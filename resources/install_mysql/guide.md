@@ -64,7 +64,7 @@ Download MySQL from [here](https://dev.mysql.com/downloads/windows/installer/). 
 **Note:** the instructions in this article may be outdated as they use an older version of Windows and MySQL. However, the installation process should still be similar.
  - Once finished downloading the installer, double click it to start the installation process.
  - `Choosing a Setup Type` Select **Custom**
- - `Select Products and Features` Select the following: latest MySQL Server, latest MySQL Workbench (under Applications), MySQL Shell (also under Applications). Press Next.
+ - `Select Products and Features` Select the following: latest MySQL Server, latest MySQL Workbench (under Applications), MySQL Shell (also under Applications). Load these files onto the right loading box by clicking the right arrow. After selecting the three, press Next.
  - `Installation` Execute! You should be downloading 3 products (Server, Workbench, Shell). Once finished downloading and installing, press Next.
  - You'll need to configure MySQL Server.
    - `High Availability` Select Standalone MySQL Server.
@@ -87,14 +87,14 @@ net stop MySQL
 ```
 There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar.
 
-You can go ahead and open the application MySQL Command Line Client. It will prompt you to enter your MySQL password.
+You can go ahead and open the application MySQL Command Line Client by searching for it on your computer as you have just installed it. It will prompt you to enter your MySQL password.
 
 <img src="images/mysql_8_shell.png" width="480" alt="MySQL Shell">
 
 Once you're in, run this command:
 ```
 CREATE DATABASE mathnavdb;
-USE DATABASE mathnavdb;
+USE mathnavdb;
 exit;
 ```
 If success (Query OK), you can exit MySql by typing `exit`.
