@@ -1,4 +1,4 @@
-package integration_tests
+package tests_integration
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,18 +19,18 @@ func Test_CreateAnnouncements(t *testing.T) {
 	announce1 := createAnnouncement(early, "Author 1", "Message 1")
 	announce2 := createAnnouncement(mid, "Author 2", "Message 2")
 	announce3 := createAnnouncement(now, "Author 3", "Message 3")
-	body1 := createJsonBody(&announce1)
-	body2 := createJsonBody(&announce2)
-	body3 := createJsonBody(&announce3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/announcements/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/announcements/create", body3)
+	body1 := utils.CreateJsonBody(&announce1)
+	body2 := utils.CreateJsonBody(&announce2)
+	body3 := utils.CreateJsonBody(&announce3)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Call Get All!
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/announcements/all", nil)
+	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/all", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
@@ -48,7 +49,7 @@ func Test_CreateAnnouncements(t *testing.T) {
 	assert.EqualValues(t, "Author 1", announces[2].Author)
 	assert.EqualValues(t, "Message 1", announces[2].Message)
 
-	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
+	utils.ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
@@ -56,18 +57,18 @@ func Test_UpdateAnnouncement(t *testing.T) {
 	// Create 1 Announcement
 	now := time.Now().UTC()
 	announce1 := createAnnouncement(now, "Author 1", "Message 1")
-	body1 := createJsonBody(&announce1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
+	body1 := utils.CreateJsonBody(&announce1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedAnnounce := createAnnouncement(now, "Author 2", "Message 2")
-	updatedBody := createJsonBody(&updatedAnnounce)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", updatedBody)
+	updatedBody := utils.CreateJsonBody(&updatedAnnounce)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -79,7 +80,7 @@ func Test_UpdateAnnouncement(t *testing.T) {
 	assert.EqualValues(t, "Author 2", announce.Author)
 	assert.EqualValues(t, "Message 2", announce.Message)
 
-	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
+	utils.ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
 
 // Test: Create 1 Announcement, Delete it, GetByAnnounceId()
@@ -87,19 +88,19 @@ func Test_DeleteAnnouncement(t *testing.T) {
 	// Create
 	now := time.Now().UTC()
 	announce1 := createAnnouncement(now, "Author 1", "Message 1")
-	body1 := createJsonBody(&announce1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
+	body1 := utils.CreateJsonBody(&announce1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	resetTable(t, domains.TABLE_ANNOUNCEMENTS)
+	utils.ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
 
 // Helper methods
