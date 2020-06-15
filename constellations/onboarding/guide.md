@@ -19,7 +19,7 @@ Let's get started!
 
 ***Warning for Mac users*** At this time, Docker-Desktop is not supported for Macs older than 2010 or OS versions earlier than 10.13. If you have an older Mac OS, please refer to the [alternative guide](./guide_alternative.md).
 
-***Warning for Windows users*** At this time, Docker-Desktop is only supported for Windows 10 Pro/Enterprise. Docker is not supporting Windows 10 Home until version 2004 (coming in May/June 2020). If Docker-Desktop cannot be installed, please refer to the [alternative guide](./guide_alternative.md).
+***Warning for Windows users*** Docker-Desktop should be supported for Windows 10 Pro/Enterprise systems. For Windows 10 Home, we will need to update to at least version 2004 (coming in May/June 2020). Please use this guide to update Windows and correctly install Docker-Desktop [Windows 10 version 2004 setup](./guide_windows10_2004.md) 
 
 ## Docker-Compose
 
