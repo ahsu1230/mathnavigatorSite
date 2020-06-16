@@ -7,6 +7,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// You can run this CLI using:
+// go run exampleCli.go exampleCli.yml
+//
+// or via a binary:
+// go build exampleCli.go
+// ./exampleCli exampleCli.yml
+
 // Client Configuration struct to fit incoming configuration yml file
 type clientConfig struct {
 	Config struct {
@@ -40,11 +47,4 @@ func main() {
 	configFile := os.Args[1]
 	config := retrieveConfigurations(configFile)
 	fmt.Println("Received this message", config.Config.Message)
-
-	// You can run this file using:
-	// go run exampleCli.go exampleCli.yml
-
-	// or via a binary:
-	// go build exampleCli.go
-	// ./exampleCli exampleCli.yml
 }
