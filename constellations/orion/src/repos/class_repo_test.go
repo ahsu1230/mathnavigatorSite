@@ -236,6 +236,7 @@ func TestInsertClass(t *testing.T) {
 			"3 pm - 5 pm",
 			now,
 			later,
+			domains.NewNullString("ab12cd34"),
 		).WillReturnResult(result)
 	class := getClass()
 	err := repo.Insert(class)
