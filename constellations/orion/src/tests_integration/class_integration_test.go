@@ -194,7 +194,7 @@ func createClass(id int) domains.Class {
 			Times:           "3 pm - 5 pm",
 			StartDate:       now,
 			EndDate:         later1,
-			GoogleClassCode: "ab12cd34",
+			GoogleClassCode: domains.NewNullString("ab12cd34"),
 		}
 	case 2:
 		return domains.Class{
@@ -206,7 +206,7 @@ func createClass(id int) domains.Class {
 			Times:           "5 pm - 7 pm",
 			StartDate:       now,
 			EndDate:         later1,
-			GoogleClassCode: "ab12cd35",
+			GoogleClassCode: domains.NewNullString("ab12cd35"),
 		}
 	case 3:
 		return domains.Class{
@@ -218,7 +218,7 @@ func createClass(id int) domains.Class {
 			Times:           "5 pm - 8 pm",
 			StartDate:       later1,
 			EndDate:         later2,
-			GoogleClassCode: "ab12cd36",
+			GoogleClassCode: domains.NewNullString("ab12cd36"),
 		}
 	case 4:
 		return domains.Class{
@@ -230,7 +230,7 @@ func createClass(id int) domains.Class {
 			Times:           "4 pm - 6 pm",
 			StartDate:       later2,
 			EndDate:         later3,
-			GoogleClassCode: "ab12cd37",
+			GoogleClassCode: domains.NewNullString("ab12cd37"),
 		}
 	default:
 		return domains.Class{}
@@ -283,7 +283,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
-		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode)
+		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode.String)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
@@ -293,7 +293,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
-		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode)
+		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode.String)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -303,7 +303,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
-		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode)
+		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode.String)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -313,7 +313,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
-		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode)
+		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode.String)
 	}
 }
 

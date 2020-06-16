@@ -270,9 +270,8 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"location_id, " +
 		"times, " +
 		"start_date, " +
-		"end_date" +
-		"google_class_code" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"end_date " +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
