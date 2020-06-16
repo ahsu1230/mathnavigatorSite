@@ -56,9 +56,4 @@ func TestValidPassword(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid password")
 	}
 
-	// family.Password = "Too long" + strings.Repeat("A", 32)
-	// if err := family.Validate(); err == nil {
-	// 	t.Error("Check was incorrect, got: nil, expected: invalid password")
-	// }
-
 }

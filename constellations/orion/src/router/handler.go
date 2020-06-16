@@ -93,11 +93,11 @@ func (h *Handler) SetupApiEndpoints() {
 
 	apiFamilies := h.Engine.Group("api/families")
 	{
-		apiFamilies.POST("create",controllers.CreateFamily)
+		apiFamilies.POST("create", controllers.CreateFamily)
 		apiFamilies.GET("/family/:id", controllers.GetFamilyById)
 		apiFamilies.POST("/family/:id", controllers.UpdateFamily)
 		apiFamilies.DELETE("/family/:id", controllers.DeleteFamily)
-		apiFamilies.POST("/search",controllers.SearchFamily)
+		apiFamilies.POST("/search", controllers.SearchFamily)
 	}
 	// apiAccounts := router.Group("api/accounts/")
 }

@@ -1,10 +1,5 @@
 package controllers
 
-// type family struct {
-// 	tempid uint `form:"id"`
-// 	temppe string `form:"email"`
-// }
-
 import (
 	"net/http"
 

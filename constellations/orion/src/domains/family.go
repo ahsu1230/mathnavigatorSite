@@ -7,10 +7,9 @@ import (
 	"time"
 )
 
-var TABLE_FAMILY = "families"
+var TABLE_FAMILIES = "families"
 
 //ID,password and primary contact email
-//possibly add family name?
 type Family struct {
 	Id           uint         `json:"id"`
 	CreatedAt    time.Time    `json:"-" db:"created_at"`
