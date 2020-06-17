@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
-	
+
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/stretchr/testify/assert"
 )
 
-//create 1 family then get by id 
+//create 1 family then get by id
 func Test_SearchFamilyById(t *testing.T) {
 	family1 := createFamily(1)
 	body1 := createJsonBody(&family1)
@@ -30,11 +30,10 @@ func Test_SearchFamilyById(t *testing.T) {
 	resetTable(t, domains.TABLE_FAMILIES)
 }
 
-
 // Test: Create 3 Families and search by pagination
 func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 	family1 := createFamily(1)
- 	body1 := createJsonBody(&family1)
+	body1 := createJsonBody(&family1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -47,8 +46,8 @@ func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 		panic(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/search",body)
+
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/search", body)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	var family domains.Family
@@ -63,7 +62,7 @@ func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 // Test: Create 3 Families and GetFamilyById
 func Test_GetFamilyById(t *testing.T) {
 	family1 := createFamily(1)
- 	body1 := createJsonBody(&family1)
+	body1 := createJsonBody(&family1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
@@ -134,18 +133,18 @@ func createFamily(id int) domains.Family {
 	switch id {
 	case 1:
 		return domains.Family{
-			PrimaryEmail:      "john_smith@example.com",
-			Password:   "password1",
+			PrimaryEmail: "john_smith@example.com",
+			Password:     "password1",
 		}
 	case 2:
 		return domains.Family{
-			PrimaryEmail:      "bob_smith@example.com",
-			Password:   "password2",
+			PrimaryEmail: "bob_smith@example.com",
+			Password:     "password2",
 		}
 	case 3:
 		return domains.Family{
-			PrimaryEmail:      "foobar@example.com",
-			Password:   "password3",
+			PrimaryEmail: "foobar@example.com",
+			Password:     "password3",
 		}
 	default:
 		return domains.Family{}
