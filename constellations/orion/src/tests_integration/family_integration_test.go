@@ -1,10 +1,10 @@
 package integration_tests
 
 import (
-	"bytes"
 	"encoding/json"
 	"net/http"
 	"testing"
+	"strings"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/stretchr/testify/assert"
@@ -39,16 +39,10 @@ func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 	body1 := createJsonBody(&family1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-
-	// Create search body for HTTP request
-	familySearchBody := FamilySearchBody{
-		"john_smith@example.com",
-	}
-	marshal, err := json.Marshal(&familySearchBody)
-	if err != nil {
-		panic(err)
-	}
-	body := bytes.NewBuffer(marshal)
+	
+	body := strings.NewReader(`{
+		"primaryEmail": "john_smith@example.com"
+	}`)
 
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/search", body)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)

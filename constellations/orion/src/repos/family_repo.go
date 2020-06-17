@@ -75,8 +75,8 @@ func (fam *familyRepo) Insert(family domains.Family) error {
 	statement := "INSERT INTO families (" +
 		"created_at, " +
 		"updated_at, " +
-		"primary_email," +
-		"password " +
+		"primary_email, " +
+		"password" +
 		") VALUES (?, ?, ?, ?)"
 
 	stmt, err := fam.db.Prepare(statement)

@@ -22,7 +22,7 @@ func initFamilyTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.FamilyRepoInt
 //
 // Test Search
 //
-func TestSearchFamily(t *testing.T) {
+func Test_SearchFamily(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
@@ -32,7 +32,6 @@ func TestSearchFamily(t *testing.T) {
 		ExpectQuery().
 		WillReturnRows(rows)
 
-	//???
 	got, err := repo.SelectById(2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -51,7 +50,7 @@ func TestSearchFamily(t *testing.T) {
 //
 // Select One
 //
-func TestSelectFamily(t *testing.T) {
+func Test_SelectFamily(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
@@ -80,7 +79,7 @@ func TestSelectFamily(t *testing.T) {
 //
 // Select One By Primary Email
 //
-func TestSelectFamilyByPrimaryEmail(t *testing.T) {
+func Test_SelectFamilyByPrimaryEmail(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
@@ -109,7 +108,7 @@ func TestSelectFamilyByPrimaryEmail(t *testing.T) {
 //
 // Create
 //
-func TestInsertFamily(t *testing.T) {
+func Test_InsertFamily(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
@@ -138,7 +137,7 @@ func TestInsertFamily(t *testing.T) {
 //
 // Update
 //
-func TestUpdateFamily(t *testing.T) {
+func Test_UpdateFamily(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
@@ -174,7 +173,7 @@ func TestUpdateFamily(t *testing.T) {
 //
 // Delete
 //
-func TestDeleteFamily(t *testing.T) {
+func Test_DeleteFamily(t *testing.T) {
 	db, mock, repo := initFamilyTest(t)
 	defer db.Close()
 
