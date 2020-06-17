@@ -11,9 +11,9 @@ import (
 
 // Test: Create 3 Achievements and GetAll(false)
 func Test_CreateAchievements(t *testing.T) {
-	achieve1 := createAchievement(2020, "message1")
-	achieve2 := createAchievement(2021, "message2")
-	achieve3 := createAchievement(2022, "message3")
+	achieve1 := createAchievement(2020, "message1", 1)
+	achieve2 := createAchievement(2021, "message2", 2)
+	achieve3 := createAchievement(2022, "message3", 3)
 	body1 := createJsonBody(&achieve1)
 	body2 := createJsonBody(&achieve2)
 	body3 := createJsonBody(&achieve3)
@@ -36,12 +36,15 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 1, achieves[0].Id)
 	assert.EqualValues(t, 2020, achieves[0].Year)
 	assert.EqualValues(t, "message1", achieves[0].Message)
+	assert.EqualValues(t, 1, achieves[0].Order)
 	assert.EqualValues(t, 2, achieves[1].Id)
 	assert.EqualValues(t, 2021, achieves[1].Year)
 	assert.EqualValues(t, "message2", achieves[1].Message)
+	assert.EqualValues(t, 2, achieves[1].Order)
 	assert.EqualValues(t, 3, achieves[2].Id)
 	assert.EqualValues(t, 2022, achieves[2].Year)
 	assert.EqualValues(t, "message3", achieves[2].Message)
+	assert.EqualValues(t, 3, achieves[2].Order)
 	assert.EqualValues(t, 3, len(achieves))
 
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
@@ -49,10 +52,10 @@ func Test_CreateAchievements(t *testing.T) {
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
 func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
-	achieve1 := createAchievement(2020, "message1")
-	achieve2 := createAchievement(2021, "message2")
-	achieve3 := createAchievement(2022, "message3")
-	achieve4 := createAchievement(2021, "message4")
+	achieve1 := createAchievement(2020, "message1", 1)
+	achieve2 := createAchievement(2021, "message2", 2)
+	achieve3 := createAchievement(2022, "message3", 3)
+	achieve4 := createAchievement(2021, "message4", 4)
 	body1 := createJsonBody(&achieve1)
 	body2 := createJsonBody(&achieve2)
 	body3 := createJsonBody(&achieve3)
@@ -95,13 +98,13 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 // Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
-	achieve1 := createAchievement(2020, "message1")
+	achieve1 := createAchievement(2020, "message1", 1)
 	body1 := createJsonBody(&achieve1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedAchieve := createAchievement(2021, "message2")
+	updatedAchieve := createAchievement(2021, "message2", 2)
 	updatedBody := createJsonBody(&updatedAchieve)
 	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -125,7 +128,7 @@ func Test_UpdateAchievement(t *testing.T) {
 // Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
 	// Create
-	achieve1 := createAchievement(2020, "message1")
+	achieve1 := createAchievement(2020, "message1", 1)
 	body1 := createJsonBody(&achieve1)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -142,9 +145,10 @@ func Test_DeleteAchievement(t *testing.T) {
 }
 
 // Helper methods
-func createAchievement(year uint, message string) domains.Achieve {
+func createAchievement(year uint, message string, order uint) domains.Achieve {
 	return domains.Achieve{
 		Year:    year,
 		Message: message,
+		Order:   order,
 	}
 }

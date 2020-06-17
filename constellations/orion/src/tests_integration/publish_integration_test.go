@@ -196,8 +196,8 @@ func Test_PublishLocations(t *testing.T) {
 // Test: Create 2 Achievements and Publish 1
 func Test_PublishAchievements(t *testing.T) {
 	// Create
-	achieve1 := createAchievement(2020, "message1")
-	achieve2 := createAchievement(2021, "message2")
+	achieve1 := createAchievement(2020, "message1", 1)
+	achieve2 := createAchievement(2021, "message2", 2)
 	body1 := createJsonBody(&achieve1)
 	body2 := createJsonBody(&achieve2)
 	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
