@@ -10,6 +10,7 @@ import (
 var TABLE_FAMILIES = "families"
 
 //ID,password and primary contact email
+
 type Family struct {
 	Id           uint         `json:"id"`
 	CreatedAt    time.Time    `json:"-" db:"created_at"`
@@ -23,10 +24,10 @@ type Family struct {
 
 func (family *Family) Validate() error {
 	// Retrieves the inputted values
-	email := family.PrimaryEmail
+	primaryEmail := family.PrimaryEmail
 	password := family.Password
 
-	if matches, _ := regexp.MatchString(REGEX_EMAIL, email); !matches || len(email) > 64 {
+	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches || len(primaryEmail) > 64 {
 		return errors.New("invalid email")
 	}
 

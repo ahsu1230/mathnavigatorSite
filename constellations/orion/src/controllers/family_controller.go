@@ -9,7 +9,7 @@ import (
 )
 
 type FamilySearchBody struct {
-	Email string
+	PrimaryEmail string
 }
 
 func GetFamilyById(c *gin.Context) {
@@ -29,7 +29,7 @@ func SearchFamily(c *gin.Context) {
 	// Incoming parameters
 	var body FamilySearchBody
 	c.BindJSON(&body)
-	primaryEmail := body.Email
+	primaryEmail := body.PrimaryEmail
 
 	family, err := repos.FamilyRepo.SelectByPrimaryEmail(primaryEmail)
 	if err != nil {

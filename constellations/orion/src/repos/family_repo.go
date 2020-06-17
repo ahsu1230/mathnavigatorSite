@@ -72,11 +72,11 @@ func (fam *familyRepo) SelectByPrimaryEmail(primary_email string) (domains.Famil
 }
 
 func (fam *familyRepo) Insert(family domains.Family) error {
-	statement := "INSERT INTO family (" +
+	statement := "INSERT INTO families (" +
 		"created_at, " +
 		"updated_at, " +
 		"primary_email," +
-		"password," +
+		"password " +
 		") VALUES (?, ?, ?, ?)"
 
 	stmt, err := fam.db.Prepare(statement)
@@ -101,7 +101,7 @@ func (fam *familyRepo) Insert(family domains.Family) error {
 func (fam *familyRepo) Update(id uint, family domains.Family) error {
 	statement := "UPDATE families SET " +
 		"updated_at=?, " +
-		"email=?, " +
+		"primary_email=?, " +
 		"password=? " +
 		"WHERE id=?"
 	stmt, err := fam.db.Prepare(statement)
@@ -123,7 +123,7 @@ func (fam *familyRepo) Update(id uint, family domains.Family) error {
 }
 
 func (fam *familyRepo) Delete(id uint) error {
-	statement := "DELETE FROM family WHERE id=?"
+	statement := "DELETE FROM families WHERE id=?"
 	stmt, err := fam.db.Prepare(statement)
 	if err != nil {
 		return err

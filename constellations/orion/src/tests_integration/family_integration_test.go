@@ -1,84 +1,83 @@
 package integration_tests
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"testing"
-
+	
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/stretchr/testify/assert"
 )
 
-// Test: Create 3 Families and GetAll()
-func Test_CreateFamilies(t *testing.T) {
-	createAllFamilies(t)
+//create 1 family then get by id 
+func Test_SearchFamilyById(t *testing.T) {
+	family1 := createFamily(1)
+	body1 := createJsonBody(&family1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", nil)
+	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var families []domains.Family
-	if err := json.Unmarshal(recorder.Body.Bytes(), &families); err != nil {
+	var family domains.Family
+	if err := json.Unmarshal(recorder2.Body.Bytes(), &family); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
-	assertFamily(t, 1, families[0])
-	assertFamily(t, 2, families[1])
-	assertFamily(t, 3, families[2])
-	assert.EqualValues(t, 3, len(families))
+	assertFamily(t, 1, family)
 
 	resetTable(t, domains.TABLE_FAMILIES)
 }
 
+
 // Test: Create 3 Families and search by pagination
-func Test_SearchFamily(t *testing.T) {
-	createAllFamilies(t)
-
-	// Call Get All Searching for "Smith" With Page Size 2 Offset 0
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/all?search=Smith&pageSize=2&offset=0", nil)
-
-	// Validate results
+func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
+	family1 := createFamily(1)
+ 	body1 := createJsonBody(&family1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	var families []domains.Family
-	if err := json.Unmarshal(recorder1.Body.Bytes(), &families); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
+
+	// Create search body for HTTP request
+	familySearchBody := controllers.FamilySearchBody{
+		"john_smith@example.com",
 	}
-	assertFamily(t, 1, families[0])
-	assertFamily(t, 2, families[1])
-	assert.EqualValues(t, 2, len(families))
-
-	// Call Get All Searching for "Smith" With Page Size 2 Offset 2
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/all?search=Smith&pageSize=2&offset=2", nil)
-
-	// Validate results
+	marshal, err := json.Marshal(&familySearchBody)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+	
+	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/search",body)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	var families2 []domains.Family
-	if err := json.Unmarshal(recorder2.Body.Bytes(), &families2); err != nil {
+
+	var family domains.Family
+	if err := json.Unmarshal(recorder2.Body.Bytes(), &family); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertFamily(t, 3, families2[0])
-	assert.EqualValues(t, 1, len(families2))
+	assertFamily(t, 1, family)
 
 	resetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 3 Families and GetFamilyById
 func Test_GetFamilyById(t *testing.T) {
-	createAllFamilies(t)
+	family1 := createFamily(1)
+ 	body1 := createJsonBody(&family1)
+	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Call Get All!
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var families []domains.Family
-	if err := json.Unmarshal(recorder.Body.Bytes(), &families); err != nil {
+	var family domains.Family
+	if err := json.Unmarshal(recorder.Body.Bytes(), &family); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertFamily(t, 2, families[0])
-	assertFamily(t, 3, families[1])
-	assert.EqualValues(t, 2, len(families))
+	assert.EqualValues(t, "john_smith@example.com", family.PrimaryEmail)
+	assert.EqualValues(t, "password1", family.Password)
 
 	resetTable(t, domains.TABLE_FAMILIES)
 }
