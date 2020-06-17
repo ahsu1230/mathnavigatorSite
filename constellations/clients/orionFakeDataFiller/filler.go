@@ -34,7 +34,7 @@ func runFiller(hostAddress string) {
 		"grade2": 12,
 		"description": "Students should take this course if they aim to take the AP Calculus Exam"
 	}`)
-	sendPostRequest(hostAddress + "/api/programs/create", body)
+	sendPostRequest(hostAddress+"/api/programs/create", body)
 }
 
 func sendPostRequest(url string, body io.Reader) {
