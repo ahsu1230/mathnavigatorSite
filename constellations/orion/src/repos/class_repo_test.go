@@ -286,7 +286,7 @@ func TestUpdateClass(t *testing.T) {
 		StartDate:       now,
 		EndDate:         later,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
-		FullState:		 0,
+		FullState:       0,
 	}
 	err := repo.Update("program1_2020_spring_final_review", class)
 	if err != nil {
@@ -404,6 +404,6 @@ func getClass() domains.Class {
 		StartDate:       now,
 		EndDate:         later,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
-		FullState:		 0,
+		FullState:       0,
 	}
 }

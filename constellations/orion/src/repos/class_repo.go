@@ -278,7 +278,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"start_date, " +
 		"end_date, " +
 		"google_class_code, " +
-		"full_state " + 
+		"full_state " +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)

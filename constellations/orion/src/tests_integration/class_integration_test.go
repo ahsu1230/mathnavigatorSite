@@ -195,7 +195,7 @@ func createClass(id int) domains.Class {
 			StartDate:       now,
 			EndDate:         later1,
 			GoogleClassCode: domains.NewNullString("ab12cd34"),
-			FullState: 		 0,
+			FullState:       0,
 		}
 	case 2:
 		return domains.Class{
@@ -208,7 +208,7 @@ func createClass(id int) domains.Class {
 			StartDate:       now,
 			EndDate:         later1,
 			GoogleClassCode: domains.NewNullString("ab12cd35"),
-			FullState:		 1,
+			FullState:       1,
 		}
 	case 3:
 		return domains.Class{
@@ -221,7 +221,7 @@ func createClass(id int) domains.Class {
 			StartDate:       later1,
 			EndDate:         later2,
 			GoogleClassCode: domains.NewNullString("ab12cd36"),
-			FullState: 		 2,
+			FullState:       2,
 		}
 	case 4:
 		return domains.Class{
@@ -234,7 +234,7 @@ func createClass(id int) domains.Class {
 			StartDate:       later2,
 			EndDate:         later3,
 			GoogleClassCode: domains.NewNullString("ab12cd37"),
-			FullState: 		 0,
+			FullState:       0,
 		}
 	default:
 		return domains.Class{}
