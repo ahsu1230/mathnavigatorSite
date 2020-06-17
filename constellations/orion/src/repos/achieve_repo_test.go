@@ -106,7 +106,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message", "Order"}).
 		AddRow(
 			2,
 			now,
@@ -115,6 +115,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			domains.NullTime{},
 			2021,
 			"1600 on SAT",
+			2,
 		).
 		AddRow(
 			1,
@@ -124,6 +125,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			domains.NullTime{},
 			2020,
 			"message1",
+			1,
 		)
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").
 		ExpectQuery().
@@ -146,6 +148,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 					PublishedAt: domains.NullTime{},
 					Year:        2021,
 					Message:     "1600 on SAT",
+					Order:       2,
 				},
 			},
 		},
@@ -201,11 +204,12 @@ func TestInsertAchieve(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO achievements").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2020, "message1").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2020, "message1", 1).
 		WillReturnResult(result)
 	achieve := domains.Achieve{
 		Year:    2020,
 		Message: "message1",
+		Order:   1,
 	}
 	err := repo.Insert(achieve)
 	if err != nil {
@@ -229,11 +233,12 @@ func TestUpdateAchieve(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE achievements SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 2021, "message2", 1).
+		WithArgs(sqlmock.AnyArg(), 2021, "message2", 1, 1).
 		WillReturnResult(result)
 	achieve := domains.Achieve{
 		Year:    2021,
 		Message: "message2",
+		Order:   1,
 	}
 	err := repo.Update(1, achieve)
 	if err != nil {
@@ -300,7 +305,7 @@ func TestDeleteAchieve(t *testing.T) {
 // Helper Methods
 //
 func getAchieveRows() *sqlmock.Rows {
-	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message", "Order"}).
 		AddRow(
 			1,
 			now,
@@ -309,6 +314,7 @@ func getAchieveRows() *sqlmock.Rows {
 			domains.NullTime{},
 			2020,
 			"message1",
+			1,
 		)
 }
 
@@ -321,5 +327,6 @@ func getAchieve() domains.Achieve {
 		PublishedAt: domains.NullTime{},
 		Year:        2020,
 		Message:     "message1",
+		Order:       1,
 	}
 }

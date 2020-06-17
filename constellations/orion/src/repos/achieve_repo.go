@@ -63,7 +63,8 @@ func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) 
 			&achieve.DeletedAt,
 			&achieve.PublishedAt,
 			&achieve.Year,
-			&achieve.Message); errScan != nil {
+			&achieve.Message,
+			&achieve.Order); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, achieve)
@@ -94,7 +95,8 @@ func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
 			&achieve.DeletedAt,
 			&achieve.PublishedAt,
 			&achieve.Year,
-			&achieve.Message); errScan != nil {
+			&achieve.Message,
+			&achieve.Order); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, achieve)
@@ -127,7 +129,8 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 			&achieve.DeletedAt,
 			&achieve.PublishedAt,
 			&achieve.Year,
-			&achieve.Message); errScan != nil {
+			&achieve.Message,
+			&achieve.Order); errScan != nil {
 			return results, errScan
 		}
 		if achieve.Year != curYear {
@@ -161,7 +164,8 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 		&achieve.DeletedAt,
 		&achieve.PublishedAt,
 		&achieve.Year,
-		&achieve.Message)
+		&achieve.Message,
+		&achieve.Order)
 	return achieve, errScan
 }
 
@@ -170,8 +174,9 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 		"created_at, " +
 		"updated_at, " +
 		"year, " +
-		"message" +
-		") VALUES (?, ?, ?, ?)"
+		"message, " +
+		"`order` " +
+		") VALUES (?, ?, ?, ?, ?)"
 
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -184,7 +189,8 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 		now,
 		now,
 		achieve.Year,
-		achieve.Message)
+		achieve.Message,
+		achieve.Order)
 	if err != nil {
 		return err
 	}
@@ -195,7 +201,8 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 	statement := "UPDATE achievements SET " +
 		"updated_at=?, " +
 		"year=?, " +
-		"message=? " +
+		"message=?, " +
+		"`order`=? " +
 		"WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -208,6 +215,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		now,
 		achieve.Year,
 		achieve.Message,
+		achieve.Order,
 		id)
 	if err != nil {
 		return err
