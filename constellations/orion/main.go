@@ -42,5 +42,5 @@ func main() {
 	handler.SetupApiEndpoints()
 
 	// Run web server
-	handler.Engine.Run(":8080")
+	handler.Engine.Run(":8001")
 }
