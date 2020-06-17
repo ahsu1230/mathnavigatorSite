@@ -49,7 +49,7 @@ func Test_ValidPassword(t *testing.T) {
 	if err := family.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid password")
 	}
-	
+
 	family.Password = "1234567"
 	if err := family.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid password")

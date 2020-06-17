@@ -25,11 +25,11 @@ func (family *Family) Validate() error {
 	primaryEmail := family.PrimaryEmail
 	password := family.Password
 
-	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches{
+	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
 		return errors.New("invalid email")
 	}
 
-	if password == ""  || len(password) < 8{
+	if password == "" || len(password) < 8 {
 		return errors.New("invalid password")
 	}
 	return nil
