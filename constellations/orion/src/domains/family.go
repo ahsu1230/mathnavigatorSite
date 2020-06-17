@@ -16,7 +16,7 @@ type Family struct {
 	CreatedAt    time.Time    `json:"-" db:"created_at"`
 	UpdatedAt    time.Time    `json:"-" db:"updated_at"`
 	DeletedAt    sql.NullTime `json:"-" db:"deleted_at"`
-	PrimaryEmail string       `json:"primaryEmail db:"primary_email"`
+	PrimaryEmail string       `json:"primaryEmail" db:"primary_email"`
 	Password     string       `json:"password" db:"password"`
 }
 

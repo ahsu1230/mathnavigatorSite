@@ -6,10 +6,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/stretchr/testify/assert"
 )
+
+type FamilySearchBody struct {
+	PrimaryEmail string
+}
 
 //create 1 family then get by id
 func Test_SearchFamilyById(t *testing.T) {
@@ -38,7 +41,7 @@ func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Create search body for HTTP request
-	familySearchBody := controllers.FamilySearchBody{
+	familySearchBody := FamilySearchBody{
 		"john_smith@example.com",
 	}
 	marshal, err := json.Marshal(&familySearchBody)
