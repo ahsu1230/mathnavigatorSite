@@ -5,25 +5,22 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 export class ClassRow extends React.Component {
-    formatTimes = (times) => {
-        return times.replace("/,/g", "\nTest");
-    };
-
     render() {
         const row = this.props.row;
-        const unpublished = !row.publishedAt;
-        const selected = this.props.selected;
-        const publishedState = unpublished ? "Unpublished" : "Published";
+        const unpublished = this.props.unpublished;
 
         return (
             <div id={unpublished ? "unpublished" : ""}>
                 {renderCheckbox(
                     row.classId,
+                    this.props.collapsed,
                     unpublished,
-                    selected,
+                    this.props.selected,
                     this.props.onSelectRow
                 )}
-                <span className="small">{publishedState}</span>
+                <span className="small">
+                    {unpublished ? "Unpublished" : "Published"}
+                </span>
                 <span className="large">{row.classId}</span>
                 <span className="small">{row.locationId}</span>
                 <span className="medium">
@@ -31,17 +28,24 @@ export class ClassRow extends React.Component {
                     {" - "}
                     {moment(row.endDate).format("M/D/YYYY")}
                 </span>
-                <span className="large">{this.formatTimes(row.times)}</span>
-                <Link className="edit" to={"/class/" + row.classId + "/edit"}>
-                    Edit
-                </Link>
+                <span className="large">{row.times}</span>
+                <Link to={"/class/" + row.classId + "/edit"}>Edit</Link>
             </div>
         );
     }
 }
 
-function renderCheckbox(classId, unpublished, selected, onSelectRow) {
-    if (unpublished) {
+function renderCheckbox(
+    classId,
+    collapsed,
+    unpublished,
+    selected,
+    onSelectRow
+) {
+    if (collapsed) {
+        // No space
+        return <span></span>;
+    } else if (unpublished) {
         return (
             <input
                 className="checkbox"
@@ -51,6 +55,7 @@ function renderCheckbox(classId, unpublished, selected, onSelectRow) {
             />
         );
     } else {
+        // Keeps the spacing
         return <span className="checkbox"></span>;
     }
 }
