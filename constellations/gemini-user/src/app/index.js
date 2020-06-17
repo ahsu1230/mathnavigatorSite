@@ -28,7 +28,7 @@ import { HomePage } from "../home/home.js";
 // import { StudentWebDevPage } from '../student/studentWebDev.js';
 
 const Achievements = () => <AchievementPage />;
-const Internship = () => <InternshipPage/>;
+const Internship = () => <InternshipPage />;
 // const Announce = () => <AnnouncePage/>;
 // const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 // const Contact = () => <ContactPageRouter/>;
@@ -80,10 +80,7 @@ class App extends React.Component {
                         component={Achievements}
                     />
 
-                    <Route 
-                        path= "/internship"
-                        component={Internship}
-                    />
+                    <Route path="/internship" component={Internship} />
                     {/* <Route path="/student-webdev" component={StudentWebDev}/>
           <Route path="/student-projects" component={StudentProjects}/>
           <Route path="/" component={Error}/> */}
