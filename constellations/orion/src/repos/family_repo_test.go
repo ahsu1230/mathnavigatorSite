@@ -115,7 +115,7 @@ func TestInsertFamily(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO family").
+	mock.ExpectPrepare("^INSERT INTO families").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
@@ -180,7 +180,7 @@ func TestDeleteFamily(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM family WHERE id=?").
+	mock.ExpectPrepare("^DELETE FROM families WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
