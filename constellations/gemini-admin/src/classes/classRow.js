@@ -35,7 +35,13 @@ export class ClassRow extends React.Component {
     }
 }
 
-function renderCheckbox(classId, isCollapsed, isUnpublished, isSelected, onSelectRow) {
+function renderCheckbox(
+    classId,
+    isCollapsed,
+    isUnpublished,
+    isSelected,
+    onSelectRow
+) {
     if (isCollapsed) {
         // No space
         return <span></span>;
