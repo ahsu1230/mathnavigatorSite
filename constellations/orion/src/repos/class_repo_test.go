@@ -237,6 +237,7 @@ func TestInsertClass(t *testing.T) {
 			now,
 			later,
 			domains.NewNullString("ab12cd34"),
+			100,
 		).WillReturnResult(result)
 	class := getClass()
 	err := repo.Insert(class)
@@ -272,6 +273,7 @@ func TestUpdateClass(t *testing.T) {
 			now,
 			later,
 			"ab12cd34",
+			100,
 			"program1_2020_spring_final_review",
 		).WillReturnResult(result)
 	class := domains.Class{
@@ -284,6 +286,7 @@ func TestUpdateClass(t *testing.T) {
 		StartDate:       now,
 		EndDate:         later,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
+		PriceLump:       100,
 	}
 	err := repo.Update("program1_2020_spring_final_review", class)
 	if err != nil {
@@ -365,6 +368,7 @@ func getClassRows() *sqlmock.Rows {
 		"StartDate",
 		"EndDate",
 		"GoogleClassCode",
+		"PriceLump",
 	}).AddRow(
 		1,
 		now,
@@ -380,6 +384,7 @@ func getClassRows() *sqlmock.Rows {
 		now,
 		later,
 		"ab12cd34",
+		100,
 	)
 }
 
@@ -399,5 +404,6 @@ func getClass() domains.Class {
 		StartDate:       now,
 		EndDate:         later,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
+		PriceLump:       100,
 	}
 }
