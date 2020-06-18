@@ -10,10 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type FamilySearchBody struct {
-	PrimaryEmail string
-}
-
 //create 1 family then get by id
 func Test_SearchFamilyById(t *testing.T) {
 	family1 := createFamily(1)

@@ -29,7 +29,7 @@ func (family *Family) Validate() error {
 		return errors.New("invalid email")
 	}
 
-	if password == "" || len(password) < 8 {
+	if len(password) < 8 {
 		return errors.New("invalid password")
 	}
 	return nil
