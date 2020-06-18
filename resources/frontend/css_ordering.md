@@ -12,6 +12,7 @@ When ordering CSS, positioning should come first, followed by display, then colo
     
 - **Display**
     - display
+    - (if using `display: flex`, flex-related properties go here! i.e. `justify-content`, `align-items`, etc.)
     - width & height
     - margin
     - padding
