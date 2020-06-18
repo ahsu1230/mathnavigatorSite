@@ -10,7 +10,7 @@ export class ClassPage extends React.Component {
     state = {
         classes: [],
         selectedIds: {},
-        unpublished: 0,
+        numUnpublished: 0,
     };
 
     componentDidMount() {
@@ -20,11 +20,11 @@ export class ClassPage extends React.Component {
     fetchData() {
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
-            const unpublished = classes.filter((c) => !c.publishedAt).length;
+            const numUnpublished = classes.filter((c) => !c.publishedAt).length;
             this.setState({
                 classes: classes,
                 selectedIds: {},
-                unpublished: unpublished,
+                numUnpublished: numUnpublished,
             });
         });
     }
@@ -46,7 +46,7 @@ export class ClassPage extends React.Component {
 
     onClickSelectAll = () => {
         // If everything is selected, the Select All button deselects everything
-        if (size(this.state.selectedIds) == this.state.unpublished) {
+        if (size(this.state.selectedIds) == this.state.numUnpublished) {
             this.state.classes.forEach((c) => {
                 this.onSelectRow(c.classId, true);
             });
@@ -69,7 +69,7 @@ export class ClassPage extends React.Component {
                 this.fetchData();
             })
             .catch((err) => {
-                console.log("Publish failed: " + err);
+                window.alert("Publish failed: " + err);
             });
     };
 
@@ -80,9 +80,9 @@ export class ClassPage extends React.Component {
                 <li key={index}>
                     <ClassRow
                         row={row}
-                        collapsed={this.state.unpublished == 0}
-                        unpublished={!row.publishedAt}
-                        selected={isSelected}
+                        isCollapsed={this.state.numUnpublished == 0}
+                        isUnpublished={!row.publishedAt}
+                        isSelected={isSelected}
                         onSelectRow={this.onSelectRow}
                     />
                 </li>
@@ -90,7 +90,7 @@ export class ClassPage extends React.Component {
         });
 
         let count = rows.length;
-        let unpublished = this.state.unpublished;
+        let numUnpublished = this.state.numUnpublished;
         let selected = size(this.state.selectedIds);
 
         return (
@@ -100,7 +100,7 @@ export class ClassPage extends React.Component {
                 <section id="class-rows">
                     <div id="header">
                         {renderSelectAllButton(
-                            unpublished,
+                            numUnpublished,
                             this.onClickSelectAll
                         )}
                         <span className="small">State</span>
@@ -119,7 +119,7 @@ export class ClassPage extends React.Component {
                         </Link>
                     </button>
                     {renderPublishButtonSection(
-                        unpublished,
+                        numUnpublished,
                         selected,
                         this.onClickPublish
                     )}
@@ -129,8 +129,8 @@ export class ClassPage extends React.Component {
     }
 }
 
-function renderSelectAllButton(unpublished, onClickSelectAll) {
-    if (unpublished > 0) {
+function renderSelectAllButton(numUnpublished, onClickSelectAll) {
+    if (numUnpublished > 0) {
         return (
             <button id="select-all" onClick={onClickSelectAll}>
                 Select
@@ -143,20 +143,20 @@ function renderSelectAllButton(unpublished, onClickSelectAll) {
     }
 }
 
-function renderPublishButtonSection(unpublished, selected, onClickPublish) {
+function renderPublishButtonSection(numUnpublished, selected, onClickPublish) {
     let publish = <div></div>;
     if (selected > 0) {
         publish = <button onClick={onClickPublish}>Publish Selected</button>;
     }
 
-    if (unpublished > 0) {
+    if (numUnpublished > 0) {
         // Use the correct word
-        const firstWord = unpublished == 1 ? "class" : "classes";
+        const firstWord = numUnpublished == 1 ? "class" : "classes";
         const secondWord = selected == 1 ? "class" : "classes";
         return (
             <div id="publish">
                 <p>
-                    You have {unpublished} unpublished {firstWord}. <br />
+                    You have {numUnpublished} unpublished {firstWord}. <br />
                     You have selected {selected} {secondWord} to publish.
                 </p>
                 {publish}

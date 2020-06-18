@@ -7,19 +7,19 @@ import { Link } from "react-router-dom";
 export class ClassRow extends React.Component {
     render() {
         const row = this.props.row;
-        const unpublished = this.props.unpublished;
+        const isUnpublished = this.props.isUnpublished;
 
         return (
-            <div id={unpublished ? "unpublished" : ""}>
+            <div id={isUnpublished ? "unpublished" : ""}>
                 {renderCheckbox(
                     row.classId,
-                    this.props.collapsed,
-                    unpublished,
-                    this.props.selected,
+                    this.props.isCollapsed,
+                    isUnpublished,
+                    this.props.isSelected,
                     this.props.onSelectRow
                 )}
                 <span className="small">
-                    {unpublished ? "Unpublished" : "Published"}
+                    {isUnpublished ? "Unpublished" : "Published"}
                 </span>
                 <span className="large">{row.classId}</span>
                 <span className="small">{row.locationId}</span>
@@ -35,23 +35,17 @@ export class ClassRow extends React.Component {
     }
 }
 
-function renderCheckbox(
-    classId,
-    collapsed,
-    unpublished,
-    selected,
-    onSelectRow
-) {
-    if (collapsed) {
+function renderCheckbox(classId, isCollapsed, isUnpublished, isSelected, onSelectRow) {
+    if (isCollapsed) {
         // No space
         return <span></span>;
-    } else if (unpublished) {
+    } else if (isUnpublished) {
         return (
             <input
                 className="checkbox"
                 type="checkbox"
-                checked={selected}
-                onChange={() => onSelectRow(classId, selected)}
+                checked={isSelected}
+                onChange={() => onSelectRow(classId, isSelected)}
             />
         );
     } else {
