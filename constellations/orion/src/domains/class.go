@@ -23,6 +23,7 @@ type Class struct {
 	StartDate       time.Time  `json:"startDate" db:"start_date"`
 	EndDate         time.Time  `json:"endDate" db:"end_date"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
+	PricePerSession uint       `json:"pricePerSession" db:"price_per_session"`
 }
 
 // Class Methods
