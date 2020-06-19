@@ -4,17 +4,14 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-var now time.Time
-
 func initSemesterTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SemesterRepoInterface) {
-	now = time.Now().UTC()
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -243,8 +240,8 @@ func getSemesterRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "SemesterId", "Title"}).
 		AddRow(
 			1,
-			now,
-			now,
+			testUtils.TimeNow,
+			testUtils.TimeNow,
 			domains.NullTime{},
 			domains.NullTime{},
 			"2020_fall",
@@ -255,8 +252,8 @@ func getSemesterRows() *sqlmock.Rows {
 func getSemester() domains.Semester {
 	return domains.Semester{
 		Id:          1,
-		CreatedAt:   now,
-		UpdatedAt:   now,
+		CreatedAt:   testUtils.TimeNow,
+		UpdatedAt:   testUtils.TimeNow,
 		DeletedAt:   domains.NullTime{},
 		PublishedAt: domains.NullTime{},
 		SemesterId:  "2020_fall",

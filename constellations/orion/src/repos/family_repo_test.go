@@ -4,17 +4,14 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-var now time.Time
-
 func initFamilyTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.FamilyRepoInterface) {
-	now = time.Now().UTC()
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -157,8 +154,8 @@ func Test_UpdateFamily(t *testing.T) {
 		).WillReturnResult(result)
 	family := domains.Family{
 		Id:           1,
-		CreatedAt:    now,
-		UpdatedAt:    now,
+		CreatedAt:    testUtils.TimeNow,
+		UpdatedAt:    testUtils.TimeNow,
 		DeletedAt:    sql.NullTime{},
 		PrimaryEmail: "bob_joe@example.com",
 		Password:     "password2",
@@ -211,8 +208,8 @@ func getFamilyRows() *sqlmock.Rows {
 		"Password",
 	}).AddRow(
 		1,
-		now,
-		now,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
 		sql.NullTime{},
 		"john_smith@example.com",
 		"password",
@@ -222,8 +219,8 @@ func getFamilyRows() *sqlmock.Rows {
 func getFamily() domains.Family {
 	return domains.Family{
 		Id:           1,
-		CreatedAt:    now,
-		UpdatedAt:    now,
+		CreatedAt:    testUtils.TimeNow,
+		UpdatedAt:    testUtils.TimeNow,
 		DeletedAt:    sql.NullTime{},
 		PrimaryEmail: "john_smith@example.com",
 		Password:     "password",
