@@ -322,17 +322,17 @@ type mockFamilyRepo struct {
 func (familyRepo *mockFamilyRepo) Initialize(db *sql.DB) {}
 
 func (familyRepo *mockFamilyRepo) SelectById(id uint) (domains.Family, error) {
-	return familyRepo.mockSelectById(id)
+	return familyRepo.MockSelectById(id)
 }
 func (familyRepo *mockFamilyRepo) SelectByPrimaryEmail(primary_email string) (domains.Family, error) {
-	return familyRepo.mockSelectByPrimaryEmail(primary_email)
+	return familyRepo.MockSelectByPrimaryEmail(primary_email)
 }
 func (familyRepo *mockFamilyRepo) Insert(family domains.Family) error {
-	return familyRepo.mockInsert(family)
+	return familyRepo.MockInsert(family)
 }
 func (familyRepo *mockFamilyRepo) Update(id uint, family domains.Family) error {
-	return familyRepo.mockUpdate(id, family)
+	return familyRepo.MockUpdate(id, family)
 }
 func (familyRepo *mockFamilyRepo) Delete(id uint) error {
-	return familyRepo.mockDelete(id)
+	return familyRepo.MockDelete(id)
 }

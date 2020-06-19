@@ -27,10 +27,10 @@ func TestGetFamily_Success(t *testing.T) {
 		)
 		return family, nil
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -52,7 +52,7 @@ func TestSearchFamily_Success(t *testing.T) {
 			"password",
 		), nil
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create search body for HTTP request
 	familySearchBody := controllers.FamilySearchBody{
@@ -65,7 +65,7 @@ func TestSearchFamily_Success(t *testing.T) {
 	body := bytes.NewBuffer(marshal)
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/search", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/search", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -83,10 +83,10 @@ func TestGetFamily_Failure(t *testing.T) {
 	testUtils.FamilyRepo.MockSelectById = func(id uint) (domains.Family, error) {
 		return domains.Family{}, errors.New("not found")
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -99,7 +99,7 @@ func TestCreateFamily_Success(t *testing.T) {
 	testUtils.FamilyRepo.MockInsert = func(family domains.Family) error {
 		return nil
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
 	family := createMockFamily(
@@ -108,7 +108,7 @@ func TestCreateFamily_Success(t *testing.T) {
 		"password",
 	)
 	body := createBodyFromFamily(family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -116,7 +116,7 @@ func TestCreateFamily_Success(t *testing.T) {
 
 func TestCreateFamily_Failure(t *testing.T) {
 	// no mock needed
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
 	family := createMockFamily(
@@ -125,7 +125,7 @@ func TestCreateFamily_Failure(t *testing.T) {
 		"",
 	)
 	body := createBodyFromFamily(family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -138,7 +138,7 @@ func TestUpdateFamily_Success(t *testing.T) {
 	testUtils.FamilyRepo.MockUpdate = func(id uint, family domains.Family) error {
 		return nil // Successful update
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
 	family := createMockFamily(
@@ -147,7 +147,7 @@ func TestUpdateFamily_Success(t *testing.T) {
 		"password",
 	)
 	body := createBodyFromFamily(family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -155,7 +155,7 @@ func TestUpdateFamily_Success(t *testing.T) {
 
 func TestUpdateFamily_Invalid(t *testing.T) {
 	// no mock needed
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
 	family := createMockFamily(
@@ -164,7 +164,7 @@ func TestUpdateFamily_Invalid(t *testing.T) {
 		"",
 	)
 	body := createBodyFromFamily(family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -174,7 +174,7 @@ func TestUpdateFamily_Failure(t *testing.T) {
 	testUtils.FamilyRepo.MockUpdate = func(id uint, family domains.Family) error {
 		return errors.New("not found")
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
 	family := createMockFamily(
@@ -183,7 +183,7 @@ func TestUpdateFamily_Failure(t *testing.T) {
 		"password",
 	)
 	body := createBodyFromFamily(family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/families/family/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -196,10 +196,10 @@ func TestDeleteFamily_Success(t *testing.T) {
 	testUtils.FamilyRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -209,10 +209,10 @@ func TestDeleteFamily_Failure(t *testing.T) {
 	testUtils.FamilyRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}
-	repos.FamilyRepo = &familyRepo
+	repos.FamilyRepo = &testUtils.FamilyRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
