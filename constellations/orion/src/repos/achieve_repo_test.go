@@ -118,6 +118,16 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			2,
 		).
 		AddRow(
+			3,
+			now,
+			now,
+			domains.NullTime{},
+			domains.NullTime{},
+			2021,
+			"800 on SAT Math",
+			1,
+		).
+		AddRow(
 			1,
 			now,
 			now,
@@ -127,9 +137,10 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			"message1",
 			1,
 		)
-	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").
+	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC, `order` ASC").
 		ExpectQuery().
 		WillReturnRows(rows)
+
 	got, err := repo.SelectAllGroupedByYear()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -140,6 +151,16 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 		{
 			Year: 2021,
 			Achievements: []domains.Achieve{
+				{
+					Id:          3,
+					CreatedAt:   now,
+					UpdatedAt:   now,
+					DeletedAt:   domains.NullTime{},
+					PublishedAt: domains.NullTime{},
+					Year:        2021,
+					Message:     "800 on SAT Math",
+					Order:       1,
+				},
 				{
 					Id:          2,
 					CreatedAt:   now,

@@ -107,7 +107,7 @@ func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
 func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
 	results := make([]domains.AchieveYearGroup, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC")
+	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC, `order` ASC")
 	if err != nil {
 		return nil, err
 	}
