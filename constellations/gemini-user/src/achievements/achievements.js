@@ -2,6 +2,7 @@
 require("./achievements.sass");
 import React from "react";
 import API from "../utils/api.js";
+import { keys, sortBy, groupBy } from "lodash";
 
 export class YearList extends React.Component {
     render() {
@@ -40,20 +41,12 @@ export class AchievementPage extends React.Component {
         });
     }
 
-    // {"id":1,"publishedAt":null,"year":2020,"message":"message"}
     render() {
         const achievements = this.state.achieveList;
 
-        let sorted = {};
-        achievements.forEach((achievement) => {
-            if (!(achievement.year in sorted)) {
-                sorted[achievement.year] = [];
-            }
-            sorted[achievement.year].push(achievement);
-        });
+        let sorted = groupBy(achievements, (a) => a.year);
 
-        let years = Object.keys(sorted);
-        years.sort().reverse();
+        let years = sortBy(keys(sorted)).reverse();
 
         let items = [];
         years.forEach((year) => {
