@@ -8,7 +8,7 @@ import { HeaderSection } from "./header/header.js";
 import { HomePage } from "./home/home.js";
 import { ProgramPage } from "./programs/program.js";
 import { ProgramEditPage } from "./programs/programEdit.js";
-import { ClassAllPage } from "./classes/classAll.js";
+import { ClassPage } from "./classes/class.js";
 import { ClassEditPage } from "./classes/classEdit.js";
 import { AchievePage } from "./achieve/achieve.js";
 import { AchieveEditPage } from "./achieve/achieveEdit.js";
@@ -47,7 +47,7 @@ const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
 
-const ClassAll = () => <ClassAllPage />;
+const Class = () => <ClassPage />;
 const ClassEdit = () => <ClassEditPage />;
 const ClassEditMatch = ({ match }) => (
     <ClassEditPage classId={match.params.classId} />
@@ -105,7 +105,7 @@ class App extends React.Component {
                         component={ClassEditMatch}
                     />
                     <Route path="/classes/add" component={ClassEdit} />
-                    <Route path="/classes" component={ClassAll} />
+                    <Route path="/classes" component={Class} />
                 </Switch>
             </div>
         );
