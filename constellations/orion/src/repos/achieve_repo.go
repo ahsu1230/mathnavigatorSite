@@ -64,7 +64,7 @@ func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) 
 			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message,
-			&achieve.Order); errScan != nil {
+			&achieve.Position); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, achieve)
@@ -96,7 +96,7 @@ func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
 			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message,
-			&achieve.Order); errScan != nil {
+			&achieve.Position); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, achieve)
@@ -107,7 +107,7 @@ func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
 func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
 	results := make([]domains.AchieveYearGroup, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC, `order` ASC")
+	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC, position ASC")
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message,
-			&achieve.Order); errScan != nil {
+			&achieve.Position); errScan != nil {
 			return results, errScan
 		}
 		if achieve.Year != curYear {
@@ -165,7 +165,7 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 		&achieve.PublishedAt,
 		&achieve.Year,
 		&achieve.Message,
-		&achieve.Order)
+		&achieve.Position)
 	return achieve, errScan
 }
 
@@ -175,7 +175,7 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 		"updated_at, " +
 		"year, " +
 		"message, " +
-		"`order` " +
+		"position " +
 		") VALUES (?, ?, ?, ?, ?)"
 
 	stmt, err := ar.db.Prepare(statement)
@@ -190,7 +190,7 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 		now,
 		achieve.Year,
 		achieve.Message,
-		achieve.Order)
+		achieve.Position)
 	if err != nil {
 		return err
 	}
@@ -202,7 +202,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		"updated_at=?, " +
 		"year=?, " +
 		"message=?, " +
-		"`order`=? " +
+		"position=? " +
 		"WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -215,7 +215,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		now,
 		achieve.Year,
 		achieve.Message,
-		achieve.Order,
+		achieve.Position,
 		id)
 	if err != nil {
 		return err

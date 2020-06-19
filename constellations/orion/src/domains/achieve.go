@@ -16,7 +16,7 @@ type Achieve struct {
 	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
 	Year        uint      `json:"year"`
 	Message     string    `json:"message"`
-	Order       uint      `json:"order"`
+	Position    uint      `json:"position"`
 }
 
 type AchieveYearGroup struct {

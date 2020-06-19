@@ -1,2 +1,2 @@
 ALTER TABLE achievements
-    DROP COLUMN `order`;
+    DROP COLUMN position;

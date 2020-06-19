@@ -36,15 +36,15 @@ func Test_CreateAchievements(t *testing.T) {
 	assert.EqualValues(t, 1, achieves[0].Id)
 	assert.EqualValues(t, 2020, achieves[0].Year)
 	assert.EqualValues(t, "message1", achieves[0].Message)
-	assert.EqualValues(t, 1, achieves[0].Order)
+	assert.EqualValues(t, 1, achieves[0].Position)
 	assert.EqualValues(t, 2, achieves[1].Id)
 	assert.EqualValues(t, 2021, achieves[1].Year)
 	assert.EqualValues(t, "message2", achieves[1].Message)
-	assert.EqualValues(t, 2, achieves[1].Order)
+	assert.EqualValues(t, 2, achieves[1].Position)
 	assert.EqualValues(t, 3, achieves[2].Id)
 	assert.EqualValues(t, 2022, achieves[2].Year)
 	assert.EqualValues(t, "message3", achieves[2].Message)
-	assert.EqualValues(t, 3, achieves[2].Order)
+	assert.EqualValues(t, 3, achieves[2].Position)
 	assert.EqualValues(t, 3, len(achieves))
 
 	resetTable(t, domains.TABLE_ACHIEVEMENTS)
@@ -145,10 +145,10 @@ func Test_DeleteAchievement(t *testing.T) {
 }
 
 // Helper methods
-func createAchievement(year uint, message string, order uint) domains.Achieve {
+func createAchievement(year uint, message string, position uint) domains.Achieve {
 	return domains.Achieve{
-		Year:    year,
-		Message: message,
-		Order:   order,
+		Year:     year,
+		Message:  message,
+		Position: position,
 	}
 }
