@@ -43,9 +43,7 @@ export class AchievementPage extends React.Component {
 
     render() {
         const achievements = this.state.achieveList;
-
         let sorted = groupBy(achievements, (a) => a.year);
-
         let years = sortBy(keys(sorted)).reverse();
 
         let items = [];
