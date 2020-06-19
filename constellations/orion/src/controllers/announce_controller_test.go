@@ -64,7 +64,7 @@ func TestGetAllAnnouncements_Success(t *testing.T) {
 func TestGetAnnouncement_Success(t *testing.T) {
 	now := time.Now().UTC()
 	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(id uint) (domains.Announce, error) {
-		announce := createMockAnnounce(1, now, "Author Name", "Valid Message", false)
+		announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message", false)
 		return announce, nil
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
