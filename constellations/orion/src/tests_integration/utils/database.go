@@ -8,13 +8,14 @@ import (
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 var db *sql.DB
 
 func SetupTestDatabase(host string, port int, username string, password string, dbName string) {
 	// Open first connection to create database
-	dbConn := repos.Open(host, port, username, password, dbName)
+	dbConn := repoUtils.Open(host, port, username, password, dbName)
 
 	fmt.Println("Creating test database...")
 	fmt.Println("host:"+host, "port:"+strconv.Itoa(port), "username:"+username, "password:"+password, "dbName:"+dbName)
@@ -29,7 +30,7 @@ func SetupTestDatabase(host string, port int, username string, password string, 
 	// Must close db connection and open a new one with dbName
 	dbConn.Close()
 	fmt.Println("Reopening test database...")
-	dbConn = repos.Open(host, port, username, password, dbName)
+	dbConn = repoUtils.Open(host, port, username, password, dbName)
 	if err := dbConn.Ping(); err != nil {
 		fmt.Println(err.Error())
 		panic(err.Error())
@@ -37,9 +38,9 @@ func SetupTestDatabase(host string, port int, username string, password string, 
 
 	// Can now start operations with newly created test database
 	fmt.Println("Starting migrations...")
-	repos.Migrate(dbConn, "file://../repos/migrations")
+	repoUtils.Migrate(dbConn, "file://../repos/migrations")
 
-	fmt.Println("Initializing repos...")
+	fmt.Println("Initializing repoUtils...")
 	repos.SetupRepos(dbConn)
 
 	db = dbConn
