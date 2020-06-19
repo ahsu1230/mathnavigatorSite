@@ -14,12 +14,13 @@ func CreateMockAchievement(id uint, year uint, message string) domains.Achieve {
 	}
 }
 
-func CreateMockAnnounce(id uint, postedAt time.Time, author string, message string) domains.Announce {
+func CreateMockAnnounce(id uint, postedAt time.Time, author string, message string, onHomePage bool) domains.Announce {
 	return domains.Announce{
 		Id:       id,
 		PostedAt: postedAt,
 		Author:   author,
 		Message:  message,
+		OnHomePage: onHomePage,
 	}
 }
 

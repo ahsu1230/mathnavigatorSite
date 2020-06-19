@@ -19,7 +19,7 @@ Let's get started!
 
 ***Warning for Mac users*** At this time, Docker-Desktop is not supported for Macs older than 2010 or OS versions earlier than 10.13. If you have an older Mac OS, please refer to the [alternative guide](./guide_alternative.md).
 
-***Warning for Windows users*** At this time, Docker-Desktop is only supported for Windows 10 Pro/Enterprise. Docker is not supporting Windows 10 Home until version 2004 (coming in May/June 2020). If Docker-Desktop cannot be installed, please refer to the [alternative guide](./guide_alternative.md).
+***Warning for Windows users*** Docker-Desktop should be supported for Windows 10 Pro/Enterprise systems. For Windows 10 Home, we will need to update to at least version 2004 (coming in May/June 2020). Please use this guide to update Windows and correctly install Docker-Desktop [Windows 10 version 2004 setup](./guide_windows10_2004.md) 
 
 ## Docker-Compose
 
@@ -67,6 +67,8 @@ The Gemini sites (admin & user) are both connected to the `orion` web server whi
 
 This application will continue to run as long as the CLI processes for the websites and the Docker services continue to run. To quit out of the websites, close their corresponding CLI tab/window or use `Ctrl-C`. To stop the Docker services, use `docker-compose stop`.
 
+For more information about using `docker-compose`, take a look [here](./guide_docker-compose.md).
+
 ## Explaining Entities
 
 Here, I'll explain the vernacular behind Math Navigator. This project is made up of many *entities* (think like objects in object-oriented programming). An *entity* could be a program, a class, a student, a teacher, etc. We'll talk about what they are and how they relate to each other.
@@ -83,5 +85,4 @@ There are more entities, but this is the fundamental vocabulary which will be ve
 ## Starting Development
 
 If you're a back-end developer, you will probably be working on `orion`. Go to the [orion](../orion) directory and read the README file there. You will also need to install Golang to start developing.
-
 If you're a front-end developer, you won't need any more installation steps. Go to the [gemini-user](../gemini-user) and [gemini-admin](../gemini-admin) directories to read more about developing in those projects.

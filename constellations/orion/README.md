@@ -2,9 +2,15 @@
 
 Our core API service. This webserver will provide the main API to allow web clients to interact with our MySQL database. This is where users, programs, classes, announcements are created and persisted into the database.
 
-## Pre-requirements
+## Install Golang
 
-Make sure that Go is installed before proceeding: (https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/onboarding/install_go.md)
+Make sure that [Golang](https://golang.org/) is installed before proceeding. Please follow the instructions to download and install Go onto your machine.
+
+Once finished, in your Terminal / DOS, run:
+```
+go version
+```
+This will print out the OS and library version of your Golang.
 
 ## How to run the Orion webserver
 

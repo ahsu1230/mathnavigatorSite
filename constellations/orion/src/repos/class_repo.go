@@ -70,7 +70,8 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 			&class.LocationId,
 			&class.Times,
 			&class.StartDate,
-			&class.EndDate); errScan != nil {
+			&class.EndDate,
+			&class.GoogleClassCode); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -107,7 +108,8 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 			&class.LocationId,
 			&class.Times,
 			&class.StartDate,
-			&class.EndDate); errScan != nil {
+			&class.EndDate,
+			&class.GoogleClassCode); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -138,7 +140,8 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.LocationId,
 		&class.Times,
 		&class.StartDate,
-		&class.EndDate)
+		&class.EndDate,
+		&class.GoogleClassCode)
 	return class, errScan
 }
 
@@ -171,7 +174,8 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.LocationId,
 			&class.Times,
 			&class.StartDate,
-			&class.EndDate); errScan != nil {
+			&class.EndDate,
+			&class.GoogleClassCode); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -208,7 +212,8 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.LocationId,
 			&class.Times,
 			&class.StartDate,
-			&class.EndDate); errScan != nil {
+			&class.EndDate,
+			&class.GoogleClassCode); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -245,7 +250,8 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.LocationId,
 			&class.Times,
 			&class.StartDate,
-			&class.EndDate); errScan != nil {
+			&class.EndDate,
+			&class.GoogleClassCode); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -264,8 +270,9 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"location_id, " +
 		"times, " +
 		"start_date, " +
-		"end_date" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"end_date, " +
+		"google_class_code " +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -284,7 +291,9 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		class.LocationId,
 		class.Times,
 		class.StartDate,
-		class.EndDate)
+		class.EndDate,
+		class.GoogleClassCode,
+	)
 	if err != nil {
 		return err
 	}
@@ -301,7 +310,8 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"location_id=?, " +
 		"times=?, " +
 		"start_date=?, " +
-		"end_date=? " +
+		"end_date=?, " +
+		"google_class_code=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -320,6 +330,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.Times,
 		class.StartDate,
 		class.EndDate,
+		class.GoogleClassCode,
 		classId)
 	if err != nil {
 		return err
