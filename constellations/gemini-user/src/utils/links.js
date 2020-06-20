@@ -23,6 +23,11 @@ const subLinksAchieve = [
         name: "Student Websites",
         url: "/student-projects",
     },
+    {
+        id: "student-internships",
+        name: "Internships",
+        url: "/internship",
+    },
 ];
 
 const mainLinks = [

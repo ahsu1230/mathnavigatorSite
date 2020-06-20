@@ -1,37 +1,27 @@
 @import "../utils/constants.sass"
 
 #view-intern
-    font-family: $fontFamilyRoboto
     width: 65%
     margin-left: auto
     margin-right: auto
-
+    font-family: $fontFamilyRoboto
 
     & h1
-        color: $colorTurquoise
         margin-top: 30px
         margin-bottom: 30px
+        color: $colorTurquoise
 
     .container-main
-        flex-direction: row
         display: flex
-        justify-content: space-between
-        align-items: center
+        flex-direction: row
 
-        border: 1px solid
-        border-color: $colorOrange
+        & img
+            width: 120px
+            margin-right: 60px
+        
+        & p
+            margin: 0
 
-
-        .child-image
-            flex-grow: 1
-            border: 1px solid
-            border-color: #colorBlack
-
-            .image
-                width: 90%
-
-        .child-caption
-            flex-grow: 2
 
         
 
@@ -47,9 +37,8 @@
         & td, th
             border: 1px solid
             border-color: #dddddd
-            text-align: left
             padding: 8px
-        
+            text-align: left        
 
 
         
