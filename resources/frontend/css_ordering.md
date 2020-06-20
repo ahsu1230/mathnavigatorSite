@@ -3,18 +3,21 @@ Properly ordering CSS properties leads to more cohesive code, especially when wo
 
 ### Ordering of CSS properties
 When ordering CSS, positioning should come first, followed by display, then color and text. 
+
 - **Positioning**
     - position
     - z-index
     - top
     - right
-
+    
 - **Display**
     - display
-    - width
+    - (if using `display: flex`, flex-related properties go here! i.e. `justify-content`, `align-items`, etc.)
+    - width & height
+    - margin
     - padding
     - border
-    - margin
+    - box-sizing
 
 - **Color**
     - color
@@ -23,5 +26,8 @@ When ordering CSS, positioning should come first, followed by display, then colo
 - **Text**
     - font-family
     - line-height
+    - font-size
+
+- **Transition**
 
 You can also check out this link: https://css-tricks.com/poll-results-how-do-you-order-your-css-properties/
