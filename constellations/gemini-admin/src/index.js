@@ -18,6 +18,7 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+import { HelpPage } from "./help/help.js";
 
 const Achieve = () => <AchievePage />;
 const AchieveEdit = () => <AchieveEditPage />;
@@ -52,6 +53,7 @@ const ClassEdit = () => <ClassEditPage />;
 const ClassEditMatch = ({ match }) => (
     <ClassEditPage classId={match.params.classId} />
 );
+const Help = () => <HelpPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -100,6 +102,7 @@ class App extends React.Component {
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
+                    <Route path="/help" component={Help} />
                     <Route
                         path="/classes/:classId/edit"
                         component={ClassEditMatch}
