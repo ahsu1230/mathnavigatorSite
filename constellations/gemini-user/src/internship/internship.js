@@ -1,7 +1,12 @@
 "use strict";
 require("./internship.sass");
 import React from "react";
-import ApCalcImgScr from "./../../assets/ap_calc.jpg";
+
+import DockerImg from "./../../assets/docker.jpg";
+import GoLangImg from "./../../assets/golang.png";
+import CircleImg from "./../../assets/circleci.png";
+import MySQLImg from "./../../assets/mysql.png";
+import ReactImg from "./../../assets/reactjs.png";
 
 export class InternshipPage extends React.Component {
     render() {
@@ -20,32 +25,47 @@ export class InternshipPage extends React.Component {
                 <h1>Technology Stack</h1>
 
                 <div class="container-main">
-                    <img src={ApCalcImgScr} />
+                    <img src={ReactImg} />
                     <p>
-                        Math Navigator occasionally offers Software Development
-                        Internship for ambitious students who would like to
-                        pursue a college major or a career in software
-                        development.
+                        ReactJs, created by Facebook, is a popular web framework
+                        that helps web developers build powerful single page web
+                        applications
                     </p>
                 </div>
 
                 <div class="container-main">
-                    <img src={ApCalcImgScr} />
+                    <img src={GoLangImg} />
                     <p>
-                        Math Navigator occasionally offers Software Development
-                        Internship for ambitious students who would like to
-                        pursue a college major or a career in software
-                        development.
+                        Golang, created by Google, is an open source programming
+                        language that makes it easy to build simple, efficient
+                        and reliable software.
                     </p>
                 </div>
 
                 <div class="container-main">
-                    <img src={ApCalcImgScr} />
+                    <img src={MySQLImg} />
                     <p>
-                        Math Navigator occasionally offers Software Development
-                        Internship for ambitious students who would like to
-                        pursue a college major or a career in software
-                        development.
+                        MySQL, developed by Oracle, is the most popular
+                        relational (SQL) database management system and widely
+                        used to store application data.
+                    </p>
+                </div>
+
+                <div class="container-main">
+                    <img src={DockerImg} />
+                    <p>
+                        Docker is the leading containerization platform that
+                        helps software developers build applications and
+                        efficiently deliver software.
+                    </p>
+                </div>
+
+                <div class="container-main">
+                    <img src={CircleImg} />
+                    <p>
+                        CircleCI is a modern continuous integration platform
+                        that helps software developers easily test and deploy
+                        code.
                     </p>
                 </div>
 
@@ -63,30 +83,52 @@ export class InternshipPage extends React.Component {
                     <tr>
                         <th>Name</th>
                         <th>School</th>
+                        <th>College</th>
                     </tr>
                     <tr>
-                        <td>Cathy Yung</td>
+                        <td>Cathy Y.</td>
                         <td>Montgomery Blair HS 2020</td>
+                        <td>Massachusetts Institute of Technology (MIT)</td>
                     </tr>
                     <tr>
-                        <td>Chujia Guo</td>
+                        <td>Jessica Y.</td>
+                        <td>Montgomery Blair HS 2020</td>
+                        <td>University of Maryland</td>
+                    </tr>
+                    <tr>
+                        <td>Max Z.</td>
+                        <td>Montgomery Blair HS 2021</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Chujia G.</td>
                         <td>Montgomery Blair HS 2022</td>
+                        <td> </td>
                     </tr>
                     <tr>
-                        <td>Frederick Zheng</td>
+                        <td>Frederick Z.</td>
                         <td>Montgomery Blair HS 2023</td>
+                        <td> </td>
                     </tr>
                     <tr>
-                        <td>Tony Wu</td>
+                        <td>Tony W.</td>
                         <td>Richard Montgomery HS 2021</td>
+                        <td> </td>
                     </tr>
                     <tr>
-                        <td>Serena Xu</td>
+                        <td>Austin H.</td>
+                        <td>Winston Churchill HS 2017</td>
+                        <td>Carnegie Mellon University</td>
+                    </tr>
+                    <tr>
+                        <td>Serena X.</td>
                         <td>Winston Churchill HS 2020</td>
+                        <td>University of Pennsylvania</td>
                     </tr>
                     <tr>
-                        <td>Daniel Liu</td>
+                        <td>Daniel L.</td>
                         <td>Winston Churchill HS 2021</td>
+                        <td> </td>
                     </tr>
                 </table>
 
@@ -103,11 +145,7 @@ export class InternshipPage extends React.Component {
                 </p>
 
                 <h1>Math Navigator Products</h1>
-                <p>
-                    More in-depth information about what it's like doing an
-                    internship. <br></br>- Talk about Admin tool (with pictures){" "}
-                    <br></br>- Talk about team-organization with Asana?
-                </p>
+                <p id="last-paragraph">Coming soon...</p>
             </div>
         );
     }
