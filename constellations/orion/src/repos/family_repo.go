@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -95,7 +96,7 @@ func (fam *familyRepo) Insert(family domains.Family) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "family was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "family was not inserted")
 }
 
 func (fam *familyRepo) Update(id uint, family domains.Family) error {
@@ -119,7 +120,7 @@ func (fam *familyRepo) Update(id uint, family domains.Family) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "family was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "family was not updated")
 }
 
 func (fam *familyRepo) Delete(id uint) error {
@@ -134,7 +135,7 @@ func (fam *familyRepo) Delete(id uint) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "family was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "family was not deleted")
 }
 
 // For Tests Only
