@@ -8,14 +8,14 @@ var TABLE_ASKFORHELP = "askforhelp"
 
 type AskForHelp struct {
 	Id         uint      `json:"id"`
-	CreatedAt  time.Time `json:"-"`
-	UpdatedAt  time.Time `json:"-"`
-	DeletedAt  time.Time `json:"-"`
-	Title      string    `json:"message"`
+	CreatedAt  time.Time `json:"-" db:"created_at"`
+	UpdatedAt  time.Time `json:"-" db:"updated_at"`
+	DeletedAt  NullTime  `json:"-" db:"deleted_at"`
+	Title      string    `json:"title"`
 	Date       string    `json:"date"`
 	TimeString string    `json:"timeString"`
 	Subject    string    `json:"subject"`
-	LocationId string    `json:"locationId"`
+	LocationId string    `json:"locationId" db:"location_id"`
 }
 
 func (askForHelp *AskForHelp) Validate() error {
