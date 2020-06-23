@@ -4,10 +4,10 @@ CREATE TABLE ask_for_help
     created_at  datetime     NOT NULL,
     updated_at  datetime     NOT NULL,
     deleted_at  datetime,
-    title       text         NOT NULL,
+    title       varchar(256) NOT NULL,
     date        date         NOT NULL,
-    timeString  varchar(64)  NOT NULL,
-    subject     text         NOT NULL,
+    time_string varchar(64)  NOT NULL,
+    subject     varchar(128) NOT NULL,
     location_id varchar(64)  NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (location_id) REFERENCES locations (location_id)
