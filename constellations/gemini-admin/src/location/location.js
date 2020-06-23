@@ -1,5 +1,5 @@
 "use strict";
-require("./location.styl");
+require("./location.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
