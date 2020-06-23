@@ -1,5 +1,5 @@
 "use strict";
-require("./program.styl");
+require("./program.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { keys, size } from "lodash";
