@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -154,7 +155,7 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 	now := time.Now().UTC()
 	for _, session := range sessions {
 		if err := session.Validate(); err != nil {
-			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
+			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
 			continue
 		}
 		result, err := stmt.Exec(
@@ -166,14 +167,14 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 			session.Canceled,
 			session.Notes)
 		if err != nil {
-			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
+			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
 			continue
 		}
-		if err = handleSqlExecResult(result, 1, "session was not inserted"); err != nil {
-			errorString = appendError(errorString, fmt.Sprint(session.Id), err)
+		if err = utils.HandleSqlExecResult(result, 1, "session was not inserted"); err != nil {
+			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -210,7 +211,7 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "session was not updated")
+	return utils.HandleSqlExecResult(result, 1, "session was not updated")
 }
 
 func (sr *sessionRepo) Publish(ids []uint) error {
@@ -230,10 +231,10 @@ func (sr *sessionRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		_, err := stmt.Exec(now, id)
 		if err != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err)
+			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -257,14 +258,14 @@ func (sr *sessionRepo) Delete(ids []uint) error {
 	for _, id := range ids {
 		result, err := stmt.Exec(id)
 		if err != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err)
+			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
 			continue
 		}
-		if err = handleSqlExecResult(result, 1, "session was not deleted"); err != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err)
+		if err = utils.HandleSqlExecResult(result, 1, "session was not deleted"); err != nil {
+			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil

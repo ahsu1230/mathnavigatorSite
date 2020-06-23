@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -160,7 +161,7 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "location was not inserted")
+	return utils.HandleSqlExecResult(result, 1, "location was not inserted")
 }
 
 func (lr *locationRepo) Update(locationId string, location domains.Location) error {
@@ -194,7 +195,7 @@ func (lr *locationRepo) Update(locationId string, location domains.Location) err
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "location was not updated")
+	return utils.HandleSqlExecResult(result, 1, "location was not updated")
 }
 
 func (lr *locationRepo) Publish(locationIds []string) error {
@@ -214,10 +215,10 @@ func (lr *locationRepo) Publish(locationIds []string) error {
 	for _, locationId := range locationIds {
 		_, err := stmt.Exec(now, locationId)
 		if err != nil {
-			errorString = appendError(errorString, locationId, err)
+			errorString = utils.AppendError(errorString, locationId, err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -237,7 +238,7 @@ func (lr *locationRepo) Delete(locationId string) error {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "location was not deleted")
+	return utils.HandleSqlExecResult(result, 1, "location was not deleted")
 }
 
 func CreateTestLocationRepo(db *sql.DB) LocationRepoInterface {

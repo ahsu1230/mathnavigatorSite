@@ -1,4 +1,4 @@
-package integration_tests
+package tests_integration
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,18 +16,18 @@ func Test_CreateSemesters(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_fall", "Fall 2020")
 	semester3 := createSemester("2020_winter", "Winter 2020")
-	body1 := createJsonBody(&semester1)
-	body2 := createJsonBody(&semester2)
-	body3 := createJsonBody(&semester3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
+	body1 := utils.CreateJsonBody(&semester1)
+	body2 := utils.CreateJsonBody(&semester2)
+	body3 := utils.CreateJsonBody(&semester3)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Call Get All!
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/semesters/all", nil)
+	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/all", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
@@ -42,23 +43,23 @@ func Test_CreateSemesters(t *testing.T) {
 	assert.EqualValues(t, "Winter 2020", semesters[2].Title)
 	assert.EqualValues(t, 3, len(semesters))
 
-	resetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
 func Test_UniqueSemesterId(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	semester2 := createSemester("2020_spring", "Fall 2020") // Same semesterId
-	body1 := createJsonBody(&semester1)
-	body2 := createJsonBody(&semester2)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
+	body1 := utils.CreateJsonBody(&semester1)
+	body2 := utils.CreateJsonBody(&semester2)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
 	errBody := recorder2.Body.String()
 	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -69,27 +70,27 @@ func Test_UniqueSemesterId(t *testing.T) {
 	assert.EqualValues(t, "2020_spring", semester.SemesterId)
 	assert.EqualValues(t, "Spring 2020", semester.Title)
 
-	resetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 1 Semester, Update it, GetBySemesterId()
 func Test_UpdateSemester(t *testing.T) {
 	// Create 1 Semester
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	body1 := createJsonBody(&semester1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
+	body1 := utils.CreateJsonBody(&semester1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedSemester := createSemester("2020_fall", "Fall 2020")
-	updatedBody := createJsonBody(&updatedSemester)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_spring", updatedBody)
+	updatedBody := utils.CreateJsonBody(&updatedSemester)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_spring", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
-	recorder4 := sendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_fall", nil)
+	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_fall", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Validate results
@@ -100,26 +101,26 @@ func Test_UpdateSemester(t *testing.T) {
 	assert.EqualValues(t, "2020_fall", semester.SemesterId)
 	assert.EqualValues(t, "Fall 2020", semester.Title)
 
-	resetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
 func Test_DeleteSemester(t *testing.T) {
 	// Create
 	semester1 := createSemester("2020_spring", "Spring 2020")
-	body1 := createJsonBody(&semester1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
+	body1 := utils.CreateJsonBody(&semester1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/2020_spring", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	resetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
 
 // Helper methods
