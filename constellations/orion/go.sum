@@ -4,6 +4,7 @@ github.com/Microsoft/go-winio v0.4.14 h1:+hMXMk01us9KgxGb7ftKQt2Xpf5hH/yky+TDA+q
 github.com/Microsoft/go-winio v0.4.14/go.mod h1:qXqCSQ3Xa7+6tgxaGTIe4Kpcdsi+P8jBhyzoq1bpyYA=
 github.com/ahsu1230/mathnavigatorSite v0.0.0-20200502204059-1bc6002e1d18 h1:cKB+Fxuh3CiqTDHVtk4cqIBpJhutW0EsWBeDrw+3Fc4=
 github.com/ahsu1230/mathnavigatorSite v0.0.0-20200612212458-26dc58f0fe6e h1:irD6rI8vqFUjlukeb5EY1UIUI0yWFuiecY0V7luVE7U=
+github.com/ahsu1230/mathnavigatorSite v0.0.0-20200623173232-7f6d7c4b3cb5 h1:u8v2SKfPqUINDeat8vdi1fOnmzN9xTY63LrvCWA7WS4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
@@ -113,8 +115,7 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 	if err != nil {
 		return err
 	}
-
-	return handleSqlExecResult(result, 1, "ask for help was not inserted")
+	return utils.HandleSqlExecResult(result, 1, "ask for help was not inserted")
 }
 
 func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
@@ -145,8 +146,7 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 	if err != nil {
 		return err
 	}
-
-	return handleSqlExecResult(result, 1, "ask for help was not updated")
+	return utils.HandleSqlExecResult(result, 1, "ask for help was not updated")
 }
 
 func (ar *askForHelpRepo) Delete(id uint) error {
@@ -161,7 +161,7 @@ func (ar *askForHelpRepo) Delete(id uint) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "ask for help was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "ask for help was not deleted")
 }
 func CreateTestAFHRepo(db *sql.DB) AskForHelpRepoInterface {
 	ar := &askForHelpRepo{}
