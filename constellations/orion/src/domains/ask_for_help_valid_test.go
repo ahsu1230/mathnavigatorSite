@@ -3,15 +3,18 @@ package domains_test
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
 func TestValidAFHTitle(t *testing.T) {
+	now := time.Now().UTC()
+	var date1 = now.Add(time.Hour * 24 * 30)
 	askForHelp := domains.AskForHelp{
 		Id:         1,
 		Title:      "AP Calculus Help",
-		Date:       "August 20, 2020",
+		Date:       date1,
 		TimeString: "3:00 - 5:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
@@ -32,10 +35,12 @@ func TestValidAFHTitle(t *testing.T) {
 }
 
 func TestValidAFHSubject(t *testing.T) {
+	now := time.Now().UTC()
+	var date1 = now.Add(time.Hour * 24 * 30)
 	askForHelp := domains.AskForHelp{
 		Id:         1,
 		Title:      "AP Calculus Help",
-		Date:       "August 20, 2020",
+		Date:       date1,
 		TimeString: "3:00 - 5:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
@@ -58,10 +63,12 @@ func TestValidAFHSubject(t *testing.T) {
 }
 
 func TestValidAFHLocationId(t *testing.T) {
+	now := time.Now().UTC()
+	var date1 = now.Add(time.Hour * 24 * 30)
 	askForHelp := domains.AskForHelp{
 		Id:         1,
 		Title:      "AP Calculus Help",
-		Date:       "August 20, 2020",
+		Date:       date1,
 		TimeString: "3:00 - 5:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",

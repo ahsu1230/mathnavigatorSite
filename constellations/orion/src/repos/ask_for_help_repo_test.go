@@ -4,10 +4,12 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initAFHTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AskForHelpRepoInterface) {
@@ -73,14 +75,16 @@ func TestInsertAFH(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := time.Now().UTC()
+	var date1 = now.Add(time.Hour * 24 * 30)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO ask_for_help").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "AP Calculus Help", "December 25, 2020", "2:00-4:00 PM", "AP Calculus", "wchs").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "AP Calculus Help", date1, "2:00-4:00 PM", "AP Calculus", "wchs").
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Title:      "AP Calculus Help",
-		Date:       "December 25, 2020",
+		Date:       date1,
 		TimeString: "2:00-4:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
@@ -101,15 +105,17 @@ func TestUpdateAFH(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := time.Now().UTC()
+	var date1 = now.Add(time.Hour * 24 * 30)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE ask_for_help SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 2, "AP Stat Help", "December 25, 2020", "2:00-4:00PM", "AP Stat", "room12", 1).
+		WithArgs(sqlmock.AnyArg(), 2, "AP Stat Help", date1, "2:00-4:00PM", "AP Stat", "room12", 1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Id:         2,
 		Title:      "AP Stat Help",
-		Date:       "December 25, 2020",
+		Date:       date1,
 		TimeString: "2:00-4:00PM",
 		Subject:    "AP Stat",
 		LocationId: "room12",
@@ -151,11 +157,11 @@ func getAFHRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Title", "Date", "TimeString", "Subject", "LocationId"}).
 		AddRow(
 			1,
-			now,
-			now,
+			testUtils.TimeNow,
+			testUtils.TimeNow,
 			domains.NullTime{},
 			"AP Calculus Help",
-			"August 2, 2020",
+			testUtils.TimeNow,
 			"3:00-5:00PM",
 			"AP Calculus",
 			"wchs",
@@ -165,11 +171,11 @@ func getAFHRows() *sqlmock.Rows {
 func getAskForHelp() domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         1,
-		CreatedAt:  now,
-		UpdatedAt:  now,
+		CreatedAt:  testUtils.TimeNow,
+		UpdatedAt:  testUtils.TimeNow,
 		DeletedAt:  domains.NullTime{},
 		Title:      "AP Calculus Help",
-		Date:       "August 2, 2020",
+		Date:       testUtils.TimeNow,
 		TimeString: "3:00-5:00PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",

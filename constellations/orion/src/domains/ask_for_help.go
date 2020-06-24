@@ -14,7 +14,7 @@ type AskForHelp struct {
 	UpdatedAt  time.Time `json:"-" db:"updated_at"`
 	DeletedAt  NullTime  `json:"-" db:"deleted_at"`
 	Title      string    `json:"title"`
-	Date       string    `json:"date"`
+	Date       time.Time `json:"date"`
 	TimeString string    `json:"timeString" db:"time_string"`
 	Subject    string    `json:"subject"`
 	LocationId string    `json:"locationId" db:"location_id"`

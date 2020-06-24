@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
@@ -16,12 +17,15 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
+var date1 = now.Add(time.Hour * 24 * 30)
+var date2 = now.Add(time.Hour * 24 * 31)
+
 // Test Get All
 func TestGetAllAFH_Success(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectAll = func() ([]domains.AskForHelp, error) {
 		return []domains.AskForHelp{
-			testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs"),
-			testUtils.CreateMockAFH(2, "AP Statistics Help", "February 14, 2020", "3:00-5:00PM", "AP Statistics", "room12"),
+			testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs"),
+			testUtils.CreateMockAFH(2, "AP Statistics Help", date2, "3:00-5:00PM", "AP Statistics", "room12"),
 		}, nil
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -39,14 +43,14 @@ func TestGetAllAFH_Success(t *testing.T) {
 	assert.EqualValues(t, 1, askForHelps[0].Id)
 	assert.EqualValues(t, "AP Calculus Help", askForHelps[0].Title)
 	assert.EqualValues(t, 2, askForHelps[1].Id)
-	assert.EqualValues(t, "February 14, 2020", askForHelps[1].Date)
+	assert.EqualValues(t, date2, askForHelps[1].Date)
 	assert.EqualValues(t, 2, len(askForHelps))
 }
 
 // Test Get Ask For Help
 func TestGetAFH_Success(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
-		askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs")
+		askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs")
 		return askForHelp, nil
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -87,7 +91,7 @@ func TestCreateAFH_Success(t *testing.T) {
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
 	// Create new HTTP request to endpoint
-	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs")
+	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs")
 	body := createBodyFromAFH(askForHelp)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body)
 
@@ -100,7 +104,7 @@ func TestCreateAFH_Failure(t *testing.T) {
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
 	// Create new HTTP request to endpoint
-	askForHelp := testUtils.CreateMockAFH(1, "", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs")
+	askForHelp := testUtils.CreateMockAFH(1, "", date1, "2:00-4:00PM", "AP Calculus", "wchs")
 	body := createBodyFromAFH(askForHelp)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body)
 
@@ -116,7 +120,7 @@ func TestUpdateAFH_Success(t *testing.T) {
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
 	// Create new HTTP request to endpoint
-	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs")
+	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs")
 	body := createBodyFromAFH(askForHelp)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/afh/1", body)
 
@@ -129,7 +133,7 @@ func TestUpdateAFH_Invalid(t *testing.T) {
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
 	// Create new HTTP request to endpoint
-	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "", "wchs")
+	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "", "wchs")
 	body := createBodyFromAFH(askForHelp)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/afh/1", body)
 
@@ -144,7 +148,7 @@ func TestUpdateAFH_Failure(t *testing.T) {
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
 	// Create new HTTP request to endpoint
-	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", "December 25, 2020", "2:00-4:00PM", "AP Calculus", "wchs")
+	askForHelp := testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs")
 	body := createBodyFromAFH(askForHelp)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/afh/1", body)
 
