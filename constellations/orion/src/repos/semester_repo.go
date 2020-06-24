@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -144,7 +145,7 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "semester was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "semester was not inserted")
 }
 
 func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
@@ -168,7 +169,7 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "semester was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "semester was not updated")
 }
 
 func (sr *semesterRepo) Publish(semesterIds []string) error {
@@ -188,10 +189,10 @@ func (sr *semesterRepo) Publish(semesterIds []string) error {
 	for _, semesterId := range semesterIds {
 		_, err := stmt.Exec(now, semesterId)
 		if err != nil {
-			errorString = appendError(errorString, semesterId, err)
+			errorString = utils.AppendError(errorString, semesterId, err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -211,7 +212,7 @@ func (sr *semesterRepo) Delete(semesterId string) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "semester was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "semester was not deleted")
 }
 
 // For Tests Only

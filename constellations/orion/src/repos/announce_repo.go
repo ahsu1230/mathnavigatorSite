@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -50,7 +51,8 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 			&announce.DeletedAt,
 			&announce.PostedAt,
 			&announce.Author,
-			&announce.Message); errScan != nil {
+			&announce.Message,
+			&announce.OnHomePage); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, announce)
@@ -75,7 +77,8 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 		&announce.DeletedAt,
 		&announce.PostedAt,
 		&announce.Author,
-		&announce.Message)
+		&announce.Message,
+		&announce.OnHomePage)
 
 	return announce, errScan
 }
@@ -86,8 +89,9 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		"updated_at, " +
 		"posted_at, " +
 		"author, " +
-		"message" +
-		") VALUES (?, ?, ?, ?, ?)")
+		"message," +
+		"on_home_page" +
+		") VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -99,12 +103,13 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		now,
 		announce.PostedAt,
 		announce.Author,
-		announce.Message)
+		announce.Message,
+		announce.OnHomePage)
 	if err != nil {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "announcement was not inserted")
+	return utils.HandleSqlExecResult(result, 1, "announcement was not inserted")
 }
 
 func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
@@ -112,7 +117,8 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 		"updated_at=?, " +
 		"posted_at=?, " +
 		"author=?, " +
-		"message=? " +
+		"message=?, " +
+		"on_home_page=? " +
 		"WHERE id=?")
 	if err != nil {
 		return err
@@ -125,12 +131,13 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 		announce.PostedAt,
 		announce.Author,
 		announce.Message,
+		announce.OnHomePage,
 		id)
 	if err != nil {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "announcement was not updated")
+	return utils.HandleSqlExecResult(result, 1, "announcement was not updated")
 }
 
 func (ar *announceRepo) Delete(id uint) error {
@@ -145,7 +152,7 @@ func (ar *announceRepo) Delete(id uint) error {
 		return err
 	}
 
-	return handleSqlExecResult(result, 1, "announcement was not deleted")
+	return utils.HandleSqlExecResult(result, 1, "announcement was not deleted")
 }
 
 func CreateTestAnnounceRepo(db *sql.DB) AnnounceRepoInterface {

@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
@@ -19,7 +20,7 @@ import (
 //
 func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionRepo.mockSelectAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
+	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -39,10 +40,10 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 			},
 		}, nil
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/class/id_1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/sessions/class/id_1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -62,14 +63,14 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 //
 func TestGetSession_Success(t *testing.T) {
 	now := time.Now().UTC()
-	sessionRepo.mockSelectBySessionId = func(id uint) (domains.Session, error) {
-		session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
+		session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 		return session, nil
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -82,13 +83,13 @@ func TestGetSession_Success(t *testing.T) {
 }
 
 func TestGetSession_Failure(t *testing.T) {
-	sessionRepo.mockSelectBySessionId = func(id uint) (domains.Session, error) {
+	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
 		return domains.Session{}, errors.New("Not Found")
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/2", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -98,34 +99,34 @@ func TestGetSession_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateSessions_Success(t *testing.T) {
-	sessionRepo.mockInsert = func(session []domains.Session) error {
+	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
 		return nil
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "special lecture from guest")}
+	sessions := []domains.Session{testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestCreateSessions_Failure(t *testing.T) {
-	sessionRepo.mockInsert = func(session []domains.Session) error {
+	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
 		return errors.New("invalid notes")
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	sessions := []domains.Session{createMockSession(1, "id_1", now, now, true, "@@")}
+	sessions := []domains.Session{testUtils.CreateMockSession(1, "id_1", now, now, true, "@@")}
 	marshal, _ := json.Marshal(&sessions)
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -135,16 +136,16 @@ func TestCreateSessions_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateSession_Success(t *testing.T) {
-	sessionRepo.mockUpdate = func(id uint, session domains.Session) error {
+	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
 		return nil // Successful update
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -152,29 +153,29 @@ func TestUpdateSession_Success(t *testing.T) {
 
 func TestUpdateSession_Invalid(t *testing.T) {
 	// no mock needed
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "@@")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "@@")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 func TestUpdateSession_Failure(t *testing.T) {
-	sessionRepo.mockUpdate = func(id uint, session domains.Session) error {
+	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
 		return errors.New("not found")
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	now := time.Now().UTC()
-	session := createMockSession(1, "id_1", now, now, true, "special lecture from guest")
+	session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 	body := createBodyFromSession(session)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/2", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/2", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -184,10 +185,10 @@ func TestUpdateSession_Failure(t *testing.T) {
 // Test Publish
 //
 func TestPublishSessions_Success(t *testing.T) {
-	sessionRepo.mockPublish = func(ids []uint) error {
+	testUtils.SessionRepo.MockPublish = func(ids []uint) error {
 		return nil // Successful publish
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	ids := []uint{1, 2}
@@ -196,7 +197,7 @@ func TestPublishSessions_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/sessions/publish", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/publish", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -206,10 +207,10 @@ func TestPublishSessions_Success(t *testing.T) {
 // Test Delete
 //
 func TestDeleteSessions_Success(t *testing.T) {
-	sessionRepo.mockDelete = func(ids []uint) error {
+	testUtils.SessionRepo.MockDelete = func(ids []uint) error {
 		return nil // Return no error, successful delete!
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
 	ids := []uint{1, 2, 3}
@@ -218,20 +219,20 @@ func TestDeleteSessions_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := bytes.NewBuffer(marshal)
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteSessions_Failure(t *testing.T) {
-	sessionRepo.mockDelete = func(id []uint) error {
+	testUtils.SessionRepo.MockDelete = func(id []uint) error {
 		return errors.New("not found")
 	}
-	repos.SessionRepo = &sessionRepo
+	repos.SessionRepo = &testUtils.SessionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -240,16 +241,6 @@ func TestDeleteSessions_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockSession(id uint, classId string, startsAt time.Time, endsAt time.Time, canceled bool, notes string) domains.Session {
-	return domains.Session{
-		Id:       id,
-		ClassId:  classId,
-		StartsAt: startsAt,
-		EndsAt:   endsAt,
-		Canceled: canceled,
-		Notes:    domains.NewNullString(notes),
-	}
-}
 
 func createBodyFromSession(session domains.Session) io.Reader {
 	marshal, err := json.Marshal(&session)

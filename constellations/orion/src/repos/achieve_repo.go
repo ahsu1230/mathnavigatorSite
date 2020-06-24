@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -188,7 +189,7 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "achievement was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "achievement was not inserted")
 }
 
 func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
@@ -212,7 +213,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "achievement was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "achievement was not updated")
 }
 
 func (ar *achieveRepo) Publish(ids []uint) error {
@@ -232,10 +233,10 @@ func (ar *achieveRepo) Publish(ids []uint) error {
 	for _, id := range ids {
 		_, err := stmt.Exec(now, id)
 		if err != nil {
-			errorString = appendError(errorString, fmt.Sprint(id), err)
+			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -255,7 +256,7 @@ func (ar *achieveRepo) Delete(id uint) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "achievement was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "achievement was not deleted")
 }
 
 // For Tests Only
