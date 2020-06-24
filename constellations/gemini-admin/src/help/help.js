@@ -6,6 +6,7 @@ export class HelpPage extends React.Component {
     render() {
         return (
             <div>
+                <h2>Administrative Support</h2>
                 <h1>How to Create a Class</h1>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
