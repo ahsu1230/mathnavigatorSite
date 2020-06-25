@@ -79,11 +79,8 @@ export class SessionAdd extends React.Component {
             let endsAt = moment(this.state.endsAt).add(i, "w");
 
             sessions.push({
-                classId: this.props.classId,
                 startsAt: startsAt,
                 endsAt: endsAt,
-                canceled: false,
-                notes: "",
             });
         }
         this.props.addSessions(sessions);

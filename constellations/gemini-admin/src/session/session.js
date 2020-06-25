@@ -13,15 +13,23 @@ export class SessionPage extends React.Component {
     };
 
     componentDidMount = () => {
-        this.fetchData();
-    };
-
-    fetchData = () => {
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
+            const classId = classes.length > 0 ? classes[0].classId : "";
             this.setState({
                 classes: classes,
-                classId: classes.length > 0 ? classes[0].classId : "",
+                classId: classId,
+            });
+            this.fetchSessionData(this.state.classId);
+        });
+    };
+
+    fetchSessionData = (classId) => {
+        API.get("api/sessions/class/" + classId).then((res) => {
+            var newSessions = res.data;
+            newSessions = _.sortBy(newSessions, ["startsAt"]);
+            this.setState({
+                sessions: newSessions,
             });
         });
     };
@@ -34,13 +42,27 @@ export class SessionPage extends React.Component {
     };
 
     addSessions = (sessions) => {
-        var newSessions = _.concat(this.state.sessions, sessions);
-        newSessions = _.sortBy(newSessions, ["startsAt"]);
-
-        this.setState({
-            sessions: newSessions,
+        var sessionsJSON = [];
+        sessions.forEach((session) => {
+            sessionsJSON.push({
+                classId: this.state.classId,
+                startsAt: session.startsAt.toJSON(),
+                endsAt: session.endsAt.toJSON(),
+                canceled: false,
+                notes: "",
+            });
         });
-        console.log("Added sessions");
+
+        API.post("api/sessions/create", sessionsJSON)
+            .then(() => {
+                console.log("Successfully created sessions!");
+            })
+            .catch((err) => {
+                window.alert("Could not create sessions: " + err);
+            })
+            .finally(() => {
+                this.fetchSessionData(this.state.classId);
+            });
     };
 
     render = () => {
@@ -62,7 +84,10 @@ export class SessionPage extends React.Component {
                         {classOptions}
                     </select>
                 </section>
-                <SessionAdd addSessions={this.addSessions} />
+                <SessionAdd
+                    classId={this.state.classId}
+                    addSessions={this.addSessions}
+                />
                 <SessionList
                     classId={this.state.classId}
                     sessions={this.state.sessions}

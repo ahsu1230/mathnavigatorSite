@@ -1,6 +1,7 @@
 "use strict";
 require("./sessionList.sass");
 import React from "react";
+import moment from "moment";
 import { Link } from "react-router-dom";
 
 export class SessionList extends React.Component {
@@ -11,17 +12,17 @@ export class SessionList extends React.Component {
             return (
                 <div className="row" key={index}>
                     <span className="column">
-                        {session.startsAt.format("l")}
+                        {moment(session.startsAt).format("l")}
                     </span>
-                    <span className="wide-column">
-                        {session.startsAt.format("LT")}
+                    <span className="medium-column">
+                        {moment(session.startsAt).format("LT")}
                         {" - "}
-                        {session.endsAt.format("LT")}
+                        {moment(session.endsAt).format("LT")}
                     </span>
                     <span className="column">
-                        {session.canceled ? "true" : ""}
+                        {session.canceled ? "True" : ""}
                     </span>
-                    <span className="wide-column">{session.notes}</span>
+                    <span className="large-column">{session.notes}</span>
                     <span className="edit">
                         <Link
                             to={
@@ -42,9 +43,9 @@ export class SessionList extends React.Component {
             <section id="session-rows">
                 <div id="header" className="row">
                     <span className="column">Date</span>
-                    <span className="wide-column">Time</span>
+                    <span className="medium-column">Time</span>
                     <span className="column">Canceled</span>
-                    <span className="wide-column">Notes</span>
+                    <span className="large-column">Notes</span>
                     <span className="edit"></span>
                 </div>
                 {rows}

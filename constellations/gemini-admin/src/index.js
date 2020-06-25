@@ -36,10 +36,7 @@ const ClassEditMatch = ({ match }) => (
 );
 const Session = () => <SessionPage />;
 const SessionEditMatch = ({ match }) => (
-    <SessionEditPage
-        classId={match.params.classId}
-        sessionId={match.params.sessionId}
-    />
+    <SessionEditPage classId={match.params.classId} id={match.params.id} />
 );
 const Announce = () => <AnnouncePage />;
 const AnnounceEdit = () => <AnnounceEditPage />;
@@ -49,7 +46,7 @@ const AnnounceEditMatch = ({ match }) => (
 const Achieve = () => <AchievePage />;
 const AchieveEdit = () => <AchieveEditPage />;
 const AchieveEditMatch = ({ match }) => (
-    <AchieveEditPage Id={match.params.Id} />
+    <AchieveEditPage id={match.params.id} />
 );
 const Location = () => <LocationPage />;
 const LocationEdit = () => <LocationEditPage />;
@@ -92,7 +89,7 @@ class App extends React.Component {
                     <Route path="/classes/add" component={ClassEdit} />
                     <Route path="/classes" component={Class} />
                     <Route
-                        path="/sessions/:classId/:sessionId/edit"
+                        path="/sessions/:classId/:id/edit"
                         component={SessionEditMatch}
                     />
                     <Route path="/sessions" component={Session} />

@@ -3,29 +3,34 @@
 #session-rows
     max-width: $spacing96x
     margin: auto
-    margin-top: $spacing2x
+    margin-top: $spacing4x
     padding: $spacing2x
     box-sizing: border-box
 
     #header
         height: $spacing4x
+        min-height: $spacing4x
         padding-bottom: $spacing1x
         border-bottom: 1px solid $colorGrayDark
 
     .row
         display: flex
-        height: $spacing8x
+        min-height: $spacing8x
         border-bottom: 1px solid $colorGrayLight
     
     .column
         flex: 2 1 0
     
-    .wide-column
+    .medium-column
         flex: 3 1 0
+    
+    .large-column
+        flex: 4 1 0
     
     .edit
         flex: 0 0 $spacing6x
 
     span
         align-self: center
-        padding-right: $spacing2x
+        padding: $spacing2x
+        padding-left: 0
