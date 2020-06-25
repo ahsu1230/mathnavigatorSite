@@ -13,6 +13,8 @@ import (
 
 // Test: Create 3 Ask For Helps and GetAll()
 func Test_CreateAskForHelps(t *testing.T) {
+	createLocations(t)
+
 	var date1 = now.Add(time.Hour * 24 * 30)
 	var date2 = now.Add(time.Hour * 24 * 31)
 	var date3 = now.Add(time.Hour * 24 * 60)
@@ -58,10 +60,13 @@ func Test_CreateAskForHelps(t *testing.T) {
 	assert.EqualValues(t, "room101", askForHelps[2].LocationId)
 
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
 
 // Test: Create 1 Ask For Help, Update, Get By ID
 func Test_UpdateAFH(t *testing.T) {
+	createLocations(t)
+
 	//Create 1 AFH
 	var date1 = now.Add(time.Hour * 24 * 30)
 	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", "Calculus", "wchs")
@@ -93,10 +98,13 @@ func Test_UpdateAFH(t *testing.T) {
 	assert.EqualValues(t, "room12", askForHelp.LocationId)
 
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
 func Test_DeleteAFH(t *testing.T) {
+	createLocations(t)
+
 	// Create
 	var date1 = now.Add(time.Hour * 24 * 30)
 	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", "Calculus", "wchs")
@@ -113,9 +121,28 @@ func Test_DeleteAFH(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
 
 // Helper methods
+func createLocations(t *testing.T) {
+	location1 := createLocation("wchs", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
+	location2 := createLocation("room12", "123 Sesame St", "Rockville", "MD", "20814", "Room 8")
+	location3 := createLocation("room101", "101 Rainbow Avenue", "Gaithersburg", "MD", "23456", "Room 101")
+
+	body1 := utils.CreateJsonBody(&location1)
+	body2 := utils.CreateJsonBody(&location2)
+	body3 := utils.CreateJsonBody(&location3)
+
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
+
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+}
+
 func createAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string) domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         id,

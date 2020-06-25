@@ -8,7 +8,7 @@ CREATE TABLE ask_for_help
     date        date         NOT NULL,
     time_string varchar(64)  NOT NULL,
     subject     varchar(128) NOT NULL,
-    location_id varchar(64)  NOT NULL,
+    location_id varchar(64)  NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (location_id) REFERENCES locations (location_id)
 ) AUTO_INCREMENT = 1
