@@ -11,6 +11,7 @@ import { ProgramEditPage } from "./programs/programEdit.js";
 import { ClassPage } from "./classes/class.js";
 import { ClassEditPage } from "./classes/classEdit.js";
 import { SessionPage } from "./session/session.js";
+import { SessionEditPage } from "./session/sessionEdit.js";
 import { AnnouncePage } from "./announce/announce.js";
 import { AnnounceEditPage } from "./announce/announceEdit.js";
 import { AchievePage } from "./achieve/achieve.js";
@@ -34,7 +35,12 @@ const ClassEditMatch = ({ match }) => (
     <ClassEditPage classId={match.params.classId} />
 );
 const Session = () => <SessionPage />;
-
+const SessionEditMatch = ({ match }) => (
+    <SessionEditPage
+        classId={match.params.classId}
+        sessionId={match.params.sessionId}
+    />
+);
 const Announce = () => <AnnouncePage />;
 const AnnounceEdit = () => <AnnounceEditPage />;
 const AnnounceEditMatch = ({ match }) => (
@@ -85,6 +91,10 @@ class App extends React.Component {
                     />
                     <Route path="/classes/add" component={ClassEdit} />
                     <Route path="/classes" component={Class} />
+                    <Route
+                        path="/sessions/:classId/:sessionId/edit"
+                        component={SessionEditMatch}
+                    />
                     <Route path="/sessions" component={Session} />
                     <Route
                         path="/announcements/:announceId/edit"
