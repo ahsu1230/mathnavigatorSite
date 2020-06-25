@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var TABLE_ASKFORHELP = "askForHelp"
+var TABLE_ASKFORHELP = "ask_for_help"
 
 type AskForHelp struct {
 	Id         uint      `json:"id"`
