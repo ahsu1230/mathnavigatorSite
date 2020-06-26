@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -172,7 +173,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "user was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "user was not inserted")
 }
 
 func (ur *userRepo) Update(id uint, user domains.User) error {
@@ -206,7 +207,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "user was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "user was not updated")
 }
 
 func (ur *userRepo) Delete(id uint) error {
@@ -221,7 +222,7 @@ func (ur *userRepo) Delete(id uint) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "user was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "user was not deleted")
 }
 
 // For Tests Only

@@ -90,5 +90,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
 		apiUsers.GET("/guardian/:guardianId", controllers.GetUserByGuardian)
 	}
+
+	apiFamilies := h.Engine.Group("api/families")
+	{
+		apiFamilies.POST("/create", controllers.CreateFamily)
+		apiFamilies.GET("/family/:id", controllers.GetFamilyById)
+		apiFamilies.POST("/family/:id", controllers.UpdateFamily)
+		apiFamilies.DELETE("/family/:id", controllers.DeleteFamily)
+		apiFamilies.POST("/search", controllers.SearchFamily)
+	}
 	// apiAccounts := router.Group("api/accounts/")
 }
