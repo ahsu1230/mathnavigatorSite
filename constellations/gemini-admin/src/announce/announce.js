@@ -74,7 +74,7 @@ export class AnnouncePage extends React.Component {
                 <h1>All Announcements ({numRows}) </h1>
 
                 <ul className="announce-list-row subheader">
-                    <li className="li-med">On Home Page</li>
+                    <li className="li-small">On Home Page</li>
                     <li className="li-med">State</li>
                     <li className="li-med">Date</li>
                     <li className="li-med">Author</li>
@@ -108,7 +108,7 @@ class AnnounceRow extends React.Component {
         const url = "/announcements/" + announceId + "/edit";
         return (
             <ul className="announce-list-row">
-                <li className="li-med">
+                <li className="li-small">
                     <input
                         type="checkbox"
                         onChange={this.props.onChangeCheckbox}
