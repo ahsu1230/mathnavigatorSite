@@ -74,6 +74,16 @@ export class SessionPage extends React.Component {
             );
         });
 
+        let sessionsList = <div></div>;
+        if (this.state.sessions.length != 0) {
+            sessionsList = (
+                <SessionList
+                    classId={this.state.classId}
+                    sessions={this.state.sessions}
+                />
+            );
+        }
+
         return (
             <div id="view-session">
                 <section id="select-class">
@@ -88,10 +98,7 @@ export class SessionPage extends React.Component {
                     classId={this.state.classId}
                     addSessions={this.addSessions}
                 />
-                <SessionList
-                    classId={this.state.classId}
-                    sessions={this.state.sessions}
-                />
+                {sessionsList}
             </div>
         );
     };
