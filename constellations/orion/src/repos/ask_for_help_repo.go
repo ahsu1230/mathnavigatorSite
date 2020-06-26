@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
-
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable

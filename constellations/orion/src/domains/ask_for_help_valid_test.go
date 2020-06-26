@@ -61,31 +61,3 @@ func TestValidAFHSubject(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid subject")
 	}
 }
-
-func TestValidAFHLocationId(t *testing.T) {
-	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
-	askForHelp := domains.AskForHelp{
-		Id:         1,
-		Title:      "AP Calculus Help",
-		Date:       date1,
-		TimeString: "3:00 - 5:00 PM",
-		Subject:    "AP Calculus",
-		LocationId: "wchs",
-	}
-
-	askForHelp.LocationId = "churchill_high_school"
-	if err := askForHelp.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-
-	askForHelp.LocationId = "Room_23"
-	if err := askForHelp.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-
-	askForHelp.LocationId = "Room 23 Space"
-	if err := askForHelp.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid AFH location id")
-	}
-}

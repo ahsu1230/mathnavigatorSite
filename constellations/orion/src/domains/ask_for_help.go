@@ -23,7 +23,6 @@ type AskForHelp struct {
 func (askForHelp *AskForHelp) Validate() error {
 	title := askForHelp.Title
 	subject := askForHelp.Subject
-	locationId := askForHelp.LocationId
 
 	// Title validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches || len(title) > 256 {
@@ -33,11 +32,6 @@ func (askForHelp *AskForHelp) Validate() error {
 	// Subject validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, subject); !matches || len(title) > 128 {
 		return errors.New("invalid subject")
-	}
-
-	// Location ID validation
-	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, locationId); !matches {
-		return errors.New("invalid AFH location id")
 	}
 	return nil
 }

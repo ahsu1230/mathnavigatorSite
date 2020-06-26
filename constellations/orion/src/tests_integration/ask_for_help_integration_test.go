@@ -67,7 +67,7 @@ func Test_CreateAskForHelps(t *testing.T) {
 func Test_UpdateAFH(t *testing.T) {
 	createLocations(t)
 
-	//Create 1 AFH
+	// Create 1 AFH
 	var date1 = now.Add(time.Hour * 24 * 30)
 	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", "Calculus", "wchs")
 	body1 := utils.CreateJsonBody(&afh1)

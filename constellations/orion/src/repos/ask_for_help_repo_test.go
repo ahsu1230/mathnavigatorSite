@@ -80,7 +80,14 @@ func TestInsertAFH(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO ask_for_help").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "AP Calculus Help", date1, "2:00-4:00 PM", "AP Calculus", "wchs").
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"AP Calculus Help",
+			date1,
+			"2:00-4:00 PM",
+			"AP Calculus",
+			"wchs").
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Title:      "AP Calculus Help",
@@ -110,7 +117,15 @@ func TestUpdateAFH(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE ask_for_help SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 2, "AP Stat Help", date1, "2:00-4:00PM", "AP Stat", "room12", 1).
+		WithArgs(
+			sqlmock.AnyArg(),
+			2,
+			"AP Stat Help",
+			date1,
+			"2:00-4:00PM",
+			"AP Stat",
+			"room12",
+			1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Id:         2,
@@ -154,7 +169,17 @@ func TestDeleteAFH(t *testing.T) {
 
 // Helper Methods
 func getAFHRows() *sqlmock.Rows {
-	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Title", "Date", "TimeString", "Subject", "LocationId"}).
+	return sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"Title",
+		"Date",
+		"TimeString",
+		"Subject",
+		"LocationId",
+	}).
 		AddRow(
 			1,
 			testUtils.TimeNow,

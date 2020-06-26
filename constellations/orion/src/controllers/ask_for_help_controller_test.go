@@ -9,12 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
-
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
 var date1 = now.Add(time.Hour * 24 * 30)
@@ -24,8 +22,21 @@ var date2 = now.Add(time.Hour * 24 * 31)
 func TestGetAllAFH_Success(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectAll = func() ([]domains.AskForHelp, error) {
 		return []domains.AskForHelp{
-			testUtils.CreateMockAFH(1, "AP Calculus Help", date1, "2:00-4:00PM", "AP Calculus", "wchs"),
-			testUtils.CreateMockAFH(2, "AP Statistics Help", date2, "3:00-5:00PM", "AP Statistics", "room12"),
+			testUtils.CreateMockAFH(
+				1,
+				"AP Calculus Help",
+				date1,
+				"2:00-4:00PM",
+				"AP Calculus",
+				"wchs",
+			),
+			testUtils.CreateMockAFH(2,
+				"AP Statistics Help",
+				date2,
+				"3:00-5:00PM",
+				"AP Statistics",
+				"room12",
+			),
 		}, nil
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -42,8 +53,16 @@ func TestGetAllAFH_Success(t *testing.T) {
 
 	assert.EqualValues(t, 1, askForHelps[0].Id)
 	assert.EqualValues(t, "AP Calculus Help", askForHelps[0].Title)
+	assert.EqualValues(t, date1, askForHelps[0].Date)
+	assert.EqualValues(t, "2:00-4:00PM", askForHelps[0].TimeString)
+	assert.EqualValues(t, "AP Calculus", askForHelps[0].Subject)
+	assert.EqualValues(t, "wchs", askForHelps[0].LocationId)
 	assert.EqualValues(t, 2, askForHelps[1].Id)
+	assert.EqualValues(t, "AP Statistics Help", askForHelps[1].Title)
 	assert.EqualValues(t, date2, askForHelps[1].Date)
+	assert.EqualValues(t, "3:00-5:00PM", askForHelps[1].TimeString)
+	assert.EqualValues(t, "AP Statistics", askForHelps[1].Subject)
+	assert.EqualValues(t, "room12", askForHelps[1].LocationId)
 	assert.EqualValues(t, 2, len(askForHelps))
 }
 
