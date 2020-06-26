@@ -20,7 +20,11 @@ export class SessionList extends React.Component {
                         {moment(session.endsAt).format("LT")}
                     </span>
                     <span className="column">
-                        {session.canceled ? "True" : ""}
+                        {session.canceled
+                            ? "Canceled"
+                            : moment().isAfter(session.startsAt)
+                            ? "Done"
+                            : "Scheduled"}
                     </span>
                     <span className="large-column">{session.notes}</span>
                     <span className="edit">
@@ -44,7 +48,7 @@ export class SessionList extends React.Component {
                 <div id="header" className="row">
                     <span className="column">Date</span>
                     <span className="medium-column">Time</span>
-                    <span className="column">Canceled</span>
+                    <span className="column">Status</span>
                     <span className="large-column">Notes</span>
                     <span className="edit"></span>
                 </div>
