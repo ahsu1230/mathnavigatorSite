@@ -12,27 +12,15 @@ import (
 
 // Test: Create 3 Achievements and GetAll(false)
 func Test_CreateAchievements(t *testing.T) {
-<<<<<<< HEAD
 	achieve1 := createAchievement(2020, "message1", 1)
 	achieve2 := createAchievement(2021, "message2", 2)
 	achieve3 := createAchievement(2022, "message3", 3)
-	body1 := createJsonBody(&achieve1)
-	body2 := createJsonBody(&achieve2)
-	body3 := createJsonBody(&achieve3)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
-=======
-	achieve1 := createAchievement(2020, "message1")
-	achieve2 := createAchievement(2021, "message2")
-	achieve3 := createAchievement(2022, "message3")
 	body1 := utils.CreateJsonBody(&achieve1)
 	body2 := utils.CreateJsonBody(&achieve2)
 	body3 := utils.CreateJsonBody(&achieve3)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
 	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
->>>>>>> e8030e0b910e7db96cc6eccb1da17f2adf541070
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -65,24 +53,10 @@ func Test_CreateAchievements(t *testing.T) {
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
 func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
-<<<<<<< HEAD
 	achieve1 := createAchievement(2020, "message1", 1)
 	achieve2 := createAchievement(2021, "message2", 2)
 	achieve3 := createAchievement(2022, "message3", 3)
 	achieve4 := createAchievement(2021, "message4", 4)
-	body1 := createJsonBody(&achieve1)
-	body2 := createJsonBody(&achieve2)
-	body3 := createJsonBody(&achieve3)
-	body4 := createJsonBody(&achieve4)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body4)
-=======
-	achieve1 := createAchievement(2020, "message1")
-	achieve2 := createAchievement(2021, "message2")
-	achieve3 := createAchievement(2022, "message3")
-	achieve4 := createAchievement(2021, "message4")
 	body1 := utils.CreateJsonBody(&achieve1)
 	body2 := utils.CreateJsonBody(&achieve2)
 	body3 := utils.CreateJsonBody(&achieve3)
@@ -91,7 +65,6 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
 	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
 	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body4)
->>>>>>> e8030e0b910e7db96cc6eccb1da17f2adf541070
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -126,13 +99,13 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 // Test: Create 1 Achievement, Update it, GetById()
 func Test_UpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
-	achieve1 := createAchievement(2020, "message1")
+	achieve1 := createAchievement(2020, "message1", 1)
 	body1 := utils.CreateJsonBody(&achieve1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedAchieve := createAchievement(2021, "message2")
+	updatedAchieve := createAchievement(2021, "message2", 2)
 	updatedBody := utils.CreateJsonBody(&updatedAchieve)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -156,15 +129,9 @@ func Test_UpdateAchievement(t *testing.T) {
 // Test: Create 1 Achievement, Delete it, GetById()
 func Test_DeleteAchievement(t *testing.T) {
 	// Create
-<<<<<<< HEAD
 	achieve1 := createAchievement(2020, "message1", 1)
-	body1 := createJsonBody(&achieve1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-=======
-	achieve1 := createAchievement(2020, "message1")
 	body1 := utils.CreateJsonBody(&achieve1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
->>>>>>> e8030e0b910e7db96cc6eccb1da17f2adf541070
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete

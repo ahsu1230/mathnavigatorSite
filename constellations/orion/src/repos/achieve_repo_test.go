@@ -113,16 +113,6 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 	// Mock DB statements and execute
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message", "Position"}).
 		AddRow(
-			2,
-			now,
-			now,
-			domains.NullTime{},
-			domains.NullTime{},
-			2021,
-			"1600 on SAT",
-			2,
-		).
-		AddRow(
 			3,
 			now,
 			now,
@@ -131,6 +121,16 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			2021,
 			"800 on SAT Math",
 			1,
+		).
+		AddRow(
+			2,
+			now,
+			now,
+			domains.NullTime{},
+			domains.NullTime{},
+			2021,
+			"1600 on SAT",
+			2,
 		).
 		AddRow(
 			1,
