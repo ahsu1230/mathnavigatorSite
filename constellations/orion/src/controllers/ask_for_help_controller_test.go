@@ -30,7 +30,8 @@ func TestGetAllAFH_Success(t *testing.T) {
 				"AP Calculus",
 				"wchs",
 			),
-			testUtils.CreateMockAFH(2,
+			testUtils.CreateMockAFH(
+				2,
 				"AP Statistics Help",
 				date2,
 				"3:00-5:00PM",
