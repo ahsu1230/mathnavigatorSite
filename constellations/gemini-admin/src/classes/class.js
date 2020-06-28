@@ -13,11 +13,11 @@ export class ClassPage extends React.Component {
         numUnpublished: 0,
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.fetchData();
-    }
+    };
 
-    fetchData() {
+    fetchData = () => {
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
             const numUnpublished = classes.filter((c) => !c.publishedAt).length;
@@ -27,7 +27,7 @@ export class ClassPage extends React.Component {
                 numUnpublished: numUnpublished,
             });
         });
-    }
+    };
 
     onSelectRow = (classId, selected) => {
         // Switches the checkbox state
@@ -73,7 +73,51 @@ export class ClassPage extends React.Component {
             });
     };
 
-    render() {
+    renderSelectAllButton = () => {
+        if (this.state.numUnpublished > 0) {
+            return (
+                <button id="select-all" onClick={this.onClickSelectAll}>
+                    Select
+                    <br />
+                    All
+                </button>
+            );
+        } else {
+            return <div></div>;
+        }
+    };
+
+    renderPublishButtonSection = () => {
+        const numUnpublished = this.state.numUnpublished;
+        const selected = this.state.selected;
+
+        let publish = <div></div>;
+        if (selected > 0) {
+            publish = (
+                <button onClick={this.onClickPublish}>Publish Selected</button>
+            );
+        }
+
+        if (numUnpublished > 0) {
+            // Use the correct word
+            const firstWord = numUnpublished == 1 ? "class" : "classes";
+            const secondWord = selected == 1 ? "class" : "classes";
+            return (
+                <div id="publish">
+                    <p>
+                        You have {numUnpublished} unpublished {firstWord}.{" "}
+                        <br />
+                        You have selected {selected} {secondWord} to publish.
+                    </p>
+                    {publish}
+                </div>
+            );
+        } else {
+            return <p></p>;
+        }
+    };
+
+    render = () => {
         const rows = this.state.classes.map((row, index) => {
             const isSelected = !!this.state.selectedIds[row.classId];
             return (
@@ -99,10 +143,7 @@ export class ClassPage extends React.Component {
 
                 <section id="class-rows">
                     <div id="header">
-                        {renderSelectAllButton(
-                            numUnpublished,
-                            this.onClickSelectAll
-                        )}
+                        {this.renderSelectAllButton()}
                         <span className="small">State</span>
                         <span className="large">ClassId</span>
                         <span className="small">LocationId</span>
@@ -118,51 +159,9 @@ export class ClassPage extends React.Component {
                             Add Class
                         </Link>
                     </button>
-                    {renderPublishButtonSection(
-                        numUnpublished,
-                        selected,
-                        this.onClickPublish
-                    )}
+                    {this.renderPublishButtonSection()}
                 </section>
             </div>
         );
-    }
-}
-
-function renderSelectAllButton(numUnpublished, onClickSelectAll) {
-    if (numUnpublished > 0) {
-        return (
-            <button id="select-all" onClick={onClickSelectAll}>
-                Select
-                <br />
-                All
-            </button>
-        );
-    } else {
-        return <div></div>;
-    }
-}
-
-function renderPublishButtonSection(numUnpublished, selected, onClickPublish) {
-    let publish = <div></div>;
-    if (selected > 0) {
-        publish = <button onClick={onClickPublish}>Publish Selected</button>;
-    }
-
-    if (numUnpublished > 0) {
-        // Use the correct word
-        const firstWord = numUnpublished == 1 ? "class" : "classes";
-        const secondWord = selected == 1 ? "class" : "classes";
-        return (
-            <div id="publish">
-                <p>
-                    You have {numUnpublished} unpublished {firstWord}. <br />
-                    You have selected {selected} {secondWord} to publish.
-                </p>
-                {publish}
-            </div>
-        );
-    } else {
-        return <p></p>;
-    }
+    };
 }
