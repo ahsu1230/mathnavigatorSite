@@ -113,7 +113,7 @@ export class SessionAdd extends React.Component {
                             </div>
 
                             <div className="item">
-                                <h4>Repeat Every Week:</h4>
+                                <h4>Repeat Every Week</h4>
                                 <input
                                     id="repeat"
                                     value={this.state.numWeeks}

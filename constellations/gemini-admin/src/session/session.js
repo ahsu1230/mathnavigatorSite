@@ -38,6 +38,7 @@ export class SessionPage extends React.Component {
         this.setState({
             classId: e.target.value,
         });
+        this.fetchSessionData(e.target.value);
         console.log("Selected classId: " + e.target.value);
     };
 
