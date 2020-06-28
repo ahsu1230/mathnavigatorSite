@@ -19,46 +19,37 @@
         list-style: none
 
     & .announce-list-row
-        display: block
-        position: relative
-        padding: $spacing2x 0
-        border-bottom: 1px solid $colorGrayLight
-        
         display: flex
         flex-direction: row
         align-items: center
+        padding: $spacing2x 0
+        border-bottom: 1px solid $colorGrayLight
 
         &.subheader
             border-bottom: 2px solid $colorGrayLight
 
         & li
-                display: inline-block
-                vertical-align: text-top
+            &.li-med
+                width: $spacing24x
 
-                &.li-med
-                    width: $spacing24x
+                &.scheduled
+                    font-style: italic
+                    color: $colorGrayMed
+                &.published
+                    color: $colorTurquoise
 
-                    &.scheduled
-                        font-style: italic
-                        color: $colorGrayMed
-                    &.published
-                        color: $colorTurquoise
+            &.li-large
+                flex-grow: 1
+                width: $spacing56x
+                margin-right: $spacing4x
+                
+            &.li-small
+                width: $spacing12x
 
-                &.li-large
-                    width: $spacing56x
-                    margin-right: $spacing4x
-                    flex-grow: 1
-                    
-                &.li-small
-                    width: $spacing12x
-
-                & div
-                    line-height: $lineHeight1
+            & div
+                line-height: $lineHeight1
 
         & a
-            //position: absolute
-            //top: 50%
-            //transform: translateY(-50%)
             margin: 0px 20px
 
     .announcement-button

@@ -34,12 +34,14 @@ export class AnnouncePage extends React.Component {
             (announcement) => announcement.id == e.target.id
         );
 
-        this.state.list[current].onHomePage = true;
+        let newList = this.state.list;
+
+        newList[current].onHomePage = true;
         if (previous >= 0) {
-            this.state.list[previous].onHomePage = false;
+            newList[previous].onHomePage = false;
         }
 
-        this.setState(this.state);
+        this.setState({ list: newList });
 
         let indexes = previous == current ? [previous] : [previous, current];
 
