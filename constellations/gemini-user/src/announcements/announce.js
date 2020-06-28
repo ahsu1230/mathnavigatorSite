@@ -3,14 +3,12 @@ require("./announce.sass");
 import React from "react";
 import API from "../utils/api.js";
 import { keys, sortBy, groupBy } from "lodash";
+import moment from "moment";
 
-export class DateList extends React.Component {
+export class AnnouncementGroup extends React.Component {
     render() {
         let a = this.props.announcements;
-        let date = this.props.postedAt;
-        date = date.substring(0, 10);
-        date = date.replace(/-/g, "/");
-        date = date.substr(5) + "/" + date.substring(0, 4);
+        var postedAt = moment(this.props.postedAt).format('l');
         let announcements = a.map((announcement, index) => (
             <li key={announcement.id}>
                 <p>{announcement.message}</p>
@@ -19,7 +17,7 @@ export class DateList extends React.Component {
 
         return (
             <div className="announcement-card">
-                <h2>{date}</h2>
+                <h2>{postedAt}</h2>
                 <ul>{announcements}</ul>
             </div>
         );
@@ -45,7 +43,7 @@ export class AnnouncePage extends React.Component {
         let items = [];
         dates.forEach((date) => {
             items.push(
-                <DateList
+                <AnnouncementGroup
                     key={date}
                     postedAt={date}
                     announcements={sorted[date]}
