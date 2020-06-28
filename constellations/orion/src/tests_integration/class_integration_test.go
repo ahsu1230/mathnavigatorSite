@@ -297,12 +297,9 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
 		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode.String)
-<<<<<<< HEAD
-		assert.EqualValues(t, 100, class.PriceLump)
-=======
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
->>>>>>> 2c7bc52223b76672a805fde4dbec2ef61f08cb21
+		assert.EqualValues(t, 0, class.PriceLump.Uint)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
@@ -313,12 +310,9 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, now, class.StartDate)
 		assert.EqualValues(t, later1, class.EndDate)
 		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode.String)
-<<<<<<< HEAD
-		assert.EqualValues(t, 101, class.PriceLump)
-=======
 		assert.EqualValues(t, 1, class.FullState)
 		assert.EqualValues(t, 10, class.PricePerSession.Uint)
->>>>>>> 2c7bc52223b76672a805fde4dbec2ef61f08cb21
+		assert.EqualValues(t, 101, class.PriceLump.Uint)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -329,12 +323,9 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later1, class.StartDate)
 		assert.EqualValues(t, later2, class.EndDate)
 		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode.String)
-<<<<<<< HEAD
-		assert.EqualValues(t, 102, class.PriceLump)
-=======
 		assert.EqualValues(t, 2, class.FullState)
 		assert.EqualValues(t, 20, class.PricePerSession.Uint)
->>>>>>> 2c7bc52223b76672a805fde4dbec2ef61f08cb21
+		assert.EqualValues(t, 102, class.PriceLump.Uint)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -345,12 +336,9 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later2, class.StartDate)
 		assert.EqualValues(t, later3, class.EndDate)
 		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode.String)
-<<<<<<< HEAD
-		assert.EqualValues(t, 103, class.PriceLump)
-=======
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 30, class.PricePerSession.Uint)
->>>>>>> 2c7bc52223b76672a805fde4dbec2ef61f08cb21
+		assert.EqualValues(t, 103, class.PriceLump.Uint)
 	}
 }
 

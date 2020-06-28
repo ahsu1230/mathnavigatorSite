@@ -25,7 +25,7 @@ type Class struct {
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       int        `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
-	PriceLump       uint       `json:"priceLump" db:"price_lump"`
+	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
 }
 
 // Class Methods
