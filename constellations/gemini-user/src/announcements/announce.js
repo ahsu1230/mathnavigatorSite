@@ -8,7 +8,7 @@ import moment from "moment";
 export class AnnouncementGroup extends React.Component {
     render() {
         let a = this.props.announcements;
-        var postedAt = moment(this.props.postedAt).format('l');
+        var postedAt = moment(this.props.postedAt).format("l");
         let announcements = a.map((announcement, index) => (
             <li key={announcement.id}>
                 <p>{announcement.message}</p>
