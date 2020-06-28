@@ -15,10 +15,10 @@
         display: flex
         flex-direction: row
         align-items: center
-        height: 96px
+        min-height: 96px
         border-bottom: 1px solid #b8b8b8
         line-height: 24px
-        font-size: 16px
+        font-size: 16
         
         & .bullet
             display: inline
@@ -28,7 +28,8 @@
             background-color: #b8b8b8
             
         & p
-            margin: 0 0 0 32px
+            margin: 16px 0 16px 32px
+            overflow-wrap: anywhere
 
     & li:last-child
         border: none
