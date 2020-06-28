@@ -111,7 +111,17 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message", "Position"}).
+		AddRow(
+			3,
+			now,
+			now,
+			domains.NullTime{},
+			domains.NullTime{},
+			2021,
+			"800 on SAT Math",
+			1,
+		).
 		AddRow(
 			2,
 			now,
@@ -120,6 +130,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			domains.NullTime{},
 			2021,
 			"1600 on SAT",
+			2,
 		).
 		AddRow(
 			1,
@@ -129,10 +140,12 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			domains.NullTime{},
 			2020,
 			"message1",
+			1,
 		)
-	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC").
+	mock.ExpectPrepare("^SELECT (.+) FROM achievements ORDER BY year DESC, position ASC").
 		ExpectQuery().
 		WillReturnRows(rows)
+
 	got, err := repo.SelectAllGroupedByYear()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
@@ -144,6 +157,16 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 			Year: 2021,
 			Achievements: []domains.Achieve{
 				{
+					Id:          3,
+					CreatedAt:   now,
+					UpdatedAt:   now,
+					DeletedAt:   domains.NullTime{},
+					PublishedAt: domains.NullTime{},
+					Year:        2021,
+					Message:     "800 on SAT Math",
+					Position:    1,
+				},
+				{
 					Id:          2,
 					CreatedAt:   now,
 					UpdatedAt:   now,
@@ -151,6 +174,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 					PublishedAt: domains.NullTime{},
 					Year:        2021,
 					Message:     "1600 on SAT",
+					Position:    2,
 				},
 			},
 		},
@@ -206,11 +230,12 @@ func TestInsertAchieve(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO achievements").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2020, "message1").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2020, "message1", 1).
 		WillReturnResult(result)
 	achieve := domains.Achieve{
-		Year:    2020,
-		Message: "message1",
+		Year:     2020,
+		Message:  "message1",
+		Position: 1,
 	}
 	err := repo.Insert(achieve)
 	if err != nil {
@@ -234,11 +259,12 @@ func TestUpdateAchieve(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE achievements SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), 2021, "message2", 1).
+		WithArgs(sqlmock.AnyArg(), 2021, "message2", 1, 1).
 		WillReturnResult(result)
 	achieve := domains.Achieve{
-		Year:    2021,
-		Message: "message2",
+		Year:     2021,
+		Message:  "message2",
+		Position: 1,
 	}
 	err := repo.Update(1, achieve)
 	if err != nil {
@@ -305,7 +331,7 @@ func TestDeleteAchieve(t *testing.T) {
 // Helper Methods
 //
 func getAchieveRows() *sqlmock.Rows {
-	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message"}).
+	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "Year", "Message", "Position"}).
 		AddRow(
 			1,
 			now,
@@ -314,6 +340,7 @@ func getAchieveRows() *sqlmock.Rows {
 			domains.NullTime{},
 			2020,
 			"message1",
+			1,
 		)
 }
 
@@ -326,5 +353,6 @@ func getAchieve() domains.Achieve {
 		PublishedAt: domains.NullTime{},
 		Year:        2020,
 		Message:     "message1",
+		Position:    1,
 	}
 }
