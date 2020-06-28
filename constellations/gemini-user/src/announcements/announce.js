@@ -8,9 +8,9 @@ export class DateList extends React.Component {
     render() {
         let a = this.props.announcements;
         let date = this.props.postedAt;
-        date = date.substring(0,10);
-        date = date.replace(/-/g,"/");
-        date = date.substr(5) + "/" + date.substring(0,4);
+        date = date.substring(0, 10);
+        date = date.replace(/-/g, "/");
+        date = date.substr(5) + "/" + date.substring(0, 4);
         let announcements = a.map((announcement, index) => (
             <li key={announcement.id}>
                 <p>{announcement.message}</p>
@@ -35,17 +35,21 @@ export class AnnouncePage extends React.Component {
         API.get("api/announcements/all").then((res) => {
             const list = res.data;
             console.log("api success!");
-            this.setState({ announcementList : list });
+            this.setState({ announcementList: list });
         });
     }
     render() {
         const announcements = this.state.announcementList;
-        let sorted = groupBy(announcements, (a) => a.postedAt.substring(0,10));
+        let sorted = groupBy(announcements, (a) => a.postedAt.substring(0, 10));
         let dates = sortBy(keys(sorted)).reverse();
         let items = [];
         dates.forEach((date) => {
             items.push(
-                <DateList key={date} postedAt={date} announcements={sorted[date]} />
+                <DateList
+                    key={date}
+                    postedAt={date}
+                    announcements={sorted[date]}
+                />
             );
         });
         return (

@@ -16,7 +16,7 @@ import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
 import { AchievementPage } from "../achievements/achievements.js";
 import { InternshipPage } from "../internship/internship.js";
 // import { AFHPage } from '../afh/afh.js';
-import { AnnouncePage } from '../announcements/announce.js';
+import { AnnouncePage } from "../announcements/announce.js";
 // import { ClassPage } from '../class/class.js';
 // import { ContactPage } from '../contact/contact.js';
 // import { ErrorPage } from '../errorPage/error.js';
@@ -29,7 +29,7 @@ import { HomePage } from "../home/home.js";
 
 const Achievements = () => <AchievementPage />;
 const Internship = () => <InternshipPage />;
-const Announce = () => <AnnouncePage/>;
+const Announce = () => <AnnouncePage />;
 // const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 // const Contact = () => <ContactPageRouter/>;
 // const ContactPageRouter = withRouter(ContactPage);
@@ -70,8 +70,8 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact component={Home} />
 
-                    <Route path="/announcements" component={Announce}/>
-          {/* <Route path="/programs" component={Programs}/>
+                    <Route path="/announcements" component={Announce} />
+                    {/* <Route path="/programs" component={Programs}/>
           <Route path="/contact" component={Contact}/>
           <Route path="/class/:slug" component={ClassPageWithSlug}/>
         <Route path="/ask-for-help" component={AFH}/> */}
