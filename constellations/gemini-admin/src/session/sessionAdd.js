@@ -60,9 +60,13 @@ export class SessionAdd extends React.Component {
                 .minute(minute)
                 .second(0);
 
-            this.setState({
-                endsAt: newEndTime,
-            });
+            if (this.state.startsAt.isAfter(newEndTime)) {
+                window.alert("End time cannot be before start time");
+            } else {
+                this.setState({
+                    endsAt: newEndTime,
+                });
+            }
         }
     };
 

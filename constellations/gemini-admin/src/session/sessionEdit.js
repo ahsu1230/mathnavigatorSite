@@ -37,7 +37,7 @@ export class SessionEditPage extends React.Component {
                     startsAt: moment(session.startsAt),
                     endsAt: moment(session.endsAt),
                     canceled: session.canceled,
-                    notes: session.notes,
+                    notes: session.notes || "",
                 });
             });
         }
@@ -78,9 +78,13 @@ export class SessionEditPage extends React.Component {
                 .minute(minute)
                 .second(0);
 
-            this.setState({
-                endsAt: newEndTime,
-            });
+            if (this.state.startsAt.isAfter(newEndTime)) {
+                window.alert("End time cannot be before start time");
+            } else {
+                this.setState({
+                    endsAt: newEndTime,
+                });
+            }
         }
     };
 

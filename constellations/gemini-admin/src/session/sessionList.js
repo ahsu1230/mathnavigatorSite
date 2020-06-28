@@ -9,6 +9,17 @@ export class SessionList extends React.Component {
         const classId = this.props.classId;
         const sessions = this.props.sessions;
         const rows = sessions.map((session, index) => {
+            let status;
+            if (session.canceled) {
+                status = "Canceled"
+            } else if (moment().isBefore(session.startsAt)) {
+                status = "Scheduled"
+            } else if (moment().isBetween(session.startsAt, session.endsAt)) {
+                status = "In progress"
+            } else {
+                status = "Done"
+            }
+
             return (
                 <div className="row" key={index}>
                     <span className="column">
@@ -19,13 +30,7 @@ export class SessionList extends React.Component {
                         {" - "}
                         {moment(session.endsAt).format("LT")}
                     </span>
-                    <span className="column">
-                        {session.canceled
-                            ? "Canceled"
-                            : moment().isAfter(session.startsAt)
-                            ? "Done"
-                            : "Scheduled"}
-                    </span>
+                    <span className="column">{status}</span>
                     <span className="large-column">{session.notes}</span>
                     <span className="edit">
                         <Link
