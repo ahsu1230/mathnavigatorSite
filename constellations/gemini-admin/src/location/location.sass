@@ -8,13 +8,13 @@
     box-sizing: border-box
     color: $colorBlackDark
 
-    h1
+    & h1
         display: inline-block
         margin: $spacing4x 0
         line-height: $lineHeight3
         font-size: $fontSize3
 
-    p
+    & p
         display: inline-block
         position: absolute
         right: 0
@@ -24,7 +24,7 @@
         margin: 0
         text-align: right
 
-    ul
+    & ul
         list-style: none
         margin: 0
         padding: 0
@@ -32,10 +32,10 @@
 #view-location #list-heading
     border-bottom: 2px solid $colorGrayDark
 
-    button
+    & button
         color: $colorTurquoise
 
-    li
+    & li
         display: inline-block
         height: $spacing4x
         line-height: $spacing4x
@@ -43,29 +43,29 @@
 #view-location #location-row
     border-bottom: 1px solid $colorGrayDark
 
-    li
+    & li
         display: inline-block
         height: $spacing8x
         line-height: $spacing4x
         position: relative
 
-    input
+    & input
         position: relative
         left: 25px
 
 #view-location
-    .li-small
+    & .li-small
         width: $spacing10x
-    .li-med
+    & .li-med
         width: $spacing20x
-    .li-large
+    & .li-large
         width: $spacing30x
 
 #view-location #list-buttons
     display: block
     position: relative
 
-    button
+    & button
         display: inline-block
         margin: $spacing2x 0
         padding: 0.75em

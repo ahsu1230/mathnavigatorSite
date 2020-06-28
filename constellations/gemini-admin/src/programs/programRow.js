@@ -1,5 +1,5 @@
 "use strict";
-require("./programRow.styl");
+require("./programRow.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 
