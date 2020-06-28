@@ -11,13 +11,13 @@ export class SessionList extends React.Component {
         const rows = sessions.map((session, index) => {
             let status;
             if (session.canceled) {
-                status = "Canceled"
+                status = "Canceled";
             } else if (moment().isBefore(session.startsAt)) {
-                status = "Scheduled"
+                status = "Scheduled";
             } else if (moment().isBetween(session.startsAt, session.endsAt)) {
-                status = "In progress"
+                status = "In progress";
             } else {
-                status = "Done"
+                status = "Done";
             }
 
             return (
