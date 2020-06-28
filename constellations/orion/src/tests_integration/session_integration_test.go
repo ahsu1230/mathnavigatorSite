@@ -1,4 +1,4 @@
-package integration_tests
+package tests_integration
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -26,22 +27,22 @@ func Test_CreateSessions(t *testing.T) {
 	session1 := createSession("fast_track_2020_spring_class_A", mid, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	session3 := createSession("slow_track_2020_fall_class_B", start, end, false, "May 5th regular meeting")
-	body1 := createJsonBody(&prog1)
-	body2 := createJsonBody(&prog2)
-	body3 := createJsonBody(&loc1)
-	body4 := createJsonBody(&semester1)
-	body5 := createJsonBody(&semester2)
-	body6 := createJsonBody(&class1)
-	body7 := createJsonBody(&class2)
-	body8 := createJsonBody([]domains.Session{session1, session2, session3})
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body5)
-	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body6)
-	recorder7 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body7)
-	recorder8 := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body8)
+	body1 := utils.CreateJsonBody(&prog1)
+	body2 := utils.CreateJsonBody(&prog2)
+	body3 := utils.CreateJsonBody(&loc1)
+	body4 := utils.CreateJsonBody(&semester1)
+	body5 := utils.CreateJsonBody(&semester2)
+	body6 := utils.CreateJsonBody(&class1)
+	body7 := utils.CreateJsonBody(&class2)
+	body8 := utils.CreateJsonBody([]domains.Session{session1, session2, session3})
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
+	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
+	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body5)
+	recorder6 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body6)
+	recorder7 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body7)
+	recorder8 := utils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body8)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -52,7 +53,7 @@ func Test_CreateSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder8.Code)
 
 	// Call Get All!
-	recorder9 := sendHttpRequest(t, http.MethodGet, "/api/sessions/class/fast_track_2020_spring_class_A", nil)
+	recorder9 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/class/fast_track_2020_spring_class_A", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder9.Code)
@@ -79,16 +80,16 @@ func Test_UpdateSession(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020")
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
-	body1 := createJsonBody(&prog1)
-	body2 := createJsonBody(&loc1)
-	body3 := createJsonBody(&semester1)
-	body4 := createJsonBody(&class1)
-	body5 := createJsonBody([]domains.Session{session1})
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body4)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body5)
+	body1 := utils.CreateJsonBody(&prog1)
+	body2 := utils.CreateJsonBody(&loc1)
+	body3 := utils.CreateJsonBody(&semester1)
+	body4 := utils.CreateJsonBody(&class1)
+	body5 := utils.CreateJsonBody([]domains.Session{session1})
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
+	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body4)
+	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body5)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -97,12 +98,12 @@ func Test_UpdateSession(t *testing.T) {
 
 	// Update
 	updatedSession := createSession("fast_track_2020_spring_class_A", start, end, true, "cancelled due to corona")
-	updatedBody := createJsonBody(&updatedSession)
-	recorder6 := sendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", updatedBody)
+	updatedBody := utils.CreateJsonBody(&updatedSession)
+	recorder6 := utils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Get
-	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
+	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder7.Code)
 
 	// Validate results
@@ -128,16 +129,16 @@ func Test_DeleteSessions(t *testing.T) {
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
-	body1 := createJsonBody(&prog1)
-	body2 := createJsonBody(&loc1)
-	body3 := createJsonBody(&semester1)
-	body4 := createJsonBody(&class1)
-	body5 := createJsonBody([]domains.Session{session1, session2})
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
-	recorder3 := sendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
-	recorder4 := sendHttpRequest(t, http.MethodPost, "/api/classes/create", body4)
-	recorder5 := sendHttpRequest(t, http.MethodPost, "/api/sessions/create", body5)
+	body1 := utils.CreateJsonBody(&prog1)
+	body2 := utils.CreateJsonBody(&loc1)
+	body3 := utils.CreateJsonBody(&semester1)
+	body4 := utils.CreateJsonBody(&class1)
+	body5 := utils.CreateJsonBody([]domains.Session{session1, session2})
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
+	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body4)
+	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/sessions/create", body5)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -145,14 +146,14 @@ func Test_DeleteSessions(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder5.Code)
 
 	// Delete
-	body6 := createJsonBody([]uint{1, 2})
-	recorder6 := sendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body6)
+	body6 := utils.CreateJsonBody([]uint{1, 2})
+	recorder6 := utils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body6)
 	assert.EqualValues(t, http.StatusOK, recorder6.Code)
 
 	// Get
-	recorder7 := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
+	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder7.Code)
-	recorder8 := sendHttpRequest(t, http.MethodGet, "/api/sessions/session/2", nil)
+	recorder8 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/2", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder8.Code)
 
 	resetSessionTables(t)
@@ -182,9 +183,9 @@ func createClassUtil(programId, semesterId, classKey, locationId, times string, 
 }
 
 func resetSessionTables(t *testing.T) {
-	resetTable(t, domains.TABLE_SESSIONS)
-	resetTable(t, domains.TABLE_CLASSES)
-	resetTable(t, domains.TABLE_PROGRAMS)
-	resetTable(t, domains.TABLE_SEMESTERS)
-	resetTable(t, domains.TABLE_LOCATIONS)
+	utils.ResetTable(t, domains.TABLE_SESSIONS)
+	utils.ResetTable(t, domains.TABLE_CLASSES)
+	utils.ResetTable(t, domains.TABLE_PROGRAMS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
