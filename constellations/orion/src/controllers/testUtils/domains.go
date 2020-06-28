@@ -95,7 +95,7 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 	}
 }
 
-func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string) domains.AskForHelp {
+func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         id,
 		Title:      title,
@@ -103,5 +103,6 @@ func CreateMockAFH(id uint, title string, date time.Time, timeString string, sub
 		TimeString: timeString,
 		Subject:    subject,
 		LocationId: locationId,
+		Notes:      notes,
 	}
 }

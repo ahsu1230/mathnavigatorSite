@@ -18,6 +18,7 @@ type AskForHelp struct {
 	TimeString string    `json:"timeString" db:"time_string"`
 	Subject    string    `json:"subject"`
 	LocationId string    `json:"locationId" db:"location_id"`
+	Notes      string    `json:"notes"`
 }
 
 func (askForHelp *AskForHelp) Validate() error {

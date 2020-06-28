@@ -55,7 +55,8 @@ func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
 			&askForHelp.Date,
 			&askForHelp.TimeString,
 			&askForHelp.Subject,
-			&askForHelp.LocationId); errScan != nil {
+			&askForHelp.LocationId,
+			&askForHelp.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, askForHelp)
@@ -83,7 +84,8 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 		&askForHelp.Date,
 		&askForHelp.TimeString,
 		&askForHelp.Subject,
-		&askForHelp.LocationId)
+		&askForHelp.LocationId,
+		&askForHelp.Notes)
 	return askForHelp, errScan
 }
 
@@ -95,8 +97,9 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 		"date, " +
 		"time_string, " +
 		"subject, " +
-		"location_id" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)")
+		"location_id, " +
+		"notes" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -110,7 +113,8 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 		askForHelp.Date,
 		askForHelp.TimeString,
 		askForHelp.Subject,
-		askForHelp.LocationId)
+		askForHelp.LocationId,
+		askForHelp.Notes)
 	if err != nil {
 		return err
 	}
@@ -125,7 +129,8 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 		"date=?, " +
 		"time_string=?, " +
 		"subject=?, " +
-		"location_id=? " +
+		"location_id=?, " +
+		"notes=? " +
 		"WHERE id=?")
 	if err != nil {
 		return err
@@ -141,6 +146,7 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 		askForHelp.TimeString,
 		askForHelp.Subject,
 		askForHelp.LocationId,
+		askForHelp.Notes,
 		id)
 	if err != nil {
 		return err

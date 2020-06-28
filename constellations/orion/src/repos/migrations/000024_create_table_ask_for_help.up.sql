@@ -9,6 +9,7 @@ CREATE TABLE ask_for_help
     time_string varchar(64)  NOT NULL,
     subject     varchar(128) NOT NULL,
     location_id varchar(64)  NOT NULL,
+    notes       text,
     PRIMARY KEY (id),
     FOREIGN KEY (location_id) REFERENCES locations (location_id)
 ) AUTO_INCREMENT = 1
