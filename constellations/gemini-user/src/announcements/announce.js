@@ -7,13 +7,14 @@ import moment from "moment";
 
 export class AnnouncementGroup extends React.Component {
     render() {
-        let a = this.props.announcements;
-        var postedAt = moment(this.props.postedAt).format("l");
-        let announcements = a.map((announcement, index) => (
-            <li key={announcement.id}>
-                <p>{announcement.message}</p>
-            </li>
-        ));
+        const postedAt = moment(this.props.postedAt).format("l");
+        const announcements = this.props.announcements.map(
+            (announcement, index) => (
+                <li key={announcement.id}>
+                    <p>{announcement.message}</p>
+                </li>
+            )
+        );
 
         return (
             <div className="announcement-card">
@@ -38,8 +39,10 @@ export class AnnouncePage extends React.Component {
     }
     render() {
         const announcements = this.state.announcementList;
-        let sorted = groupBy(announcements, (a) => a.postedAt.substring(0, 10));
-        let dates = sortBy(keys(sorted)).reverse();
+        let sorted = groupBy(announcements, (a) =>
+            moment(a.postedAt).format("l")
+        );
+        const dates = sortBy(keys(sorted)).reverse();
         let items = [];
         dates.forEach((date) => {
             items.push(
