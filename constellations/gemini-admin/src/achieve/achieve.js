@@ -1,7 +1,6 @@
 "use strict";
-require("./achieve.styl");
+require("./achieve.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 import API from "../api.js";
 import { Link } from "react-router-dom";
 

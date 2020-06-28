@@ -14,6 +14,7 @@ import { history } from "./history.js";
 import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
 
 import { AchievementPage } from "../achievements/achievements.js";
+import { InternshipPage } from "../internship/internship.js";
 // import { AFHPage } from '../afh/afh.js';
 // import { AnnouncePage } from '../announcements/announce.js';
 // import { ClassPage } from '../class/class.js';
@@ -27,6 +28,7 @@ import { HomePage } from "../home/home.js";
 // import { StudentWebDevPage } from '../student/studentWebDev.js';
 
 const Achievements = () => <AchievementPage />;
+const Internship = () => <InternshipPage />;
 // const Announce = () => <AnnouncePage/>;
 // const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
 // const Contact = () => <ContactPageRouter/>;
@@ -77,6 +79,8 @@ class App extends React.Component {
                         path="/student-achievements"
                         component={Achievements}
                     />
+
+                    <Route path="/internship" component={Internship} />
                     {/* <Route path="/student-webdev" component={StudentWebDev}/>
           <Route path="/student-projects" component={StudentProjects}/>
           <Route path="/" component={Error}/> */}
