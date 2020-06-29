@@ -1,0 +1,45 @@
+@import "../_.constants.sass"
+
+#view-semester
+  width: 100%
+  height: 400px
+  padding: 0 $spacing2x
+  box-sizing: border-box
+  color: $colorGrayDark
+  font-family: $fontFamilyRoboto
+
+  & h1
+    margin: $spacing4x 0
+    line-height: $lineHeight3
+    font-size: $fontSize3
+  & ul
+    padding: 0
+
+  & .semester-lists
+    padding-left: 0
+    height: $lineHeight6
+    border-bottom: 1px solid $colorGrayLight
+    line-height: $lineHeight6
+    list-style: none
+
+    & li
+        display: inline-block
+    & div
+        display: inline-block
+    & p
+        display: inline-block
+
+#view-semester
+      & .li-small
+        width: $spacing8x
+        color: $colorTurquoise
+      & .li-med
+          width: $spacing32x
+
+      .semester-button
+        display: inline-block
+        padding: $spacing2x $spacing4x
+        border-radius: $spacing1x
+        background-color: $colorTurquoise
+        color: $colorWhite
+        text-align: center
