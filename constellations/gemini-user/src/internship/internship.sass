@@ -27,6 +27,25 @@
     .intern-main
         display: none
 
+    #past-intern
+        border-collapse: collapse
+        border-spacing: 2px
+        width: 80%
+        margin: 30px auto
+
+
+        & caption
+            color: $colorTurquoise
+
+        & td, th
+            border: 1px solid
+            border-color: #dddddd
+            padding: 8px
+            text-align: left       
+
+    #last-paragraph
+        margin-bottom: 300px
+
     @media only screen and (max-width: 700px)
         & h1, p
             text-align: center
@@ -61,25 +80,4 @@
                 text-align: center
 
         #past-intern
-            display: none
-
-     
-
-    #past-intern
-        border-collapse: collapse
-        border-spacing: 2px
-        width: 80%
-        margin: 30px auto
-
-
-        & caption
-            color: $colorTurquoise
-
-        & td, th
-            border: 1px solid
-            border-color: #dddddd
-            padding: 8px
-            text-align: left       
-
-    #last-paragraph
-        margin-bottom: 300px 
+            display: none 
