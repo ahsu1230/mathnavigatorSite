@@ -1,5 +1,5 @@
 "use strict";
-require("./announceEdit.styl");
+require("./announceEdit.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
