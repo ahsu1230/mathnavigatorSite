@@ -78,6 +78,37 @@ export class InternshipPage extends React.Component {
                     students who have done internships for both teams!
                 </p>
 
+                <div class="intern-main">
+                    <h4>Past Interns:</h4>
+                    <p>
+                        Cathy Y. <br></br> Montgomery Blair HS 2020 <br></br>{" "}
+                        Massachusetts Institute of Technology (MIT)
+                    </p>
+                    <p>
+                        Jessica Y. <br></br> Montgomery Blair HS 2020 <br></br>{" "}
+                        University of Maryland
+                    </p>
+                    <p>
+                        Max Z. <br></br> Montgomery Blair HS 2021
+                    </p>
+                    <p>
+                        Chujia G. <br></br> Montgomery Blair HS 2022
+                    </p>
+                    <p>
+                        Frederick Z. <br></br> Montgomery Blair HS 2023
+                    </p>
+                    <p>
+                        Tony W. <br></br> Richard Montgomery HS 2021
+                    </p>
+                    <p>
+                        Serena X. <br></br> Winston Churchill HS 2020 <br></br>{" "}
+                        University of Pennsylvania
+                    </p>
+                    <p>
+                        Daniel L. <br></br> Winston Churchill HS 2021
+                    </p>
+                </div>
+
                 <table id="past-intern">
                     <caption>Past Interns:</caption> <br></br>
                     <tr>
