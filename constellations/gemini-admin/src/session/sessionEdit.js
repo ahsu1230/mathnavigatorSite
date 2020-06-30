@@ -247,7 +247,7 @@ export class SessionEditPage extends React.Component {
                     <h4>Canceled</h4>
                     <input
                         type="checkbox"
-                        value={this.state.canceled}
+                        checked={!!this.state.canceled}
                         onChange={this.onCanceledChange}
                     />
                 </div>

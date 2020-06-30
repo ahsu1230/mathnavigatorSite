@@ -19,6 +19,7 @@ export class SessionList extends React.Component {
             } else {
                 status = "Done";
             }
+            const url = "/sessions/" + classId + "/" + session.id + "/edit";
 
             return (
                 <div className="row" key={index}>
@@ -33,16 +34,7 @@ export class SessionList extends React.Component {
                     <span className="column">{status}</span>
                     <span className="large-column">{session.notes}</span>
                     <span className="edit">
-                        <Link
-                            to={
-                                "/sessions/" +
-                                classId +
-                                "/" +
-                                session.id +
-                                "/edit"
-                            }>
-                            {"Edit >"}
-                        </Link>
+                        <Link to={url}>{"Edit >"}</Link>
                     </span>
                 </div>
             );

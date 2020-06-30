@@ -2,6 +2,7 @@
 require("./session.sass");
 import React from "react";
 import API from "../api.js";
+import { getCurrentClassId, updateCurrentClassId } from "./../localStorage.js";
 import { SessionAdd } from "./sessionAdd.js";
 import { SessionList } from "./sessionList.js";
 
@@ -13,14 +14,21 @@ export class SessionPage extends React.Component {
     };
 
     componentDidMount = () => {
+        console.log("WHAT");
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
-            const classId = classes.length > 0 ? classes[0].classId : "";
+            const classId =
+                getCurrentClassId() ||
+                (classes.length > 0 ? classes[0].classId : "");
+            if (classId != "") {
+                updateCurrentClassId(classId);
+            }
+
             this.setState({
                 classes: classes,
                 classId: classId,
             });
-            this.fetchSessionData(this.state.classId);
+            this.fetchSessionData(classId);
         });
     };
 
@@ -35,11 +43,13 @@ export class SessionPage extends React.Component {
     };
 
     onChangeSelect = (e) => {
+        const classId = e.target.value;
         this.setState({
-            classId: e.target.value,
+            classId: classId,
         });
-        this.fetchSessionData(e.target.value);
-        console.log("Selected classId: " + e.target.value);
+        updateCurrentClassId(classId);
+        this.fetchSessionData(classId);
+        console.log("Selected classId: " + classId);
     };
 
     addSessions = (sessions) => {
@@ -91,6 +101,7 @@ export class SessionPage extends React.Component {
                     <h1>Select Class</h1>
                     <select
                         id="dropdown"
+                        value={this.state.classId}
                         onChange={(e) => this.onChangeSelect(e)}>
                         {classOptions}
                     </select>
