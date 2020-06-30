@@ -5,7 +5,7 @@ export const getCurrentClassId = () => {
     return JSON.parse(classId);
 };
 
-export const updateCurrentClassId = (c) => {
+export const setCurrentClassId = (c) => {
     const classId = JSON.stringify(c);
     window.localStorage.setItem(STORAGE_CURRENT_CLASS, classId);
 };

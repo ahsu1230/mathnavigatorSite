@@ -2,7 +2,7 @@
 require("./session.sass");
 import React from "react";
 import API from "../api.js";
-import { getCurrentClassId, updateCurrentClassId } from "./../localStorage.js";
+import { getCurrentClassId, setCurrentClassId } from "./../localStorage.js";
 import { SessionAdd } from "./sessionAdd.js";
 import { SessionList } from "./sessionList.js";
 
@@ -14,14 +14,13 @@ export class SessionPage extends React.Component {
     };
 
     componentDidMount = () => {
-        console.log("WHAT");
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
             const classId =
                 getCurrentClassId() ||
                 (classes.length > 0 ? classes[0].classId : "");
             if (classId != "") {
-                updateCurrentClassId(classId);
+                setCurrentClassId(classId);
             }
 
             this.setState({
@@ -47,7 +46,7 @@ export class SessionPage extends React.Component {
         this.setState({
             classId: classId,
         });
-        updateCurrentClassId(classId);
+        setCurrentClassId(classId);
         this.fetchSessionData(classId);
         console.log("Selected classId: " + classId);
     };
