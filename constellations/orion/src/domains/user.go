@@ -20,20 +20,18 @@ type User struct {
 	Email      string       `json:"email"`
 	Phone      string       `json:"phone"`
 	IsGuardian bool         `json:"isGuardian" db:"is_guardian"`
-	GuardianId NullUint     `json:"guardianId" db:"guardian_id"`
+	FamilyId   uint         `json:"familyId" db:"family_id"`
+	Notes      NullString   `json:"notes" db:"notes"`
 }
 
 // Class Methods
 
 func (user *User) Validate() error {
 	// Retrieves the inputted values
-	id := user.Id
 	firstName := user.FirstName
 	lastName := user.LastName
 	email := user.Email
 	phone := user.Phone
-	isGuardian := user.IsGuardian
-	guardianId := user.GuardianId
 
 	// First name validation
 	if firstName == "" || len(firstName) > 32 {
@@ -53,17 +51,6 @@ func (user *User) Validate() error {
 	// Phone validation
 	if matches, _ := regexp.MatchString(REGEX_PHONE, phone); !matches || len(phone) > 24 {
 		return errors.New("invalid phone")
-	}
-
-	// Guardian validation
-	if isGuardian {
-		if guardianId.Valid {
-			return errors.New("guardian cannot have a guardian id")
-		}
-	} else {
-		if guardianId.Uint == id || !guardianId.Valid {
-			return errors.New("invalid guardian id")
-		}
 	}
 
 	return nil

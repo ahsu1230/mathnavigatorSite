@@ -101,19 +101,19 @@ func TestSelectUser(t *testing.T) {
 }
 
 //
-// Select One By Guardian ID
+// Select Many By Family ID
 //
-func TestSelectUsersByGuardianId(t *testing.T) {
+func TestSelectUsersByFamilyId(t *testing.T) {
 	db, mock, repo := initUserTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	rows := getUserRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE guardian_id=?").
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE family_id=?").
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByGuardianId(2)
+	got, err := repo.SelectByFamilyId(2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -149,7 +149,8 @@ func TestInsertUser(t *testing.T) {
 			"john_smith@example.com",
 			"555-555-0100",
 			false,
-			domains.NewNullUint(2),
+			2,
+			domains.NewNullString(""),
 		).WillReturnResult(result)
 	user := getUser()
 	err := repo.Insert(user)
@@ -182,7 +183,8 @@ func TestUpdateUser(t *testing.T) {
 			"bob_joe@example.com",
 			"555-555-0199",
 			true,
-			domains.NewNullUint(0),
+			0,
+			domains.NewNullString("notes"),
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
@@ -196,7 +198,8 @@ func TestUpdateUser(t *testing.T) {
 		Email:      "bob_joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
-		GuardianId: domains.NewNullUint(0),
+		FamilyId:   0,
+		Notes:      domains.NewNullString("notes"),
 	}
 	err := repo.Update(1, user)
 	if err != nil {
@@ -248,7 +251,8 @@ func getUserRows() *sqlmock.Rows {
 		"Email",
 		"Phone",
 		"IsGuardian",
-		"GuardianId",
+		"FamilyId",
+		"Notes",
 	}).AddRow(
 		1,
 		now,
@@ -260,7 +264,8 @@ func getUserRows() *sqlmock.Rows {
 		"john_smith@example.com",
 		"555-555-0100",
 		false,
-		domains.NewNullUint(2),
+		2,
+		domains.NewNullString(""),
 	)
 }
 
@@ -276,6 +281,7 @@ func getUser() domains.User {
 		Email:      "john_smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: false,
-		GuardianId: domains.NewNullUint(2),
+		FamilyId:   2,
+		Notes:      domains.NewNullString(""),
 	}
 }
