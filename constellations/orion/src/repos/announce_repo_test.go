@@ -37,9 +37,10 @@ func TestSelectAllAnnouncements(t *testing.T) {
 		"DeletedAt",
 		"PostedAt",
 		"Author",
-		"Message"}).
-		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message").
-		AddRow(2, early, early, domains.NullTime{}, early, "Author Name 2", "Valid Message 2")
+		"Message",
+		"OnHomePage"}).
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message", false).
+		AddRow(2, early, early, domains.NullTime{}, early, "Author Name 2", "Valid Message 2", true)
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -51,22 +52,24 @@ func TestSelectAllAnnouncements(t *testing.T) {
 	// Validate results
 	want := []domains.Announce{
 		{
-			Id:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-			DeletedAt: domains.NullTime{},
-			PostedAt:  now,
-			Author:    "Author Name",
-			Message:   "Valid Message",
+			Id:         1,
+			CreatedAt:  now,
+			UpdatedAt:  now,
+			DeletedAt:  domains.NullTime{},
+			PostedAt:   now,
+			Author:     "Author Name",
+			Message:    "Valid Message",
+			OnHomePage: false,
 		},
 		{
-			Id:        2,
-			CreatedAt: early,
-			UpdatedAt: early,
-			DeletedAt: domains.NullTime{},
-			PostedAt:  early,
-			Author:    "Author Name 2",
-			Message:   "Valid Message 2",
+			Id:         2,
+			CreatedAt:  early,
+			UpdatedAt:  early,
+			DeletedAt:  domains.NullTime{},
+			PostedAt:   early,
+			Author:     "Author Name 2",
+			Message:    "Valid Message 2",
+			OnHomePage: true,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -93,8 +96,9 @@ func TestSelectAnnouncement(t *testing.T) {
 		"DeletedAt",
 		"PostedAt",
 		"Author",
-		"Message"}).
-		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message")
+		"Message",
+		"OnHomePage"}).
+		AddRow(1, now, now, domains.NullTime{}, now, "Author Name", "Valid Message", false)
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -106,13 +110,14 @@ func TestSelectAnnouncement(t *testing.T) {
 
 	// Validate results
 	want := domains.Announce{
-		Id:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		DeletedAt: domains.NullTime{},
-		PostedAt:  now,
-		Author:    "Author Name",
-		Message:   "Valid Message",
+		Id:         1,
+		CreatedAt:  now,
+		UpdatedAt:  now,
+		DeletedAt:  domains.NullTime{},
+		PostedAt:   now,
+		Author:     "Author Name",
+		Message:    "Valid Message",
+		OnHomePage: false,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -134,12 +139,13 @@ func TestInsertAnnouncement(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO announcements").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), now, "Author Name", "Valid Message").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), now, "Author Name", "Valid Message", false).
 		WillReturnResult(result)
 	announce := domains.Announce{
-		PostedAt: now,
-		Author:   "Author Name",
-		Message:  "Valid Message",
+		PostedAt:   now,
+		Author:     "Author Name",
+		Message:    "Valid Message",
+		OnHomePage: false,
 	}
 	err := repo.Insert(announce)
 	if err != nil {
@@ -164,12 +170,13 @@ func TestUpdateAnnouncement(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE announcements SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), now, "Author Name", "Valid Message", 1).
+		WithArgs(sqlmock.AnyArg(), now, "Author Name", "Valid Message", false, 1).
 		WillReturnResult(result)
 	announce := domains.Announce{
-		PostedAt: now,
-		Author:   "Author Name",
-		Message:  "Valid Message",
+		PostedAt:   now,
+		Author:     "Author Name",
+		Message:    "Valid Message",
+		OnHomePage: false,
 	}
 	err := repo.Update(1, announce)
 	if err != nil {

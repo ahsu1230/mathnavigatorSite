@@ -9,19 +9,22 @@ import (
 var TABLE_CLASSES = "classes"
 
 type Class struct {
-	Id          uint       `json:"id"`
-	CreatedAt   time.Time  `json:"-" db:"created_at"`
-	UpdatedAt   time.Time  `json:"-" db:"updated_at"`
-	DeletedAt   NullTime   `json:"-" db:"deleted_at"`
-	PublishedAt NullTime   `json:"publishedAt" db:"published_at"`
-	ProgramId   string     `json:"programId" db:"program_id"`
-	SemesterId  string     `json:"semesterId" db:"semester_id"`
-	ClassKey    NullString `json:"classKey" db:"class_key"`
-	ClassId     string     `json:"classId" db:"class_id"`
-	LocationId  string     `json:"locationId" db:"location_id"`
-	Times       string     `json:"times"`
-	StartDate   time.Time  `json:"startDate" db:"start_date"`
-	EndDate     time.Time  `json:"endDate" db:"end_date"`
+	Id              uint       `json:"id"`
+	CreatedAt       time.Time  `json:"-" db:"created_at"`
+	UpdatedAt       time.Time  `json:"-" db:"updated_at"`
+	DeletedAt       NullTime   `json:"-" db:"deleted_at"`
+	PublishedAt     NullTime   `json:"publishedAt" db:"published_at"`
+	ProgramId       string     `json:"programId" db:"program_id"`
+	SemesterId      string     `json:"semesterId" db:"semester_id"`
+	ClassKey        NullString `json:"classKey" db:"class_key"`
+	ClassId         string     `json:"classId" db:"class_id"`
+	LocationId      string     `json:"locationId" db:"location_id"`
+	Times           string     `json:"times"`
+	StartDate       time.Time  `json:"startDate" db:"start_date"`
+	EndDate         time.Time  `json:"endDate" db:"end_date"`
+	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
+	FullState       int        `json:"fullState" db:"full_state"`
+	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 }
 
 // Class Methods

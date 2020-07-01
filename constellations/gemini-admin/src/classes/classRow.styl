@@ -1,0 +1,45 @@
+@import "../static.styl"
+
+#view-class #class-rows
+  & span
+    display: inline-block
+
+  .small
+    width: 150px
+
+  .medium
+    width: 210px
+
+  .large
+    width: 360px
+
+  #select-all
+    width: 100px
+    margin-right: 20px
+    color: colorTurquoise
+
+  #header
+    display: flex
+    align-items: center
+    height: 55px
+    border-bottom: 2px solid colorGrayDark
+
+  #rows
+    list-style: none
+    padding: 0
+    margin: 0
+
+    #unpublished
+      color: colorGrayMed
+
+    & div
+      display: flex
+      align-items: center
+      height: 60px
+      border-bottom: 1px solid colorGrayLight
+
+    .checkbox
+      width: 100px
+      padding: 0
+      margin: 0
+      margin-right: 20px

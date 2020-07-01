@@ -9,7 +9,7 @@ Every microservice has a codename. It's often used to give different services co
 
 ## Onboarding
 
-To learn how to start these services together, view the [Constellation Onboarding Guide](./onboarding.md).
+To learn how to start these services together, view the [Constellation Onboarding Guide](./onboarding/guide.md).
 
 ## Constellations
 

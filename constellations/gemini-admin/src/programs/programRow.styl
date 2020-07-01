@@ -1,48 +1,31 @@
 @import "../static.styl"
 
-#view-program #list-heading
-  border-bottom: 2px solid colorGrayDark
-
-  & li
-    display: inline-block
-    height: spacing4x
-    line-height: spacing4x
-
-  & button
-    color: colorTurquoise
-    
 #view-program
-  & .li-small
+  & span
+    display: inline-block
+
+  .small
     width: 80px
-  & .li-med
+
+  .medium
     width: 160px
-  & .li-large
+
+  .large
     width: 240px
-  & .li-checkbox
-    width: 100px
 
-#view-program #list-rows li
-  display: block
-  position: relative
-  width: 100%
-  height: 60px
-  line-height: 60px
-  border-bottom: 1px solid colorGrayLight
+  #header
+    display: flex
+    align-items: center
+    height: 55px
+    border-bottom: 2px solid colorGrayDark
 
-  &.unpublished
-    color: colorGrayMed
-
-  & input
-    position: relative
-    top: 4px
-    left: 40px
+  #rows
+    list-style: none
+    padding: 0
     margin: 0
 
-  & div
-    display: inline-block
-
-  & button
-    position: absolute
-    top: 50%
-    right: spacing4x
-    transform: translateY(-50%)
+    & div
+      display: flex
+      align-items: center
+      height: 60px
+      border-bottom: 1px solid colorGrayLight
