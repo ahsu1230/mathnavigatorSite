@@ -57,7 +57,7 @@ func TestGetUser_Success(t *testing.T) {
 }
 
 func TestGetUsersByFamily_Success(t *testing.T) {
-	userRepo.mockSelectByFamilyId = func(familyId uint) ([]domains.User, error) {
+	testUtils.UserRepo.MockSelectByFamilyId = func(familyId uint) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -86,7 +86,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
