@@ -13,21 +13,21 @@ import (
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	family2 := createFamily(2)
-	body2 := createJsonBody(&family2)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
+	body2 := utils.CreateJsonBody(&family2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	createAllUsers(t)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
 
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -47,8 +47,8 @@ func Test_CreateUsers(t *testing.T) {
 	assertUser(t, 3, users[1])
 	assert.EqualValues(t, 2, len(users))
 
-	resetTable(t, domains.TABLE_USERS)
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 
 }
 
@@ -87,19 +87,19 @@ func Test_CreateUsers(t *testing.T) {
 // Test: Create 3 Users and GetUserByFamilyId
 func Test_GetUsersByFamilyId(t *testing.T) {
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	family2 := createFamily(2)
-	body2 := createJsonBody(&family2)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
+	body2 := utils.CreateJsonBody(&family2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	createAllUsers(t)
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
 
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -119,16 +119,16 @@ func Test_GetUsersByFamilyId(t *testing.T) {
 	assertUser(t, 3, users[1])
 	assert.EqualValues(t, 2, len(users))
 
-	resetTable(t, domains.TABLE_USERS)
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 
 }
 
 // Test: Create 1 Family, 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
 	family := createFamily(1)
-	body := createJsonBody(&family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	body := utils.CreateJsonBody(&family)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Create 1 User
@@ -139,8 +139,8 @@ func Test_UpdateUser(t *testing.T) {
 
 	// Update
 	updatedUser := createUser(4)
-	updatedBody := createJsonBody(&updatedUser)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", updatedBody)
+	updatedBody := utils.CreateJsonBody(&updatedUser)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
@@ -154,15 +154,15 @@ func Test_UpdateUser(t *testing.T) {
 	}
 	assertUser(t, 4, user)
 
-	resetTable(t, domains.TABLE_USERS)
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
 	family := createFamily(1)
-	body := createJsonBody(&family)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	body := utils.CreateJsonBody(&family)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Create
@@ -179,8 +179,8 @@ func Test_DeleteUser(t *testing.T) {
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	resetTable(t, domains.TABLE_USERS)
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 
 }
 
