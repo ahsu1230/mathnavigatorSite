@@ -16,6 +16,7 @@ var SemesterRepo mockSemesterRepo
 var SessionRepo mockSessionRepo
 var FamilyRepo mockFamilyRepo
 var UserRepo mockUserRepo
+var AskForHelpRepo mockAskForHelpRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
@@ -335,4 +336,32 @@ func (familyRepo *mockFamilyRepo) Update(id uint, family domains.Family) error {
 }
 func (familyRepo *mockFamilyRepo) Delete(id uint) error {
 	return familyRepo.MockDelete(id)
+}
+
+type mockAskForHelpRepo struct {
+	MockInitialize func(*sql.DB)
+	MockSelectAll  func() ([]domains.AskForHelp, error)
+	MockSelectById func(uint) (domains.AskForHelp, error)
+	MockInsert     func(domains.AskForHelp) error
+	MockUpdate     func(uint, domains.AskForHelp) error
+	MockDelete     func(uint) error
+}
+
+// Implement methods of AFHRepo interface with mocked implementations
+func (askForHelpRepo *mockAskForHelpRepo) Initialize(db *sql.DB) {}
+
+func (askForHelpRepo *mockAskForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
+	return askForHelpRepo.MockSelectAll()
+}
+func (askForHelpRepo *mockAskForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
+	return askForHelpRepo.MockSelectById(id)
+}
+func (askForHelpRepo *mockAskForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
+	return askForHelpRepo.MockInsert(askForHelp)
+}
+func (askForHelpRepo *mockAskForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
+	return askForHelpRepo.MockUpdate(id, askForHelp)
+}
+func (askForHelpRepo mockAskForHelpRepo) Delete(id uint) error {
+	return askForHelpRepo.MockDelete(id)
 }
