@@ -18,7 +18,6 @@ func TestValidAFHTitle(t *testing.T) {
 		TimeString: "3:00 - 5:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
-		Notes:      "test note",
 	}
 	if err := askForHelp.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -45,7 +44,6 @@ func TestValidAFHSubject(t *testing.T) {
 		TimeString: "3:00 - 5:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
-		Notes:      "test note",
 	}
 
 	askForHelp.Subject = "AP Calculus 2"

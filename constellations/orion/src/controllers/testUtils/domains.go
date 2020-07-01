@@ -103,6 +103,6 @@ func CreateMockAFH(id uint, title string, date time.Time, timeString string, sub
 		TimeString: timeString,
 		Subject:    subject,
 		LocationId: locationId,
-		Notes:      notes,
+		Notes:      domains.NewNullString(notes),
 	}
 }

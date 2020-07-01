@@ -38,7 +38,7 @@ func TestGetAllAFH_Success(t *testing.T) {
 				"3:00-5:00PM",
 				"AP Statistics",
 				"room12",
-				"",
+				"test note 2",
 			),
 		}, nil
 	}
@@ -60,14 +60,14 @@ func TestGetAllAFH_Success(t *testing.T) {
 	assert.EqualValues(t, "2:00-4:00PM", askForHelps[0].TimeString)
 	assert.EqualValues(t, "AP Calculus", askForHelps[0].Subject)
 	assert.EqualValues(t, "wchs", askForHelps[0].LocationId)
-	assert.EqualValues(t, "test note", askForHelps[0].Notes)
+	assert.EqualValues(t, domains.NewNullString("test note"), askForHelps[0].Notes)
 	assert.EqualValues(t, 2, askForHelps[1].Id)
 	assert.EqualValues(t, "AP Statistics Help", askForHelps[1].Title)
 	assert.EqualValues(t, date2, askForHelps[1].Date)
 	assert.EqualValues(t, "3:00-5:00PM", askForHelps[1].TimeString)
 	assert.EqualValues(t, "AP Statistics", askForHelps[1].Subject)
 	assert.EqualValues(t, "room12", askForHelps[1].LocationId)
-	assert.EqualValues(t, "", askForHelps[1].Notes)
+	assert.EqualValues(t, domains.NewNullString("test note 2"), askForHelps[1].Notes)
 	assert.EqualValues(t, 2, len(askForHelps))
 }
 
@@ -101,7 +101,7 @@ func TestGetAFH_Success(t *testing.T) {
 	assert.EqualValues(t, "2:00-4:00PM", askForHelp.TimeString)
 	assert.EqualValues(t, "AP Calculus", askForHelp.Subject)
 	assert.EqualValues(t, "wchs", askForHelp.LocationId)
-	assert.EqualValues(t, "test note", askForHelp.Notes)
+	assert.EqualValues(t, domains.NewNullString("test note"), askForHelp.Notes)
 }
 
 func TestGetAFH_Failure(t *testing.T) {

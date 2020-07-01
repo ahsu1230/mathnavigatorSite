@@ -88,15 +88,15 @@ func TestInsertAFH(t *testing.T) {
 			"2:00-4:00 PM",
 			"AP Calculus",
 			"wchs",
-			"test note").
-		WillReturnResult(result)
+			domains.NewNullString("test note"),
+		).WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Title:      "AP Calculus Help",
 		Date:       date1,
 		TimeString: "2:00-4:00 PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
-		Notes:      "test note",
+		Notes:      domains.NewNullString("test note"),
 	}
 	err := repo.Insert(askForHelp)
 	if err != nil {
@@ -127,7 +127,7 @@ func TestUpdateAFH(t *testing.T) {
 			"2:00-4:00PM",
 			"AP Stat",
 			"room12",
-			"asdf ajfasdopf djfjfaoi ajfiadfpo long notes ajfdoapfja",
+			domains.NewNullString("test note"),
 			1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
@@ -137,7 +137,7 @@ func TestUpdateAFH(t *testing.T) {
 		TimeString: "2:00-4:00PM",
 		Subject:    "AP Stat",
 		LocationId: "room12",
-		Notes:      "asdf ajfasdopf djfjfaoi ajfiadfpo long notes ajfdoapfja",
+		Notes:      domains.NewNullString("test note"),
 	}
 	err := repo.Update(1, askForHelp)
 	if err != nil {
@@ -195,7 +195,7 @@ func getAFHRows() *sqlmock.Rows {
 			"3:00-5:00PM",
 			"AP Calculus",
 			"wchs",
-			"test note",
+			domains.NewNullString("test note"),
 		)
 }
 
@@ -210,6 +210,6 @@ func getAskForHelp() domains.AskForHelp {
 		TimeString: "3:00-5:00PM",
 		Subject:    "AP Calculus",
 		LocationId: "wchs",
-		Notes:      "test note",
+		Notes:      domains.NewNullString("test note"),
 	}
 }
