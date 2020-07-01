@@ -80,35 +80,48 @@ export class InternshipPage extends React.Component {
 
                 <h4>Past Interns:</h4>
                 <div class="intern-main">
-                    <p>Cathy Y.</p> <p>Montgomery Blair HS 2020</p>
+                    <p class="name">Cathy Y.</p>{" "}
+                    <p class="school">Montgomery Blair HS 2020</p>
                     <p>Massachusetts Institute of Technology (MIT)</p>
                 </div>
                 <div class="intern-main">
-                    <p>Jessica Y.</p> <p>Montgomery Blair HS 2020</p>
+                    <p class="name">Jessica Y.</p>{" "}
+                    <p class="school">Montgomery Blair HS 2020</p>
                     <p>University of Maryland</p>
                 </div>
                 <div class="intern-main">
-                    <p>Max Z.</p> <p>Montgomery Blair HS 2021</p>
+                    <p class="name">Max Z.</p>{" "}
+                    <p class="school">Montgomery Blair HS 2021</p>
                     <p />
                 </div>
                 <div class="intern-main">
-                    <p>Chujia G.</p> <p>Montgomery Blair HS 2022</p>
+                    <p class="name">Chujia G.</p>{" "}
+                    <p class="school">Montgomery Blair HS 2022</p>
                     <p />
                 </div>
                 <div class="intern-main">
-                    <p>Frederick Z.</p> <p>Montgomery Blair HS 2023</p>
+                    <p class="name">Frederick Z.</p>{" "}
+                    <p class="school">Montgomery Blair HS 2023</p>
                     <p />
                 </div>
                 <div class="intern-main">
-                    <p>Tony W.</p> <p>Richard Montgomery HS 2021</p>
+                    <p class="name">Tony W.</p>{" "}
+                    <p class="school">Richard Montgomery HS 2021</p>
                     <p />
                 </div>
                 <div class="intern-main">
-                    <p>Serena X.</p> <p>Winston Churchill HS 2020</p>
+                    <p class="name">Austin H.</p>{" "}
+                    <p class="school">Winston Churchill HS 2017</p>
+                    <p>Carnegie Mellon University</p>
+                </div>
+                <div class="intern-main">
+                    <p class="name">Serena X.</p>{" "}
+                    <p class="school">Winston Churchill HS 2020</p>
                     <p>University of Pennsylvania</p>
                 </div>
                 <div class="intern-main">
-                    <p>Daniel L.</p> <p>Winston Churchill HS 2021</p>
+                    <p class="name">Daniel L.</p>{" "}
+                    <p class="school">Winston Churchill HS 2021</p>
                     <p />
                 </div>
 

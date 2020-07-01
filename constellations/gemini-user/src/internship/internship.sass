@@ -14,7 +14,7 @@
     & h4
         margin-bottom: 20px
         color: $colorTurquoiseLight
-        text-align: center
+        text-align: left
 
     .container-main
         display: flex
@@ -32,19 +32,18 @@
     .intern-main
         display: flex
         flex-direction: row
-        justify-content: center
-
         & p
-            margin: 20px
-
-
-
+            margin: 20px 20px 20px 0
+        .name
+            width: 120px
+        .school
+            width: 250px
 
     #last-paragraph
         margin-bottom: 300px
 
     @media only screen and (max-width: 700px)
-        & h1, p
+        & h1, h4, p
             text-align: center
 
         .container-main
@@ -68,3 +67,5 @@
             margin-bottom: 35px
             & p
                 margin: 0
+            .name, .school
+                width: auto
