@@ -78,90 +78,39 @@ export class InternshipPage extends React.Component {
                     students who have done internships for both teams!
                 </p>
 
+                <h4>Past Interns:</h4>
                 <div class="intern-main">
-                    <h4>Past Interns:</h4>
-                    <p>
-                        Cathy Y. <br></br> Montgomery Blair HS 2020 <br></br>
-                        Massachusetts Institute of Technology (MIT)
-                    </p>
-                    <p>
-                        Jessica Y. <br></br> Montgomery Blair HS 2020 <br></br>
-                        University of Maryland
-                    </p>
-                    <p>
-                        Max Z. <br></br> Montgomery Blair HS 2021
-                    </p>
-                    <p>
-                        Chujia G. <br></br> Montgomery Blair HS 2022
-                    </p>
-                    <p>
-                        Frederick Z. <br></br> Montgomery Blair HS 2023
-                    </p>
-                    <p>
-                        Tony W. <br></br> Richard Montgomery HS 2021
-                    </p>
-                    <p>
-                        Serena X. <br></br> Winston Churchill HS 2020 <br></br>
-                        University of Pennsylvania
-                    </p>
-                    <p>
-                        Daniel L. <br></br> Winston Churchill HS 2021
-                    </p>
+                    <p>Cathy Y.</p> <p>Montgomery Blair HS 2020</p>
+                    <p>Massachusetts Institute of Technology (MIT)</p>
                 </div>
-
-                <table id="past-intern">
-                    <caption>Past Interns:</caption> <br></br>
-                    <tr>
-                        <th>Name</th>
-                        <th>School</th>
-                        <th>College</th>
-                    </tr>
-                    <tr>
-                        <td>Cathy Y.</td>
-                        <td>Montgomery Blair HS 2020</td>
-                        <td>Massachusetts Institute of Technology (MIT)</td>
-                    </tr>
-                    <tr>
-                        <td>Jessica Y.</td>
-                        <td>Montgomery Blair HS 2020</td>
-                        <td>University of Maryland</td>
-                    </tr>
-                    <tr>
-                        <td>Max Z.</td>
-                        <td>Montgomery Blair HS 2021</td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td>Chujia G.</td>
-                        <td>Montgomery Blair HS 2022</td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td>Frederick Z.</td>
-                        <td>Montgomery Blair HS 2023</td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td>Tony W.</td>
-                        <td>Richard Montgomery HS 2021</td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td>Austin H.</td>
-                        <td>Winston Churchill HS 2017</td>
-                        <td>Carnegie Mellon University</td>
-                    </tr>
-                    <tr>
-                        <td>Serena X.</td>
-                        <td>Winston Churchill HS 2020</td>
-                        <td>University of Pennsylvania</td>
-                    </tr>
-                    <tr>
-                        <td>Daniel L.</td>
-                        <td>Winston Churchill HS 2021</td>
-                        <td> </td>
-                    </tr>
-                </table>
+                <div class="intern-main">
+                    <p>Jessica Y.</p> <p>Montgomery Blair HS 2020</p>
+                    <p>University of Maryland</p>
+                </div>
+                <div class="intern-main">
+                    <p>Max Z.</p> <p>Montgomery Blair HS 2021</p>
+                    <p />
+                </div>
+                <div class="intern-main">
+                    <p>Chujia G.</p> <p>Montgomery Blair HS 2022</p>
+                    <p />
+                </div>
+                <div class="intern-main">
+                    <p>Frederick Z.</p> <p>Montgomery Blair HS 2023</p>
+                    <p />
+                </div>
+                <div class="intern-main">
+                    <p>Tony W.</p> <p>Richard Montgomery HS 2021</p>
+                    <p />
+                </div>
+                <div class="intern-main">
+                    <p>Serena X.</p> <p>Winston Churchill HS 2020</p>
+                    <p>University of Pennsylvania</p>
+                </div>
+                <div class="intern-main">
+                    <p>Daniel L.</p> <p>Winston Churchill HS 2021</p>
+                    <p />
+                </div>
 
                 <p>
                     Internship opportunities will be announced when they are

@@ -1,7 +1,7 @@
 @import "../utils/constants.sass"
 
 #view-intern
-    width: 65%
+    width: 70%
     margin-left: auto
     margin-right: auto
     font-family: $fontFamilyRoboto
@@ -10,6 +10,11 @@
         margin-top: 90px
         margin-bottom: 30px
         color: $colorTurquoise
+
+    & h4
+        margin-bottom: 20px
+        color: $colorTurquoiseLight
+        text-align: center
 
     .container-main
         display: flex
@@ -25,23 +30,15 @@
             margin: 0
 
     .intern-main
-        display: none
+        display: flex
+        flex-direction: row
+        justify-content: center
 
-    #past-intern
-        border-collapse: collapse
-        border-spacing: 2px
-        width: 80%
-        margin: 30px auto
+        & p
+            margin: 20px
 
 
-        & caption
-            color: $colorTurquoise
 
-        & td, th
-            border: 1px solid
-            border-color: #dddddd
-            padding: 8px
-            text-align: left       
 
     #last-paragraph
         margin-bottom: 300px
@@ -51,7 +48,7 @@
             text-align: center
 
         .container-main
-            display: flex
+            display: inline
             flex-direction: column
             align-items: center
 
@@ -67,17 +64,7 @@
         .intern-main
             display: flex
             flex-direction: column
-            align-items: center
-            border: 0.5px solid $colorGrayLight
-
-            & h4
-                margin: 2%
-                color: $colorTurquoiseLight
-                text-align: center
-
+            text-align: center
+            margin-bottom: 35px
             & p
-                margin: 5%
-                text-align: center
-
-        #past-intern
-            display: none 
+                margin: 0
