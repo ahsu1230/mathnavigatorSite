@@ -10,6 +10,7 @@ import (
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 )
 
@@ -24,10 +25,10 @@ func main() {
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbDefault := os.Getenv("DB_DEFAULT")
 
-	db := repos.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
-	repos.Migrate(db, "file://src/repos/migrations")
+	db := repoUtils.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
+	repoUtils.Migrate(db, "file://src/repos/migrations")
 	repos.SetupRepos(db)
-	defer repos.Close(db)
+	defer repoUtils.Close(db)
 	fmt.Println("Database started!")
 
 	// App Router

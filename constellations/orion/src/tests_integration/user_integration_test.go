@@ -1,4 +1,4 @@
-package integration_tests
+package tests_integration
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -132,8 +133,8 @@ func Test_UpdateUser(t *testing.T) {
 
 	// Create 1 User
 	user1 := createUser(1)
-	body1 := createJsonBody(&user1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
+	body1 := utils.CreateJsonBody(&user1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
@@ -143,7 +144,7 @@ func Test_UpdateUser(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -166,16 +167,16 @@ func Test_DeleteUser(t *testing.T) {
 
 	// Create
 	user1 := createUser(1)
-	body1 := createJsonBody(&user1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
+	body1 := utils.CreateJsonBody(&user1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetTable(t, domains.TABLE_USERS)
@@ -238,8 +239,8 @@ func createUser(id int) domains.User {
 func createAllUsers(t *testing.T) {
 	for i := 1; i < 4; i++ {
 		user := createUser(i)
-		body := createJsonBody(&user)
-		recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
+		body := utils.CreateJsonBody(&user)
+		recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
 }
@@ -278,11 +279,3 @@ func assertUser(t *testing.T, id int, user domains.User) {
 	}
 
 }
-
-// func createBodyFromFamily(family domains.Family) io.Reader {
-// 	marshal, err := json.Marshal(&family)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return bytes.NewBuffer(marshal)
-// }

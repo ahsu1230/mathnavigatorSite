@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -71,7 +72,9 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate,
-			&class.GoogleClassCode); errScan != nil {
+			&class.GoogleClassCode,
+			&class.FullState,
+			&class.PricePerSession); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -109,7 +112,9 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate,
-			&class.GoogleClassCode); errScan != nil {
+			&class.GoogleClassCode,
+			&class.FullState,
+			&class.PricePerSession); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -141,7 +146,9 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.Times,
 		&class.StartDate,
 		&class.EndDate,
-		&class.GoogleClassCode)
+		&class.GoogleClassCode,
+		&class.FullState,
+		&class.PricePerSession)
 	return class, errScan
 }
 
@@ -175,7 +182,9 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate,
-			&class.GoogleClassCode); errScan != nil {
+			&class.GoogleClassCode,
+			&class.FullState,
+			&class.PricePerSession); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -213,7 +222,9 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate,
-			&class.GoogleClassCode); errScan != nil {
+			&class.GoogleClassCode,
+			&class.FullState,
+			&class.PricePerSession); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -251,7 +262,9 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.Times,
 			&class.StartDate,
 			&class.EndDate,
-			&class.GoogleClassCode); errScan != nil {
+			&class.GoogleClassCode,
+			&class.FullState,
+			&class.PricePerSession); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -271,8 +284,10 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"times, " +
 		"start_date, " +
 		"end_date, " +
-		"google_class_code " +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"google_class_code, " +
+		"full_state, " +
+		"price_per_session " +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -293,11 +308,13 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		class.StartDate,
 		class.EndDate,
 		class.GoogleClassCode,
+		class.FullState,
+		class.PricePerSession,
 	)
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "class was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "class was not inserted")
 }
 
 func (cr *classRepo) Update(classId string, class domains.Class) error {
@@ -311,7 +328,9 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"times=?, " +
 		"start_date=?, " +
 		"end_date=?, " +
-		"google_class_code=? " +
+		"google_class_code=?, " +
+		"full_state=?, " +
+		"price_per_session=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -331,11 +350,13 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.StartDate,
 		class.EndDate,
 		class.GoogleClassCode,
+		class.FullState,
+		class.PricePerSession,
 		classId)
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "class was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "class was not updated")
 }
 
 func (cr *classRepo) Publish(classIds []string) error {
@@ -355,10 +376,10 @@ func (cr *classRepo) Publish(classIds []string) error {
 	for _, classId := range classIds {
 		_, err := stmt.Exec(now, classId)
 		if err != nil {
-			errorString = appendError(errorString, classId, err)
+			errorString = utils.AppendError(errorString, classId, err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -378,7 +399,7 @@ func (cr *classRepo) Delete(classId string) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "class was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "class was not deleted")
 }
 
 // For Tests Only

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
@@ -17,8 +18,8 @@ import (
 // Test Get User
 //
 func TestGetUser_Success(t *testing.T) {
-	userRepo.mockSelectById = func(id uint) (domains.User, error) {
-		user := createMockUser(
+	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
+		user := testUtils.CreateMockUser(
 			1,
 			"John",
 			"Smith",
@@ -31,10 +32,10 @@ func TestGetUser_Success(t *testing.T) {
 		)
 		return user, nil
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -58,7 +59,7 @@ func TestGetUser_Success(t *testing.T) {
 func TestGetUsersByFamily_Success(t *testing.T) {
 	userRepo.mockSelectByFamilyId = func(familyId uint) ([]domains.User, error) {
 		return []domains.User{
-			createMockUser(
+			testUtils.CreateMockUser(
 				1,
 				"John",
 				"Smith",
@@ -69,7 +70,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 				2,
 				"notes1",
 			),
-			createMockUser(
+			testUtils.CreateMockUser(
 				2,
 				"Bob",
 				"Joe",
@@ -82,7 +83,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 			),
 		}, nil
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
 	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
@@ -118,13 +119,13 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 }
 
 func TestGetUser_Failure(t *testing.T) {
-	userRepo.mockSelectById = func(id uint) (domains.User, error) {
+	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
 		return domains.User{}, errors.New("not found")
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
@@ -134,13 +135,13 @@ func TestGetUser_Failure(t *testing.T) {
 // Test Create
 //
 func TestCreateUser_Success(t *testing.T) {
-	userRepo.mockInsert = func(user domains.User) error {
+	testUtils.UserRepo.MockInsert = func(user domains.User) error {
 		return nil
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -152,7 +153,7 @@ func TestCreateUser_Success(t *testing.T) {
 		"notes1",
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -160,10 +161,10 @@ func TestCreateUser_Success(t *testing.T) {
 
 func TestCreateUser_Failure(t *testing.T) {
 	// no mock needed
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"",
 		"",
@@ -175,7 +176,7 @@ func TestCreateUser_Failure(t *testing.T) {
 		"",
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -185,13 +186,13 @@ func TestCreateUser_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateUser_Success(t *testing.T) {
-	userRepo.mockUpdate = func(id uint, user domains.User) error {
+	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
 		return nil // Successful update
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -203,7 +204,7 @@ func TestUpdateUser_Success(t *testing.T) {
 		"notes1",
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -211,10 +212,10 @@ func TestUpdateUser_Success(t *testing.T) {
 
 func TestUpdateUser_Invalid(t *testing.T) {
 	// no mock needed
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"",
 		"",
@@ -226,20 +227,20 @@ func TestUpdateUser_Invalid(t *testing.T) {
 		"",
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 func TestUpdateUser_Failure(t *testing.T) {
-	userRepo.mockUpdate = func(id uint, user domains.User) error {
+	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
 		return errors.New("not found")
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	user := createMockUser(
+	user := testUtils.CreateMockUser(
 		1,
 		"John",
 		"Smith",
@@ -251,7 +252,7 @@ func TestUpdateUser_Failure(t *testing.T) {
 		"notes1",
 	)
 	body := createBodyFromUser(user)
-	recorder := sendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -261,26 +262,26 @@ func TestUpdateUser_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteUser_Success(t *testing.T) {
-	userRepo.mockDelete = func(id uint) error {
+	testUtils.UserRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteUser_Failure(t *testing.T) {
-	userRepo.mockDelete = func(id uint) error {
+	testUtils.UserRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}
-	repos.UserRepo = &userRepo
+	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := sendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -289,14 +290,6 @@ func TestDeleteUser_Failure(t *testing.T) {
 //
 // Helper Methods
 //
-
-// func createMockFamily(id uint, email string, password string) domains.Family{
-// 	return domains.Family{
-// 		Id:	id,
-// 		PrimaryEmail: email,
-// 		Password: password,
-// 	}
-// }
 
 func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, familyId uint, notes string) domains.User {
 	return domains.User{

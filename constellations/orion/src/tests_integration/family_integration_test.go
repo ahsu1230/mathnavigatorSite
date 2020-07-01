@@ -1,4 +1,4 @@
-package integration_tests
+package tests_integration
 
 import (
 	"encoding/json"
@@ -7,17 +7,18 @@ import (
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
 //create 1 family then get by id
 func Test_SearchFamilyById(t *testing.T) {
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	var family domains.Family
@@ -26,21 +27,21 @@ func Test_SearchFamilyById(t *testing.T) {
 	}
 	assertFamily(t, 1, family)
 
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 3 Families and search by pagination
 func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	body := strings.NewReader(`{
 		"primaryEmail": "john_smith@example.com"
 	}`)
 
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/search", body)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/search", body)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	var family domains.Family
@@ -49,18 +50,18 @@ func Test_SearchFamilyByPrimaryEmail(t *testing.T) {
 	}
 	assertFamily(t, 1, family)
 
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 3 Families and GetFamilyById
 func Test_GetFamilyById(t *testing.T) {
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Call Get All!
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -71,25 +72,25 @@ func Test_GetFamilyById(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", family.PrimaryEmail)
 	assert.EqualValues(t, "password1", family.Password)
 
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 1 Family, Update it, GetFamilyById()
 func Test_UpdateFamily(t *testing.T) {
 	// Create 1 Family
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedFamily := createFamily(2)
-	updatedBody := createJsonBody(&updatedFamily)
-	recorder2 := sendHttpRequest(t, http.MethodPost, "/api/families/family/1", updatedBody)
+	updatedBody := utils.CreateJsonBody(&updatedFamily)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/family/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
@@ -99,26 +100,26 @@ func Test_UpdateFamily(t *testing.T) {
 	}
 	assertFamily(t, 2, family)
 
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Test: Create 1 Family, Delete it, GetByFamilyId()
 func Test_DeleteFamily(t *testing.T) {
 	// Create
 	family1 := createFamily(1)
-	body1 := createJsonBody(&family1)
-	recorder1 := sendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	body1 := utils.CreateJsonBody(&family1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
-	recorder2 := sendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/families/family/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := sendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/families/family/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	resetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_FAMILIES)
 }
 
 // Helper methods
@@ -150,8 +151,8 @@ func createFamily(id int) domains.Family {
 func createAllFamilies(t *testing.T) {
 	for i := 1; i < 4; i++ {
 		family := createFamily(i)
-		body := createJsonBody(&family)
-		recorder := sendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+		body := utils.CreateJsonBody(&family)
+		recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
 }

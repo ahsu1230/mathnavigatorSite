@@ -4,15 +4,12 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
-
-var now = time.Now().UTC()
-var later = now.Add(time.Hour * 24 * 60)
 
 func initClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ClassRepoInterface) {
 	db, mock, err := sqlmock.New()
@@ -234,9 +231,11 @@ func TestInsertClass(t *testing.T) {
 			"program1_2020_spring_final_review",
 			"churchill",
 			"3 pm - 5 pm",
-			now,
-			later,
+			testUtils.TimeNow,
+			testUtils.TimeLater,
 			domains.NewNullString("ab12cd34"),
+			0,
+			50,
 		).WillReturnResult(result)
 	class := getClass()
 	err := repo.Insert(class)
@@ -269,9 +268,11 @@ func TestUpdateClass(t *testing.T) {
 			"program2_2020_summer",
 			"churchill",
 			"5 pm - 7 pm",
-			now,
-			later,
+			testUtils.TimeNow,
+			testUtils.TimeLater,
 			"ab12cd34",
+			0,
+			50,
 			"program1_2020_spring_final_review",
 		).WillReturnResult(result)
 	class := domains.Class{
@@ -281,9 +282,11 @@ func TestUpdateClass(t *testing.T) {
 		ClassId:         "program2_2020_summer",
 		LocationId:      "churchill",
 		Times:           "5 pm - 7 pm",
-		StartDate:       now,
-		EndDate:         later,
+		StartDate:       testUtils.TimeNow,
+		EndDate:         testUtils.TimeLater,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
+		FullState:       0,
+		PricePerSession: domains.NewNullUint(50),
 	}
 	err := repo.Update("program1_2020_spring_final_review", class)
 	if err != nil {
@@ -365,10 +368,12 @@ func getClassRows() *sqlmock.Rows {
 		"StartDate",
 		"EndDate",
 		"GoogleClassCode",
+		"FullState",
+		"PricePerSession",
 	}).AddRow(
 		1,
-		now,
-		now,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
 		domains.NullTime{},
 		domains.NullTime{},
 		"program1",
@@ -377,17 +382,19 @@ func getClassRows() *sqlmock.Rows {
 		"program1_2020_spring_final_review",
 		"churchill",
 		"3 pm - 5 pm",
-		now,
-		later,
+		testUtils.TimeNow,
+		testUtils.TimeLater,
 		"ab12cd34",
+		0,
+		50,
 	)
 }
 
 func getClass() domains.Class {
 	return domains.Class{
 		Id:              1,
-		CreatedAt:       now,
-		UpdatedAt:       now,
+		CreatedAt:       testUtils.TimeNow,
+		UpdatedAt:       testUtils.TimeNow,
 		DeletedAt:       domains.NullTime{},
 		PublishedAt:     domains.NullTime{},
 		ProgramId:       "program1",
@@ -396,8 +403,10 @@ func getClass() domains.Class {
 		ClassId:         "program1_2020_spring_final_review",
 		LocationId:      "churchill",
 		Times:           "3 pm - 5 pm",
-		StartDate:       now,
-		EndDate:         later,
+		StartDate:       testUtils.TimeNow,
+		EndDate:         testUtils.TimeLater,
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
+		FullState:       0,
+		PricePerSession: domains.NewNullUint(50),
 	}
 }
