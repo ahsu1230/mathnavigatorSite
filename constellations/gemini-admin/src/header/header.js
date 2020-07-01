@@ -14,6 +14,10 @@ const LinkMap = {
             url: "/classes",
         },
         {
+            title: "Sessions",
+            url: "/sessions",
+        },
+        {
             title: "Announcements",
             url: "/announcements",
         },
