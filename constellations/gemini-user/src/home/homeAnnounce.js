@@ -4,10 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { isEmpty, filter } from "lodash";
-//import { getAnnouncements } from "../repos/apiRepo.js";
 import { ANNOUNCE_LAST_DISMISS } from "../utils/storage.js";
-const classnames = require("classnames");
-import srcClose from "../../assets/close_black.svg"
+import srcClose from "../../assets/close_black.svg";
 import API from "../utils/api.js";
 
 export class HomeAnnounce extends React.Component {
@@ -15,7 +13,7 @@ export class HomeAnnounce extends React.Component {
         super(props);
         this.state = {
             show: false,
-            targetAnnounce: {}
+            targetAnnounce: {},
         };
     }
 
@@ -23,38 +21,37 @@ export class HomeAnnounce extends React.Component {
         console.log("api attempt ");
         API.get("api/announcements/all").then((res) => {
             const announceList = res.data;
-            console.log("api success!");            
-            
-            let valid = filter(announceList, a => a.onHomePage)
-            console.log(announceList)
+            console.log("api success!");
+
+            let valid = filter(announceList, (a) => a.onHomePage);
             let targetAnnounce = valid.length > 0 ? valid[0] : undefined;
-            
+
             targetAnnounce.shortMessage = shortenMessage(
                 targetAnnounce.message
             );
-            
-            
-            let lastDismissed = localStorage.getItem(ANNOUNCE_LAST_DISMISS)
-            
+
+            let lastDismissed = localStorage.getItem(ANNOUNCE_LAST_DISMISS);
+
             if (lastDismissed != targetAnnounce.id) {
-                this.showTimeout = setTimeout(
-                    () => { this.setState({ show:true }) },
-                    1000
-                )
+                this.showTimeout = setTimeout(() => {
+                    this.setState({ show: true });
+                }, 1000);
             }
-            
 
             this.setState({
                 targetAnnounce: targetAnnounce,
             });
         });
     }
-    
+
     dismiss = () => {
-        this.setState({ show: false })
-        
-        localStorage.setItem(ANNOUNCE_LAST_DISMISS, this.state.targetAnnounce.id)
-    }
+        this.setState({ show: false });
+
+        localStorage.setItem(
+            ANNOUNCE_LAST_DISMISS,
+            this.state.targetAnnounce.id
+        );
+    };
 
     render() {
         const announce = this.state.targetAnnounce;
@@ -80,7 +77,7 @@ class Popup extends React.Component {
     render() {
         const announce = this.props.announce;
         const show = this.props.show;
-        const announceClass = show ? 'show' : '';
+        const announceClass = show ? "show" : "";
         return (
             <div key="real" id="home-announce" className={announceClass}>
                 <h3>New Announcement!</h3>
