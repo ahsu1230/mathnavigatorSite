@@ -1,4 +1,6 @@
 @import "../utils/_constants.sass"
+$media1: $mediaWidth3
+$media2: $mediaWidth1
 
 #view-announce
   h1
@@ -6,7 +8,7 @@
     margin: 90px 0px 50px
     text-align: center
     color: $colorTurquoise
-
+  
   h2
     width: $mediaWidth1
     margin: 0px auto 30px
@@ -15,6 +17,16 @@
     color: $colorTurquoiseDark
     font-weight: bold
 
+    @media screen and (max-width: $media1)
+      width: 80%
+    @media screen and (max-width: $media2)
+      width: 90%
+
   p
     width: $mediaWidth1
     margin: 20px auto 30px
+
+    @media screen and (max-width: $media1)
+      width: 80%
+    @media screen and (max-width: $media2)
+      width: 90%
