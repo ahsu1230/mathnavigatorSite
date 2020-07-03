@@ -1,5 +1,5 @@
 "use strict";
-require("./classEdit.styl");
+require("./classEdit.sass");
 import axios from "axios";
 import React from "react";
 import moment from "moment";
@@ -188,7 +188,7 @@ export class ClassEditPage extends React.Component {
 
         const classId = this.createClassId();
 
-        let classInformation = <h3 className="class-id">ClassId: {classId}</h3>
+        let classInformation = <h3 className="class-id">ClassId: {classId}</h3>;
         if (!this.state.isEdit) {
             classInformation = (
                 <div className="edit-section">
@@ -221,7 +221,7 @@ export class ClassEditPage extends React.Component {
 
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
-            )
+            );
         }
 
         let deleteButton = <div></div>;
