@@ -24,6 +24,7 @@ type Class struct {
 	EndDate         time.Time  `json:"endDate" db:"end_date"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       int        `json:"fullState" db:"full_state"`
+	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 }
 
 // Class Methods

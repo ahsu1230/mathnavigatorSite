@@ -1,10 +1,8 @@
-## First you need to download MySQL and GoLang.
+# Windows 10, version 2004 download
 
-* [MySQL download for Mac and Windows Directions](https://github.com/ahsu1230/mathnavigatorSite/blob/master/resources/install_mysql/guide.md). 
-* [Go Download](https://golang.org/).
+Docker is available for Windows Pro / Enterprise, and only for version 2004+ for Windows Home. To be able to use Docker, we'll need to update your system to the latest upgrade version.
 
-## Windows 10, version 2004 download 
-You can google this download or use the link here [Windows Support Website](https://support.microsoft.com/en-us/help/4027667/windows-10-update?fbclid=IwAR01JBDzt270x4OaxsNkYlBjG4-sVO21NfaEeYbHCYhcJnYilbylwXnMBdQ). This link will direct you to the Windows Support Website. 
+You can google for the Windows 10 Home 2004 update version or use the link here [Windows Support Website](https://support.microsoft.com/en-us/help/4027667/windows-10-update?fbclid=IwAR01JBDzt270x4OaxsNkYlBjG4-sVO21NfaEeYbHCYhcJnYilbylwXnMBdQ). This link will direct you to the Windows Support Website. 
 Here when you click the blue **Check for Windows Update** button at the bottom, this button will direct you to a system update on your windows computer. 
 Hopefully, you will see an update for **Windows 10, version 2004**. Please install and go through the instructions.
 
