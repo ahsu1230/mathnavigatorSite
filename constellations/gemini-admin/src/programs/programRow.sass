@@ -1,18 +1,18 @@
 @import "../_.constants.sass"
 
 #view-program
-  & span
-    display: inline-block
+  div 
+    display: flex
+    flex-direction: row
+    justify-content: flex-start
+    flex-wrap: nowrap
 
-  .small
-    width: 80px
+    span
+      width: 350px
 
-  .medium
-    width: 160px
-
-  .large
-    width: 240px
-
+    .edit
+      align-self: right
+      
   #header
     display: flex
     align-items: center
@@ -24,7 +24,7 @@
     padding: 0
     margin: 0
 
-    & div
+    div
       display: flex
       align-items: center
       height: 60px

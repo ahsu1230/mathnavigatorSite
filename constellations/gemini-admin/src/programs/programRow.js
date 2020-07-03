@@ -13,7 +13,11 @@ export class ProgramRow extends React.Component {
                 <span className="medium">{row.name}</span>
                 <span className="small">{row.grade1}</span>
                 <span className="small">{row.grade2}</span>
-                <Link to={"/program/" + row.programId + "/edit"}>Edit</Link>
+                <Link
+                    to={"/program/" + row.programId + "/edit"}
+                    className="edit">
+                    Edit
+                </Link>
             </div>
         );
     }
