@@ -29,12 +29,12 @@ func runFiller(hostAddress string) {
 
 	// Create programs
 	body := strings.NewReader(`{
-				"programId": "ap_calculus",
-				"name": "AP Calculus",
-				"grade1": 9,
-				"grade2": 12,
-				"description": "Students should take this course if they aim to take the AP Calculus Exam"
-			}`)
+		"programId": "ap_calculus",
+		"name": "AP Calculus",
+		"grade1": 9,
+		"grade2": 12,
+		"description": "Students should take this course if they aim to take the AP Calculus Exam"
+	}`)
 	sendPostRequest(hostAddress+"/api/programs/create", body)
 
 	body1 := strings.NewReader(`{
