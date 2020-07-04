@@ -24,6 +24,6 @@ describe("test", () => {
                 </Router>
             )
             .toJSON();
-        //expect(tree).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 });
