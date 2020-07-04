@@ -32,6 +32,8 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 	ur.db = db
 }
 
+//TODO
+
 // func (ur *userRepo) SearchAll(search string) ([]domains.User, error) {
 // 	results := make([]domains.User, 0)
 

@@ -21,7 +21,7 @@ type User struct {
 	Phone      string       `json:"phone"`
 	IsGuardian bool         `json:"isGuardian" db:"is_guardian"`
 	FamilyId   uint         `json:"familyId" db:"family_id"`
-	Notes      NullString   `json:"notes" db:"notes"`
+	Notes      NullString   `json:"notes"`
 }
 
 // Class Methods
@@ -34,22 +34,22 @@ func (user *User) Validate() error {
 	phone := user.Phone
 
 	// First name validation
-	if firstName == "" || len(firstName) > 32 {
+	if firstName == "" {
 		return errors.New("invalid first name")
 	}
 
 	// Last name validation
-	if lastName == "" || len(lastName) > 32 {
+	if lastName == "" {
 		return errors.New("invalid last name")
 	}
 
 	// Email validation
-	if matches, _ := regexp.MatchString(REGEX_EMAIL, email); !matches || len(email) > 64 {
+	if matches, _ := regexp.MatchString(REGEX_EMAIL, email); !matches {
 		return errors.New("invalid email")
 	}
 
 	// Phone validation
-	if matches, _ := regexp.MatchString(REGEX_PHONE, phone); !matches || len(phone) > 24 {
+	if matches, _ := regexp.MatchString(REGEX_PHONE, phone); !matches {
 		return errors.New("invalid phone")
 	}
 
