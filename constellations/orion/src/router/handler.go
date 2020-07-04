@@ -99,4 +99,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiFamilies.DELETE("/family/:id", controllers.DeleteFamily)
 		apiFamilies.POST("/search", controllers.SearchFamily)
 	}
+
+	apiAFH := h.Engine.Group("api/askforhelp")
+	{
+		apiAFH.GET("/all", controllers.GetAllAFH)
+		apiAFH.POST("/create", controllers.CreateAFH)
+		apiAFH.GET("/afh/:id", controllers.GetAFHById)
+		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
+		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
+	}
+	// apiAccounts := router.Group("api/accounts/")
 }
