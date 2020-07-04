@@ -108,7 +108,7 @@ export class ClassPage extends React.Component {
             return (
                 <div id="publish">
                     <p>
-                        You have {numUnpublished} unpublished {firstWord}.{" "}
+                        You have {numUnpublished} unpublished {firstWord}.
                         <br />
                         You have selected {numSelected} {secondWord} to publish.
                     </p>

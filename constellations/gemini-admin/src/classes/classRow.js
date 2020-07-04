@@ -5,7 +5,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 export class ClassRow extends React.Component {
-    render() {
+    render = () => {
         const row = this.props.row;
         const isUnpublished = this.props.isUnpublished;
 
@@ -36,7 +36,7 @@ export class ClassRow extends React.Component {
                 </span>
             </div>
         );
-    }
+    };
 }
 
 function renderCheckbox(
