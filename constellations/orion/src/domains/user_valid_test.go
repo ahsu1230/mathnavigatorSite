@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -31,10 +30,6 @@ func TestValidFirstName(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid first name")
 	}
 
-	user.FirstName = "Too long" + strings.Repeat("A", 32)
-	if err := user.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid first name")
-	}
 }
 
 func TestValidLastName(t *testing.T) {
@@ -61,10 +56,6 @@ func TestValidLastName(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid last name")
 	}
 
-	user.LastName = "Too long" + strings.Repeat("A", 32)
-	if err := user.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid last name")
-	}
 }
 
 func TestValidEmail(t *testing.T) {
@@ -91,10 +82,6 @@ func TestValidEmail(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid email")
 	}
 
-	user.Email = "email@email" + strings.Repeat("A", 64)
-	if err := user.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid email")
-	}
 }
 
 func TestValidPhone(t *testing.T) {
@@ -121,8 +108,4 @@ func TestValidPhone(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid phone")
 	}
 
-	user.Phone = "555" + strings.Repeat("5", 24)
-	if err := user.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid phone")
-	}
 }
