@@ -7,12 +7,12 @@
     font-family: $fontFamilyRoboto
 
     & h1
-        margin-top: 90px
-        margin-bottom: 30px
+        margin-top: $spacing10x
+        margin-bottom: $spacing4x
         color: $colorTurquoise
 
     & h4
-        margin-bottom: 20px
+        margin-bottom: $spacing3x
         color: $colorTurquoiseLight
         text-align: left
 
@@ -20,11 +20,11 @@
         display: flex
         flex-direction: row
         align-items: center
-        margin-bottom: 30px
+        margin-bottom: $spacing4x
 
         & img
-            width: 120px
-            margin-right: 60px
+            width: $propUnit4x
+            margin-right: $spacing8x
     
         & p
             margin: 0
@@ -33,14 +33,14 @@
         display: flex
         flex-direction: row
         & p
-            margin: 20px 20px 20px 0
+            margin: 0 $spacing3x $spacing3x 0
         .name
-            width: 120px
+            width: $propUnit4x
         .school
-            width: 250px
+            width: $propUnit8x
 
     #last-paragraph
-        margin-bottom: 300px
+        margin-bottom: $spacing32x
 
     @media only screen and (max-width: 700px)
         & h1, h4, p
@@ -52,10 +52,9 @@
             align-items: center
 
             & img
-                margin-left: auto
-                margin-right: auto
-                margin-bottom: 0
-                width: 90%
+                display: block
+                margin: 0 auto
+                width: $propUnit4x
         
             & p
                 margin: 5%
@@ -64,7 +63,7 @@
             display: flex
             flex-direction: column
             text-align: center
-            margin-bottom: 35px
+            margin-bottom: $spacing4x
             & p
                 margin: 0
             .name, .school

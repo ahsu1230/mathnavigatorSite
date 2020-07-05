@@ -81,8 +81,13 @@ export class InternshipPage extends React.Component {
                 <h4>Past Interns:</h4>
                 <div class="intern-main">
                     <p class="name">Cathy Y.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2020</p>
+                    <p class="school">Richard Montgomery HS 2020</p>
                     <p>Massachusetts Institute of Technology (MIT)</p>
+                </div>
+                <div class="intern-main">
+                    <p class="name">Tony W.</p>{" "}
+                    <p class="school">Richard Montgomery HS 2021</p>
+                    <p />
                 </div>
                 <div class="intern-main">
                     <p class="name">Jessica Y.</p>{" "}
@@ -102,11 +107,6 @@ export class InternshipPage extends React.Component {
                 <div class="intern-main">
                     <p class="name">Frederick Z.</p>{" "}
                     <p class="school">Montgomery Blair HS 2023</p>
-                    <p />
-                </div>
-                <div class="intern-main">
-                    <p class="name">Tony W.</p>{" "}
-                    <p class="school">Richard Montgomery HS 2021</p>
                     <p />
                 </div>
                 <div class="intern-main">
