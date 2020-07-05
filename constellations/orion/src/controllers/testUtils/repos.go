@@ -280,13 +280,13 @@ func (sessionRepo *mockSessionRepo) Delete(ids []uint) error {
 
 // Fake userRepo that implements UserRepo interface
 type mockUserRepo struct {
-	MockInitialize         func(*sql.DB)
-	MockSelectAll          func(string, int, int) ([]domains.User, error)
-	MockSelectById         func(uint) (domains.User, error)
-	MockSelectByGuardianId func(uint) ([]domains.User, error)
-	MockInsert             func(domains.User) error
-	MockUpdate             func(uint, domains.User) error
-	MockDelete             func(uint) error
+	MockInitialize       func(*sql.DB)
+	MockSelectAll        func(string, int, int) ([]domains.User, error)
+	MockSelectById       func(uint) (domains.User, error)
+	MockSelectByFamilyId func(uint) ([]domains.User, error)
+	MockInsert           func(domains.User) error
+	MockUpdate           func(uint, domains.User) error
+	MockDelete           func(uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
@@ -297,8 +297,8 @@ func (userRepo *mockUserRepo) SelectAll(search string, pageSize, offset int) ([]
 func (userRepo *mockUserRepo) SelectById(id uint) (domains.User, error) {
 	return userRepo.MockSelectById(id)
 }
-func (userRepo *mockUserRepo) SelectByGuardianId(guardianId uint) ([]domains.User, error) {
-	return userRepo.MockSelectByGuardianId(guardianId)
+func (userRepo *mockUserRepo) SelectByFamilyId(familyId uint) ([]domains.User, error) {
+	return userRepo.MockSelectByFamilyId(familyId)
 }
 func (userRepo *mockUserRepo) Insert(user domains.User) error {
 	return userRepo.MockInsert(user)

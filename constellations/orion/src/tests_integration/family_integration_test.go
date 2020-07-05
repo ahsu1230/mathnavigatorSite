@@ -127,16 +127,19 @@ func createFamily(id int) domains.Family {
 	switch id {
 	case 1:
 		return domains.Family{
+			Id:           1,
 			PrimaryEmail: "john_smith@example.com",
 			Password:     "password1",
 		}
 	case 2:
 		return domains.Family{
+			Id:           2,
 			PrimaryEmail: "bob_smith@example.com",
 			Password:     "password2",
 		}
 	case 3:
 		return domains.Family{
+			Id:           3,
 			PrimaryEmail: "foobar@example.com",
 			Password:     "password3",
 		}
