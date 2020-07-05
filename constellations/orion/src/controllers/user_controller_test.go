@@ -51,13 +51,13 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0199", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, 0, user.FamilyId)
+	assert.EqualValues(t, 0, user.AccountId)
 	assert.EqualValues(t, "notes1", user.Notes.String)
 
 }
 
-func TestGetUsersByFamily_Success(t *testing.T) {
-	testUtils.UserRepo.MockSelectByFamilyId = func(familyId uint) ([]domains.User, error) {
+func TestGetUsersByAccount_Success(t *testing.T) {
+	testUtils.UserRepo.MockSelectByAccountId = func(accountId uint) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -86,7 +86,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -102,7 +102,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, false, users[0].IsGuardian)
-	assert.EqualValues(t, 2, users[0].FamilyId)
+	assert.EqualValues(t, 2, users[0].AccountId)
 	assert.EqualValues(t, "notes1", users[0].Notes.String)
 
 	assert.EqualValues(t, 2, users[1].Id)
@@ -112,7 +112,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0199", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 2, users[1].FamilyId)
+	assert.EqualValues(t, 2, users[1].AccountId)
 	assert.EqualValues(t, "notes2", users[1].Notes.String)
 
 	assert.EqualValues(t, 2, len(users))
@@ -291,7 +291,7 @@ func TestDeleteUser_Failure(t *testing.T) {
 // Helper Methods
 //
 
-func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, familyId uint, notes string) domains.User {
+func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, accountId uint, notes string) domains.User {
 	return domains.User{
 		Id:         id,
 		FirstName:  firstName,
@@ -300,7 +300,7 @@ func createMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		Email:      email,
 		Phone:      phone,
 		IsGuardian: isGuardian,
-		FamilyId:   familyId,
+		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),
 	}
 }

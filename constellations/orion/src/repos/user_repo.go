@@ -22,7 +22,7 @@ type UserRepoInterface interface {
 	//SearchAll(string) ([]domains.User,error)
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
-	SelectByFamilyId(uint) ([]domains.User, error)
+	SelectByAccountId(uint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -91,7 +91,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.FamilyId,
+			&user.AccountId,
 			&user.Notes); errScan != nil {
 			return results, errScan
 		}
@@ -121,20 +121,20 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.Email,
 		&user.Phone,
 		&user.IsGuardian,
-		&user.FamilyId,
+		&user.AccountId,
 		&user.Notes)
 	return user, errScan
 }
 
-func (ur *userRepo) SelectByFamilyId(familyId uint) ([]domains.User, error) {
+func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE family_id=?")
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE account_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullUint(familyId))
+	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (ur *userRepo) SelectByFamilyId(familyId uint) ([]domains.User, error) {
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.FamilyId,
+			&user.AccountId,
 			&user.Notes); errScan != nil {
 			return results, errScan
 		}
@@ -172,7 +172,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 		"email," +
 		"phone, " +
 		"is_guardian," +
-		"family_id," +
+		"account_id," +
 		"notes" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
@@ -192,7 +192,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.FamilyId,
+		user.AccountId,
 		user.Notes,
 	)
 	if err != nil {
@@ -210,7 +210,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		"email=?, " +
 		"phone=?, " +
 		"is_guardian=?, " +
-		"family_id=?, " +
+		"account_id=?, " +
 		"notes=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -228,7 +228,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.FamilyId,
+		user.AccountId,
 		user.Notes,
 		id)
 	if err != nil {

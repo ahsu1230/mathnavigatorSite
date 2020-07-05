@@ -7,9 +7,9 @@ import (
 	"time"
 )
 
-var TABLE_FAMILIES = "families"
+var TABLE_ACCOUNTS= "accounts"
 
-type Family struct {
+type Account struct {
 	Id           uint         `json:"id"`
 	CreatedAt    time.Time    `json:"-" db:"created_at"`
 	UpdatedAt    time.Time    `json:"-" db:"updated_at"`
@@ -20,10 +20,10 @@ type Family struct {
 
 // Class Methods
 
-func (family *Family) Validate() error {
+func (account *Account) Validate() error {
 	// Retrieves the inputted values
-	primaryEmail := family.PrimaryEmail
-	password := family.Password
+	primaryEmail := account.PrimaryEmail
+	password := account.Password
 
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
 		return errors.New("invalid email")

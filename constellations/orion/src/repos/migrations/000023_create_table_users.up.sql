@@ -10,9 +10,9 @@ CREATE TABLE users
     email       varchar(64)  NOT NULL,
     phone       varchar(24)  NOT NULL,
     is_guardian boolean      NOT NULL DEFAULT 0,
-    family_id   int unsigned NOT NULL,
+    account_id   int unsigned NOT NULL,
     notes       varchar(64),
     PRIMARY KEY (id),
-    FOREIGN KEY (family_id) REFERENCES families (id)
+    FOREIGN KEY (account_id) REFERENCES accounts (id)
 ) AUTO_INCREMENT = 1
   DEFAULT CHARSET = UTF8MB4;

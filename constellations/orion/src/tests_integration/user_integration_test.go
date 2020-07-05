@@ -12,22 +12,22 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	family1 := createFamily(1)
-	body1 := utils.CreateJsonBody(&family1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+	account1 := createAccount(1)
+	body1 := utils.CreateJsonBody(&account1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	family2 := createFamily(2)
-	body2 := utils.CreateJsonBody(&family2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
+	account2 := createAccount(2)
+	body2 := utils.CreateJsonBody(&account2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	createAllUsers(t)
 
 	// Call Get All!
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
 
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -48,7 +48,7 @@ func Test_CreateUsers(t *testing.T) {
 	assert.EqualValues(t, 2, len(users))
 
 	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 
 }
 
@@ -84,22 +84,22 @@ func Test_CreateUsers(t *testing.T) {
 // 	resetTable(t, domains.TABLE_USERS)
 // }
 
-// Test: Create 3 Users and GetUserByFamilyId
-func Test_GetUsersByFamilyId(t *testing.T) {
-	family1 := createFamily(1)
-	body1 := utils.CreateJsonBody(&family1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body1)
+// Test: Create 3 Users and GetUserByAccountId
+func Test_GetUsersByAccountId(t *testing.T) {
+	account1 := createAccount(1)
+	body1 := utils.CreateJsonBody(&account1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	family2 := createFamily(2)
-	body2 := utils.CreateJsonBody(&family2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body2)
+	account2 := createAccount(2)
+	body2 := utils.CreateJsonBody(&account2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	createAllUsers(t)
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
 
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -120,15 +120,15 @@ func Test_GetUsersByFamilyId(t *testing.T) {
 	assert.EqualValues(t, 2, len(users))
 
 	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 
 }
 
-// Test: Create 1 Family, 1 User, Update it, GetUserById()
+// Test: Create 1 Account, 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
-	family := createFamily(1)
-	body := utils.CreateJsonBody(&family)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	account := createAccount(1)
+	body := utils.CreateJsonBody(&account)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Create 1 User
@@ -155,14 +155,14 @@ func Test_UpdateUser(t *testing.T) {
 	assertUser(t, 4, user)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	family := createFamily(1)
-	body := utils.CreateJsonBody(&family)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/families/create", body)
+	account := createAccount(1)
+	body := utils.CreateJsonBody(&account)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Create
@@ -180,7 +180,7 @@ func Test_DeleteUser(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_FAMILIES)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 
 }
 
@@ -195,7 +195,7 @@ func createUser(id int) domains.User {
 			Email:      "john_smith@example.com",
 			Phone:      "555-555-0100",
 			IsGuardian: true,
-			FamilyId:   1,
+			AccountId:   1,
 			Notes:      domains.NewNullString("notes1"),
 		}
 	case 2:
@@ -206,7 +206,7 @@ func createUser(id int) domains.User {
 			Email:      "bob_smith@example.com",
 			Phone:      "555-555-0101",
 			IsGuardian: false,
-			FamilyId:   2,
+			AccountId:   2,
 			Notes:      domains.NewNullString("notes2"),
 		}
 	case 3:
@@ -217,7 +217,7 @@ func createUser(id int) domains.User {
 			Email:      "foobar@example.com",
 			Phone:      "555-555-0102",
 			IsGuardian: false,
-			FamilyId:   2,
+			AccountId:   2,
 			Notes:      domains.NewNullString("notes3"),
 		}
 	case 4:
@@ -228,7 +228,7 @@ func createUser(id int) domains.User {
 			Email:      "austinhsu@example.com",
 			Phone:      "555-555-0103",
 			IsGuardian: false,
-			FamilyId:   1,
+			AccountId:   1,
 			Notes:      domains.NewNullString("notes4"),
 		}
 	default:
@@ -254,7 +254,7 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, "john_smith@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0100", user.Phone)
 		assert.EqualValues(t, true, user.IsGuardian)
-		assert.EqualValues(t, 1, user.FamilyId)
+		assert.EqualValues(t, 1, user.AccountId)
 		assert.EqualValues(t, "notes1", user.Notes.String)
 	case 2:
 		assert.EqualValues(t, "Bob", user.FirstName)
@@ -263,7 +263,7 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, "bob_smith@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0101", user.Phone)
 		assert.EqualValues(t, false, user.IsGuardian)
-		assert.EqualValues(t, 2, user.FamilyId)
+		assert.EqualValues(t, 2, user.AccountId)
 		assert.EqualValues(t, "notes2", user.Notes.String)
 
 	case 3:
@@ -273,7 +273,7 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, "foobar@example.com", user.Email)
 		assert.EqualValues(t, "555-555-0102", user.Phone)
 		assert.EqualValues(t, false, user.IsGuardian)
-		assert.EqualValues(t, 2, user.FamilyId)
+		assert.EqualValues(t, 2, user.AccountId)
 		assert.EqualValues(t, "notes3", user.Notes.String)
 
 	}

@@ -102,19 +102,19 @@ func TestSelectUser(t *testing.T) {
 }
 
 //
-// Select Many By Family ID
+// Select Many By Account ID
 //
-func TestSelectUsersByFamilyId(t *testing.T) {
+func TestSelectUsersByAccountId(t *testing.T) {
 	db, mock, repo := initUserTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	rows := getUserRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE family_id=?").
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE account_id=?").
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByFamilyId(2)
+	got, err := repo.SelectByAccountId(2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -199,7 +199,7 @@ func TestUpdateUser(t *testing.T) {
 		Email:      "bob_joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
-		FamilyId:   0,
+		AccountId:   0,
 		Notes:      domains.NewNullString("notes"),
 	}
 	err := repo.Update(1, user)
@@ -252,7 +252,7 @@ func getUserRows() *sqlmock.Rows {
 		"Email",
 		"Phone",
 		"IsGuardian",
-		"FamilyId",
+		"AccountId",
 		"Notes",
 	}).AddRow(
 		1,
@@ -282,7 +282,7 @@ func getUser() domains.User {
 		Email:      "john_smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: false,
-		FamilyId:   2,
+		AccountId:   2,
 		Notes:      domains.NewNullString(""),
 	}
 }

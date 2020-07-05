@@ -49,11 +49,11 @@ func GetUserById(c *gin.Context) {
 	}
 }
 
-func GetUsersByFamilyId(c *gin.Context) {
+func GetUsersByAccountId(c *gin.Context) {
 	// Incoming parameters
-	familyId := ParseParamUint(c.Param("familyId"))
+	accountId := ParseParamUint(c.Param("accountId"))
 
-	user, err := repos.UserRepo.SelectByFamilyId(familyId)
+	user, err := repos.UserRepo.SelectByAccountId(accountId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
