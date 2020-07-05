@@ -37,6 +37,7 @@ export class ClassEditPage extends React.Component {
 
             // other
             focusedInput: undefined,
+            fullState: "",
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -133,6 +134,14 @@ export class ClassEditPage extends React.Component {
 
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
+    }
+
+    onChangeSelect = (e) => {
+        const value = e.target.value;
+        console.log(value);
+        this.setState({
+            fullState: value
+        });
     }
 
     onClickSave() {
@@ -343,6 +352,14 @@ export class ClassEditPage extends React.Component {
                     onAddSessions={this.onAddSessions}
                     onDeleteSession={this.onDeleteSession}
                 />
+
+                <h3>Class Avalibility</h3>
+
+                <select onChange={(e) => this.onChangeSelect(e)}>
+                    <option value = "0">Normal</option>
+                    <option value = "1">Almost Full</option>
+                    <option value = "2">Full</option>
+                </select>
 
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
