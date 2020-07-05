@@ -30,13 +30,9 @@ export class HomeAnnounce extends React.Component {
                 targetAnnounce.message
             );
 
-            let lastDismissed = localStorage.getItem(ANNOUNCE_LAST_DISMISS);
-
-            if (lastDismissed != targetAnnounce.id) {
-                this.showTimeout = setTimeout(() => {
-                    this.setState({ show: true });
-                }, 1000);
-            }
+            this.showTimeout = setTimeout(() => {
+                this.setState({ show: true });
+            }, 1000);
 
             this.setState({
                 targetAnnounce: targetAnnounce,
@@ -46,11 +42,6 @@ export class HomeAnnounce extends React.Component {
 
     dismiss = () => {
         this.setState({ show: false });
-
-        localStorage.setItem(
-            ANNOUNCE_LAST_DISMISS,
-            this.state.targetAnnounce.id
-        );
     };
 
     render() {
