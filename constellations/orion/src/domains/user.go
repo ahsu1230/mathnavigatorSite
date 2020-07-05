@@ -20,7 +20,7 @@ type User struct {
 	Email      string       `json:"email"`
 	Phone      string       `json:"phone"`
 	IsGuardian bool         `json:"isGuardian" db:"is_guardian"`
-	AccountId   uint         `json:"accountId" db:"account_id"`
+	AccountId  uint         `json:"accountId" db:"account_id"`
 	Notes      NullString   `json:"notes"`
 }
 

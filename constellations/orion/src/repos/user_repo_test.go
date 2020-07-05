@@ -199,7 +199,7 @@ func TestUpdateUser(t *testing.T) {
 		Email:      "bob_joe@example.com",
 		Phone:      "555-555-0199",
 		IsGuardian: true,
-		AccountId:   0,
+		AccountId:  0,
 		Notes:      domains.NewNullString("notes"),
 	}
 	err := repo.Update(1, user)
@@ -282,7 +282,7 @@ func getUser() domains.User {
 		Email:      "john_smith@example.com",
 		Phone:      "555-555-0100",
 		IsGuardian: false,
-		AccountId:   2,
+		AccountId:  2,
 		Notes:      domains.NewNullString(""),
 	}
 }

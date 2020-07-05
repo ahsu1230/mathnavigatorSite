@@ -280,13 +280,13 @@ func (sessionRepo *mockSessionRepo) Delete(ids []uint) error {
 
 // Fake userRepo that implements UserRepo interface
 type mockUserRepo struct {
-	MockInitialize       func(*sql.DB)
-	MockSelectAll        func(string, int, int) ([]domains.User, error)
-	MockSelectById       func(uint) (domains.User, error)
+	MockInitialize        func(*sql.DB)
+	MockSelectAll         func(string, int, int) ([]domains.User, error)
+	MockSelectById        func(uint) (domains.User, error)
 	MockSelectByAccountId func(uint) ([]domains.User, error)
-	MockInsert           func(domains.User) error
-	MockUpdate           func(uint, domains.User) error
-	MockDelete           func(uint) error
+	MockInsert            func(domains.User) error
+	MockUpdate            func(uint, domains.User) error
+	MockDelete            func(uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations

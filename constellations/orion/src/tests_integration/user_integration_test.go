@@ -195,7 +195,7 @@ func createUser(id int) domains.User {
 			Email:      "john_smith@example.com",
 			Phone:      "555-555-0100",
 			IsGuardian: true,
-			AccountId:   1,
+			AccountId:  1,
 			Notes:      domains.NewNullString("notes1"),
 		}
 	case 2:
@@ -206,7 +206,7 @@ func createUser(id int) domains.User {
 			Email:      "bob_smith@example.com",
 			Phone:      "555-555-0101",
 			IsGuardian: false,
-			AccountId:   2,
+			AccountId:  2,
 			Notes:      domains.NewNullString("notes2"),
 		}
 	case 3:
@@ -217,7 +217,7 @@ func createUser(id int) domains.User {
 			Email:      "foobar@example.com",
 			Phone:      "555-555-0102",
 			IsGuardian: false,
-			AccountId:   2,
+			AccountId:  2,
 			Notes:      domains.NewNullString("notes3"),
 		}
 	case 4:
@@ -228,7 +228,7 @@ func createUser(id int) domains.User {
 			Email:      "austinhsu@example.com",
 			Phone:      "555-555-0103",
 			IsGuardian: false,
-			AccountId:   1,
+			AccountId:  1,
 			Notes:      domains.NewNullString("notes4"),
 		}
 	default:

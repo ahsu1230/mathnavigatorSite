@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var TABLE_ACCOUNTS= "accounts"
+var TABLE_ACCOUNTS = "accounts"
 
 type Account struct {
 	Id           uint         `json:"id"`
