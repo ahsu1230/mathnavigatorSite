@@ -27,203 +27,205 @@ func main() {
 }
 
 func runFiller(hostAddress string) {
-
 	// Create programs
-	body := strings.NewReader(createProgram(
+	createProgram(
+		hostAddress,
 		"ap_calculus",
 		"AP Calculus",
 		"9",
 		"12",
 		"Students should take this course if they aim to take the AP Calculus Exam",
-	))
-	sendPostRequest(hostAddress+"/api/programs/create", body)
+	)
 
-	body1 := strings.NewReader(createProgram(
+	createProgram(
+		hostAddress,
 		"ap_java",
 		"AP Java",
 		"10",
 		"12",
 		"Students should take this course if they aim to take the AP Java Exam",
-	))
-	sendPostRequest(hostAddress+"/api/programs/create", body1)
+	)
 
-	body2 := strings.NewReader(createProgram(
+	createProgram(
+		hostAddress,
 		"sat_math",
 		"SAT Math",
 		"8",
 		"11",
 		"Students should take the course if they aim to take the SAT Math Exam",
-	))
-	sendPostRequest(hostAddress+"/api/programs/create", body2)
+	)
 
 	// Create semesters
-	body3 := strings.NewReader(createSemester(
+	createSemester(
+		hostAddress,
 		"2020_fall",
 		"Fall 2020",
-	))
-	sendPostRequest(hostAddress+"/api/semesters/create", body3)
+	)
 
-	body4 := strings.NewReader(createSemester(
+	createSemester(
+		hostAddress,
 		"2021_summer",
 		"Summer 2021",
-	))
-	sendPostRequest(hostAddress+"/api/semesters/create", body4)
+	)
 
-	body5 := strings.NewReader(createSemester(
+	createSemester(
+		hostAddress,
 		"2021_winter",
 		"Winter 2021",
-	))
-	sendPostRequest(hostAddress+"/api/semesters/create", body5)
+	)
 
 	// Create locations
-	body6 := strings.NewReader(createLocation(
+	createLocation(
+		hostAddress,
 		"wchs",
 		"11300 Gainsborough Rd",
 		"Potomac",
 		"MD",
 		"20854",
-	))
-	sendPostRequest(hostAddress+"/api/locations/create", body6)
+	)
 
-	body7 := strings.NewReader(createLocation(
+	createLocation(
+		hostAddress,
 		"house1",
 		"123 Sesame St",
 		"Rockville",
 		"MD",
 		"20854",
-	))
-	sendPostRequest(hostAddress+"/api/locations/create", body7)
+	)
 
 	// Create achievements
-	body8 := strings.NewReader(createAchieve(
+	createAchieve(
+		hostAddress,
 		"2020",
 		"100% of students scored above a 1550 on SAT!",
-	))
-	sendPostRequest(hostAddress+"/api/achievements/create", body8)
+	)
 
-	body9 := strings.NewReader(createAchieve(
+	createAchieve(
+		hostAddress,
 		"2020",
 		"5 students scored an 800 on SAT Math!",
-	))
-	sendPostRequest(hostAddress+"/api/achievements/create", body9)
+	)
 
-	body10 := strings.NewReader(createAchieve(
+	createAchieve(
+		hostAddress,
 		"2019",
 		"10 students scored a 5 on AP Java!",
-	))
-	sendPostRequest(hostAddress+"/api/achievements/create", body10)
+	)
 
 	// Create announcements
-	body11 := strings.NewReader(createAnnounce(
+	createAnnounce(
+		hostAddress,
 		"Author Name",
 		"The Summer 2020 session of SAT Math",
 		"true",
-	))
-	sendPostRequest(hostAddress+"/api/announcements/create", body11)
+	)
 
-	body12 := strings.NewReader(createAnnounce(
+	createAnnounce(
+		hostAddress,
 		"Harry Potter",
 		"The Summer 2021 session of SAT Math",
 		"false",
-	))
-	sendPostRequest(hostAddress+"/api/announcements/create", body12)
+	)
 
 	// Create classes
-	body13 := strings.NewReader(createClass(
+	createClass(
+		hostAddress,
 		"ap_calculus",
 		"2020_fall",
 		"class1",
 		"ap_calculus_2020_fall_class1",
 		"wchs",
 		"Tues 1pm - 2pm",
-	))
-	sendPostRequest(hostAddress+"/api/classes/create", body13)
+	)
 
-	body14 := strings.NewReader(createClass(
+	createClass(
+		hostAddress,
 		"ap_java",
 		"2020_fall",
 		"class1",
 		"ap_java_2020_fall_class1",
 		"house1",
 		"Tues 1pm - 2pm",
-	))
-	sendPostRequest(hostAddress+"/api/classes/create", body14)
+	)
 
 	// Create sessions
-	body15 := strings.NewReader(createSession(
+	createSession(
+		hostAddress,
 		"id_1",
 		"false",
-	))
-	sendPostRequest(hostAddress+"/api/sessions/create", body15)
+	)
 
-	body16 := strings.NewReader(createSession(
+	createSession(
+		hostAddress,
 		"id_2",
 		"true",
-	))
-	sendPostRequest(hostAddress+"/api/sessions/create", body16)
-
+	)
 }
 
-func createProgram(programId string, name string, grade1 string, grade2 string, description string) string {
-	programBody := fmt.Sprintf(`{
+func createProgram(hostAddress, programId string, name string, grade1 string, grade2 string, description string) error {
+	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
 		"grade1": %s,
 		"grade2": %s,
 		"description": "%s"
-	}`, programId, name, grade1, grade2, description)
+	}`, programId, name, grade1, grade2, description))
 	fmt.Println(programId + " was created")
-	return programBody
+	sendPostRequest(hostAddress+"/api/programs/create", programBody)
+	return nil
 }
 
-func createSemester(semesterId string, title string) string {
-	semesterBody := fmt.Sprintf(`{
+func createSemester(hostAddress, semesterId string, title string) error {
+	semesterBody := strings.NewReader(fmt.Sprintf(`{
 		"semesterId": "%s",
 		"title": "%s"
-	}`, semesterId, title)
-	return semesterBody
+	}`, semesterId, title))
+	sendPostRequest(hostAddress+"/api/semesters/create", semesterBody)
+	return nil
 }
 
-func createLocation(locationId, street, city, state, zipcode string) string {
-	locationBody := fmt.Sprintf(`{
+func createLocation(hostAddress, locationId, street, city, state, zipcode string) error {
+	locationBody := strings.NewReader(fmt.Sprintf(`{
 		"locationId": "%s",
 		"street": "%s",
 		"city": "%s",
 		"state": "%s",
 		"zipcode": "%s"
-	}`, locationId, street, city, state, zipcode)
-	return locationBody
+	}`, locationId, street, city, state, zipcode))
+	sendPostRequest(hostAddress+"/api/locations/create", locationBody)
+	return nil
 }
 
-func createAchieve(year, message string) string {
-	achieveBody := fmt.Sprintf(`{
+func createAchieve(hostAddress, year, message string) error {
+	achieveBody := strings.NewReader(fmt.Sprintf(`{
 		"year": %s,
 		"message": "%s"
-	}`, year, message)
-	return achieveBody
+	}`, year, message))
+	sendPostRequest(hostAddress+"/api/achievements/create", achieveBody)
+	return nil
 }
 
-func createAnnounce(author, message, onHomePage string) string {
+func createAnnounce(hostAddress, author, message, onHomePage string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 
-	announceBody := fmt.Sprintf(`{
+	announceBody := strings.NewReader(fmt.Sprintf(`{
 		"postedAt": %s,
 		"author": "%s",
 		"message": "%s",
 		"onHomePage": %s
-	}`, nowJson, author, message, onHomePage)
-
-	return announceBody
+	}`, nowJson, author, message, onHomePage))
+	sendPostRequest(hostAddress+"/api/announcements/create", announceBody)
+	return nil
 }
 
-func createClass(programId, semesterId, classKey, classId, locationId, times string) string {
+func createClass(hostAddress, programId, semesterId, classKey, classId, locationId, times string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
-	var later1 = now.Add(time.Hour * 24 * 30)
-	laterJson, _ := later1.MarshalJSON()
+	var later = now.Add(time.Hour * 24 * 30)
+	laterJson, _ := later.MarshalJSON()
 
-	classBody := fmt.Sprintf(`{
+	classBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"semesterId": "%s",
 		"classKey": "%s",
@@ -232,27 +234,31 @@ func createClass(programId, semesterId, classKey, classId, locationId, times str
 		"times": "%s",
 		"startDate": %s,
 		"endDate": %s
-	}`, programId, semesterId, classKey, classId, locationId, times, nowJson, laterJson)
-	return classBody
+	}`, programId, semesterId, classKey, classId, locationId, times, nowJson, laterJson))
+	sendPostRequest(hostAddress+"/api/classes/create", classBody)
+	return nil
 }
 
-func createSession(classId, cancelled string) string {
+func createSession(hostAddress, classId, cancelled string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
+	var later = now.Add(time.Hour * 24 * 30)
+	laterJson, _ := later.MarshalJSON()
 
-	sessionBody := fmt.Sprintf(`{
+	sessionBody := strings.NewReader(fmt.Sprintf(`{
 		"classId": "%s"
 		"startsAt": %s
 		"endsAt": %s
 		"cancelled": %s
-	}`, classId, nowJson, nowJson, cancelled)
-	return sessionBody
+	}`, classId, nowJson, laterJson, cancelled))
+	sendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
+	return nil
 }
 
 func sendPostRequest(url string, body io.Reader) {
 	resp, err := http.Post(url, "application/json; charset=UTF-8", body)
 	if err != nil {
-		log.Println("smth failed")
+		log.Println("Post request was not fulfilled.")
 	}
 	if resp.StatusCode != 200 && resp.StatusCode != 204 {
 		log.Println("Response status was not successful.")
