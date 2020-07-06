@@ -8,50 +8,50 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FamilySearchBody struct {
+type AccountSearchBody struct {
 	PrimaryEmail string
 }
 
-func GetFamilyById(c *gin.Context) {
+func GetAccountById(c *gin.Context) {
 	// Incoming parameters
 	id := ParseParamId(c)
 
-	family, err := repos.FamilyRepo.SelectById(id)
+	account, err := repos.AccountRepo.SelectById(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, &family)
+		c.JSON(http.StatusOK, &account)
 	}
 }
 
-func SearchFamily(c *gin.Context) {
+func SearchAccount(c *gin.Context) {
 	// Incoming parameters
-	var body FamilySearchBody
+	var body AccountSearchBody
 	c.BindJSON(&body)
 	primaryEmail := body.PrimaryEmail
 
-	family, err := repos.FamilyRepo.SelectByPrimaryEmail(primaryEmail)
+	account, err := repos.AccountRepo.SelectByPrimaryEmail(primaryEmail)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, &family)
+		c.JSON(http.StatusOK, &account)
 	}
 }
 
-func CreateFamily(c *gin.Context) {
+func CreateAccount(c *gin.Context) {
 	// Incoming JSON
-	var familyJson domains.Family
-	c.BindJSON(&familyJson)
+	var accountJson domains.Account
+	c.BindJSON(&accountJson)
 
-	if err := familyJson.Validate(); err != nil {
+	if err := accountJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := repos.FamilyRepo.Insert(familyJson)
+	err := repos.AccountRepo.Insert(accountJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -60,19 +60,19 @@ func CreateFamily(c *gin.Context) {
 	}
 }
 
-func UpdateFamily(c *gin.Context) {
+func UpdateAccount(c *gin.Context) {
 	// Incoming JSON & Parameters
 	id := ParseParamId(c)
-	var familyJson domains.Family
-	c.BindJSON(&familyJson)
+	var accountJson domains.Account
+	c.BindJSON(&accountJson)
 
-	if err := familyJson.Validate(); err != nil {
+	if err := accountJson.Validate(); err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := repos.FamilyRepo.Update(id, familyJson)
+	err := repos.AccountRepo.Update(id, accountJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -81,11 +81,11 @@ func UpdateFamily(c *gin.Context) {
 	}
 }
 
-func DeleteFamily(c *gin.Context) {
+func DeleteAccount(c *gin.Context) {
 	// Incoming Parameters
 	id := ParseParamId(c)
 
-	err := repos.FamilyRepo.Delete(id)
+	err := repos.AccountRepo.Delete(id)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
