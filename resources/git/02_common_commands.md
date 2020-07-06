@@ -96,8 +96,6 @@ git log
 git fetch
 git pull origin master
 git pull origin LOCAL_BRANCH_NAME
-
-git push origin LOCAL_BRANCH_NAME
 ```
 
 *TIP* It's advised to always call `git fetch` before using `git pull`. That way, you can download the latest updates from the remote repository. Without doing this, your remote may be out-of-date and end up pulling old updates from the remote repository. This may cause merge conflicts later.
