@@ -49,7 +49,7 @@ type Class struct {
 	Times           string     `json:"times"`
 <<<<<<< HEAD
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
-=======
+-=======
 	FullState       int        `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 >>>>>>> a711987b69fd2bf2cc26c2b1448318acd198725c
@@ -58,7 +58,7 @@ type Class struct {
 
 As you can see, Git is having trouble identifying what fields should be part of Class. There is code portion from two branches separated by `=======`. The top portion (after `HEAD`) are local changes (what you had before the `git pull`). The bottom portion is "incoming" changes (changes coming from the merging branch). So if you're pulling from master, the bottom code portion is referring to the most up-to-date changes in the remote master branch codebase.
 
-Let's look at the changes in more detail. When resolving merge conflicts, you MUST keenly observe both code segments. On one hand, one branch (local branch, current changes) is saying `PaymentNotes` should be part of the struct. The other branch (incoming branch) is saying the `FullState` and `PricePerSession` should be part of the struct. This usually happens if two developers were working on or made changes to this Class struct. 
+Let's look at the changes in more detail. When resolving merge conflicts, you MUST keenly observe both code segments. On one hand, one branch (local branch, current changes) is saying `PaymentNotes` should be part of the struct. The other branch (incoming branch) is saying the `FullState` and `PricePerSession` should be part of the struct. This usually happens if two developers simultaneously made changes to this Class struct. 
 
 Turns out that in this case, we actually want both to be part of the Class struct. So we can combine the two code segments together and remove the `<<<<<<`, `======`, `>>>>>>` that would fail the code compilation.
 
@@ -81,7 +81,15 @@ type Class struct {
 }
 ```
 
-Fortunately, this merge conflict example is very easy to resolve. Once we are done resolving, input this in Terminal.
+Fortunately, this merge conflict example is very easy to resolve. But the process of more complicated merge conflicts is the same.
+
+- Identify which files have merge conflicts
+- Observe which lines of the codebase have incompatible changes (and observe the contents of both codeblocks)
+- Select the final change that needs to persist to the *master* branch.
+- Remove extraneous characters from the merge conflict (`<<<`, `===`, `>>>`).
+- Save and commit.
+
+Once we are done resolving, input this in Terminal.
 
 ```
 git status          <- checks for any other remaining files with merge conflicts
