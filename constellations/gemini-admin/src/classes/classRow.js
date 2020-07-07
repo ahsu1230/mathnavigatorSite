@@ -29,7 +29,7 @@ export class ClassRow extends React.Component {
                     {moment(row.endDate).format("M/D/YYYY")}
                 </span>
                 <span className="large">{row.times}</span>
-                <Link to={"/class/" + row.classId + "/edit"}>Edit</Link>
+                <Link to={"/classes/" + row.classId + "/edit"}>Edit</Link>
             </div>
         );
     }

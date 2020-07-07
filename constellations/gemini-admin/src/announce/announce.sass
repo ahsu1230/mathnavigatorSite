@@ -1,0 +1,62 @@
+@import "../_.constants.sass"
+
+#view-announce
+    width: 100%
+    height: 400px
+    padding: 0 $spacing2x
+    box-sizing: border-box
+    color: $colorGrayDark
+    font-family: $fontFamilyRoboto
+
+    & h1
+        margin: $spacing4x 0
+        line-height: $lineHeight3
+        font-size: $fontSize3
+    
+    & ul
+        margin: 0
+        padding: 0
+        list-style: none
+
+    & .announce-list-row
+        display: flex
+        flex-direction: row
+        align-items: center
+        padding: $spacing2x 0
+        border-bottom: 1px solid $colorGrayLight
+
+        &.subheader
+            border-bottom: 2px solid $colorGrayLight
+
+        & li
+            &.li-med
+                width: $spacing24x
+
+                &.scheduled
+                    font-style: italic
+                    color: $colorGrayMed
+                &.published
+                    color: $colorTurquoise
+
+            &.li-large
+                flex-grow: 1
+                width: $spacing56x
+                margin-right: $spacing4x
+                
+            &.li-small
+                width: $spacing12x
+
+            & div
+                line-height: $lineHeight1
+
+        & a
+            margin: 0px 20px
+
+    .announcement-button
+        display: inline-block
+        margin-top: $spacing4x
+        padding: $spacing2x $spacing4x
+        border-radius: $spacing1x
+        background-color: $colorTurquoise
+        text-align: center
+        color: $colorWhite

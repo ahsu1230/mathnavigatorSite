@@ -1,5 +1,5 @@
 "use strict";
-require("./achieveEdit.styl");
+require("./achieveEdit.sass");
 import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";

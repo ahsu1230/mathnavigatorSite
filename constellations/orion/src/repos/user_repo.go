@@ -3,7 +3,7 @@ package repos
 import (
 	"database/sql"
 	"time"
-
+	//"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
@@ -19,9 +19,10 @@ type userRepo struct {
 // Interface to implement
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
+	//SearchAll(string) ([]domains.User,error)
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
-	SelectByGuardianId(uint) ([]domains.User, error)
+	SelectByAccountId(uint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -30,6 +31,25 @@ type UserRepoInterface interface {
 func (ur *userRepo) Initialize(db *sql.DB) {
 	ur.db = db
 }
+
+//TODO
+
+// func (ur *userRepo) SearchAll(search string) ([]domains.User, error) {
+// 	results := make([]domains.User, 0)
+
+// 	//var query string
+
+// 	query := fmt.Sprintf("SELECT * FROM users WHERE first_name CONTAINS %s",search)
+
+// 	//query = "SELECT * FROM users WHERE first_name CONTAINS ?" //? OR middle_name contains ? OR last_name contains ? OR email contains ? "
+// 	stmt, err := ur.db.Prepare(query)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer stmt.Close()
+
+// 	return results, nil
+// }
 
 func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	results := make([]domains.User, 0)
@@ -71,7 +91,8 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.GuardianId); errScan != nil {
+			&user.AccountId,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -100,19 +121,20 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.Email,
 		&user.Phone,
 		&user.IsGuardian,
-		&user.GuardianId)
+		&user.AccountId,
+		&user.Notes)
 	return user, errScan
 }
 
-func (ur *userRepo) SelectByGuardianId(guardianId uint) ([]domains.User, error) {
+func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE guardian_id=?")
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE account_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullUint(guardianId))
+	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +153,8 @@ func (ur *userRepo) SelectByGuardianId(guardianId uint) ([]domains.User, error) 
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.GuardianId); errScan != nil {
+			&user.AccountId,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -149,8 +172,9 @@ func (ur *userRepo) Insert(user domains.User) error {
 		"email," +
 		"phone, " +
 		"is_guardian," +
-		"guardian_id" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"account_id," +
+		"notes" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -168,7 +192,8 @@ func (ur *userRepo) Insert(user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.GuardianId,
+		user.AccountId,
+		user.Notes,
 	)
 	if err != nil {
 		return err
@@ -185,7 +210,8 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		"email=?, " +
 		"phone=?, " +
 		"is_guardian=?, " +
-		"guardian_id=? " +
+		"account_id=?, " +
+		"notes=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -202,7 +228,8 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.GuardianId,
+		user.AccountId,
+		user.Notes,
 		id)
 	if err != nil {
 		return err

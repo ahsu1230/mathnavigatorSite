@@ -82,7 +82,7 @@ func CreateMockSession(id uint, classId string, startsAt time.Time, endsAt time.
 	}
 }
 
-func CreateMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, guardianId uint) domains.User {
+func CreateMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, accountId uint, notes string) domains.User {
 	return domains.User{
 		Id:         id,
 		FirstName:  firstName,
@@ -91,6 +91,19 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		Email:      email,
 		Phone:      phone,
 		IsGuardian: isGuardian,
-		GuardianId: domains.NewNullUint(guardianId),
+		AccountId:  accountId,
+		Notes:      domains.NewNullString(notes),
+	}
+}
+
+func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
+	return domains.AskForHelp{
+		Id:         id,
+		Title:      title,
+		Date:       date,
+		TimeString: timeString,
+		Subject:    subject,
+		LocationId: locationId,
+		Notes:      domains.NewNullString(notes),
 	}
 }

@@ -1,5 +1,5 @@
 "use strict";
-require("./announceEditDateTime.styl");
+require("./announceEditDateTime.sass");
 import React from "react";
 import moment from "moment";
 

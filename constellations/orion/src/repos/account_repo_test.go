@@ -11,25 +11,25 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-func initFamilyTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.FamilyRepoInterface) {
+func initAccountTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AccountRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestFamilyRepo(db)
+	repo := repos.CreateTestAccountRepo(db)
 	return db, mock, repo
 }
 
 //
 // Test Search
 //
-func Test_SearchFamily(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_SearchAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getFamilyRows()
-	mock.ExpectPrepare(`^SELECT (.+) FROM families WHERE (.+)`).
+	rows := getAccountRows()
+	mock.ExpectPrepare(`^SELECT (.+) FROM accounts WHERE (.+)`).
 		ExpectQuery().
 		WillReturnRows(rows)
 
@@ -39,7 +39,7 @@ func Test_SearchFamily(t *testing.T) {
 	}
 
 	// Validate results
-	want := getFamily()
+	want := getAccount()
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
 	}
@@ -51,13 +51,13 @@ func Test_SearchFamily(t *testing.T) {
 //
 // Select One
 //
-func Test_SelectFamily(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_SelectAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getFamilyRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM families WHERE id=?").
+	rows := getAccountRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM accounts WHERE id=?").
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
@@ -67,7 +67,7 @@ func Test_SelectFamily(t *testing.T) {
 	}
 
 	// Validate results
-	want := getFamily()
+	want := getAccount()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -80,13 +80,13 @@ func Test_SelectFamily(t *testing.T) {
 //
 // Select One By Primary Email
 //
-func Test_SelectFamilyByPrimaryEmail(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_SelectAccountByPrimaryEmail(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getFamilyRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM families WHERE primary_email=?").
+	rows := getAccountRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM accounts WHERE primary_email=?").
 		ExpectQuery().
 		WithArgs("john_smith@example.com").
 		WillReturnRows(rows)
@@ -96,7 +96,7 @@ func Test_SelectFamilyByPrimaryEmail(t *testing.T) {
 	}
 
 	// Validate results
-	want := getFamily()
+	want := getAccount()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -109,13 +109,13 @@ func Test_SelectFamilyByPrimaryEmail(t *testing.T) {
 //
 // Create
 //
-func Test_InsertFamily(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_InsertAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO families").
+	mock.ExpectPrepare("^INSERT INTO accounts").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
@@ -123,8 +123,8 @@ func Test_InsertFamily(t *testing.T) {
 			"john_smith@example.com",
 			"password",
 		).WillReturnResult(result)
-	family := getFamily()
-	err := repo.Insert(family)
+	account := getAccount()
+	err := repo.Insert(account)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -138,13 +138,13 @@ func Test_InsertFamily(t *testing.T) {
 //
 // Update
 //
-func Test_UpdateFamily(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_UpdateAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE families SET (.*) WHERE id=?").
+	mock.ExpectPrepare("^UPDATE accounts SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
@@ -152,7 +152,7 @@ func Test_UpdateFamily(t *testing.T) {
 			"password2",
 			1,
 		).WillReturnResult(result)
-	family := domains.Family{
+	account := domains.Account{
 		Id:           1,
 		CreatedAt:    testUtils.TimeNow,
 		UpdatedAt:    testUtils.TimeNow,
@@ -160,7 +160,7 @@ func Test_UpdateFamily(t *testing.T) {
 		PrimaryEmail: "bob_joe@example.com",
 		Password:     "password2",
 	}
-	err := repo.Update(1, family)
+	err := repo.Update(1, account)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -174,13 +174,13 @@ func Test_UpdateFamily(t *testing.T) {
 //
 // Delete
 //
-func Test_DeleteFamily(t *testing.T) {
-	db, mock, repo := initFamilyTest(t)
+func Test_DeleteAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM families WHERE id=?").
+	mock.ExpectPrepare("^DELETE FROM accounts WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
@@ -198,7 +198,7 @@ func Test_DeleteFamily(t *testing.T) {
 //
 // Helper Methods
 //
-func getFamilyRows() *sqlmock.Rows {
+func getAccountRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
@@ -216,8 +216,8 @@ func getFamilyRows() *sqlmock.Rows {
 	)
 }
 
-func getFamily() domains.Family {
-	return domains.Family{
+func getAccount() domains.Account {
+	return domains.Account{
 		Id:           1,
 		CreatedAt:    testUtils.TimeNow,
 		UpdatedAt:    testUtils.TimeNow,
