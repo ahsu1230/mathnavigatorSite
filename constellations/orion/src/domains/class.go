@@ -36,6 +36,8 @@ func (class *Class) Validate() error {
 	times := class.Times
 	startDate := class.StartDate
 	endDate := class.EndDate
+	pricePerSession := class.PricePerSession
+	priceLump := class.PriceLump
 
 	// Class Key validation
 	if classKey.Valid {
@@ -57,6 +59,12 @@ func (class *Class) Validate() error {
 	// End Date validation
 	if !endDate.After(startDate) {
 		return errors.New("invalid end date")
+	}
+
+	//Price validation
+	//Both valid
+	if priceLump.Valid && pricePerSession.Valid {
+		return errors.New("invalid price: both valid")
 	}
 
 	return nil
