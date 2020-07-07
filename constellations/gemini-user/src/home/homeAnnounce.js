@@ -4,7 +4,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { isEmpty, filter } from "lodash";
-import { ANNOUNCE_LAST_DISMISS } from "../utils/storage.js";
 import srcClose from "../../assets/close_black.svg";
 import API from "../utils/api.js";
 
