@@ -353,7 +353,7 @@ export class ClassEditPage extends React.Component {
                     onDeleteSession={this.onDeleteSession}
                 />
 
-                <h3>Class Avalibility</h3>
+                <h3 className = "avalibility">Class Avalibility</h3>
 
                 <select onChange={(e) => this.onChangeSelect(e)}>
                     <option value = "0">Normal</option>
