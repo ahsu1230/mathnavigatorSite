@@ -170,7 +170,7 @@ func createProgram(hostAddress, programId string, name string, grade1 string, gr
 		"grade2": %s,
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
-	fmt.Println(programId + " was created")
+	fmt.Println("Creating program " + programId + "...")
 	sendPostRequest(hostAddress+"/api/programs/create", programBody)
 	return nil
 }
@@ -180,6 +180,7 @@ func createSemester(hostAddress, semesterId string, title string) error {
 		"semesterId": "%s",
 		"title": "%s"
 	}`, semesterId, title))
+	fmt.Println("Creating semester " + semesterId + "...")
 	sendPostRequest(hostAddress+"/api/semesters/create", semesterBody)
 	return nil
 }
@@ -192,6 +193,7 @@ func createLocation(hostAddress, locationId, street, city, state, zipcode string
 		"state": "%s",
 		"zipcode": "%s"
 	}`, locationId, street, city, state, zipcode))
+	fmt.Println("Creating location " + locationId + "...")
 	sendPostRequest(hostAddress+"/api/locations/create", locationBody)
 	return nil
 }
@@ -201,6 +203,7 @@ func createAchieve(hostAddress, year, message string) error {
 		"year": %s,
 		"message": "%s"
 	}`, year, message))
+	fmt.Println("Creating achievement " + message + "...")
 	sendPostRequest(hostAddress+"/api/achievements/create", achieveBody)
 	return nil
 }
@@ -215,6 +218,7 @@ func createAnnounce(hostAddress, author, message, onHomePage string) error {
 		"message": "%s",
 		"onHomePage": %s
 	}`, nowJson, author, message, onHomePage))
+	fmt.Println("Creating announcement " + message + "...")
 	sendPostRequest(hostAddress+"/api/announcements/create", announceBody)
 	return nil
 }
@@ -235,6 +239,7 @@ func createClass(hostAddress, programId, semesterId, classKey, classId, location
 		"startDate": %s,
 		"endDate": %s
 	}`, programId, semesterId, classKey, classId, locationId, times, nowJson, laterJson))
+	fmt.Println("Creating class " + classId + "...")
 	sendPostRequest(hostAddress+"/api/classes/create", classBody)
 	return nil
 }
@@ -251,6 +256,7 @@ func createSession(hostAddress, classId, cancelled string) error {
 		"endsAt": %s
 		"cancelled": %s
 	}`, classId, nowJson, laterJson, cancelled))
+	fmt.Println("Creating session " + classId + "...")
 	sendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
 	return nil
 }
@@ -258,9 +264,9 @@ func createSession(hostAddress, classId, cancelled string) error {
 func sendPostRequest(url string, body io.Reader) {
 	resp, err := http.Post(url, "application/json; charset=UTF-8", body)
 	if err != nil {
-		log.Println("Post request was not fulfilled.")
+		log.Println("Post request was not fulfilled.", err)
 	}
 	if resp.StatusCode != 200 && resp.StatusCode != 204 {
-		log.Println("Response status was not successful.")
+		log.Println("Response status was not successful.", resp)
 	}
 }
