@@ -2,13 +2,12 @@ package tests_integration
 
 import (
 	"encoding/json"
-	"net/http"
-	"testing"
-	"strings"
-
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
+	"net/http"
+	"strings"
+	"testing"
 )
 
 // Test: Create 3 Users and GetAll()
@@ -68,12 +67,12 @@ func Test_SearchUsers(t *testing.T) {
 	createAllUsers(t)
 
 	body := strings.NewReader(`{
-		"query": "Smith"	
+		"query": "smith"	
 	}`)
 
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/search", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	
+
 	var users []domains.User
 	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
@@ -204,7 +203,7 @@ func createUser(id int) domains.User {
 		return domains.User{
 			FirstName:  "Bob",
 			LastName:   "Smith",
-			MiddleName: domains.NewNullString(""),
+			MiddleName: domains.NewNullString("Middle"),
 			Email:      "bob_smith@example.com",
 			Phone:      "555-555-0101",
 			IsGuardian: false,

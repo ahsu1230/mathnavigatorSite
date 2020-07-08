@@ -293,7 +293,7 @@ type mockUserRepo struct {
 // Implement methods of UserRepo interface with mocked implementations
 func (userRepo *mockUserRepo) Initialize(db *sql.DB) {}
 
-func (userRepo *mockUserRepo) SearchUsers(search string) ([]domains.User, error){
+func (userRepo *mockUserRepo) SearchUsers(search string) ([]domains.User, error) {
 	return userRepo.MockSearchUsers(search)
 }
 
