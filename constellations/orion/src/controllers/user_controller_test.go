@@ -319,7 +319,6 @@ func TestUpdateUser_Success(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-
 }
 
 func TestUpdateUser_Invalid(t *testing.T) {
