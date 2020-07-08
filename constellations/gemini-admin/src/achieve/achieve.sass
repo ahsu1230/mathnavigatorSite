@@ -16,6 +16,9 @@
         list-style: none
         margin: 0
         padding: 0
+    
+    & button
+        margin-top: $spacing4x
 
 #view-achieve #list-heading
     border-bottom: 2px solid $colorGrayDark
@@ -26,12 +29,19 @@
         line-height: $spacing4x
 
 #view-achieve #achieve-row
+    display: flex
+    flex-direction: row
+    align-items: center
+    min-height: $spacing8x
     border-bottom: 1px solid $colorGrayDark
 
     & li
         display: inline-block
-        height: $spacing8x
-        line-height: $spacing8x
+        height: auto
+        line-height: $lineHeight4
+    
+    & a
+        margin: 0 $spacing3x
 
 #view-achieve
     .li-small
@@ -39,6 +49,7 @@
     .li-med
         width: $spacing20x
     .li-large
+        flex-grow: 1
         width: $spacing48x
 
 a.add-achievement

@@ -8,20 +8,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllUsers(c *gin.Context) {
-	// Incoming optional parameter
-	search := c.Query("search")
-	pageSize := ParseParamInt(c.Query("pageSize"), 100)
-	offset := ParseParamInt(c.Query("offset"), 0)
+// type UserSearchBody struct {
+// 	FirstName string
+// 	MiddleName string
+// 	LastName string
+// 	Email string
+// 	Phone string
+// }
 
-	userList, err := repos.UserRepo.SelectAll(search, pageSize, offset)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, userList)
-	}
-}
+// func SearchUser(c *gin.Context) {
+// 	// Incoming parameters
+// 	var body UserSearchBody
+// 	c.BindJSON(&body)
+
+// 	FirstName := body.FirstName
+// 	MiddleName := body.MiddleName
+// 	LastName := body.LastName
+// 	Email := body.Email
+// 	Phone := body.Phone
+
+// 	user, err := repos.UserRepo.SelectBy()
+// 	if err != nil {
+// 		c.Error(err)
+// 		c.String(http.StatusNotFound, err.Error())
+// 	} else {
+// 		c.JSON(http.StatusOK, &user)
+// 	}
+// }
 
 func GetUserById(c *gin.Context) {
 	// Incoming parameters
@@ -36,11 +49,11 @@ func GetUserById(c *gin.Context) {
 	}
 }
 
-func GetUserByGuardian(c *gin.Context) {
+func GetUsersByAccountId(c *gin.Context) {
 	// Incoming parameters
-	guardianId := ParseParamUint(c.Param("guardianId"))
+	accountId := ParseParamUint(c.Param("accountId"))
 
-	user, err := repos.UserRepo.SelectByGuardianId(guardianId)
+	user, err := repos.UserRepo.SelectByAccountId(accountId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())

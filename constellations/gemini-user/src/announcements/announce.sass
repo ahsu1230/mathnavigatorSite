@@ -1,0 +1,32 @@
+@import "../utils/_constants.sass"
+$media1: $mediaWidth3
+$media2: $mediaWidth1
+
+#view-announce
+  h1
+    width: 100%
+    margin: $spacing12x 0px $spacing6x
+    text-align: center
+    color: $colorTurquoise
+  
+  h2
+    width: $mediaWidth1
+    margin: 0px auto $spacing4x
+    padding-bottom: $spacing3x
+    border-bottom: 1px solid
+    color: $colorTurquoiseDark
+    font-weight: bold
+
+    @media screen and (max-width: $media1)
+      width: 80%
+    @media screen and (max-width: $media2)
+      width: 90%
+
+  p
+    width: $mediaWidth1
+    margin: $spacing3x auto $spacing4x
+
+    @media screen and (max-width: $media1)
+      width: 80%
+    @media screen and (max-width: $media2)
+      width: 90%

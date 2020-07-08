@@ -1,29 +1,30 @@
 @import "../_.constants.sass"
 
-#session-rows
-    max-width: $spacing96x
-    margin: $spacing4x auto 0
-    padding: $spacing2x
+#view-class #class-rows
     box-sizing: border-box
 
-    #header
-        height: $spacing4x
-        min-height: $spacing4x
-        padding-bottom: $spacing1x
+    .container
+        border-bottom: 1px solid $colorGrayLight
+
+    .header-container
         border-bottom: 2px solid $colorGrayDark
 
     .row
         display: flex
         align-items: center
+        max-width: 1400px
         min-height: $spacing8x
-        border-bottom: 1px solid $colorGrayLight
-    
+
+    .select
+        flex: 0 0 $spacing10x
+        margin-right: $spacing2x
+
     .column
-        flex: 2 1 0
-    
+        flex: 1 1 0
+
     .medium-column
-        flex: 3 1 0
-    
+        flex: 2 1 0
+
     .large-column
         flex: 4 1 0
     
@@ -33,3 +34,7 @@
     span
         padding: $spacing2x
         padding-left: 0
+    
+    input
+        height: 20px
+        margin: 0

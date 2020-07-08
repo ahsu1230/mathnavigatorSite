@@ -10,48 +10,48 @@ import (
 
 func Test_ValidPrimaryEmail(t *testing.T) {
 	// Checks for valid emails
-	family := domains.Family{
+	account := domains.Account{
 		PrimaryEmail: "gmail@gmail.com",
 		Password:     "password",
 	}
-	if err := family.Validate(); err != nil {
+	if err := account.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	family.PrimaryEmail = "test.test_test+123@example.com"
-	if err := family.Validate(); err != nil {
+	account.PrimaryEmail = "test.test_test+123@example.com"
+	if err := account.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid emails
-	family.PrimaryEmail = "invalidEmail"
-	if err := family.Validate(); err == nil {
+	account.PrimaryEmail = "invalidEmail"
+	if err := account.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid email")
 	}
 }
 
 func Test_ValidPassword(t *testing.T) {
 	// Checks for passwords
-	family := domains.Family{
+	account := domains.Account{
 		PrimaryEmail: "gmail@gmail.com",
 		Password:     "password",
 	}
-	if err := family.Validate(); err != nil {
+	if err := account.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	family.Password = "TestName"
-	if err := family.Validate(); err != nil {
+	account.Password = "TestName"
+	if err := account.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	family.Password = ""
-	if err := family.Validate(); err == nil {
+	account.Password = ""
+	if err := account.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid password")
 	}
 
-	family.Password = "1234567"
-	if err := family.Validate(); err == nil {
+	account.Password = "1234567"
+	if err := account.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid password")
 	}
 }
