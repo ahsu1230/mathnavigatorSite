@@ -1,16 +1,28 @@
 package domains
 
+import "errors"
+
 var TABLE_USERAFH = "user_afh"
 
-type UserAFH struct {
+type UserAfh struct {
 	Id     uint `json:"id"`
-	UserId uint `json:"id"`
-	AfhId  uint `json:"id"`
+	UserId uint `json:"user_id"`
+	AfhId  uint `json:"afh_id"`
 }
 
-func (userAFH *UserAFH) Validate() error {
-	id := userAFH.Id
-	userId := userAFH.UserId
-	afhId := userAFH.AfhId
+func (userAfh *UserAfh) Validate() error {
+	userId := userAfh.UserId
+	afhId := userAfh.AfhId
 
+	// UserId validation
+	if userId < 0 {
+		return errors.New("invalid userId")
+	}
+
+	// AfhId validation
+	if afhId < 0 {
+		return errors.New("invalid afhId")
+	}
+
+	return nil
 }
