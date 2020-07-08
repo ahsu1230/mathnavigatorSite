@@ -79,6 +79,19 @@ func TestSearchAccount_Success(t *testing.T) {
 	assert.EqualValues(t, "password", accounts.Password)
 }
 
+func TestSearchAccount_Failure(t *testing.T) {
+	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
+		return domains.Account{}, errors.New("not found")
+	}
+	repos.AccountRepo = &testUtils.AccountRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/search", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
 func TestGetAccounts_Failure(t *testing.T) {
 	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
 		return domains.Account{}, errors.New("not found")

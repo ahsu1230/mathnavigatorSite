@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
+	"strings"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
@@ -53,36 +54,37 @@ func Test_CreateUsers(t *testing.T) {
 }
 
 // Test: Create 3 Users and search by pagination
-// func Test_SearchUsers(t *testing.T) {
-// 	createAllUsers(t)
+func Test_SearchUsers(t *testing.T) {
+	account1 := createAccount(1)
+	body1 := utils.CreateJsonBody(&account1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-// 	// Call Get All Searching for "Smith" With Page Size 2 Offset 0
-// 	recorder1 := sendHttpRequest(t, http.MethodGet, "/api/users/all?search=Smith&pageSize=2&offset=0", nil)
+	account2 := createAccount(2)
+	body2 := utils.CreateJsonBody(&account2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-// 	// Validate results
-// 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-// 	var users1 []domains.User
-// 	if err := json.Unmarshal(recorder1.Body.Bytes(), &users1); err != nil {
-// 		t.Errorf("unexpected error: %v\n", err)
-// 	}
-// 	assertUser(t, 1, users1[0])
-// 	assertUser(t, 2, users1[1])
-// 	assert.EqualValues(t, 2, len(users1))
+	createAllUsers(t)
 
-// 	// Call Get All Searching for "Smith" With Page Size 2 Offset 2
-// 	recorder2 := sendHttpRequest(t, http.MethodGet, "/api/users/all?search=Smith&pageSize=2&offset=2", nil)
+	body := strings.NewReader(`{
+		"query": "Smith"	
+	}`)
 
-// 	// Validate results
-// 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-// 	var users2 []domains.User
-// 	if err := json.Unmarshal(recorder2.Body.Bytes(), &users2); err != nil {
-// 		t.Errorf("unexpected error: %v\n", err)
-// 	}
-// 	assertUser(t, 3, users2[0])
-// 	assert.EqualValues(t, 1, len(users2))
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/search", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
 
-// 	resetTable(t, domains.TABLE_USERS)
-// }
+	assertUser(t, 1, users[0])
+	assertUser(t, 2, users[1])
+
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+}
 
 // Test: Create 3 Users and GetUserByAccountId
 func Test_GetUsersByAccountId(t *testing.T) {

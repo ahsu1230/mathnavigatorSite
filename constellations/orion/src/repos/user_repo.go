@@ -3,7 +3,7 @@ package repos
 import (
 	"database/sql"
 	"time"
-	//"fmt"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
@@ -19,7 +19,7 @@ type userRepo struct {
 // Interface to implement
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
-	//SearchAll(string) ([]domains.User,error)
+	SearchUsers(string) ([]domains.User,error)
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
 	SelectByAccountId(uint) ([]domains.User, error)
@@ -34,22 +34,27 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 
 //TODO
 
-// func (ur *userRepo) SearchAll(search string) ([]domains.User, error) {
-// 	results := make([]domains.User, 0)
+func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
+	results := make([]domains.User, 0)
 
-// 	//var query string
+	//var query string
 
-// 	query := fmt.Sprintf("SELECT * FROM users WHERE first_name CONTAINS %s",search)
+	query := fmt.Sprintf("SELECT * FROM users WHERE first_name LIKE '%%s%' OR middle_name LIKE '%%s%' OR last_name LIKE '%%s%' OR email LIKE '%%s%'",search,search,search,search)
+	
+	//query := fmt.Sprintf("SELECT * FROM users WHERE CONTAINS(first_name,%s) OR CONTAINS(middle_name,%s) OR CONTAINS(last_name,%s) OR CONTAINS(email,%s)",search,search,search,search)
 
-// 	//query = "SELECT * FROM users WHERE first_name CONTAINS ?" //? OR middle_name contains ? OR last_name contains ? OR email contains ? "
-// 	stmt, err := ur.db.Prepare(query)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer stmt.Close()
+	//query := fmt.Sprintf("SELECT * FROM users WHERE CONTAINS((first_name,middle_name,last_name,email),%s)",search)
 
-// 	return results, nil
-// }
+	// query = "SELECT * FROM users WHERE first_name ? OR middle_name CONTAINS ? OR last_name CONTAINS ? OR email CONTAINS ? "
+	
+	stmt, err := ur.db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return results, nil
+}
 
 func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	results := make([]domains.User, 0)

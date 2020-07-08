@@ -88,7 +88,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.POST("/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
 		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
-		//apiUsers.POST("/search", controllers.SearchUser)
+		apiUsers.POST("/search", controllers.SearchUsers)
 	}
 
 	apiAccounts := h.Engine.Group("api/accounts")
