@@ -1,5 +1,5 @@
 "use strict";
-require("./class.styl");
+require("./class.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
@@ -13,11 +13,11 @@ export class ClassPage extends React.Component {
         numUnpublished: 0,
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.fetchData();
-    }
+    };
 
-    fetchData() {
+    fetchData = () => {
         API.get("api/classes/all").then((res) => {
             const classes = res.data;
             const numUnpublished = classes.filter((c) => !c.publishedAt).length;
@@ -27,7 +27,7 @@ export class ClassPage extends React.Component {
                 numUnpublished: numUnpublished,
             });
         });
-    }
+    };
 
     onSelectRow = (classId, selected) => {
         // Switches the checkbox state
@@ -73,11 +73,58 @@ export class ClassPage extends React.Component {
             });
     };
 
-    render() {
+    renderSelectAllButton = () => {
+        if (this.state.numUnpublished > 0) {
+            return (
+                <button
+                    id="select-all"
+                    className="select"
+                    onClick={this.onClickSelectAll}>
+                    Select
+                    <br />
+                    All
+                </button>
+            );
+        } else {
+            return <div></div>;
+        }
+    };
+
+    renderPublishButtonSection = () => {
+        const numUnpublished = this.state.numUnpublished;
+        const numSelected = size(this.state.selectedIds);
+
+        let publish = <div></div>;
+        if (numSelected > 0) {
+            publish = (
+                <button onClick={this.onClickPublish}>Publish Selected</button>
+            );
+        }
+
+        if (numUnpublished > 0) {
+            // Use the correct word
+            const firstWord = numUnpublished == 1 ? "class" : "classes";
+            const secondWord = numSelected == 1 ? "class" : "classes";
+            return (
+                <div id="publish">
+                    <p>
+                        You have {numUnpublished} unpublished {firstWord}.
+                        <br />
+                        You have selected {numSelected} {secondWord} to publish.
+                    </p>
+                    {publish}
+                </div>
+            );
+        } else {
+            return <div id="publish"></div>;
+        }
+    };
+
+    render = () => {
         const rows = this.state.classes.map((row, index) => {
             const isSelected = !!this.state.selectedIds[row.classId];
             return (
-                <li key={index}>
+                <div key={index} className="container">
                     <ClassRow
                         row={row}
                         isCollapsed={this.state.numUnpublished == 0}
@@ -85,31 +132,29 @@ export class ClassPage extends React.Component {
                         isSelected={isSelected}
                         onSelectRow={this.onSelectRow}
                     />
-                </li>
+                </div>
             );
         });
 
-        let count = rows.length;
-        let numUnpublished = this.state.numUnpublished;
-        let selected = size(this.state.selectedIds);
-
         return (
             <div id="view-class">
-                <h1>All Classes ({count}) </h1>
+                <h1>All Classes ({rows.length}) </h1>
 
                 <section id="class-rows">
-                    <div id="header">
-                        {renderSelectAllButton(
-                            numUnpublished,
-                            this.onClickSelectAll
-                        )}
-                        <span className="small">State</span>
-                        <span className="large">ClassId</span>
-                        <span className="small">LocationId</span>
-                        <span className="medium">StartDate - EndDate</span>
-                        <span className="large">Times</span>
+                    <div className="header-container">
+                        <div id="header" className="row">
+                            {this.renderSelectAllButton()}
+                            <span className="column">State</span>
+                            <span className="large-column">ClassId</span>
+                            <span className="column">LocationId</span>
+                            <span className="medium-column">
+                                StartDate - EndDate
+                            </span>
+                            <span className="large-column">Times</span>
+                            <span className="edit"></span>
+                        </div>
                     </div>
-                    <ul id="rows">{rows}</ul>
+                    {rows}
                 </section>
 
                 <section id="footer">
@@ -118,51 +163,9 @@ export class ClassPage extends React.Component {
                             Add Class
                         </Link>
                     </button>
-                    {renderPublishButtonSection(
-                        numUnpublished,
-                        selected,
-                        this.onClickPublish
-                    )}
+                    {this.renderPublishButtonSection()}
                 </section>
             </div>
         );
-    }
-}
-
-function renderSelectAllButton(numUnpublished, onClickSelectAll) {
-    if (numUnpublished > 0) {
-        return (
-            <button id="select-all" onClick={onClickSelectAll}>
-                Select
-                <br />
-                All
-            </button>
-        );
-    } else {
-        return <div></div>;
-    }
-}
-
-function renderPublishButtonSection(numUnpublished, selected, onClickPublish) {
-    let publish = <div></div>;
-    if (selected > 0) {
-        publish = <button onClick={onClickPublish}>Publish Selected</button>;
-    }
-
-    if (numUnpublished > 0) {
-        // Use the correct word
-        const firstWord = numUnpublished == 1 ? "class" : "classes";
-        const secondWord = selected == 1 ? "class" : "classes";
-        return (
-            <div id="publish">
-                <p>
-                    You have {numUnpublished} unpublished {firstWord}. <br />
-                    You have selected {selected} {secondWord} to publish.
-                </p>
-                {publish}
-            </div>
-        );
-    } else {
-        return <p></p>;
-    }
+    };
 }
