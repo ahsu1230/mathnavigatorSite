@@ -1,8 +1,7 @@
 "use strict";
-require("./program.styl");
+require("./program.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { keys, size } from "lodash";
 import API from "../api.js";
 import { ProgramRow } from "./programRow.js";
 
@@ -11,20 +10,20 @@ export class ProgramPage extends React.Component {
         programs: [],
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.fetchData();
-    }
+    };
 
-    fetchData() {
+    fetchData = () => {
         API.get("api/programs/all").then((res) => {
             const programs = res.data;
             this.setState({
                 programs: programs,
             });
         });
-    }
+    };
 
-    render() {
+    render = () => {
         const rows = this.state.programs.map((row, index) => {
             return (
                 <li key={index}>
@@ -54,5 +53,5 @@ export class ProgramPage extends React.Component {
                 </button>
             </div>
         );
-    }
+    };
 }

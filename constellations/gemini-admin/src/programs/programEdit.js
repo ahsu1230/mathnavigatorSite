@@ -1,43 +1,26 @@
 "use strict";
-require("./programEdit.styl");
+require("./programEdit.sass");
 import React from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { TextInput } from "../utils/textInput.js";
 
 export class ProgramEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isEdit: false,
-            showDeleteModal: false,
-            showSaveModal: false,
-            oldProgramId: "",
-            inputProgramId: "",
-            inputProgramName: "",
-            inputGrade1: 0,
-            inputGrade2: 0,
-            inputDescription: "",
-        };
+    state = {
+        isEdit: false,
+        showDeleteModal: false,
+        showSaveModal: false,
+        oldProgramId: "",
+        inputProgramId: "",
+        inputProgramName: "",
+        inputGrade1: 0,
+        inputGrade2: 0,
+        inputDescription: "",
+    };
 
-        // input onChange
-        this.handleChange = this.handleChange.bind(this);
-
-        // click on button
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        // after action
-        this.onDeleted = this.onDeleted.bind(this);
-        this.onSaved = this.onSaved.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         const programId = this.props.programId;
         if (programId) {
             API.get("api/programs/program/" + programId).then((res) => {
@@ -53,21 +36,21 @@ export class ProgramEditPage extends React.Component {
                 });
             });
         }
-    }
+    };
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
-    onClickCancel() {
+    onClickCancel = () => {
         window.location.hash = "programs";
-    }
+    };
 
-    onClickDelete() {
+    onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    }
+    };
 
-    onClickSave() {
+    onClickSave = () => {
         let program = {
             programId: this.state.inputProgramId,
             name: this.state.inputProgramName,
@@ -81,37 +64,40 @@ export class ProgramEditPage extends React.Component {
             alert("Could not save program: " + err.response.data);
         if (this.state.isEdit) {
             API.post("api/programs/program/" + this.state.oldProgramId, program)
-                .then((res) => successCallback())
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         } else {
             API.post("api/programs/create", program)
-                .then((res) => successCallback())
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         }
-    }
+    };
 
-    onDeleted() {
+    onDeleted = () => {
         const programId = this.props.programId;
         API.delete("api/programs/program/" + programId)
-            .then((res) => {
+            .then(() => {
                 window.location.hash = "programs";
             })
+            .catch((err) => {
+                alert("Could not delete program: " + err.response.data);
+            })
             .finally(() => this.onDismissModal());
-    }
+    };
 
-    onSaved() {
+    onSaved = () => {
         this.onDismissModal();
         window.location.hash = "programs";
-    }
+    };
 
-    onDismissModal() {
+    onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
-    render() {
+    render = () => {
         const isEdit = this.state.isEdit;
         const program = this.state.program;
         const title = isEdit ? "Edit Program" : "Add Program";
@@ -161,30 +147,98 @@ export class ProgramEditPage extends React.Component {
             <div id="view-program-edit">
                 {modalDiv}
                 <h2>{title}</h2>
-                <h4>Program Id</h4>
-                <input
+
+                <TextInput
+                    label="Program Id"
+                    isTextBox={false}
                     value={this.state.inputProgramId}
-                    onChange={(e) => this.handleChange(e, "inputProgramId")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputProgramId")
+                    }
+                    required={true}
+                    description="Enter the program ID"
+                    validators={[
+                        {
+                            validate: (programId) => programId != "",
+                            message: "You must input a programId",
+                        },
+                    ]}
                 />
-                <h4>Program Name</h4>
-                <input
+
+                <TextInput
+                    label="Program Name"
+                    isTextBox={false}
                     value={this.state.inputProgramName}
-                    onChange={(e) => this.handleChange(e, "inputProgramName")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputProgramName")
+                    }
+                    required={true}
+                    description="Enter the program name"
+                    validators={[
+                        {
+                            validate: (name) => name != "",
+                            message: "You must input a name",
+                        },
+                    ]}
                 />
-                <h4>Grade1</h4>
-                <input
+
+                <TextInput
+                    label="Grade1"
+                    isTextBox={false}
                     value={this.state.inputGrade1}
-                    onChange={(e) => this.handleChange(e, "inputGrade1")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputGrade1")
+                    }
+                    required={true}
+                    description="Enter the lower grade"
+                    validators={[
+                        {
+                            validate: (grade1) => grade1 != "",
+                            message: "You must input a grade",
+                        },
+                        {
+                            validate: (grade1) => parseInt(grade1) >= 1,
+                            message: "Grade cannot be less than 1",
+                        },
+                    ]}
                 />
-                <h4>Grade2</h4>
-                <input
+
+                <TextInput
+                    label="Grade2"
+                    isTextBox={false}
                     value={this.state.inputGrade2}
-                    onChange={(e) => this.handleChange(e, "inputGrade2")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputGrade2")
+                    }
+                    required={true}
+                    description="Enter the higher grade"
+                    validators={[
+                        {
+                            validate: (grade2) => grade2 != "",
+                            message: "You must input a grade",
+                        },
+                        {
+                            validate: (grade2) => parseInt(grade2) <= 12,
+                            message: "Grade cannot be greater than 12",
+                        },
+                    ]}
                 />
-                <h4>Description</h4>
-                <textarea
+
+                <TextInput
+                    label="Description"
+                    isTextBox={true}
                     value={this.state.inputDescription}
-                    onChange={(e) => this.handleChange(e, "inputDescription")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputDescription")
+                    }
+                    required={true}
+                    description="Enter the description"
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a description",
+                        },
+                    ]}
                 />
 
                 <div className="buttons">
@@ -198,5 +252,5 @@ export class ProgramEditPage extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }

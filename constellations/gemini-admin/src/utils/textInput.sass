@@ -1,6 +1,8 @@
 @import "../_.constants.sass"
 
 #text-input-wrapper
+    padding: $spacing1x 0
+
     h2
         font-size: $fontSize2
 
@@ -9,12 +11,22 @@
         align-items: center
 
         input
+            width: 100%
             height: $spacing4x
-            margin-right: $spacing2x
+            margin: $spacing1x $spacing2x $spacing1x 0
             padding: 0 $spacing2x
             outline: none
             border-radius: $spacing1x
             border-width: 2px
+            font-size: $fontSize0
+
+        textarea
+            width: 100%
+            height: $spacing12x
+            margin: $spacing1x $spacing2x $spacing2x 0
+            border: 1px solid $colorGrayLight
+            line-height: $lineHeight0
+            font-size: $fontSize0
 
         .blue
             border-color: $colorLightBlue
