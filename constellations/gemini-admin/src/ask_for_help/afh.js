@@ -6,11 +6,10 @@ import API from "../api.js";
 import { Link } from "react-router-dom";
 
 export class AskForHelpPage extends React.Component {
-    
     state = {
         list: [],
     };
-    
+
     componentDidMount() {
         /*let data = {
             id: 1,
@@ -31,7 +30,7 @@ export class AskForHelpPage extends React.Component {
             console.log(this.state.list);
         });
     }
-    
+
     render() {
         const rows = this.state.list.map((row, index) => {
             return <AFHRow row={row} key={index} />;
