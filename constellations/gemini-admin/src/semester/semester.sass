@@ -13,9 +13,13 @@
     line-height: $lineHeight3
     font-size: $fontSize3
   & ul
+    margin: 0
     padding: 0
 
   & .semester-lists
+    display: flex
+    flex-direction: row
+    align-items: center
     padding-left: 0
     height: $lineHeight6
     border-bottom: 1px solid $colorGrayLight
@@ -28,6 +32,13 @@
         display: inline-block
     & p
         display: inline-block
+    & li:nth-child(2)
+        flex-grow: 1
+    & a
+        margin: 0 $spacing3x
+    
+  & button
+    margin-top: $spacing4x
 
 #view-semester
       & .li-small

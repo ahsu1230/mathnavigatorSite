@@ -1,4 +1,4 @@
-CREATE TABLE families
+CREATE TABLE accounts
 (
     id          int unsigned NOT NULL AUTO_INCREMENT,
     created_at  datetime     NOT NULL,

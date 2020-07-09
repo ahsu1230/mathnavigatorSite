@@ -1,18 +1,12 @@
 "use strict";
-require("./classEdit.styl");
+require("./classEdit.sass");
 import axios from "axios";
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { ClassSessions } from "./classSessions.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
-
-// React DatePicker
-import "react-dates/initialize";
-import { DateRangePicker } from "react-dates";
-import "react-dates/lib/css/_datepicker.css";
 
 export class ClassEditPage extends React.Component {
     constructor(props) {
@@ -54,7 +48,7 @@ export class ClassEditPage extends React.Component {
         this.onDeleteSession = this.onDeleteSession.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         const classId = this.props.classId;
         const apiCalls = [
             API.get("api/programs/all"),
@@ -76,12 +70,13 @@ export class ClassEditPage extends React.Component {
 
                     const hasClassId = responses.length > 3;
                     let classObj = hasClassId ? responses[3].data : {};
-                    let sessions = hasClassId ? responses[4].data : [];
-                    sessions = sessions.map((s) => {
-                        s.startsAt = moment(s.startsAt);
-                        s.endsAt = moment(s.endsAt);
-                        return s;
-                    });
+                    const sessions = (hasClassId ? responses[4].data : []).map(
+                        (session) => {
+                            session.startsAt = moment(session.startsAt);
+                            session.endsAt = moment(session.endsAt);
+                            return session;
+                        }
+                    );
 
                     let selectedProgramId = hasClassId
                         ? classObj.programId
@@ -98,43 +93,35 @@ export class ClassEditPage extends React.Component {
                         oldClassId: classObj.classId,
                         inputClassKey: classObj.classKey || "",
                         inputTimeString: classObj.times || "",
-                        startDate: moment(classObj.startDate),
-                        endDate: moment(classObj.endDate),
 
-                        listPrograms: programs,
-                        listSemesters: semesters,
-                        listLocations: locations,
-                        listSessionsRemote: sessions,
-                        listSessionsLocal: sessions,
                         selectProgramId: selectedProgramId,
                         selectSemesterId: selectedSemesterId,
                         selectLocationId: selectedLocationId,
+
+                        programs: programs,
+                        semesters: semesters,
+                        locations: locations,
+                        sessions: sessions,
                     });
                 })
             )
-            .catch((errors) => {
-                console.log("Error: api call failed. " + errors.message);
+            .catch((err) => {
+                console.log("Error: api call failed. " + err.message);
             });
-    }
+    };
 
-    onAddSessions(newSessions) {
-        let newList = _.concat(this.state.listSessionsLocal, newSessions);
-        newList = _.sortBy(newList, ["startsAt"]);
-        this.setState({ listSessionsLocal: newList });
-    }
+    createClassId = () => {
+        let classId =
+            this.state.selectProgramId + "_" + this.state.selectSemesterId;
+        classId = this.state.inputClassKey
+            ? classId + "_" + this.state.inputClassKey
+            : classId;
+        return classId;
+    };
 
-    onDeleteSession(sessionId) {
-        let sessions = _.filter(this.state.listSessionsLocal, (session) => {
-            return session.id != sessionId;
-        });
-        this.setState({
-            listSessionsLocal: sessions,
-        });
-    }
-
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
     onChangeSelect = (e) => {
         const value = e.target.value;
@@ -144,13 +131,9 @@ export class ClassEditPage extends React.Component {
         });
     };
 
-    onClickSave() {
+    onClickSave = () => {
         const oldClassId = this.state.oldClassId;
-        const newClassId = createClassId(
-            this.state.selectProgramId,
-            this.state.selectSemesterId,
-            this.state.inputClassKey
-        );
+        const newClassId = this.createClassId();
         let classObj = {
             classId: newClassId,
             programId: this.state.selectProgramId,
@@ -175,108 +158,69 @@ export class ClassEditPage extends React.Component {
             apiCalls.push(API.post("api/classes/create", classObj));
         }
 
-        // Find the sessions to persist and add to apiCalls
-        let sessionsToAdd = _.difference(
-            this.state.listSessionsLocal,
-            this.state.listSessionsRemote
-        );
-        let sessionsToRemove = _.difference(
-            this.state.listSessionsRemote,
-            this.state.listSessionsLocal
-        );
+        executeApiCalls(apiCalls, successCallback, failCallback);
+    };
 
-        _.forEach(sessionsToAdd, (session) => {
-            let apiSession = _.cloneDeep(session);
-            apiSession.startsAt = apiSession.startsAt.toJSON(); // are moment objects
-            apiSession.endsAt = apiSession.endsAt.toJSON(); // are moment objects
-            apiSession.id = undefined;
-            apiCalls.push(API.post("/api/sessions/create", apiSession));
+    onClickCancel = () => {
+        window.location.hash = "classes";
+    };
+
+    onClickDelete = () => {
+        this.setState({ showDeleteModal: true });
+    };
+
+    onModalDeleteConfirm = () => {
+        const classId = this.props.classId;
+
+        let apiCalls = [];
+        let successCallback = () => (window.location.hash = "classes");
+        let failCallback = (err) =>
+            alert("Could not delete class or sessions: " + err);
+
+        // Must delete sessions before deleting class
+        var sessionIds = [];
+        this.state.sessions.forEach((session) => {
+            sessionIds.push(session.id);
         });
 
-        _.forEach(sessionsToRemove, (session) => {
-            apiCalls.push(API.delete("/api/sessions/session/" + session.id));
-        });
+        apiCalls.push(API.delete("api/sessions/delete", { data: sessionIds }));
+        apiCalls.push(API.delete("api/classes/class/" + classId));
 
         executeApiCalls(apiCalls, successCallback, failCallback);
-    }
+    };
 
-    onClickCancel() {
-        window.location.hash = "classes";
-    }
-
-    onClickDelete() {
-        this.setState({ showDeleteModal: true });
-    }
-
-    onModalDeleteConfirm() {
-        const classId = this.props.classId;
-        API.delete("api/classes/class/" + classId).then((res) => {
-            window.location.hash = "classes";
-        });
-    }
-
-    onModalOkSaved() {
+    onModalOkSaved = () => {
         this.onModalDismiss();
         window.location.hash = "classes";
-    }
+    };
 
-    onModalDismiss() {
+    onModalDismiss = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
-    render() {
+    render = () => {
         const title = this.state.isEdit ? "Edit Class" : "Add Class";
 
-        const optPrograms = renderOptionsPrograms(this.state.listPrograms);
-        const optSemesters = renderOptionsSemesters(this.state.listSemesters);
-        const optLocations = renderOptionsLocations(this.state.listLocations);
-        const classId = createClassId(
-            this.state.selectProgramId,
-            this.state.selectSemesterId,
-            this.state.inputClassKey
-        );
-        const listSessionsLocal = this.state.listSessionsLocal;
-        const startDateString =
-            listSessionsLocal.length > 0
-                ? listSessionsLocal[0].startsAt.format(
-                      "dddd, MMMM Do YYYY, h:mm a"
-                  )
-                : "Not scheduled yet. Please add new sessions.";
-        const endDateString =
-            listSessionsLocal.length > 0
-                ? listSessionsLocal[listSessionsLocal.length - 1].endsAt.format(
-                      "dddd, MMMM Do YYYY, h:mm a"
-                  )
-                : "Not scheduled yet. Please add new sessions.";
+        const programOptions = this.state.programs.map((program, index) => (
+            <option key={index}>{program.programId}</option>
+        ));
 
-        const deleteButton = renderDeleteButton(
-            this.state.isEdit,
-            this.onClickDelete
-        );
-        const modalDiv = renderModal(
-            this.state.showSaveModal,
-            this.state.showDeleteModal,
-            this.onModalOkSaved,
-            this.onModalDeleteConfirm,
-            this.onModalDismiss
-        );
-        return (
-            <div id="view-class-edit">
-                <div className="buttons upper-right">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
-                {modalDiv}
-                <h2>{title}</h2>
+        const semesterOptions = this.state.semesters.map((semester, index) => (
+            <option key={index}>{semester.semesterId}</option>
+        ));
 
+        const locationOptions = this.state.locations.map((location, index) => (
+            <option key={index}>{location.locationId}</option>
+        ));
+
+        const classId = this.createClassId();
+
+        let classInformation = <h3 className="class-id">ClassId: {classId}</h3>;
+        if (!this.state.isEdit) {
+            classInformation = (
                 <div className="edit-section">
                     <h3>Class Information</h3>
 
@@ -286,7 +230,7 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) =>
                             this.handleChange(e, "selectProgramId")
                         }>
-                        {optPrograms}
+                        {programOptions}
                     </select>
 
                     <h4>SemesterId</h4>
@@ -295,7 +239,7 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) =>
                             this.handleChange(e, "selectSemesterId")
                         }>
-                        {optSemesters}
+                        {semesterOptions}
                     </select>
 
                     <h4>ClassKey</h4>
@@ -307,7 +251,31 @@ export class ClassEditPage extends React.Component {
 
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
+            );
+        }
 
+        let deleteButton = <div></div>;
+        if (this.state.isEdit) {
+            deleteButton = (
+                <button className="btn-delete" onClick={this.onClickDelete}>
+                    Delete
+                </button>
+            );
+        }
+
+        const modalDiv = renderModal(
+            this.state.showSaveModal,
+            this.state.showDeleteModal,
+            this.onModalOkSaved,
+            this.onModalDeleteConfirm,
+            this.onModalDismiss
+        );
+
+        return (
+            <div id="view-class-edit">
+                {modalDiv}
+                <h2>{title}</h2>
+                {classInformation}
                 <div className="edit-section">
                     <h3>Class Schedule</h3>
 
@@ -317,7 +285,7 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) =>
                             this.handleChange(e, "selectLocationId")
                         }>
-                        {optLocations}
+                        {locationOptions}
                     </select>
 
                     <h4>Display Time</h4>
@@ -335,33 +303,14 @@ export class ClassEditPage extends React.Component {
                             this.handleChange(e, "inputTimeString")
                         }
                     />
+                    <h3 className="avalibility">Class Avalibility</h3>
+
+                    <select onChange={(e) => this.onChangeSelect(e)}>
+                        <option value="0">Normal</option>
+                        <option value="1">Almost Full</option>
+                        <option value="2">Full</option>
+                    </select>
                 </div>
-
-                <div className="edit-section">
-                    <h4>Dates</h4>
-                    <p>
-                        <b>Start:</b> {startDateString}
-                    </p>
-                    <p>
-                        <b>End:</b> {endDateString}
-                    </p>
-                </div>
-
-                <ClassSessions
-                    classId={classId}
-                    sessions={this.state.listSessionsLocal}
-                    onAddSessions={this.onAddSessions}
-                    onDeleteSession={this.onDeleteSession}
-                />
-
-                <h3 className="avalibility">Class Avalibility</h3>
-
-                <select onChange={(e) => this.onChangeSelect(e)}>
-                    <option value="0">Normal</option>
-                    <option value="1">Almost Full</option>
-                    <option value="2">Full</option>
-                </select>
-
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save
@@ -373,43 +322,7 @@ export class ClassEditPage extends React.Component {
                 </div>
             </div>
         );
-    }
-}
-
-function createClassId(programId, semesterId, classKey) {
-    let classId = programId + "_" + semesterId;
-    classId = classKey ? classId + "_" + classKey : classId;
-    return classId;
-}
-
-function renderOptionsPrograms(programs) {
-    return programs.map((program, index) => (
-        <option key={index}>{program.programId}</option>
-    ));
-}
-
-function renderOptionsSemesters(semesters) {
-    return semesters.map((semester, index) => (
-        <option key={index}>{semester.semesterId}</option>
-    ));
-}
-
-function renderOptionsLocations(locations) {
-    return locations.map((loc, index) => (
-        <option key={index}>{loc.locationId}</option>
-    ));
-}
-
-function renderDeleteButton(isEdit, onClickDelete) {
-    let deleteButton = <div></div>;
-    if (isEdit) {
-        deleteButton = (
-            <button className="btn-delete" onClick={onClickDelete}>
-                Delete
-            </button>
-        );
-    }
-    return deleteButton;
+    };
 }
 
 function renderModal(
