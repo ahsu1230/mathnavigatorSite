@@ -1,0 +1,54 @@
+@import "../_.constants.sass"
+
+#view-afh
+  width: 100%
+  padding: 0 $spacing2x
+  box-sizing: border-box
+
+  & h1
+    display: inline-block
+    margin: $spacing4x 0
+    line-height: $lineHeight3
+    font-size: $fontSize3
+
+  & ul
+    list-style: none
+    margin: 0
+    padding: 0
+  
+  & #header 
+    border-bottom: 2px solid $colorGrayDark
+  
+    & li
+      display: inline-block
+      height: $spacing4x
+      line-height: $spacing4x
+  
+  & li
+    margin: 0px $spacing1x
+  
+  .li-small
+    width: $spacing10x
+  .li-med
+    width: $spacing20x
+  .li-large
+    flex-grow: 1
+    width: $spacing48x
+  
+  & button
+    margin-top: $spacing2x
+    
+  #afh-row
+    display: flex
+    flex-direction: row
+    align-items: center
+    min-height: $spacing8x
+    border-bottom: 1px solid $colorGrayDark
+
+    & li
+        display: inline-block
+        height: auto
+        line-height: $lineHeight4
+    
+    & a
+        margin: 0 $spacing3x

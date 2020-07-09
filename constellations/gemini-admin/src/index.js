@@ -20,6 +20,8 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+import { AskForHelpPage } from "./ask_for_help/afh.js";
+import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -57,6 +59,11 @@ const Semester = () => <SemesterPage />;
 const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
+);
+const AFH = () => <AskForHelpPage />;
+const AFHEdit = () => <AskForHelpEditPage />;
+const AFHMatch = ({ match }) => (
+    <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
 class AppContainer extends React.Component {
@@ -117,6 +124,9 @@ class App extends React.Component {
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
+                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
+                    <Route path="/afh/add" component={AFHEdit} />
+                    <Route path="/afh" component={AFH} />
                 </Switch>
             </div>
         );
