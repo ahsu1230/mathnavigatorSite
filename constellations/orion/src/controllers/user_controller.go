@@ -8,33 +8,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// type UserSearchBody struct {
-// 	FirstName string
-// 	MiddleName string
-// 	LastName string
-// 	Email string
-// 	Phone string
-// }
+type UserSearchBody struct {
+	Query string `json:"query"`
+}
 
-// func SearchUser(c *gin.Context) {
-// 	// Incoming parameters
-// 	var body UserSearchBody
-// 	c.BindJSON(&body)
+func SearchUsers(c *gin.Context) {
+	// Incoming parameters
+	var body UserSearchBody
+	c.BindJSON(&body)
 
-// 	FirstName := body.FirstName
-// 	MiddleName := body.MiddleName
-// 	LastName := body.LastName
-// 	Email := body.Email
-// 	Phone := body.Phone
+	query := body.Query
 
-// 	user, err := repos.UserRepo.SelectBy()
-// 	if err != nil {
-// 		c.Error(err)
-// 		c.String(http.StatusNotFound, err.Error())
-// 	} else {
-// 		c.JSON(http.StatusOK, &user)
-// 	}
-// }
+	user, err := repos.UserRepo.SearchUsers(query)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, &user)
+	}
+}
 
 func GetUserById(c *gin.Context) {
 	// Incoming parameters
