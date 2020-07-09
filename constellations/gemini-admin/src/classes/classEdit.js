@@ -140,9 +140,9 @@ export class ClassEditPage extends React.Component {
         const value = e.target.value;
         console.log(value);
         this.setState({
-            fullState: value
+            fullState: value,
         });
-    }
+    };
 
     onClickSave() {
         const oldClassId = this.state.oldClassId;
@@ -158,6 +158,7 @@ export class ClassEditPage extends React.Component {
             locationId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
+            classState: this.state.fullState,
             startDate: moment().toJSON(), // TODO: need to remove
             endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
@@ -353,12 +354,12 @@ export class ClassEditPage extends React.Component {
                     onDeleteSession={this.onDeleteSession}
                 />
 
-                <h3 className = "avalibility">Class Avalibility</h3>
+                <h3 className="avalibility">Class Avalibility</h3>
 
                 <select onChange={(e) => this.onChangeSelect(e)}>
-                    <option value = "0">Normal</option>
-                    <option value = "1">Almost Full</option>
-                    <option value = "2">Full</option>
+                    <option value="0">Normal</option>
+                    <option value="1">Almost Full</option>
+                    <option value="2">Full</option>
                 </select>
 
                 <div className="buttons">
