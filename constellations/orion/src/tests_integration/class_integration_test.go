@@ -198,7 +198,7 @@ func createClass(id int) domains.Class {
 			GoogleClassCode: domains.NewNullString("ab12cd34"),
 			FullState:       0,
 			PricePerSession: domains.NewNullUint(0),
-			PriceLump:       domains.NewNullUint(0),
+			PriceLump:       domains.NewNullUint(10),
 		}
 	case 2:
 		return domains.Class{
@@ -213,7 +213,7 @@ func createClass(id int) domains.Class {
 			GoogleClassCode: domains.NewNullString("ab12cd35"),
 			FullState:       1,
 			PricePerSession: domains.NewNullUint(10),
-			PriceLump:       domains.NewNullUint(101),
+			PriceLump:       domains.NewNullUint(0),
 		}
 	case 3:
 		return domains.Class{
@@ -227,8 +227,8 @@ func createClass(id int) domains.Class {
 			EndDate:         later2,
 			GoogleClassCode: domains.NewNullString("ab12cd36"),
 			FullState:       2,
-			PricePerSession: domains.NewNullUint(20),
-			PriceLump:       domains.NewNullUint(102),
+			PricePerSession: domains.NewNullUint(0),
+			PriceLump:       domains.NewNullUint(20),
 		}
 	case 4:
 		return domains.Class{
@@ -242,8 +242,8 @@ func createClass(id int) domains.Class {
 			EndDate:         later3,
 			GoogleClassCode: domains.NewNullString("ab12cd37"),
 			FullState:       0,
-			PricePerSession: domains.NewNullUint(30),
-			PriceLump:       domains.NewNullUint(103),
+			PricePerSession: domains.NewNullUint(20),
+			PriceLump:       domains.NewNullUint(0),
 		}
 	default:
 		return domains.Class{}
@@ -299,7 +299,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
-		assert.EqualValues(t, 0, class.PriceLump.Uint)
+		assert.EqualValues(t, 10, class.PriceLump.Uint)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
@@ -312,7 +312,7 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode.String)
 		assert.EqualValues(t, 1, class.FullState)
 		assert.EqualValues(t, 10, class.PricePerSession.Uint)
-		assert.EqualValues(t, 101, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PriceLump.Uint)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -324,8 +324,8 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later2, class.EndDate)
 		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode.String)
 		assert.EqualValues(t, 2, class.FullState)
-		assert.EqualValues(t, 20, class.PricePerSession.Uint)
-		assert.EqualValues(t, 102, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PricePerSession.Uint)
+		assert.EqualValues(t, 20, class.PriceLump.Uint)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -337,8 +337,8 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, later3, class.EndDate)
 		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
-		assert.EqualValues(t, 30, class.PricePerSession.Uint)
-		assert.EqualValues(t, 103, class.PriceLump.Uint)
+		assert.EqualValues(t, 20, class.PricePerSession.Uint)
+		assert.EqualValues(t, 0, class.PriceLump.Uint)
 	}
 }
 
