@@ -5,7 +5,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
-import { TextInput } from "../utils/textInput.js";
+import { InputText } from "../utils/inputText.js";
 
 export class ProgramEditPage extends React.Component {
     state = {
@@ -148,7 +148,7 @@ export class ProgramEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
 
-                <TextInput
+                <InputText
                     label="Program Id"
                     value={this.state.inputProgramId}
                     onChangeCallback={(e) =>
@@ -164,7 +164,7 @@ export class ProgramEditPage extends React.Component {
                     ]}
                 />
 
-                <TextInput
+                <InputText
                     label="Program Name"
                     value={this.state.inputProgramName}
                     onChangeCallback={(e) =>
@@ -180,7 +180,7 @@ export class ProgramEditPage extends React.Component {
                     ]}
                 />
 
-                <TextInput
+                <InputText
                     label="Grade1"
                     value={this.state.inputGrade1}
                     onChangeCallback={(e) =>
@@ -207,7 +207,7 @@ export class ProgramEditPage extends React.Component {
                     ]}
                 />
 
-                <TextInput
+                <InputText
                     label="Grade2"
                     value={this.state.inputGrade2}
                     onChangeCallback={(e) =>
@@ -234,7 +234,7 @@ export class ProgramEditPage extends React.Component {
                     ]}
                 />
 
-                <TextInput
+                <InputText
                     label="Description"
                     isTextBox={true}
                     value={this.state.inputDescription}

@@ -1,9 +1,9 @@
 "use strict";
-require("./textInput.sass");
+require("./inputText.sass");
 import React from "react";
 import Checkbox from "../../assets/checkmark_green.svg";
 
-export class TextInput extends React.Component {
+export class InputText extends React.Component {
     render = () => {
         const description = this.props.description;
         const required = this.props.required;
