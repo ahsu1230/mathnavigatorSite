@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { HomeSectionPrograms } from "./homePrograms.js";
 import { HomeSectionStories } from "./homeStories.js";
 import { HomeSectionSuccess } from "./homeSuccess.js";
+import { HomeAnnounce } from "./homeAnnounce.js";
 
 export class HomePage extends React.Component {
     render() {
@@ -17,6 +18,7 @@ export class HomePage extends React.Component {
                     <HomeSectionPrograms />
                     <HomeSectionSuccess />
                     <HomeSectionStories />
+                    <HomeAnnounce />
                 </div>
             </div>
         );

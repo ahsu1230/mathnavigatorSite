@@ -28,6 +28,17 @@ docker-compose rm
 
 Use `docker-compose -h` for more information about commands.
 
+## When pulling codebase updates
+
+Whenever you pull from Git's remote to update your codebase (i.e. `git pull origin master`), you will probably need to restart some of the Docker services. To restart, you can use `docker-compose restart orion` to restart the `orion` webserver for example.
+
+If you need a full restart (warning: doing this will delete all your local data), you can use:
+```
+docker-compose down
+docker-compose build
+docker-compose up -d
+```
+
 ## Math Navigator services and ports
 
 You can find the following services with their corresponding host/port locations. For webservers like `orion`, nothing will show up if you go to `localhost:8001`, but you can cUrl endpoints to `http://localhost:8001/api/...`.

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -162,7 +163,7 @@ func (pr *programRepo) Insert(program domains.Program) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "program was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "program was not inserted")
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
@@ -196,7 +197,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "program was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "program was not updated")
 }
 
 func (pr *programRepo) Publish(programIds []string) error {
@@ -216,10 +217,10 @@ func (pr *programRepo) Publish(programIds []string) error {
 	for _, programId := range programIds {
 		_, err := stmt.Exec(now, programId)
 		if err != nil {
-			errorString = appendError(errorString, programId, err)
+			errorString = utils.AppendError(errorString, programId, err)
 		}
 	}
-	errorString = appendError(errorString, "", tx.Commit())
+	errorString = utils.AppendError(errorString, "", tx.Commit())
 
 	if len(errorString) == 0 {
 		return nil
@@ -239,7 +240,7 @@ func (pr *programRepo) Delete(programId string) error {
 	if err != nil {
 		return err
 	}
-	return handleSqlExecResult(execResult, 1, "program was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "program was not deleted")
 }
 
 // For Tests Only

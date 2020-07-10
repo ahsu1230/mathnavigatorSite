@@ -23,6 +23,9 @@ type Class struct {
 	StartDate       time.Time  `json:"startDate" db:"start_date"`
 	EndDate         time.Time  `json:"endDate" db:"end_date"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
+	FullState       int        `json:"fullState" db:"full_state"`
+	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
+	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 
@@ -34,6 +37,8 @@ func (class *Class) Validate() error {
 	times := class.Times
 	startDate := class.StartDate
 	endDate := class.EndDate
+	pricePerSession := class.PricePerSession
+	priceLump := class.PriceLump
 
 	// Class Key validation
 	if classKey.Valid {
@@ -55,6 +60,12 @@ func (class *Class) Validate() error {
 	// End Date validation
 	if !endDate.After(startDate) {
 		return errors.New("invalid end date")
+	}
+
+	//Price validation
+	//Both valid
+	if priceLump.Valid && pricePerSession.Valid {
+		return errors.New("invalid price: both valid")
 	}
 
 	return nil

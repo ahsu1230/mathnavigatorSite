@@ -1,0 +1,40 @@
+@import "../_.constants.sass"
+
+#view-class #class-rows
+    box-sizing: border-box
+
+    .container
+        border-bottom: 1px solid $colorGrayLight
+
+    .header-container
+        border-bottom: 2px solid $colorGrayDark
+
+    .row
+        display: flex
+        align-items: center
+        max-width: 1400px
+        min-height: $spacing8x
+
+    .select
+        flex: 0 0 $spacing10x
+        margin-right: $spacing2x
+
+    .column
+        flex: 1 1 0
+
+    .medium-column
+        flex: 2 1 0
+
+    .large-column
+        flex: 4 1 0
+    
+    .edit
+        flex: 0 0 $spacing6x
+
+    span
+        padding: $spacing2x
+        padding-left: 0
+    
+    input
+        height: 20px
+        margin: 0

@@ -1,5 +1,5 @@
 "use strict";
-require("./semester.styl");
+require("./semester.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import API from "../api.js";

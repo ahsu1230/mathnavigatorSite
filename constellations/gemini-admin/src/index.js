@@ -10,31 +10,44 @@ import { ProgramPage } from "./programs/program.js";
 import { ProgramEditPage } from "./programs/programEdit.js";
 import { ClassPage } from "./classes/class.js";
 import { ClassEditPage } from "./classes/classEdit.js";
-import { AchievePage } from "./achieve/achieve.js";
-import { AchieveEditPage } from "./achieve/achieveEdit.js";
+import { SessionPage } from "./session/session.js";
+import { SessionEditPage } from "./session/sessionEdit.js";
 import { AnnouncePage } from "./announce/announce.js";
 import { AnnounceEditPage } from "./announce/announceEdit.js";
+import { AchievePage } from "./achieve/achieve.js";
+import { AchieveEditPage } from "./achieve/achieveEdit.js";
 import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+import { HelpPage } from "./help/help.js";
 
-const Achieve = () => <AchievePage />;
-const AchieveEdit = () => <AchieveEditPage />;
-const AchieveEditMatch = ({ match }) => (
-    <AchieveEditPage Id={match.params.Id} />
+const Header = () => <HeaderSection />;
+const Home = () => <HomePage />;
+
+const Programs = () => <ProgramPage />;
+const ProgramEdit = () => <ProgramEditPage />;
+const ProgramEditMatch = ({ match }) => (
+    <ProgramEditPage programId={match.params.programId} />
+);
+const Class = () => <ClassPage />;
+const ClassEdit = () => <ClassEditPage />;
+const ClassEditMatch = ({ match }) => (
+    <ClassEditPage classId={match.params.classId} />
+);
+const Session = () => <SessionPage />;
+const SessionEditMatch = ({ match }) => (
+    <SessionEditPage classId={match.params.classId} id={match.params.id} />
 );
 const Announce = () => <AnnouncePage />;
 const AnnounceEdit = () => <AnnounceEditPage />;
 const AnnounceEditMatch = ({ match }) => (
     <AnnounceEditPage announceId={match.params.announceId} />
 );
-const Header = () => <HeaderSection />;
-const Home = () => <HomePage />;
-const Programs = () => <ProgramPage />;
-const ProgramEdit = () => <ProgramEditPage />;
-const ProgramEditMatch = ({ match }) => (
-    <ProgramEditPage programId={match.params.programId} />
+const Achieve = () => <AchievePage />;
+const AchieveEdit = () => <AchieveEditPage />;
+const AchieveEditMatch = ({ match }) => (
+    <AchieveEditPage id={match.params.id} />
 );
 const Location = () => <LocationPage />;
 const LocationEdit = () => <LocationEditPage />;
@@ -46,12 +59,7 @@ const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
-
-const Class = () => <ClassPage />;
-const ClassEdit = () => <ClassEditPage />;
-const ClassEditMatch = ({ match }) => (
-    <ClassEditPage classId={match.params.classId} />
-);
+const Help = () => <HelpPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -71,11 +79,22 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route
-                        path="/program/:programId/edit"
+                        path="/programs/:programId/edit"
                         component={ProgramEditMatch}
                     />
                     <Route path="/programs/add" component={ProgramEdit} />
                     <Route path="/programs" component={Programs} />
+                    <Route
+                        path="/classes/:classId/edit"
+                        component={ClassEditMatch}
+                    />
+                    <Route path="/classes/add" component={ClassEdit} />
+                    <Route path="/classes" component={Class} />
+                    <Route
+                        path="/sessions/:classId/:id/edit"
+                        component={SessionEditMatch}
+                    />
+                    <Route path="/sessions" component={Session} />
                     <Route
                         path="/announcements/:announceId/edit"
                         component={AnnounceEditMatch}
@@ -100,12 +119,7 @@ class App extends React.Component {
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
-                    <Route
-                        path="/classes/:classId/edit"
-                        component={ClassEditMatch}
-                    />
-                    <Route path="/classes/add" component={ClassEdit} />
-                    <Route path="/classes" component={Class} />
+                    <Route path="/help" component={Help} />
                 </Switch>
             </div>
         );

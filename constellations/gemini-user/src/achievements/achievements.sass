@@ -1,2 +1,59 @@
 #view-achieve h1
-  color: red
+    color: red
+
+
+.achieve-card
+    margin-bottom: 96px
+    
+    & h2
+        border-bottom: 1px solid #222
+        color: #056571
+        line-height: 30px
+        font-size: 18px
+
+    & li
+        display: flex
+        flex-direction: row
+        align-items: center
+        min-height: 96px
+        border-bottom: 1px solid #b8b8b8
+        line-height: 24px
+        font-size: 16px
+        
+        & .bullet
+            display: inline
+            min-width: 6px
+            min-height: 6px
+            border-radius: 100%
+            background-color: #b8b8b8
+            
+        & p
+            margin: 16px 0 16px 32px
+            overflow-wrap: anywhere
+            word-wrap: break-word
+
+    & li:last-child
+        border: none
+    
+    & a
+        float: right
+        margin-top: 16px
+        line-height: 24px
+        font-size: 16px
+    
+#view-achievements-container
+    width: 80%
+    max-width: 512px
+    margin: 0 auto 128px
+    
+    & h1
+        margin-top: 96px
+        line-height: 28px
+        text-align: center
+    
+    & .subheaders
+        margin: 32px 0 96px
+        color: #222
+        line-height: 26px
+        font-size: 18px
+        text-align: center

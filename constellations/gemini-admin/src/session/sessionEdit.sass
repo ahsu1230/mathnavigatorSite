@@ -1,0 +1,70 @@
+@import "../_.constants.sass"
+
+#view-session-edit
+    max-width: $spacing96x
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+
+    h2
+        margin: $spacing4x 0
+
+    h4
+        margin-bottom: $spacing1x
+
+    .item
+        padding-right: $spacing4x
+
+    #date-picker
+        margin: $spacing1x 0
+        padding: 0
+        font-size: $fontSize0
+    
+    #edit-times
+        display: flex
+        flex-flow: row wrap
+
+    .time_picker_container
+        width: $spacing30x
+
+    #cancel-toggle
+        display: flex
+        align-items: center
+        padding-top: $spacing4x
+
+        h4
+            margin: 0
+
+        input
+            width: $spacing2x
+            margin: 0 $spacing2x
+
+    input
+        width: 100%
+        height: $spacing3x
+        margin-bottom: $spacing2x
+        box-sizing: border-box
+        font-size: $fontSize0
+
+    .buttons
+        margin-top: $spacing2x
+        margin-bottom: $spacing8x
+
+        button
+            padding: $spacing2x $spacing4x
+            font-size: $fontSize0
+            outline: none
+            border: none
+            border-radius: 6px
+            cursor: pointer
+
+            :hover
+                filter: brightness(1.1)
+
+        .btn-save
+            float: right
+            background-color: $colorTurquoise
+            color: $colorWhite
+
+        .btn-cancel
+            float: left
+            background-color: $colorGrayLight

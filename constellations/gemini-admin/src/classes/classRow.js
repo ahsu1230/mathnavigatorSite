@@ -1,16 +1,16 @@
 "use strict";
-require("./classRow.styl");
+require("./classRow.sass");
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
 export class ClassRow extends React.Component {
-    render() {
+    render = () => {
         const row = this.props.row;
         const isUnpublished = this.props.isUnpublished;
 
         return (
-            <div id={isUnpublished ? "unpublished" : ""}>
+            <div id={isUnpublished ? "unpublished" : ""} className="row">
                 {renderCheckbox(
                     row.classId,
                     this.props.isCollapsed,
@@ -18,21 +18,25 @@ export class ClassRow extends React.Component {
                     this.props.isSelected,
                     this.props.onSelectRow
                 )}
-                <span className="small">
+                <span className="column">
                     {isUnpublished ? "Unpublished" : "Published"}
                 </span>
-                <span className="large">{row.classId}</span>
-                <span className="small">{row.locationId}</span>
-                <span className="medium">
+                <span className="large-column">{row.classId}</span>
+                <span className="column">{row.locationId}</span>
+                <span className="medium-column">
                     {moment(row.startDate).format("M/D/YYYY")}
                     {" - "}
                     {moment(row.endDate).format("M/D/YYYY")}
                 </span>
-                <span className="large">{row.times}</span>
-                <Link to={"/class/" + row.classId + "/edit"}>Edit</Link>
+                <span className="large-column">{row.times}</span>
+                <span className="edit">
+                    <Link to={"/classes/" + row.classId + "/edit"}>
+                        {"Edit >"}
+                    </Link>
+                </span>
             </div>
         );
-    }
+    };
 }
 
 function renderCheckbox(
@@ -44,11 +48,11 @@ function renderCheckbox(
 ) {
     if (isCollapsed) {
         // No space
-        return <span></span>;
+        return <div></div>;
     } else if (isUnpublished) {
         return (
             <input
-                className="checkbox"
+                className="select"
                 type="checkbox"
                 checked={isSelected}
                 onChange={() => onSelectRow(classId, isSelected)}
@@ -56,6 +60,6 @@ function renderCheckbox(
         );
     } else {
         // Keeps the spacing
-        return <span className="checkbox"></span>;
+        return <div className="select"></div>;
     }
 }

@@ -26,10 +26,24 @@ If you are not using Docker, use `go run main.go` to continually run the Orion w
 ## Running Tests
 
 To run all tests for the back-end web server, run:
+
 ```
 go test ./...
 ```
+
 You should see `ok`s and no failures.
+
+- To run tests with more details, use the `-v` verbose option.
+- Golang automatically "caches" your tests. To run tests without caching, use the option `-count=1`
+- To run a specific test, use the file path instead of `./...`, which recursively runs all tests found in all subfolders.
+
+Examples:
+
+```
+go test -v ./...
+go test -v -count=1 ./...
+go test -v -count=1 ./src/repos/program_repos_test.go
+```
 
 ## Formatting your code
 
