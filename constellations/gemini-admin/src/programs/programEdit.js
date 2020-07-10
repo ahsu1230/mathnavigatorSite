@@ -150,13 +150,12 @@ export class ProgramEditPage extends React.Component {
 
                 <TextInput
                     label="Program Id"
-                    isTextBox={false}
                     value={this.state.inputProgramId}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputProgramId")
                     }
                     required={true}
-                    description="Enter the program ID"
+                    description="Enter the program ID. Examples: ap_calculus, sat1, ap_java"
                     validators={[
                         {
                             validate: (programId) => programId != "",
@@ -167,13 +166,12 @@ export class ProgramEditPage extends React.Component {
 
                 <TextInput
                     label="Program Name"
-                    isTextBox={false}
                     value={this.state.inputProgramName}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputProgramName")
                     }
                     required={true}
-                    description="Enter the program name"
+                    description="Enter the program name. This name will be present to users. Example: AP Calculus, SAT2 Subject Math"
                     validators={[
                         {
                             validate: (name) => name != "",
@@ -184,7 +182,6 @@ export class ProgramEditPage extends React.Component {
 
                 <TextInput
                     label="Grade1"
-                    isTextBox={false}
                     value={this.state.inputGrade1}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputGrade1")
@@ -197,15 +194,21 @@ export class ProgramEditPage extends React.Component {
                             message: "You must input a grade",
                         },
                         {
-                            validate: (grade1) => parseInt(grade1) >= 1,
-                            message: "Grade cannot be less than 1",
+                            validate: (grade1) =>
+                                parseInt(grade1) >= 1 && parseInt(grade1) <= 12,
+                            message: "Grade must be between 1 and 12",
+                        },
+                        {
+                            validate: (grade1) =>
+                                this.state.inputGrade2 >= parseInt(grade1),
+                            message:
+                                "Grade1 must be less than or equal to Grade2",
                         },
                     ]}
                 />
 
                 <TextInput
                     label="Grade2"
-                    isTextBox={false}
                     value={this.state.inputGrade2}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputGrade2")
@@ -218,8 +221,15 @@ export class ProgramEditPage extends React.Component {
                             message: "You must input a grade",
                         },
                         {
-                            validate: (grade2) => parseInt(grade2) <= 12,
-                            message: "Grade cannot be greater than 12",
+                            validate: (grade2) =>
+                                parseInt(grade2) >= 1 && parseInt(grade2) <= 12,
+                            message: "Grade must be between 1 and 12",
+                        },
+                        {
+                            validate: (grade2) =>
+                                this.state.inputGrade1 <= parseInt(grade2),
+                            message:
+                                "Grade2 must be greater than or equal to Grade1",
                         },
                     ]}
                 />

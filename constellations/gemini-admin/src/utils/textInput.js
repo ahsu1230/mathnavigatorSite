@@ -9,20 +9,6 @@ export class TextInput extends React.Component {
         const required = this.props.required;
         const value = this.props.value;
 
-        var format = <h4 className="hidden"></h4>;
-        if (!!description) {
-            let ending = required ? (
-                <span className="red">{" (required)"}</span>
-            ) : (
-                " (optional)"
-            );
-            format = (
-                <h4>
-                    {description} {ending}
-                </h4>
-            );
-        }
-
         var pass = true;
         var error = <h4 className="hidden"></h4>;
         if (required) {
@@ -35,6 +21,26 @@ export class TextInput extends React.Component {
             });
         } else {
             pass = false;
+        }
+
+        var format = <h4 className="hidden"></h4>;
+        if (!!description) {
+            let ending;
+            if (required) {
+                if (pass) {
+                    ending = <span>{" (required)"}</span>;
+                } else {
+                    ending = <span className="red">{" (required)"}</span>;
+                }
+            } else {
+                ending = " (optional)";
+            }
+
+            format = (
+                <h4>
+                    {description} {ending}
+                </h4>
+            );
         }
 
         var input = (
