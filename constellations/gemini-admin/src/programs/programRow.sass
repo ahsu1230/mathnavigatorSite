@@ -1,0 +1,32 @@
+@import "../_.constants.sass"
+
+#view-program
+    span
+        display: inline-block
+
+    // TODO: Change to using flexbox
+    .small
+        width: 80px
+
+    .medium
+        width: 160px
+
+    .large
+        width: 240px
+
+    #header
+        display: flex
+        align-items: center
+        height: 55px
+        border-bottom: 2px solid $colorGrayDark
+
+    #rows
+        list-style: none
+        padding: 0
+        margin: 0
+
+        div
+            display: flex
+            align-items: center
+            height: 60px
+            border-bottom: 1px solid $colorGrayLight

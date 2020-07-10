@@ -1,5 +1,5 @@
 "use strict";
-require("./announce.styl");
+require("./announce.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
@@ -20,11 +20,53 @@ export class AnnouncePage extends React.Component {
         });
     }
 
+    onChangeCheckbox = (e) => {
+        let successCallback = () => console.log("api success");
+        let failCallback = (err) => {
+            alert("Could not save announcement: " + err.response.data);
+            console.log(err.response);
+        };
+
+        let previous = this.state.list.findIndex(
+            (announcement) => announcement.onHomePage
+        );
+        let current = this.state.list.findIndex(
+            (announcement) => announcement.id == e.target.id
+        );
+
+        let newList = this.state.list;
+
+        newList[current].onHomePage = true;
+        if (previous >= 0) {
+            newList[previous].onHomePage = false;
+        }
+
+        this.setState({ list: newList });
+
+        let indexes = previous == current ? [previous] : [previous, current];
+
+        indexes.forEach((index) => {
+            if (index >= 0) {
+                API.post(
+                    "api/announcements/announcement/" +
+                        this.state.list[index].id,
+                    this.state.list[index]
+                )
+                    .then((res) => successCallback())
+                    .catch((err) => failCallback(err));
+            }
+        });
+    };
+
     render() {
         const rows = this.state.list.map((row, index) => {
             return (
                 <li key={index}>
-                    <AnnounceRow key={index} row={row} />
+                    <AnnounceRow
+                        key={index}
+                        row={row}
+                        onChangeCheckbox={this.onChangeCheckbox}
+                    />
                 </li>
             );
         });
@@ -34,6 +76,7 @@ export class AnnouncePage extends React.Component {
                 <h1>All Announcements ({numRows}) </h1>
 
                 <ul className="announce-list-row subheader">
+                    <li className="li-small">On Home Page</li>
                     <li className="li-med">State</li>
                     <li className="li-med">Date</li>
                     <li className="li-med">Author</li>
@@ -56,6 +99,8 @@ class AnnounceRow extends React.Component {
         const announceId = this.props.row.id;
         const postedAt = moment(this.props.row.postedAt);
 
+        const checked = this.props.row.onHomePage || false;
+
         const now = moment();
         const isScheduled = postedAt.isAfter(now);
 
@@ -65,6 +110,14 @@ class AnnounceRow extends React.Component {
         const url = "/announcements/" + announceId + "/edit";
         return (
             <ul className="announce-list-row">
+                <li className="li-small">
+                    <input
+                        type="checkbox"
+                        onChange={this.props.onChangeCheckbox}
+                        id={announceId}
+                        checked={checked}
+                    />
+                </li>
                 <li
                     className={
                         "li-med " + (isScheduled ? " scheduled" : " published")

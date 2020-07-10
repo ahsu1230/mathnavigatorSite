@@ -7,31 +7,41 @@
     box-sizing: border-box
     color: $colorBlackDark
 
-    h1
+    & h1
         margin: $spacing4x 0
         line-height: $lineHeight3
         font-size: $fontSize3
 
-    ul
+    & ul
         list-style: none
         margin: 0
         padding: 0
+    
+    & button
+        margin-top: $spacing4x
 
 #view-achieve #list-heading
     border-bottom: 2px solid $colorGrayDark
 
-    li
+    & li
         display: inline-block
         height: $spacing4x
         line-height: $spacing4x
 
 #view-achieve #achieve-row
+    display: flex
+    flex-direction: row
+    align-items: center
+    min-height: $spacing8x
     border-bottom: 1px solid $colorGrayDark
 
-    li
+    & li
         display: inline-block
-        height: $spacing8x
-        line-height: $spacing8x
+        height: auto
+        line-height: $lineHeight4
+    
+    & a
+        margin: 0 $spacing3x
 
 #view-achieve
     .li-small
@@ -39,12 +49,13 @@
     .li-med
         width: $spacing20x
     .li-large
+        flex-grow: 1
         width: $spacing48x
 
 a.add-achievement
     display: inline-block
     margin: $spacing2x 0
-    background-color: $colorTurquoise
-    color: $colorWhite
     padding: 0.75em
     border-radius: 10px
+    color: $colorWhite
+    background-color: $colorTurquoise
