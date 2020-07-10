@@ -11,17 +11,6 @@ export class AskForHelpPage extends React.Component {
     };
 
     componentDidMount() {
-        /*let data = {
-            id: 1,
-            title: "AP Calculus Help",
-            date: new Date(),
-            timeString: "2:00-4:00PM",
-            subject: "AP Calculus",
-            locationId: "wchs",
-            notes: "test note"
-        }
-        API.post("api/askforhelp/create", data).catch((err) => alert(err))*/
-
         API.get("api/askforhelp/all").then((res) => {
             const afh = res.data;
             this.setState({
