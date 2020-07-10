@@ -17,6 +17,7 @@ var SessionRepo mockSessionRepo
 var FamilyRepo mockFamilyRepo
 var UserRepo mockUserRepo
 var AskForHelpRepo mockAskForHelpRepo
+var UserAfhRepo mockUserAfhRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
@@ -364,4 +365,36 @@ func (askForHelpRepo *mockAskForHelpRepo) Update(id uint, askForHelp domains.Ask
 }
 func (askForHelpRepo mockAskForHelpRepo) Delete(id uint) error {
 	return askForHelpRepo.MockDelete(id)
+}
+
+type mockUserAfhRepo struct {
+	MockInitalize       func(*sql.DB)
+	MockSelectByUserId  func(uint) ([]domains.UserAfh, error)
+	MockSelectByAfhId   func(uint) ([]domains.UserAfh, error)
+	MockSelectByBothIds func(uint, uint) (domains.UserAfh, error)
+	MockInsert          func(domains.UserAfh) error
+	MockUpdate          func(uint, domains.UserAfh) error
+	MockDelete          func(uint) error
+}
+
+// Implement methods of UserAfhRepo interface with mocked implementations
+func (userAfhRepo *mockUserAfhRepo) Initialize(db *sql.DB) {}
+
+func (userAfhRepo *mockUserAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
+	return userAfhRepo.MockSelectByUserId(userId)
+}
+func (userAfhRepo *mockUserAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
+	return userAfhRepo.MockSelectByAfhId(afhId)
+}
+func (userAfhRepo *mockUserAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, error) {
+	return userAfhRepo.MockSelectByBothIds(userId, afhId)
+}
+func (userAfhRepo *mockUserAfhRepo) Insert(userAfh domains.UserAfh) error {
+	return userAfhRepo.MockInsert(userAfh)
+}
+func (userAfhRepo *mockUserAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
+	return userAfhRepo.MockUpdate(id, userAfh)
+}
+func (userAfhRepo *mockUserAfhRepo) Delete(id uint) error {
+	return userAfhRepo.MockDelete(id)
 }

@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func ParseParamId(c *gin.Context) uint {
@@ -35,4 +36,20 @@ func ParseParamInt(str string, preset int) int {
 		panic(err)
 	}
 	return int(integer)
+}
+
+func ParseParamUserId(c *gin.Context) uint {
+	id, err := strconv.ParseUint(c.Param("userId"), 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id)
+}
+
+func ParseParamAfhId(c *gin.Context) uint {
+	id1, err := strconv.ParseUint(c.Param("afhId"), 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint(id1)
 }

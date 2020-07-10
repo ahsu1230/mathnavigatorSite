@@ -107,3 +107,10 @@ func CreateMockAFH(id uint, title string, date time.Time, timeString string, sub
 		Notes:      domains.NewNullString(notes),
 	}
 }
+
+func CreateMockUserAfh(userId, afhId uint) domains.UserAfh {
+	return domains.UserAfh{
+		UserId: userId,
+		AfhId:  afhId,
+	}
+}
