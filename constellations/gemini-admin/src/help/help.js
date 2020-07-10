@@ -5,7 +5,7 @@ import React from "react";
 export class HelpPage extends React.Component {
     render() {
         return (
-            <div>
+            <div id="view-help">
                 <h2>Administrative Support</h2>
                 <h1>How to Create a Class</h1>
                 <p>
