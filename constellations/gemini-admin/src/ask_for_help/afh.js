@@ -16,7 +16,6 @@ export class AskForHelpPage extends React.Component {
             this.setState({
                 list: afh,
             });
-            console.log(this.state.list);
         });
     }
 

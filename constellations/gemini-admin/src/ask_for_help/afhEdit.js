@@ -45,7 +45,6 @@ export class AskForHelpEditPage extends React.Component {
             if (afhId) {
                 API.get("api/askforhelp/afh/" + afhId).then((res2) => {
                     const afh = res2.data;
-                    console.log(afh);
                     this.setState({
                         isEdit: true,
 
@@ -70,7 +69,6 @@ export class AskForHelpEditPage extends React.Component {
 
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
-        console.log(this.state);
     }
 
     onClickSave() {
