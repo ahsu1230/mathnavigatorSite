@@ -26,6 +26,7 @@ type Class struct {
 	FullState       int        `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
+	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 
 // Class Methods
