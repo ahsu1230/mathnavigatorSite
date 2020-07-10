@@ -4,17 +4,13 @@ import React from "react";
 import Checkbox from "../../assets/checkmark_green.svg";
 
 export class InputText extends React.Component {
-    render = () => {
-        const description = this.props.description;
-        const required = this.props.required;
-        const value = this.props.value;
-
+    renderErrorMessage = (required, value) => {
         var pass = true;
-        var error = <h4 className="hidden"></h4>;
+        var errorMessage = <h4 className="hidden"></h4>;
         if (required) {
             this.props.validators.some((validator) => {
                 if (!validator.validate(value)) {
-                    error = <h4 className="red">{validator.message}</h4>;
+                    errorMessage = <h4 className="red">{validator.message}</h4>;
                     pass = false;
                     return true;
                 }
@@ -22,27 +18,27 @@ export class InputText extends React.Component {
         } else {
             pass = false;
         }
+        return [errorMessage, pass];
+    };
 
-        var format = <h4 className="hidden"></h4>;
+    renderDescription = (description, required, pass) => {
+        var formatDescription = <h4 className="hidden"></h4>;
         if (!!description) {
-            let ending;
-            if (required) {
-                if (pass) {
-                    ending = <span>{" (required)"}</span>;
-                } else {
-                    ending = <span className="red">{" (required)"}</span>;
-                }
-            } else {
-                ending = " (optional)";
-            }
-
-            format = (
+            let ending = required ? (
+                <span className={pass ? "" : "red"}>{" (required)"}</span>
+            ) : (
+                " (optional)"
+            );
+            formatDescription = (
                 <h4>
                     {description} {ending}
                 </h4>
             );
         }
+        return formatDescription;
+    };
 
+    renderInput = (pass, value) => {
         var input = (
             <input
                 className={pass ? "blue" : ""}
@@ -60,16 +56,30 @@ export class InputText extends React.Component {
                 />
             );
         }
+        return input;
+    };
+
+    render = () => {
+        const required = this.props.required;
+        const value = this.props.value;
+
+        var [errorMessage, pass] = this.renderErrorMessage(required, value);
+        var formatDescription = this.renderDescription(
+            this.props.description,
+            required,
+            pass
+        );
+        var input = this.renderInput(pass, value);
 
         return (
             <div id="text-input-wrapper">
                 <h2>{this.props.label}</h2>
-                {format}
+                {formatDescription}
                 <div id="input-wrapper">
                     {input}
                     {pass ? <img src={Checkbox} /> : <img />}
                 </div>
-                {error}
+                {errorMessage}
             </div>
         );
     };
