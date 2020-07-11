@@ -1,0 +1,83 @@
+@import "../_.constants.sass"
+
+#view-header
+    position: fixed
+    top: 0
+    z-index: 99
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
+    height: $headerHeight
+    box-sizing: border-box
+    background-color: $colorGrayDark
+    color: $colorWhite
+
+    h2
+        margin: 0
+        padding: 0 $spacing4x
+        border: 0
+
+        a
+            color: $colorWhite
+            font-size: $fontSize3
+            line-height: $lineHeight2
+            text-decoration: none
+
+    #header-left
+        display: flex
+        align-items: center
+
+    .header-section
+        display: flex
+        justify-content: center
+        padding: 0 $spacing6x
+        min-width: $spacing3x
+
+    .header-dropdown
+        flex: 1 1 0
+
+        .title
+            line-height: $spacing5x
+            cursor: default
+
+        .orange
+            color: $colorOrange
+
+        .dropdown
+            position: absolute
+            z-index: 100
+            top: $spacing8x
+            display: flex
+            flex-flow: column nowrap
+            width: $spacing20x
+            max-height: 0
+            margin: 0
+            padding: 0
+            overflow: hidden
+            transition: max-height 0.3s linear
+
+            span
+                padding: 5px $spacing2x
+                background-color: $colorGrayLight
+                text-align: center
+
+                &:hover
+                    filter: brightness(1.1)
+
+            a
+                color: $colorBlackDark
+                text-decoration: none
+
+        .expand
+            max-height: $spacing64x
+
+    .header-link a
+        color: $colorWhite
+        text-decoration: none
+
+        &:hover
+            color: $colorOrange
+
+body
+    padding-top: $headerHeight
