@@ -20,6 +20,14 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+
+// import { UserPage } from "./users/user.js";
+// import { UserEditPage } from "./users/userEdit.js";
+import { AccountPage } from "./accounts/account.js";
+import { AccountEditPage } from "./accounts/accountEdit.js";
+import { TransactionEditPage } from "./accounts/accountTransactionEdit.js";
+// import { CreatePrimaryPage } from "./primary/createPrimary.js";
+
 import { HelpPage } from "./help/help.js";
 
 const Header = () => <HeaderSection />;
@@ -59,6 +67,19 @@ const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
+
+// const User = () => <UserPage />;
+// const UserEdit = () => <UserEditPage />;
+// const UserEditMatch = ({ match }) => <UserEdit id={match.params.id} />;
+const Account = () => <AccountPage />;
+const AccountEdit = () => <AccountEditPage />;
+const AccountEditMatch = ({ match }) => <AccountEdit id={match.params.id} />;
+const AccountTransactionEdit = () => <AccountTransactionEditPage />;
+const AccountTransactionEditMatch = ({ match }) => (
+    <AccountTransactionEditPage id={match.params.id} />
+);
+// const CreatePrimary = () => <CreatePrimaryPage />;
+
 const Help = () => <HelpPage />;
 
 class AppContainer extends React.Component {
@@ -119,6 +140,22 @@ class App extends React.Component {
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
+
+                    {/* <Route path="/users/:id/edit" component={UserEditMatch} />
+                    <Route path="/users/add" component={UserEdit} />
+                    <Route path="/users" component={User} /> */}
+                    <Route
+                        path="/accounts/:id/edit"
+                        component={AccountEditMatch}
+                    />
+                    <Route
+                        path="/accounts/transaction/:id/edit"
+                        component={AccountTransactionEdit}
+                    />
+                    <Route path="/accounts/add" component={AccountEdit} />
+                    <Route path="/accounts" component={Account} />
+                    {/* <Route path="/primary" component={CreatePrimary} /> */}
+
                     <Route path="/help" component={Help} />
                 </Switch>
             </div>

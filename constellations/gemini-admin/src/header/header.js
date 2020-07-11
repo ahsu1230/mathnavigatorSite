@@ -103,8 +103,15 @@ class HeaderDropdown extends React.Component {
                 className="header-dropdown header-section"
                 onMouseOver={this.onHoverHeader}
                 onMouseOut={this.onExitHeader}>
-                <div className={this.state.hover ? "title orange" : "title"}>{this.props.title}</div>
-                <div className={this.state.hover ? "dropdown expand" : "dropdown"}>{links}</div>
+                <div className={this.state.hover ? "title orange" : "title"}>
+                    {this.props.title}
+                </div>
+                <div
+                    className={
+                        this.state.hover ? "dropdown expand" : "dropdown"
+                    }>
+                    {links}
+                </div>
             </div>
         );
     }
