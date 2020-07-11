@@ -113,8 +113,8 @@ func (h *Handler) SetupApiEndpoints() {
 	apiUserAfh := h.Engine.Group("api/userAfhs")
 	{
 		apiUserAfh.GET("/userAfhs/user/:userId", controllers.GetUserAfhByUserId)
-		apiUserAfh.GET("/userAfhs/afh/:afhid", controllers.GetUserAfhByAfhId)
-		apiUserAfh.GET("/userAfhs/user/:userId/afh/:userId", controllers.GetUserAfhByBothIds)
+		apiUserAfh.GET("/userAfhs/afh/:afhId", controllers.GetUserAfhByAfhId)
+		apiUserAfh.GET("/userAfhs/user/:userId/afh/:afhId", controllers.GetUserAfhByBothIds)
 		apiUserAfh.POST("/create", controllers.CreateUserAfh)
 		apiUserAfh.POST("/userAfh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/userAfh/:id", controllers.DeleteUserAfh)
