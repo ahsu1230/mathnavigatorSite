@@ -7,15 +7,20 @@
     font-family: $fontFamilyRoboto
 
     & h1
-        margin-top: 80px
+        margin-top: $spacing10x
         color: $colorTurquoise
 
     .section
-        margin-bottom: 80px
+        margin-bottom: $spacing10x
 
     & h3
-        margin: 20px 0
+        margin: $spacing3x 0
         color: $colorTurquoise
+
+    & li
+        padding: $spacing3x 0
+        width: 100% 
+        border-bottom: 1px solid $colorGrayLight
 
     .container-class
         display: flex
@@ -35,33 +40,16 @@
                 filter: brightness(1.1)
 
     .class-section
-        display: flex
-        flex-direction: row
-        align-items: center
-        border-bottom: 1px solid $colorGrayDark
-
-    .unpublished-classes
-        display: flex
-        flex-direction: row
-        align-items: center
-        border-bottom: 1px solid $colorGrayLight
-
-        .classID
-            width: 80%
-            margin-right: 60px
-        .edit
+        display: inline-block
+        width: 100%
+        & p
             margin: 0
+            border-bottom: 1px solid $colorGrayDark
+        & ul
+              list-style-type: none
+              padding: 0
+              margin: 0
 
-            .editB
-                padding: 6px 12px
-                border-radius: 48px
-                background-color: $colorWhite
-                color: $colorTurquoise
-                font-size: $fontSize0
-
-                &:hover
-                    cursor: pointer
-                    filter: brightness(1.1)
 
     .container-user
         display: flex

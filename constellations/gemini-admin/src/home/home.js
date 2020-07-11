@@ -5,10 +5,31 @@ import API from "../api.js";
 import { Link } from "react-router-dom";
 
 export class HomePage extends React.Component {
+    state = {
+        classes: [],
+    };
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        API.get("api/unpublished").then((res) => {
+            const unpublishedList = res.data;
+            this.setState({
+                classes: unpublishedList.classes,
+            });
+        });
+    };
+
     render() {
+        let unpublishedClasses = this.state.classes.map((row, index) => {
+            return <li key={index}> {row.classId} </li>;
+        });
+
         return (
             <div id="view-home">
-                <h1>Adminstrator Dashboard</h1>
+                <h1>Administrator Dashboard</h1>
 
                 <div class="section">
                     <div class="container-class">
@@ -19,24 +40,10 @@ export class HomePage extends React.Component {
                             <Link to={"/classes"}>View Details to Publish</Link>
                         </button>
                     </div>
-
                     <div class="class-section">
-                        <p class="classID">Class ID</p>
-                        <p class="edit"> </p>
-                    </div>
-                    <div class="unpublished-classes">
-                        <p class="classID">ap_calculus_spring_2020</p>
-                        <p class="edit">
-                            {" "}
-                            <button class="editB">Edit</button>{" "}
-                        </p>
-                    </div>
-                    <div class="unpublished-classes">
-                        <p class="classID">ap_java_summer_2020_class_a</p>
-                        <p class="edit">
-                            {" "}
-                            <button class="editB">Edit</button>{" "}
-                        </p>
+                        <p>Class ID</p>
+
+                        <ul>{unpublishedClasses}</ul>
                     </div>
                 </div>
 
