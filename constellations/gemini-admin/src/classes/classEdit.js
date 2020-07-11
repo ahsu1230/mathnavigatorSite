@@ -9,44 +9,25 @@ import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class ClassEditPage extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        isEdit: false,
 
-        this.state = {
-            isEdit: false,
+        // class object
+        oldClassId: "",
+        inputClassKey: "",
+        inputTimeString: "",
 
-            // class object
-            oldClassId: "",
-            inputClassKey: "",
-            inputTimeString: "",
+        selectProgramId: "",
+        selectSemesterId: "",
+        selectLocationId: "",
 
-            selectProgramId: "",
-            selectSemesterId: "",
-            selectLocationId: "",
-            listPrograms: [],
-            listSemesters: [],
-            listLocations: [],
-            listSessionsLocal: [],
-            listSessionsRemote: [],
+        programs: [],
+        semesters: [],
+        locations: [],
+        sessions: [],
 
-            // other
-            focusedInput: undefined,
-            fullState: "",
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onModalDeleteConfirm = this.onModalDeleteConfirm.bind(this);
-        this.onModalOkSaved = this.onModalOkSaved.bind(this);
-        this.onModalDismiss = this.onModalDismiss.bind(this);
-
-        this.onAddSessions = this.onAddSessions.bind(this);
-        this.onDeleteSession = this.onDeleteSession.bind(this);
-    }
+        fullState: "",
+    };
 
     componentDidMount = () => {
         const classId = this.props.classId;
@@ -123,9 +104,8 @@ export class ClassEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
-    onChangeSelect = (e) => {
+    onChangeFullState = (e) => {
         const value = e.target.value;
-        console.log(value);
         this.setState({
             fullState: value,
         });
@@ -249,6 +229,13 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) => this.handleChange(e, "inputClassKey")}
                     />
 
+                    <h4 className="availability">Class Availability</h4>
+                    <select onChange={(e) => this.onChangeFullState(e)}>
+                        <option value="0">Normal</option>
+                        <option value="1">Almost Full</option>
+                        <option value="2">Full</option>
+                    </select>
+
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
             );
@@ -303,13 +290,6 @@ export class ClassEditPage extends React.Component {
                             this.handleChange(e, "inputTimeString")
                         }
                     />
-                    <h3 className="avalibility">Class Avalibility</h3>
-
-                    <select onChange={(e) => this.onChangeSelect(e)}>
-                        <option value="0">Normal</option>
-                        <option value="1">Almost Full</option>
-                        <option value="2">Full</option>
-                    </select>
                 </div>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
