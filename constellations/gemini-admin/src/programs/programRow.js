@@ -1,10 +1,10 @@
 "use strict";
-require("./programRow.styl");
+require("./programRow.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 
 export class ProgramRow extends React.Component {
-    render() {
+    render = () => {
         const row = this.props.row;
 
         return (
@@ -16,5 +16,5 @@ export class ProgramRow extends React.Component {
                 <Link to={"/programs/" + row.programId + "/edit"}>Edit</Link>
             </div>
         );
-    }
+    };
 }

@@ -2,10 +2,11 @@ package repos
 
 import (
 	"database/sql"
-	"time"
-	//"fmt"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"strings"
+	"time"
 )
 
 // Global variable
@@ -19,10 +20,10 @@ type userRepo struct {
 // Interface to implement
 type UserRepoInterface interface {
 	Initialize(db *sql.DB)
-	//SearchAll(string) ([]domains.User,error)
+	SearchUsers(string) ([]domains.User, error)
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
-	SelectByFamilyId(uint) ([]domains.User, error)
+	SelectByAccountId(uint) ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -34,22 +35,46 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 
 //TODO
 
-// func (ur *userRepo) SearchAll(search string) ([]domains.User, error) {
-// 	results := make([]domains.User, 0)
+func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
+	results := make([]domains.User, 0)
 
-// 	//var query string
+	lcSearch := strings.ToLower(search)
+	query := fmt.Sprintf("SELECT * FROM users WHERE LOWER(`first_name`) LIKE '%%%s%%' OR LOWER(`middle_name`) LIKE '%%%s%%' OR LOWER(`last_name`) LIKE '%%%s%%' OR LOWER(`email`) LIKE '%%%s%%'", lcSearch, lcSearch, lcSearch, lcSearch)
 
-// 	query := fmt.Sprintf("SELECT * FROM users WHERE first_name CONTAINS %s",search)
+	stmt, err := ur.db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
 
-// 	//query = "SELECT * FROM users WHERE first_name CONTAINS ?" //? OR middle_name contains ? OR last_name contains ? OR email contains ? "
-// 	stmt, err := ur.db.Prepare(query)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-// 	return results, nil
-// }
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.DeletedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.MiddleName,
+			&user.Email,
+			&user.Phone,
+			&user.IsGuardian,
+			&user.AccountId,
+			&user.Notes); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, user)
+	}
+
+	return results, nil
+}
 
 func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	results := make([]domains.User, 0)
@@ -91,7 +116,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.FamilyId,
+			&user.AccountId,
 			&user.Notes); errScan != nil {
 			return results, errScan
 		}
@@ -121,20 +146,20 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.Email,
 		&user.Phone,
 		&user.IsGuardian,
-		&user.FamilyId,
+		&user.AccountId,
 		&user.Notes)
 	return user, errScan
 }
 
-func (ur *userRepo) SelectByFamilyId(familyId uint) ([]domains.User, error) {
+func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE family_id=?")
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE account_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullUint(familyId))
+	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +178,7 @@ func (ur *userRepo) SelectByFamilyId(familyId uint) ([]domains.User, error) {
 			&user.Email,
 			&user.Phone,
 			&user.IsGuardian,
-			&user.FamilyId,
+			&user.AccountId,
 			&user.Notes); errScan != nil {
 			return results, errScan
 		}
@@ -172,7 +197,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 		"email," +
 		"phone, " +
 		"is_guardian," +
-		"family_id," +
+		"account_id," +
 		"notes" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
@@ -192,7 +217,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.FamilyId,
+		user.AccountId,
 		user.Notes,
 	)
 	if err != nil {
@@ -210,7 +235,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		"email=?, " +
 		"phone=?, " +
 		"is_guardian=?, " +
-		"family_id=?, " +
+		"account_id=?, " +
 		"notes=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -228,7 +253,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.FamilyId,
+		user.AccountId,
 		user.Notes,
 		id)
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -51,13 +52,13 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
 	assert.EqualValues(t, "555-555-0199", user.Phone)
 	assert.EqualValues(t, true, user.IsGuardian)
-	assert.EqualValues(t, 0, user.FamilyId)
+	assert.EqualValues(t, 0, user.AccountId)
 	assert.EqualValues(t, "notes1", user.Notes.String)
 
 }
 
-func TestGetUsersByFamily_Success(t *testing.T) {
-	testUtils.UserRepo.MockSelectByFamilyId = func(familyId uint) ([]domains.User, error) {
+func TestGetUsersByAccount_Success(t *testing.T) {
+	testUtils.UserRepo.MockSelectByAccountId = func(accountId uint) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -86,7 +87,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	repos.UserRepo = &testUtils.UserRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/family/2", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -102,7 +103,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
 	assert.EqualValues(t, "555-555-0199", users[0].Phone)
 	assert.EqualValues(t, false, users[0].IsGuardian)
-	assert.EqualValues(t, 2, users[0].FamilyId)
+	assert.EqualValues(t, 2, users[0].AccountId)
 	assert.EqualValues(t, "notes1", users[0].Notes.String)
 
 	assert.EqualValues(t, 2, users[1].Id)
@@ -112,7 +113,7 @@ func TestGetUsersByFamily_Success(t *testing.T) {
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
 	assert.EqualValues(t, "555-555-0199", users[1].Phone)
 	assert.EqualValues(t, false, users[1].IsGuardian)
-	assert.EqualValues(t, 2, users[1].FamilyId)
+	assert.EqualValues(t, 2, users[1].AccountId)
 	assert.EqualValues(t, "notes2", users[1].Notes.String)
 
 	assert.EqualValues(t, 2, len(users))
@@ -177,6 +178,116 @@ func TestCreateUser_Failure(t *testing.T) {
 	)
 	body := createBodyFromUser(user)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
+func TestSearchUsers_Success(t *testing.T) {
+	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
+		return []domains.User{
+			testUtils.CreateMockUser(
+				1,
+				"Ben",
+				"Smith",
+				"",
+				"ben_smith@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes1",
+			),
+			testUtils.CreateMockUser(
+				2,
+				"B",
+				"Joe",
+				"Middle",
+				"benjamin_joe@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes2",
+			),
+			testUtils.CreateMockUser(
+				3,
+				"Bob",
+				"Ben",
+				"Middle",
+				"bob@example.com",
+				"555-555-0199",
+				false,
+				3,
+				"notes3",
+			),
+			testUtils.CreateMockUser(
+				4,
+				"A",
+				"J",
+				"Ben",
+				"a_j@example.com",
+				"555-555-0199",
+				false,
+				4,
+				"notes4",
+			),
+		}, nil
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create search body for HTTP request
+	userSearchBody := controllers.UserSearchBody{
+		"Ben",
+	}
+	marshal, err := json.Marshal(&userSearchBody)
+	if err != nil {
+		panic(err)
+	}
+	body := bytes.NewBuffer(marshal)
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/search", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, 1, users[0].Id)
+	assert.EqualValues(t, "Ben", users[0].FirstName)
+	assert.EqualValues(t, "", users[0].MiddleName.String)
+	assert.EqualValues(t, "Smith", users[0].LastName)
+	assert.EqualValues(t, "ben_smith@example.com", users[0].Email)
+
+	assert.EqualValues(t, 2, users[1].Id)
+	assert.EqualValues(t, "B", users[1].FirstName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
+	assert.EqualValues(t, "Joe", users[1].LastName)
+	assert.EqualValues(t, "benjamin_joe@example.com", users[1].Email)
+
+	assert.EqualValues(t, 3, users[2].Id)
+	assert.EqualValues(t, "Bob", users[2].FirstName)
+	assert.EqualValues(t, "Middle", users[2].MiddleName.String)
+	assert.EqualValues(t, "Ben", users[2].LastName)
+	assert.EqualValues(t, "bob@example.com", users[2].Email)
+
+	assert.EqualValues(t, 4, users[3].Id)
+	assert.EqualValues(t, "A", users[3].FirstName)
+	assert.EqualValues(t, "Ben", users[3].MiddleName.String)
+	assert.EqualValues(t, "J", users[3].LastName)
+	assert.EqualValues(t, "a_j@example.com", users[3].Email)
+
+}
+
+func TestSearchUsers_Failure(t *testing.T) {
+	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
+		return []domains.User{}, errors.New("not found")
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/search", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
@@ -291,7 +402,7 @@ func TestDeleteUser_Failure(t *testing.T) {
 // Helper Methods
 //
 
-func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, familyId uint, notes string) domains.User {
+func createMockUser(id uint, firstName, lastName, middleName, email, phone string, isGuardian bool, accountId uint, notes string) domains.User {
 	return domains.User{
 		Id:         id,
 		FirstName:  firstName,
@@ -300,7 +411,7 @@ func createMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		Email:      email,
 		Phone:      phone,
 		IsGuardian: isGuardian,
-		FamilyId:   familyId,
+		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),
 	}
 }
