@@ -5,6 +5,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { InputText } from "../utils/inputText.js";
+import { setCurrentAccountId } from "../localStorage.js";
 
 export class AccountEditPage extends React.Component {
     state = {
@@ -30,11 +31,37 @@ export class AccountEditPage extends React.Component {
             password: "password", // Temporary
         };
 
-        var id;
         API.post("api/accounts/create", account)
             .then(() => {
-                API.post("api/accounts/search", { primaryEmail: email })
-                    .then((res) => (id = res.data.id))
+                API.post("api/accounts/search", {
+                    primaryEmail: this.state.email,
+                })
+                    .then((res) => {
+                        console.log(res.data.id);
+                        const id = res.data.id;
+
+                        let user = {
+                            firstName: this.state.firstName,
+                            middleName: this.state.middleName,
+                            lastName: this.state.lastName,
+                            email: this.state.email,
+                            phone: this.state.phone,
+                            isGuardian: true,
+                            accountId: id,
+                            notes: this.state.notes,
+                        };
+
+                        API.post("api/users/create", user)
+                            .then(() => {
+                                this.setState({ showSaveModal: true });
+                                setCurrentAccountId(id);
+                            })
+                            .catch((err) =>
+                                alert(
+                                    "Could not save user: " + err.response.data
+                                )
+                            );
+                    })
                     .catch((err) =>
                         alert("Could not fetch account: " + err.response.data)
                     );
@@ -42,25 +69,6 @@ export class AccountEditPage extends React.Component {
             .catch((err) =>
                 alert("Could not create account: " + err.response.data)
             );
-
-        if (id) {
-            let user = {
-                firstName: this.state.firstName,
-                middleName: this.state.middleName,
-                lastName: this.state.lastName,
-                email: this.state.email,
-                phone: this.state.phone,
-                isGuardian: true,
-                accountId: this.state.id,
-                notes: this.state.notes,
-            };
-
-            API.post("api/users/create", user)
-                .then(() => this.setState({ showSaveModal: true }))
-                .catch((err) =>
-                    alert("Could not save user: " + err.response.data)
-                );
-        }
     };
 
     onModalOkSaved = () => {
@@ -171,11 +179,7 @@ export class AccountEditPage extends React.Component {
     };
 }
 
-function renderModal(
-    showSaveModal,
-    onModalOkSaved,
-    onModalDismiss
-) {
+function renderModal(showSaveModal, onModalOkSaved, onModalDismiss) {
     let modalDiv;
     let modalContent;
     let showModal;

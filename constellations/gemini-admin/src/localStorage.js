@@ -6,8 +6,8 @@ export const getCurrentClassId = () => {
     return JSON.parse(classId);
 };
 
-export const setCurrentClassId = (c) => {
-    const classId = JSON.stringify(c);
+export const setCurrentClassId = (id) => {
+    const classId = JSON.stringify(id);
     window.localStorage.setItem(STORAGE_CURRENT_CLASS, classId);
 };
 
@@ -16,7 +16,7 @@ export const getCurrentAccountId = () => {
     return JSON.parse(accountId);
 };
 
-export const setCurrentAccountId = () => {
-    const accountId = JSON.stringify(c);
-    window.localStorage.setItem(STORAGE_CURRENT_ACCOUNT);
+export const setCurrentAccountId = (id) => {
+    const accountId = JSON.stringify(id);
+    window.localStorage.setItem(STORAGE_CURRENT_ACCOUNT, accountId);
 };
