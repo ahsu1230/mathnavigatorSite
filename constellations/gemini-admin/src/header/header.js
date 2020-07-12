@@ -45,7 +45,7 @@ const LinkMap = {
         },
         {
             title: "Create New Primary Account",
-            url: "/primary",
+            url: "/accounts/add",
         },
     ],
 };

@@ -21,12 +21,11 @@ import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
 
-// import { UserPage } from "./users/user.js";
-// import { UserEditPage } from "./users/userEdit.js";
-import { AccountPage } from "./accounts/account.js";
-import { AccountEditPage } from "./accounts/accountEdit.js";
-import { TransactionEditPage } from "./accounts/accountTransactionEdit.js";
-// import { CreatePrimaryPage } from "./primary/createPrimary.js";
+import { UserPage } from "./user/user.js";
+import { UserEditPage } from "./user/userEdit.js";
+import { AccountPage } from "./account/account.js";
+import { AccountEditPage } from "./account/accountEdit.js";
+import { TransactionEditPage } from "./account/accountTransactionEdit.js";
 
 import { HelpPage } from "./help/help.js";
 
@@ -68,17 +67,15 @@ const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
 
-// const User = () => <UserPage />;
-// const UserEdit = () => <UserEditPage />;
-// const UserEditMatch = ({ match }) => <UserEdit id={match.params.id} />;
+const User = () => <UserPage />;
+const UserEdit = () => <UserEditPage />;
+const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
 const Account = () => <AccountPage />;
 const AccountEdit = () => <AccountEditPage />;
-const AccountEditMatch = ({ match }) => <AccountEdit id={match.params.id} />;
-const AccountTransactionEdit = () => <AccountTransactionEditPage />;
+const AccountTransactionEdit = () => <TransactionEditPage />;
 const AccountTransactionEditMatch = ({ match }) => (
-    <AccountTransactionEditPage id={match.params.id} />
+    <TransactionEditPage id={match.params.id} />
 );
-// const CreatePrimary = () => <CreatePrimaryPage />;
 
 const Help = () => <HelpPage />;
 
@@ -141,20 +138,19 @@ class App extends React.Component {
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
 
-                    {/* <Route path="/users/:id/edit" component={UserEditMatch} />
+                    <Route path="/users/:id/edit" component={UserEditMatch} />
                     <Route path="/users/add" component={UserEdit} />
-                    <Route path="/users" component={User} /> */}
-                    <Route
-                        path="/accounts/:id/edit"
-                        component={AccountEditMatch}
-                    />
+                    <Route path="/users" component={User} />
                     <Route
                         path="/accounts/transaction/:id/edit"
+                        component={AccountTransactionEditMatch}
+                    />
+                    <Route
+                        path="/accounts/transaction/add"
                         component={AccountTransactionEdit}
                     />
                     <Route path="/accounts/add" component={AccountEdit} />
                     <Route path="/accounts" component={Account} />
-                    {/* <Route path="/primary" component={CreatePrimary} /> */}
 
                     <Route path="/help" component={Help} />
                 </Switch>
