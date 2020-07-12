@@ -31,7 +31,9 @@ export class AccountPage extends React.Component {
                     this.fetchTransactionData(id);
                 })
                 .catch((err) => {
-                    window.alert("Could not fetch account: " + err);
+                    window.alert(
+                        "Could not fetch account: " + err.response.data
+                    );
                 });
         }
     };
@@ -86,7 +88,7 @@ export class AccountPage extends React.Component {
                 this.fetchTransactionData(value);
             })
             .catch((err) => {
-                window.alert("Could not fetch account: " + err);
+                window.alert("Could not fetch account: " + err.response.data);
             });
     };
 
@@ -97,7 +99,7 @@ export class AccountPage extends React.Component {
         let successCallback = () =>
             console.log("Successfully deleted account and all users!");
         let failCallback = (err) =>
-            alert("Could not delete account or users: " + err);
+            alert("Could not delete account or users: " + err.response.data);
 
         // Must delete users before deleting account
         this.state.users.forEach((user) => {
