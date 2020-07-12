@@ -229,13 +229,6 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) => this.handleChange(e, "inputClassKey")}
                     />
 
-                    <h4 className="availability">Class Availability</h4>
-                    <select onChange={(e) => this.onChangeFullState(e)}>
-                        <option value="0">Normal</option>
-                        <option value="1">Almost Full</option>
-                        <option value="2">Full</option>
-                    </select>
-
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
             );
@@ -290,6 +283,13 @@ export class ClassEditPage extends React.Component {
                             this.handleChange(e, "inputTimeString")
                         }
                     />
+
+                    <h4 className="availability">Class Availability</h4>
+                    <select onChange={(e) => this.onChangeFullState(e)}>
+                        <option value="0">Normal</option>
+                        <option value="1">Almost Full</option>
+                        <option value="2">Full</option>
+                    </select>
                 </div>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
