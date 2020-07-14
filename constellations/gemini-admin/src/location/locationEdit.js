@@ -1,5 +1,5 @@
 "use strict";
-require("./locationEdit.styl");
+require("./locationEdit.sass");
 import React from "react";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";

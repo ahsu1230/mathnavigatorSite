@@ -74,7 +74,9 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
-			&class.PricePerSession); errScan != nil {
+			&class.PricePerSession,
+			&class.PriceLump,
+			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -114,7 +116,9 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
-			&class.PricePerSession); errScan != nil {
+			&class.PricePerSession,
+			&class.PriceLump,
+			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -148,7 +152,9 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.EndDate,
 		&class.GoogleClassCode,
 		&class.FullState,
-		&class.PricePerSession)
+		&class.PricePerSession,
+		&class.PriceLump,
+		&class.PaymentNotes)
 	return class, errScan
 }
 
@@ -184,7 +190,9 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
-			&class.PricePerSession); errScan != nil {
+			&class.PricePerSession,
+			&class.PriceLump,
+			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -224,7 +232,9 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
-			&class.PricePerSession); errScan != nil {
+			&class.PricePerSession,
+			&class.PriceLump,
+			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -264,7 +274,9 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
-			&class.PricePerSession); errScan != nil {
+			&class.PricePerSession,
+			&class.PriceLump,
+			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, class)
@@ -286,8 +298,10 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"end_date, " +
 		"google_class_code, " +
 		"full_state, " +
-		"price_per_session " +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"price_per_session, " +
+		"price_lump, " +
+		"payment_notes " +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -310,6 +324,8 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
+		class.PriceLump,
+		class.PaymentNotes,
 	)
 	if err != nil {
 		return err
@@ -330,7 +346,9 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"end_date=?, " +
 		"google_class_code=?, " +
 		"full_state=?, " +
-		"price_per_session=? " +
+		"price_per_session=?, " +
+		"price_lump=?, " +
+		"payment_notes=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -352,6 +370,8 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
+		class.PriceLump,
+		class.PaymentNotes,
 		classId)
 	if err != nil {
 		return err
