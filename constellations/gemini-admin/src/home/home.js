@@ -31,25 +31,23 @@ export class HomePage extends React.Component {
             <div id="view-home">
                 <h1>Administrator Dashboard</h1>
 
-                <div class="section">
-                    <div class="container-class">
-                        <span>
-                            <h3>Unpublished Classes</h3>{" "}
-                        </span>
+                <div className="section">
+                    <div className="container-class">
+                        <h3 className="section-header">Unpublished Classes</h3>{" "}
                         <button id="publish">
                             <Link to={"/classes"}>View Details to Publish</Link>
                         </button>
                     </div>
-                    <div class="class-section">
-                        <p>Class ID</p>
 
+                    <div className="class-section">
+                        <div className="list-header">Class ID</div>
                         <ul>{unpublishedClasses}</ul>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>New Users</h3>
-                    <div class="container-user">
+                <div className="section">
+                    <h3 className="section-header">New Users</h3>
+                    <div className="container-user">
                         <p>
                             Lorem ipsum dolor sit amet, vim ei tota dicant
                             interpretaris, sea consulatu scripserit ei, pri eu
@@ -76,9 +74,9 @@ export class HomePage extends React.Component {
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>New Registrations</h3>
-                    <div class="container-registration">
+                <div className="section">
+                    <h3 className="section-header">New Registrations</h3>
+                    <div className="container-registration">
                         <p>
                             Lorem ipsum dolor sit amet, vim ei tota dicant
                             interpretaris, sea consulatu scripserit ei, pri eu
