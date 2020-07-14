@@ -7,6 +7,7 @@ import { AFHEditDateTime } from "./afhEditDateTime.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
 
 export class AskForHelpEditPage extends React.Component {
     state = {
@@ -19,7 +20,7 @@ export class AskForHelpEditPage extends React.Component {
         locationId: "",
         notes: "",
         locations: [],
-    }
+    };
 
     componentDidMount() {
         const afhId = this.props.afhId;
@@ -56,7 +57,7 @@ export class AskForHelpEditPage extends React.Component {
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
     onClickSave = () => {
         let afh = {
@@ -66,7 +67,7 @@ export class AskForHelpEditPage extends React.Component {
             subject: this.state.subject,
             title: this.state.title,
             locationId: this.state.locationId,
-            notes: this.state.notes
+            notes: this.state.notes,
         };
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
@@ -81,38 +82,38 @@ export class AskForHelpEditPage extends React.Component {
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
-    }
+    };
 
     onClickCancel = () => {
         window.location.hash = "afh";
-    }
+    };
 
     onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    }
+    };
 
     onConfirmDelete = () => {
         const afhId = this.state.id;
         API.delete("api/askforhelp/afh/" + afhId).then((res) => {
             window.location.hash = "afh";
         });
-    }
+    };
 
     onSavedOk = () => {
         this.onDismissModal();
         window.location.hash = "afh";
-    }
+    };
 
     onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
     onMomentChange = (newMoment) => {
         this.setState({ inputPostedAt: newMoment, date: newMoment });
-    }
+    };
 
     render() {
         const title =
@@ -172,17 +173,33 @@ export class AskForHelpEditPage extends React.Component {
                     postedAt={this.state.date}
                     onMomentChange={this.onMomentChange}
                 />
-                
-                <h3>Time</h3>
-                <input
+
+                <InputText
+                    label="Time"
                     value={this.state.timeString}
-                    onChange={(e) => this.handleChange(e, "timeString")}
+                    onChangeCallback={(e) => this.handleChange(e, "timeString")}
+                    required={true}
+                    description="Enter a time (e.g. 2:00 - 4:00 PM)"
+                    validators={[
+                        {
+                            validate: (name) => name != "",
+                            message: "You must input a time",
+                        },
+                    ]}
                 />
 
-                <h3>Title</h3>
-                <input
+                <InputText
+                    label="Title"
                     value={this.state.title}
-                    onChange={(e) => this.handleChange(e, "title")}
+                    onChangeCallback={(e) => this.handleChange(e, "title")}
+                    required={true}
+                    description="Enter a title"
+                    validators={[
+                        {
+                            validate: (name) => name != "",
+                            message: "You must input a title",
+                        },
+                    ]}
                 />
 
                 <h3>Subject</h3>
@@ -201,11 +218,14 @@ export class AskForHelpEditPage extends React.Component {
                     {optLocations}
                 </select>
 
-                <h3>Notes</h3>
-                <textarea
+                <InputText
+                    label="Notes"
+                    isTextBox={true}
                     value={this.state.notes}
-                    onChange={(e) => this.handleChange(e, "notes")}
+                    onChangeCallback={(e) => this.handleChange(e, "notes")}
+                    description="Add any notes"
                 />
+
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save
