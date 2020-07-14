@@ -31,10 +31,11 @@ export class AskForHelpPage extends React.Component {
                 <ul id="header">
                     <li className="li-small">Date</li>
                     <li className="li-med">Time</li>
-                    <li className="li-med">Title</li>
                     <li className="li-med">Subject</li>
-                    <li className="li-small">LocationId</li>
+                    <li className="li-med">Title</li>
+                    <li className="li-med">LocationId</li>
                     <li className="li-large">Notes</li>
+                    <span className="edit-spacer"></span>
                 </ul>
                 {rows}
                 <Link id="add-class" to={"/afh/add"}>
@@ -54,9 +55,9 @@ class AFHRow extends React.Component {
             <ul id="afh-row">
                 <li className="li-small">{date.format("M/D/YYYY")}</li>
                 <li className="li-med">{row.timeString}</li>
-                <li className="li-med">{row.title}</li>
                 <li className="li-med">{row.subject}</li>
-                <li className="li-small">{row.locationId}</li>
+                <li className="li-med">{row.title}</li>
+                <li className="li-med">{row.locationId}</li>
                 <li className="li-large">{row.notes}</li>
                 <Link to={url}>Edit</Link>
             </ul>

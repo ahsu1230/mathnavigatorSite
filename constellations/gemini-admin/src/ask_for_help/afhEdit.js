@@ -9,29 +9,16 @@ import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 
 export class AskForHelpEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isEdit: false,
-            id: 0,
-            date: null,
-            locationId: "",
-            notes: "",
-            subject: "",
-            locations: [],
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onConfirmDelete = this.onConfirmDelete.bind(this);
-        this.onSavedOk = this.onSavedOk.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-
-        this.onMomentChange = this.onMomentChange.bind(this);
+    state = {
+        isEdit: false,
+        id: 0,
+        date: null,
+        timeString: "",
+        subject: "",
+        title: "",
+        locationId: "",
+        notes: "",
+        locations: [],
     }
 
     componentDidMount() {
@@ -50,11 +37,11 @@ export class AskForHelpEditPage extends React.Component {
 
                         id: afh.id,
                         date: moment(afh.date),
+                        timeString: afh.timeString,
+                        subject: afh.subject,
+                        title: afh.title,
                         locationId: afh.locationId,
                         notes: afh.notes,
-                        subject: afh.subject,
-                        timeString: afh.timeString,
-                        title: afh.title,
                     });
                 });
             } else {
@@ -67,19 +54,19 @@ export class AskForHelpEditPage extends React.Component {
         });
     }
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
     }
 
-    onClickSave() {
+    onClickSave = () => {
         let afh = {
             id: this.state.id,
             date: this.state.date.toJSON(),
-            locationId: this.state.locationId,
-            notes: this.state.notes,
-            subject: this.state.subject,
             timeString: this.state.timeString,
+            subject: this.state.subject,
             title: this.state.title,
+            locationId: this.state.locationId,
+            notes: this.state.notes
         };
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
@@ -96,34 +83,34 @@ export class AskForHelpEditPage extends React.Component {
         }
     }
 
-    onClickCancel() {
+    onClickCancel = () => {
         window.location.hash = "afh";
     }
 
-    onClickDelete() {
+    onClickDelete = () => {
         this.setState({ showDeleteModal: true });
     }
 
-    onConfirmDelete() {
+    onConfirmDelete = () => {
         const afhId = this.state.id;
         API.delete("api/askforhelp/afh/" + afhId).then((res) => {
             window.location.hash = "afh";
         });
     }
 
-    onSavedOk() {
+    onSavedOk = () => {
         this.onDismissModal();
         window.location.hash = "afh";
     }
 
-    onDismissModal() {
+    onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
     }
 
-    onMomentChange(newMoment) {
+    onMomentChange = (newMoment) => {
         this.setState({ inputPostedAt: newMoment, date: newMoment });
     }
 
@@ -185,7 +172,7 @@ export class AskForHelpEditPage extends React.Component {
                     postedAt={this.state.date}
                     onMomentChange={this.onMomentChange}
                 />
-
+                
                 <h3>Time</h3>
                 <input
                     value={this.state.timeString}

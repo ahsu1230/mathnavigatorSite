@@ -17,12 +17,19 @@
         padding: 0
     
     & #header 
+        display: flex
+        flex-direction: row
+        width: 100%
         border-bottom: 2px solid $colorGrayDark
     
         & li
             display: inline-block
             height: $spacing4x
             line-height: $spacing4x
+            
+        & .edit-spacer
+            flex: 0 0 $spacing4x
+            margin: 0 $spacing3x
     
     & li
         margin: 0px $spacing1x
@@ -33,10 +40,15 @@
         width: $spacing20x
     .li-large
         flex-grow: 1
-        width: $spacing48x
+        width: $spacing32x
     
     & button
         margin-top: $spacing2x
+        padding: $spacing2x $spacing4x
+        border-radius: 8px
+        background-color: $colorTurquoise
+        color: $colorWhite
+        text-align: center
         
     #afh-row
         display: flex
