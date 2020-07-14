@@ -136,7 +136,6 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(
-		userAfh.Id,
 		userAfh.UserId,
 		userAfh.AfhId,
 		id)

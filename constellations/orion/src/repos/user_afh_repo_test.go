@@ -151,7 +151,7 @@ func TestUpdateUserAfh(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE user_afh SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(1, 3, 3, 1).
+		WithArgs(3, 3, 1).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
 		Id:     1,
