@@ -8,10 +8,14 @@ import (
 var TABLE_TRANSACTIONS = "transactions"
 
 type Transaction struct {
-	Id          int       `json:"id"`
-	CreatedAt   time.Time `json:"-" db:"created_at"`
-	Amount      int       `json:"amount"`
-	PaymentType string    `json:"paymentType" db:"payment_type"`
+	Id           int        `json:"id"`
+	CreatedAt    time.Time  `json:"-" db:"created_at"`
+	UpdatedAt    time.Time  `json:"-" db:"updated_at"`
+	DeletedAt    NullTime   `json:"-" db:"deleted_at"`
+	Amount       int        `json:"amount"`
+	PaymentType  string     `json:"paymentType" db:"payment_type"`
+	PaymentNotes NullString `json:"paymentNotes" db:"payment_notes"`
+	AccountId    int        `json:"accountId" db:"account_id"`
 }
 
 func (transaction *Transaction) Validate() error {
