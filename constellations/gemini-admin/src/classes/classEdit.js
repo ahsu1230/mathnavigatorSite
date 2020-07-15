@@ -108,9 +108,8 @@ export class ClassEditPage extends React.Component {
 
     onChangeFullState = (e) => {
         const value = e.target.value;
-        value = parseInt(value);
         this.setState({
-            fullState: value,
+            fullState: parseInt(value),
         });
     };
 
