@@ -47,7 +47,7 @@ func ParseParamUserId(c *gin.Context) uint {
 }
 
 func ParseParamAfhId(c *gin.Context) uint {
-	id, err := strconv.ParseUint(c.Param("afhId"), 0, 32)
+	id, err := strconv.ParseUint(c.Param("afhId"), 10, 32)
 	if err != nil {
 		panic(err)
 	}
