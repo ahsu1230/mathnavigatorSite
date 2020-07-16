@@ -43,6 +43,7 @@ export class AccountInfo extends React.Component {
 
         var balance = 0;
         const transactionRows = transactions.map((transaction, index) => {
+            const url = "/accounts/transaction/" + transaction.id + "/edit";
             const amount = transaction.amount;
             balance += parseInt(amount);
             return (
@@ -56,9 +57,7 @@ export class AccountInfo extends React.Component {
                     </span>
                     <span className="large-column">{transaction.notes}</span>
                     <span className="edit">
-                        <Link to={"/accounts/transaction/" + transaction.id}>
-                            {"Edit >"}
-                        </Link>
+                        <Link to={url}>{"Edit >"}</Link>
                     </span>
                 </div>
             );

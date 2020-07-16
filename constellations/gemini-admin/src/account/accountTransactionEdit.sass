@@ -1,0 +1,45 @@
+@import "../_.constants.sass"
+
+#view-transaction-edit
+    width: $spacing96x
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+
+    h4
+        margin: 0
+
+    #date-container
+        margin-top: $spacing4x
+
+        h2
+            color: $colorGrayMed
+            font-size: $fontSize2
+
+        #date-picker
+            margin: $spacing1x 0
+            padding: 0
+            font-size: $fontSize0
+
+    .buttons
+        margin-top: $spacing2x
+        margin-bottom: $spacing8x
+
+        button
+            padding: $spacing2x $spacing4x
+            font-size: $fontSize0
+            outline: none
+            border: none
+            border-radius: 6px
+            cursor: pointer
+
+            :hover
+                filter: brightness(1.1)
+
+        .btn-save
+            float: right
+            background-color: $colorTurquoise
+            color: $colorWhite
+
+        .btn-cancel
+            float: left
+            background-color: $colorGrayLight
