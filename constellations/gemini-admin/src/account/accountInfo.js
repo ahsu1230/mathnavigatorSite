@@ -72,7 +72,7 @@ export class AccountInfo extends React.Component {
                     {userRows}
 
                     <button id="add-user">
-                        <Link className="button" to={"/users/add"}>
+                        <Link className="button" to="/users/add">
                             Add New User to Account
                         </Link>
                     </button>
@@ -96,7 +96,7 @@ export class AccountInfo extends React.Component {
                         <button id="add-transaction">
                             <Link
                                 className="button"
-                                to={"/accounts/transaction/add"}>
+                                to="/accounts/transaction/add">
                                 Add Transaction
                             </Link>
                         </button>

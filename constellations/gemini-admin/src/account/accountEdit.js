@@ -37,7 +37,6 @@ export class AccountEditPage extends React.Component {
                     primaryEmail: this.state.email,
                 })
                     .then((res) => {
-                        console.log(res.data.id);
                         const id = res.data.id;
 
                         let user = {

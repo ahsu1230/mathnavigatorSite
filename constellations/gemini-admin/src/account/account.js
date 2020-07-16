@@ -203,7 +203,7 @@ export class AccountPage extends React.Component {
                     </div>
                     {errorMessage}
                     <button id="create-account">
-                        <Link className="button" to={"/accounts/add"}>
+                        <Link className="button" to="/accounts/add">
                             Create New Account
                         </Link>
                     </button>
