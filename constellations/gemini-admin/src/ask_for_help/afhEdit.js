@@ -20,7 +20,7 @@ export class AskForHelpEditPage extends React.Component {
         locationId: "",
         notes: "",
         locations: [],
-    };
+    }
 
     componentDidMount() {
         const afhId = this.props.afhId;
@@ -57,7 +57,7 @@ export class AskForHelpEditPage extends React.Component {
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    };
+    }
 
     onClickSave = () => {
         let afh = {
@@ -82,34 +82,34 @@ export class AskForHelpEditPage extends React.Component {
                 .then((res) => successCallback())
                 .catch((err) => failCallback(err));
         }
-    };
+    }
 
     onClickCancel = () => {
         window.location.hash = "afh";
-    };
+    }
 
     onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    };
+    }
 
     onConfirmDelete = () => {
         const afhId = this.state.id;
         API.delete("api/askforhelp/afh/" + afhId).then((res) => {
             window.location.hash = "afh";
         });
-    };
+    }
 
     onSavedOk = () => {
         this.onDismissModal();
         window.location.hash = "afh";
-    };
+    }
 
     onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    };
+    }
 
     onMomentChange = (newMoment) => {
         this.setState({ inputPostedAt: newMoment, date: newMoment });
@@ -193,7 +193,7 @@ export class AskForHelpEditPage extends React.Component {
                     value={this.state.title}
                     onChangeCallback={(e) => this.handleChange(e, "title")}
                     required={true}
-                    description="Enter a title"
+                    description="Enter a title (i.e. AP Calculus Practice Exam, Computer Programming Office Hours, English Essay Review Session)"
                     validators={[
                         {
                             validate: (name) => name != "",

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export class AskForHelpPage extends React.Component {
     state = {
         list: [],
-    };
+    }
 
     componentDidMount() {
         API.get("api/askforhelp/all").then((res) => {
