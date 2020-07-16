@@ -3,6 +3,7 @@ require("./accountTransactionEdit.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
+import { getCurrentAccountId } from "../localStorage.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
@@ -98,7 +99,8 @@ export class TransactionEditPage extends React.Component {
 
     render = () => {
         const isEdit = this.state.isEdit;
-        const title = isEdit ? "Edit Transaction" : "Add Transaction";
+        var title = isEdit ? "Edit Transaction" : "Add Transaction";
+        title += " (Account " + getCurrentAccountId() + ")";
 
         const modalDiv = renderModal(
             this.state.showSaveModal,
@@ -169,6 +171,7 @@ export class TransactionEditPage extends React.Component {
 
                 <InputText
                     label="Notes"
+                    isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.handleChange(e, "notes")}
                     description="Enter notes"
