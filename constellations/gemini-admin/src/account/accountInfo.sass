@@ -1,0 +1,59 @@
+@import "../_.constants.sass"
+
+#account-info
+    padding-top: $spacing3x
+
+    #account-number
+        color: $colorTurquoise
+        font-weight: bold
+        font-size: $fontSize3
+    
+    .row
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+    .column
+        flex: 2 1 0
+    
+    .medium-column
+        flex: 3 1 0
+
+    .large-column
+        flex: 8 1 0
+
+    .edit
+        flex: 0 0 $spacing6x
+
+    #account-users
+        max-width: $spacing96x
+
+        .row
+            padding-bottom: $spacing2x
+            color: $colorBlue
+        
+        .status
+            color: $colorTurquoise
+        
+        #add-user
+            margin: $spacing2x 0
+    
+    #account-transactions
+        max-width: $spacing128x
+
+        .header
+            border-bottom: 2px solid $colorGrayDark
+
+        .row
+            min-height: $spacing6x
+            border-bottom: 1px solid $colorGrayLight
+
+            span
+                padding: $spacing2x
+                padding-left: 0
+
+        #transaction-footer
+            display: flex
+            align-items: center
+            justify-content: space-between
+            margin: $spacing3x 0

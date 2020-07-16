@@ -7,11 +7,12 @@ import API, { executeApiCalls } from "../api.js";
 import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
 import { Modal } from "../modals/modal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { AccountInfo } from "./accountInfo.js";
 
 export class AccountPage extends React.Component {
     state = {
         id: 0,
-        account: {},
+        email: "",
         users: [],
         transactions: [],
 
@@ -25,21 +26,29 @@ export class AccountPage extends React.Component {
 
         if (id) {
             API.get("api/accounts/account/" + id)
-                .then((res) => {
-                    this.setState({
-                        id: id,
-                        account: res.data,
-                        invalid: false,
-                    });
-                    this.fetchUserData(id);
-                    this.fetchTransactionData(id);
-                })
-                .catch((err) => this.getAccountError(err));
+                .then((res) => this.fetchData(res))
+                .catch((err) => this.fetchDataError(err));
         }
     };
 
-    getAccountError = (err) => {
+    fetchData = (res) => {
+        const id = res.data.id;
         this.setState({
+            id: id,
+            email: res.data.primaryEmail,
+            users: [],
+            transactions: [],
+            invalid: false,
+        });
+        setCurrentAccountId(id);
+        this.fetchUserData(id);
+        this.fetchTransactionData(id);
+    };
+
+    fetchDataError = (err) => {
+        this.setState({
+            users: [],
+            transactions: [],
             invalid: true,
         });
         console.log("Could not fetch account: " + err.response.data);
@@ -95,31 +104,14 @@ export class AccountPage extends React.Component {
 
     onClickSearchById = (id) => {
         API.get("api/accounts/account/" + id)
-            .then((res) => {
-                this.setState({
-                    id: id,
-                    account: res.data,
-                });
-                setCurrentAccountId(id);
-                this.fetchUserData(id);
-                this.fetchTransactionData(id);
-            })
-            .catch((err) => this.getAccountError(err));
+            .then((res) => this.fetchData(res))
+            .catch((err) => this.fetchDataError(err));
     };
 
     onClickSearchByEmail = (email) => {
-        API.post("api/accounts/search", email)
-            .then((res) => {
-                const id = res.data.id;
-                this.setState({
-                    id: id,
-                    account: res.data,
-                });
-                setCurrentAccountId(id);
-                this.fetchUserData(id);
-                this.fetchTransactionData(id);
-            })
-            .catch((err) => this.getAccountError(err));
+        API.post("api/accounts/search", { primaryEmail: email })
+            .then((res) => this.fetchData(res))
+            .catch((err) => this.fetchDataError(err));
     };
 
     onClickDeleteAccount = () => {
@@ -135,6 +127,9 @@ export class AccountPage extends React.Component {
             this.onModalDismiss();
             this.setState({
                 id: 0,
+                users: [],
+                transactions: [],
+                invalid: true,
             });
         };
 
@@ -157,39 +152,6 @@ export class AccountPage extends React.Component {
     };
 
     render = () => {
-        const users = this.state.users.map((user, index) => {
-            return (
-                <div className="row" key={index}>
-                    <span className="column">
-                        {user.firstName + " " + user.lastName}
-                    </span>
-                    <span className="column">{user.email}</span>
-                    <span className="column">{name}</span>
-                    <span className="column">
-                        {user.isGuardian ? "(guardian)" : "(student)"}
-                    </span>
-                </div>
-            );
-        });
-
-        const transactions = this.state.transactions.map(
-            (transaction, index) => {
-                return (
-                    <div className="row" key={index}>
-                        <span className="column">
-                            {transaction.date.format("MM-DD-YYYY")}
-                        </span>
-                        <span className="column">{transaction.type}</span>
-                        <span className="column">{transaction.amount}</span>
-                        <span className="column">{transaction.notes}</span>
-                        <Link to={"/accounts/transaction/" + transaction.id}>
-                            {"Edit >"}
-                        </Link>
-                    </div>
-                );
-            }
-        );
-
         const modalDiv = renderModal(
             this.state.showDeleteModal,
             this.onModalDeleteConfirm,
@@ -205,7 +167,7 @@ export class AccountPage extends React.Component {
             <div id="view-account" className={this.state.id == 0 ? "hide" : ""}>
                 {modalDiv}
                 <section id="search-accounts">
-                    <h2>Search Accounts</h2>
+                    <h1>Search Accounts</h1>
                     <div className="search-input">
                         <input
                             type="text"
@@ -220,6 +182,7 @@ export class AccountPage extends React.Component {
                             Search
                         </button>
                     </div>
+
                     <div className="search-input">
                         <input
                             type="text"
@@ -239,44 +202,26 @@ export class AccountPage extends React.Component {
                         </button>
                     </div>
                     {errorMessage}
-                    <button>
-                        <Link id="create-account" to={"/accounts/add"}>
+                    <button id="create-account">
+                        <Link className="button" to={"/accounts/add"}>
                             Create New Account
                         </Link>
                     </button>
                 </section>
 
-                <section id="account-info">
-                    <div id="account-users">
-                        <span>Account: {this.state.id}</span>
-                        <h2>Users in Account</h2>
-                        <div id="user-rows">{users}</div>
-
-                        <button>
-                            <Link id="add-user" to={"/users/add"}>
-                                Add New User to Account
-                            </Link>
-                        </button>
-                    </div>
-
-                    <div id="account-transactions">
-                        <h2>Transaction History</h2>
-                        <div className="header row">
-                            <span className="column">Date</span>
-                            <span className="column">Type</span>
-                            <span className="column">Amount</span>
-                            <span className="column">Notes</span>
-                            <span className="edit"></span>
-                        </div>
-                        {transactions}
-                    </div>
-
+                <div className={this.state.invalid ? "hide" : ""}>
+                    <AccountInfo
+                        id={this.state.id}
+                        email={this.state.email}
+                        users={this.state.users}
+                        transactions={this.state.transactions}
+                    />
                     <button
                         id="btn-delete-account"
                         onClick={this.onClickDeleteAccount}>
                         Delete Account and All Users
                     </button>
-                </section>
+                </div>
             </div>
         );
     };
@@ -295,8 +240,6 @@ function renderModal(showDeleteModal, onModalDeleteConfirm, onModalDismiss) {
                 onReject={onModalDismiss}
             />
         );
-    }
-    if (modalContent) {
         modalDiv = (
             <Modal
                 content={modalContent}

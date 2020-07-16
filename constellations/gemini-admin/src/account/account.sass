@@ -1,0 +1,47 @@
+@import "../_.constants.sass"
+
+#view-account
+    width: 100%
+    padding: 0 $spacing8x
+    box-sizing: border-box
+
+    h1
+        margin: $spacing4x 0
+        line-height: $lineHeight3
+        font-size: $fontSize3
+
+    button
+        border-radius: 10px
+        color: white
+        background-color: $colorTurquoise
+
+        .button
+            color: white
+            text-decoration: none
+
+    .hide
+        display: none
+
+    #search-accounts
+        input
+            width: $spacing32x
+            margin-right: $spacing8x
+            margin-bottom: $spacing2x
+            padding: 6px 12px
+            border-radius: 6px
+            box-sizing: border-box
+
+            &:focus
+                outline: none
+                box-shadow: 0 0 2px $colorBlack
+
+        .btn-search
+            height: $spacing4x
+
+        #create-account
+            margin: $spacing2x 0
+
+    #btn-delete-account
+        margin: $spacing2x 0
+        padding: 10px $spacing2x
+        background-color: $colorRed
