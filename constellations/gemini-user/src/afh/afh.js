@@ -29,18 +29,18 @@ export class AFHPage extends React.Component {
                 <div class="tab">
                     <button
                         className="tabButton"
-                        onClick= {() => this.openSubject("Math")}
+                        onClick={() => this.openSubject("Math")}
                         id="defaultOpen">
                         Math
                     </button>
                     <button
                         className="tabButton"
-                        onClick= {() => this.openSubject("Eng")}>
+                        onClick={() => this.openSubject("Eng")}>
                         English
                     </button>
                     <button
                         className="tabButton"
-                        onClick= {() => this.openSubject("Comp")}>
+                        onClick={() => this.openSubject("Comp")}>
                         Computer Programming
                     </button>
                 </div>
@@ -58,7 +58,7 @@ export class AFHPage extends React.Component {
                     }>
                     <p>testing 2</p>
                 </div>
-                
+
                 <div
                     className={
                         this.state.currentTab == "Comp" ? "showTab" : "hide"
