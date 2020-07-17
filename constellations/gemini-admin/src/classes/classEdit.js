@@ -25,6 +25,8 @@ export class ClassEditPage extends React.Component {
         semesters: [],
         locations: [],
         sessions: [],
+
+        fullState: 0,
     };
 
     componentDidMount = () => {
@@ -81,6 +83,8 @@ export class ClassEditPage extends React.Component {
                         semesters: semesters,
                         locations: locations,
                         sessions: sessions,
+
+                        fullState: classObj.fullState,
                     });
                 })
             )
@@ -102,6 +106,13 @@ export class ClassEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
+    onChangeFullState = (e) => {
+        const value = e.target.value;
+        this.setState({
+            fullState: parseInt(value),
+        });
+    };
+
     onClickSave = () => {
         const oldClassId = this.state.oldClassId;
         const newClassId = this.createClassId();
@@ -112,6 +123,7 @@ export class ClassEditPage extends React.Component {
             locationId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
             times: this.state.inputTimeString,
+            fullState: this.state.fullState,
             startDate: moment().toJSON(), // TODO: need to remove
             endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
@@ -273,8 +285,16 @@ export class ClassEditPage extends React.Component {
                             this.handleChange(e, "inputTimeString")
                         }
                     />
-                </div>
 
+                    <h4 className="availability">Class Availability</h4>
+                    <select
+                        value={this.state.fullState}
+                        onChange={(e) => this.onChangeFullState(e)}>
+                        <option value="0">Normal</option>
+                        <option value="1">Almost Full</option>
+                        <option value="2">Full</option>
+                    </select>
+                </div>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save

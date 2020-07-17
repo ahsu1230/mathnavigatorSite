@@ -117,5 +117,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)
 		apiTransaction.DELETE("/transaction/:id", controllers.DeleteTransaction)
 	}
-	// apiAccounts := router.Group("api/accounts/")
+
+	apiUserAfh := h.Engine.Group("api/userafhs")
+	{
+		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)
+		apiUserAfh.GET("afh/:afhId", controllers.GetUserAfhByAfhId)
+		apiUserAfh.GET("/users/:userId/afh/:afhId", controllers.GetUserAfhByBothIds)
+		apiUserAfh.POST("/create", controllers.CreateUserAfh)
+		apiUserAfh.POST("/userafh/:id", controllers.UpdateUserAfh)
+		apiUserAfh.DELETE("/userafh/:id", controllers.DeleteUserAfh)
+	}
 }
