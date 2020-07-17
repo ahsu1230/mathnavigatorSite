@@ -16,26 +16,30 @@
 
     .tab 
         overflow: hidden
-        border: 1px solid #ccc
-        background-color: #f1f1f1
+        border-bottom: 1px solid $colorGrayLight
 
     .tabButton 
-        background-color: inherit
         float: center
-        width: 33.33%
-        border: none
-        outline: none
+        width: 33.333%
         cursor: pointer
         padding: 14px 16px
         transition: 0.3s
+        background-color: $colorWhite
         font-size: 17px
         color: $colorBlack
 
+    .tab button:hover
+        cursor: pointer
+        background-color: $colorGrayLight
+    .tab button:active
+        background-color: $colorTurquoise
+    
+
     .showTab 
         display: inline-block
+        width: 100%
         padding: 6px 12px
-        border: 1px solid #ccc
-        border-top: none
+        border: none
     .hide
         display: none
 
