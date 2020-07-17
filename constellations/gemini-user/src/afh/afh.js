@@ -5,7 +5,7 @@ import API from "../utils/api.js";
 
 export class AFHPage extends React.Component {
     state = {
-        currentTab: "",
+        currentTab: "Math",
     };
 
     openSubject = (subjectName) => {
@@ -46,8 +46,7 @@ export class AFHPage extends React.Component {
 
                 <div
                     className={
-                        ((id = "defaultOpen"),
-                        this.state.currentTab == "Math" ? "showTab" : "hide")
+                        this.state.currentTab == "Math" ? "showTab" : "hide"
                     }>
                     <p>testing 1</p>
                 </div>
