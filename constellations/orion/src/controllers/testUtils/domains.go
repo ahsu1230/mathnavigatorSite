@@ -115,7 +115,9 @@ func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes
 		PaymentType:  paymentType,
 		PaymentNotes: domains.NewNullString(paymentNotes),
 		AccountId:    accountId,
-		
+	}
+}
+
 func CreateMockUserAfh(userId, afhId uint) domains.UserAfh {
 	return domains.UserAfh{
 		UserId: userId,

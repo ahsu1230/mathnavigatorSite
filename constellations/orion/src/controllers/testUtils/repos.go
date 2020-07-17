@@ -17,11 +17,8 @@ var SessionRepo mockSessionRepo
 var AccountRepo mockAccountRepo
 var UserRepo mockUserRepo
 var AskForHelpRepo mockAskForHelpRepo
-<<<<<<< HEAD
 var TransactionRepo mockTransactionRepo
-=======
 var UserAfhRepo mockUserAfhRepo
->>>>>>> 2108ade2d4e65d6609f6d67d4d20c6450915fca1
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
@@ -403,7 +400,8 @@ func (transactionRepo *mockTransactionRepo) Update(id uint, transaction domains.
 }
 func (transactionRepo mockTransactionRepo) Delete(id uint) error {
 	return transactionRepo.MockDelete(id)
-	
+}
+
 type mockUserAfhRepo struct {
 	MockInitalize       func(*sql.DB)
 	MockSelectByUserId  func(uint) ([]domains.UserAfh, error)
