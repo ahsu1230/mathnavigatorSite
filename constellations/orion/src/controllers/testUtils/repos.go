@@ -385,17 +385,17 @@ type mockTransactionRepo struct {
 // Implement methods of AFHRepo interface with mocked implementations
 func (transactionRepo *mockTransactionRepo) Initialize(db *sql.DB) {}
 
-func (transactionRepo *mockTransactionRepo) SelectAll() ([]domains.AskForHelp, error) {
+func (transactionRepo *mockTransactionRepo) SelectAll() ([]domains.Transaction, error) {
 	return transactionRepo.MockSelectAll()
 }
-func (transactionRepo *mockTransactionRepo) SelectById(id uint) (domains.AskForHelp, error) {
+func (transactionRepo *mockTransactionRepo) SelectById(id uint) (domains.Transaction, error) {
 	return transactionRepo.MockSelectById(id)
 }
-func (transactionRepo *mockTransactionRepo) Insert(askForHelp domains.AskForHelp) error {
-	return transactionRepo.MockInsert(askForHelp)
+func (transactionRepo *mockTransactionRepo) Insert(transaction domains.Transaction) error {
+	return transactionRepo.MockInsert(transaction)
 }
-func (transactionRepo *mockTransactionRepo) Update(id uint, askForHelp domains.AskForHelp) error {
-	return transactionRepo.MockUpdate(id, askForHelp)
+func (transactionRepo *mockTransactionRepo) Update(id uint, transaction domains.Transaction) error {
+	return transactionRepo.MockUpdate(id, transaction)
 }
 func (transactionRepo mockTransactionRepo) Delete(id uint) error {
 	return transactionRepo.MockDelete(id)

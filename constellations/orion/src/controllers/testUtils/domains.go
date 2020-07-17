@@ -113,7 +113,7 @@ func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes
 		Id:           id,
 		Amount:       amount,
 		PaymentType:  paymentType,
-		PaymentNotes: paymentNotes,
+		PaymentNotes: domains.NewNullString(paymentNotes),
 		AccountId:    accountId,
 	}
 }
