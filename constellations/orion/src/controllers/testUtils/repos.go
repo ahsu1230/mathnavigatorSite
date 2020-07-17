@@ -17,6 +17,7 @@ var SessionRepo mockSessionRepo
 var AccountRepo mockAccountRepo
 var UserRepo mockUserRepo
 var AskForHelpRepo mockAskForHelpRepo
+var TransactionRepo mockTransactionRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
@@ -370,4 +371,32 @@ func (askForHelpRepo *mockAskForHelpRepo) Update(id uint, askForHelp domains.Ask
 }
 func (askForHelpRepo mockAskForHelpRepo) Delete(id uint) error {
 	return askForHelpRepo.MockDelete(id)
+}
+
+type mockTransactionRepo struct {
+	MockInitialize func(*sql.DB)
+	MockSelectAll  func() ([]domains.Transaction, error)
+	MockSelectById func(uint) (domains.Transaction, error)
+	MockInsert     func(domains.Transaction) error
+	MockUpdate     func(uint, domains.Transaction) error
+	MockDelete     func(uint) error
+}
+
+// Implement methods of AFHRepo interface with mocked implementations
+func (transactionRepo *mockTransactionRepo) Initialize(db *sql.DB) {}
+
+func (transactionRepo *mockTransactionRepo) SelectAll() ([]domains.AskForHelp, error) {
+	return transactionRepo.MockSelectAll()
+}
+func (transactionRepo *mockTransactionRepo) SelectById(id uint) (domains.AskForHelp, error) {
+	return transactionRepo.MockSelectById(id)
+}
+func (transactionRepo *mockTransactionRepo) Insert(askForHelp domains.AskForHelp) error {
+	return transactionRepo.MockInsert(askForHelp)
+}
+func (transactionRepo *mockTransactionRepo) Update(id uint, askForHelp domains.AskForHelp) error {
+	return transactionRepo.MockUpdate(id, askForHelp)
+}
+func (transactionRepo mockTransactionRepo) Delete(id uint) error {
+	return transactionRepo.MockDelete(id)
 }
