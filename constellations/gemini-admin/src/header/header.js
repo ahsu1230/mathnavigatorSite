@@ -33,6 +33,10 @@ const LinkMap = {
             title: "Semesters",
             url: "/semesters",
         },
+        {
+            title: "Ask For Help",
+            url: "/afh",
+        },
     ],
 };
 
