@@ -68,8 +68,8 @@ const SemesterEditMatch = ({ match }) => (
 );
 
 const User = () => <UserPage />;
-const UserEdit = () => <UserEditPage />;
 const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
+const UserAddMatch = ({ match }) => <UserEditPage accId={match.params.accId} />;
 const Account = () => <AccountPage />;
 const AccountEdit = () => <AccountEditPage />;
 const AccountTransactionEdit = () => <TransactionEditPage />;
@@ -139,7 +139,7 @@ class App extends React.Component {
                     <Route path="/semesters" component={Semester} />
 
                     <Route path="/users/:id/edit" component={UserEditMatch} />
-                    <Route path="/users/add" component={UserEdit} />
+                    <Route path="/users/:accId/add" component={UserAddMatch} />
                     <Route path="/users" component={User} />
                     <Route
                         path="/accounts/transaction/:id/edit"

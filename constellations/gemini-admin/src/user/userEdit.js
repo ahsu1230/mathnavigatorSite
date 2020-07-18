@@ -34,7 +34,7 @@ export class UserEditPage extends React.Component {
     };
 
     componentDidUpdate = () => {
-        if (this.props.id != this.state.id) {
+        if (this.state.isEdit && this.props.id != this.state.id) {
             this.fetchData();
         }
     };
@@ -70,6 +70,20 @@ export class UserEditPage extends React.Component {
                     });
             });
         }
+
+        const accountId = this.props.accId;
+        if (accountId) {
+            this.setState({ accountId: accountId });
+            API.get("api/users/account/" + accountId)
+                .then((res) => {
+                    this.setState({
+                        allUsers: res.data,
+                    });
+                })
+                .catch((err) => {
+                    window.alert("Could not fetch users: " + err.response.data);
+                });
+        }
     };
 
     handleChange = (event, value) => {
@@ -89,9 +103,11 @@ export class UserEditPage extends React.Component {
             email: this.state.email,
             phone: this.state.phone,
             isGuardian: this.state.isGuardian,
-            accountId: this.state.accountId,
+            accountId: parseInt(this.state.accountId),
             notes: this.state.notes,
         };
+        console.log(user);
+        console.log(this.state);
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
             alert("Could not save user: " + err.response.data);
@@ -218,7 +234,7 @@ export class UserEditPage extends React.Component {
         return (
             <div id="view-user-edit">
                 {modalDiv}
-                <h1>Edit User</h1>
+                <h1>{this.state.isEdit ? "Edit" : "Add"} User</h1>
                 <div id="column-container">
                     <div id="left-column">
                         <InputText

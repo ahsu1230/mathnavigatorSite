@@ -59,17 +59,13 @@ export class UserPage extends React.Component {
             <div id="view-user" className={this.state.id == 0 ? "hide" : ""}>
                 <h1>Search Users</h1>
 
-                <div id="searchbar-row">
-                    <input
-                        value={this.state.searchQuery}
-                        onChange={this.onChangeSearch}
-                        onKeyPress={this.onSearchKeyPress}
-                        placeholder="Search for a User"
-                        id="searchbar"
-                    />
-                    <div className="spacer"></div>
-                    <button>Add a User</button>
-                </div>
+                <input
+                    value={this.state.searchQuery}
+                    onChange={this.onChangeSearch}
+                    onKeyPress={this.onSearchKeyPress}
+                    placeholder="Search for a User"
+                    id="searchbar"
+                />
 
                 <ul id="header">
                     <li className="li-small">User ID</li>

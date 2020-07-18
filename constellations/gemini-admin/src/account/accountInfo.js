@@ -63,6 +63,8 @@ export class AccountInfo extends React.Component {
             );
         });
 
+        const userAddLink = "/users/" + this.props.id + "/add";
+
         return (
             <section id="account-info">
                 <span id="account-number">Account {id}</span>
@@ -72,7 +74,7 @@ export class AccountInfo extends React.Component {
                     {userRows}
 
                     <button id="add-user">
-                        <Link className="button" to="/users/add">
+                        <Link className="button" to={userAddLink}>
                             Add New User to Account
                         </Link>
                     </button>
