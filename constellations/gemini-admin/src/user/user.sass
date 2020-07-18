@@ -1,0 +1,97 @@
+@import "../_.constants.sass"
+
+#view-user
+    width: 100%
+    padding: 0 $spacing2x
+    box-sizing: border-box
+
+    & h1
+        display: inline-block
+        margin: $spacing4x 0
+        line-height: $lineHeight3
+        font-size: $fontSize3
+
+    & ul
+        margin: 0
+        padding: 0
+        list-style: none
+
+    & #header 
+        display: flex
+        border-bottom: 1px solid $colorGrayMed
+
+        & li
+            display: inline-block
+            line-height: $spacing4x
+
+    & li
+        margin: 0px $spacing1x
+
+    .li-small
+        width: $spacing10x
+    .li-med
+        width: $spacing24x
+    .li-large
+        flex-grow: 1
+        width: $spacing32x
+    
+    #searchbar-row
+        display: flex
+        flex-direction: row
+        align-items: center
+        margin-bottom: $spacing3x
+        
+        & .spacer
+            flex-grow: 1
+        
+        & #searchbar
+            width: 40%
+            padding: $spacing1x
+            border: 1px solid $colorGrayDark
+            border-radius: $spacing1x
+
+    #user-row
+        display: flex
+        flex-direction: row
+        align-items: center
+        min-height: $spacing8x
+        border-bottom: 1px solid $colorGrayLight
+
+        & li
+            display: inline-block
+            height: auto
+            line-height: $lineHeight4
+
+.dropdown
+    position: relative
+    margin: 0
+    padding: 0
+    
+    & img
+        padding: $spacing2x
+    
+    & .hide
+        display: none
+    
+    & .dropdown-content
+        position: absolute
+        z-index: 1
+        transform: translate(-100%, -$spacing6x)
+        display: flex
+        flex-direction: column
+        padding: 0
+        margin: 0
+        border: 1px solid $colorGrayMed
+        border-radius: $spacing1x
+        overflow: hidden
+        background-color: $colorWhite
+        
+    & a
+        padding: $spacing1x $spacing2x
+        text-align: center
+        white-space: nowrap
+    
+    & a:hover
+        background-color: $colorTurquoise
+        color: $colorWhite
+        text-decoration: none
