@@ -7,6 +7,7 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { setCurrentAccountId } from "../localStorage.js";
 
 export class UserEditPage extends React.Component {
     state = {
@@ -129,6 +130,10 @@ export class UserEditPage extends React.Component {
         this.setState({ isGuardian: !this.state.isGuardian });
     };
 
+    onClickAccountDetails = (e) => {
+        setCurrentAccountId(this.state.accountId);
+    };
+
     render = () => {
         let deleteButton = <div></div>;
         if (this.state.isEdit) {
@@ -164,7 +169,14 @@ export class UserEditPage extends React.Component {
             associatedAccount = (
                 <div id="associated-account">
                     <h2>Associated Account</h2>
-                    <p>Account Id: {this.state.accountId}</p>
+                    <div className="account-details-wrapper">
+                        <p>Account Id: {this.state.accountId}</p>
+                        <Link
+                            onClick={this.onClickAccountDetails}
+                            to="/accounts">
+                            View Details
+                        </Link>
+                    </div>
                     {otherUsersHeader}
                     {otherUsersRows}
                 </div>
