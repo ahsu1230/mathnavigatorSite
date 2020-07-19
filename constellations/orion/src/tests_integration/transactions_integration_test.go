@@ -2,11 +2,11 @@ package tests_integration
 
 import (
 	"encoding/json"
-	"net/http"
-	"testing"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
+	"net/http"
+	"testing"
 )
 
 // Test: Create 3 Transactions and GetAll()
@@ -129,10 +129,10 @@ func createAccounts(t *testing.T) {
 }
 func createTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
 	return domains.Transaction{
-		Id: id,
-		Amount: amount,
-		PaymentType: paymentType,
+		Id:           id,
+		Amount:       amount,
+		PaymentType:  paymentType,
 		PaymentNotes: domains.NewNullString(paymentNotes),
-		AccountId: accountId,
+		AccountId:    accountId,
 	}
 }

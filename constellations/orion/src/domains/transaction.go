@@ -15,7 +15,7 @@ type Transaction struct {
 	Amount       int        `json:"amount"`
 	PaymentType  string     `json:"paymentType" db:"payment_type"`
 	PaymentNotes NullString `json:"paymentNotes" db:"payment_notes"`
-	AccountId    uint        `json:"accountId" db:"account_id"`
+	AccountId    uint       `json:"accountId" db:"account_id"`
 }
 
 func (transaction *Transaction) Validate() error {
