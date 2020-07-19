@@ -18,6 +18,8 @@ export class AccountPage extends React.Component {
 
         searchId: "",
         searchEmail: "",
+        search: "",
+        searchValue: "",
         invalid: false,
     };
 
@@ -103,12 +105,20 @@ export class AccountPage extends React.Component {
     };
 
     onClickSearchById = (id) => {
+        this.setState({
+            search: "id",
+            searchValue: id,
+        });
         API.get("api/accounts/account/" + id)
             .then((res) => this.fetchData(res))
             .catch((err) => this.fetchDataError(err));
     };
 
     onClickSearchByEmail = (email) => {
+        this.setState({
+            search: "email",
+            searchValue: email,
+        });
         API.post("api/accounts/search", { primaryEmail: email })
             .then((res) => this.fetchData(res))
             .catch((err) => this.fetchDataError(err));
@@ -160,7 +170,10 @@ export class AccountPage extends React.Component {
 
         var errorMessage = <div></div>;
         if (this.state.invalid) {
-            errorMessage = <h4 className="red">No Account Found</h4>;
+            const value = this.state.search + " " + this.state.searchValue;
+            errorMessage = (
+                <h4 className="red">No account with {value} found</h4>
+            );
         }
 
         return (
@@ -168,45 +181,55 @@ export class AccountPage extends React.Component {
                 {modalDiv}
                 <section id="search-accounts">
                     <h1>Search Accounts</h1>
-                    <div className="search-input">
-                        <input
-                            type="text"
-                            placeholder="Search by Account ID"
-                            onChange={(e) => this.handleChange(e, "searchId")}
-                        />
-                        <button
-                            className="btn-search"
-                            onClick={() =>
-                                this.onClickSearchById(this.state.searchId)
-                            }>
-                            Search
+                    <div className="container">
+                        <div>
+                            <div className="search-input">
+                                <input
+                                    type="text"
+                                    placeholder="Search by Account ID"
+                                    onChange={(e) =>
+                                        this.handleChange(e, "searchId")
+                                    }
+                                />
+                                <button
+                                    className="btn-search"
+                                    onClick={() =>
+                                        this.onClickSearchById(
+                                            this.state.searchId
+                                        )
+                                    }>
+                                    Search
+                                </button>
+                            </div>
+
+                            <div className="search-input">
+                                <input
+                                    type="text"
+                                    placeholder="Search by Primary Email"
+                                    onChange={(e) =>
+                                        this.handleChange(e, "searchEmail")
+                                    }
+                                />
+                                <button
+                                    className="btn-search"
+                                    onClick={() =>
+                                        this.onClickSearchByEmail(
+                                            this.state.searchEmail
+                                        )
+                                    }>
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <button id="create-account">
+                            <Link className="button" to="/accounts/add">
+                                Create New Account
+                            </Link>
                         </button>
                     </div>
 
-                    <div className="search-input">
-                        <input
-                            type="text"
-                            placeholder="Search by Primary Email"
-                            onChange={(e) =>
-                                this.handleChange(e, "searchEmail")
-                            }
-                        />
-                        <button
-                            className="btn-search"
-                            onClick={() =>
-                                this.onClickSearchByEmail(
-                                    this.state.searchEmail
-                                )
-                            }>
-                            Search
-                        </button>
-                    </div>
                     {errorMessage}
-                    <button id="create-account">
-                        <Link className="button" to="/accounts/add">
-                            Create New Account
-                        </Link>
-                    </button>
                 </section>
 
                 <div className={this.state.invalid ? "hide" : ""}>

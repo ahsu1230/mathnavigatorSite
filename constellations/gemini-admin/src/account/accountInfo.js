@@ -65,7 +65,7 @@ export class AccountInfo extends React.Component {
 
         return (
             <section id="account-info">
-                <span id="account-number">Account {id}</span>
+                <span id="account-number">Account No. {id}</span>
 
                 <div id="account-users">
                     <h1>Users in Account</h1>
