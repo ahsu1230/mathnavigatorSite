@@ -23,6 +23,7 @@ export class AccountPage extends React.Component {
 
     componentDidMount = () => {
         const id = getCurrentAccountId() || 0;
+        console.log("id: " + id);
 
         if (id) {
             API.get("api/accounts/account/" + id)
