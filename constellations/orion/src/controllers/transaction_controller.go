@@ -34,7 +34,7 @@ func GetTransactionById(c *gin.Context) {
 func CreateTransaction(c *gin.Context) {
 	//JSON
 	var transactionJson domains.Transaction
-	c.BindJSON(transactionJson)
+	c.BindJSON(&transactionJson)
 
 	if err := transactionJson.Validate(); err != nil {
 		c.Error(err)

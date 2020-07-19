@@ -21,6 +21,7 @@ type Transaction struct {
 func (transaction *Transaction) Validate() error {
 	amount := transaction.Amount
 	paymentType := transaction.PaymentType
+
 	if paymentType != "pay_paypal" && paymentType != "pay_check" && paymentType != "pay_cash" && paymentType != "charge" && paymentType != "refund" {
 		return errors.New("invalid payment type")
 	}

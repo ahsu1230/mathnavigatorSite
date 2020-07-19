@@ -93,7 +93,7 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 		"payment_type, " +
 		"payment_notes, " +
 		"account_id " +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
