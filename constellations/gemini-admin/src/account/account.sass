@@ -26,6 +26,16 @@
         display: none
 
     #search-accounts
+        .container
+            display: flex
+            flex-flow: row wrap
+            align-items: flex-end
+            justify-content: space-between
+            max-width: $spacing128x
+        
+        .search-input
+            display: flex
+
         input
             width: $spacing32x
             margin-right: $spacing8x
@@ -42,7 +52,7 @@
             height: $spacing4x
 
         #create-account
-            margin: $spacing2x 0
+            margin: $spacing2x
 
     #btn-delete-account
         margin: $spacing2x 0

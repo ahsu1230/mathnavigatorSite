@@ -23,8 +23,8 @@ import { SemesterEditPage } from "./semester/semesterEdit.js";
 
 import { UserPage } from "./user/user.js";
 import { UserEditPage } from "./user/userEdit.js";
-import { UserClassPage } from "./user/userClass.js";
-import { UserAFHPage } from "./user/userAFH.js";
+// import { UserClassPage } from "./user/userClass.js";
+// import { UserAFHPage } from "./user/userAFH.js";
 import { AccountPage } from "./account/account.js";
 import { AccountEditPage } from "./account/accountEdit.js";
 import { TransactionEditPage } from "./account/accountTransactionEdit.js";
@@ -72,8 +72,8 @@ const SemesterEditMatch = ({ match }) => (
 const User = () => <UserPage />;
 const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
 const UserAddMatch = ({ match }) => <UserEditPage accId={match.params.accId} />;
-const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
-const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
+// const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
+// const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
 const Account = () => <AccountPage />;
 const AccountEdit = () => <AccountEditPage />;
 const AccountTransactionEdit = () => <TransactionEditPage />;
@@ -144,15 +144,14 @@ class App extends React.Component {
 
                     <Route path="/users/:id/edit" component={UserEditMatch} />
                     <Route path="/users/:accId/add" component={UserAddMatch} />
-                    <Route
+                    {/* <Route
                         path="/users/:id/class/edit"
                         component={UserClassMatch}
                     />
                     <Route
                         path="/users/:id/afh/edit"
                         component={UserAFHMatch}
-                    />
-                    <Route path="/users/add" component={UserEdit} />
+                    /> */}
                     <Route path="/users" component={User} />
                     <Route
                         path="/accounts/transaction/:id/edit"
