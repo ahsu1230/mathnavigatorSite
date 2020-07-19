@@ -30,6 +30,8 @@ import { AccountEditPage } from "./account/accountEdit.js";
 import { TransactionEditPage } from "./account/accountTransactionEdit.js";
 
 import { HelpPage } from "./help/help.js";
+import { AskForHelpPage } from "./ask_for_help/afh.js";
+import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -82,6 +84,11 @@ const AccountTransactionEditMatch = ({ match }) => (
 );
 
 const Help = () => <HelpPage />;
+const AFH = () => <AskForHelpPage />;
+const AFHEdit = () => <AskForHelpEditPage />;
+const AFHMatch = ({ match }) => (
+    <AskForHelpEditPage afhId={match.params.afhId} />
+);
 
 class AppContainer extends React.Component {
     render() {
@@ -165,6 +172,9 @@ class App extends React.Component {
                     <Route path="/accounts" component={Account} />
 
                     <Route path="/help" component={Help} />
+                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
+                    <Route path="/afh/add" component={AFHEdit} />
+                    <Route path="/afh" component={AFH} />
                 </Switch>
             </div>
         );
