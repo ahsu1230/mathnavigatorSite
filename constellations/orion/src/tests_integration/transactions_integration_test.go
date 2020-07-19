@@ -11,6 +11,7 @@ import (
 
 // Test: Create 3 Transactions and GetAll()
 func Test_CreateTransactions(t *testing.T) {
+	createAccounts(t)
 
 	trans1 := createTransaction(1, 100, "pay_paypal", "notes1", 1)
 	trans2 := createTransaction(2, 200, "pay_cash", "notes2", 2)
@@ -109,7 +110,24 @@ func Test_DeleteTransaction(t *testing.T) {
 }
 
 // Helper methods
-func createTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId int) domains.Transaction {
+func createAccounts(t *testing.T) {
+	acc1 := createAccount(1)
+	acc2 := createAccount(2)
+	acc3 := createAccount(3)
+
+	body1 := utils.CreateJsonBody(&acc1)
+	body2 := utils.CreateJsonBody(&acc2)
+	body3 := utils.CreateJsonBody(&acc3)
+
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body3)
+
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+}
+func createTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
 	return domains.Transaction{
 		Id: id,
 		Amount: amount,

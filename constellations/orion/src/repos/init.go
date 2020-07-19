@@ -16,4 +16,5 @@ func SetupRepos(db *sql.DB) {
 	AccountRepo.Initialize(db)
 	AskForHelpRepo.Initialize(db)
 	UserAfhRepo.Initialize(db)
+	TransactionRepo.Initialize(db)
 }

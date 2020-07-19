@@ -108,7 +108,7 @@ func CreateMockAFH(id uint, title string, date time.Time, timeString string, sub
 	}
 }
 
-func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId int) domains.Transaction {
+func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
 	return domains.Transaction{
 		Id:           id,
 		Amount:       amount,
