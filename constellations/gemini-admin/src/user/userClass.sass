@@ -1,0 +1,56 @@
+@import "../_.constants.sass"
+
+#view-user-class
+    width: 100%
+    padding: 0 $spacing8x
+    box-sizing: border-box
+
+    h2
+        margin: $spacing4x 0 $spacing2x
+        font-size: $fontSize3
+        color: $colorTurquoise
+
+    .users-back
+        font-size: $fontSize3
+        text-decoration: none
+    
+    p
+        margin: $spacing1x 0
+
+    #user-class
+        max-width: $spacing96x
+
+        .row
+            display: flex
+            align-items: center
+            justify-content: space-between
+            border-bottom: 1px solid $colorGrayLight
+        
+            span
+                padding: $spacing2x
+                padding-left: 0
+
+        .header
+            border-bottom: 2px solid $colorGrayDark
+
+        .column
+            flex: 2 1 0        
+
+        .large-column
+            flex: 3 1 0
+
+        .button
+            flex: 0 0 $spacing12x
+
+    select
+        width: $spacing32x
+        height: $spacing4x
+        margin-right: $spacing8x
+        padding: 4px $spacing1x
+        border-radius: 6px
+
+    button
+        margin: $spacing2x 0
+        padding: 12px $spacing2x
+        color: $colorWhite
+        background-color: $colorTurquoise
