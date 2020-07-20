@@ -1,0 +1,68 @@
+@import "../_.constants.sass"
+
+#view-user-edit
+    width: 100%
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+    
+    & h1
+        margin-bottom: 0
+    
+    #column-container
+        display: flex
+        flex-direction: row
+        align-items: baseline
+        
+        & #left-column
+            min-width: 30%
+        
+        & #associated-account
+            border: 1px solid $colorGrayLight
+            padding: $spacing2x
+            margin-left: auto
+    
+    #guardian
+        display: inline-block
+        color: $colorGrayMed
+        font-size: 20px
+    
+    .account-details-wrapper
+        display: flex
+        flex-direction: row
+        align-items: center
+
+        & p:first-child
+            flex-grow: 1
+    
+    input[type=checkbox]
+        margin: 0 $spacing1x 0 $spacing4x
+    
+    .buttons
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        
+        & .spacer
+            flex-grow: 1
+        
+        & button
+            padding: $spacing2x $spacing4x
+            outline: none
+            border: none
+            border-radius: 6px
+            font-size: $fontSize0
+            cursor: pointer
+
+            &:hover
+                filter: brightness(1.1)
+
+        & .btn-save
+            background-color: $colorTurquoise
+            color: $colorWhite
+
+        & .btn-cancel
+            background-color: $colorGrayLight 
+        
+        & .btn-delete
+            background-color: $colorRed
+            color: $colorWhite
