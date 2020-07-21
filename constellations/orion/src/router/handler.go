@@ -116,6 +116,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiTransaction.GET("/transaction/:id", controllers.GetTransactionById)
 		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)
 		apiTransaction.DELETE("/transaction/:id", controllers.DeleteTransaction)
+		apiTransaction.GET("/types", controllers.GetAllPaymentTypes)
 	}
 
 	apiUserAfh := h.Engine.Group("api/userafhs")

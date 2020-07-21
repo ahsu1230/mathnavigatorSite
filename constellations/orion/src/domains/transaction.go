@@ -7,6 +7,14 @@ import (
 
 var TABLE_TRANSACTIONS = "transactions"
 
+const (
+	PAY_CASH   = "pay_cash"
+	PAY_CHECK  = "pay_check"
+	PAY_PAYPAL = "pay_paypal"
+	REFUND     = "refund"
+	CHARGE     = "charge"
+)
+
 type Transaction struct {
 	Id           uint       `json:"id"`
 	CreatedAt    time.Time  `json:"-" db:"created_at"`
@@ -22,15 +30,15 @@ func (transaction *Transaction) Validate() error {
 	amount := transaction.Amount
 	paymentType := transaction.PaymentType
 
-	if paymentType != "pay_paypal" && paymentType != "pay_check" && paymentType != "pay_cash" && paymentType != "charge" && paymentType != "refund" {
+	if paymentType != PAY_PAYPAL && paymentType != PAY_CHECK && paymentType != PAY_CASH && paymentType != CHARGE && paymentType != REFUND {
 		return errors.New("invalid payment type")
 	}
 
-	if paymentType != "charge" && amount < 0 {
+	if paymentType != CHARGE && amount < 0 {
 		return errors.New("amount less than 0")
 	}
 
-	if paymentType == "charge" && amount > 0 {
+	if paymentType == CHARGE && amount > 0 {
 		return errors.New("charge greater than 0")
 	}
 

@@ -82,13 +82,13 @@ func TestInsertTransaction(t *testing.T) {
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
 			100,
-			"pay_paypal",
+			domains.PAY_PAYPAL,
 			domains.NewNullString("note1"),
 			1,
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
 		Amount:       100,
-		PaymentType:  "pay_paypal",
+		PaymentType:  domains.PAY_PAYPAL,
 		PaymentNotes: domains.NewNullString("note1"),
 		AccountId:    1,
 	}
@@ -115,14 +115,14 @@ func TestUpdateTransaction(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(),
 			101,
-			"pay_paypal",
+			domains.PAY_PAYPAL,
 			domains.NewNullString("note2"),
 			2,
 			1,
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
 		Amount:       101,
-		PaymentType:  "pay_paypal",
+		PaymentType:  domains.PAY_PAYPAL,
 		PaymentNotes: domains.NewNullString("note2"),
 		AccountId:    2,
 	}
@@ -176,7 +176,7 @@ func getTransactionRows() *sqlmock.Rows {
 			testUtils.TimeNow,
 			domains.NullTime{},
 			100,
-			"pay_paypal",
+			domains.PAY_PAYPAL,
 			domains.NewNullString("note1"),
 			1,
 		)
@@ -189,7 +189,7 @@ func getTransaction() domains.Transaction {
 		UpdatedAt:    testUtils.TimeNow,
 		DeletedAt:    domains.NullTime{},
 		Amount:       100,
-		PaymentType:  "pay_paypal",
+		PaymentType:  domains.PAY_PAYPAL,
 		PaymentNotes: domains.NewNullString("note1"),
 		AccountId:    1,
 	}

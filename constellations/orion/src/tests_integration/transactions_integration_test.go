@@ -13,9 +13,9 @@ import (
 func Test_CreateTransactions(t *testing.T) {
 	createAccounts(t)
 
-	trans1 := createTransaction(1, 100, "pay_paypal", "notes1", 1)
-	trans2 := createTransaction(2, 200, "pay_cash", "notes2", 2)
-	trans3 := createTransaction(3, 300, "pay_check", "notes3", 3)
+	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
+	trans2 := createTransaction(2, 200, domains.PAY_CASH, "notes2", 2)
+	trans3 := createTransaction(3, 300, domains.PAY_CHECK, "notes3", 3)
 	body1 := utils.CreateJsonBody(&trans1)
 	body2 := utils.CreateJsonBody(&trans2)
 	body3 := utils.CreateJsonBody(&trans3)
@@ -38,17 +38,17 @@ func Test_CreateTransactions(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transactions[0].Id)
 	assert.EqualValues(t, 100, transactions[0].Amount)
-	assert.EqualValues(t, "pay_paypal", transactions[0].PaymentType)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
 	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
 	assert.EqualValues(t, 2, transactions[1].Id)
 	assert.EqualValues(t, 200, transactions[1].Amount)
-	assert.EqualValues(t, "pay_cash", transactions[1].PaymentType)
+	assert.EqualValues(t, domains.PAY_CASH, transactions[1].PaymentType)
 	assert.EqualValues(t, "notes2", transactions[1].PaymentNotes.String)
 	assert.EqualValues(t, 2, transactions[1].AccountId)
 	assert.EqualValues(t, 3, transactions[2].Id)
 	assert.EqualValues(t, 300, transactions[2].Amount)
-	assert.EqualValues(t, "pay_check", transactions[2].PaymentType)
+	assert.EqualValues(t, domains.PAY_CHECK, transactions[2].PaymentType)
 	assert.EqualValues(t, "notes3", transactions[2].PaymentNotes.String)
 	assert.EqualValues(t, 3, transactions[2].AccountId)
 
@@ -59,13 +59,13 @@ func Test_CreateTransactions(t *testing.T) {
 func Test_UpdateTransaction(t *testing.T) {
 
 	// Create 1 Transaction
-	trans1 := createTransaction(1, 100, "pay_paypal", "notes1", 1)
+	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
 	body1 := utils.CreateJsonBody(&trans1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	transUpdated := createTransaction(1, 100, "pay_cash", "notes1", 1)
+	transUpdated := createTransaction(1, 100, domains.PAY_CASH, "notes1", 1)
 
 	updatedBody := utils.CreateJsonBody(&transUpdated)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/transaction/1", updatedBody)
@@ -82,7 +82,7 @@ func Test_UpdateTransaction(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transaction.Id)
 	assert.EqualValues(t, 100, transaction.Amount)
-	assert.EqualValues(t, "pay_cash", transaction.PaymentType)
+	assert.EqualValues(t, domains.PAY_CASH, transaction.PaymentType)
 	assert.EqualValues(t, "notes1", transaction.PaymentNotes.String)
 	assert.EqualValues(t, 1, transaction.AccountId)
 
@@ -93,7 +93,7 @@ func Test_UpdateTransaction(t *testing.T) {
 func Test_DeleteTransaction(t *testing.T) {
 
 	// Create
-	trans1 := createTransaction(1, 100, "pay_paypal", "notes1", 1)
+	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
 	body1 := utils.CreateJsonBody(&trans1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)

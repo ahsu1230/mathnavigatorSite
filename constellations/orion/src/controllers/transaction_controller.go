@@ -31,6 +31,7 @@ func GetTransactionById(c *gin.Context) {
 	}
 }
 
+//Create transaction from JSON
 func CreateTransaction(c *gin.Context) {
 	//JSON
 	var transactionJson domains.Transaction
@@ -83,4 +84,9 @@ func DeleteTransaction(c *gin.Context) {
 	} else {
 		c.Status(http.StatusOK)
 	}
+}
+
+func GetAllPaymentTypes(c *gin.Context) {
+	paymentTypes := []string{domains.PAY_PAYPAL, domains.PAY_CASH, domains.PAY_CHECK, domains.CHARGE, domains.REFUND}
+	c.JSON(http.StatusOK, paymentTypes)
 }

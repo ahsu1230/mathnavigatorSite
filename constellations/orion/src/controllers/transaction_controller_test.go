@@ -20,14 +20,14 @@ func TestGetAllTransaction_Success(t *testing.T) {
 			testUtils.CreateMockTransaction(
 				1,
 				100,
-				"pay_paypal",
+				domains.PAY_PAYPAL,
 				"notes1",
 				1,
 			),
 			testUtils.CreateMockTransaction(
 				2,
 				200,
-				"pay_paypal",
+				domains.PAY_PAYPAL,
 				"notes2",
 				2,
 			),
@@ -47,24 +47,24 @@ func TestGetAllTransaction_Success(t *testing.T) {
 
 	assert.EqualValues(t, 1, transactions[0].Id)
 	assert.EqualValues(t, 100, transactions[0].Amount)
-	assert.EqualValues(t, "pay_paypal", transactions[0].PaymentType)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
 	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
 	assert.EqualValues(t, 2, transactions[1].Id)
 	assert.EqualValues(t, 200, transactions[1].Amount)
-	assert.EqualValues(t, "pay_paypal", transactions[1].PaymentType)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[1].PaymentType)
 	assert.EqualValues(t, "notes2", transactions[1].PaymentNotes.String)
 	assert.EqualValues(t, 2, transactions[1].AccountId)
 
 }
 
-// Test Get Ask For Help
+// Test Get Transaction
 func TestGetTransaction_Success(t *testing.T) {
 	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
 		transaction := testUtils.CreateMockTransaction(
 			1,
 			100,
-			"pay_paypal",
+			domains.PAY_PAYPAL,
 			"notes1",
 			1)
 		return transaction, nil
@@ -82,7 +82,7 @@ func TestGetTransaction_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transaction.Id)
 	assert.EqualValues(t, 100, transaction.Amount)
-	assert.EqualValues(t, "pay_paypal", transaction.PaymentType)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transaction.PaymentType)
 	assert.EqualValues(t, "notes1", transaction.PaymentNotes.String)
 	assert.EqualValues(t, 1, transaction.AccountId)
 }
@@ -111,7 +111,7 @@ func TestCreateTransaction_Success(t *testing.T) {
 	transaction := testUtils.CreateMockTransaction(
 		1,
 		100,
-		"pay_paypal",
+		domains.PAY_PAYPAL,
 		"notes1",
 		1)
 	body := createBodyFromTransaction(transaction)
@@ -150,7 +150,7 @@ func TestUpdateTransaction_Success(t *testing.T) {
 	transaction := testUtils.CreateMockTransaction(
 		1,
 		100,
-		"pay_paypal",
+		domains.PAY_PAYPAL,
 		"notes1",
 		1)
 	body := createBodyFromTransaction(transaction)
@@ -188,7 +188,7 @@ func TestUpdateTransaction_Failure(t *testing.T) {
 	transaction := testUtils.CreateMockTransaction(
 		1,
 		100,
-		"pay_paypal",
+		domains.PAY_PAYPAL,
 		"notes1",
 		1)
 	body := createBodyFromTransaction(transaction)
@@ -223,6 +223,25 @@ func TestDeleteTransaction_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
+
+func TestGetAllPaymentTypes(t *testing.T) {
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/types", nil)
+
+	//Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	var paymentTypes []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &paymentTypes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "pay_paypal", paymentTypes[0])
+	assert.EqualValues(t, "pay_cash", paymentTypes[1])
+	assert.EqualValues(t, "pay_check", paymentTypes[2])
+	assert.EqualValues(t, "charge", paymentTypes[3])
+	assert.EqualValues(t, "refund", paymentTypes[4])
+
 }
 
 // Helper Methods
