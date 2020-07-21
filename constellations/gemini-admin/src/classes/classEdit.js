@@ -7,6 +7,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -16,6 +17,8 @@ export class ClassEditPage extends React.Component {
         oldClassId: "",
         inputClassKey: "",
         inputTimeString: "",
+        googleClassCode: "",
+        paymentNotes: "",
 
         selectProgramId: "",
         selectSemesterId: "",
@@ -27,6 +30,8 @@ export class ClassEditPage extends React.Component {
         sessions: [],
 
         fullState: 0,
+        priceLump: 0,
+        pricePerSession: 0,
     };
 
     componentDidMount = () => {
@@ -106,6 +111,11 @@ export class ClassEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
+    handleIntegerChange = (event, value) => {
+        let number = event.target.value;
+        this.setState({ [value]: parseInt(number) });
+    };
+
     onChangeFullState = (e) => {
         const value = e.target.value;
         this.setState({
@@ -122,8 +132,12 @@ export class ClassEditPage extends React.Component {
             semesterId: this.state.selectSemesterId,
             locationId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
+            googleClassCode: this.state.googleClassCode,
+            paymentNotes: this.state.paymentNotes,
             times: this.state.inputTimeString,
             fullState: this.state.fullState,
+            priceLump: this.state.priceLump,
+            pricePerSession: this.state.pricePerSession,
             startDate: moment().toJSON(), // TODO: need to remove
             endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
@@ -231,6 +245,72 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) => this.handleChange(e, "inputClassKey")}
                     />
 
+                    <InputText
+                        label="Google Classroom Code"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter the google classroom code"
+                        value={this.state.googleClassCode}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "googleClassCode")
+                        }
+                        validators={[
+                            {
+                                validate: (text) => text != "",
+                                message: "You must input a description",
+                            },
+                        ]}
+                    />
+
+                    <InputText
+                        label="Price Lump"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "priceLump")
+                        }
+                        validators={[
+                            {
+                                validate: (text) => text != "",
+                                message: "You must input a description",
+                            },
+                        ]}
+                    />
+
+                    <InputText
+                        label="Price Per Session"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter price for pay per session attended (Either enter only in this field or only in the price lump field)"
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "pricePerSession")
+                        }
+                        validators={[
+                            {
+                                validate: (text) => text != "",
+                                message: "You must input a description",
+                            },
+                        ]}
+                    />
+
+                    <InputText
+                        label="Payment Notes"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter payment notes"
+                        value={this.state.paymentNotes}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "paymentNotes")
+                        }
+                        validators={[
+                            {
+                                validate: (text) => text != "",
+                                message: "You must input a description",
+                            },
+                        ]}
+                    />
+                    
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
             );
