@@ -254,12 +254,6 @@ export class ClassEditPage extends React.Component {
                         onChangeCallback={(e) =>
                             this.handleChange(e, "googleClassCode")
                         }
-                        validators={[
-                            {
-                                validate: (text) => text != "",
-                                message: "You must input a description",
-                            },
-                        ]}
                     />
 
                     <InputText
@@ -272,8 +266,14 @@ export class ClassEditPage extends React.Component {
                         }
                         validators={[
                             {
-                                validate: (text) => text != "",
-                                message: "You must input a description",
+                                validate: (input) => parseInt(input) != NaN,
+                                message: "price must be a valid number",
+                            },
+                            {
+                                validate: (input) => input != "",
+                                validate: this.state.pricePerSession != 0,
+                                message:
+                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
                             },
                         ]}
                     />
@@ -282,14 +282,20 @@ export class ClassEditPage extends React.Component {
                         label="Price Per Session"
                         isTextBox={true}
                         required={false}
-                        description="Enter price for pay per session attended (Either enter only in this field or only in the price lump field)"
+                        description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
                         onChangeCallback={(e) =>
                             this.handleIntegerChange(e, "pricePerSession")
                         }
                         validators={[
                             {
-                                validate: (text) => text != "",
-                                message: "You must input a description",
+                                validate: (input) => parseInt(input) != "NaN",
+                                message: "price must be a valid number",
+                            },
+                            {
+                                validate: (input) => input != "",
+                                validate: this.state.priceLump != 0,
+                                message:
+                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
                             },
                         ]}
                     />
@@ -303,12 +309,6 @@ export class ClassEditPage extends React.Component {
                         onChangeCallback={(e) =>
                             this.handleChange(e, "paymentNotes")
                         }
-                        validators={[
-                            {
-                                validate: (text) => text != "",
-                                message: "You must input a description",
-                            },
-                        ]}
                     />
 
                     <h3 className="class-id">ClassId: {classId}</h3>
