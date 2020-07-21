@@ -1,5 +1,14 @@
 @import "../utils/constants.sass"
 
+@media only screen and (max-width: 700px)
+    #view-afh
+        width: 100%
+
+        & h1, .description
+            text-align: center
+    
+
+
 #view-afh
     width: 70%
     margin: 0 auto
@@ -12,7 +21,6 @@
     .description
         margin: $spacing2x 0
         color: $colorBlack
-
 
     .tab 
         overflow: hidden
@@ -31,7 +39,7 @@
     .tab button:hover
         cursor: pointer
         background-color: $colorGrayLight
-    .tab button:active
+    .tab button.active
         background-color: $colorTurquoise
     
 

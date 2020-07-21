@@ -6,7 +6,18 @@ import API from "../utils/api.js";
 export class AFHPage extends React.Component {
     state = {
         currentTab: "Math",
+        sessions: [],
     };
+    /*
+    componentDidMount() {
+        API.get("api/askforhelp/all").then((res) => {
+            const afh = res.data;
+            this.setState({
+                sessions: afh,
+            });
+        });
+    }
+    */
 
     openSubject = (subjectName) => {
         this.setState({
@@ -15,6 +26,11 @@ export class AFHPage extends React.Component {
     };
 
     render() {
+        /*
+        let showSessions = this.state.sessions.map((row, index) => {
+            return <li key={index}> {jksdhgkjhg something goes here} </li>;
+        }); */
+
         return (
             <div id="view-afh">
                 <h1>Ask for Help</h1>
