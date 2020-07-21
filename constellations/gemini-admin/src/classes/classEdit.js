@@ -268,7 +268,7 @@ export class ClassEditPage extends React.Component {
                         required={false}
                         description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "priceLump")
+                            this.handleIntegerChange(e, "priceLump")
                         }
                         validators={[
                             {
@@ -284,7 +284,7 @@ export class ClassEditPage extends React.Component {
                         required={false}
                         description="Enter price for pay per session attended (Either enter only in this field or only in the price lump field)"
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "pricePerSession")
+                            this.handleIntegerChange(e, "pricePerSession")
                         }
                         validators={[
                             {
@@ -310,7 +310,7 @@ export class ClassEditPage extends React.Component {
                             },
                         ]}
                     />
-                    
+
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
             );
