@@ -33,6 +33,10 @@ const LinkMap = {
             title: "Semesters",
             url: "/semesters",
         },
+        {
+            title: "Ask For Help",
+            url: "/afh",
+        },
     ],
 };
 
@@ -46,7 +50,7 @@ export class HeaderSection extends React.Component {
                 <div id="header-left">
                     <HeaderDropdown id={"site"} title={"Site"} />
                     <HeaderLink title={"Accounts"} url={"/accounts"} />
-                    <HeaderLink title={"Emails"} url={"/emails"} />
+                    <HeaderLink title={"Help"} url={"/help"} />
                     <span>Sign Out</span>
                 </div>
             </div>

@@ -69,6 +69,7 @@ func ResetAllTables(t *testing.T) {
 	ResetTable(t, domains.TABLE_ACCOUNTS)
 	ResetTable(t, domains.TABLE_ASKFORHELP)
 	ResetTable(t, domains.TABLE_USERCLASS)
+	ResetTable(t, domains.TABLE_USERAFH)
 }
 
 func CloseDb() {

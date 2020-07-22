@@ -27,9 +27,9 @@ For simplicity sake, your overall workflow will probably consist of this series 
 
 ```git
 git branch
+git checkout BRANCH_NAME
 git checkout -b NEW_BRANCH_NAME
 git checkout -b NEW_BRANCH_NAME origin/master
-git checkout BRANCH_NAME
 git branch -D BRANCH_NAME
 ```
 
@@ -38,6 +38,8 @@ git branch -D BRANCH_NAME
 3. Creates a new branch (off of current branch) and makes it your current branch
 4. Creates a new branch (off of remote master) and makes it your current branch
 5. Deletes a local branch
+
+For more details about managing branching in your workflow, visit [here](./03_branching.md).
 
 ## Managing Changed Files
 
@@ -94,8 +96,6 @@ git log
 git fetch
 git pull origin master
 git pull origin LOCAL_BRANCH_NAME
-
-git push origin LOCAL_BRANCH_NAME
 ```
 
 *TIP* It's advised to always call `git fetch` before using `git pull`. That way, you can download the latest updates from the remote repository. Without doing this, your remote may be out-of-date and end up pulling old updates from the remote repository. This may cause merge conflicts later.

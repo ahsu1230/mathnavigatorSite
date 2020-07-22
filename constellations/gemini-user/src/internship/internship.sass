@@ -1,45 +1,70 @@
 @import "../utils/constants.sass"
 
 #view-intern
-    width: 65%
+    width: 70%
     margin-left: auto
     margin-right: auto
     font-family: $fontFamilyRoboto
 
     & h1
-        margin-top: 90px
-        margin-bottom: 30px
+        margin-top: $spacing10x
+        margin-bottom: $spacing4x
         color: $colorTurquoise
+
+    & h4
+        margin-bottom: $spacing3x
+        color: $colorTurquoiseLight
+        text-align: left
 
     .container-main
         display: flex
         flex-direction: row
         align-items: center
-        margin-bottom: 30px
+        margin-bottom: $spacing4x
 
         & img
-            width: 120px
-            margin-right: 60px
-        
+            width: $propUnit4x
+            margin-right: $spacing8x
+    
         & p
             margin: 0
-     
 
-    #past-intern
-        border-collapse: collapse
-        border-spacing: 2px
-        width: 80%
-        margin: 30px auto
-
-
-        & caption
-            color: $colorTurquoise
-
-        & td, th
-            border: 1px solid
-            border-color: #dddddd
-            padding: 8px
-            text-align: left       
+    .intern-main
+        display: flex
+        flex-direction: row
+        & p
+            margin: 0 $spacing3x $spacing3x 0
+        .name
+            width: $propUnit4x
+        .school
+            width: $propUnit8x
 
     #last-paragraph
-        margin-bottom: 300px 
+        margin-bottom: $spacing32x
+
+    @media only screen and (max-width: 700px)
+        & h1, h4, p
+            text-align: center
+
+        .container-main
+            display: inline
+            flex-direction: column
+            align-items: center
+
+            & img
+                display: block
+                margin: 0 auto
+                width: $propUnit4x
+        
+            & p
+                margin: 5%
+
+        .intern-main
+            display: flex
+            flex-direction: column
+            text-align: center
+            margin-bottom: $spacing4x
+            & p
+                margin: 0
+            .name, .school
+                width: auto
