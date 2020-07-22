@@ -15,6 +15,8 @@ const (
 	CHARGE     = "charge"
 )
 
+var ALL_TRANSACTION_TYPES = []string{PAY_PAYPAL, PAY_CASH, PAY_CHECK, CHARGE, REFUND}
+
 type Transaction struct {
 	Id           uint       `json:"id"`
 	CreatedAt    time.Time  `json:"-" db:"created_at"`
