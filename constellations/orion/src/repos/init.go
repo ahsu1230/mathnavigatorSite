@@ -13,6 +13,7 @@ func SetupRepos(db *sql.DB) {
 	SemesterRepo.Initialize(db)
 	SessionRepo.Initialize(db)
 	UserRepo.Initialize(db)
+	UserClassRepo.Initialize(db)
 	AccountRepo.Initialize(db)
 	AskForHelpRepo.Initialize(db)
 }
