@@ -44,17 +44,23 @@ export class AFHPage extends React.Component {
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div class="tab">
                     <button
-                        className="tabButton"
+                        className={
+                            this.state.currentTab == "Math" ? "active" : ""
+                        }
                         onClick={() => this.openSubject("Math")}>
                         Math
                     </button>
                     <button
-                        className="tabButton"
+                        className={
+                            this.state.currentTab == "Eng" ? "active" : ""
+                        }
                         onClick={() => this.openSubject("Eng")}>
                         English
                     </button>
                     <button
-                        className="tabButton"
+                        className={
+                            this.state.currentTab == "Comp" ? "active" : ""
+                        }
                         onClick={() => this.openSubject("Comp")}>
                         Computer Programming
                     </button>

@@ -26,29 +26,27 @@
         overflow: hidden
         border-bottom: 1px solid $colorGrayLight
 
-    .tabButton 
+        .active
+            border-bottom: 2px solid $colorTurquoise
+
+    .tab button 
         float: center
         width: 33.333%
         cursor: pointer
-        padding: 14px 16px
+        padding: $spacing2x
         transition: 0.3s
         background-color: $colorWhite
-        font-size: 17px
+        font-size: $fontSize1
         color: $colorBlack
 
     .tab button:hover
         cursor: pointer
         background-color: $colorGrayLight
-    .tab button.active
-        background-color: $colorTurquoise
     
-
     .showTab 
         display: inline-block
         width: 100%
-        padding: 6px 12px
+        padding: $spacing1x $spacing2x
         border: none
     .hide
         display: none
-
-
