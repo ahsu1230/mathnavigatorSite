@@ -5,32 +5,34 @@
     padding: 0 $spacing2x
     box-sizing: border-box
 
-    & h1
+    h1
         display: inline-block
         margin: $spacing4x 0
         line-height: $lineHeight3
         font-size: $fontSize3
 
-    & ul
+    ul
         margin: 0
         padding: 0
         list-style: none
 
-    & #header 
+    #header 
         display: flex
         border-bottom: 1px solid $colorGrayMed
 
-        & li
+        li
             display: inline-block
             line-height: $spacing4x
 
-    & li
+    li
         margin: 0px $spacing1x
 
     .li-small
         width: $spacing10x
+
     .li-med
         width: $spacing24x
+
     .li-large
         flex-grow: 1
         width: $spacing32x
@@ -50,41 +52,41 @@
         min-height: $spacing8x
         border-bottom: 1px solid $colorGrayLight
 
-        & li
+        li
             display: inline-block
             height: auto
             line-height: $lineHeight4
 
-.dropdown
-    position: relative
-    margin: 0
-    padding: 0
-    
-    & img
-        padding: $spacing2x
-    
-    & .hide
-        display: none
-    
-    & .dropdown-content
-        position: absolute
-        z-index: 1
-        transform: translate(-100%, -$spacing6x)
-        display: flex
-        flex-direction: column
-        padding: 0
+    .dropdown
+        position: relative
         margin: 0
-        border: 1px solid $colorGrayMed
-        border-radius: $spacing1x
-        overflow: hidden
-        background-color: $colorWhite
+        padding: 0
         
-    & a
-        padding: $spacing1x $spacing2x
-        text-align: center
-        white-space: nowrap
-    
-    & a:hover
-        background-color: $colorTurquoise
-        color: $colorWhite
-        text-decoration: none
+        img
+            padding: $spacing2x
+        
+        .hide
+            display: none
+        
+        .dropdown-content
+            position: absolute
+            z-index: 1
+            transform: translate(-100%, -$spacing6x)
+            display: flex
+            flex-direction: column
+            padding: 0
+            margin: 0
+            border: 1px solid $colorGrayMed
+            border-radius: $spacing1x
+            overflow: hidden
+            background-color: $colorWhite
+
+            a
+                padding: $spacing1x $spacing2x
+                text-align: center
+                white-space: nowrap
+            
+                &:hover
+                    background-color: $colorTurquoise
+                    color: $colorWhite
+                    text-decoration: none

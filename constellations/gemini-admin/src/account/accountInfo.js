@@ -18,6 +18,7 @@ export class AccountInfo extends React.Component {
         const email = this.props.email;
         const users = this.props.users;
         const transactions = this.props.transactions;
+        const userAddLink = "/users/" + this.props.id + "/add";
 
         const userRows = users.map((user, index) => {
             var name = user.firstName + " ";
@@ -62,8 +63,6 @@ export class AccountInfo extends React.Component {
                 </div>
             );
         });
-
-        const userAddLink = "/users/" + this.props.id + "/add";
 
         return (
             <section id="account-info">

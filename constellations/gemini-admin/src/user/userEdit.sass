@@ -5,7 +5,7 @@
     padding: $spacing1x $spacing8x $spacing4x
     box-sizing: border-box
     
-    & h1
+    h1
         margin-bottom: 0
     
     #column-container
@@ -13,10 +13,10 @@
         flex-direction: row
         align-items: baseline
         
-        & #left-column
+        #left-column
             min-width: 30%
         
-        & #associated-account
+        #associated-account
             border: 1px solid $colorGrayLight
             padding: $spacing2x
             margin-left: auto
@@ -31,7 +31,7 @@
         flex-direction: row
         align-items: center
 
-        & p:first-child
+        p:first-child
             flex-grow: 1
     
     input[type=checkbox]
@@ -42,10 +42,10 @@
         flex-direction: row
         justify-content: space-between
         
-        & .spacer
+        .spacer
             flex-grow: 1
         
-        & button
+        button
             padding: $spacing2x $spacing4x
             outline: none
             border: none
@@ -56,13 +56,13 @@
             &:hover
                 filter: brightness(1.1)
 
-        & .btn-save
+        .btn-save
             background-color: $colorTurquoise
             color: $colorWhite
 
-        & .btn-cancel
+        .btn-cancel
             background-color: $colorGrayLight 
         
-        & .btn-delete
+        .btn-delete
             background-color: $colorRed
             color: $colorWhite

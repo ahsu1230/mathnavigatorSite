@@ -24,9 +24,6 @@ export class UserEditPage extends React.Component {
         notes: "",
 
         allUsers: [],
-
-        showSaveModal: false,
-        showDeleteModal: false,
     };
 
     componentDidMount = () => {
@@ -55,7 +52,7 @@ export class UserEditPage extends React.Component {
                     phone: user.phone,
                     isGuardian: user.isGuardian,
                     accountId: user.accountId,
-                    notes: user.notes,
+                    notes: user.notes || "",
                 });
                 API.get("api/users/account/" + user.accountId)
                     .then((res) => {
@@ -71,7 +68,7 @@ export class UserEditPage extends React.Component {
             });
         }
 
-        const accountId = this.props.accId;
+        const accountId = this.props.accountId;
         if (accountId) {
             this.setState({ accountId: accountId });
             API.get("api/users/account/" + accountId)
@@ -106,8 +103,7 @@ export class UserEditPage extends React.Component {
             accountId: parseInt(this.state.accountId),
             notes: this.state.notes,
         };
-        console.log(user);
-        console.log(this.state);
+
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
             alert("Could not save user: " + err.response.data);
@@ -117,24 +113,26 @@ export class UserEditPage extends React.Component {
                 : "api/users/create",
             user
         )
-            .then((res) => successCallback())
+            .then(() => successCallback())
             .catch((err) => failCallback(err));
     };
 
     onClickDelete = () => {
         this.setState({ showDeleteModal: true });
     };
+
     onConfirmDelete = () => {
         const id = this.state.id;
-        API.delete("api/users/user/" + id).then((res) => {
-            window.location.hash = "users";
-        });
+        API.delete("api/users/user/" + id).then(
+            () => (window.location.hash = "users")
+        );
     };
 
     onSavedOk = () => {
         this.onDismissModal();
         window.location.hash = "users";
     };
+
     onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
@@ -142,11 +140,11 @@ export class UserEditPage extends React.Component {
         });
     };
 
-    onChangeGuardian = (e) => {
+    onChangeGuardian = () => {
         this.setState({ isGuardian: !this.state.isGuardian });
     };
 
-    onClickAccountDetails = (e) => {
+    onClickAccountDetails = () => {
         setCurrentAccountId(this.state.accountId);
     };
 
@@ -162,12 +160,10 @@ export class UserEditPage extends React.Component {
 
         let associatedAccount = <div></div>;
         if (this.state.accountId != 0) {
-            const otherUsers = this.state.allUsers.filter((item) => {
-                if (item.id == this.state.id) {
-                    return false;
-                }
-                return true;
-            });
+            const otherUsers = this.state.allUsers.filter(
+                (item) => item.id != this.state.id
+            );
+
             let otherUsersRows = otherUsers.map((user, index) => {
                 const url = "/users/" + user.id + "/edit";
                 return (
@@ -178,10 +174,12 @@ export class UserEditPage extends React.Component {
                     </p>
                 );
             });
+
             let otherUsersHeader = null;
             if (otherUsers.length > 0) {
                 otherUsersHeader = <h3>Other Users in Account</h3>;
             }
+
             associatedAccount = (
                 <div id="associated-account">
                     <h2>Associated Account</h2>
@@ -252,15 +250,16 @@ export class UserEditPage extends React.Component {
                                 },
                             ]}
                         />
+
                         <InputText
                             label="Middle Name"
                             value={this.state.middleName}
                             onChangeCallback={(e) =>
                                 this.handleChange(e, "middleName")
                             }
-                            required={false}
                             description="Enter your middle name"
                         />
+
                         <InputText
                             label="Last Name"
                             value={this.state.lastName}
@@ -276,6 +275,7 @@ export class UserEditPage extends React.Component {
                                 },
                             ]}
                         />
+
                         <InputText
                             label="Email"
                             value={this.state.email}
@@ -298,13 +298,13 @@ export class UserEditPage extends React.Component {
                                 },
                             ]}
                         />
+
                         <InputText
                             label="Phone"
                             value={this.state.phone}
                             onChangeCallback={(e) =>
                                 this.handleChange(e, "phone")
                             }
-                            required={false}
                             description="Enter your phone number"
                         />
 

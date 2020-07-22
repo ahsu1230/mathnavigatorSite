@@ -1,12 +1,8 @@
 "use strict";
 require("./user.sass");
 import React from "react";
-import moment from "moment";
 import { Link } from "react-router-dom";
-import API, { executeApiCalls } from "../api.js";
-import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
-import { Modal } from "../modals/modal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import API from "../api.js";
 import DotsVertical from "../../assets/dots_vertical_gray.svg";
 
 export class UserPage extends React.Component {
@@ -30,6 +26,7 @@ export class UserPage extends React.Component {
     onChangeSearch = (event) => {
         this.setState({ searchQuery: event.target.value });
     };
+
     onSearchKeyPress = (event) => {
         if (event.key === "Enter") {
             this.searchUsers(this.state.searchQuery);
@@ -55,16 +52,17 @@ export class UserPage extends React.Component {
                 />
             );
         });
+
         return (
-            <div id="view-user" className={this.state.id == 0 ? "hide" : ""}>
+            <div id="view-user">
                 <h1>Search Users</h1>
 
                 <input
+                    id="searchbar"
                     value={this.state.searchQuery}
                     onChange={this.onChangeSearch}
                     onKeyPress={this.onSearchKeyPress}
                     placeholder="Search for a User"
-                    id="searchbar"
                 />
 
                 <ul id="header">
@@ -82,30 +80,35 @@ export class UserPage extends React.Component {
 }
 
 class UserRow extends React.Component {
-    render() {
+    render = () => {
         const row = this.props.row;
-        const url = "/users/" + row.id + "/edit";
+        var fullName = row.firstName;
+        if (row.middleName) {
+            fullName += " " + row.middleName + " " + row.lastName;
+        } else {
+            fullName += " " + row.lastName;
+        }
+
         return (
             <ul id="user-row">
                 <li className="li-small">{row.id}</li>
                 <li className="li-small">{row.accountId}</li>
-                <li className="li-med">{row.firstName + " " + row.lastName}</li>
+                <li className="li-med">{fullName}</li>
                 <li className="li-med">{row.email}</li>
                 <li className="li-med">{row.phone}</li>
                 <li className="li-large">{row.notes}</li>
                 <Dropdown
-                    shown={false}
-                    onClickCallback={this.props.dropdownClickCallback}
                     id={row.id}
+                    onClickCallback={this.props.dropdownClickCallback}
                     currentDropdown={this.props.currentDropdown}
                 />
             </ul>
         );
-    }
+    };
 }
 
 class Dropdown extends React.Component {
-    render() {
+    render = () => {
         const editUrl = "/users/" + this.props.id + "/edit";
         const classUrl = "/users/" + this.props.id + "/class/edit";
         const afhUrl = "/users/" + this.props.id + "/afh/edit";
@@ -128,5 +131,5 @@ class Dropdown extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }
