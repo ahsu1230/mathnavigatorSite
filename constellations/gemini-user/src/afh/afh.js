@@ -8,7 +8,7 @@ export class AFHPage extends React.Component {
         currentTab: "Math",
         sessions: [],
     };
-    /*
+
     componentDidMount() {
         API.get("api/askforhelp/all").then((res) => {
             const afh = res.data;
@@ -17,7 +17,6 @@ export class AFHPage extends React.Component {
             });
         });
     }
-    */
 
     openSubject = (subjectName) => {
         this.setState({
@@ -26,10 +25,17 @@ export class AFHPage extends React.Component {
     };
 
     render() {
-        /*
+        let currentSub = this.state.currentTab;
         let showSessions = this.state.sessions.map((row, index) => {
-            return <li key={index}> {jksdhgkjhg something goes here} </li>;
-        }); */
+            return (
+                <li key={index}>
+                    {" "}
+                    {row.date}
+                    {row.timeString} <br />
+                    {row.title} {row.notes} <br /> {row.locationId}
+                </li>
+            );
+        });
 
         return (
             <div id="view-afh">
@@ -70,7 +76,7 @@ export class AFHPage extends React.Component {
                     className={
                         this.state.currentTab == "Math" ? "showTab" : "hide"
                     }>
-                    <p>testing 1</p>
+                    <div>{showSessions}</div>
                 </div>
 
                 <div
