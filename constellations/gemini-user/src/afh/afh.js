@@ -25,11 +25,12 @@ export class AFHPage extends React.Component {
     };
 
     render() {
-        let currentSub = this.state.currentTab;
-        let showSessions = this.state.sessions.map((row, index) => {
+        let currentSub = this.state.sessions.filter(
+            (session) => session.subject == this.state.currentTab
+        );
+        let showSessions = currentSub.map((row, index) => {
             return (
                 <li key={index}>
-                    {" "}
                     {row.date}
                     {row.timeString} <br />
                     {row.title} {row.notes} <br /> {row.locationId}
@@ -58,16 +59,20 @@ export class AFHPage extends React.Component {
                     </button>
                     <button
                         className={
-                            this.state.currentTab == "Eng" ? "active" : ""
+                            this.state.currentTab == "English" ? "active" : ""
                         }
-                        onClick={() => this.openSubject("Eng")}>
+                        onClick={() => this.openSubject("English")}>
                         English
                     </button>
                     <button
                         className={
-                            this.state.currentTab == "Comp" ? "active" : ""
+                            this.state.currentTab == "Computer Programming"
+                                ? "active"
+                                : ""
                         }
-                        onClick={() => this.openSubject("Comp")}>
+                        onClick={() =>
+                            this.openSubject("Computer Programming")
+                        }>
                         Computer Programming
                     </button>
                 </div>
@@ -81,16 +86,18 @@ export class AFHPage extends React.Component {
 
                 <div
                     className={
-                        this.state.currentTab == "Eng" ? "showTab" : "hide"
+                        this.state.currentTab == "English" ? "showTab" : "hide"
                     }>
-                    <p>testing 2</p>
+                    <div>{showSessions}</div>
                 </div>
 
                 <div
                     className={
-                        this.state.currentTab == "Comp" ? "showTab" : "hide"
+                        this.state.currentTab == "Computer Programming"
+                            ? "showTab"
+                            : "hide"
                     }>
-                    <p>testing 3</p>
+                    <div>{showSessions}</div>
                 </div>
             </div>
         );
