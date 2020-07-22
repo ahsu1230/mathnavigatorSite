@@ -160,24 +160,26 @@ func TestCreateUserClass_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-// func TestCreateUserClass_Failure(t *testing.T) {
-// 	// no mock needed
-// 	repos.UserClassRepo = &testUtils.UserClassRepo
+func TestCreateUserClass_Failure(t *testing.T) {
+	testUtils.UserClassRepo.MockInsert = func(userClass domains.UserClass) error {
+		return errors.New("not found")
+	}
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
-// 	// Create new HTTP request to endpoint
-// 	userClass := testUtils.CreateMockUserClass(
-// 		1,
-// 		0,
-// 		"",
-// 		0,
-// 		0,
-// 	)
-// 	body := createBodyFromUserClass(userClass)
-// 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+	// Create new HTTP request to endpoint
+	userClass := testUtils.CreateMockUserClass(
+		1,
+		0,
+		"",
+		0,
+		0,
+	)
+	body := createBodyFromUserClass(userClass)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
 
-// 	// Validate results
-// 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
-// }
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
 
 //
 // Test Update
@@ -203,24 +205,27 @@ func TestUpdateUserClass_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-// func TestUpdateUserClass_Invalid(t *testing.T) {
-// 	// no mock needed
-// 	repos.UserClassRepo = &testUtils.UserClassRepo
+func TestUpdateUserClass_Invalid(t *testing.T) {
+	testUtils.UserClassRepo.MockUpdate = func(id uint, userClass domains.UserClass) error {
+		return errors.New("not found")
+	}
+	// no mock needed
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
-// 	// Create new HTTP request to endpoint
-// 	userClass := testUtils.CreateMockUserClass(
-// 		1,
-// 		0,
-// 		"",
-// 		0,
-// 		0,
-// 	)
-// 	body := createBodyFromUserClass(userClass)
-// 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", body)
+	// Create new HTTP request to endpoint
+	userClass := testUtils.CreateMockUserClass(
+		1,
+		0,
+		"",
+		0,
+		0,
+	)
+	body := createBodyFromUserClass(userClass)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", body)
 
-// 	// Validate results
-// 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
-// }
+	// Validate results
+	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+}
 
 func TestUpdateUserClass_Failure(t *testing.T) {
 	testUtils.UserClassRepo.MockUpdate = func(id uint, userClass domains.UserClass) error {
