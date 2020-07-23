@@ -1,6 +1,6 @@
 package domains
 
-var TABLE_USERAFH = "user_afh"
+var TABLE_USER_AFH = "user_afh"
 
 type UserAfh struct {
 	Id     uint `json:"id"`

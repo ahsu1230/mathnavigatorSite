@@ -17,13 +17,13 @@ func Test_CreateUserClasses(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Call Get All!
-	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder7.Code)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	var userClass []domains.UserClasses
-	if err := json.Unmarshal(recorder7.Body.Bytes(), &userClass); err != nil {
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assertUserClass(t, 1, userClass[0])
@@ -31,13 +31,7 @@ func Test_CreateUserClasses(t *testing.T) {
 
 	assert.EqualValues(t, 2, len(userClass))
 
-	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
-	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_CLASSES)
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-	utils.ResetTable(t, domains.TABLE_SEMESTERS)
-	utils.ResetTable(t, domains.TABLE_LOCATIONS)
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	resetAllTables(t)
 }
 
 // Test: Create UserClasses and GetUserByClassId
@@ -61,13 +55,7 @@ func Test_GetUsersByClassId(t *testing.T) {
 
 	assert.EqualValues(t, 2, len(userClass))
 
-	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
-	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_CLASSES)
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-	utils.ResetTable(t, domains.TABLE_SEMESTERS)
-	utils.ResetTable(t, domains.TABLE_LOCATIONS)
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	resetAllTables(t)
 }
 
 //Test: Create UserClasses and GetUserByUserAndClass
@@ -88,13 +76,7 @@ func Test_GetUserClassByUserAndClass(t *testing.T) {
 	}
 	assertUserClass(t, 1, userClass)
 
-	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
-	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_CLASSES)
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-	utils.ResetTable(t, domains.TABLE_SEMESTERS)
-	utils.ResetTable(t, domains.TABLE_LOCATIONS)
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	resetAllTables(t)
 }
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
@@ -110,7 +92,7 @@ func Test_UpdateUserClass(t *testing.T) {
 	// Update
 	updatedUserClass := createUserClass(4)
 	updatedBody := utils.CreateJsonBody(&updatedUserClass)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/uc/1", updatedBody)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/userclass/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
@@ -124,13 +106,7 @@ func Test_UpdateUserClass(t *testing.T) {
 	}
 	assertUserClass(t, 4, userClass2[0])
 
-	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
-	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_CLASSES)
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-	utils.ResetTable(t, domains.TABLE_SEMESTERS)
-	utils.ResetTable(t, domains.TABLE_LOCATIONS)
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	resetAllTables(t)
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
@@ -144,20 +120,14 @@ func Test_DeleteUserClass(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Update
-	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/uc/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/userclass/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/uc/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/userclass/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
-	utils.ResetTable(t, domains.TABLE_USERS)
-	utils.ResetTable(t, domains.TABLE_CLASSES)
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-	utils.ResetTable(t, domains.TABLE_SEMESTERS)
-	utils.ResetTable(t, domains.TABLE_LOCATIONS)
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	resetAllTables(t)
 }
 
 // Helper methods
@@ -287,4 +257,14 @@ func createClasses(t *testing.T) {
 	bodyc2 := utils.CreateJsonBody(&class2)
 	recorderc2 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", bodyc2)
 	assert.EqualValues(t, http.StatusOK, recorderc2.Code)
+}
+
+func resetAllTables(t *testing.T){
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	utils.ResetTable(t, domains.TABLE_CLASSES)
+	utils.ResetTable(t, domains.TABLE_PROGRAMS)
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }

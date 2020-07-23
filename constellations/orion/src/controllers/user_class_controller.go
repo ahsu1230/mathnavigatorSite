@@ -1,12 +1,20 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
+
+type StateValues struct {
+	Name  string `json:"name"`
+	Value uint   `json:"value"`
+}
+
+type StateArray struct {
+	SA []StateValues
+}
 
 func GetUsersByClassId(c *gin.Context) {
 	// Incoming parameters
@@ -100,4 +108,23 @@ func DeleteUserClass(c *gin.Context) {
 		return
 	}
 	c.Status(http.StatusOK)
+}
+
+func GetStateValues(c *gin.Context) {
+	arr := make([]StateValues, 0)
+	// create 3 stateValues variables and push them to arr
+	var stateValue1 StateValues
+	stateValue1.Name = "pending"
+	stateValue1.Value = 0
+
+	var stateValue2 StateValues
+	stateValue2.Name = "accepted"
+	stateValue2.Value = 1
+
+	var stateValue3 StateValues
+	stateValue3.Name = "trial"
+	stateValue3.Value = 2
+
+	arr = append(arr, stateValue1, stateValue2, stateValue3)
+	c.JSON(http.StatusOK, arr)
 }
