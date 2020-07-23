@@ -17,12 +17,12 @@ func Test_CreateUserClasses(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Call Get All!
-	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/userclass/user/1", nil)
+	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder7.Code)
 
-	var userClass []domains.UserClass
+	var userClass []domains.UserClasses
 	if err := json.Unmarshal(recorder7.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -31,7 +31,7 @@ func Test_CreateUserClasses(t *testing.T) {
 
 	assert.EqualValues(t, 2, len(userClass))
 
-	utils.ResetTable(t, domains.TABLE_USERCLASS)
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_CLASSES)
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
@@ -47,12 +47,12 @@ func Test_GetUsersByClassId(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Call Get All!
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userclass/class/program1_2020_spring_class1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/class/program1_2020_spring_class1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	var userClass []domains.UserClass
+	var userClass []domains.UserClasses
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -61,7 +61,7 @@ func Test_GetUsersByClassId(t *testing.T) {
 
 	assert.EqualValues(t, 2, len(userClass))
 
-	utils.ResetTable(t, domains.TABLE_USERCLASS)
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_CLASSES)
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
@@ -77,18 +77,18 @@ func Test_GetUserClassByUserAndClass(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Call Get All!
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userclass/class/program1_2020_spring_class1/user/1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/class/program1_2020_spring_class1/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	var userClass domains.UserClass
+	var userClass domains.UserClasses
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assertUserClass(t, 1, userClass)
 
-	utils.ResetTable(t, domains.TABLE_USERCLASS)
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_CLASSES)
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
@@ -104,27 +104,27 @@ func Test_UpdateUserClass(t *testing.T) {
 
 	userClass := createUserClass(1)
 	body := utils.CreateJsonBody(&userClass)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Update
 	updatedUserClass := createUserClass(4)
 	updatedBody := utils.CreateJsonBody(&updatedUserClass)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", updatedBody)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/uc/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/userclass/user/3", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/3", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	// Validate results
-	var userClass2 []domains.UserClass
+	var userClass2 []domains.UserClasses
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &userClass2); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assertUserClass(t, 4, userClass2[0])
 
-	utils.ResetTable(t, domains.TABLE_USERCLASS)
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_CLASSES)
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
@@ -140,18 +140,18 @@ func Test_DeleteUserClass(t *testing.T) {
 
 	userClass := createUserClass(1)
 	body := utils.CreateJsonBody(&userClass)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Update
-	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/userclass/uc/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/uc/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/userclass/uc/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/uc/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
-	utils.ResetTable(t, domains.TABLE_USERCLASS)
+	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_CLASSES)
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
@@ -161,38 +161,38 @@ func Test_DeleteUserClass(t *testing.T) {
 }
 
 // Helper methods
-func createUserClass(id int) domains.UserClass {
+func createUserClass(id int) domains.UserClasses {
 	switch id {
 	case 1:
-		return domains.UserClass{
+		return domains.UserClasses{
 			UserId:    1,
 			ClassId:   "program1_2020_spring_class1",
 			AccountId: 1,
 			State:     1,
 		}
 	case 2:
-		return domains.UserClass{
+		return domains.UserClasses{
 			UserId:    1,
 			ClassId:   "program1_2020_spring_class2",
 			AccountId: 1,
 			State:     1,
 		}
 	case 3:
-		return domains.UserClass{
+		return domains.UserClasses{
 			UserId:    2,
 			ClassId:   "program1_2020_spring_class1",
 			AccountId: 2,
 			State:     1,
 		}
 	case 4:
-		return domains.UserClass{
+		return domains.UserClasses{
 			UserId:    3,
 			ClassId:   "program1_2020_spring_class2",
 			AccountId: 3,
 			State:     1,
 		}
 	default:
-		return domains.UserClass{}
+		return domains.UserClasses{}
 	}
 }
 
@@ -200,12 +200,12 @@ func createAllUserClasses(t *testing.T) {
 	for i := 1; i < 5; i++ {
 		userClass := createUserClass(i)
 		body := utils.CreateJsonBody(&userClass)
-		recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+		recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	}
 }
 
-func assertUserClass(t *testing.T, id int, userClass domains.UserClass) {
+func assertUserClass(t *testing.T, id int, userClass domains.UserClasses) {
 	switch id {
 	case 1:
 		assert.EqualValues(t, 1, userClass.UserId)

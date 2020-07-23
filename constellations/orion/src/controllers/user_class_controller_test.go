@@ -15,32 +15,32 @@ import (
 )
 
 func TestGetUsersByClassId_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockSelectByClassId = func(classId string) ([]domains.UserClass, error) {
-		return []domains.UserClass{
-			testUtils.CreateMockUserClass(
+	testUtils.UserClassesRepo.MockSelectByClassId = func(classId string) ([]domains.UserClasses, error) {
+		return []domains.UserClasses{
+			testUtils.CreateMockUserClasses(
 				1,
 				1,
 				"abcd",
 				1,
-				1,
+				domains.USER_CLASS_ACCEPTED,
 			),
-			testUtils.CreateMockUserClass(
+			testUtils.CreateMockUserClasses(
 				2,
 				2,
 				"abcd",
 				2,
-				2,
+				domains.USER_CLASS_TRIAL,
 			),
 		}, nil
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userclass/class/abcd", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/class/abcd", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass []domains.UserClass
+	var userClass []domains.UserClasses
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -49,44 +49,44 @@ func TestGetUsersByClassId_Success(t *testing.T) {
 	assert.EqualValues(t, 1, userClass[0].UserId)
 	assert.EqualValues(t, "abcd", userClass[0].ClassId)
 	assert.EqualValues(t, 1, userClass[0].AccountId)
-	assert.EqualValues(t, 1, userClass[0].State)
+	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
 
 	assert.EqualValues(t, 2, userClass[1].Id)
 	assert.EqualValues(t, 2, userClass[1].UserId)
 	assert.EqualValues(t, "abcd", userClass[1].ClassId)
 	assert.EqualValues(t, 2, userClass[1].AccountId)
-	assert.EqualValues(t, 2, userClass[1].State)
+	assert.EqualValues(t, domains.USER_CLASS_TRIAL, userClass[1].State)
 
 	assert.EqualValues(t, 2, len(userClass))
 }
 
 func TestGetClassesByUserId_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockSelectByUserId = func(id uint) ([]domains.UserClass, error) {
-		return []domains.UserClass{
-			testUtils.CreateMockUserClass(
+	testUtils.UserClassesRepo.MockSelectByUserId = func(id uint) ([]domains.UserClasses, error) {
+		return []domains.UserClasses{
+			testUtils.CreateMockUserClasses(
 				1,
 				1,
 				"abcd",
 				1,
-				1,
+				domains.USER_CLASS_ACCEPTED,
 			),
-			testUtils.CreateMockUserClass(
+			testUtils.CreateMockUserClasses(
 				2,
 				1,
 				"abce",
 				1,
-				1,
+				domains.USER_CLASS_ACCEPTED,
 			),
 		}, nil
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userclass/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass []domains.UserClass
+	var userClass []domains.UserClasses
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -95,35 +95,35 @@ func TestGetClassesByUserId_Success(t *testing.T) {
 	assert.EqualValues(t, 1, userClass[0].UserId)
 	assert.EqualValues(t, "abcd", userClass[0].ClassId)
 	assert.EqualValues(t, 1, userClass[0].AccountId)
-	assert.EqualValues(t, 1, userClass[0].State)
+	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
 
 	assert.EqualValues(t, 2, userClass[1].Id)
 	assert.EqualValues(t, 1, userClass[1].UserId)
 	assert.EqualValues(t, "abce", userClass[1].ClassId)
 	assert.EqualValues(t, 1, userClass[1].AccountId)
-	assert.EqualValues(t, 1, userClass[1].State)
+	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[1].State)
 
 	assert.EqualValues(t, 2, len(userClass))
 }
 
 func TestGetUserClassByUserAndClass_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockSelectByUserAndClass = func(id uint, classId string) (domains.UserClass, error) {
-		userClass := testUtils.CreateMockUserClass(
+	testUtils.UserClassesRepo.MockSelectByUserAndClass = func(id uint, classId string) (domains.UserClasses, error) {
+		userClass := testUtils.CreateMockUserClasses(
 			1,
 			1,
 			"abcd",
 			1,
-			1,
+			domains.USER_CLASS_ACCEPTED,
 		)
 		return userClass, nil
 	}
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userclass/class/abcd/user/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/class/abcd/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass domains.UserClass
+	var userClass domains.UserClasses
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -132,7 +132,7 @@ func TestGetUserClassByUserAndClass_Success(t *testing.T) {
 	assert.EqualValues(t, 1, userClass.UserId)
 	assert.EqualValues(t, "abcd", userClass.ClassId)
 	assert.EqualValues(t, 1, userClass.AccountId)
-	assert.EqualValues(t, 1, userClass.State)
+	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass.State)
 
 }
 
@@ -140,42 +140,42 @@ func TestGetUserClassByUserAndClass_Success(t *testing.T) {
 // Test Create
 //
 func TestCreateUserClass_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockInsert = func(userClass domains.UserClass) error {
+	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
 		return nil
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClass(
+	userClass := testUtils.CreateMockUserClasses(
 		1,
 		1,
 		"abcd",
 		1,
-		1,
+		domains.USER_CLASS_ACCEPTED,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestCreateUserClass_Failure(t *testing.T) {
-	testUtils.UserClassRepo.MockInsert = func(userClass domains.UserClass) error {
+	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
 		return errors.New("not found")
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClass(
+	userClass := testUtils.CreateMockUserClasses(
 		1,
 		0,
 		"",
 		0,
-		0,
+		domains.USER_CLASS_PENDING,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -185,64 +185,64 @@ func TestCreateUserClass_Failure(t *testing.T) {
 // Test Update
 //
 func TestUpdateUserClass_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockUpdate = func(id uint, userClass domains.UserClass) error {
+	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
 		return nil // Successful update
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClass(
+	userClass := testUtils.CreateMockUserClasses(
 		1,
 		1,
 		"abcd",
 		1,
-		1,
+		domains.USER_CLASS_ACCEPTED,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/uc/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestUpdateUserClass_Invalid(t *testing.T) {
-	testUtils.UserClassRepo.MockUpdate = func(id uint, userClass domains.UserClass) error {
+	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
 		return errors.New("not found")
 	}
 	// no mock needed
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClass(
+	userClass := testUtils.CreateMockUserClasses(
 		1,
 		0,
 		"",
 		0,
-		0,
+		domains.USER_CLASS_PENDING,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/uc/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
 }
 
 func TestUpdateUserClass_Failure(t *testing.T) {
-	testUtils.UserClassRepo.MockUpdate = func(id uint, userClass domains.UserClass) error {
+	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
 		return errors.New("not found")
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClass(
+	userClass := testUtils.CreateMockUserClasses(
 		1,
 		1,
 		"abcd",
 		1,
-		1,
+		domains.USER_CLASS_ACCEPTED,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userclass/uc/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/uc/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -252,26 +252,26 @@ func TestUpdateUserClass_Failure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteUserClass_Success(t *testing.T) {
-	testUtils.UserClassRepo.MockDelete = func(id uint) error {
+	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/userclass/uc/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/uc/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 func TestDeleteUserClass_Failure(t *testing.T) {
-	testUtils.UserClassRepo.MockDelete = func(id uint) error {
+	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}
-	repos.UserClassRepo = &testUtils.UserClassRepo
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/userclass/uc/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/uc/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -281,8 +281,8 @@ func TestDeleteUserClass_Failure(t *testing.T) {
 // Helper Methods
 //
 
-func createMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClass {
-	return domains.UserClass{
+func createMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClasses {
+	return domains.UserClasses{
 		Id:        id,
 		UserId:    userId,
 		ClassId:   classId,
@@ -291,7 +291,7 @@ func createMockUserClass(id uint, userId uint, classId string, accountId uint, s
 	}
 }
 
-func createBodyFromUserClass(userClass domains.UserClass) io.Reader {
+func createBodyFromUserClass(userClass domains.UserClasses) io.Reader {
 	marshal, err := json.Marshal(&userClass)
 	if err != nil {
 		panic(err)

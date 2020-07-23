@@ -16,7 +16,7 @@ var SemesterRepo mockSemesterRepo
 var SessionRepo mockSessionRepo
 var AccountRepo mockAccountRepo
 var UserRepo mockUserRepo
-var UserClassRepo mockUserClassRepo
+var UserClassesRepo mockUserClassesRepo
 var AskForHelpRepo mockAskForHelpRepo
 var UserAfhRepo mockUserAfhRepo
 
@@ -319,36 +319,36 @@ func (userRepo *mockUserRepo) Delete(id uint) error {
 }
 
 // Fake userRepo that implements UserRepo interface
-type mockUserClassRepo struct {
+type mockUserClassesRepo struct {
 	MockInitialize           func(*sql.DB)
-	MockSelectByClassId      func(string) ([]domains.UserClass, error)
-	MockSelectByUserId       func(uint) ([]domains.UserClass, error)
-	MockSelectByUserAndClass func(uint, string) (domains.UserClass, error)
-	MockInsert               func(domains.UserClass) error
-	MockUpdate               func(uint, domains.UserClass) error
+	MockSelectByClassId      func(string) ([]domains.UserClasses, error)
+	MockSelectByUserId       func(uint) ([]domains.UserClasses, error)
+	MockSelectByUserAndClass func(uint, string) (domains.UserClasses, error)
+	MockInsert               func(domains.UserClasses) error
+	MockUpdate               func(uint, domains.UserClasses) error
 	MockDelete               func(uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
-func (userClassRepo *mockUserClassRepo) Initialize(db *sql.DB) {}
+func (userClassesRepo *mockUserClassesRepo) Initialize(db *sql.DB) {}
 
-func (userClassRepo *mockUserClassRepo) SelectByClassId(classId string) ([]domains.UserClass, error) {
-	return userClassRepo.MockSelectByClassId(classId)
+func (userClassesRepo *mockUserClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByClassId(classId)
 }
-func (userClassRepo *mockUserClassRepo) SelectByUserId(id uint) ([]domains.UserClass, error) {
-	return userClassRepo.MockSelectByUserId(id)
+func (userClassesRepo *mockUserClassesRepo) SelectByUserId(id uint) ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByUserId(id)
 }
-func (userClassRepo *mockUserClassRepo) SelectByUserAndClass(id uint, classId string) (domains.UserClass, error) {
-	return userClassRepo.MockSelectByUserAndClass(id, classId)
+func (userClassesRepo *mockUserClassesRepo) SelectByUserAndClass(id uint, classId string) (domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByUserAndClass(id, classId)
 }
-func (userClassRepo *mockUserClassRepo) Insert(userClass domains.UserClass) error {
-	return userClassRepo.MockInsert(userClass)
+func (userClassesRepo *mockUserClassesRepo) Insert(userClasses domains.UserClasses) error {
+	return userClassesRepo.MockInsert(userClasses)
 }
-func (userClassRepo *mockUserClassRepo) Update(id uint, userClass domains.UserClass) error {
-	return userClassRepo.MockUpdate(id, userClass)
+func (userClassesRepo *mockUserClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
+	return userClassesRepo.MockUpdate(id, userClasses)
 }
-func (userClassRepo *mockUserClassRepo) Delete(id uint) error {
-	return userClassRepo.MockDelete(id)
+func (userClassesRepo *mockUserClassesRepo) Delete(id uint) error {
+	return userClassesRepo.MockDelete(id)
 }
 
 type mockAccountRepo struct {

@@ -1,1 +1,1 @@
-DROP TABLE userclass;
+DROP TABLE user_classes;

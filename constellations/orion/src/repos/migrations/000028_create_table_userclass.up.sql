@@ -1,4 +1,4 @@
-CREATE TABLE userclass
+CREATE TABLE user_classes
 (
     id          int unsigned NOT NULL AUTO_INCREMENT,
     created_at  datetime     NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE userclass
     user_id     int unsigned NOT NULL,
     class_id    varchar(192) NOT NULL,
     account_id  int unsigned NOT NULL,
-    state       int unsigned NOT NULL,
+    state       int unsigned NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (account_id) REFERENCES accounts (id),
     FOREIGN KEY (user_id) REFERENCES users (id),

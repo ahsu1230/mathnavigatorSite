@@ -5,9 +5,15 @@ import (
 	"time"
 )
 
-var TABLE_USERCLASS = "userclass"
+var TABLE_USER_CLASSES = "user_classes"
 
-type UserClass struct {
+const (
+	USER_CLASS_PENDING  uint = 0
+	USER_CLASS_ACCEPTED uint = 1
+	USER_CLASS_TRIAL    uint = 2
+)
+
+type UserClasses struct {
 	Id        uint         `json:"id"`
 	CreatedAt time.Time    `json:"-" db:"created_at"`
 	UpdatedAt time.Time    `json:"-" db:"updated_at"`
@@ -18,6 +24,6 @@ type UserClass struct {
 	State     uint         `json:"state" db:"state"`
 }
 
-func (userClass *UserClass) Validate() error {
+func (userClasses *UserClasses) Validate() error {
 	return nil
 }

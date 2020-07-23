@@ -11,12 +11,12 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-func initUserClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClassRepoInterface) {
+func initUserClassesTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClassesRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserClassRepo(db)
+	repo := repos.CreateTestUserClassesRepo(db)
 	return db, mock, repo
 }
 
@@ -24,12 +24,12 @@ func initUserClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClassR
 // Select Many by Class Id
 //
 func TestSelectUsersByClassId(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM userclass WHERE class_id=?").
+	rows := getUserClassesRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("abcd").
 		WillReturnRows(rows)
@@ -39,7 +39,7 @@ func TestSelectUsersByClassId(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.UserClass{getUserClass()}
+	want := []domains.UserClasses{getUserClasses()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -53,12 +53,12 @@ func TestSelectUsersByClassId(t *testing.T) {
 // Select Many By User ID
 //
 func TestSelectClassesByUserId(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM userclass WHERE user_id=?").
+	rows := getUserClassesRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE user_id=?").
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
@@ -68,7 +68,7 @@ func TestSelectClassesByUserId(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.UserClass{getUserClass()}
+	want := []domains.UserClasses{getUserClasses()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -82,12 +82,12 @@ func TestSelectClassesByUserId(t *testing.T) {
 // Select One By User ID and Class ID
 //
 func TestSelectByUserAndClass(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassRows()
-	mock.ExpectPrepare(`^SELECT (.+) FROM userclass WHERE user_id=\? AND class_id=?`).
+	rows := getUserClassesRows()
+	mock.ExpectPrepare(`^SELECT (.+) FROM user_classes WHERE user_id=\? AND class_id=?`).
 		ExpectQuery().
 		WithArgs(1, "abcd").
 		WillReturnRows(rows)
@@ -97,7 +97,7 @@ func TestSelectByUserAndClass(t *testing.T) {
 	}
 
 	// Validate results
-	want := getUserClass()
+	want := getUserClasses()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -111,12 +111,12 @@ func TestSelectByUserAndClass(t *testing.T) {
 // Create
 //
 func TestInsertUserClass(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO userclass").
+	mock.ExpectPrepare("^INSERT INTO user_classes").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
@@ -124,10 +124,10 @@ func TestInsertUserClass(t *testing.T) {
 			1,
 			"abcd",
 			1,
-			1,
+			domains.USER_CLASS_ACCEPTED,
 		).WillReturnResult(result)
-	userClass := getUserClass()
-	err := repo.Insert(userClass)
+	userClasses := getUserClasses()
+	err := repo.Insert(userClasses)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -142,22 +142,22 @@ func TestInsertUserClass(t *testing.T) {
 // Update
 //
 func TestUpdateUserClass(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE userclass SET (.*) WHERE id=?").
+	mock.ExpectPrepare("^UPDATE user_classes SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			1,
 			"abcd",
 			1,
-			1,
+			domains.USER_CLASS_ACCEPTED,
 			1,
 		).WillReturnResult(result)
-	userClass := domains.UserClass{
+	userClasses := domains.UserClasses{
 		Id:        1,
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
@@ -165,9 +165,9 @@ func TestUpdateUserClass(t *testing.T) {
 		UserId:    1,
 		ClassId:   "abcd",
 		AccountId: 1,
-		State:     1,
+		State:     domains.USER_CLASS_ACCEPTED,
 	}
-	err := repo.Update(1, userClass)
+	err := repo.Update(1, userClasses)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -182,12 +182,12 @@ func TestUpdateUserClass(t *testing.T) {
 // Delete
 //
 func TestDeleteUserClass(t *testing.T) {
-	db, mock, repo := initUserClassTest(t)
+	db, mock, repo := initUserClassesTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM userclass WHERE id=?").
+	mock.ExpectPrepare("^DELETE FROM user_classes WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
@@ -205,7 +205,7 @@ func TestDeleteUserClass(t *testing.T) {
 //
 // Helper Methods
 //
-func getUserClassRows() *sqlmock.Rows {
+func getUserClassesRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
@@ -223,12 +223,12 @@ func getUserClassRows() *sqlmock.Rows {
 		1,
 		"abcd",
 		1,
-		1,
+		domains.USER_CLASS_ACCEPTED,
 	)
 }
 
-func getUserClass() domains.UserClass {
-	return domains.UserClass{
+func getUserClasses() domains.UserClasses {
+	return domains.UserClasses{
 		Id:        1,
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
@@ -236,6 +236,6 @@ func getUserClass() domains.UserClass {
 		UserId:    1,
 		ClassId:   "abcd",
 		AccountId: 1,
-		State:     1,
+		State:     domains.USER_CLASS_ACCEPTED,
 	}
 }

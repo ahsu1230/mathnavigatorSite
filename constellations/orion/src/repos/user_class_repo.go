@@ -8,32 +8,32 @@ import (
 )
 
 // Global variable
-var UserClassRepo UserClassRepoInterface = &userClassRepo{}
+var UserClassesRepo UserClassesRepoInterface = &userClassesRepo{}
 
 // Implements interface userRepoInterface
-type userClassRepo struct {
+type userClassesRepo struct {
 	db *sql.DB // golang native db connection
 }
 
 // Interface to implement
-type UserClassRepoInterface interface {
+type UserClassesRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectByClassId(string) ([]domains.UserClass, error)
-	SelectByUserId(uint) ([]domains.UserClass, error)
-	SelectByUserAndClass(uint, string) (domains.UserClass, error)
-	Insert(domains.UserClass) error
-	Update(uint, domains.UserClass) error
+	SelectByClassId(string) ([]domains.UserClasses, error)
+	SelectByUserId(uint) ([]domains.UserClasses, error)
+	SelectByUserAndClass(uint, string) (domains.UserClasses, error)
+	Insert(domains.UserClasses) error
+	Update(uint, domains.UserClasses) error
 	Delete(uint) error
 }
 
-func (ur *userClassRepo) Initialize(db *sql.DB) {
+func (ur *userClassesRepo) Initialize(db *sql.DB) {
 	ur.db = db
 }
 
-func (ur *userClassRepo) SelectByClassId(classId string) ([]domains.UserClass, error) {
-	results := make([]domains.UserClass, 0)
+func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
+	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM userclass WHERE class_id=?")
+	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE class_id=?")
 	if err != nil {
 		return nil, err
 	}
@@ -45,27 +45,27 @@ func (ur *userClassRepo) SelectByClassId(classId string) ([]domains.UserClass, e
 	defer rows.Close()
 
 	for rows.Next() {
-		var userClass domains.UserClass
+		var userClasses domains.UserClasses
 		if errScan := rows.Scan(
-			&userClass.Id,
-			&userClass.CreatedAt,
-			&userClass.UpdatedAt,
-			&userClass.DeletedAt,
-			&userClass.UserId,
-			&userClass.ClassId,
-			&userClass.AccountId,
-			&userClass.State); errScan != nil {
+			&userClasses.Id,
+			&userClasses.CreatedAt,
+			&userClasses.UpdatedAt,
+			&userClasses.DeletedAt,
+			&userClasses.UserId,
+			&userClasses.ClassId,
+			&userClasses.AccountId,
+			&userClasses.State); errScan != nil {
 			return results, errScan
 		}
-		results = append(results, userClass)
+		results = append(results, userClasses)
 	}
 	return results, nil
 }
 
-func (ur *userClassRepo) SelectByUserId(userId uint) ([]domains.UserClass, error) {
-	results := make([]domains.UserClass, 0)
+func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, error) {
+	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM userclass WHERE user_id=?")
+	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE user_id=?")
 	if err != nil {
 		return nil, err
 	}
@@ -77,47 +77,47 @@ func (ur *userClassRepo) SelectByUserId(userId uint) ([]domains.UserClass, error
 	defer rows.Close()
 
 	for rows.Next() {
-		var userClass domains.UserClass
+		var userClasses domains.UserClasses
 		if errScan := rows.Scan(
-			&userClass.Id,
-			&userClass.CreatedAt,
-			&userClass.UpdatedAt,
-			&userClass.DeletedAt,
-			&userClass.UserId,
-			&userClass.ClassId,
-			&userClass.AccountId,
-			&userClass.State); errScan != nil {
+			&userClasses.Id,
+			&userClasses.CreatedAt,
+			&userClasses.UpdatedAt,
+			&userClasses.DeletedAt,
+			&userClasses.UserId,
+			&userClasses.ClassId,
+			&userClasses.AccountId,
+			&userClasses.State); errScan != nil {
 			return results, errScan
 		}
-		results = append(results, userClass)
+		results = append(results, userClasses)
 	}
 	return results, nil
 }
 
-func (ur *userClassRepo) SelectByUserAndClass(userId uint, classId string) (domains.UserClass, error) {
-	statement := "SELECT * FROM userclass WHERE user_id=? AND class_id=?"
+func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (domains.UserClasses, error) {
+	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.UserClass{}, err
+		return domains.UserClasses{}, err
 	}
 	defer stmt.Close()
 
-	var userClass domains.UserClass
+	var userClasses domains.UserClasses
 	row := stmt.QueryRow(userId, classId)
 	errScan := row.Scan(
-		&userClass.Id,
-		&userClass.CreatedAt,
-		&userClass.UpdatedAt,
-		&userClass.DeletedAt,
-		&userClass.UserId,
-		&userClass.ClassId,
-		&userClass.AccountId,
-		&userClass.State)
-	return userClass, errScan
+		&userClasses.Id,
+		&userClasses.CreatedAt,
+		&userClasses.UpdatedAt,
+		&userClasses.DeletedAt,
+		&userClasses.UserId,
+		&userClasses.ClassId,
+		&userClasses.AccountId,
+		&userClasses.State)
+	return userClasses, errScan
 }
 
-func (ur *userClassRepo) Insert(userClass domains.UserClass) error {
-	statement := "INSERT INTO userclass (" +
+func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
+	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
 		"updated_at, " +
 		"user_id," +
@@ -136,19 +136,19 @@ func (ur *userClassRepo) Insert(userClass domains.UserClass) error {
 	execResult, err := stmt.Exec(
 		now,
 		now,
-		userClass.UserId,
-		userClass.ClassId,
-		userClass.AccountId,
-		userClass.State,
+		userClasses.UserId,
+		userClasses.ClassId,
+		userClasses.AccountId,
+		userClasses.State,
 	)
 	if err != nil {
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClass was not inserted")
+	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not inserted")
 }
 
-func (ur *userClassRepo) Update(id uint, userClass domains.UserClass) error {
-	statement := "UPDATE userclass SET " +
+func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
+	statement := "UPDATE user_classes SET " +
 		"updated_at=?, " +
 		"user_id=?, " +
 		"class_id=?, " +
@@ -164,19 +164,19 @@ func (ur *userClassRepo) Update(id uint, userClass domains.UserClass) error {
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
-		userClass.UserId,
-		userClass.ClassId,
-		userClass.AccountId,
-		userClass.State,
+		userClasses.UserId,
+		userClasses.ClassId,
+		userClasses.AccountId,
+		userClasses.State,
 		id)
 	if err != nil {
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClass was not updated")
+	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not updated")
 }
 
-func (ur *userClassRepo) Delete(id uint) error {
-	statement := "DELETE FROM userclass WHERE id=?"
+func (ur *userClassesRepo) Delete(id uint) error {
+	statement := "DELETE FROM user_classes WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return err
@@ -187,12 +187,12 @@ func (ur *userClassRepo) Delete(id uint) error {
 	if err != nil {
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClass was not deleted")
+	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not deleted")
 }
 
 // For Tests Only
-func CreateTestUserClassRepo(db *sql.DB) UserClassRepoInterface {
-	ur := &userClassRepo{}
+func CreateTestUserClassesRepo(db *sql.DB) UserClassesRepoInterface {
+	ur := &userClassesRepo{}
 	ur.Initialize(db)
 	return ur
 }

@@ -109,7 +109,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
 	}
 
-	apiUserClass := h.Engine.Group("api/userclass")
+	apiUserClass := h.Engine.Group("api/user-classes")
 	{
 		apiUserClass.POST("/create", controllers.CreateUserClass)
 		apiUserClass.GET("/class/:classId", controllers.GetUsersByClassId)
