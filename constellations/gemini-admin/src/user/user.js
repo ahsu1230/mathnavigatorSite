@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import API from "../api.js";
 import DotsVertical from "../../assets/dots_vertical_gray.svg";
+import { debounce } from "lodash";
 
 export class UserPage extends React.Component {
     state = {
@@ -16,21 +17,17 @@ export class UserPage extends React.Component {
         this.searchUsers("");
     };
 
-    searchUsers = (query) => {
+    searchUsers = debounce((query) => {
         API.post("api/users/search", { query: query }).then((res) => {
             const users = res.data;
             this.setState({ list: users });
         });
-    };
+    }, 200);
 
     onChangeSearch = (event) => {
-        this.setState({ searchQuery: event.target.value });
-    };
-
-    onSearchKeyPress = (event) => {
-        if (event.key === "Enter") {
+        this.setState({ searchQuery: event.target.value }, () => {
             this.searchUsers(this.state.searchQuery);
-        }
+        });
     };
 
     onClickDropdown = (event) => {
@@ -61,7 +58,6 @@ export class UserPage extends React.Component {
                     id="searchbar"
                     value={this.state.searchQuery}
                     onChange={this.onChangeSearch}
-                    onKeyPress={this.onSearchKeyPress}
                     placeholder="Search for a User"
                 />
 
@@ -113,7 +109,13 @@ class Dropdown extends React.Component {
         const classUrl = "/users/" + this.props.id + "/class/edit";
         const afhUrl = "/users/" + this.props.id + "/afh/edit";
         return (
-            <div className="dropdown">
+            <div
+                className={
+                    "dropdown " +
+                    (this.props.id == this.props.currentDropdown
+                        ? "dropdown-active"
+                        : "")
+                }>
                 <img
                     src={DotsVertical}
                     onClick={this.props.onClickCallback}
