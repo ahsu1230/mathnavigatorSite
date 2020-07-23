@@ -17,8 +17,6 @@ export class ClassEditPage extends React.Component {
         oldClassId: "",
         inputClassKey: "",
         inputTimeString: "",
-        googleClassCode: "",
-        paymentNotes: "",
 
         selectProgramId: "",
         selectSemesterId: "",
@@ -30,8 +28,10 @@ export class ClassEditPage extends React.Component {
         sessions: [],
 
         fullState: 0,
+        googleClassCode: "",
         priceLump: 0,
         pricePerSession: 0,
+        paymentNotes: "",
     };
 
     componentDidMount = () => {
@@ -132,12 +132,12 @@ export class ClassEditPage extends React.Component {
             semesterId: this.state.selectSemesterId,
             locationId: this.state.selectLocationId,
             classKey: this.state.inputClassKey,
-            googleClassCode: this.state.googleClassCode,
-            paymentNotes: this.state.paymentNotes,
             times: this.state.inputTimeString,
             fullState: this.state.fullState,
+            googleClassCode: this.state.googleClassCode,
             priceLump: this.state.priceLump,
             pricePerSession: this.state.pricePerSession,
+            paymentNotes: this.state.paymentNotes,
             startDate: moment().toJSON(), // TODO: need to remove
             endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
@@ -245,72 +245,6 @@ export class ClassEditPage extends React.Component {
                         onChange={(e) => this.handleChange(e, "inputClassKey")}
                     />
 
-                    <InputText
-                        label="Google Classroom Code"
-                        isTextBox={true}
-                        required={false}
-                        description="Enter the google classroom code"
-                        value={this.state.googleClassCode}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "googleClassCode")
-                        }
-                    />
-
-                    <InputText
-                        label="Price Lump"
-                        isTextBox={true}
-                        required={false}
-                        description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
-                        onChangeCallback={(e) =>
-                            this.handleIntegerChange(e, "priceLump")
-                        }
-                        validators={[
-                            {
-                                validate: (input) => parseInt(input) != NaN,
-                                message: "price must be a valid number",
-                            },
-                            {
-                                validate: (input) => input != "",
-                                validate: this.state.pricePerSession != 0,
-                                message:
-                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
-                            },
-                        ]}
-                    />
-
-                    <InputText
-                        label="Price Per Session"
-                        isTextBox={true}
-                        required={false}
-                        description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
-                        onChangeCallback={(e) =>
-                            this.handleIntegerChange(e, "pricePerSession")
-                        }
-                        validators={[
-                            {
-                                validate: (input) => parseInt(input) != "NaN",
-                                message: "price must be a valid number",
-                            },
-                            {
-                                validate: (input) => input != "",
-                                validate: this.state.priceLump != 0,
-                                message:
-                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
-                            },
-                        ]}
-                    />
-
-                    <InputText
-                        label="Payment Notes"
-                        isTextBox={true}
-                        required={false}
-                        description="Enter payment notes"
-                        value={this.state.paymentNotes}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "paymentNotes")
-                        }
-                    />
-
                     <h3 className="class-id">ClassId: {classId}</h3>
                 </div>
             );
@@ -374,6 +308,72 @@ export class ClassEditPage extends React.Component {
                         <option value="1">Almost Full</option>
                         <option value="2">Full</option>
                     </select>
+                    
+                    <InputText
+                        label="Google Classroom Code"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter the google classroom code"
+                        value={this.state.googleClassCode}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "googleClassCode")
+                        }
+                    />
+
+                    <InputText
+                        label="Price Lump"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
+                        onChangeCallback={(e) =>
+                            this.handleIntegerChange(e, "priceLump")
+                        }
+                        validators={[
+                            {
+                                validate: (input) => parseInt(input) != NaN,
+                                message: "Price must be a valid number",
+                            },
+                            {
+                                validate: (input) => input != "",
+                                validate: this.state.pricePerSession != 0,
+                                message:
+                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
+                            },
+                        ]}
+                    />
+
+                    <InputText
+                        label="Price Per Session"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
+                        onChangeCallback={(e) =>
+                            this.handleIntegerChange(e, "pricePerSession")
+                        }
+                        validators={[
+                            {
+                                validate: (input) => parseInt(input) != "NaN",
+                                message: "Price must be a valid number",
+                            },
+                            {
+                                validate: (input) => input != "",
+                                validate: this.state.priceLump != 0,
+                                message:
+                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
+                            },
+                        ]}
+                    />
+
+                    <InputText
+                        label="Payment Notes"
+                        isTextBox={true}
+                        required={false}
+                        description="Enter payment notes"
+                        value={this.state.paymentNotes}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "paymentNotes")
+                        }
+                    />
                 </div>
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
