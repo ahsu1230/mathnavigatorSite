@@ -24,17 +24,31 @@ export class AFHPage extends React.Component {
         });
     };
 
+    selectCheckbox = (title, onSelectSession) => {
+        return (
+            <input
+                className="select"
+                type="checkbox"
+                onChange={() => onSelectSession(title)}
+            />
+        );
+    };
+
+    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
+    onSelectSession = (title) => {};
+
     render() {
         let currentSub = this.state.sessions.filter(
             (session) => session.subject == this.state.currentTab
         );
         let showSessions = currentSub.map((row, index) => {
             return (
-                <li key={index}>
+                <div className="sessions-list" key={index}>
+                    {this.selectCheckbox}
                     {row.date}
                     {row.timeString} <br />
                     {row.title} {row.notes} <br /> {row.locationId}
-                </li>
+                </div>
             );
         });
 
@@ -49,7 +63,7 @@ export class AFHPage extends React.Component {
                 </div>
 
                 <h1>Ask for Help Sessions by Subject</h1>
-                <div class="tab">
+                <div className="tab">
                     <button
                         className={
                             this.state.currentTab == "Math" ? "active" : ""
@@ -81,14 +95,14 @@ export class AFHPage extends React.Component {
                     className={
                         this.state.currentTab == "Math" ? "showTab" : "hide"
                     }>
-                    <div>{showSessions}</div>
+                    {showSessions}
                 </div>
 
                 <div
                     className={
                         this.state.currentTab == "English" ? "showTab" : "hide"
                     }>
-                    <div>{showSessions}</div>
+                    {showSessions}
                 </div>
 
                 <div
@@ -97,7 +111,7 @@ export class AFHPage extends React.Component {
                             ? "showTab"
                             : "hide"
                     }>
-                    <div>{showSessions}</div>
+                    {showSessions}
                 </div>
             </div>
         );
