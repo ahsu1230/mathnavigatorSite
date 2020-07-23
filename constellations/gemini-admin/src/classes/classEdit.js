@@ -308,7 +308,7 @@ export class ClassEditPage extends React.Component {
                         <option value="1">Almost Full</option>
                         <option value="2">Full</option>
                     </select>
-                    
+
                     <InputText
                         label="Google Classroom Code"
                         isTextBox={true}
