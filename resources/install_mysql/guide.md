@@ -85,9 +85,9 @@ Now that you've installed MySQL, remember these two commands:
 net start MySQL
 net stop MySQL
 ```
-There two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar.
+**You MUST enter the start command inside Command Prompt as administrator**!! To do so, right-click on Command Prompt in your Start Programs taskbar and select "Run as administrator". These two commands will start or stop your MySQL local server. If the local server is not started, your MySQL will not work. You can also use the MySQL Notifier app in the taskbar.
 
-You can go ahead and open the application MySQL Command Line Client by searching for it on your computer as you have just installed it. It will prompt you to enter your MySQL password.
+After starting the MySQL server, you can open the application MySQL Command Line Client by searching for it on your computer as you have just installed it. It will prompt you to enter your MySQL password.
 
 <img src="images/mysql_8_shell.png" width="480" alt="MySQL Shell">
 
@@ -116,14 +116,14 @@ Congratulations! MySQL is successfully installed.
 ## MySQL GUI
 To view your MySQL database, you can either use the Terminal or download a MySQL GUI. The most popular free GUI is [MySQL Workbench](https://dev.mysql.com/downloads/workbench/).
 
-If you decide to work in Terminal, use this command to sign in:
+If you decide to work in Terminal or MySQL Shell, use this command to sign in:
 ```
 mysql -u root -p
 ```
 
 If you want to use MySQL Workbench, create a New Connection with the following properties:
  - Connection Method: Standard TCP/IP
- - Hostname:  `127.0.01`
+ - Hostname:  `127.0.0.1`
  - Port: `3306`
  - Username: `root`
  - Password: `YOUR_PASSWORD_FROM_MYSQL_SECTION`
