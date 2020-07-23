@@ -259,7 +259,7 @@ func createClasses(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorderc2.Code)
 }
 
-func resetAllTables(t *testing.T){
+func resetAllTables(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_USER_CLASSES)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
