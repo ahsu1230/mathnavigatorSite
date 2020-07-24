@@ -96,6 +96,16 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 	}
 }
 
+func CreateMockUserClasses(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClasses {
+	return domains.UserClasses{
+		Id:        id,
+		UserId:    userId,
+		ClassId:   classId,
+		AccountId: accountId,
+		State:     state,
+	}
+}
+
 func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         id,

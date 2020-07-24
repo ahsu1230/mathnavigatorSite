@@ -16,6 +16,7 @@ var SemesterRepo mockSemesterRepo
 var SessionRepo mockSessionRepo
 var AccountRepo mockAccountRepo
 var UserRepo mockUserRepo
+var UserClassesRepo mockUserClassesRepo
 var AskForHelpRepo mockAskForHelpRepo
 var TransactionRepo mockTransactionRepo
 var UserAfhRepo mockUserAfhRepo
@@ -316,6 +317,39 @@ func (userRepo *mockUserRepo) Update(id uint, user domains.User) error {
 }
 func (userRepo *mockUserRepo) Delete(id uint) error {
 	return userRepo.MockDelete(id)
+}
+
+// Fake userRepo that implements UserRepo interface
+type mockUserClassesRepo struct {
+	MockInitialize           func(*sql.DB)
+	MockSelectByClassId      func(string) ([]domains.UserClasses, error)
+	MockSelectByUserId       func(uint) ([]domains.UserClasses, error)
+	MockSelectByUserAndClass func(uint, string) (domains.UserClasses, error)
+	MockInsert               func(domains.UserClasses) error
+	MockUpdate               func(uint, domains.UserClasses) error
+	MockDelete               func(uint) error
+}
+
+// Implement methods of UserRepo interface with mocked implementations
+func (userClassesRepo *mockUserClassesRepo) Initialize(db *sql.DB) {}
+
+func (userClassesRepo *mockUserClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByClassId(classId)
+}
+func (userClassesRepo *mockUserClassesRepo) SelectByUserId(id uint) ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByUserId(id)
+}
+func (userClassesRepo *mockUserClassesRepo) SelectByUserAndClass(id uint, classId string) (domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByUserAndClass(id, classId)
+}
+func (userClassesRepo *mockUserClassesRepo) Insert(userClasses domains.UserClasses) error {
+	return userClassesRepo.MockInsert(userClasses)
+}
+func (userClassesRepo *mockUserClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
+	return userClassesRepo.MockUpdate(id, userClasses)
+}
+func (userClassesRepo *mockUserClassesRepo) Delete(id uint) error {
+	return userClassesRepo.MockDelete(id)
 }
 
 type mockAccountRepo struct {

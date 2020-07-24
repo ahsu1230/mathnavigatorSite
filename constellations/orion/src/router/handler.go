@@ -109,6 +109,16 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
 	}
 
+	apiUserClasses := h.Engine.Group("api/user-classes")
+	{
+		apiUserClasses.POST("/create", controllers.CreateUserClass)
+		apiUserClasses.GET("/class/:classId", controllers.GetUsersByClassId)
+		apiUserClasses.GET("/user/:userId", controllers.GetClassesByUserId)
+		apiUserClasses.GET("/class/:classId/user/:userId", controllers.GetUserClassByUserAndClass)
+		apiUserClasses.POST("/user-class/:id", controllers.UpdateUserClass)
+		apiUserClasses.DELETE("/user-class/:id", controllers.DeleteUserClass)
+		apiUserClasses.GET("/states", controllers.GetStateValues)
+	}
 	apiTransaction := h.Engine.Group("api/transactions")
 	{
 		apiTransaction.GET("/all", controllers.GetAllTransactions)
