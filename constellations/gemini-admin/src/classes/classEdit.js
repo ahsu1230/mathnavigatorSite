@@ -311,7 +311,6 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="Google Classroom Code"
-                        isTextBox={true}
                         required={false}
                         description="Enter the google classroom code"
                         value={this.state.googleClassCode}
@@ -322,7 +321,6 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="Price Lump"
-                        isTextBox={true}
                         required={false}
                         description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
                         onChangeCallback={(e) =>
@@ -344,7 +342,6 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="Price Per Session"
-                        isTextBox={true}
                         required={false}
                         description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
                         onChangeCallback={(e) =>
