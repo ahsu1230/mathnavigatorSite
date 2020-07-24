@@ -24,6 +24,8 @@ export class UserEditPage extends React.Component {
         notes: "",
 
         allUsers: [],
+        primaryEmail: "",
+        originalEmail: "",
     };
 
     componentDidMount = () => {
@@ -53,6 +55,8 @@ export class UserEditPage extends React.Component {
                     isGuardian: user.isGuardian,
                     accountId: user.accountId,
                     notes: user.notes || "",
+
+                    originalEmail: user.email,
                 });
                 API.get("api/users/account/" + user.accountId)
                     .then((res) => {
@@ -63,6 +67,17 @@ export class UserEditPage extends React.Component {
                     .catch((err) => {
                         window.alert(
                             "Could not fetch users: " + err.response.data
+                        );
+                    });
+                API.get("api/accounts/account/" + user.accountId)
+                    .then((res) => {
+                        this.setState({
+                            primaryEmail: res.data.primaryEmail,
+                        });
+                    })
+                    .catch((err) => {
+                        window.alert(
+                            "Could not fetch account: " + err.response.data
                         );
                     });
             });
@@ -150,10 +165,13 @@ export class UserEditPage extends React.Component {
 
     render = () => {
         let deleteButton = <div></div>;
-        if (this.state.isEdit) {
+        if (
+            this.state.isEdit &&
+            this.state.originalEmail != this.state.primaryEmail
+        ) {
             deleteButton = (
                 <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
+                    Delete User From Account
                 </button>
             );
         }
@@ -314,7 +332,7 @@ export class UserEditPage extends React.Component {
                             checked={this.state.isGuardian}
                             onChange={this.onChangeGuardian}
                         />
-                        <span>{this.state.isGuardian ? "Yes" : "No"}</span>
+                        <span>Yes</span>
 
                         {/*
                         It doesn't look like there's anything in orion for these, so I left
