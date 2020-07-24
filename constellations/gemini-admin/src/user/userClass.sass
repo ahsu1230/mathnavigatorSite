@@ -2,7 +2,7 @@
 
 #view-user-class
     width: 100%
-    padding: 0 $spacing8x
+    padding: $spacing1x $spacing8x $spacing4x
     box-sizing: border-box
 
     h2
@@ -19,6 +19,7 @@
 
     #user-class
         max-width: $spacing96x
+        margin-top: $spacing6x
 
         .row
             display: flex
@@ -42,15 +43,24 @@
         .button
             flex: 0 0 $spacing12x
 
-    select
-        width: $spacing32x
-        height: $spacing4x
-        margin-right: $spacing8x
-        padding: 4px $spacing1x
-        border-radius: 6px
+    #user-enroll
+        margin-top: $spacing6x
 
-    button
-        margin: $spacing2x 0
-        padding: 12px $spacing2x
-        color: $colorWhite
-        background-color: $colorTurquoise
+        h2
+            margin-bottom: $spacing4x
+
+        span
+            color: $colorRed
+
+        select
+            width: $spacing32x
+            height: $spacing4x
+            margin-right: $spacing8x
+            padding: 4px $spacing1x
+            border-radius: 6px
+
+        button
+            margin: $spacing2x 0
+            padding: 12px $spacing2x
+            color: $colorWhite
+            background-color: $colorTurquoise

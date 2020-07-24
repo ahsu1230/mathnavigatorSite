@@ -2,19 +2,20 @@
 require("./user.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import API from "../api.js";
-import DotsVertical from "../../assets/dots_vertical_gray.svg";
 import { debounce } from "lodash";
+import API from "../api.js";
+import { getCurrentUserSearch, setCurrentUserSearch } from "../localStorage.js";
+import DotsVertical from "../../assets/dots_vertical_gray.svg";
 
 export class UserPage extends React.Component {
     state = {
         list: [],
-        searchQuery: "",
+        searchQuery: getCurrentUserSearch() || "",
         currentDropdown: -1,
     };
 
     componentDidMount = () => {
-        this.searchUsers("");
+        this.searchUsers(this.state.searchQuery);
     };
 
     searchUsers = debounce((query) => {
@@ -25,7 +26,10 @@ export class UserPage extends React.Component {
     }, 200);
 
     onChangeSearch = (event) => {
-        this.setState({ searchQuery: event.target.value }, () => {
+        const query = event.target.value;
+
+        setCurrentUserSearch(query);
+        this.setState({ searchQuery: query }, () => {
             this.searchUsers(this.state.searchQuery);
         });
     };

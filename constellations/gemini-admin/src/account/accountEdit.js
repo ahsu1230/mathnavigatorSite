@@ -92,7 +92,7 @@ export class AccountEditPage extends React.Component {
         return (
             <div id="view-account-edit">
                 {modalDiv}
-                <h2>Create Primary Contact for New Account</h2>
+                <h1>Create Primary Contact for New Account</h1>
 
                 <InputText
                     label="First Name"

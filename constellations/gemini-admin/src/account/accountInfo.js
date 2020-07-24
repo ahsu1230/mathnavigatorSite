@@ -1,16 +1,19 @@
 "use strict";
 require("./accountInfo.sass");
 import React from "react";
-import moment from "moment";
 import { Link } from "react-router-dom";
 
 export class AccountInfo extends React.Component {
     formatCurrency = (amount) => {
-        if (amount < 0) {
-            return "-$" + (-amount).toString();
-        } else {
-            return "$" + amount;
-        }
+        // if (amount < 0) {
+        //     return "-$" + (-amount).toString();
+        // } else {
+        //     return "$" + amount;
+        // }
+        return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+        }).format(amount);
     };
 
     render = () => {
@@ -49,14 +52,13 @@ export class AccountInfo extends React.Component {
             balance += parseInt(amount);
             return (
                 <div className="row" key={index}>
+                    <span className="column">{transaction.paymentType}</span>
                     <span className="medium-column">
-                        {transaction.date.format("MM-DD-YYYY")}
-                    </span>
-                    <span className="column">{transaction.type}</span>
-                    <span className="column">
                         {this.formatCurrency(amount)}
                     </span>
-                    <span className="large-column">{transaction.notes}</span>
+                    <span className="large-column">
+                        {transaction.paymentNotes}
+                    </span>
                     <span className="edit">
                         <Link to={url}>{"Edit >"}</Link>
                     </span>
@@ -69,7 +71,7 @@ export class AccountInfo extends React.Component {
                 <span id="account-number">Account No. {id}</span>
 
                 <div id="account-users">
-                    <h1>Users in Account</h1>
+                    <h2>Users in Account</h2>
                     {userRows}
 
                     <button id="add-user">
@@ -80,11 +82,10 @@ export class AccountInfo extends React.Component {
                 </div>
 
                 <div id="account-transactions">
-                    <h1>Transaction History</h1>
+                    <h2>Transaction History</h2>
                     <div className="header row">
-                        <span className="medium-column">Date</span>
                         <span className="column">Type</span>
-                        <span className="column">Amount</span>
+                        <span className="medium-column">Amount</span>
                         <span className="large-column">Notes</span>
                         <span className="edit"></span>
                     </div>

@@ -49,9 +49,9 @@ export class UserClassPage extends React.Component {
                     }
                 })
             )
-            .catch((err) => {
-                alert("Could not fetch user: " + err.response.data);
-            });
+            .catch((err) =>
+                alert("Could not fetch user: " + err.response.data)
+            );
     };
 
     fetchClasses = (classIds) => {
@@ -73,9 +73,9 @@ export class UserClassPage extends React.Component {
                     classes: classes,
                 });
             })
-            .catch((err) => {
-                alert("Could not fetch classes: " + err.response.data);
-            });
+            .catch((err) =>
+                alert("Could not fetch classes: " + err.response.data)
+            );
     };
 
     onClassChange = (e) => {
@@ -94,9 +94,9 @@ export class UserClassPage extends React.Component {
             .then(() => {
                 this.fetchUser();
             })
-            .catch((err) => {
-                alert("Could not enroll in class: " + err.response.data);
-            });
+            .catch((err) =>
+                alert("Could not enroll in class: " + err.response.data)
+            );
     };
 
     render = () => {
@@ -151,6 +151,30 @@ export class UserClassPage extends React.Component {
             return <option key={index}>{c.classId}</option>;
         });
 
+        var enroll = (
+            <span>
+                There are no classes to choose from. Please add one{" "}
+                <Link to="/classes/add">here</Link>
+            </span>
+        );
+        if (this.state.classes.length != 0) {
+            enroll = (
+                <div>
+                    <p>Select a Class ID to enroll user into:</p>
+                    <select
+                        value={this.state.classId}
+                        onChange={(e) => this.onClassChange(e)}>
+                        <option default hidden>
+                            Select a classId
+                        </option>
+                        {classOptions}
+
+                        <button onClick={this.onClickEnroll}>Enroll</button>
+                    </select>
+                </div>
+            );
+        }
+
         return (
             <div id="view-user-class">
                 <h2>
@@ -166,8 +190,8 @@ export class UserClassPage extends React.Component {
                     <p>{user.phone}</p>
                 </div>
 
-                <h2>User Classes</h2>
                 <div id="user-class">
+                    <h2>User Classes</h2>
                     <div className="header row">
                         <span className="large-column">Class ID</span>
                         <span className="column">Enroll Status</span>
@@ -178,18 +202,10 @@ export class UserClassPage extends React.Component {
                     {rows}
                 </div>
 
-                <h2>Enroll User for Class</h2>
-                <p>Select a Class ID to enroll user into:</p>
-                <select
-                    value={this.state.classId}
-                    onChange={(e) => this.onClassChange(e)}>
-                    <option default hidden>
-                        Select a classId
-                    </option>
-                    {classOptions}
-                </select>
-
-                <button onClick={this.onClickEnroll}>Enroll</button>
+                <div id="user-enroll">
+                    <h2>Enroll User for Class</h2>
+                    {enroll}
+                </div>
             </div>
         );
     };

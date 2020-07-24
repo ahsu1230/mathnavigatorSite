@@ -1,7 +1,13 @@
 @import "../_.constants.sass"
 
 #account-info
-    padding-top: $spacing3x
+    padding-top: $spacing5x
+    border-top: 2px solid $colorGrayDark
+
+    h2
+        margin: $spacing3x 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
 
     #account-number
         color: $colorTurquoise
@@ -15,12 +21,12 @@
 
     .column
         flex: 2 1 0
-    
+
     .medium-column
         flex: 3 1 0
 
     .large-column
-        flex: 8 1 0
+        flex: 6 1 0
 
     .edit
         flex: 0 0 $spacing6x
@@ -39,7 +45,8 @@
             margin: $spacing2x 0
     
     #account-transactions
-        max-width: $spacing128x
+        max-width: $spacing96x
+        padding: $spacing2x 0
 
         .row
             min-height: $spacing6x

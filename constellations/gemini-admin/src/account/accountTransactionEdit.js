@@ -1,7 +1,6 @@
 "use strict";
 require("./accountTransactionEdit.sass");
 import React from "react";
-import moment from "moment";
 import API from "../api.js";
 import { getCurrentAccountId } from "../localStorage.js";
 import { Modal } from "../modals/modal.js";
@@ -9,34 +8,44 @@ import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
 
-// React DatePicker
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
-import { SingleDatePicker } from "react-dates";
-
 export class TransactionEditPage extends React.Component {
     state = {
         isEdit: false,
-        date: moment(),
+        types: [],
         type: "",
         amount: "",
         notes: "",
+        accountId: getCurrentAccountId(),
     };
 
     componentDidMount = () => {
         const id = this.props.id;
         if (id) {
-            API.get("api/transactions/transaction/" + id).then((res) => {
-                const transaction = res.data;
-                this.setState({
-                    isEdit: true,
-                    date: moment(transaction.programId),
-                    type: transaction.programId,
-                    amount: transaction.name,
-                    notes: transaction.notes || "",
-                });
-            });
+            API.get("api/transactions/transaction/" + id)
+                .then((res) => {
+                    const transaction = res.data;
+                    this.setState({
+                        isEdit: true,
+                        type: transaction.paymentType,
+                        amount: parseInt(transaction.amount),
+                        notes: transaction.paymentNotes || "",
+                    });
+                })
+                .catch((err) =>
+                    alert("Could not fetch transaction: " + err.response.data)
+                );
         }
+
+        API.get("api/transactions/types")
+            .then((res) =>
+                this.setState({
+                    type: res.data[0],
+                    types: res.data,
+                })
+            )
+            .catch((err) =>
+                alert("Could not fetch types: " + err.response.data)
+            );
     };
 
     handleChange = (event, value) => {
@@ -65,17 +74,21 @@ export class TransactionEditPage extends React.Component {
 
     onClickSave = () => {
         let transaction = {
-            date: this.state.date,
-            type: this.state.type,
+            paymentType: this.state.type,
             amount: parseInt(this.state.amount),
-            notes: this.state.notes,
+            paymentNotes: this.state.notes,
+            accountId: this.state.accountId,
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
             alert("Could not save transaction: " + err.response.data);
+
         if (this.state.isEdit) {
-            API.post("api/transactions/transaction/" + this.state.id, account)
+            API.post(
+                "api/transactions/transaction/" + this.props.id,
+                transaction
+            )
                 .then(() => successCallback())
                 .catch((err) => failCallback(err));
         } else {
@@ -90,7 +103,7 @@ export class TransactionEditPage extends React.Component {
         window.location.hash = "accounts";
     };
 
-    onDismissModal = () => {
+    onModalDismiss = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
@@ -100,7 +113,7 @@ export class TransactionEditPage extends React.Component {
     render = () => {
         const isEdit = this.state.isEdit;
         var title = isEdit ? "Edit Transaction" : "Add Transaction";
-        title += " (Account " + getCurrentAccountId() + ")";
+        title += " (Account No. " + this.state.accountId + ")";
 
         const modalDiv = renderModal(
             this.state.showSaveModal,
@@ -109,6 +122,14 @@ export class TransactionEditPage extends React.Component {
             this.onModalDeleteConfirm,
             this.onModalDismiss
         );
+
+        const typeOptions = this.state.types.map((type, index) => {
+            return (
+                <option value={type} key={index}>
+                    {type}
+                </option>
+            );
+        });
 
         let deleteButton = <div></div>;
         if (isEdit) {
@@ -122,37 +143,18 @@ export class TransactionEditPage extends React.Component {
         return (
             <div id="view-transaction-edit">
                 {modalDiv}
-                <h2>{title}</h2>
+                <h1>{title}</h1>
 
-                <div id="date-container">
-                    <h2>Date</h2>
-                    <SingleDatePicker
-                        id="date-picker"
-                        date={this.state.date}
-                        onDateChange={(date) => this.onDateChange(date)}
-                        focused={this.state.dateFocused}
-                        onFocusChange={({ focused }) =>
-                            this.setState({
-                                dateFocused: focused,
-                            })
-                        }
-                        showDefaultInputIcon
-                    />
+                <div id="transaction-type">
+                    <h2>Type</h2>
+                    <h4>Enter the type of transaction</h4>
+                    <select
+                        className="dropdown"
+                        value={this.state.type}
+                        onChange={(e) => this.handleChange(e, "type")}>
+                        {typeOptions}
+                    </select>
                 </div>
-
-                <InputText
-                    label="Type"
-                    value={this.state.type}
-                    onChangeCallback={(e) => this.handleChange(e, "type")}
-                    required={true}
-                    description="Enter the type of transaction"
-                    validators={[
-                        {
-                            validate: (type) => type != "",
-                            message: "You must input a type",
-                        },
-                    ]}
-                />
 
                 <InputText
                     label="Amount"
@@ -165,6 +167,16 @@ export class TransactionEditPage extends React.Component {
                             validate: (amount) =>
                                 !isNaN(amount) && amount != "",
                             message: "You must input an amount",
+                        },
+                        {
+                            validate: (amount) =>
+                                !(this.state.type != "charge" && amount < 0),
+                            message: "Payment must be positive",
+                        },
+                        {
+                            validate: (amount) =>
+                                !(this.state.type == "charge" && amount > 0),
+                            message: "Charge must be negative",
                         },
                     ]}
                 />

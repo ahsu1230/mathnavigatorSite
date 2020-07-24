@@ -40,15 +40,10 @@ export class UserAFHPage extends React.Component {
                         id: id,
                         user: responses[0].data,
                     });
-
-                    if (afhIds.length > 0) {
-                        this.fetchAFHs(afhIds);
-                    }
+                    this.fetchAFHs(afhIds);
                 })
             )
-            .catch((err) => {
-                alert("Could not fetch user: " + err.response.data);
-            });
+            .catch((err) => alert("Could not fetch user: " + err));
     };
 
     fetchAFHs = (afhIds) => {
@@ -72,9 +67,7 @@ export class UserAFHPage extends React.Component {
                     afhs: afhs,
                 });
             })
-            .catch((err) => {
-                alert("Could not fetch afhs: " + err.response.data);
-            });
+            .catch((err) => alert("Could not fetch afhs: " + err));
     };
 
     onAFHChange = (e) => {
@@ -93,9 +86,7 @@ export class UserAFHPage extends React.Component {
             .then(() => {
                 this.fetchUser();
             })
-            .catch((err) => {
-                alert("Could not schedule AFH: " + err.response.data);
-            });
+            .catch((err) => alert("Could not schedule AFH: " + err));
     };
 
     render = () => {
@@ -136,6 +127,30 @@ export class UserAFHPage extends React.Component {
             );
         });
 
+        var schedule = (
+            <span>
+                There are no AFH sessions to choose from. Please add one{" "}
+                <Link to="/afh/add">here</Link>
+            </span>
+        );
+        if (this.state.afhs.length != 0) {
+            schedule = (
+                <div>
+                    <p>Select a AFH session for user:</p>
+                    <select
+                        value={this.state.afhId}
+                        onChange={(e) => this.onAFHChange(e)}>
+                        <option default hidden>
+                            Select an AFH session
+                        </option>
+                        {afhOptions}
+                    </select>
+
+                    <button onClick={this.onClickSchedule}>Schedule</button>
+                </div>
+            );
+        }
+
         return (
             <div id="view-user-afh">
                 <h2>
@@ -151,8 +166,8 @@ export class UserAFHPage extends React.Component {
                     <p>{user.phone}</p>
                 </div>
 
-                <h2>User AskForHelp Sessions</h2>
                 <div id="user-afh">
+                    <h2>User AskForHelp Sessions</h2>
                     <div className="header row">
                         <span className="column">AskForHelp Date</span>
                         <span className="large-column">Title</span>
@@ -162,18 +177,10 @@ export class UserAFHPage extends React.Component {
                     {rows}
                 </div>
 
-                <h2>Schedule AskForHelp for User</h2>
-                <p>Select a AFH session for user:</p>
-                <select
-                    value={this.state.afhId}
-                    onChange={(e) => this.onAFHChange(e)}>
-                    <option default hidden>
-                        Select an AFH session
-                    </option>
-                    {afhOptions}
-                </select>
-
-                <button onClick={this.onClickSchedule}>Schedule</button>
+                <div id="user-schedule">
+                    <h2>Schedule AskForHelp for User</h2>
+                    {schedule}
+                </div>
             </div>
         );
     };
