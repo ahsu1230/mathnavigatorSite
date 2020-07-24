@@ -8,14 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllTransactions(c *gin.Context) {
-	transactionList, err := repos.TransactionRepo.SelectAll()
+func GetTransactionsByAccountId(c *gin.Context) {
+	accountId := ParseParamUint(c.Param("accountId"))
+
+	transactionList, err := repos.TransactionRepo.SelectByAccountId(accountId)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, transactionList)
+		c.String(http.StatusNotFound, err.Error())
+		return
 	}
+	c.JSON(http.StatusOK, &transactionList)
 }
 
 func GetTransactionById(c *gin.Context) {
@@ -26,9 +28,9 @@ func GetTransactionById(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &transaction)
+		return
 	}
+	c.JSON(http.StatusOK, &transaction)
 }
 
 func CreateTransaction(c *gin.Context) {
@@ -46,9 +48,9 @@ func CreateTransaction(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func UpdateTransaction(c *gin.Context) {
@@ -67,9 +69,9 @@ func UpdateTransaction(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteTransaction(c *gin.Context) {
@@ -80,9 +82,9 @@ func DeleteTransaction(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func GetAllPaymentTypes(c *gin.Context) {

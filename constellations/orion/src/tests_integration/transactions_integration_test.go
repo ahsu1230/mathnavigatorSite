@@ -16,24 +16,30 @@ func Test_CreateTransactions(t *testing.T) {
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
 	trans2 := createTransaction(2, 200, domains.PAY_CASH, "notes2", 2)
 	trans3 := createTransaction(3, 300, domains.PAY_CHECK, "notes3", 3)
+	trans4 := createTransaction(4, 400, domains.PAY_CHECK, "notes4", 1)
+
 	body1 := utils.CreateJsonBody(&trans1)
 	body2 := utils.CreateJsonBody(&trans2)
 	body3 := utils.CreateJsonBody(&trans3)
+	body4 := utils.CreateJsonBody(&trans4)
 
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body2)
 	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body3)
+	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/transactions/create", body4)
+
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	// Call Get All
-	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/transactions/all", nil)
+	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/transactions/account/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 	var transactions []domains.Transaction
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &transactions); err != nil {
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &transactions); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, 1, transactions[0].Id)
@@ -41,16 +47,12 @@ func Test_CreateTransactions(t *testing.T) {
 	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
 	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
-	assert.EqualValues(t, 2, transactions[1].Id)
-	assert.EqualValues(t, 200, transactions[1].Amount)
-	assert.EqualValues(t, domains.PAY_CASH, transactions[1].PaymentType)
-	assert.EqualValues(t, "notes2", transactions[1].PaymentNotes.String)
-	assert.EqualValues(t, 2, transactions[1].AccountId)
-	assert.EqualValues(t, 3, transactions[2].Id)
-	assert.EqualValues(t, 300, transactions[2].Amount)
-	assert.EqualValues(t, domains.PAY_CHECK, transactions[2].PaymentType)
-	assert.EqualValues(t, "notes3", transactions[2].PaymentNotes.String)
-	assert.EqualValues(t, 3, transactions[2].AccountId)
+
+	assert.EqualValues(t, 4, transactions[1].Id)
+	assert.EqualValues(t, 400, transactions[1].Amount)
+	assert.EqualValues(t, domains.PAY_CHECK, transactions[1].PaymentType)
+	assert.EqualValues(t, "notes4", transactions[1].PaymentNotes.String)
+	assert.EqualValues(t, 1, transactions[1].AccountId)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
 }

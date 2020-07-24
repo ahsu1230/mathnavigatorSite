@@ -20,15 +20,18 @@ func initTransactionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.Transact
 	return db, mock, repo
 }
 
-// Test Select All
-func TestSelectAllTransactions(t *testing.T) {
+// Test Select By Account Id
+func TestSelectByAccountId(t *testing.T) {
 	db, mock, repo := initTransactionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	rows := getTransactionRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM transactions").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	mock.ExpectPrepare("^SELECT (.+) FROM transactions WHERE account_id=?").
+		ExpectQuery().
+		WithArgs(1).
+		WillReturnRows(rows)
+	got, err := repo.SelectByAccountId(1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
