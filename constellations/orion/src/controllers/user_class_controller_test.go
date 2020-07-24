@@ -199,7 +199,7 @@ func TestUpdateUserClass_Success(t *testing.T) {
 		domains.USER_CLASS_ACCEPTED,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/userclass/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -221,7 +221,7 @@ func TestUpdateUserClass_Invalid(t *testing.T) {
 		domains.USER_CLASS_PENDING,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/userclass/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -242,7 +242,7 @@ func TestUpdateUserClass_Failure(t *testing.T) {
 		domains.USER_CLASS_ACCEPTED,
 	)
 	body := createBodyFromUserClass(userClass)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/userclass/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
@@ -258,7 +258,7 @@ func TestDeleteUserClass_Success(t *testing.T) {
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/userclass/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -271,7 +271,7 @@ func TestDeleteUserClass_Failure(t *testing.T) {
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/userclass/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)

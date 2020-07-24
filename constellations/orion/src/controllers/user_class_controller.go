@@ -12,10 +12,6 @@ type StateValues struct {
 	Value uint   `json:"value"`
 }
 
-type StateArray struct {
-	SA []StateValues
-}
-
 func GetUsersByClassId(c *gin.Context) {
 	// Incoming parameters
 	classId := c.Param("classId")
@@ -113,17 +109,9 @@ func DeleteUserClass(c *gin.Context) {
 func GetStateValues(c *gin.Context) {
 	arr := make([]StateValues, 0)
 	// create 3 stateValues variables and push them to arr
-	var stateValue1 StateValues
-	stateValue1.Name = "pending"
-	stateValue1.Value = 0
-
-	var stateValue2 StateValues
-	stateValue2.Name = "accepted"
-	stateValue2.Value = 1
-
-	var stateValue3 StateValues
-	stateValue3.Name = "trial"
-	stateValue3.Value = 2
+	stateValue1 := StateValues{"pending", 0}
+	stateValue2 := StateValues{"accepted", 1}
+	stateValue3 := StateValues{"trial", 2}
 
 	arr = append(arr, stateValue1, stateValue2, stateValue3)
 	c.JSON(http.StatusOK, arr)

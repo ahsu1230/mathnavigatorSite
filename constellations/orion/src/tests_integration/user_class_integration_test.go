@@ -92,7 +92,7 @@ func Test_UpdateUserClass(t *testing.T) {
 	// Update
 	updatedUserClass := createUserClass(4)
 	updatedBody := utils.CreateJsonBody(&updatedUserClass)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/userclass/1", updatedBody)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
@@ -120,11 +120,11 @@ func Test_DeleteUserClass(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Update
-	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/userclass/1", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Get
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/userclass/1", nil)
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user-class/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	resetAllTables(t)
