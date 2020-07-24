@@ -118,4 +118,9 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserAfh.POST("/userafh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/userafh/:id", controllers.DeleteUserAfh)
 	}
+
+	apiClassesBySemester := h.Engine.Group("api/classesbysemesters")
+	{
+		apiClassesBySemester.GET("/group", controllers.GetAllProgramsSemestersClasses)
+	}
 }
