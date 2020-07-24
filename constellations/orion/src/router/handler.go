@@ -121,7 +121,7 @@ func (h *Handler) SetupApiEndpoints() {
 	}
 	apiTransaction := h.Engine.Group("api/transactions")
 	{
-		apiTransaction.GET("/all", controllers.GetAllTransactions)
+		apiTransaction.GET("/account/:accountId", controllers.GetTransactionsByAccountId)
 		apiTransaction.POST("/create", controllers.CreateTransaction)
 		apiTransaction.GET("/transaction/:id", controllers.GetTransactionById)
 		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)

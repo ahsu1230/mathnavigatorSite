@@ -14,8 +14,8 @@ import (
 )
 
 // Test Get All
-func TestGetAllTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectAll = func() ([]domains.Transaction, error) {
+func TestGetTransactionsByAccountId_Success(t *testing.T) {
+	testUtils.TransactionRepo.MockSelectByAccountId = func(accountId uint) ([]domains.Transaction, error) {
 		return []domains.Transaction{
 			testUtils.CreateMockTransaction(
 				1,
@@ -29,14 +29,14 @@ func TestGetAllTransaction_Success(t *testing.T) {
 				200,
 				domains.PAY_PAYPAL,
 				"notes2",
-				2,
+				1,
 			),
 		}, nil
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/all", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/account/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -50,11 +50,12 @@ func TestGetAllTransaction_Success(t *testing.T) {
 	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
 	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
+
 	assert.EqualValues(t, 2, transactions[1].Id)
 	assert.EqualValues(t, 200, transactions[1].Amount)
 	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[1].PaymentType)
 	assert.EqualValues(t, "notes2", transactions[1].PaymentNotes.String)
-	assert.EqualValues(t, 2, transactions[1].AccountId)
+	assert.EqualValues(t, 1, transactions[1].AccountId)
 
 }
 
