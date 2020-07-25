@@ -24,6 +24,16 @@ export class AFHPage extends React.Component {
         });
     };
 
+    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
+
+    onSelectSession = (title) => {
+        var session = title;
+        session.checked = true;
+
+        let originalClassName = "sessions-list";
+        originalClassName = originalClassName + "active";
+    };
+
     selectCheckbox = (title, onSelectSession) => {
         return (
             <input
@@ -34,9 +44,6 @@ export class AFHPage extends React.Component {
         );
     };
 
-    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
-    onSelectSession = (title) => {};
-
     render() {
         let currentSub = this.state.sessions.filter(
             (session) => session.subject == this.state.currentTab
@@ -45,8 +52,7 @@ export class AFHPage extends React.Component {
             return (
                 <div className="sessions-list" key={index}>
                     {this.selectCheckbox}
-                    {row.date}
-                    {row.timeString} <br />
+                    {row.date} {row.timeString} <br />
                     {row.title} {row.notes} <br /> {row.locationId}
                 </div>
             );
