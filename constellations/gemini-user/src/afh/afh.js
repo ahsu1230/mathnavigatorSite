@@ -24,26 +24,6 @@ export class AFHPage extends React.Component {
         });
     };
 
-    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
-
-    onSelectSession = (title) => {
-        var session = title;
-        session.checked = true;
-
-        let originalClassName = "sessions-list";
-        originalClassName = originalClassName + "active";
-    };
-
-    selectCheckbox = (title, onSelectSession) => {
-        return (
-            <input
-                className="select"
-                type="checkbox"
-                onChange={() => onSelectSession(title)}
-            />
-        );
-    };
-
     render() {
         let currentSub = this.state.sessions.filter(
             (session) => session.subject == this.state.currentTab
@@ -51,7 +31,11 @@ export class AFHPage extends React.Component {
         let showSessions = currentSub.map((row, index) => {
             return (
                 <div className="sessions-list" key={index}>
-                    {this.selectCheckbox}
+                    <CheckboxInput
+                        key={index}
+                        row={row}
+                        onChangeCheckbox={this.onChangeCheckbox}
+                    />
                     {row.date} {row.timeString} <br />
                     {row.title} {row.notes} <br /> {row.locationId}
                 </div>
@@ -121,5 +105,30 @@ export class AFHPage extends React.Component {
                 </div>
             </div>
         );
+    }
+}
+
+class CheckboxInput extends React.Component {
+    selectCheckbox = (title) => {
+        return (
+            <input
+                className="select"
+                type="checkbox"
+                onChange={this.onSelectSession(title)}
+            />
+        );
+    };
+
+    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
+    onSelectSession = (title) => {
+        let originalClassName = "sessions-list";
+        title.className = originalClassName + "active";
+    };
+
+    render() {
+        const row = this.props.row;
+        const checkbox = this.selectCheckbox(row.title);
+
+        return <div className="checkbox">{checkbox}</div>;
     }
 }
