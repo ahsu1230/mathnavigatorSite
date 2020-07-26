@@ -67,7 +67,9 @@ func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
 			&user.Phone,
 			&user.IsGuardian,
 			&user.AccountId,
-			&user.Notes); errScan != nil {
+			&user.Notes,
+			&user.School,
+			&user.GraduationYear); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -117,7 +119,9 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 			&user.Phone,
 			&user.IsGuardian,
 			&user.AccountId,
-			&user.Notes); errScan != nil {
+			&user.Notes,
+			&user.School,
+			&user.GraduationYear); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -147,7 +151,9 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.Phone,
 		&user.IsGuardian,
 		&user.AccountId,
-		&user.Notes)
+		&user.Notes,
+		&user.School,
+		&user.GraduationYear)
 	return user, errScan
 }
 
@@ -179,7 +185,9 @@ func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 			&user.Phone,
 			&user.IsGuardian,
 			&user.AccountId,
-			&user.Notes); errScan != nil {
+			&user.Notes,
+			&user.School,
+			&user.GraduationYear); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -198,8 +206,10 @@ func (ur *userRepo) Insert(user domains.User) error {
 		"phone, " +
 		"is_guardian," +
 		"account_id," +
-		"notes" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"notes," +
+		"school," +
+		"graduation_year" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -219,6 +229,8 @@ func (ur *userRepo) Insert(user domains.User) error {
 		user.IsGuardian,
 		user.AccountId,
 		user.Notes,
+		user.School,
+		user.GraduationYear,
 	)
 	if err != nil {
 		return err
@@ -236,7 +248,9 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		"phone=?, " +
 		"is_guardian=?, " +
 		"account_id=?, " +
-		"notes=? " +
+		"notes=?, " +
+		"school=?, " +
+		"graduation_year=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -255,6 +269,8 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		user.IsGuardian,
 		user.AccountId,
 		user.Notes,
+		user.School,
+		user.GraduationYear,
 		id)
 	if err != nil {
 		return err
