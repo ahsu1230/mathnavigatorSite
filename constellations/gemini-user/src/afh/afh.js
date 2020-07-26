@@ -31,13 +31,18 @@ export class AFHPage extends React.Component {
         let showSessions = currentSub.map((row, index) => {
             return (
                 <div className="sessions-list" key={index}>
-                    <CheckboxInput
-                        key={index}
-                        row={row}
-                        onChangeCheckbox={this.onChangeCheckbox}
-                    />
-                    {row.date} {row.timeString} <br />
-                    {row.title} {row.notes} <br /> {row.locationId}
+                    <div className="sessions-checkbox">
+                        <CheckboxInput
+                            key={index}
+                            row={row}
+                            onChangeCheckbox={this.onChangeCheckbox}
+                        />
+                    </div>
+
+                    <div className="session-details">
+                        {row.date} {row.timeString} <br />
+                        {row.title} {row.notes} <br /> {row.locationId}
+                    </div>
                 </div>
             );
         });

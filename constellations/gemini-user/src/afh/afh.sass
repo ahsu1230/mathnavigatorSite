@@ -1,20 +1,6 @@
 @import "../utils/constants.sass"
 
-@media only screen and (max-width: 700px)
-    #view-afh
-        width: 100%
 
-        & h1, .description
-            text-align: center
-
-        .sessions-list
-            width: 90%
-            margin: $spacing1x auto
-
-        .tab button
-            font-size: 8px
-
-    
 
 #view-afh
     width: 70%
@@ -26,8 +12,13 @@
         color: $colorTurquoise
 
     .sessions-list
-        width: 70%
+        display: flex
+        flex-direction: row
+        align-items: center
         margin: $spacing4x auto
+
+        .sessions-checkbox
+            width: 20%
 
     .sessions-list.active
         width: 70%
@@ -72,3 +63,16 @@
     .hide
         display: none
     
+@media only screen and (max-width: 700px)
+    #view-afh
+        width: 100%
+
+        & h1, .description
+            text-align: center
+
+        .sessions-list
+            width: 90%
+            margin: $spacing1x auto
+
+        .tab button
+            font-size: 14px
