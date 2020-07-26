@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -11,7 +12,61 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test getting programs and classes by semester endpoint
+func TestOneSemesterOneProgramOneClass_Success(t *testing.T) {
+	// Mock 1 program, 1 semester, 1 class
+	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+		return createMockPrograms(1), nil
+	}
+	repos.ProgramRepo = &testUtils.ProgramRepo
+
+	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+		return createMockSemesters(1), nil
+	}
+	repos.SemesterRepo = &testUtils.SemesterRepo
+
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(1), nil
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var results []domains.ProgramClassesBySemester
+	if err := json.Unmarshal(recorder.Body.Bytes(), &results); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
+	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
+	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
+}
+
+func TestOneSemesterOneProgramOneClass_Failure(t *testing.T) {
+	// Mock 1 program, 1 semester, no classes created
+	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+		return createMockPrograms(1), nil
+	}
+	repos.ProgramRepo = &testUtils.ProgramRepo
+
+	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+		return createMockSemesters(1), nil
+	}
+	repos.SemesterRepo = &testUtils.SemesterRepo
+
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return []domains.Class{}, errors.New("error in class")
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+}
+
 func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	// Mock 2 programs, 2 semesters, 2 classes
 	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
