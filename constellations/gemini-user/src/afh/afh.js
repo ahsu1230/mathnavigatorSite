@@ -2,6 +2,7 @@
 require("./afh.sass");
 import React from "react";
 import API from "../utils/api.js";
+import moment from "moment";
 
 export class AFHPage extends React.Component {
     state = {
@@ -28,6 +29,8 @@ export class AFHPage extends React.Component {
         let currentSub = this.state.sessions.filter(
             (session) => session.subject == this.state.currentTab
         );
+
+        let sessionDate = moment(this.props.row.date).format("dddd, M/D/YYYY");
         let showSessions = currentSub.map((row, index) => {
             return (
                 <div className="sessions-list" key={index}>
@@ -40,7 +43,7 @@ export class AFHPage extends React.Component {
                     </div>
 
                     <div className="session-details">
-                        {row.date} {row.timeString} <br />
+                        {sessionDate} {row.timeString} <br />
                         {row.title} {row.notes} <br /> {row.locationId}
                     </div>
                 </div>
