@@ -25,7 +25,7 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
-		return createMockClasses(1, 2), nil
+		return createMockClasses(1, 2, 3, 4), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
