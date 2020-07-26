@@ -13,7 +13,7 @@ import (
 
 // Test getting programs and classes by semester endpoint
 func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
-	// Mock selecting all programs, semesters, classes
+	// Mock 2 programs, 2 semesters, 2 classes
 	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return createMockPrograms(1, 2), nil
 	}
@@ -40,10 +40,78 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
 	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
-	assert.EqualValues(t, "class1", results[0].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program1_2020_spring_class2", results[0].ProgramClasses[0].Classes[1].ClassId)
 	assert.EqualValues(t, "2020_summer", results[1].Semester.SemesterId)
 	assert.EqualValues(t, "program1", results[1].ProgramClasses[0].ProgramObj.ProgramId)
-	assert.EqualValues(t, "final_review", results[1].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program1_2020_summer_final_review", results[1].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program2", results[1].ProgramClasses[1].ProgramObj.ProgramId)
+}
+
+func GetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
+	// Mock 1 semester, 2 programs, 1 class, where one program has no class
+	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+		return createMockPrograms(1, 2), nil
+	}
+	repos.ProgramRepo = &testUtils.ProgramRepo
+
+	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+		return createMockSemesters(1), nil
+	}
+	repos.SemesterRepo = &testUtils.SemesterRepo
+
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(1, 2, 3, 4), nil
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var results []domains.ProgramClassesBySemester
+	if err := json.Unmarshal(recorder.Body.Bytes(), &results); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
+	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
+	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program1_2020_spring_class2", results[0].ProgramClasses[0].Classes[1].ClassId)
+	assert.EqualValues(t, "program2", results[0].ProgramClasses[1].ProgramObj.ProgramId)
+}
+
+func GetTwoSemestersOneProgramOneClass(t *testing.T) {
+	// Mock 2 semesters, 1 program, 1 class, where one semester has no programs
+	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+		return createMockPrograms(1), nil
+	}
+	repos.ProgramRepo = &testUtils.ProgramRepo
+
+	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+		return createMockSemesters(1, 2), nil
+	}
+	repos.SemesterRepo = &testUtils.SemesterRepo
+
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(1, 2), nil
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var results []domains.ProgramClassesBySemester
+	if err := json.Unmarshal(recorder.Body.Bytes(), &results); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
+	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
+	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
+	assert.EqualValues(t, "program1_2020_spring_class2", results[0].ProgramClasses[0].Classes[1].ClassId)
+	assert.EqualValues(t, "2020_summer", results[1].Semester.SemesterId)
 }
 
 // Helper functions

@@ -9,7 +9,8 @@ import (
 )
 
 func GetAllProgramsSemestersClasses(c *gin.Context) {
-	var classSemesterJson domains.ProgramClassesBySemester
+	var classSemester domains.ProgramClassesBySemester
+	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch progrmas, semesters, classes from repo functions
 	publishedOnly := ParseParamPublishedOnly(c)
@@ -37,9 +38,9 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	semesterClassMap := make(map[string][]domains.Class)
 
 	// Loop over semesterIds
-	for _, value := range semesterMap {
+	for i := 0; i < len(semesters); i++ {
 		// Create Semester Object
-		semesterObj := value
+		semesterObj := semesters[i]
 		var programClassStruct domains.ProgramClass
 		var programObj domains.Program
 
@@ -89,17 +90,15 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 		}
 
 		// Make ProgramClassesBySemester struct
-		classSemesterJson = updateProgramClassesBySemester(value, listProgramClass)
-		c.BindJSON(&classSemesterJson)
+		classSemester = updateProgramClassesBySemester(semesters[i], listProgramClass)
+		listResults = append(listResults, classSemester)
 	}
-
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, &classSemesterJson)
+		c.JSON(http.StatusOK, &listResults)
 	}
-	return
 }
 
 func updateProgramClass(programObj domains.Program, classes []domains.Class) domains.ProgramClass {
