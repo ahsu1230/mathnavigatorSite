@@ -185,7 +185,7 @@ func createUserAfh(userId, afhId uint) domains.UserAfh {
 }
 
 func resetUserAfhTables(t *testing.T) {
-	utils.ResetTable(t, domains.TABLE_USERAFH)
+	utils.ResetTable(t, domains.TABLE_USER_AFH)
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)

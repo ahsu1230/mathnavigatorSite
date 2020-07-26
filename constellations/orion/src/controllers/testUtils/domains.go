@@ -96,6 +96,16 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 	}
 }
 
+func CreateMockUserClasses(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClasses {
+	return domains.UserClasses{
+		Id:        id,
+		UserId:    userId,
+		ClassId:   classId,
+		AccountId: accountId,
+		State:     state,
+	}
+}
+
 func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         id,
@@ -105,6 +115,16 @@ func CreateMockAFH(id uint, title string, date time.Time, timeString string, sub
 		Subject:    subject,
 		LocationId: locationId,
 		Notes:      domains.NewNullString(notes),
+	}
+}
+
+func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
+	return domains.Transaction{
+		Id:           id,
+		Amount:       amount,
+		PaymentType:  paymentType,
+		PaymentNotes: domains.NewNullString(paymentNotes),
+		AccountId:    accountId,
 	}
 }
 
