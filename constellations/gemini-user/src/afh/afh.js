@@ -31,7 +31,7 @@ export class AFHPage extends React.Component {
         );
 
         let showSessions = currentSub.map((row, index) => {
-            let sessionDate = moment(row.date).format("M/D/YYYY dddd");  
+            let sessionDate = moment(row.date).format("M/D/YYYY dddd");
             return (
                 <div className="sessions-list" key={index}>
                     <div className="sessions-checkbox">
