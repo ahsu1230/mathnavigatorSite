@@ -33,7 +33,13 @@ export class AFHPage extends React.Component {
         let showSessions = currentSub.map((row, index) => {
             let sessionDate = moment(row.date).format("M/D/YYYY dddd");
             return (
-                <div className="sessions-list" key={index}>
+                <div
+                    className={
+                        this.state.isActive == "true"
+                            ? "sessions-list-active"
+                            : "sessions-list"
+                    }
+                    key={index}>
                     <div className="sessions-checkbox">
                         <CheckboxInput
                             key={index}
@@ -117,25 +123,29 @@ export class AFHPage extends React.Component {
 }
 
 class CheckboxInput extends React.Component {
-    selectCheckbox = (title) => {
-        return (
-            <input
-                className="select"
-                type="checkbox"
-                onChange={this.onSelectSession(title)}
-            />
-        );
+    state = {
+        isActive: "false",
+    };
+    selectCheckbox = (e) => {
+        return <input className="select" type="checkbox" />;
     };
 
-    //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
-    onSelectSession = (title) => {
-        let originalClassName = "sessions-list";
-        this.className = originalClassName + "active";
+    onSelectSession = (e) => {
+        if (this.state.isActive == "false") {
+            this.setState({
+                isActive: "true",
+            });
+        } else {
+            this.setState({
+                isActive: "false",
+            });
+        }
+        return this.state.isActive;
     };
 
     render() {
         const row = this.props.row;
-        const checkbox = this.selectCheckbox(row.title);
+        const checkbox = this.selectCheckbox;
 
         return <div className="checkbox">{checkbox}</div>;
     }
