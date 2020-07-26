@@ -198,8 +198,8 @@ func createUser(id int) domains.User {
 			IsGuardian:     true,
 			AccountId:      1,
 			Notes:          domains.NewNullString("notes1"),
-			School:         domains.NewNullString("school1"),
-			GraduationYear: domains.NewNullUint(1213),
+			School:         domains.NewNullString("schoolone"),
+			GraduationYear: domains.NewNullUint(2001),
 		}
 	case 2:
 		return domains.User{
@@ -211,8 +211,8 @@ func createUser(id int) domains.User {
 			IsGuardian:     false,
 			AccountId:      2,
 			Notes:          domains.NewNullString("notes2"),
-			School:         domains.NewNullString("school2"),
-			GraduationYear: domains.NewNullUint(1214),
+			School:         domains.NewNullString("schooltwo"),
+			GraduationYear: domains.NewNullUint(2002),
 		}
 	case 3:
 		return domains.User{
@@ -237,8 +237,8 @@ func createUser(id int) domains.User {
 			IsGuardian:     false,
 			AccountId:      1,
 			Notes:          domains.NewNullString("notes4"),
-			School:         domains.NewNullString("school4"),
-			GraduationYear: domains.NewNullUint(0),
+			School:         domains.NewNullString("schoolfour"),
+			GraduationYear: domains.NewNullUint(2004),
 		}
 	default:
 		return domains.User{}
@@ -265,8 +265,8 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, true, user.IsGuardian)
 		assert.EqualValues(t, 1, user.AccountId)
 		assert.EqualValues(t, "notes1", user.Notes.String)
-		assert.EqualValues(t, "school1", user.School.String)
-		assert.EqualValues(t, 1213, user.GraduationYear.Uint)
+		assert.EqualValues(t, "schoolone", user.School.String)
+		assert.EqualValues(t, 2001, user.GraduationYear.Uint)
 	case 2:
 		assert.EqualValues(t, "Bob", user.FirstName)
 		assert.EqualValues(t, "Smith", user.LastName)
@@ -276,8 +276,8 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, false, user.IsGuardian)
 		assert.EqualValues(t, 2, user.AccountId)
 		assert.EqualValues(t, "notes2", user.Notes.String)
-		assert.EqualValues(t, "school2", user.School.String)
-		assert.EqualValues(t, 1214, user.GraduationYear.Uint)
+		assert.EqualValues(t, "schooltwo", user.School.String)
+		assert.EqualValues(t, 2002, user.GraduationYear.Uint)
 	case 3:
 		assert.EqualValues(t, "Foo", user.FirstName)
 		assert.EqualValues(t, "Bar", user.LastName)

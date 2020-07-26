@@ -34,6 +34,8 @@ func (user *User) Validate() error {
 	lastName := user.LastName
 	email := user.Email
 	phone := user.Phone
+	school := user.School.String
+	year := user.GraduationYear.Uint
 
 	// First name validation
 	if firstName == "" {
@@ -55,5 +57,14 @@ func (user *User) Validate() error {
 		return errors.New("invalid phone")
 	}
 
+	// School validation
+	if matches, _ := regexp.MatchString(`[^a-zA-Z\s]`, school); matches && user.School.Valid {
+		return errors.New("school contains non alphabetic characters")
+	}
+
+	// Year validation
+	if year < 2000 && user.GraduationYear.Valid {
+		return errors.New("invalid graduation year")
+	}
 	return nil
 }
