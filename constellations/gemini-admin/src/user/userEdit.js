@@ -103,7 +103,7 @@ export class UserEditPage extends React.Component {
     };
 
     onClickCancel = () => {
-        window.location.hash = "users";
+        window.location.hash = this.state.isEdit ? "users" : "accounts";
     };
 
     onClickSave = () => {
@@ -139,13 +139,16 @@ export class UserEditPage extends React.Component {
     onConfirmDelete = () => {
         const id = this.state.id;
         API.delete("api/users/user/" + id).then(
-            () => (window.location.hash = "users")
+            () =>
+                (window.location.hash = this.state.isEdit
+                    ? "users"
+                    : "accounts")
         );
     };
 
     onSavedOk = () => {
         this.onDismissModal();
-        window.location.hash = "users";
+        window.location.hash = this.state.isEdit ? "users" : "accounts";
     };
 
     onDismissModal = () => {
@@ -323,7 +326,18 @@ export class UserEditPage extends React.Component {
                             onChangeCallback={(e) =>
                                 this.handleChange(e, "phone")
                             }
+                            required={true}
                             description="Enter your phone number"
+                            validators={[
+                                {
+                                    validate: (num) => num != "",
+                                    message: "You must input a phone number",
+                                },
+                                {
+                                    validate: (num) => /^\d{10,}$/.test(num),
+                                    message: "Invalid phone number",
+                                },
+                            ]}
                         />
 
                         <h2 id="guardian">Is this user a guardian?</h2>
@@ -334,10 +348,9 @@ export class UserEditPage extends React.Component {
                         />
                         <span>Yes</span>
 
-                        {/*
-                        It doesn't look like there's anything in orion for these, so I left
-                        them out for now
-                        <InputText
+                        {
+                            //TODO: Add the following InputTexts when orion users have school/graduation year data.
+                            /*<InputText
                             label="School"
                             value={this.state.school}
                             onChangeCallback={(e) => this.handleChange(e, "school")}
@@ -350,7 +363,8 @@ export class UserEditPage extends React.Component {
                             onChangeCallback={(e) => this.handleChange(e, "gradYear")}
                             required={true}
                             description="Enter your graduation year"
-                        />*/}
+                        />*/
+                        }
                     </div>
                     {associatedAccount}
                 </div>
@@ -364,14 +378,19 @@ export class UserEditPage extends React.Component {
                 />
 
                 <div className="buttons">
-                    <button onClick={this.onClickCancel} className="btn-cancel">
-                        Cancel
-                    </button>
-                    {deleteButton}
-                    <div className="spacer"></div>
-                    <button onClick={this.onClickSave} className="btn-save">
-                        Save
-                    </button>
+                    <div id="buttons-left">
+                        <button
+                            onClick={this.onClickCancel}
+                            className="btn-cancel">
+                            Cancel
+                        </button>
+                        {deleteButton}
+                    </div>
+                    <div id="buttons-right">
+                        <button onClick={this.onClickSave} className="btn-save">
+                            Save
+                        </button>
+                    </div>
                 </div>
             </div>
         );

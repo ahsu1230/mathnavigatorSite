@@ -15,7 +15,10 @@ export class UserPage extends React.Component {
     };
 
     componentDidMount = () => {
-        this.searchUsers(this.state.searchQuery);
+        API.post("api/users/search", { query: "" }).then((res) => {
+            const users = res.data;
+            this.setState({ list: users });
+        });
     };
 
     searchUsers = debounce((query) => {
