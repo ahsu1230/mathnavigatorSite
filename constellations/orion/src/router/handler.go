@@ -119,8 +119,5 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserAfh.DELETE("/userafh/:id", controllers.DeleteUserAfh)
 	}
 
-	apiClassesBySemester := h.Engine.Group("api/classesbysemesters")
-	{
-		apiClassesBySemester.GET("/group", controllers.GetAllProgramsSemestersClasses)
-	}
+	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
 }

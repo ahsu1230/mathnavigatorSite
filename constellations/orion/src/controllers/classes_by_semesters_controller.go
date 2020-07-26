@@ -10,7 +10,6 @@ import (
 
 func GetAllProgramsSemestersClasses(c *gin.Context) {
 	var classSemesterJson domains.ProgramClassesBySemester
-	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch progrmas, semesters, classes from repo functions
 	publishedOnly := ParseParamPublishedOnly(c)
@@ -37,23 +36,24 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	// Semester to class list map (maps semesterId to Class object)
 	semesterClassMap := make(map[string][]domains.Class)
 
-	// loop over semesterIds
+	// Loop over semesterIds
 	for _, value := range semesterMap {
-		// create Semester Object
+		// Create Semester Object
 		semesterObj := value
 		var programClassStruct domains.ProgramClass
 		var programObj domains.Program
 
-		// Find classes that have the same semester Id and append to semesterClassMap
+		// Find classes that have the same semesterId and append to semesterClassMap
 		classSlice := make([]domains.Class, 0)
 		for i := 0; i < len(classes); i++ {
 			if classes[i].SemesterId == semesterObj.SemesterId {
 				classSlice = append(classSlice, classes[i])
 			}
 		}
-		semesterClassMap[semesterObj.SemesterId] = classSlice // list of classes in specific semester
+		// List of classes in specific semester
+		semesterClassMap[semesterObj.SemesterId] = classSlice
 
-		// create list of programIds in specific semester
+		// Create list of programIds in specific semester
 		var programList []string
 		for i := 0; i < len(classSlice); i++ {
 			if Find(programList, classSlice[i].ProgramId) != -1 {
@@ -63,7 +63,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 			}
 		}
 
-		// find all classes in each program
+		// Find all classes in each program
 		finalClassList := make([]domains.Class, 0)
 		listProgramClass := make([]domains.ProgramClass, 0)
 		for i := 0; i < len(programList); i++ {
@@ -72,24 +72,32 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 					finalClassList = append(finalClassList, classSlice[j])
 				}
 			}
-			programObj = programMap[programList[i]]
 
-			// make ProgramClass struct
+			// Check if programId exists inside programMap
+			if value, ok := programMap[programList[i]]; ok {
+				programObj = value
+			} else {
+				c.Error(err)
+				c.String(http.StatusInternalServerError, err.Error())
+			}
+
+			// Make ProgramClass struct
 			programClassStruct = updateProgramClass(programObj, finalClassList)
-			listProgramClass = append(listProgramClass, programClassStruct) // append to list of ProgramClasses
+			// Append to list of ProgramClasses
+			listProgramClass = append(listProgramClass, programClassStruct)
 			finalClassList = nil
 		}
 
-		// make ProgramClassesBySemester struct
+		// Make ProgramClassesBySemester struct
 		classSemesterJson = updateProgramClassesBySemester(value, listProgramClass)
 		c.BindJSON(&classSemesterJson)
-		listResults = append(listResults, classSemesterJson)
 	}
+
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
 	} else {
-		c.JSON(http.StatusOK, &listResults)
+		c.JSON(http.StatusOK, &classSemesterJson)
 	}
 	return
 }
