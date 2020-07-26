@@ -23,7 +23,7 @@ type User struct {
 	AccountId      uint         `json:"accountId" db:"account_id"`
 	Notes          NullString   `json:"notes"`
 	School         NullString   `json:"school" db:"school"`
-	GraduationYear NullUint     `json:"graduationYear db:"graduation_year"`
+	GraduationYear NullUint     `json:"graduationYear" db:"graduation_year"`
 }
 
 // Class Methods
