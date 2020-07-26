@@ -8,6 +8,7 @@ CREATE TABLE transactions
     payment_type  varchar(16)  not null,
     payment_notes text,
     account_id    int unsigned not null,
-    primary key (id),
-    foreign key (account_id) references accounts (id)
-)
+    PRIMARY KEY (id),
+    FOREIGN KEY (account_id) REFERENCES accounts (id)
+) AUTO_INCREMENT = 1
+DEFAULT CHARSET = UTF8MB4;

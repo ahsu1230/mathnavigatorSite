@@ -19,7 +19,7 @@ type transactionRepo struct {
 //Interface to implement
 type TransactionRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Transaction, error)
+	SelectByAccountId(uint) ([]domains.Transaction, error)
 	SelectById(uint) (domains.Transaction, error)
 	Insert(domains.Transaction) error
 	Update(uint, domains.Transaction) error
@@ -30,15 +30,15 @@ func (tr *transactionRepo) Initialize(db *sql.DB) {
 	tr.db = db
 }
 
-func (tr *transactionRepo) SelectAll() ([]domains.Transaction, error) {
+func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transaction, error) {
 	results := make([]domains.Transaction, 0)
 
-	stmt, err := tr.db.Prepare("SELECT * FROM transactions")
+	stmt, err := tr.db.Prepare("SELECT * FROM transactions WHERE account_id=?")
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
 		return nil, err
 	}
