@@ -122,7 +122,7 @@ class CheckboxInput extends React.Component {
     //planning to add a class name to the "selected" sessions so font color of session can be changed to turquoise
     onSelectSession = (title) => {
         let originalClassName = "sessions-list";
-        title.className = originalClassName + "active";
+        this.className = originalClassName + "active";
     };
 
     render() {
