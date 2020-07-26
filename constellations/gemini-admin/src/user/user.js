@@ -108,23 +108,39 @@ class UserRow extends React.Component {
 }
 
 class Dropdown extends React.Component {
+    handleClickOutside = (event) => {
+        if (
+            this.wrapperRef &&
+            !this.wrapperRef.contains(event.target) &&
+            this.props.id == this.props.currentDropdown
+        ) {
+            this.props.onClickCallback({ target: { id: this.props.id } });
+        }
+    };
+
+    componentDidMount() {
+        document.addEventListener("mousedown", this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("mousedown", this.handleClickOutside);
+    }
+
     render = () => {
         const editUrl = "/users/" + this.props.id + "/edit";
         const classUrl = "/users/" + this.props.id + "/class/edit";
         const afhUrl = "/users/" + this.props.id + "/afh/edit";
         return (
             <div
+                ref={(node) => (this.wrapperRef = node)}
                 className={
                     "dropdown " +
                     (this.props.id == this.props.currentDropdown
                         ? "dropdown-active"
                         : "")
-                }>
-                <img
-                    src={DotsVertical}
-                    onClick={this.props.onClickCallback}
-                    id={this.props.id}
-                />
+                }
+                onClick={this.props.onClickCallback}>
+                <img src={DotsVertical} id={this.props.id} />
                 <div
                     className={
                         this.props.id == this.props.currentDropdown
