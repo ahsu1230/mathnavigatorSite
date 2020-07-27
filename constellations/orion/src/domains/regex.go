@@ -7,6 +7,9 @@ const (
 	// Ensures at least one uppercase or lowercase letter
 	REGEX_LETTER = `[A-Za-z]`
 
+	// School names (alphabetic and some symbols)
+	REGEX_SCHOOLS = `[^a-zA-Z\s.-]`
+
 	// Ensures at least one number
 	REGEX_NUMBER = `[0-9]`
 

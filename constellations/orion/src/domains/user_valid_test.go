@@ -122,7 +122,7 @@ func TestValidSchool(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 	//Test valid school
-	user.School = domains.NewNullString("mbhs")
+	user.School = domains.NewNullString("Churchill H.S.")
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -131,6 +131,10 @@ func TestValidSchool(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 	user.School = domains.NewNullString("Montgomery Blair High school")
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	user.School = domains.NewNullString("Thomas-Jefferson H.S.")
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
