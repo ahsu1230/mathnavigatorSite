@@ -58,7 +58,7 @@ func (user *User) Validate() error {
 	}
 
 	// School validation
-	if matches, _ := regexp.MatchString(REGEX_SCHOOLS, school); matches && user.School.Valid {
+	if matches, _ := regexp.MatchString(REGEX_WORDS, school); matches && user.School.Valid {
 		return errors.New("school contains non alphabetic characters")
 	}
 

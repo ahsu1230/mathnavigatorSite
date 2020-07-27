@@ -126,10 +126,6 @@ func TestValidSchool(t *testing.T) {
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
-	user.School = domains.NewNullString("Winston churchill High school")
-	if err := user.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
 	user.School = domains.NewNullString("Montgomery Blair High school")
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
