@@ -7,7 +7,7 @@ const (
 	// Ensures at least one uppercase or lowercase letter
 	REGEX_LETTER = `[A-Za-z]`
 
-	// School names (alphabetic and some symbols)
+	// Finds characters that are not alphabetic, whitespace, a period, or a hyphen
 	REGEX_SCHOOLS = `[^a-zA-Z\s.-]`
 
 	// Ensures at least one number
