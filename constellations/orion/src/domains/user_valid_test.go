@@ -109,3 +109,66 @@ func TestValidPhone(t *testing.T) {
 	}
 
 }
+
+func TestValidSchool(t *testing.T) {
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: false,
+	}
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	//Test valid school
+	user.School = domains.NewNullString("Churchill H.S.")
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	user.School = domains.NewNullString("Montgomery Blair High school")
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	user.School = domains.NewNullString("Thomas-Jefferson H.S.")
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	//Test invalid school
+	user.School = domains.NewNullString("school12992")
+	if err := user.Validate(); err == nil {
+		t.Errorf("Check was incorrect, got: nil, expected: school contains non alphabetical characters")
+	}
+}
+
+func TestValidGradYear(t *testing.T) {
+	user := domains.User{
+		FirstName:  "John",
+		LastName:   "Smith",
+		Email:      "gmail@gmail.com",
+		Phone:      "555-555-0100",
+		IsGuardian: false,
+	}
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	//Test valid year
+	user.GraduationYear = domains.NewNullUint(2022)
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	user.GraduationYear = domains.NewNullUint(2018)
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	user.GraduationYear = domains.NewNullUint(2031)
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+	//Test invalid school
+	user.GraduationYear = domains.NewNullUint(1992)
+	if err := user.Validate(); err == nil {
+		t.Errorf("Check was incorrect, got: nil, expected: invalid graduation year")
+	}
+
+}

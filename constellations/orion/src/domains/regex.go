@@ -7,6 +7,9 @@ const (
 	// Ensures at least one uppercase or lowercase letter
 	REGEX_LETTER = `[A-Za-z]`
 
+	// Finds characters that are not alphabetic, whitespace, a period, or a hyphen
+	REGEX_WORDS = `[^a-zA-Z\s.-]`
+
 	// Ensures at least one number
 	REGEX_NUMBER = `[0-9]`
 
