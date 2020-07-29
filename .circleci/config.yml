@@ -63,9 +63,11 @@ jobs:
           name: Run Gemini-Admin Enzyme tests
           command: |
             cd constellations/gemini-admin
+            npm install
             npm run test
       - run:
           name: Run Gemini-User Enzyme tests
           command: |
             cd constellations/gemini-user
+            npm install
             npm run test
