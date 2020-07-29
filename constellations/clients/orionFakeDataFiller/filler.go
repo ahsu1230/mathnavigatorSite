@@ -166,6 +166,7 @@ func runFiller(hostAddress string) {
 		"house1",
 		"Thurs 1pm - 2pm",
 	)
+
 	createClass(
 		hostAddress,
 		"ap_calculus",
@@ -175,6 +176,7 @@ func runFiller(hostAddress string) {
 		"wchs",
 		"Tues 5pm - 7pm",
 	)
+
 	createClass(
 		hostAddress,
 		"ap_calculus",

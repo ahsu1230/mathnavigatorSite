@@ -37,6 +37,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 
 		listResults = append(listResults, programClassesBySemester)
 	}
+
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
