@@ -5,13 +5,14 @@ import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import API from "../api.js";
+import { getFullName } from "../utils/utils.js";
 
 export class UserAFHPage extends React.Component {
     state = {
         id: 0,
         user: {},
         userAFHs: [],
-        afhs: [],
+        otherAFHs: [],
         afhId: 0,
     };
 
@@ -25,49 +26,42 @@ export class UserAFHPage extends React.Component {
         const apiCalls = [
             API.get("api/users/user/" + id),
             API.get("api/userafhs/users/" + id),
+            API.get("api/askforhelp/all"),
         ];
 
         axios
             .all(apiCalls)
             .then(
                 axios.spread((...responses) => {
-                    let afhIds = [];
+                    let userAFHs = [];
+                    let otherAFHs = [];
+
+                    let afhIds = new Set();
                     responses[1].data.forEach((userAFH) => {
-                        afhIds.push(userAFH.afhId);
+                        afhIds.add(userAFH.afhId);
                     });
+
+                    // Separate afhs into selected and unselected
+                    responses[2].data.forEach((afh) => {
+                        if (afhIds.has(afh.id)) {
+                            userAFHs.push(afh);
+                        } else {
+                            otherAFHs.push(afh);
+                        }
+                    });
+                    userAFHs = _.sortBy(userAFHs, ["date"]);
+                    otherAFHs = _.sortBy(otherAFHs, ["date"]);
 
                     this.setState({
                         id: id,
                         user: responses[0].data,
+                        userAFHs: userAFHs,
+                        otherAFHs: otherAFHs,
+                        afhId: otherAFHs[0] ? otherAFHs[0].id : 0,
                     });
-                    this.fetchAFHs(afhIds);
                 })
             )
             .catch((err) => alert("Could not fetch user: " + err));
-    };
-
-    fetchAFHs = (afhIds) => {
-        let searchArray = new Set(afhIds);
-        API.get("api/askforhelp/all")
-            .then((res) => {
-                var userAFHs = [];
-                var afhs = [];
-                res.data.forEach((afh) => {
-                    if (searchArray.has(afh.id)) {
-                        userAFHs.push(afh);
-                    } else {
-                        afhs.push(afh);
-                    }
-                });
-
-                userAFHs = _.sortBy(userAFHs, ["date"]);
-                afhs = _.sortBy(afhs, ["date"]);
-                this.setState({
-                    userAFHs: userAFHs,
-                    afhs: afhs,
-                });
-            })
-            .catch((err) => alert("Could not fetch afhs: " + err));
     };
 
     onAFHChange = (e) => {
@@ -89,17 +83,47 @@ export class UserAFHPage extends React.Component {
             .catch((err) => alert("Could not schedule AFH: " + err));
     };
 
+    renderScheduleSection = () => {
+        const afhOptions = this.state.otherAFHs.map((afh, index) => {
+            return (
+                <option key={index} value={afh.id}>
+                    {moment(afh.date).format("l") +
+                        " " +
+                        afh.subject +
+                        " " +
+                        afh.timeString}
+                </option>
+            );
+        });
+
+        var schedule = (
+            <div>
+                <span>
+                    There are no AFH sessions to choose from. Please add one
+                </span>
+                <Link to="/afh/add"> here</Link>
+            </div>
+        );
+        if (this.state.otherAFHs.length != 0) {
+            schedule = (
+                <div>
+                    <p>Select a AFH session for user:</p>
+                    <select
+                        value={this.state.afhId}
+                        onChange={(e) => this.onAFHChange(e)}>
+                        {afhOptions}
+                    </select>
+
+                    <button onClick={this.onClickSchedule}>Schedule</button>
+                </div>
+            );
+        }
+        return schedule;
+    };
+
     render = () => {
         const user = this.state.user;
-
-        var fullName = user.firstName;
-        if (user.middleName) {
-            fullName += " " + user.middleName + " " + user.lastName;
-        } else {
-            fullName += " " + user.lastName;
-        }
-
-        const rows = this.state.userAFHs.map((afh, index) => {
+        const userAFHs = this.state.userAFHs.map((afh, index) => {
             const status = moment().isBefore(afh.date)
                 ? "Will Attend"
                 : "Attended";
@@ -115,42 +139,6 @@ export class UserAFHPage extends React.Component {
             );
         });
 
-        const afhOptions = this.state.afhs.map((afh, index) => {
-            return (
-                <option key={index} value={afh.id}>
-                    {moment(afh.date).format("l") +
-                        " " +
-                        afh.subject +
-                        " " +
-                        afh.timeString}
-                </option>
-            );
-        });
-
-        var schedule = (
-            <span>
-                There are no AFH sessions to choose from. Please add one{" "}
-                <Link to="/afh/add">here</Link>
-            </span>
-        );
-        if (this.state.afhs.length != 0) {
-            schedule = (
-                <div>
-                    <p>Select a AFH session for user:</p>
-                    <select
-                        value={this.state.afhId}
-                        onChange={(e) => this.onAFHChange(e)}>
-                        <option default hidden>
-                            Select an AFH session
-                        </option>
-                        {afhOptions}
-                    </select>
-
-                    <button onClick={this.onClickSchedule}>Schedule</button>
-                </div>
-            );
-        }
-
         return (
             <div id="view-user-afh">
                 <h2>
@@ -161,7 +149,7 @@ export class UserAFHPage extends React.Component {
 
                 <div>
                     <h2>User Information</h2>
-                    <p>{fullName}</p>
+                    <p>{getFullName(user)}</p>
                     <p>{user.email}</p>
                     <p>{user.phone}</p>
                 </div>
@@ -174,12 +162,12 @@ export class UserAFHPage extends React.Component {
                         <span className="column">Subject</span>
                         <span className="column status">Status</span>
                     </div>
-                    {rows}
+                    {userAFHs}
                 </div>
 
                 <div id="user-schedule">
                     <h2>Schedule AskForHelp for User</h2>
-                    {schedule}
+                    {this.renderScheduleSection()}
                 </div>
             </div>
         );

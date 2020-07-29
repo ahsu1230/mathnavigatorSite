@@ -5,6 +5,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { InputText } from "../utils/inputText.js";
+import { generatePassword } from "../utils/utils.js";
 import { setCurrentAccountId } from "../localStorage.js";
 
 export class AccountEditPage extends React.Component {
@@ -28,9 +29,10 @@ export class AccountEditPage extends React.Component {
     onClickSave = () => {
         let account = {
             primaryEmail: this.state.email,
-            password: "password", // Temporary
+            password: generatePassword(),
         };
 
+        // TODO: replace these calls with one endpoint
         API.post("api/accounts/create", account)
             .then(() => {
                 API.post("api/accounts/search", {

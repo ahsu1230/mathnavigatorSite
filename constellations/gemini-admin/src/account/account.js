@@ -1,6 +1,7 @@
 "use strict";
 require("./account.sass");
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import API, { executeApiCalls } from "../api.js";
 import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
@@ -41,8 +42,24 @@ export class AccountPage extends React.Component {
             errorType: "",
         });
         setCurrentAccountId(id);
-        this.fetchUserData(id);
-        this.fetchTransactionData(id);
+
+        const apiCalls = [
+            API.get("api/users/account/" + id),
+            API.get("api/transactions/account/" + id),
+        ];
+        axios
+            .all(apiCalls)
+            .then(
+                axios.spread((...responses) =>
+                    this.setState({
+                        users: responses[0].data,
+                        transactions: responses[1].data,
+                    })
+                )
+            )
+            .catch((err) =>
+                alert("Could not fetch users or transactions: " + err)
+            );
     };
 
     fetchDataError = (err) => {
@@ -51,29 +68,6 @@ export class AccountPage extends React.Component {
             transactions: [],
         });
         console.log("Could not fetch account: " + err.response.data);
-    };
-
-    fetchUserData = (id) => {
-        API.get("api/users/account/" + id)
-            .then((res) =>
-                this.setState({
-                    users: res.data,
-                })
-            )
-            .catch((err) => alert("Could not fetch users: " + err));
-    };
-
-    fetchTransactionData = (id) => {
-        API.get("api/transactions/all")
-            .then((res) => {
-                const transactions = res.data.filter(
-                    (transaction) => transaction.accountId == id
-                );
-                this.setState({
-                    transactions: transactions,
-                });
-            })
-            .catch((err) => alert("Could not fetch transactions: " + err));
     };
 
     handleChange = (event, value) => {
@@ -125,7 +119,7 @@ export class AccountPage extends React.Component {
         let failCallback = (err) =>
             alert("Could not delete account: " + err.response.data);
 
-        // Must delete users and transactions before deleting account
+        // TODO: the backend will eventually handle deleting all users, transactions, userAFHs, and userClasses
         this.state.users.forEach((user) =>
             apiCalls.push(API.delete("api/users/user/" + user.id))
         );
@@ -145,15 +139,29 @@ export class AccountPage extends React.Component {
         });
     };
 
-    render = () => {
-        const modalDiv = renderModal(
-            this.state.showDeleteModal,
-            this.onModalDeleteConfirm,
-            this.onModalDismiss
-        );
+    renderModal = (showDeleteModal, onModalDeleteConfirm, onModalDismiss) => {
+        let modalDiv;
+        let modalContent;
+        if (showDeleteModal) {
+            modalContent = (
+                <YesNoModal
+                    text={"Are you sure you want to delete?"}
+                    onAccept={onModalDeleteConfirm}
+                    onReject={onModalDismiss}
+                />
+            );
+            modalDiv = (
+                <Modal
+                    content={modalContent}
+                    show={showDeleteModal}
+                    onDismiss={onModalDismiss}
+                />
+            );
+        }
+        return modalDiv;
+    };
 
-        const errorType = this.state.errorType;
-        const errorValue = this.state.errorValue;
+    generateErrorMessage = (errorType, errorValue) => {
         var errorMessage = <div></div>;
         switch (errorType) {
             case "empty":
@@ -171,10 +179,8 @@ export class AccountPage extends React.Component {
                 errorMessage = (
                     <h4>
                         No account with primary email {errorValue} found. You
-                        may search for a user's email
-                        <Link className="button" to="/users">
-                            here
-                        </Link>
+                        may search for a user's email{" "}
+                        <Link to="/users">here</Link>
                     </h4>
                 );
                 break;
@@ -184,6 +190,21 @@ export class AccountPage extends React.Component {
             errorMessage = <h4>No {errorType} entered</h4>;
         }
 
+        return errorMessage;
+    };
+
+    render = () => {
+        const modalDiv = this.renderModal(
+            this.state.showDeleteModal,
+            this.onModalDeleteConfirm,
+            this.onModalDismiss
+        );
+
+        const errorMessage = this.generateErrorMessage(
+            this.state.errorType,
+            this.state.errorValue
+        );
+
         return (
             <div id="view-account">
                 {modalDiv}
@@ -191,49 +212,30 @@ export class AccountPage extends React.Component {
                     <h1>Search Accounts</h1>
                     <div className="container">
                         <div>
-                            <div className="search-input">
-                                <input
-                                    type="text"
-                                    placeholder="Search by Account ID"
-                                    onChange={(e) =>
-                                        this.handleChange(e, "searchId")
-                                    }
-                                />
-                                <button
-                                    className="btn-search"
-                                    onClick={() =>
-                                        this.onClickSearchById(
-                                            this.state.searchId
-                                        )
-                                    }>
-                                    Search
-                                </button>
-                            </div>
-
-                            <div className="search-input">
-                                <input
-                                    type="text"
-                                    placeholder="Search by Primary Email"
-                                    onChange={(e) =>
-                                        this.handleChange(e, "searchEmail")
-                                    }
-                                />
-                                <button
-                                    className="btn-search"
-                                    onClick={() =>
-                                        this.onClickSearchByEmail(
-                                            this.state.searchEmail
-                                        )
-                                    }>
-                                    Search
-                                </button>
-                            </div>
+                            <AccountSearch
+                                placeholder="Search by Account ID"
+                                changeCallback={(e) =>
+                                    this.handleChange(e, "searchId")
+                                }
+                                searchCallback={() =>
+                                    this.onClickSearchById(this.state.searchId)
+                                }
+                            />
+                            <AccountSearch
+                                placeholder="Search by Primary Email"
+                                changeCallback={(e) =>
+                                    this.handleChange(e, "searchEmail")
+                                }
+                                searchCallback={() =>
+                                    this.onClickSearchByEmail(
+                                        this.state.searchEmail
+                                    )
+                                }
+                            />
                         </div>
 
                         <button>
-                            <Link className="button" to="/accounts/add">
-                                Create New Account
-                            </Link>
+                            <Link to="/accounts/add">Create New Account</Link>
                         </button>
                     </div>
 
@@ -258,26 +260,21 @@ export class AccountPage extends React.Component {
     };
 }
 
-function renderModal(showDeleteModal, onModalDeleteConfirm, onModalDismiss) {
-    let modalDiv;
-    let modalContent;
-    let showModal;
-    if (showDeleteModal) {
-        showModal = showDeleteModal;
-        modalContent = (
-            <YesNoModal
-                text={"Are you sure you want to delete?"}
-                onAccept={onModalDeleteConfirm}
-                onReject={onModalDismiss}
-            />
+class AccountSearch extends React.Component {
+    render = () => {
+        return (
+            <div className="search-input">
+                <input
+                    type="text"
+                    placeholder={this.props.placeholder}
+                    onChange={this.props.changeCallback}
+                />
+                <button
+                    className="btn-search"
+                    onClick={this.props.searchCallback}>
+                    Search
+                </button>
+            </div>
         );
-        modalDiv = (
-            <Modal
-                content={modalContent}
-                show={showModal}
-                onDismiss={onModalDismiss}
-            />
-        );
-    }
-    return modalDiv;
+    };
 }

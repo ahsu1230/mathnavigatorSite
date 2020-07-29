@@ -2,14 +2,10 @@
 require("./accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
+import { getFullName } from "../utils/utils.js";
 
 export class AccountInfo extends React.Component {
     formatCurrency = (amount) => {
-        // if (amount < 0) {
-        //     return "-$" + (-amount).toString();
-        // } else {
-        //     return "$" + amount;
-        // }
         return new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -24,23 +20,14 @@ export class AccountInfo extends React.Component {
         const userAddLink = "/users/" + this.props.id + "/add";
 
         const userRows = users.map((user, index) => {
-            var name = user.firstName + " ";
-            if (user.middleName) {
-                name += user.middleName + " " + user.lastName;
-            } else {
-                name += user.lastName;
-            }
+            var status = user.isGuardian ? "(guardian" : "(student";
+            status += user.email == email ? ", primary contact)" : ")";
+
             return (
                 <div className="row" key={index}>
-                    <span className="column">{name}</span>
+                    <span className="column">{getFullName(user)}</span>
                     <span className="column">{user.email}</span>
-                    <span className="column status">
-                        {user.isGuardian
-                            ? email == user.email
-                                ? "(guardian, primary contact)"
-                                : "(guardian)"
-                            : "(student)"}
-                    </span>
+                    <span className="column status">{status}</span>
                 </div>
             );
         });
