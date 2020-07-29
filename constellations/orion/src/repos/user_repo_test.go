@@ -152,6 +152,8 @@ func TestInsertUser(t *testing.T) {
 			false,
 			2,
 			domains.NewNullString(""),
+			domains.NewNullString("school1"),
+			domains.NewNullUint(1213),
 		).WillReturnResult(result)
 	user := getUser()
 	err := repo.Insert(user)
@@ -186,21 +188,25 @@ func TestUpdateUser(t *testing.T) {
 			true,
 			0,
 			domains.NewNullString("notes"),
+			domains.NewNullString("school1"),
+			domains.NewNullUint(1213),
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
-		Id:         1,
-		CreatedAt:  testUtils.TimeNow,
-		UpdatedAt:  testUtils.TimeNow,
-		DeletedAt:  sql.NullTime{},
-		FirstName:  "Bob",
-		LastName:   "Joe",
-		MiddleName: domains.NewNullString("Oliver"),
-		Email:      "bob_joe@example.com",
-		Phone:      "555-555-0199",
-		IsGuardian: true,
-		AccountId:  0,
-		Notes:      domains.NewNullString("notes"),
+		Id:             1,
+		CreatedAt:      testUtils.TimeNow,
+		UpdatedAt:      testUtils.TimeNow,
+		DeletedAt:      sql.NullTime{},
+		FirstName:      "Bob",
+		LastName:       "Joe",
+		MiddleName:     domains.NewNullString("Oliver"),
+		Email:          "bob_joe@example.com",
+		Phone:          "555-555-0199",
+		IsGuardian:     true,
+		AccountId:      0,
+		Notes:          domains.NewNullString("notes"),
+		School:         domains.NewNullString("school1"),
+		GraduationYear: domains.NewNullUint(1213),
 	}
 	err := repo.Update(1, user)
 	if err != nil {
@@ -254,6 +260,8 @@ func getUserRows() *sqlmock.Rows {
 		"IsGuardian",
 		"AccountId",
 		"Notes",
+		"School",
+		"GraduationYear",
 	}).AddRow(
 		1,
 		testUtils.TimeNow,
@@ -267,22 +275,26 @@ func getUserRows() *sqlmock.Rows {
 		false,
 		2,
 		domains.NewNullString(""),
+		domains.NewNullString("school1"),
+		domains.NewNullUint(1213),
 	)
 }
 
 func getUser() domains.User {
 	return domains.User{
-		Id:         1,
-		CreatedAt:  testUtils.TimeNow,
-		UpdatedAt:  testUtils.TimeNow,
-		DeletedAt:  sql.NullTime{},
-		FirstName:  "John",
-		LastName:   "Smith",
-		MiddleName: domains.NewNullString(""),
-		Email:      "john_smith@example.com",
-		Phone:      "555-555-0100",
-		IsGuardian: false,
-		AccountId:  2,
-		Notes:      domains.NewNullString(""),
+		Id:             1,
+		CreatedAt:      testUtils.TimeNow,
+		UpdatedAt:      testUtils.TimeNow,
+		DeletedAt:      sql.NullTime{},
+		FirstName:      "John",
+		LastName:       "Smith",
+		MiddleName:     domains.NewNullString(""),
+		Email:          "john_smith@example.com",
+		Phone:          "555-555-0100",
+		IsGuardian:     false,
+		AccountId:      2,
+		Notes:          domains.NewNullString(""),
+		School:         domains.NewNullString("school1"),
+		GraduationYear: domains.NewNullUint(1213),
 	}
 }
