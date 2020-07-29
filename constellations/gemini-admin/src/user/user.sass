@@ -67,8 +67,15 @@
         img
             padding: $spacing2x
         
-        .hide
+        .dropdown-content
             display: none
+    
+    .dropdown:hover
+        background-color: $colorWhiteLight
+        cursor: pointer
+        
+    .dropdown-active
+        background-color: $colorWhiteLight
         
         .dropdown-content
             position: absolute
@@ -92,10 +99,3 @@
                     background-color: $colorTurquoise
                     color: $colorWhite
                     text-decoration: none
-    
-    .dropdown:hover
-        background-color: $colorWhiteLight
-        cursor: pointer
-        
-    .dropdown-active
-        background-color: $colorWhiteLight

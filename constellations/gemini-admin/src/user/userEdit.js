@@ -42,67 +42,63 @@ export class UserEditPage extends React.Component {
         const userId = this.props.id;
 
         if (userId) {
-            API.get("api/users/user/" + userId).then((res) => {
-                const user = res.data;
-                this.setState({
-                    isEdit: true,
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    middleName: user.middleName || "",
-                    email: user.email,
-                    phone: user.phone,
-                    isGuardian: user.isGuardian,
-                    accountId: user.accountId,
-                    notes: user.notes || "",
+            API.get("api/users/user/" + userId)
+                .then((res) => {
+                    const user = res.data;
+                    this.setState({
+                        isEdit: true,
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        middleName: user.middleName || "",
+                        email: user.email,
+                        phone: user.phone,
+                        isGuardian: user.isGuardian,
+                        accountId: user.accountId,
+                        notes: user.notes || "",
 
-                    originalEmail: user.email,
+                        originalEmail: user.email,
+                    });
+                    this.fetchAccountData(user.accountId);
+                })
+                .catch((err) => {
+                    window.alert("Could not fetch user: " + err.response.data);
                 });
-                API.get("api/users/account/" + user.accountId)
-                    .then((res) => {
-                        this.setState({
-                            allUsers: res.data,
-                        });
-                    })
-                    .catch((err) => {
-                        window.alert(
-                            "Could not fetch users: " + err.response.data
-                        );
-                    });
-                API.get("api/accounts/account/" + user.accountId)
-                    .then((res) => {
-                        this.setState({
-                            primaryEmail: res.data.primaryEmail,
-                        });
-                    })
-                    .catch((err) => {
-                        window.alert(
-                            "Could not fetch account: " + err.response.data
-                        );
-                    });
-            });
         }
 
         const accountId = this.props.accountId;
         if (accountId) {
             this.setState({ accountId: accountId });
-            API.get("api/users/account/" + accountId)
-                .then((res) => {
-                    this.setState({
-                        allUsers: res.data,
-                    });
-                })
-                .catch((err) => {
-                    window.alert("Could not fetch users: " + err.response.data);
-                });
+            this.fetchAccountData(accountId);
         }
+    };
+
+    fetchAccountData = (id) => {
+        API.get("api/users/account/" + id)
+            .then((res) => {
+                this.setState({
+                    allUsers: res.data,
+                });
+            })
+            .catch((err) => {
+                window.alert("Could not fetch users: " + err.response.data);
+            });
+        API.get("api/accounts/account/" + id)
+            .then((res) => {
+                this.setState({
+                    primaryEmail: res.data.primaryEmail,
+                });
+            })
+            .catch((err) => {
+                window.alert("Could not fetch account: " + err.response.data);
+            });
     };
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
     };
 
-    onClickCancel = () => {
+    returnToPage = () => {
         window.location.hash = this.state.isEdit ? "users" : "accounts";
     };
 
@@ -138,17 +134,7 @@ export class UserEditPage extends React.Component {
 
     onConfirmDelete = () => {
         const id = this.state.id;
-        API.delete("api/users/user/" + id).then(
-            () =>
-                (window.location.hash = this.state.isEdit
-                    ? "users"
-                    : "accounts")
-        );
-    };
-
-    onSavedOk = () => {
-        this.onDismissModal();
-        window.location.hash = this.state.isEdit ? "users" : "accounts";
+        API.delete("api/users/user/" + id).then(() => this.returnToPage());
     };
 
     onDismissModal = () => {
@@ -166,20 +152,7 @@ export class UserEditPage extends React.Component {
         setCurrentAccountId(this.state.accountId);
     };
 
-    render = () => {
-        let deleteButton = <div></div>;
-        if (
-            this.state.isEdit &&
-            this.state.originalEmail != this.state.primaryEmail
-        ) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete User From Account
-                </button>
-            );
-        }
-
-        let associatedAccount = <div></div>;
+    renderAssociatedAccount = () => {
         if (this.state.accountId != 0) {
             const otherUsers = this.state.allUsers.filter(
                 (item) => item.id != this.state.id
@@ -201,7 +174,7 @@ export class UserEditPage extends React.Component {
                 otherUsersHeader = <h3>Other Users in Account</h3>;
             }
 
-            associatedAccount = (
+            return (
                 <div id="associated-account">
                     <h2>Associated Account</h2>
                     <div className="account-details-wrapper">
@@ -217,12 +190,40 @@ export class UserEditPage extends React.Component {
                 </div>
             );
         }
+    };
 
-        let modalDiv;
+    renderButtons = () => {
+        let deleteButton;
+        if (
+            this.state.isEdit &&
+            this.state.originalEmail != this.state.primaryEmail
+        ) {
+            deleteButton = (
+                <button className="btn-delete" onClick={this.onClickDelete}>
+                    Delete User From Account
+                </button>
+            );
+        }
+        return (
+            <div className="buttons">
+                <div id="buttons-left">
+                    <button onClick={this.returnToPage} className="btn-cancel">
+                        Cancel
+                    </button>
+                    {deleteButton}
+                </div>
+                <div id="buttons-right">
+                    <button onClick={this.onClickSave} className="btn-save">
+                        Save
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    renderModal = () => {
         let modalContent;
-        let showModal;
         if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
             modalContent = (
                 <YesNoModal
                     text={"Are you sure you want to delete?"}
@@ -232,27 +233,32 @@ export class UserEditPage extends React.Component {
             );
         }
         if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
             modalContent = (
                 <OkayModal
                     text={"User information saved!"}
-                    onOkay={this.onSavedOk}
+                    onOkay={this.returnToPage}
                 />
             );
         }
         if (modalContent) {
-            modalDiv = (
+            return (
                 <Modal
                     content={modalContent}
-                    show={showModal}
+                    show={true}
                     onDismiss={this.onDismissModal}
                 />
             );
         }
+    };
+
+    render = () => {
+        let modal = this.renderModal();
+        let associatedAccount = this.renderAssociatedAccount();
+        let buttonSection = this.renderButtons();
 
         return (
             <div id="view-user-edit">
-                {modalDiv}
+                {modal}
                 <h1>{this.state.isEdit ? "Edit" : "Add"} User</h1>
                 <div id="column-container">
                     <div id="left-column">
@@ -264,12 +270,7 @@ export class UserEditPage extends React.Component {
                             }
                             required={true}
                             description="Enter your first name"
-                            validators={[
-                                {
-                                    validate: (name) => name != "",
-                                    message: "You must input a name",
-                                },
-                            ]}
+                            validators={[emptyValidator("name")]}
                         />
 
                         <InputText
@@ -278,7 +279,7 @@ export class UserEditPage extends React.Component {
                             onChangeCallback={(e) =>
                                 this.handleChange(e, "middleName")
                             }
-                            description="Enter your middle name"
+                            description="Enter your middle name if applicable"
                         />
 
                         <InputText
@@ -289,12 +290,7 @@ export class UserEditPage extends React.Component {
                             }
                             required={true}
                             description="Enter your last name"
-                            validators={[
-                                {
-                                    validate: (name) => name != "",
-                                    message: "You must input a name",
-                                },
-                            ]}
+                            validators={[emptyValidator("name")]}
                         />
 
                         <InputText
@@ -306,10 +302,7 @@ export class UserEditPage extends React.Component {
                             required={true}
                             description="Enter your email address"
                             validators={[
-                                {
-                                    validate: (email) => email != "",
-                                    message: "You must input an email",
-                                },
+                                emptyValidator("email"),
                                 {
                                     validate: (email) =>
                                         /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+/.test(
@@ -329,12 +322,12 @@ export class UserEditPage extends React.Component {
                             required={true}
                             description="Enter your phone number"
                             validators={[
+                                emptyValidator("phone number"),
                                 {
-                                    validate: (num) => num != "",
-                                    message: "You must input a phone number",
-                                },
-                                {
-                                    validate: (num) => /^\d{10,}$/.test(num),
+                                    validate: (num) =>
+                                        /^\d{10}|\d{3}[ -]\d{3}[ -]\d{4}$/.test(
+                                            num
+                                        ),
                                     message: "Invalid phone number",
                                 },
                             ]}
@@ -377,22 +370,15 @@ export class UserEditPage extends React.Component {
                     description="Add any notes"
                 />
 
-                <div className="buttons">
-                    <div id="buttons-left">
-                        <button
-                            onClick={this.onClickCancel}
-                            className="btn-cancel">
-                            Cancel
-                        </button>
-                        {deleteButton}
-                    </div>
-                    <div id="buttons-right">
-                        <button onClick={this.onClickSave} className="btn-save">
-                            Save
-                        </button>
-                    </div>
-                </div>
+                {buttonSection}
             </div>
         );
+    };
+}
+
+function emptyValidator(label) {
+    return {
+        validate: (x) => x != "",
+        message: "You must input a " + label,
     };
 }

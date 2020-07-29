@@ -15,10 +15,12 @@ export class UserPage extends React.Component {
     };
 
     componentDidMount = () => {
-        API.post("api/users/search", { query: "" }).then((res) => {
-            const users = res.data;
-            this.setState({ list: users });
-        });
+        API.post("api/users/search", { query: this.state.searchQuery }).then(
+            (res) => {
+                const users = res.data;
+                this.setState({ list: users });
+            }
+        );
     };
 
     searchUsers = debounce((query) => {
@@ -37,11 +39,11 @@ export class UserPage extends React.Component {
         });
     };
 
-    onClickDropdown = (event) => {
-        if (event.target.id == this.state.currentDropdown) {
+    onClickDropdown = (id) => {
+        if (id == this.state.currentDropdown) {
             this.setState({ currentDropdown: -1 });
         } else {
-            this.setState({ currentDropdown: event.target.id });
+            this.setState({ currentDropdown: id });
         }
     };
 
@@ -117,7 +119,7 @@ class Dropdown extends React.Component {
             !this.wrapperRef.contains(event.target) &&
             this.props.id == this.props.currentDropdown
         ) {
-            this.props.onClickCallback({ target: { id: this.props.id } });
+            this.props.onClickCallback(this.props.id);
         }
     };
 
@@ -142,14 +144,9 @@ class Dropdown extends React.Component {
                         ? "dropdown-active"
                         : "")
                 }
-                onClick={this.props.onClickCallback}>
-                <img src={DotsVertical} id={this.props.id} />
-                <div
-                    className={
-                        this.props.id == this.props.currentDropdown
-                            ? "dropdown-content"
-                            : "hide"
-                    }>
+                onClick={() => this.props.onClickCallback(this.props.id)}>
+                <img src={DotsVertical} />
+                <div className="dropdown-content">
                     <Link to={editUrl}>Edit</Link>
                     <Link to={classUrl}>Add Class</Link>
                     <Link to={afhUrl}>Add AskForHelp</Link>
