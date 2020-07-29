@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -9,7 +10,6 @@ import (
 )
 
 func GetAllProgramsSemestersClasses(c *gin.Context) {
-	var classSemester domains.ProgramClassesBySemester
 	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch progrmas, semesters, classes from repo functions
@@ -20,78 +20,22 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
 
 	// Convert lists into maps
-	programMap := make(map[string]domains.Program)
-	semesterMap := make(map[string]domains.Semester)
-	classMap := make(map[string]domains.Class)
-
-	for i := 0; i < len(programs); i++ {
-		programMap[programs[i].ProgramId] = programs[i]
-	}
-	for i := 0; i < len(semesters); i++ {
-		semesterMap[semesters[i].SemesterId] = semesters[i]
-	}
-	for i := 0; i < len(classes); i++ {
-		classMap[classes[i].ClassId] = classes[i]
-	}
-
-	// Semester to class list map (maps semesterId to Class object)
-	semesterClassMap := make(map[string][]domains.Class)
+	programMap := createProgramMap(programs)
 
 	// Loop over semesterIds
 	for i := 0; i < len(semesters); i++ {
 		// Create Semester Object
 		semesterObj := semesters[i]
-		var programClassStruct domains.ProgramClass
-		var programObj domains.Program
 
-		// Find classes that have the same semesterId and append to semesterClassMap
-		classSlice := make([]domains.Class, 0)
-		for i := 0; i < len(classes); i++ {
-			if classes[i].SemesterId == semesterObj.SemesterId {
-				classSlice = append(classSlice, classes[i])
-			}
-		}
-		// List of classes in specific semester
-		semesterClassMap[semesterObj.SemesterId] = classSlice
-
-		// Create list of programIds in specific semester
-		var programList []string
-		for i := 0; i < len(classSlice); i++ {
-			if Find(programList, classSlice[i].ProgramId) != -1 {
-				continue
-			} else {
-				programList = append(programList, classSlice[i].ProgramId)
-			}
-		}
-
-		// Find all classes in each program
-		finalClassList := make([]domains.Class, 0)
-		listProgramClass := make([]domains.ProgramClass, 0)
-		for i := 0; i < len(programList); i++ {
-			for j := 0; j < len(classSlice); j++ {
-				if programList[i] == classSlice[j].ProgramId {
-					finalClassList = append(finalClassList, classSlice[j])
-				}
-			}
-
-			// Check if programId exists inside programMap
-			if value, ok := programMap[programList[i]]; ok {
-				programObj = value
-			} else {
-				c.Error(err)
-				c.String(http.StatusInternalServerError, err.Error())
-			}
-
-			// Make ProgramClass struct
-			programClassStruct = updateProgramClass(programObj, finalClassList)
-			// Append to list of ProgramClasses
-			listProgramClass = append(listProgramClass, programClassStruct)
-			finalClassList = nil
-		}
+		programClasses := createProgramClassesForSemester(c, semesters[i].SemesterId, programs, classes, programMap)
 
 		// Make ProgramClassesBySemester struct
-		classSemester = updateProgramClassesBySemester(semesters[i], listProgramClass)
-		listResults = append(listResults, classSemester)
+		programClassesBySemester := domains.ProgramClassesBySemester{
+			Semester:       semesterObj,
+			ProgramClasses: programClasses,
+		}
+
+		listResults = append(listResults, programClassesBySemester)
 	}
 	if err != nil {
 		c.Error(err)
@@ -101,17 +45,57 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	}
 }
 
+func createProgramClassesForSemester(c *gin.Context, semesterId string, programs []domains.Program, classes []domains.Class, programMap map[string]domains.Program) []domains.ProgramClass {
+	var programClasses []domains.ProgramClass
+	// Create a list of all classes in one semester classSlice
+	classSlice := make([]domains.Class, 0)
+	for i := 0; i < len(classes); i++ {
+		if classes[i].SemesterId == semesterId {
+			classSlice = append(classSlice, classes[i])
+		}
+	}
+
+	// Create map mapping programId to list of classes programClassMap
+	programClassMap := make(map[string][]domains.Class)
+
+	// For each class, get programId and put into programClassMap
+	for i := 0; i < len(classSlice); i++ {
+		programId := classSlice[i].ProgramId
+		if _, ok := programMap[programId]; !ok {
+			err := errors.New("programId not found in list of programs")
+			c.Error(err)
+			c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		if _, ok := programClassMap[programId]; ok {
+			programClassMap[programId] = append(programClassMap[programId], classSlice[i])
+		} else {
+			programClassMap[programId] = []domains.Class{classSlice[i]}
+		}
+	}
+
+	// Account for programs that are in map but have no classes
+	for key, _ := range programMap {
+		if _, ok := programClassMap[key]; ok {
+			continue
+		} else {
+			programClassMap[key] = []domains.Class{}
+		}
+	}
+
+	// Create list of ProgramClass
+	for i := 0; i < len(programs); i++ {
+		programId := programs[i].ProgramId
+		programClasses = append(programClasses, updateProgramClass(programs[i], programClassMap[programId]))
+	}
+
+	return programClasses
+}
+
 func updateProgramClass(programObj domains.Program, classes []domains.Class) domains.ProgramClass {
 	return domains.ProgramClass{
 		ProgramObj: programObj,
 		Classes:    classes,
-	}
-}
-
-func updateProgramClassesBySemester(semester domains.Semester, programClasses []domains.ProgramClass) domains.ProgramClassesBySemester {
-	return domains.ProgramClassesBySemester{
-		Semester:       semester,
-		ProgramClasses: programClasses,
 	}
 }
 
@@ -122,4 +106,12 @@ func Find(slice []string, val string) int {
 		}
 	}
 	return -1
+}
+
+func createProgramMap(programs []domains.Program) map[string]domains.Program {
+	programMap := make(map[string]domains.Program)
+	for i := 0; i < len(programs); i++ {
+		programMap[programs[i].ProgramId] = programs[i]
+	}
+	return programMap
 }

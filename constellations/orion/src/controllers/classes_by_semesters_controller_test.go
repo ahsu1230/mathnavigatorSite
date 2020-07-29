@@ -103,7 +103,7 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	assert.EqualValues(t, "program2", results[1].ProgramClasses[1].ProgramObj.ProgramId)
 }
 
-func GetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
+func TestGetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
 	// Mock 1 semester, 2 programs, 1 class, where one program has no class
 	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return createMockPrograms(1, 2), nil
