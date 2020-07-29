@@ -7,73 +7,27 @@ import { Link } from "react-router-dom";
 export class LocationPage extends React.Component {
     state = {
         list: [],
-        numUnpublished: 0,
-        numSelected: 0,
     };
-
     componentDidMount() {
         API.get("api/locations/all").then((res) => {
             const locations = res.data;
             this.setState({ list: locations });
         });
     }
-
-    onCheckRow() {
-        const elements = document.getElementsByName("unpublished") || [];
-        let numChecked = 0;
-        for (let i = 0; i < elements.length; i++) {
-            if (elements[i].checked) {
-                numChecked++;
-            }
-        }
-        this.setState({ numSelected: numChecked });
-    }
-
-    onClickSelectAll() {
-        var items = document.getElementsByName("unpublished");
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].type == "checkbox") {
-                items[i].checked = true;
-            }
-        }
-        this.setState({ numSelected: items.length });
-    }
-
-    onClickPublish() {
-        console.log("clicked publish");
-    }
-
     render() {
         const location = this.state.list.map((location, index) => {
-            return (
-                <LocationRow
-                    key={index}
-                    location={location}
-                    onCheckRow={this.onCheckRow}
-                />
-            );
+            return <LocationRow key={index} location={location} />;
         });
         const numLocations = location.length;
         return (
             <div id="view-location">
                 <div>
                     <h1>All Locations ({numLocations})</h1>
-                    <p>
-                        You have {this.state.numUnpublished} unpublished items.{" "}
-                        <br />
-                        You have selected {this.state.numSelected} items to
-                        publish.
-                    </p>
                 </div>
                 <ul id="list-heading">
-                    <button
-                        className="li-small"
-                        onClick={this.onClickSelectAll}>
-                        Select All
-                    </button>
                     <li className="li-med">Location ID</li>
                     <li className="li-large">Address</li>
-                    <li className="li-large">Room</li>
+                    <li className="li-small">Room</li>
                 </ul>
                 <ul>{location}</ul>
                 <div id="list-buttons">
@@ -82,9 +36,6 @@ export class LocationPage extends React.Component {
                             Add Location
                         </Link>
                     </button>
-                    <button id="publish" onClick={this.onClickPublish}>
-                        Publish
-                    </button>
                 </div>
             </div>
         );
@@ -92,22 +43,6 @@ export class LocationPage extends React.Component {
 }
 
 class LocationRow extends React.Component {
-    renderCheckbox(isUnpublished) {
-        let checkbox = <div> </div>;
-        if (isUnpublished) {
-            return (checkbox = (
-                <input
-                    className="li-small"
-                    type="checkbox"
-                    name="unpublished"
-                    onClick={this.props.onCheckRow}
-                />
-            ));
-        } else {
-            return (checkbox = <div className="li-small"></div>);
-        }
-    }
-
     render() {
         const locationId = this.props.location.locationId;
         const address1 = this.props.location.street;
@@ -119,10 +54,8 @@ class LocationRow extends React.Component {
             this.props.location.zipcode;
         const room = this.props.location.room;
         const url = "/locations/" + locationId + "/edit";
-        let checkbox = this.renderCheckbox(true);
         return (
             <ul id="location-row">
-                {checkbox}
                 <li className="li-med">{locationId}</li>
                 <li className="li-large">
                     <div> {address1} </div>

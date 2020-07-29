@@ -5,6 +5,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
 
 export class LocationEditPage extends React.Component {
     state = {
@@ -116,35 +117,75 @@ export class LocationEditPage extends React.Component {
             <div id="view-location-edit">
                 {modalDiv}
                 <h2>{title}</h2>
-                <h4>Location ID</h4>
-                <input
+                <InputText
+                    description="Location ID"
+                    required={true}
                     value={this.state.inputlocationId}
-                    onChange={(e) => this.handleChange(e, "inputlocationId")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputlocationId")
+                    }
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a location ID",
+                        },
+                    ]}
                 />
-                <h4>Street</h4>
-                <input
+                <InputText
+                    description="Street  (E.g. 1234 Gains Rd, 5432 Abc Drive W)"
+                    required={true}
                     value={this.state.inputStreet}
-                    onChange={(e) => this.handleChange(e, "inputStreet")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputStreet")
+                    }
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a street",
+                        },
+                    ]}
                 />
-                <h4>City</h4>
-                <input
+                <InputText
+                    description="City  (E.g. Potomac)"
+                    required={true}
                     value={this.state.inputCity}
-                    onChange={(e) => this.handleChange(e, "inputCity")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputCity")}
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a city",
+                        },
+                    ]}
                 />
-                <h4>State</h4>
-                <input
+                <InputText
+                    description="State  (E.g. MD)"
+                    required={true}
                     value={this.state.inputState}
-                    onChange={(e) => this.handleChange(e, "inputState")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputState")}
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a state",
+                        },
+                    ]}
                 />
-                <h4>Zipcode</h4>
-                <input
+                <InputText
+                    description="Zipcode"
+                    required={true}
                     value={this.state.inputZip}
-                    onChange={(e) => this.handleChange(e, "inputZip")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputZip")}
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a zipcode",
+                        },
+                    ]}
                 />
-                <h4>Room</h4>
-                <input
+                <InputText
+                    description="Room"
+                    required={false}
                     value={this.state.inputRoom}
-                    onChange={(e) => this.handleChange(e, "inputRoom")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputRoom")}
                 />
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
