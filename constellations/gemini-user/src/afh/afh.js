@@ -31,30 +31,14 @@ export class AFHPage extends React.Component {
         );
 
         let showSessions = currentSub.map((row, index) => {
-            let sessionDate = moment(row.date).format("M/D/YYYY dddd");
-            return (
-                <div
-                    className={
-                        this.state.isActive == "true"
-                            ? "sessions-list-active"
-                            : "sessions-list"
-                    }
-                    key={index}>
-                    <div className="sessions-checkbox">
-                        <CheckboxInput
-                            key={index}
-                            row={row}
-                            onChangeCheckbox={this.onChangeCheckbox}
-                        />
-                    </div>
-
-                    <div className="session-details">
-                        {sessionDate} {row.timeString} <br />
-                        {row.title} {row.notes} <br /> {row.locationId}
-                    </div>
-                </div>
-            );
+            return <AfhSessionRow key={index} row={row} />;
         });
+
+        const subjectDisplayNames = {
+            math: "Math",
+            english: "English",
+            computer: "Computer Programming",
+        };
 
         return (
             <div id="view-afh">
@@ -68,52 +52,12 @@ export class AFHPage extends React.Component {
 
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div className="tab">
-                    <button
-                        className={
-                            this.state.currentTab == "Math" ? "active" : ""
-                        }
-                        onClick={() => this.openSubject("Math")}>
-                        Math
-                    </button>
-                    <button
-                        className={
-                            this.state.currentTab == "English" ? "active" : ""
-                        }
-                        onClick={() => this.openSubject("English")}>
-                        English
-                    </button>
-                    <button
-                        className={
-                            this.state.currentTab == "Computer Programming"
-                                ? "active"
-                                : ""
-                        }
-                        onClick={() =>
-                            this.openSubject("Computer Programming")
-                        }>
-                        Computer Programming
-                    </button>
+                    <TabButton currentTab={this.state.currentTab} />
                 </div>
 
                 <div
                     className={
-                        this.state.currentTab == "Math" ? "showTab" : "hide"
-                    }>
-                    {showSessions}
-                </div>
-
-                <div
-                    className={
-                        this.state.currentTab == "English" ? "showTab" : "hide"
-                    }>
-                    {showSessions}
-                </div>
-
-                <div
-                    className={
-                        this.state.currentTab == "Computer Programming"
-                            ? "showTab"
-                            : "hide"
+                        this.state.currentTab == currentSub ? "showTab" : "hide"
                     }>
                     {showSessions}
                 </div>
@@ -122,31 +66,73 @@ export class AFHPage extends React.Component {
     }
 }
 
-class CheckboxInput extends React.Component {
-    state = {
-        isActive: "false",
-    };
-    selectCheckbox = (e) => {
-        return <input className="select" type="checkbox" />;
-    };
+class TabButton extends React.Component {
+    render() {
+        let currentTab = this.props.currentTab;
 
-    onSelectSession = (e) => {
-        if (this.state.isActive == "false") {
+        return (
+            <button
+                className={currentTab == "Math" ? "active" : ""}
+                onClick={() => this.openSubject("Math")}>
+                Math
+            </button>
+        );
+    }
+}
+
+class AfhSessionRow extends React.Component {
+    state = {
+        isActive: false,
+    };
+    render() {
+        const row = this.props.row;
+        let sessionDate = moment(row.date).format("M/D/YYYY dddd");
+
+        return (
+            <div
+                className={
+                    this.state.isActive
+                        ? "sessions-list-active"
+                        : "sessions-list"
+                }>
+                <div className="sessions-checkbox">
+                    <CheckboxInput
+                        row={row}
+                        isActive={this.state.isActive}
+                        onChangeCheckbox={this.onChangeCheckbox}
+                    />
+                </div>
+
+                <div className="session-details">
+                    {sessionDate} {row.timeString} <br />
+                    {row.title} {row.notes} <br /> {row.locationId}
+                </div>
+            </div>
+        );
+    }
+}
+
+class CheckboxInput extends React.Component {
+    onChangeCheckbox = () => {
+        if (isActive == false) {
             this.setState({
-                isActive: "true",
+                isActive: true,
             });
         } else {
             this.setState({
-                isActive: "false",
+                isActive: false,
             });
         }
-        return this.state.isActive;
     };
 
     render() {
+        const isActive = this.props.isActive;
         const row = this.props.row;
-        const checkbox = this.selectCheckbox;
 
-        return <div className="checkbox">{checkbox}</div>;
+        return (
+            <div className="checkbox">
+                {<input className="select" type="checkbox" />}
+            </div>
+        );
     }
 }
