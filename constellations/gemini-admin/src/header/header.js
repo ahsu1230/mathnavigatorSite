@@ -1,5 +1,5 @@
 "use strict";
-require("./header.styl");
+require("./header.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 
