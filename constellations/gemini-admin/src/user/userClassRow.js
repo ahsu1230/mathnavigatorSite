@@ -103,7 +103,7 @@ export class UserClassRow extends React.Component {
                         {stateOptions}
                     </select>
                 </span>
-                <span className="space">
+                <span className="space end">
                     <button onClick={this.onSubmitState}>Update</button>
                 </span>
             </div>

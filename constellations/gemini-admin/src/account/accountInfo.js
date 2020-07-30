@@ -20,12 +20,15 @@ export class AccountInfo extends React.Component {
         const userAddLink = "/users/" + this.props.id + "/add";
 
         const userRows = users.map((user, index) => {
+            const url = "/users/" + user.id + "/edit";
             var status = user.isGuardian ? "(guardian" : "(student";
             status += user.email == email ? ", primary contact)" : ")";
 
             return (
                 <div className="row" key={index}>
-                    <span className="column">{getFullName(user)}</span>
+                    <span className="column">
+                        <Link to={url}>{getFullName(user)}</Link>
+                    </span>
                     <span className="column">{user.email}</span>
                     <span className="column status">{status}</span>
                 </div>
