@@ -38,9 +38,9 @@ func (sr *semesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error
 
 	var query string
 	if publishedOnly {
-		query = "SELECT * FROM semesters WHERE published_at IS NOT NULL"
+		query = "SELECT * FROM semesters WHERE published_at IS NOT NULL ORDER BY ordering ASC"
 	} else {
-		query = "SELECT * FROM semesters"
+		query = "SELECT * FROM semesters ORDER BY ordering ASC"
 	}
 	stmt, err := sr.db.Prepare(query)
 	if err != nil {
@@ -62,7 +62,8 @@ func (sr *semesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error
 			&semester.DeletedAt,
 			&semester.PublishedAt,
 			&semester.SemesterId,
-			&semester.Title); errScan != nil {
+			&semester.Title,
+			&semester.Ordering); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, semester)
@@ -93,7 +94,8 @@ func (sr *semesterRepo) SelectAllUnpublished() ([]domains.Semester, error) {
 			&semester.DeletedAt,
 			&semester.PublishedAt,
 			&semester.SemesterId,
-			&semester.Title); errScan != nil {
+			&semester.Title,
+			&semester.Ordering); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, semester)
@@ -118,7 +120,8 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 		&semester.DeletedAt,
 		&semester.PublishedAt,
 		&semester.SemesterId,
-		&semester.Title)
+		&semester.Title,
+		&semester.Ordering)
 	return semester, errScan
 }
 
@@ -127,8 +130,9 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		"created_at, " +
 		"updated_at, " +
 		"semester_id, " +
-		"title" +
-		") VALUES (?, ?, ?, ?)"
+		"title, " +
+		"ordering" +
+		") VALUES (?, ?, ?, ?, ?)"
 
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -141,7 +145,8 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		now,
 		now,
 		semester.SemesterId,
-		semester.Title)
+		semester.Title,
+		semester.Ordering)
 	if err != nil {
 		return err
 	}
@@ -152,7 +157,8 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
-		"title=? " +
+		"title=?, " +
+		"ordering=? " +
 		"WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -165,6 +171,7 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 		now,
 		semester.SemesterId,
 		semester.Title,
+		semester.Ordering,
 		semesterId)
 	if err != nil {
 		return err
