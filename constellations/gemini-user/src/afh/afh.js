@@ -54,16 +54,12 @@ export class AFHPage extends React.Component {
                 <div className="tab">
                     <TabButton
                         currentTab={this.state.currentTab}
+                        openSubject={this.openSubject}
                         subjectDisplayNames={this.subjectDisplayNames}
                     />
                 </div>
 
-                <div
-                    className={
-                        this.state.currentTab == currentSub ? "showTab" : "hide"
-                    }>
-                    {showSessions}
-                </div>
+                <div className="showTab">{showSessions}</div>
             </div>
         );
     }
@@ -76,15 +72,9 @@ class TabButton extends React.Component {
 
         return (
             <button
-                className={
-                    currentTab == subjectDisplayNames[currentTab]
-                        ? "active"
-                        : ""
-                }
-                onClick={() =>
-                    this.openSubject(subjectDisplayNames[currentTab])
-                }>
-                {subjectDisplayNames[currentTab]}
+                className={currentTab == "Math" ? "active" : ""}
+                onClick={() => this.openSubject("Math")}>
+                Math
             </button>
         );
     }
