@@ -15,10 +15,10 @@ export class LocationPage extends React.Component {
         });
     }
     render() {
-        const location = this.state.list.map((location, index) => {
+        const locations = this.state.list.map((location, index) => {
             return <LocationRow key={index} location={location} />;
         });
-        const numLocations = location.length;
+        const numLocations = locations.length;
         return (
             <div id="view-location">
                 <div>
@@ -27,9 +27,9 @@ export class LocationPage extends React.Component {
                 <ul id="list-heading">
                     <li className="li-med">Location ID</li>
                     <li className="li-large">Address</li>
-                    <li className="li-small">Room</li>
+                    <li className="li-large">Room</li>
                 </ul>
-                <ul>{location}</ul>
+                <ul>{locations}</ul>
                 <div id="list-buttons">
                     <button>
                         <Link to={"/locations/add"} id="add-location">
@@ -61,8 +61,10 @@ class LocationRow extends React.Component {
                     <div> {address1} </div>
                     <div> {address2} </div>
                 </li>
-                <li className="li-small">{room}</li>
-                <Link to={url}>Edit</Link>
+                <li className="li-large">{room}</li>
+                <Link to={url} className="editButton">
+                    Edit
+                </Link>
             </ul>
         );
     }

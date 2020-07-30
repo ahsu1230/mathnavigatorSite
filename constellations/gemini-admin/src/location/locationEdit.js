@@ -118,7 +118,8 @@ export class LocationEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
                 <InputText
-                    description="Location ID"
+                    label="Location ID"
+                    description="Enter a location Id (e.g. wchs, home)"
                     required={true}
                     value={this.state.inputlocationId}
                     onChangeCallback={(e) =>
@@ -132,7 +133,8 @@ export class LocationEditPage extends React.Component {
                     ]}
                 />
                 <InputText
-                    description="Street  (E.g. 1234 Gains Rd, 5432 Abc Drive W)"
+                    label="Street"
+                    description="Enter a street number and street (e.g. 1234 Gains Rd, 5432 Victory Dr)"
                     required={true}
                     value={this.state.inputStreet}
                     onChangeCallback={(e) =>
@@ -146,7 +148,8 @@ export class LocationEditPage extends React.Component {
                     ]}
                 />
                 <InputText
-                    description="City  (E.g. Potomac)"
+                    label="City"
+                    description="Enter a city (e.g. Potomac, Rockville)"
                     required={true}
                     value={this.state.inputCity}
                     onChangeCallback={(e) => this.handleChange(e, "inputCity")}
@@ -158,7 +161,8 @@ export class LocationEditPage extends React.Component {
                     ]}
                 />
                 <InputText
-                    description="State  (E.g. MD)"
+                    label="State"
+                    description="Enter the 2 letter abbreviation of a state (e.g. MD)"
                     required={true}
                     value={this.state.inputState}
                     onChangeCallback={(e) => this.handleChange(e, "inputState")}
@@ -170,7 +174,8 @@ export class LocationEditPage extends React.Component {
                     ]}
                 />
                 <InputText
-                    description="Zipcode"
+                    label="Zipcode"
+                    description="Enter a zipcode"
                     required={true}
                     value={this.state.inputZip}
                     onChangeCallback={(e) => this.handleChange(e, "inputZip")}
@@ -182,7 +187,8 @@ export class LocationEditPage extends React.Component {
                     ]}
                 />
                 <InputText
-                    description="Room"
+                    label="Room"
+                    description="Enter a room description (e.g. Room 143, Gymnasium)"
                     required={false}
                     value={this.state.inputRoom}
                     onChangeCallback={(e) => this.handleChange(e, "inputRoom")}
