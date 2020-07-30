@@ -52,7 +52,10 @@ export class AFHPage extends React.Component {
 
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div className="tab">
-                    <TabButton currentTab={this.state.currentTab} />
+                    <TabButton
+                        currentTab={this.state.currentTab}
+                        subjectDisplayNames={this.subjectDisplayNames}
+                    />
                 </div>
 
                 <div
@@ -69,12 +72,19 @@ export class AFHPage extends React.Component {
 class TabButton extends React.Component {
     render() {
         let currentTab = this.props.currentTab;
+        const subjectDisplayNames = this.props.subjectDisplayNames;
 
         return (
             <button
-                className={currentTab == "Math" ? "active" : ""}
-                onClick={() => this.openSubject("Math")}>
-                Math
+                className={
+                    currentTab == subjectDisplayNames[currentTab]
+                        ? "active"
+                        : ""
+                }
+                onClick={() =>
+                    this.openSubject(subjectDisplayNames[currentTab])
+                }>
+                {subjectDisplayNames[currentTab]}
             </button>
         );
     }
