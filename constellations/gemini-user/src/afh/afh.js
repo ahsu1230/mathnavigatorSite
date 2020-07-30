@@ -94,36 +94,8 @@ class AfhSessionRow extends React.Component {
     state = {
         isActive: false,
     };
-    render() {
-        const row = this.props.row;
-        let sessionDate = moment(row.date).format("M/D/YYYY dddd");
 
-        return (
-            <div
-                className={
-                    this.state.isActive
-                        ? "sessions-list-active"
-                        : "sessions-list"
-                }>
-                <div className="sessions-checkbox">
-                    <CheckboxInput
-                        row={row}
-                        isActive={this.state.isActive}
-                        onChangeCheckbox={this.onChangeCheckbox}
-                    />
-                </div>
-
-                <div className="session-details">
-                    {sessionDate} {row.timeString} <br />
-                    {row.title} {row.notes} <br /> {row.locationId}
-                </div>
-            </div>
-        );
-    }
-}
-
-class CheckboxInput extends React.Component {
-    onChangeCheckbox = () => {
+    onSelectSession = () => {
         if (isActive == false) {
             this.setState({
                 isActive: true,
@@ -136,12 +108,28 @@ class CheckboxInput extends React.Component {
     };
 
     render() {
-        const isActive = this.props.isActive;
         const row = this.props.row;
+        let sessionDate = moment(row.date).format("M/D/YYYY dddd");
 
         return (
-            <div className="checkbox">
-                {<input className="select" type="checkbox" />}
+            <div
+                className={
+                    this.state.isActive
+                        ? "sessions-list-active"
+                        : "sessions-list"
+                }>
+                <div className="sessions-checkbox">
+                    <input
+                        className="select"
+                        type="checkbox"
+                        onChange={this.onSelectSession}
+                    />
+                </div>
+
+                <div className="session-details">
+                    {sessionDate} {row.timeString} <br />
+                    {row.title} {row.notes} <br /> {row.locationId}
+                </div>
             </div>
         );
     }
