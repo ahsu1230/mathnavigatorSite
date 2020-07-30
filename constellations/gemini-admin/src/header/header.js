@@ -110,12 +110,12 @@ class HeaderDropdown extends React.Component {
                 <div className={this.state.hover ? "title orange" : "title"}>
                     {this.props.title}
                 </div>
-                <div
+                <ul
                     className={
                         this.state.hover ? "dropdown expand" : "dropdown"
                     }>
                     {links}
-                </div>
+                </ul>
             </div>
         );
     }
@@ -125,9 +125,9 @@ class HeaderDropdownRow extends React.Component {
     render() {
         const link = this.props.link;
         return (
-            <span>
+            <li>
                 <Link to={link.url}>{link.title}</Link>
-            </span>
+            </li>
         );
     }
 }

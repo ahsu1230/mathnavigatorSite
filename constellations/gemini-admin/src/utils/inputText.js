@@ -84,3 +84,10 @@ export class InputText extends React.Component {
         );
     };
 }
+
+export const emptyValidator = (label) => {
+    return {
+        validate: (x) => x != "",
+        message: "You must input a " + label,
+    };
+};

@@ -8,6 +8,7 @@ import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
 import { setCurrentAccountId } from "../localStorage.js";
+import { UserInput } from "./userInput.js";
 
 export class UserEditPage extends React.Component {
     state = {
@@ -15,12 +16,14 @@ export class UserEditPage extends React.Component {
 
         id: 0,
         firstName: "",
-        lastName: "",
         middleName: "",
+        lastName: "",
         email: "",
         phone: "",
         isGuardian: false,
         accountId: 0,
+        school: "",
+        graduationYear: "",
         notes: "",
 
         allUsers: [],
@@ -49,12 +52,14 @@ export class UserEditPage extends React.Component {
                         isEdit: true,
                         id: user.id,
                         firstName: user.firstName,
-                        lastName: user.lastName,
                         middleName: user.middleName || "",
+                        lastName: user.lastName,
                         email: user.email,
                         phone: user.phone,
                         isGuardian: user.isGuardian,
                         accountId: user.accountId,
+                        school: user.school || "",
+                        graduationYear: user.graduationYear || "",
                         notes: user.notes || "",
 
                         originalEmail: user.email,
@@ -98,6 +103,10 @@ export class UserEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
+    onChangeGuardian = () => {
+        this.setState({ isGuardian: !this.state.isGuardian });
+    };
+
     returnToPage = () => {
         window.location.hash = this.state.isEdit ? "users" : "accounts";
     };
@@ -106,12 +115,14 @@ export class UserEditPage extends React.Component {
         let user = {
             id: this.state.id,
             firstName: this.state.firstName,
-            lastName: this.state.lastName,
             middleName: this.state.middleName,
+            lastName: this.state.lastName,
             email: this.state.email,
             phone: this.state.phone,
             isGuardian: this.state.isGuardian,
             accountId: parseInt(this.state.accountId),
+            school: this.state.school,
+            graduationYear: parseInt(this.state.graduationYear),
             notes: this.state.notes,
         };
 
@@ -142,10 +153,6 @@ export class UserEditPage extends React.Component {
             showDeleteModal: false,
             showSaveModal: false,
         });
-    };
-
-    onChangeGuardian = () => {
-        this.setState({ isGuardian: !this.state.isGuardian });
     };
 
     onClickAccountDetails = () => {
@@ -262,102 +269,18 @@ export class UserEditPage extends React.Component {
                 <h1>{this.state.isEdit ? "Edit" : "Add"} User</h1>
                 <div id="column-container">
                     <div id="left-column">
-                        <InputText
-                            label="First Name"
-                            value={this.state.firstName}
-                            onChangeCallback={(e) =>
-                                this.handleChange(e, "firstName")
-                            }
-                            required={true}
-                            description="Enter your first name"
-                            validators={[emptyValidator("name")]}
+                        <UserInput
+                            handleChange={this.handleChange}
+                            onChangeGuardian={this.onChangeGuardian}
+                            firstName={this.state.firstName}
+                            middleName={this.state.middleName}
+                            lastName={this.state.lastName}
+                            email={this.state.email}
+                            phone={this.state.phone}
+                            isGuardian={this.state.isGuardian}
+                            school={this.state.school}
+                            graduationYear={this.state.graduationYear}
                         />
-
-                        <InputText
-                            label="Middle Name"
-                            value={this.state.middleName}
-                            onChangeCallback={(e) =>
-                                this.handleChange(e, "middleName")
-                            }
-                            description="Enter your middle name if applicable"
-                        />
-
-                        <InputText
-                            label="Last Name"
-                            value={this.state.lastName}
-                            onChangeCallback={(e) =>
-                                this.handleChange(e, "lastName")
-                            }
-                            required={true}
-                            description="Enter your last name"
-                            validators={[emptyValidator("name")]}
-                        />
-
-                        <InputText
-                            label="Email"
-                            value={this.state.email}
-                            onChangeCallback={(e) =>
-                                this.handleChange(e, "email")
-                            }
-                            required={true}
-                            description="Enter your email address"
-                            validators={[
-                                emptyValidator("email"),
-                                {
-                                    validate: (email) =>
-                                        /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+/.test(
-                                            email
-                                        ),
-                                    message: "Invalid email",
-                                },
-                            ]}
-                        />
-
-                        <InputText
-                            label="Phone"
-                            value={this.state.phone}
-                            onChangeCallback={(e) =>
-                                this.handleChange(e, "phone")
-                            }
-                            required={true}
-                            description="Enter your phone number"
-                            validators={[
-                                emptyValidator("phone number"),
-                                {
-                                    validate: (num) =>
-                                        /^\d{10}|\d{3}[ -]\d{3}[ -]\d{4}$/.test(
-                                            num
-                                        ),
-                                    message: "Invalid phone number",
-                                },
-                            ]}
-                        />
-
-                        <h2 id="guardian">Is this user a guardian?</h2>
-                        <input
-                            type="checkbox"
-                            checked={this.state.isGuardian}
-                            onChange={this.onChangeGuardian}
-                        />
-                        <span>Yes</span>
-
-                        {
-                            //TODO: Add the following InputTexts when orion users have school/graduation year data.
-                            /*<InputText
-                            label="School"
-                            value={this.state.school}
-                            onChangeCallback={(e) => this.handleChange(e, "school")}
-                            required={false}
-                            description="Enter your school"
-                        />
-                        <InputText
-                            label="Graduation Year"
-                            value={this.state.gradYear}
-                            onChangeCallback={(e) => this.handleChange(e, "gradYear")}
-                            required={true}
-                            description="Enter your graduation year"
-                        />*/
-                        }
                     </div>
                     {associatedAccount}
                 </div>
@@ -373,12 +296,5 @@ export class UserEditPage extends React.Component {
                 {buttonSection}
             </div>
         );
-    };
-}
-
-function emptyValidator(label) {
-    return {
-        validate: (x) => x != "",
-        message: "You must input a " + label,
     };
 }

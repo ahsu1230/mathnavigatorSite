@@ -10,9 +10,9 @@ export default axios.create({
 });
 
 /*
-Given a list of API calls (promises), execute them in order.
-If all succeed, execute successCallback. If any fail, execute the failCallback.
-*/
+ * Given a list of API calls (promises), execute them in order.
+ * If all succeed, execute successCallback. If any fail, execute the failCallback.
+ */
 export const executeApiCalls = (apiCalls, successCallback, failCallback) => {
     console.log("Reducing " + apiCalls.length);
 

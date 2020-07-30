@@ -7,6 +7,7 @@ import { OkayModal } from "../modals/okayModal.js";
 import { InputText } from "../utils/inputText.js";
 import { generatePassword } from "../utils/utils.js";
 import { setCurrentAccountId } from "../localStorage.js";
+import { UserInput } from "../user/userInput.js";
 
 export class AccountEditPage extends React.Component {
     state = {
@@ -15,11 +16,19 @@ export class AccountEditPage extends React.Component {
         lastName: "",
         email: "",
         phone: "",
+        isGuardian: false,
+        accountId: 0,
+        school: "",
+        graduationYear: "",
         notes: "",
     };
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
+    };
+
+    onChangeGuardian = () => {
+        this.setState({ isGuardian: !this.state.isGuardian });
     };
 
     onClickCancel = () => {
@@ -95,76 +104,25 @@ export class AccountEditPage extends React.Component {
             <div id="view-account-edit">
                 {modalDiv}
                 <h1>Create Primary Contact for New Account</h1>
-
-                <InputText
-                    label="First Name"
-                    value={this.state.firstName}
-                    onChangeCallback={(e) => this.handleChange(e, "firstName")}
-                    required={true}
-                    description="Enter your first name"
-                    validators={[
-                        {
-                            validate: (name) => name != "",
-                            message: "You must input a name",
-                        },
-                    ]}
-                />
-
-                <InputText
-                    label="Middle Name"
-                    value={this.state.middleName}
-                    onChangeCallback={(e) => this.handleChange(e, "middleName")}
-                    description="Enter your middle name if applicable"
-                />
-
-                <InputText
-                    label="Last Name"
-                    value={this.state.lastName}
-                    onChangeCallback={(e) => this.handleChange(e, "lastName")}
-                    required={true}
-                    description="Enter your last name"
-                    validators={[
-                        {
-                            validate: (name) => name != "",
-                            message: "You must input a name",
-                        },
-                    ]}
-                />
-
-                <InputText
-                    label="Primary Email"
-                    value={this.state.email}
-                    onChangeCallback={(e) => this.handleChange(e, "email")}
-                    required={true}
-                    description="Enter the primary email for this account"
-                    validators={[
-                        {
-                            validate: (email) => email != "",
-                            message: "You must input an email",
-                        },
-                    ]}
-                />
-
-                <InputText
-                    label="Phone"
-                    value={this.state.phone}
-                    onChangeCallback={(e) => this.handleChange(e, "phone")}
-                    required={true}
-                    description="Enter your phone number"
-                    validators={[
-                        {
-                            validate: (phone) => phone != "",
-                            message: "You must input a phone number",
-                        },
-                    ]}
+                <UserInput
+                    handleChange={this.handleChange}
+                    onChangeGuardian={this.onChangeGuardian}
+                    firstName={this.state.firstName}
+                    middleName={this.state.middleName}
+                    lastName={this.state.lastName}
+                    email={this.state.email}
+                    phone={this.state.phone}
+                    isGuardian={this.state.isGuardian}
+                    school={this.state.school}
+                    graduationYear={this.state.graduationYear}
                 />
 
                 <InputText
                     label="Notes"
+                    description="Add any notes"
                     isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.handleChange(e, "notes")}
-                    description="Add any notes"
                 />
 
                 <div className="buttons">

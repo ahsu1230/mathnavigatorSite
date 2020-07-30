@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { debounce } from "lodash";
 import API from "../api.js";
+import { getFullName } from "../utils/utils.js";
 import { getCurrentUserSearch, setCurrentUserSearch } from "../localStorage.js";
 import DotsVertical from "../../assets/dots_vertical_gray.svg";
 
@@ -76,6 +77,8 @@ export class UserPage extends React.Component {
                     <li className="li-med">Full Name</li>
                     <li className="li-med">Email</li>
                     <li className="li-med">Phone</li>
+                    <li className="li-med">School</li>
+                    <li className="li-med">Graduation Year</li>
                     <li className="li-large">Notes</li>
                 </ul>
                 {rows}
@@ -87,20 +90,16 @@ export class UserPage extends React.Component {
 class UserRow extends React.Component {
     render = () => {
         const row = this.props.row;
-        var fullName = row.firstName;
-        if (row.middleName) {
-            fullName += " " + row.middleName + " " + row.lastName;
-        } else {
-            fullName += " " + row.lastName;
-        }
 
         return (
             <ul id="user-row">
                 <li className="li-small">{row.id}</li>
                 <li className="li-small">{row.accountId}</li>
-                <li className="li-med">{fullName}</li>
+                <li className="li-med">{getFullName(row)}</li>
                 <li className="li-med">{row.email}</li>
                 <li className="li-med">{row.phone}</li>
+                <li className="li-med">{row.school}</li>
+                <li className="li-med">{row.graduationYear}</li>
                 <li className="li-large">{row.notes}</li>
                 <Dropdown
                     id={row.id}
