@@ -18,9 +18,12 @@ To install MySQL, refer to this [guide](../../resources/install_mysql/guide.md).
 
 ## Setting up your environment for Orion Integration Testing
 
-Open MySQL with your CLI. You can use Terminal for Mac or use MySQL Shell for Windows. Once you're signed into the MySQL (via `mysql --user=root --password`), we'll need to create another user for integration testing.
+- Open your computer's CLI (Terminal for Mac, Command Prompt for Windows)
+- Start the MySQL server (`mysql.server start` for Mac, `net start MySQL` for Windows)
+- (If needed) Open a MySQL shell (MySQL Command Prompt / Shell for Windows)
+- Sign into MySQL (via `mysql --user=root --password`)
 
-Enter the following commands into the MySQL Shell.
+We'll need to create another user for integration testing. Once you are successfully signed into MySQL, input the followed commands:
 
 ```unix
 CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
@@ -54,7 +57,7 @@ export CORS_ORIGIN=*
 
 **For Windows users**
 
-Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You simply need to create the following 5 user environment variables.
+Read this guide here <https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/> to add environment variables. You are NOT editing the environment variable `PATH`. You simply need to create the following 5 **user** environment variables.
 
 ```unix
 Key: DB_HOST

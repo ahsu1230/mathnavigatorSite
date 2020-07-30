@@ -2,7 +2,7 @@ import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import { AchievePage } from "./achieve.js";
 
-describe("test", () => {
+describe("Achievement Page", () => {
     const component = shallow(<AchievePage />);
 
     test("renders", () => {
