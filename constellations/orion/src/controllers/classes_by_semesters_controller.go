@@ -27,7 +27,13 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 		// Create Semester Object
 		semesterObj := semesters[i]
 
-		programClasses := createProgramClassesForSemester(c, semesters[i].SemesterId, programs, classes, programMap)
+		// Make ProgramClass structs
+		programClasses, err := createProgramClassesForSemester(semesters[i].SemesterId, programs, classes, programMap)
+		if err != nil {
+			c.Error(err)
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
 
 		// Make ProgramClassesBySemester struct
 		programClassesBySemester := domains.ProgramClassesBySemester{
@@ -46,8 +52,10 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	}
 }
 
-func createProgramClassesForSemester(c *gin.Context, semesterId string, programs []domains.Program, classes []domains.Class, programMap map[string]domains.Program) []domains.ProgramClass {
+// Helper functions
+func createProgramClassesForSemester(semesterId string, programs []domains.Program, classes []domains.Class, programMap map[string]domains.Program) ([]domains.ProgramClass, error) {
 	var programClasses []domains.ProgramClass
+
 	// Create a list of all classes in one semester classSlice
 	classSlice := make([]domains.Class, 0)
 	for i := 0; i < len(classes); i++ {
@@ -64,8 +72,7 @@ func createProgramClassesForSemester(c *gin.Context, semesterId string, programs
 		programId := classSlice[i].ProgramId
 		if _, ok := programMap[programId]; !ok {
 			err := errors.New("programId not found in list of programs")
-			c.Error(err)
-			c.String(http.StatusInternalServerError, err.Error())
+			return []domains.ProgramClass{}, err
 		}
 
 		if _, ok := programClassMap[programId]; ok {
@@ -90,7 +97,7 @@ func createProgramClassesForSemester(c *gin.Context, semesterId string, programs
 		programClasses = append(programClasses, updateProgramClass(programs[i], programClassMap[programId]))
 	}
 
-	return programClasses
+	return programClasses, nil
 }
 
 func updateProgramClass(programObj domains.Program, classes []domains.Class) domains.ProgramClass {
