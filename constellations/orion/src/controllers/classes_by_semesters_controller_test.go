@@ -103,10 +103,10 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	assert.EqualValues(t, "program2", results[1].ProgramClasses[1].ProgramObj.ProgramId)
 }
 
-func TestGetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
-	// Mock 1 semester, 2 programs, 1 class, where one program has no class
+func TestProgramWithNoClass_Success(t *testing.T) {
+	// Mock 1 semester, 1 program, 0 class, where program has no class
 	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
-		return createMockPrograms(1, 2), nil
+		return createMockPrograms(1), nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -115,11 +115,6 @@ func TestGetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
-	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
-		return createMockClasses(1, 2, 3, 4), nil
-	}
-	repos.ClassRepo = &testUtils.ClassRepo
-
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
@@ -131,28 +126,15 @@ func TestGetOneSemesterTwoProgramsTwoClasses_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
 	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
-	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
-	assert.EqualValues(t, "program1_2020_spring_class2", results[0].ProgramClasses[0].Classes[1].ClassId)
-	assert.EqualValues(t, "program2", results[0].ProgramClasses[1].ProgramObj.ProgramId)
 }
 
-func GetTwoSemestersOneProgramOneClass(t *testing.T) {
-	// Mock 2 semesters, 1 program, 1 class, where one semester has no programs
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
-		return createMockPrograms(1), nil
-	}
-	repos.ProgramRepo = &testUtils.ProgramRepo
-
+func TestSemesterWithNoPrograms_Success(t *testing.T) {
+	// Mock one semester with no programs or classes
 	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
-		return createMockSemesters(1, 2), nil
+		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
-	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
-		return createMockClasses(1, 2), nil
-	}
-	repos.ClassRepo = &testUtils.ClassRepo
-
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
@@ -163,10 +145,6 @@ func GetTwoSemestersOneProgramOneClass(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
-	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
-	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
-	assert.EqualValues(t, "program1_2020_spring_class2", results[0].ProgramClasses[0].Classes[1].ClassId)
-	assert.EqualValues(t, "2020_summer", results[1].Semester.SemesterId)
 }
 
 // Helper functions

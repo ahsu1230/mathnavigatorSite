@@ -65,6 +65,26 @@ func createProgramClassesForSemester(semesterId string, programs []domains.Progr
 	}
 
 	// Create map mapping programId to list of classes programClassMap
+	programClassMap, err := createProgramClassMap(classSlice, programMap)
+	if err != nil {
+		return []domains.ProgramClass{}, err
+	}
+
+	// Create list of ProgramClass
+	for i := 0; i < len(programs); i++ {
+		programId := programs[i].ProgramId
+		programClass := domains.ProgramClass{
+			ProgramObj: programs[i],
+			Classes:    programClassMap[programId],
+		}
+		programClasses = append(programClasses, programClass)
+	}
+
+	return programClasses, nil
+}
+
+func createProgramClassMap(classSlice []domains.Class, programMap map[string]domains.Program) (map[string][]domains.Class, error) {
+	// Create map mapping programId to list of classes programClassMap
 	programClassMap := make(map[string][]domains.Class)
 
 	// For each class, get programId and put into programClassMap
@@ -72,7 +92,7 @@ func createProgramClassesForSemester(semesterId string, programs []domains.Progr
 		programId := classSlice[i].ProgramId
 		if _, ok := programMap[programId]; !ok {
 			err := errors.New("programId not found in list of programs")
-			return []domains.ProgramClass{}, err
+			return map[string][]domains.Class{}, err
 		}
 
 		if _, ok := programClassMap[programId]; ok {
@@ -81,30 +101,7 @@ func createProgramClassesForSemester(semesterId string, programs []domains.Progr
 			programClassMap[programId] = []domains.Class{classSlice[i]}
 		}
 	}
-
-	// Account for programs that are in map but have no classes
-	for key, _ := range programMap {
-		if _, ok := programClassMap[key]; ok {
-			continue
-		} else {
-			programClassMap[key] = []domains.Class{}
-		}
-	}
-
-	// Create list of ProgramClass
-	for i := 0; i < len(programs); i++ {
-		programId := programs[i].ProgramId
-		programClasses = append(programClasses, updateProgramClass(programs[i], programClassMap[programId]))
-	}
-
-	return programClasses, nil
-}
-
-func updateProgramClass(programObj domains.Program, classes []domains.Class) domains.ProgramClass {
-	return domains.ProgramClass{
-		ProgramObj: programObj,
-		Classes:    classes,
-	}
+	return programClassMap, nil
 }
 
 func Find(slice []string, val string) int {
