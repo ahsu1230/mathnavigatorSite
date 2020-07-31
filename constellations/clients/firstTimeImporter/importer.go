@@ -1,14 +1,16 @@
 package main
 
 import (
+	"./importers"
 	"flag"
+	"io/ioutil"
 	"log"
 	"strings"
 )
 
-DEFAULT_LOCAL_ORION_HOST := "http://localhost:8001"
+var DEFAULT_LOCAL_ORION_HOST string = "http://localhost:8001"
 
-// This CLI reads JSON files (given a single file or a directory/folder) and 
+// This CLI reads JSON files (given a single file or a directory/folder) and
 // sends appropriate http requests to a specified orion webserver. If no orion
 // is specified, it will use the localhost orion webserver.
 // Make sure orion is healthy before running this CLI.
@@ -22,32 +24,38 @@ DEFAULT_LOCAL_ORION_HOST := "http://localhost:8001"
 func main() {
 	log.Println("Orion First-Time-Importer Client starting...")
 
-	orionHost := flag.String("orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
-	folderPath := flag.String("folder", "", "Path to folder that contains valid domain JSON files")
-	filePath := flag.String("file", "", "Path to file that contains valid domain JSON");
+	var orionHost, folderPath, filePath string
+	flag.StringVar(&orionHost, "orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
+	flag.StringVar(&folderPath, "folder", "", "Path to folder that contains valid domain JSON files")
+	flag.StringVar(&filePath, "file", "", "Path to file that contains valid domain JSON")
+	flag.Parse()
 
-	isFolder := folderPath != ""
-	isFile := filePath != ""
+	isFolder := (folderPath != "")
+	isFile := (filePath != "")
 
-	if (!isFolder && !isFile) {
+	if !isFolder && !isFile {
 		// error - must specify at least one. Exit program.
 	}
 
-	if (isFolder && isFile) {
+	if isFolder && isFile {
 		// error - cannot specify both. Exit program.
 	}
 
-	if (isFile) {
-
-		if (strings.contains(filePath, "programs.json")) {
-			importer.ImportProgram(orionHost, filePath)
+	if isFile {
+		data, err := readJsonFile(filePath)
+		if err != nil {
+			// error reading json file
+			return
 		}
-		// Determine what domain to use based on file name
-		// Need a map between fileName -> domain type?
-		// Read JSON file
-		// Unmarshal JSON as a list of Domains
-		// Need a map between domain type -> API url (?)
-		// Send Http Request per domain
+		log.Println(data)
+
+		if strings.Contains(filePath, "programs.json") {
+			err = importer.ImportProgram(orionHost, data)
+			if err != nil {
+				// error importing program
+				return
+			}
+		}
 	} else { // is folder
 		// for every file in folder, call filePath logic
 		// if file does not have a correct associated domain, skip file
@@ -55,13 +63,10 @@ func main() {
 	}
 }
 
-func ReadJsonFile(jsonFilePath string) interface{}, error {
-	jsonFile, err := os.Open(jsonFilePath)
+func readJsonFile(jsonFilePath string) ([]byte, error) {
+	byteValue, err := ioutil.ReadFile(jsonFilePath)
 	if err != nil {
 		return nil, err
 	}
-	defer jsonFile.Close()
-
-	byteValue, err := ioutil.ReadAll(jsonFile)
 	return byteValue, err
 }
