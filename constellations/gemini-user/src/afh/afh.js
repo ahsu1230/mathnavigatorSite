@@ -7,7 +7,7 @@ import moment from "moment";
 const subjectDisplayNames = {
     math: "Math",
     english: "English",
-    programming: "Computer Programming",
+    programming: "Programming",
 };
 
 export class AFHPage extends React.Component {
