@@ -147,7 +147,7 @@ func createUsersAndAfhs(t *testing.T) {
 		"AP Calculus Help",
 		date1,
 		"2:00-4:00PM",
-		"AP Calculus",
+		domains.SUBJECT_MATH,
 		"wchs",
 		"test note",
 	)
@@ -156,7 +156,7 @@ func createUsersAndAfhs(t *testing.T) {
 		"AP Statistics Help",
 		date1,
 		"3:00-5:00PM",
-		"AP Statistics",
+		domains.SUBJECT_MATH,
 		"room12",
 		"test note 2",
 	)

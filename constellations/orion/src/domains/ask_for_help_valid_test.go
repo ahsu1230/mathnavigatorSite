@@ -16,7 +16,7 @@ func TestValidAFHTitle(t *testing.T) {
 		Title:      "AP Calculus Help",
 		Date:       date1,
 		TimeString: "3:00 - 5:00 PM",
-		Subject:    "AP Calculus",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 	}
 	if err := askForHelp.Validate(); err != nil {
@@ -42,11 +42,9 @@ func TestValidAFHSubject(t *testing.T) {
 		Title:      "AP Calculus Help",
 		Date:       date1,
 		TimeString: "3:00 - 5:00 PM",
-		Subject:    "AP Calculus",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 	}
-
-	askForHelp.Subject = "AP Calculus 2"
 	if err := askForHelp.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -56,7 +54,7 @@ func TestValidAFHSubject(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid subject")
 	}
 
-	askForHelp.Subject = "Too long: " + strings.Repeat("A", 128)
+	askForHelp.Subject = "history" // not a valid subject
 	if err := askForHelp.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid subject")
 	}
