@@ -54,17 +54,14 @@ export class AFHPage extends React.Component {
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div className="tabs">
                     <TabButton
-                        currentSubject={this.state.currentSubject}
                         highlight={this.state.currentSubject == "math"}
                         subject={"math"}
                     />
                     <TabButton
-                        currentSubject={this.state.currentSubject}
                         highlight={this.state.currentSubject == "english"}
                         subject={"english"}
                     />
                     <TabButton
-                        currentSubject={this.state.currentSubject}
                         highlight={this.state.currentSubject == "computer"}
                         subject={"computer"}
                     />
@@ -82,7 +79,6 @@ class TabButton extends React.Component {
     };
 
     render() {
-        let currentSubject = this.props.currentSubject;
         let highlight = this.props.highlight;
         let subject = this.props.subject;
         let displayName = subjectDisplayNames[subject];
