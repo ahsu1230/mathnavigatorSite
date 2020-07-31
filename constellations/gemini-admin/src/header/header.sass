@@ -1,78 +1,83 @@
 @import "../_.constants.sass"
 
-$listHeight: $spacing4x
-
 #view-header
+    position: fixed
+    z-index: 99
+    top: 0
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
     height: $headerHeight
-    padding: 0 $spacing2x
     box-sizing: border-box
     color: $colorWhite
     background-color: $colorGrayDark
 
-    & h2
-        display: inline-block
+    h2
         margin: 0
-        line-height: $headerHeight
+        padding: 0 $spacing4x
+        border: 0
 
-        & a
+        a
             color: $colorWhite
-            line-height: $lineHeight3
+            line-height: $lineHeight2
             font-size: $fontSize3
+            text-decoration: none
 
-            &:hover
+    #header-left
+        display: flex
+        align-items: center
+
+    .header-section
+        display: flex
+        justify-content: center
+        min-width: $spacing3x
+        padding: 0 $spacing6x
+
+    .header-dropdown
+        flex: 1 1 0
+
+        .title
+            line-height: $spacing5x
+            cursor: default
+
+        .orange
+            color: $colorOrange
+
+        .dropdown
+            position: absolute
+            z-index: 100
+            top: $spacing8x
+            display: flex
+            flex-flow: column nowrap
+            width: $spacing20x
+            max-height: 0
+            margin: 0
+            padding: 0
+            overflow: hidden
+            transition: max-height 0.3s linear
+
+            li
+                padding: 5px $spacing2x
+                background-color: $colorGrayLight
+                text-align: center
+
+                &:hover
+                    filter: brightness(1.1)
+
+            a
+                color: $colorBlackDark
                 text-decoration: none
 
-    & #header-left
-        float: right
-        vertical-align: top
+        .expand
+            max-height: $spacing64x
 
-
-#view-header .header-section
-    position: relative
-    vertical-align: top
-    display: inline-block
-    height: $headerHeight
-    padding: 0 $spacing5x
-    line-height: $headerHeight
-
-    &.header-link a
+    .header-link a
         color: $colorWhite
         text-decoration: none
 
         &:hover
-            text-decoration: underline
+            color: $colorOrange
 
-        &:active
-            color: $colorWhite
-
-
-.header-dropdown
-    & .title
-        width: 100%
-        cursor: default
-
-    & ul
-        position: absolute
-        z-index: 100
-        top: 75%
-        left: -16px
-        height: 0px
-        margin: 0
-        padding: 0
-        list-style: none
-        overflow: hidden
-        transition: 0.1s linear height
-
-        & li
-            height: $listHeight
-            padding: 0 $spacing2x
-            background-color: $colorGrayLight
-            text-align: center
-            line-height: $listHeight
-
-            &:hover
-                filter: brightness(1.1)
-
-            & a
-                color: $colorBlackDark
-                text-decoration: none
+body
+    padding-top: $headerHeight
