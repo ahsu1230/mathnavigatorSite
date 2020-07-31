@@ -62,7 +62,7 @@ class LocationRow extends React.Component {
                     <div> {address2} </div>
                 </li>
                 <li className="li-large">{room}</li>
-                <Link to={url} className="editButton">
+                <Link to={url} className="edit-button">
                     Edit
                 </Link>
             </ul>
