@@ -99,15 +99,9 @@ class AfhSessionRow extends React.Component {
     };
 
     onSelectSession = () => {
-        if (isActive == false) {
-            this.setState({
-                isActive: true,
-            });
-        } else {
-            this.setState({
-                isActive: false,
-            });
-        }
+        this.setState({
+            isActive: !this.state.isActive,
+        });
     };
 
     render() {
