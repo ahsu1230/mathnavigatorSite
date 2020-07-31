@@ -13,9 +13,9 @@ import (
 
 // Test: Create 3 Semesters and GetAll(false)
 func Test_CreateSemesters(t *testing.T) {
-	semester1 := createSemester("2020_spring", "Spring 2020", 3)
-	semester2 := createSemester("2020_fall", "Fall 2020", 2)
-	semester3 := createSemester("2020_winter", "Winter 2020", 1)
+	semester1 := createSemester("2020_fall", "Fall 2020", 1)
+	semester2 := createSemester("2020_winter", "Winter 2020", 2)
+	semester3 := createSemester("2020_spring", "Spring 2020", 3)
 	body1 := utils.CreateJsonBody(&semester1)
 	body2 := utils.CreateJsonBody(&semester2)
 	body3 := utils.CreateJsonBody(&semester3)
@@ -36,12 +36,12 @@ func Test_CreateSemesters(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
-	assert.EqualValues(t, "2020_winter", semesters[0].SemesterId)
-	assert.EqualValues(t, "Winter 2020", semesters[0].Title)
+	assert.EqualValues(t, "2020_fall", semesters[0].SemesterId)
+	assert.EqualValues(t, "Fall 2020", semesters[0].Title)
 	assert.EqualValues(t, 1, semesters[0].Ordering)
 
-	assert.EqualValues(t, "2020_fall", semesters[1].SemesterId)
-	assert.EqualValues(t, "Fall 2020", semesters[1].Title)
+	assert.EqualValues(t, "2020_winter", semesters[1].SemesterId)
+	assert.EqualValues(t, "Winter 2020", semesters[1].Title)
 	assert.EqualValues(t, 2, semesters[1].Ordering)
 
 	assert.EqualValues(t, "2020_spring", semesters[2].SemesterId)

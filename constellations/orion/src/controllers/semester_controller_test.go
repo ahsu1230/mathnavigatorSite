@@ -96,7 +96,6 @@ func TestGetSemester_Success(t *testing.T) {
 	assert.EqualValues(t, "2020_fall", semester.SemesterId)
 	assert.EqualValues(t, "Fall 2020", semester.Title)
 	assert.EqualValues(t, 1, semester.Ordering)
-
 }
 
 func TestGetSemester_Failure(t *testing.T) {
