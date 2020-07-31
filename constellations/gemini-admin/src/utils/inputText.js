@@ -4,24 +4,24 @@ import React from "react";
 import Checkbox from "../../assets/checkmark_green.svg";
 
 /*
- * Props for the InputText Component
+ * Props for the InputText Component:
  *
- * label: A large gray label for the input, e.g. "Program ID"
+ * label: A large gray label for the input, e.g. "Program ID".
  *
  * description: A more detailed description for what the input should be.
- * The format of the input could also go here, e.g. "Enter the program ID. Examples: ap_calculus, sat1, ap_java"
+ * The format of the input could also go here, e.g. "Enter the program ID. Examples: ap_calculus, sat1, ap_java".
  *
- * required: Whether or not the input is required (omit if false)
+ * required: Whether or not the input is required (omit if false).
  * If this input is omitted, the validators prop should not be used either.
  *
- * isTextbox: If true, the input is a large textbox, otherwise it is a single line (omit if false)
+ * isTextbox: If true, the input is a large textbox, otherwise it is a single line (omit if false).
  *
- * value: This is the value of the input, e.g. this.state.programId
+ * value: This is the value of the input, e.g. this.state.programId.
  *
- * onChangeCallback: This is the function that is called when the input changes
+ * onChangeCallback: This is the function that is called when the input changes.
  *
  * validators: This is a list of functions that validate the input. The validators are checked in order.
- * The function in validate must be true or else the message will appear, e.g.
+ * The function in validate must return true or else the message will appear, e.g.
  *      validators={[
  *          emptyValidator("grade"),
  *          {
@@ -29,8 +29,8 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *              message: "Grade must be between 1 and 12",
  *          },
  *      ]}
- * The emptyValidator(label) function can be imported and checks to make sure the input exists
- * It returns an error in the form "You must input a <label>" if the input is empty
+ * The emptyValidator(label) function can be imported and checks to make sure the input exists.
+ * It returns an error in the form "You must input a <label>" if the input is empty.
  */
 export class InputText extends React.Component {
     renderErrorMessage = (required, value) => {
