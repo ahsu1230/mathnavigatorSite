@@ -32,7 +32,6 @@ export class AFHPage extends React.Component {
     };
 
     render() {
-        // complication HERE
         let currentTab = this.state.sessions.filter(
             (session) => session.subject == this.state.currentSubject
         );
@@ -99,15 +98,9 @@ class AfhSessionRow extends React.Component {
     };
 
     onSelectSession = () => {
-        if (isActive == false) {
-            this.setState({
-                isActive: true,
-            });
-        } else {
-            this.setState({
-                isActive: false,
-            });
-        }
+        this.setState({
+            isActive: !this.state.isActive,
+        });
     };
 
     render() {
