@@ -2,6 +2,7 @@
 require("./userInput.sass");
 import React from "react";
 import { InputText, emptyValidator } from "../utils/inputText.js";
+import { validateEmail, validatePhoneNumber } from "../utils/userUtils.js";
 
 export class UserInput extends React.Component {
     render = () => {
@@ -43,8 +44,7 @@ export class UserInput extends React.Component {
                     validators={[
                         emptyValidator("email"),
                         {
-                            validate: (email) =>
-                                /^[^( @)]+@[^( @)]+\.[^( @)]+$/.test(email),
+                            validate: (email) => validateEmail(email),
                             message: "Invalid email address",
                         },
                     ]}
@@ -59,7 +59,7 @@ export class UserInput extends React.Component {
                     validators={[
                         emptyValidator("phone number"),
                         {
-                            validate: (num) => /^[\d\s+.()/-]{3,}$/.test(num),
+                            validate: (phone) => validatePhoneNumber(phone),
                             message: "Invalid phone number",
                         },
                     ]}

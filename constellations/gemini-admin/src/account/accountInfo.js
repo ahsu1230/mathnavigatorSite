@@ -2,7 +2,7 @@
 require("./accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { getFullName } from "../utils/utils.js";
+import { getFullName } from "../utils/userUtils.js";
 
 export class AccountInfo extends React.Component {
     formatCurrency = (amount) => {

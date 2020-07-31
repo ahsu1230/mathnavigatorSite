@@ -211,28 +211,26 @@ export class AccountPage extends React.Component {
                 <section id="search-accounts">
                     <h1>Search Accounts</h1>
                     <div className="container">
-                        <div>
-                            <AccountSearch
-                                placeholder="Search by Account ID"
-                                changeCallback={(e) =>
-                                    this.handleChange(e, "searchId")
-                                }
-                                searchCallback={() =>
-                                    this.onClickSearchById(this.state.searchId)
-                                }
-                            />
-                            <AccountSearch
-                                placeholder="Search by Primary Email"
-                                changeCallback={(e) =>
-                                    this.handleChange(e, "searchEmail")
-                                }
-                                searchCallback={() =>
-                                    this.onClickSearchByEmail(
-                                        this.state.searchEmail
-                                    )
-                                }
-                            />
-                        </div>
+                        <AccountSearch
+                            placeholder="Search by Account ID"
+                            changeCallback={(e) =>
+                                this.handleChange(e, "searchId")
+                            }
+                            searchCallback={() =>
+                                this.onClickSearchById(this.state.searchId)
+                            }
+                        />
+                        <AccountSearch
+                            placeholder="Search by Primary Email"
+                            changeCallback={(e) =>
+                                this.handleChange(e, "searchEmail")
+                            }
+                            searchCallback={() =>
+                                this.onClickSearchByEmail(
+                                    this.state.searchEmail
+                                )
+                            }
+                        />
 
                         <button>
                             <Link to="/accounts/add">Create New Account</Link>

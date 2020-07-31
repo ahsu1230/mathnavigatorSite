@@ -119,7 +119,7 @@ export class AccountEditPage extends React.Component {
 
                 <InputText
                     label="Notes"
-                    description="Add any notes"
+                    description="Add any additional information about this account"
                     isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.handleChange(e, "notes")}

@@ -17,3 +17,11 @@ export const getFullName = (user) => {
 
     return fullName;
 };
+
+export const validateEmail = (email) => {
+    return /^[^( @)]+@[^( @)]+\.[^( @)]+$/.test(email);
+}
+
+export const validatePhoneNumber = (phone) => {
+    return /^[\d\s+.()/-]{3,}$/.test(phone)
+}

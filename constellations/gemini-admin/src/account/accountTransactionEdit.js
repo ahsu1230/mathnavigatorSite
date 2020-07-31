@@ -6,7 +6,7 @@ import { getCurrentAccountId } from "../localStorage.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
+import { InputText, emptyValidator } from "../utils/inputText.js";
 
 export class TransactionEditPage extends React.Component {
     state = {
@@ -113,7 +113,7 @@ export class TransactionEditPage extends React.Component {
     render = () => {
         const isEdit = this.state.isEdit;
         var title = isEdit ? "Edit Transaction" : "Add Transaction";
-        title += " (Account No. " + this.state.accountId + ")";
+        title += " for Account No. " + this.state.accountId;
 
         const modalDiv = renderModal(
             this.state.showSaveModal,
@@ -123,13 +123,11 @@ export class TransactionEditPage extends React.Component {
             this.onModalDismiss
         );
 
-        const typeOptions = this.state.types.map((type, index) => {
-            return (
-                <option value={type} key={index}>
-                    {type}
-                </option>
-            );
-        });
+        const typeOptions = this.state.types.map((type, index) => (
+            <option value={type} key={index}>
+                {type}
+            </option>
+        ));
 
         let deleteButton = <div></div>;
         if (isEdit) {
@@ -139,6 +137,20 @@ export class TransactionEditPage extends React.Component {
                 </button>
             );
         }
+
+        const chargeValidators = [
+            emptyValidator("amount"),
+            {
+                validate: (amount) =>
+                    !(this.state.type != "charge" && amount < 0),
+                message: "Payment must be positive",
+            },
+            {
+                validate: (amount) =>
+                    !(this.state.type == "charge" && amount > 0),
+                message: "Charge must be negative",
+            },
+        ];
 
         return (
             <div id="view-transaction-edit">
@@ -158,35 +170,19 @@ export class TransactionEditPage extends React.Component {
 
                 <InputText
                     label="Amount"
+                    description="Enter the amount of money"
+                    required={true}
                     value={this.state.amount}
                     onChangeCallback={(e) => this.handleChange(e, "amount")}
-                    required={true}
-                    description="Enter the amount of money"
-                    validators={[
-                        {
-                            validate: (amount) =>
-                                !isNaN(amount) && amount != "",
-                            message: "You must input an amount",
-                        },
-                        {
-                            validate: (amount) =>
-                                !(this.state.type != "charge" && amount < 0),
-                            message: "Payment must be positive",
-                        },
-                        {
-                            validate: (amount) =>
-                                !(this.state.type == "charge" && amount > 0),
-                            message: "Charge must be negative",
-                        },
-                    ]}
+                    validators={chargeValidators}
                 />
 
                 <InputText
                     label="Notes"
+                    description="Enter notes"
                     isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.handleChange(e, "notes")}
-                    description="Enter notes"
                 />
 
                 <div className="buttons">
