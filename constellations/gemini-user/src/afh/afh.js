@@ -7,7 +7,7 @@ import moment from "moment";
 const subjectDisplayNames = {
     math: "Math",
     english: "English",
-    computer: "Computer Programming",
+    programming: "Computer Programming",
 };
 
 export class AFHPage extends React.Component {
@@ -53,16 +53,19 @@ export class AFHPage extends React.Component {
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div className="tabs">
                     <TabButton
+                        onChangeTab={this.openSubject}
                         highlight={this.state.currentSubject == "math"}
                         subject={"math"}
                     />
                     <TabButton
+                        onChangeTab={this.openSubject}
                         highlight={this.state.currentSubject == "english"}
                         subject={"english"}
                     />
                     <TabButton
-                        highlight={this.state.currentSubject == "computer"}
-                        subject={"computer"}
+                        onChangeTab={this.openSubject}
+                        highlight={this.state.currentSubject == "programming"}
+                        subject={"programming"}
                     />
                 </div>
 
@@ -73,10 +76,6 @@ export class AFHPage extends React.Component {
 }
 
 class TabButton extends React.Component {
-    openSubject = (subjectName) => {
-        this.props.openSubject(subjectName);
-    };
-
     render() {
         let highlight = this.props.highlight;
         let subject = this.props.subject;
@@ -85,7 +84,7 @@ class TabButton extends React.Component {
         return (
             <button
                 className={highlight ? "active" : ""}
-                onClick={() => this.openSubject(subject)}>
+                onClick={() => this.props.onChangeTab(subject)}>
                 {displayName}
             </button>
         );
