@@ -32,7 +32,6 @@ export class AFHPage extends React.Component {
     };
 
     render() {
-        // complication HERE
         let currentTab = this.state.sessions.filter(
             (session) => session.subject == this.state.currentSubject
         );
