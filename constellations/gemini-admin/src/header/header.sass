@@ -1,0 +1,78 @@
+@import "../_.constants.sass"
+
+$listHeight: $spacing4x
+
+#view-header
+    height: $headerHeight
+    padding: 0 $spacing2x
+    box-sizing: border-box
+    color: $colorWhite
+    background-color: $colorGrayDark
+
+    & h2
+        display: inline-block
+        margin: 0
+        line-height: $headerHeight
+
+        & a
+            color: $colorWhite
+            line-height: $lineHeight3
+            font-size: $fontSize3
+
+            &:hover
+                text-decoration: none
+
+    & #header-left
+        float: right
+        vertical-align: top
+
+
+#view-header .header-section
+    position: relative
+    vertical-align: top
+    display: inline-block
+    height: $headerHeight
+    padding: 0 $spacing5x
+    line-height: $headerHeight
+
+    &.header-link a
+        color: $colorWhite
+        text-decoration: none
+
+        &:hover
+            text-decoration: underline
+
+        &:active
+            color: $colorWhite
+
+
+.header-dropdown
+    & .title
+        width: 100%
+        cursor: default
+
+    & ul
+        position: absolute
+        z-index: 100
+        top: 75%
+        left: -16px
+        height: 0px
+        margin: 0
+        padding: 0
+        list-style: none
+        overflow: hidden
+        transition: 0.1s linear height
+
+        & li
+            height: $listHeight
+            padding: 0 $spacing2x
+            background-color: $colorGrayLight
+            text-align: center
+            line-height: $listHeight
+
+            &:hover
+                filter: brightness(1.1)
+
+            & a
+                color: $colorBlackDark
+                text-decoration: none

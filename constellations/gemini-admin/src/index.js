@@ -1,5 +1,5 @@
 "use strict";
-require("./app.styl");
+require("./app.sass");
 import React from "react";
 import ReactDOM from "react-dom";
 import { withRouter } from "react-router";
