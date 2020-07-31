@@ -20,8 +20,8 @@ export const getFullName = (user) => {
 
 export const validateEmail = (email) => {
     return /^[^( @)]+@[^( @)]+\.[^( @)]+$/.test(email);
-}
+};
 
 export const validatePhoneNumber = (phone) => {
-    return /^[\d\s+.()/-]{3,}$/.test(phone)
-}
+    return /^[\d\s+.()/-]{3,}$/.test(phone);
+};

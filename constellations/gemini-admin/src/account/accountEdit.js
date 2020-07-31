@@ -5,7 +5,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { InputText } from "../utils/inputText.js";
-import { generatePassword } from "../utils/utils.js";
+import { generatePassword } from "../utils/userUtils.js";
 import { setCurrentAccountId } from "../localStorage.js";
 import { UserInput } from "../user/userInput.js";
 

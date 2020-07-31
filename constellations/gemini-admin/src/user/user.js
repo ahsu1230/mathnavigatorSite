@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { debounce } from "lodash";
 import API from "../api.js";
-import { getFullName } from "../utils/utils.js";
+import { getFullName } from "../utils/userUtils.js";
 import { getCurrentUserSearch, setCurrentUserSearch } from "../localStorage.js";
 import DotsVertical from "../../assets/dots_vertical_gray.svg";
 

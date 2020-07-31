@@ -4,7 +4,7 @@ import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import API from "../api.js";
-import { getFullName } from "../utils/utils.js";
+import { getFullName } from "../utils/userUtils.js";
 import { UserClassRow } from "./userClassRow.js";
 
 export class UserClassPage extends React.Component {

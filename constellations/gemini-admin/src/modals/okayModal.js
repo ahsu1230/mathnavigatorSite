@@ -1,10 +1,9 @@
 "use strict";
-require("./okayModal.styl");
+require("./okayModal.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 
 export class OkayModal extends React.Component {
-    render() {
+    render = () => {
         const text = this.props.text;
         const onOkay = this.props.onOkay;
         return (
@@ -13,5 +12,5 @@ export class OkayModal extends React.Component {
                 <button onClick={onOkay}>OK</button>
             </div>
         );
-    }
+    };
 }
