@@ -1,0 +1,67 @@
+@import "../_.constants.sass"
+
+#view-user-edit
+    width: 100%
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+    
+    a
+        color: $colorBlue
+    
+    h1
+        margin: $spacing4x 0 0
+        color: $colorTurquoise
+        line-height: $lineHeight3
+        font-size: $fontSize4
+    
+    #column-container
+        display: flex
+        flex-direction: row
+        align-items: baseline
+        
+        #left-column
+            min-width: 30%
+        
+        #associated-account
+            border: 1px solid $colorGrayLight
+            padding: $spacing2x
+            margin-left: auto
+            
+            h2, h3
+                color: $colorTurquoise
+    
+    .account-details-wrapper
+        display: flex
+        flex-direction: row
+        align-items: center
+
+        p:first-child
+            flex-grow: 1
+    
+    .buttons
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        
+        button
+            padding: $spacing2x $spacing4x
+            outline: none
+            border: none
+            border-radius: 6px
+            font-size: $fontSize0
+            cursor: pointer
+
+            &:hover
+                filter: brightness(1.1)
+
+        .btn-save
+            background-color: $colorTurquoise
+            color: $colorWhite
+
+        .btn-cancel
+            background-color: $colorGrayLight 
+            margin-right: $spacing2x
+        
+        .btn-delete
+            background-color: $colorRed
+            color: $colorWhite
