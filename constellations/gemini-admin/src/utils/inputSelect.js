@@ -10,7 +10,6 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *
  * onChangeCallback: Function that is called when the selection changes.
  *
- *
  * required: Whether or not the selection  is required (omit if false).
  *
  * hasNoDefault: If true, an extra option -- Select an option -- will be added as the default.
@@ -22,10 +21,11 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *
  * options: A list of option objects:
  *      [
- *          { value: "ap_calc", displayName:"AP Calculus" }
+ *          { value: "ap_calc", displayName: "AP Calculus" }
  *      ]
- * becomes
+ *  becomes
  *      <option value="ap_calc">AP Calculus</option>
+ *  value should not be an empty string.
  */
 export class InputSelect extends React.Component {
     state = {
@@ -64,7 +64,7 @@ export class InputSelect extends React.Component {
         var defaultOption = this.props.hasNoDefault ? (
             <option disabled selected value>
                 {" "}
-                -- select an option --{" "}
+                -- Select an option --{" "}
             </option>
         ) : null;
 
@@ -82,9 +82,9 @@ export class InputSelect extends React.Component {
     render = () => {
         const required = this.props.required;
         const value = this.props.value;
-
         const pass =
-            (this.state.chosen && this.props.value) || !this.props.hasNoDefault;
+            (this.state.chosen && this.props.value !== "") ||
+            !this.props.hasNoDefault;
 
         var formatDescription = this.renderDescription(
             this.props.description,
