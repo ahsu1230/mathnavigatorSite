@@ -107,8 +107,6 @@ class LocationAddress extends React.Component {
     }
 
     render() {
-        const locationId = this.props.locationId;
-
         const address1 = this.state.location.street;
         const address2 =
             this.state.location.city +
@@ -144,9 +142,7 @@ class AfhSessionRow extends React.Component {
         return (
             <div
                 className={
-                    this.state.isActive
-                        ? "sessions-list-active"
-                        : "sessions-list"
+                    "sessions-list" + (this.state.isActive ? " active" : "")
                 }>
                 <div className="sessions-checkbox">
                     <input

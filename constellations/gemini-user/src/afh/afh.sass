@@ -16,15 +16,8 @@
         margin: $spacing4x auto
         color: $colorBlack
 
-        .sessions-checkbox
-            width: 20%
-
-    .sessions-list-active
-        display: flex
-        flex-direction: row
-        align-items: center
-        margin: $spacing4x auto
-        color: $colorTurquoiseLight
+        &.active
+            color: $colorTurquoiseLight
 
         .sessions-checkbox
             width: 20%
@@ -38,39 +31,41 @@
         margin-right: $spacing2x
 
     .tabs 
-        overflow: hidden
+        display: flex
+        flex-direction: row
+        align-items: center
         border-bottom: 1px solid $colorGrayLight
 
         .active
             border-bottom: 2px solid $colorTurquoise
 
     .tabs button 
-        float: center
         width: 33.333%
         height: 100%
-        cursor: pointer
         padding: $spacing2x
-        transition: 0.3s
         background-color: $colorWhite
         border-bottom: 2px solid transparent
         font-size: $fontSize1
         color: $colorBlack
+        cursor: pointer
+        transition: 0.3s
 
     .tabs button:hover
-        cursor: pointer
         background-color: $colorGrayLight
+        cursor: pointer
     
     .showTab 
         display: inline-block
         width: 100%
         padding: $spacing1x $spacing2x
         border: none
+
     .hide
         display: none
     
 @media only screen and (max-width: 700px)
     #view-afh
-        width: 100%
+        width: 90%
 
         & h1, .description
             text-align: center
