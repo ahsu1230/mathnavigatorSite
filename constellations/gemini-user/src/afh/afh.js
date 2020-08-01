@@ -25,7 +25,7 @@ export class AFHPage extends React.Component {
         });
     }
 
-    openSubject = (subjectName) => {
+    changeSubject = (subjectName) => {
         this.setState({
             currentSubject: subjectName,
         });
@@ -53,17 +53,17 @@ export class AFHPage extends React.Component {
                 <h1>Ask for Help Sessions by Subject</h1>
                 <div className="tabs">
                     <TabButton
-                        onChangeTab={this.openSubject}
+                        onChangeTab={this.changeSubject}
                         highlight={this.state.currentSubject == "math"}
                         subject={"math"}
                     />
                     <TabButton
-                        onChangeTab={this.openSubject}
+                        onChangeTab={this.changeSubject}
                         highlight={this.state.currentSubject == "english"}
                         subject={"english"}
                     />
                     <TabButton
-                        onChangeTab={this.openSubject}
+                        onChangeTab={this.changeSubject}
                         highlight={this.state.currentSubject == "programming"}
                         subject={"programming"}
                     />
@@ -87,6 +87,41 @@ class TabButton extends React.Component {
                 onClick={() => this.props.onChangeTab(subject)}>
                 {displayName}
             </button>
+        );
+    }
+}
+
+class LocationAddress extends React.Component {
+    state = {
+        location: [],
+    };
+    componentDidMount() {
+        API.get("api/locations/location/" + this.props.locationId).then(
+            (res) => {
+                const currentLocation = res.data;
+                this.setState({
+                    location: currentLocation,
+                });
+            }
+        );
+    }
+
+    render() {
+        const locationId = this.props.locationId;
+
+        const address1 = this.state.location.street;
+        const address2 =
+            this.state.location.city +
+            ", " +
+            this.state.location.state +
+            " " +
+            this.state.location.zipcode;
+        const room = this.state.location.room;
+
+        return (
+            <div>
+                {address1} <br /> {address2} <br /> {room}
+            </div>
         );
     }
 }
@@ -123,7 +158,8 @@ class AfhSessionRow extends React.Component {
 
                 <div className="session-details">
                     {sessionDate} {row.timeString} <br />
-                    {row.title} {row.notes} <br /> {row.locationId}
+                    {row.title} {row.notes} <br />
+                    <LocationAddress locationId={row.locationId} />
                 </div>
             </div>
         );
