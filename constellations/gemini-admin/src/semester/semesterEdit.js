@@ -6,6 +6,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
 
 export class SemesterEditPage extends React.Component {
     constructor(props) {
@@ -147,16 +148,32 @@ export class SemesterEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
 
-                <h4>Semester ID</h4>
-                <input
+                <InputText
+                    label="Semester ID"
+                    required={true}
                     value={this.state.inputSemesterId}
-                    onChange={(e) => this.handleChange(e, "inputSemesterId")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputSemesterId")
+                    }
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a semester ID",
+                        },
+                    ]}
                 />
 
-                <h4>Title</h4>
-                <input
+                <InputText
+                    label="Title"
+                    required={true}
                     value={this.state.inputTitle}
-                    onChange={(e) => this.handleChange(e, "inputTitle")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputTitle")}
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a title",
+                        },
+                    ]}
                 />
 
                 <div className="buttons">

@@ -284,20 +284,22 @@ export class ClassEditPage extends React.Component {
                         {locationOptions}
                     </select>
 
-                    <h4>Display Time</h4>
-                    <p>
-                        A display string to convey to users the class session
-                        time every week. Each class session should be separated
-                        by a comma.
-                        <br />
-                        Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm
-                    </p>
-                    <input
+                    <InputText
+                        label="Display Time"
+                        required={true}
+                        description="A display string to convey to users the class session
+                                    time every week. Each class session should be separated
+                                    by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
                         value={this.state.inputTimeString}
-                        placeholder="i.e. Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm"
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "inputTimeString")
                         }
+                        validators={[
+                            {
+                                validate: (text) => text != "",
+                                message: "You must input a time string",
+                            },
+                        ]}
                     />
 
                     <h4 className="availability">Class Availability</h4>
