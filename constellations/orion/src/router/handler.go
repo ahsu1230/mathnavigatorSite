@@ -138,4 +138,6 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserAfh.POST("/userafh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/userafh/:id", controllers.DeleteUserAfh)
 	}
+
+	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
 }
