@@ -11,69 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test: Get All Unpublished Programs, Publish a Few, then Get All Unpublished Again
-func Test_PublishPrograms(t *testing.T) {
-	// Create
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
-	program2 := createProgram("prog2", "Program2", 8, 12, "descript2", 1)
-	program3 := createProgram("prog3", "Program3", 1, 12, "descript3", 0)
-	body1 := utils.CreateJsonBody(&program1)
-	body2 := utils.CreateJsonBody(&program2)
-	body3 := utils.CreateJsonBody(&program3)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-
-	// Get All Unpublished
-	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-	var unpublishedDomains domains.UnpublishedDomains
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog1", unpublishedDomains.Programs[0].ProgramId)
-	assert.EqualValues(t, "prog2", unpublishedDomains.Programs[1].ProgramId)
-	assert.EqualValues(t, "prog3", unpublishedDomains.Programs[2].ProgramId)
-	assert.EqualValues(t, 3, len(unpublishedDomains.Programs))
-
-	// Publish prog1 and prog3
-	publishIds := []string{"prog1", "prog3"}
-	publishBody := utils.CreateJsonBody(publishIds)
-	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/publish", publishBody)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-
-	// Get All Unpublished Again
-	recorder6 := utils.SendHttpRequest(t, http.MethodGet, "/api/unpublished", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder6.Code)
-	if err := json.Unmarshal(recorder6.Body.Bytes(), &unpublishedDomains); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog2", unpublishedDomains.Programs[0].ProgramId)
-	assert.EqualValues(t, 1, len(unpublishedDomains.Programs))
-
-	// Get Published Only
-	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/all?published=true", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder7.Code)
-	var programs []domains.Program
-	if err := json.Unmarshal(recorder7.Body.Bytes(), &programs); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-	assert.EqualValues(t, "prog1", programs[0].ProgramId)
-	assert.EqualValues(t, "prog3", programs[1].ProgramId)
-	assert.EqualValues(t, 2, len(programs))
-
-	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-}
-
 // Test: Create 2 Classes and Publish 1
 func Test_PublishClasses(t *testing.T) {
 	// Create

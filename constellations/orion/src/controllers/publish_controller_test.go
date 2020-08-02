@@ -12,12 +12,6 @@ import (
 )
 
 func setupMock() {
-	testUtils.ProgramRepo.MockSelectAllUnpublished = func() ([]domains.Program, error) {
-		return []domains.Program{
-			testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0),
-			testUtils.CreateMockProgram("prog2", "Program2", 8, 12, "descript2", 0),
-		}, nil
-	}
 	testUtils.ClassRepo.MockSelectAllUnpublished = func() ([]domains.Class, error) {
 		return []domains.Class{
 			testUtils.CreateMockClass(
@@ -83,12 +77,6 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedDomains); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
-	assert.EqualValues(t, "prog1", unpublishedDomains.Programs[0].ProgramId)
-	assert.EqualValues(t, "Program1", unpublishedDomains.Programs[0].Name)
-	assert.EqualValues(t, "prog2", unpublishedDomains.Programs[1].ProgramId)
-	assert.EqualValues(t, "Program2", unpublishedDomains.Programs[1].Name)
-	assert.EqualValues(t, 2, len(unpublishedDomains.Programs))
 
 	class0 := unpublishedDomains.Classes[0]
 	class1 := unpublishedDomains.Classes[1]

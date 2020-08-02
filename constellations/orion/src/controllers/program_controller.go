@@ -78,21 +78,6 @@ func UpdateProgram(c *gin.Context) {
 	return
 }
 
-func PublishPrograms(c *gin.Context) {
-	// Incoming JSON
-	var programIdsJson []string
-	c.BindJSON(&programIdsJson)
-
-	err := repos.ProgramRepo.Publish(programIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func DeleteProgram(c *gin.Context) {
 	// Incoming Parameters
 	programId := c.Param("programId")

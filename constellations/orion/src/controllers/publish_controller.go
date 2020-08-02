@@ -19,10 +19,6 @@ func GetAllUnpublished(c *gin.Context) {
 }
 
 func callGetUnpublishedRepos() (domains.UnpublishedDomains, error) {
-	programList, err := repos.ProgramRepo.SelectAllUnpublished()
-	if err != nil {
-		return domains.UnpublishedDomains{}, err
-	}
 	classList, err := repos.ClassRepo.SelectAllUnpublished()
 	if err != nil {
 		return domains.UnpublishedDomains{}, err
@@ -45,7 +41,6 @@ func callGetUnpublishedRepos() (domains.UnpublishedDomains, error) {
 	}
 
 	unpublishedDomains := domains.UnpublishedDomains{
-		Programs:  programList,
 		Classes:   classList,
 		Locations: locationList,
 		Achieves:  achieveList,

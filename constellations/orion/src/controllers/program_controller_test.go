@@ -174,28 +174,6 @@ func TestUpdateProgram_Failure(t *testing.T) {
 }
 
 //
-// Test Publish
-//
-func TestPublishPrograms_Success(t *testing.T) {
-	testUtils.ProgramRepo.MockPublish = func(programIds []string) error {
-		return nil // Successful publish
-	}
-	repos.ProgramRepo = &testUtils.ProgramRepo
-
-	// Create new HTTP request to endpoint
-	programIds := []string{"prog1", "prog2"}
-	marshal, err := json.Marshal(programIds)
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-//
 // Test Delete
 //
 func TestDeleteProgram_Success(t *testing.T) {

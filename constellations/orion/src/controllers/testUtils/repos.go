@@ -23,23 +23,18 @@ var UserAfhRepo mockUserAfhRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectAll            func(bool) ([]domains.Program, error)
-	MockSelectAllUnpublished func() ([]domains.Program, error)
-	MockSelectByProgramId    func(string) (domains.Program, error)
-	MockInsert               func(domains.Program) error
-	MockUpdate               func(string, domains.Program) error
-	MockPublish              func([]string) error
-	MockDelete               func(string) error
+	MockInitialize        func(*sql.DB)
+	MockSelectAll         func(bool) ([]domains.Program, error)
+	MockSelectByProgramId func(string) (domains.Program, error)
+	MockInsert            func(domains.Program) error
+	MockUpdate            func(string, domains.Program) error
+	MockDelete            func(string) error
 }
 
 // Implement methods of ProgramRepo interface with mocked implementations
 func (programRepo *mockProgramRepo) Initialize(db *sql.DB) {}
 func (programRepo *mockProgramRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
 	return programRepo.MockSelectAll(publishedOnly)
-}
-func (programRepo *mockProgramRepo) SelectAllUnpublished() ([]domains.Program, error) {
-	return programRepo.MockSelectAllUnpublished()
 }
 func (programRepo *mockProgramRepo) SelectByProgramId(programId string) (domains.Program, error) {
 	return programRepo.MockSelectByProgramId(programId)
@@ -49,9 +44,6 @@ func (programRepo *mockProgramRepo) Insert(program domains.Program) error {
 }
 func (programRepo *mockProgramRepo) Update(programId string, program domains.Program) error {
 	return programRepo.MockUpdate(programId, program)
-}
-func (programRepo *mockProgramRepo) Publish(programIds []string) error {
-	return programRepo.MockPublish(programIds)
 }
 func (programRepo *mockProgramRepo) Delete(programId string) error {
 	return programRepo.MockDelete(programId)

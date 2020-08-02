@@ -19,7 +19,6 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
 		apiPrograms.POST("/create", controllers.CreateProgram)
-		apiPrograms.POST("/publish", controllers.PublishPrograms)
 		apiPrograms.GET("/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/program/:programId", controllers.DeleteProgram)
