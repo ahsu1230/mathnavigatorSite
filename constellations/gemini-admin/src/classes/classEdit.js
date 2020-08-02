@@ -9,6 +9,7 @@ import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
 import { InputSelect } from "../utils/inputSelect.js";
+import { Link } from "react-router-dom";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -240,7 +241,12 @@ export class ClassEditPage extends React.Component {
                         }
                         required={true}
                         options={programOptions}
-                        hasNoDefault={false}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no programs to choose from. Please add
+                                one <Link to="/programs/add">here</Link>
+                            </span>
+                        }
                     />
 
                     <InputSelect
@@ -252,7 +258,12 @@ export class ClassEditPage extends React.Component {
                         }
                         required={true}
                         options={semesterOptions}
-                        hasNoDefault={false}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no semesters to choose from. Please
+                                add one <Link to="/semesters/add">here</Link>
+                            </span>
+                        }
                     />
 
                     <h4>ClassKey</h4>
@@ -301,7 +312,12 @@ export class ClassEditPage extends React.Component {
                         }
                         required={true}
                         options={locationOptions}
-                        hasNoDefault={false}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no locations to choose from. Please
+                                add one <Link to="/locations/add">here</Link>
+                            </span>
+                        }
                     />
 
                     <h4>Display Time</h4>
@@ -327,7 +343,6 @@ export class ClassEditPage extends React.Component {
                         onChangeCallback={(e) => this.onChangeFullState(e)}
                         required={true}
                         options={fullStateOptions}
-                        hasNoDefault={false}
                     />
 
                     <InputText

@@ -26,6 +26,8 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *  becomes
  *      <option value="ap_calc">AP Calculus</option>
  *  value should not be an empty string.
+ *
+ *  errorMessageIfEmpty: If options is empty, then this message will be displayed instead of the select.
  */
 export class InputSelect extends React.Component {
     state = {
@@ -54,42 +56,50 @@ export class InputSelect extends React.Component {
         return formatDescription;
     };
 
-    renderSelect = (options, value) => {
-        var optionElements = options.map((option, index) => (
-            <option key={index} value={option.value}>
-                {option.displayName}
-            </option>
-        ));
+    renderSelect = (options) => {
+        if (options.length) {
+            var optionElements = options.map((option, index) => (
+                <option key={index} value={option.value}>
+                    {option.displayName}
+                </option>
+            ));
 
-        var defaultOption = this.props.hasNoDefault ? (
-            <option disabled selected value>
-                {" "}
-                -- Select an option --{" "}
-            </option>
-        ) : null;
+            var defaultOption = this.props.hasNoDefault ? (
+                <option disabled value="">
+                    -- Select an option --
+                </option>
+            ) : null;
 
-        value =
-            this.props.hasNoDefault && !this.state.chosen ? undefined : value;
-
-        return (
-            <select value={value} onChange={(e) => this.onChangeSelect(e)}>
-                {defaultOption}
-                {optionElements}
-            </select>
-        );
+            return (
+                <select
+                    defaultValue={""}
+                    onChange={(e) => this.onChangeSelect(e)}>
+                    {defaultOption}
+                    {optionElements}
+                </select>
+            );
+        } else {
+            return (
+                <h4 className="select-error red">
+                    {this.props.errorMessageIfEmpty}
+                </h4>
+            );
+        }
     };
 
     render = () => {
         const required = this.props.required;
         const value = this.props.value;
-        const pass = this.state.chosen || !this.props.hasNoDefault;
+        const pass =
+            this.props.options.length &&
+            (this.state.chosen || !this.props.hasNoDefault);
 
         var formatDescription = this.renderDescription(
             this.props.description,
             required,
             pass
         );
-        var select = this.renderSelect(this.props.options, value);
+        var select = this.renderSelect(this.props.options);
 
         return (
             <div id="text-input-wrapper">
