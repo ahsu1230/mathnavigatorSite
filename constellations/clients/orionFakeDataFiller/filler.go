@@ -160,6 +160,70 @@ func runFiller(hostAddress string) {
 		"id_2",
 		"true",
 	)
+	// Create Users
+	createUser(
+		hostAddress,
+		"Joe",
+		"Smith",
+		"",
+		"emailaddress1@gmail.com",
+		"301-123-4567",
+		0,
+		1,
+		"notes1",
+		"schoolone",
+		2001,
+	)
+
+	createUser(
+		hostAddress,
+		"Billy",
+		"Bob",
+		"Joe",
+		"emailaddress2@gmail.com",
+		"301-123-4568",
+		1,
+		2,
+		"notes2",
+		"schooltwo",
+		2002,
+	)
+
+	// Create Accounts
+	createAccount(
+		hostAddress,
+		"emailaddress1@gmail.com",
+		"jhdgjhddjhdjuj",
+	)
+	createAccount(hostAddress,
+		"emailaddress2@gmail.com",
+		"2redssssa",
+	)
+
+	// Create transactions
+	createTransaction(
+		hostAddress,
+		100,
+		"pay_paypal",
+		"notes1",
+		1,
+	)
+
+	createTransaction(
+		hostAddress,
+		101,
+		"pay_cash",
+		"notes2",
+		2,
+	)
+
+	createTransaction(
+		hostAddress,
+		102,
+		"pay_check",
+		"notes3",
+		3,
+	)
 }
 
 func createProgram(hostAddress, programId string, name string, grade1 string, grade2 string, description string) error {
@@ -258,6 +322,45 @@ func createSession(hostAddress, classId, cancelled string) error {
 	}`, classId, nowJson, laterJson, cancelled))
 	fmt.Println("Creating session " + classId + "...")
 	sendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
+	return nil
+}
+func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian int, account_id int, notes, school string, graduation_year int) error {
+	userBody := strings.NewReader(fmt.Sprintf(`{
+		"firstName": %s
+		"lastName": %s
+		"middleName": %s
+		"email": %s
+		"phone": %s
+		"isGuardian": %d
+		"accountId": %d
+		"notes": %s
+		"school": %s
+		"graduationYear": %d
+	}`, first_name, last_name, middle_name, email, phone, is_guardian, account_id, notes, school, graduation_year))
+	fmt.Println("Creating user " + first_name + "...")
+	sendPostRequest(hostAddress+"/api/users/create", userBody)
+	return nil
+}
+
+func createAccount(hostAddress, primary_email, password string) error {
+	accountBody := strings.NewReader(fmt.Sprintf(`{
+		"primaryEmail": %s
+		"password": %s
+	}`, primary_email, password))
+	fmt.Println("Creating account " + primary_email + "...")
+	sendPostRequest(hostAddress+"/api/account/create", accountBody)
+	return nil
+}
+
+func createTransaction(hostAddress string, amount int, paymentType string, paymentNotes string, accountId int) error {
+	transactionBody := strings.NewReader(fmt.Sprintf(`{
+		"amount": "%d"
+		"paymentType": "%s"
+		"paymentNotes": "%s"
+		"accountId": "%d"
+		}`, amount, paymentType, paymentNotes, accountId))
+	fmt.Println("Creating transaction " + paymentNotes + "...")
+	sendPostRequest(hostAddress+"/api/transactions/create", transactionBody)
 	return nil
 }
 
