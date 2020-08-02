@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -13,10 +12,6 @@ import (
 )
 
 func setupMock() {
-	now := time.Now().UTC()
-	later1 := now.Add(time.Hour * 24 * 30)
-	later2 := now.Add(time.Hour * 24 * 60)
-
 	testUtils.ProgramRepo.MockSelectAllUnpublished = func() ([]domains.Program, error) {
 		return []domains.Program{
 			testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0),
@@ -31,8 +26,6 @@ func setupMock() {
 				"classA",
 				"churchill",
 				"3 pm - 5 pm",
-				now,
-				later1,
 			),
 			testUtils.CreateMockClass(
 				"prog1",
@@ -40,8 +33,6 @@ func setupMock() {
 				"classB",
 				"churchill",
 				"3 pm - 5 pm",
-				now,
-				later2,
 			),
 		}, nil
 	}
