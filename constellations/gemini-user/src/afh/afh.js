@@ -93,7 +93,7 @@ class TabButton extends React.Component {
 
 class LocationAddress extends React.Component {
     state = {
-        location: [],
+        location: {},
     };
     componentDidMount() {
         API.get("api/locations/location/" + this.props.locationId).then(
