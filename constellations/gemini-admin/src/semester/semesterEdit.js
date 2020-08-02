@@ -50,6 +50,15 @@ export class SemesterEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     }
 
+    handleIdChange(event, value) {
+        this.setState({ [value]: event.target.value });
+        var possibleTitle =
+            event.target.value.substring(5) +
+            " " +
+            event.target.value.substring(0, 4);
+        this.setState({ inputTitle: possibleTitle });
+    }
+
     onClickSave() {
         let semester = {
             semesterId: this.state.inputSemesterId,
@@ -150,15 +159,20 @@ export class SemesterEditPage extends React.Component {
 
                 <InputText
                     label="Semester ID"
+                    description="Must be in the form year_season (e.g. 2020_fall or 2020_winter)"
                     required={true}
                     value={this.state.inputSemesterId}
                     onChangeCallback={(e) =>
-                        this.handleChange(e, "inputSemesterId")
+                        this.handleIdChange(e, "inputSemesterId")
                     }
                     validators={[
                         {
                             validate: (text) => text != "",
                             message: "You must input a semester ID",
+                        },
+                        {
+                            validate: (text) => text == text.toLowerCase(),
+                            message: "The semester ID must be all lowercase",
                         },
                     ]}
                 />

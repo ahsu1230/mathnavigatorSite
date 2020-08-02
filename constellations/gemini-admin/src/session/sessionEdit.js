@@ -255,15 +255,10 @@ export class SessionEditPage extends React.Component {
 
                 <InputText
                     label="Notes"
+                    description="You may enter any additional information about this session here"
                     isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.onNotesChange(e)}
-                    validators={[
-                        {
-                            validate: (text) => text != "",
-                            message: "You must input a message",
-                        },
-                    ]}
                 />
 
                 <div className="buttons">

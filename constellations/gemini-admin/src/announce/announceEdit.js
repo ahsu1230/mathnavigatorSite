@@ -187,9 +187,9 @@ export class AnnounceEditPage extends React.Component {
 
                 <InputText
                     label="Message"
+                    description="Enter the announcement message"
                     isTextBox={true}
                     required={true}
-                    description="Enter the announcement message"
                     value={this.state.inputMessage}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputMessage")

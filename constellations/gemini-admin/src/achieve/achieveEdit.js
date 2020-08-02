@@ -149,22 +149,22 @@ export class AchieveEditPage extends React.Component {
                 <h2>{title}</h2>
                 <InputText
                     label="Year"
-                    required={true}
                     description="Enter the achievement year"
+                    required={true}
                     value={this.state.inputYear}
                     onChangeCallback={(e) => this.handleChange(e, "inputYear")}
                     validators={[
                         {
-                            validate: (text) => text != "",
-                            message: "You must input a year",
+                            validate: (text) => parseInt(text) > 2000,
+                            message: "You must input a year greater than 2000",
                         },
                     ]}
                 />
                 <InputText
                     label="Message"
+                    description="Enter the achievement message"
                     isTextBox={true}
                     required={true}
-                    description="Enter the achievement message"
                     value={this.state.inputMessage}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputMessage")

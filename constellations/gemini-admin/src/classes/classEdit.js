@@ -286,10 +286,10 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="Display Time"
-                        required={true}
                         description="A display string to convey to users the class session
                                     time every week. Each class session should be separated
                                     by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
+                        required={true}
                         value={this.state.inputTimeString}
                         onChangeCallback={(e) =>
                             this.handleChange(e, "inputTimeString")
