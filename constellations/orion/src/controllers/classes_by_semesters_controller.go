@@ -12,7 +12,7 @@ import (
 func GetAllProgramsSemestersClasses(c *gin.Context) {
 	var listResults []domains.ProgramClassesBySemester
 
-	// Fetch progrmas, semesters, classes from repo functions
+	// Fetch programs, semesters, classes from repo functions
 	publishedOnly := ParseParamPublishedOnly(c)
 
 	programs, err := repos.ProgramRepo.SelectAll(publishedOnly)
