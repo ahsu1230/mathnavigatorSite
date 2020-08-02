@@ -10,6 +10,30 @@
         margin-top: $spacing10x
         color: $colorTurquoise
 
+    .tabs 
+        display: flex
+        flex-direction: row
+        align-items: center
+        border-bottom: 1px solid $colorGrayLight
+
+        .active
+            border-bottom: 2px solid $colorTurquoise
+
+    .tabs button 
+        width: 33.333%
+        height: 100%
+        padding: $spacing2x
+        background-color: $colorWhite
+        border-bottom: 2px solid transparent
+        font-size: $fontSize1
+        color: $colorBlack
+        cursor: pointer
+        transition: 0.3s
+
+    .tabs button:hover
+        background-color: $colorGrayLight
+        cursor: pointer
+
     .section
         margin-bottom: $spacing10x
 
@@ -48,16 +72,3 @@
             list-style-type: none
             padding: 0
             margin: 0
-
-
-    .container-user
-        display: flex
-        flex-direction: row
-        align-items: center
-        border: 1px solid $colorGrayLight
-
-    .container-registration
-        display: flex
-        flex-direction: row
-        align-items: center
-        border: 1px solid $colorGrayLight
