@@ -9,9 +9,11 @@ describe("test", () => {
     test("renders", () => {
         expect(component.exists()).toBe(true);
         expect(component.find("h2").text()).toContain("Add Announcement");
-        expect(component.find("h4").at(0).text()).toBe("Author");
-        expect(component.find("h4").at(1).text()).toBe("Message");
-        expect(component.find("h4").length).toBe(2);
+
+        expect(component.find("InputText").at(0).prop("label")).toBe("Author");
+        expect(component.find("InputText").at(1).prop("label")).toBe("Message");
+        expect(component.find("InputText").length).toBe(2);
+
         expect(component.find("button").at(0).text()).toBe("Save");
         expect(component.find("button").at(1).text()).toBe("Cancel");
         expect(component.find("button").length).toBe(2);
