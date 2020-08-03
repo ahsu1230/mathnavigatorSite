@@ -190,47 +190,55 @@ func createUser(id int) domains.User {
 	switch id {
 	case 1:
 		return domains.User{
-			FirstName:  "John",
-			LastName:   "Smith",
-			MiddleName: domains.NewNullString("Middle"),
-			Email:      "john_smith@example.com",
-			Phone:      "555-555-0100",
-			IsGuardian: true,
-			AccountId:  1,
-			Notes:      domains.NewNullString("notes1"),
+			FirstName:      "John",
+			LastName:       "Smith",
+			MiddleName:     domains.NewNullString("Middle"),
+			Email:          "john_smith@example.com",
+			Phone:          "555-555-0100",
+			IsGuardian:     true,
+			AccountId:      1,
+			Notes:          domains.NewNullString("notes1"),
+			School:         domains.NewNullString("schoolone"),
+			GraduationYear: domains.NewNullUint(2001),
 		}
 	case 2:
 		return domains.User{
-			FirstName:  "Bob",
-			LastName:   "Smith",
-			MiddleName: domains.NewNullString("Middle"),
-			Email:      "bob_smith@example.com",
-			Phone:      "555-555-0101",
-			IsGuardian: false,
-			AccountId:  2,
-			Notes:      domains.NewNullString("notes2"),
+			FirstName:      "Bob",
+			LastName:       "Smith",
+			MiddleName:     domains.NewNullString("Middle"),
+			Email:          "bob_smith@example.com",
+			Phone:          "555-555-0101",
+			IsGuardian:     false,
+			AccountId:      2,
+			Notes:          domains.NewNullString("notes2"),
+			School:         domains.NewNullString("schooltwo"),
+			GraduationYear: domains.NewNullUint(2002),
 		}
 	case 3:
 		return domains.User{
-			FirstName:  "Foo",
-			LastName:   "Bar",
-			MiddleName: domains.NewNullString("Smith"),
-			Email:      "foobar@example.com",
-			Phone:      "555-555-0102",
-			IsGuardian: false,
-			AccountId:  2,
-			Notes:      domains.NewNullString("notes3"),
+			FirstName:      "Foo",
+			LastName:       "Bar",
+			MiddleName:     domains.NewNullString("Smith"),
+			Email:          "foobar@example.com",
+			Phone:          "555-555-0102",
+			IsGuardian:     false,
+			AccountId:      2,
+			Notes:          domains.NewNullString("notes3"),
+			School:         domains.NewNullString(""),
+			GraduationYear: domains.NewNullUint(0),
 		}
 	case 4:
 		return domains.User{
-			FirstName:  "Austin",
-			LastName:   "Hsu",
-			MiddleName: domains.NewNullString(""),
-			Email:      "austinhsu@example.com",
-			Phone:      "555-555-0103",
-			IsGuardian: false,
-			AccountId:  1,
-			Notes:      domains.NewNullString("notes4"),
+			FirstName:      "Austin",
+			LastName:       "Hsu",
+			MiddleName:     domains.NewNullString(""),
+			Email:          "austinhsu@example.com",
+			Phone:          "555-555-0103",
+			IsGuardian:     false,
+			AccountId:      1,
+			Notes:          domains.NewNullString("notes4"),
+			School:         domains.NewNullString("schoolfour"),
+			GraduationYear: domains.NewNullUint(2004),
 		}
 	default:
 		return domains.User{}
@@ -257,6 +265,8 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, true, user.IsGuardian)
 		assert.EqualValues(t, 1, user.AccountId)
 		assert.EqualValues(t, "notes1", user.Notes.String)
+		assert.EqualValues(t, "schoolone", user.School.String)
+		assert.EqualValues(t, 2001, user.GraduationYear.Uint)
 	case 2:
 		assert.EqualValues(t, "Bob", user.FirstName)
 		assert.EqualValues(t, "Smith", user.LastName)
@@ -266,7 +276,8 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, false, user.IsGuardian)
 		assert.EqualValues(t, 2, user.AccountId)
 		assert.EqualValues(t, "notes2", user.Notes.String)
-
+		assert.EqualValues(t, "schooltwo", user.School.String)
+		assert.EqualValues(t, 2002, user.GraduationYear.Uint)
 	case 3:
 		assert.EqualValues(t, "Foo", user.FirstName)
 		assert.EqualValues(t, "Bar", user.LastName)
@@ -276,6 +287,8 @@ func assertUser(t *testing.T, id int, user domains.User) {
 		assert.EqualValues(t, false, user.IsGuardian)
 		assert.EqualValues(t, 2, user.AccountId)
 		assert.EqualValues(t, "notes3", user.Notes.String)
+		assert.EqualValues(t, "", user.School.String)
+		assert.EqualValues(t, 0, user.GraduationYear.Uint)
 
 	}
 

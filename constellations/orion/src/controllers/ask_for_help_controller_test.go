@@ -27,7 +27,7 @@ func TestGetAllAFH_Success(t *testing.T) {
 				"AP Calculus Help",
 				date1,
 				"2:00-4:00PM",
-				"AP Calculus",
+				domains.SUBJECT_MATH,
 				"wchs",
 				"test note",
 			),
@@ -36,7 +36,7 @@ func TestGetAllAFH_Success(t *testing.T) {
 				"AP Statistics Help",
 				date2,
 				"3:00-5:00PM",
-				"AP Statistics",
+				domains.SUBJECT_MATH,
 				"room12",
 				"test note 2",
 			),
@@ -58,14 +58,14 @@ func TestGetAllAFH_Success(t *testing.T) {
 	assert.EqualValues(t, "AP Calculus Help", askForHelps[0].Title)
 	assert.EqualValues(t, date1, askForHelps[0].Date)
 	assert.EqualValues(t, "2:00-4:00PM", askForHelps[0].TimeString)
-	assert.EqualValues(t, "AP Calculus", askForHelps[0].Subject)
+	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelps[0].Subject)
 	assert.EqualValues(t, "wchs", askForHelps[0].LocationId)
 	assert.EqualValues(t, domains.NewNullString("test note"), askForHelps[0].Notes)
 	assert.EqualValues(t, 2, askForHelps[1].Id)
 	assert.EqualValues(t, "AP Statistics Help", askForHelps[1].Title)
 	assert.EqualValues(t, date2, askForHelps[1].Date)
 	assert.EqualValues(t, "3:00-5:00PM", askForHelps[1].TimeString)
-	assert.EqualValues(t, "AP Statistics", askForHelps[1].Subject)
+	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelps[1].Subject)
 	assert.EqualValues(t, "room12", askForHelps[1].LocationId)
 	assert.EqualValues(t, domains.NewNullString("test note 2"), askForHelps[1].Notes)
 	assert.EqualValues(t, 2, len(askForHelps))
@@ -79,7 +79,7 @@ func TestGetAFH_Success(t *testing.T) {
 			"AP Calculus Help",
 			date1,
 			"2:00-4:00PM",
-			"AP Calculus",
+			domains.SUBJECT_MATH,
 			"wchs",
 			"test note")
 		return askForHelp, nil
@@ -99,7 +99,7 @@ func TestGetAFH_Success(t *testing.T) {
 	assert.EqualValues(t, "AP Calculus Help", askForHelp.Title)
 	assert.EqualValues(t, date1, askForHelp.Date)
 	assert.EqualValues(t, "2:00-4:00PM", askForHelp.TimeString)
-	assert.EqualValues(t, "AP Calculus", askForHelp.Subject)
+	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelp.Subject)
 	assert.EqualValues(t, "wchs", askForHelp.LocationId)
 	assert.EqualValues(t, domains.NewNullString("test note"), askForHelp.Notes)
 }
@@ -130,7 +130,7 @@ func TestCreateAFH_Success(t *testing.T) {
 		"AP Calculus Help",
 		date1,
 		"2:00-4:00PM",
-		"AP Calculus",
+		domains.SUBJECT_MATH,
 		"wchs",
 		"test note")
 	body := createBodyFromAFH(askForHelp)
@@ -150,7 +150,7 @@ func TestCreateAFH_Failure(t *testing.T) {
 		"",
 		date1,
 		"2:00-4:00PM",
-		"AP Calculus",
+		domains.SUBJECT_MATH,
 		"wchs",
 		"test note")
 	body := createBodyFromAFH(askForHelp)
@@ -173,7 +173,7 @@ func TestUpdateAFH_Success(t *testing.T) {
 		"AP Calculus Help",
 		date1,
 		"2:00-4:00PM",
-		"AP Calculus",
+		domains.SUBJECT_MATH,
 		"wchs",
 		"test note")
 	body := createBodyFromAFH(askForHelp)
@@ -215,7 +215,7 @@ func TestUpdateAFH_Failure(t *testing.T) {
 		"AP Calculus Help",
 		date1,
 		"2:00-4:00PM",
-		"AP Calculus",
+		domains.SUBJECT_MATH,
 		"wchs",
 		"test note")
 	body := createBodyFromAFH(askForHelp)

@@ -8,6 +8,12 @@ import (
 
 var TABLE_ASKFORHELP = "ask_for_help"
 
+const (
+	SUBJECT_MATH        = "math"
+	SUBJECT_ENGLISH     = "english"
+	SUBJECT_PROGRAMMING = "programming"
+)
+
 type AskForHelp struct {
 	Id         uint       `json:"id"`
 	CreatedAt  time.Time  `json:"-" db:"created_at"`
@@ -31,7 +37,7 @@ func (askForHelp *AskForHelp) Validate() error {
 	}
 
 	// Subject validation
-	if matches, _ := regexp.MatchString(REGEX_TITLE, subject); !matches || len(title) > 128 {
+	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
 		return errors.New("invalid subject")
 	}
 	return nil

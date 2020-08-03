@@ -1,0 +1,78 @@
+@import "../utils/constants.sass"
+
+#view-afh
+    width: 70%
+    margin: 0 auto $spacing24x
+    font-family: $fontFamilyRoboto
+
+    &  h1
+        margin: $spacing6x 0
+        color: $colorTurquoise
+
+    .sessions-list
+        display: flex
+        flex-direction: row
+        align-items: center
+        margin: $spacing4x auto
+        color: $colorBlack
+
+        &.active
+            color: $colorTurquoiseLight
+
+        .sessions-checkbox
+            width: 20%
+        
+    .description
+        margin: $spacing2x 0
+        color: $colorBlack
+
+    .select
+        flex: 0 0 $spacing10x
+        margin-right: $spacing2x
+
+    .tabs 
+        display: flex
+        flex-direction: row
+        align-items: center
+        border-bottom: 1px solid $colorGrayLight
+
+        .active
+            border-bottom: 2px solid $colorTurquoise
+
+    .tabs button 
+        width: 33.333%
+        height: 100%
+        padding: $spacing2x
+        background-color: $colorWhite
+        border-bottom: 2px solid transparent
+        font-size: $fontSize1
+        color: $colorBlack
+        cursor: pointer
+        transition: 0.3s
+
+    .tabs button:hover
+        background-color: $colorGrayLight
+        cursor: pointer
+    
+    .showTab 
+        display: inline-block
+        width: 100%
+        padding: $spacing1x $spacing2x
+        border: none
+
+    .hide
+        display: none
+    
+@media only screen and (max-width: 700px)
+    #view-afh
+        width: 90%
+
+        & h1, .description
+            text-align: center
+
+        .sessions-list
+            width: 90%
+            margin: $spacing3x auto
+
+        .tabs button
+            font-size: $fontSize0

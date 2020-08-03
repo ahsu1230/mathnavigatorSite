@@ -1,22 +1,16 @@
 "use strict";
-require("./modal.styl");
+require("./modal.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 const classnames = require("classnames");
 
 export class Modal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleDismiss = this.handleDismiss.bind(this);
-    }
-
-    handleDismiss() {
+    handleDismiss = () => {
         if (this.props.onDismiss) {
             this.props.onDismiss();
         }
-    }
+    };
 
-    render() {
+    render = () => {
         const modalContent = this.props.content;
         const persistent = this.props.persistent || false;
         const withClose = this.props.withClose || false;
@@ -51,5 +45,5 @@ export class Modal extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }

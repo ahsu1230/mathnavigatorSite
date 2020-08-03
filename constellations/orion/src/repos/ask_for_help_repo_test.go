@@ -86,7 +86,7 @@ func TestInsertAFH(t *testing.T) {
 			"AP Calculus Help",
 			date1,
 			"2:00-4:00 PM",
-			"AP Calculus",
+			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
 		).WillReturnResult(result)
@@ -94,7 +94,7 @@ func TestInsertAFH(t *testing.T) {
 		Title:      "AP Calculus Help",
 		Date:       date1,
 		TimeString: "2:00-4:00 PM",
-		Subject:    "AP Calculus",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}
@@ -125,7 +125,7 @@ func TestUpdateAFH(t *testing.T) {
 			"AP Stat Help",
 			date1,
 			"2:00-4:00PM",
-			"AP Stat",
+			domains.SUBJECT_MATH,
 			"room12",
 			domains.NewNullString("test note"),
 			1).
@@ -135,7 +135,7 @@ func TestUpdateAFH(t *testing.T) {
 		Title:      "AP Stat Help",
 		Date:       date1,
 		TimeString: "2:00-4:00PM",
-		Subject:    "AP Stat",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "room12",
 		Notes:      domains.NewNullString("test note"),
 	}
@@ -193,7 +193,7 @@ func getAFHRows() *sqlmock.Rows {
 			"AP Calculus Help",
 			testUtils.TimeNow,
 			"3:00-5:00PM",
-			"AP Calculus",
+			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
 		)
@@ -208,7 +208,7 @@ func getAskForHelp() domains.AskForHelp {
 		Title:      "AP Calculus Help",
 		Date:       testUtils.TimeNow,
 		TimeString: "3:00-5:00PM",
-		Subject:    "AP Calculus",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}

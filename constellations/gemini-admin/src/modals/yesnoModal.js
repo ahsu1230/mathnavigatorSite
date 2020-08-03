@@ -1,10 +1,9 @@
 "use strict";
-require("./yesnoModal.styl");
+require("./yesnoModal.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 
 export class YesNoModal extends React.Component {
-    render() {
+    render = () => {
         const text = this.props.text;
         const rejectText = this.props.rejectText || "No";
         const acceptText = this.props.acceptText || "Yes";
@@ -21,5 +20,5 @@ export class YesNoModal extends React.Component {
                 </button>
             </div>
         );
-    }
+    };
 }

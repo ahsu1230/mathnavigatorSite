@@ -1,5 +1,5 @@
 "use strict";
-require("./app.styl");
+require("./app.sass");
 import React from "react";
 import ReactDOM from "react-dom";
 import { withRouter } from "react-router";
@@ -20,6 +20,15 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+
+import { UserPage } from "./user/user.js";
+import { UserEditPage } from "./user/userEdit.js";
+import { UserClassPage } from "./user/userClass.js";
+import { UserAFHPage } from "./user/userAFH.js";
+import { AccountPage } from "./account/account.js";
+import { AccountEditPage } from "./account/accountEdit.js";
+import { TransactionEditPage } from "./account/accountTransactionEdit.js";
+
 import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./ask_for_help/afh.js";
 import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
@@ -61,6 +70,21 @@ const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
+
+const User = () => <UserPage />;
+const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
+const UserAddMatch = ({ match }) => (
+    <UserEditPage accountId={match.params.accountId} />
+);
+const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
+const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
+const Account = () => <AccountPage />;
+const AccountEdit = () => <AccountEditPage />;
+const AccountTransactionEdit = () => <TransactionEditPage />;
+const AccountTransactionEditMatch = ({ match }) => (
+    <TransactionEditPage id={match.params.id} />
+);
+
 const Help = () => <HelpPage />;
 const AFH = () => <AskForHelpPage />;
 const AFHEdit = () => <AskForHelpEditPage />;
@@ -126,6 +150,32 @@ class App extends React.Component {
                     />
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
+
+                    <Route path="/users/:id/edit" component={UserEditMatch} />
+                    <Route
+                        path="/users/:accountId/add"
+                        component={UserAddMatch}
+                    />
+                    <Route
+                        path="/users/:id/class/edit"
+                        component={UserClassMatch}
+                    />
+                    <Route
+                        path="/users/:id/afh/edit"
+                        component={UserAFHMatch}
+                    />
+                    <Route path="/users" component={User} />
+                    <Route
+                        path="/accounts/transaction/:id/edit"
+                        component={AccountTransactionEditMatch}
+                    />
+                    <Route
+                        path="/accounts/transaction/add"
+                        component={AccountTransactionEdit}
+                    />
+                    <Route path="/accounts/add" component={AccountEdit} />
+                    <Route path="/accounts" component={Account} />
+
                     <Route path="/help" component={Help} />
                     <Route path="/afh/:afhId/edit" component={AFHMatch} />
                     <Route path="/afh/add" component={AFHEdit} />
