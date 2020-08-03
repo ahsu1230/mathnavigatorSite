@@ -66,24 +66,21 @@ export class ClassEditPage extends React.Component {
                         }
                     );
 
-                    let selectedProgramId;
-                    let selectedSemesterId;
-                    let selectedLocationId;
-                    if (programs.length) {
-                        selectedProgramId = hasClassId
-                            ? classObj.programId
-                            : programs[0].programId;
-                    }
-                    if (semesters.length) {
-                        selectedSemesterId = hasClassId
-                            ? classObj.semesterId
-                            : semesters[0].semesterId;
-                    }
-                    if (locations.length) {
-                        selectedLocationId = hasClassId
-                            ? classObj.locationId
-                            : locations[0].locationId;
-                    }
+                    let selectedProgramId = hasClassId
+                        ? classObj.programId
+                        : programs.length
+                        ? programs[0].programId
+                        : undefined;
+                    let selectedSemesterId = hasClassId
+                        ? classObj.semesterId
+                        : semesters.length
+                        ? semesters[0].semesterId
+                        : undefined;
+                    let selectedLocationId = hasClassId
+                        ? classObj.locationId
+                        : programs.length
+                        ? locations[0].locationId
+                        : undefined;
 
                     this.setState({
                         isEdit: !!classId,

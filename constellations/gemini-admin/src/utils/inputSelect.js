@@ -56,7 +56,7 @@ export class InputSelect extends React.Component {
         return formatDescription;
     };
 
-    renderSelect = (options) => {
+    renderSelect = (options, value) => {
         if (options.length) {
             var optionElements = options.map((option, index) => (
                 <option key={index} value={option.value}>
@@ -65,15 +65,18 @@ export class InputSelect extends React.Component {
             ));
 
             var defaultOption = this.props.hasNoDefault ? (
-                <option disabled value="">
+                <option disabled selected value>
                     -- Select an option --
                 </option>
             ) : null;
 
+            value =
+                this.props.hasNoDefault && !this.state.chosen
+                    ? undefined
+                    : value;
+
             return (
-                <select
-                    defaultValue={""}
-                    onChange={(e) => this.onChangeSelect(e)}>
+                <select value={value} onChange={(e) => this.onChangeSelect(e)}>
                     {defaultOption}
                     {optionElements}
                 </select>
@@ -99,11 +102,11 @@ export class InputSelect extends React.Component {
             required,
             pass
         );
-        var select = this.renderSelect(this.props.options);
+        var select = this.renderSelect(this.props.options, this.props.value);
 
         return (
             <div id="text-input-wrapper">
-                <h2>{this.props.label}</h2>
+                <h2 className="inputLabel">{this.props.label}</h2>
                 {formatDescription}
                 <div id="input-wrapper">
                     {select}
