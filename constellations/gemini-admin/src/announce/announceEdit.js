@@ -172,6 +172,7 @@ export class AnnounceEditPage extends React.Component {
 
                 <InputText
                     label="Author"
+                    description="Input your name"
                     required={true}
                     value={this.state.inputAuthor}
                     onChangeCallback={(e) =>
