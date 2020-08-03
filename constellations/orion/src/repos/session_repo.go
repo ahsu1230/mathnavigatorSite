@@ -20,11 +20,9 @@ type sessionRepo struct {
 type SessionRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAllByClassId(string, bool) ([]domains.Session, error)
-	SelectAllUnpublished() ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert([]domains.Session) error
 	Update(uint, domains.Session) error
-	Publish([]uint) error
 	Delete([]uint) error
 }
 
@@ -59,7 +57,6 @@ func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([
 			&session.CreatedAt,
 			&session.UpdatedAt,
 			&session.DeletedAt,
-			&session.PublishedAt,
 			&session.ClassId,
 			&session.StartsAt,
 			&session.EndsAt,
@@ -70,40 +67,6 @@ func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([
 		results = append(results, session)
 	}
 
-	return results, nil
-}
-
-func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
-	results := make([]domains.Session, 0)
-
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var session domains.Session
-		if errScan := rows.Scan(
-			&session.Id,
-			&session.CreatedAt,
-			&session.UpdatedAt,
-			&session.DeletedAt,
-			&session.PublishedAt,
-			&session.ClassId,
-			&session.StartsAt,
-			&session.EndsAt,
-			&session.Canceled,
-			&session.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, session)
-	}
 	return results, nil
 }
 
@@ -121,7 +84,6 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.DeletedAt,
-		&session.PublishedAt,
 		&session.ClassId,
 		&session.StartsAt,
 		&session.EndsAt,
@@ -185,7 +147,6 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
 		"updated_at=?, " +
-		"published_at=?, " +
 		"class_id=?, " +
 		"starts_at=?, " +
 		"ends_at=?, " +
@@ -200,7 +161,6 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		session.PublishedAt,
 		session.ClassId,
 		session.StartsAt,
 		session.EndsAt,
@@ -212,34 +172,6 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 	}
 
 	return utils.HandleSqlExecResult(result, 1, "session was not updated")
-}
-
-func (sr *sessionRepo) Publish(ids []uint) error {
-	var errorString string
-
-	tx, err := sr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE sessions SET published_at=? WHERE id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, id := range ids {
-		_, err := stmt.Exec(now, id)
-		if err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
-		}
-	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
 }
 
 func (sr *sessionRepo) Delete(ids []uint) error {

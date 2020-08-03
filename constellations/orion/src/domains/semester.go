@@ -9,14 +9,13 @@ import (
 var TABLE_SEMESTERS = "semesters"
 
 type Semester struct {
-	Id          uint      `json:"id"`
-	CreatedAt   time.Time `json:"-" db:"created_at"`
-	UpdatedAt   time.Time `json:"-" db:"updated_at"`
-	DeletedAt   NullTime  `json:"-" db:"deleted_at"`
-	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
-	SemesterId  string    `json:"semesterId" db:"semester_id"`
-	Title       string    `json:"title"`
-	Ordering    uint      `json:"ordering" db:"ordering"`
+	Id         uint      `json:"id"`
+	CreatedAt  time.Time `json:"-" db:"created_at"`
+	UpdatedAt  time.Time `json:"-" db:"updated_at"`
+	DeletedAt  NullTime  `json:"-" db:"deleted_at"`
+	SemesterId string    `json:"semesterId" db:"semester_id"`
+	Title      string    `json:"title"`
+	Ordering   uint      `json:"ordering" db:"ordering"`
 }
 
 // Class Methods

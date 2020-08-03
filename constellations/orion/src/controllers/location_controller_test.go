@@ -174,28 +174,6 @@ func TestUpdateLocation_Failure(t *testing.T) {
 }
 
 //
-// Test Publish
-//
-func TestPublishLocations_Success(t *testing.T) {
-	testUtils.LocationRepo.MockPublish = func(LocationIds []string) error {
-		return nil // Successful publish
-	}
-	repos.LocationRepo = &testUtils.LocationRepo
-
-	// Create new HTTP request to endpoint
-	LocationIds := []string{"loc1", "loc2"}
-	marshal, err := json.Marshal(LocationIds)
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-//
 // Test Delete
 //
 func TestDeleteLocation_Success(t *testing.T) {

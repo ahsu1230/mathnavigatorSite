@@ -73,21 +73,6 @@ func UpdateSession(c *gin.Context) {
 	return
 }
 
-func PublishSessions(c *gin.Context) {
-	// Incoming JSON
-	var idsJson []uint
-	c.BindJSON(&idsJson)
-
-	err := repos.SessionRepo.Publish(idsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func DeleteSessions(c *gin.Context) {
 	// Incoming Parameters
 	var idsJson []uint

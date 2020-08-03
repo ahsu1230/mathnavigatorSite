@@ -189,45 +189,6 @@ func TestUpdateSemester_Failure(t *testing.T) {
 }
 
 //
-// Test Publish
-//
-func TestPublishSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockPublish = func(semesterId []string) error {
-		return nil // Return no error, successful publish!
-	}
-	repos.SemesterRepo = &testUtils.SemesterRepo
-
-	// Create new HTTP request to endpoint
-	semesterIds := []string{"2020_fall"}
-	marshal, err := json.Marshal(semesterIds)
-	if err != nil {
-		panic(err)
-	}
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/publish", bytes.NewBuffer(marshal))
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestPublishSemesters_Failure(t *testing.T) {
-	testUtils.SemesterRepo.MockPublish = func(semesterId []string) error {
-		return errors.New("not found")
-	}
-	repos.SemesterRepo = &testUtils.SemesterRepo
-
-	// Create new HTTP request to endpoint
-	semesterIds := []string{"2020_fall"}
-	marshal, err := json.Marshal(semesterIds)
-	if err != nil {
-		panic(err)
-	}
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/publish", bytes.NewBuffer(marshal))
-
-	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
 // Test Delete
 //
 func TestDeleteSemester_Success(t *testing.T) {

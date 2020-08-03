@@ -78,21 +78,6 @@ func UpdateLocation(c *gin.Context) {
 	return
 }
 
-func PublishLocations(c *gin.Context) {
-	// Incoming JSON
-	var locationIdsJson []string
-	c.BindJSON(&locationIdsJson)
-
-	err := repos.LocationRepo.Publish(locationIdsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
 func DeleteLocation(c *gin.Context) {
 	// Incoming Parameters
 	locationId := c.Param("locationId")

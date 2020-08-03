@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -21,11 +20,9 @@ type semesterRepo struct {
 type SemesterRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectAll(bool) ([]domains.Semester, error)
-	SelectAllUnpublished() ([]domains.Semester, error)
 	SelectBySemesterId(string) (domains.Semester, error)
 	Insert(domains.Semester) error
 	Update(string, domains.Semester) error
-	Publish([]string) error
 	Delete(string) error
 }
 
@@ -60,39 +57,6 @@ func (sr *semesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error
 			&semester.CreatedAt,
 			&semester.UpdatedAt,
 			&semester.DeletedAt,
-			&semester.PublishedAt,
-			&semester.SemesterId,
-			&semester.Title,
-			&semester.Ordering); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, semester)
-	}
-	return results, nil
-}
-
-func (sr *semesterRepo) SelectAllUnpublished() ([]domains.Semester, error) {
-	results := make([]domains.Semester, 0)
-
-	stmt, err := sr.db.Prepare("SELECT * FROM semesters WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var semester domains.Semester
-		if errScan := rows.Scan(
-			&semester.Id,
-			&semester.CreatedAt,
-			&semester.UpdatedAt,
-			&semester.DeletedAt,
-			&semester.PublishedAt,
 			&semester.SemesterId,
 			&semester.Title,
 			&semester.Ordering); errScan != nil {
@@ -118,7 +82,6 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 		&semester.CreatedAt,
 		&semester.UpdatedAt,
 		&semester.DeletedAt,
-		&semester.PublishedAt,
 		&semester.SemesterId,
 		&semester.Title,
 		&semester.Ordering)
@@ -177,34 +140,6 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 		return err
 	}
 	return utils.HandleSqlExecResult(execResult, 1, "semester was not updated")
-}
-
-func (sr *semesterRepo) Publish(semesterIds []string) error {
-	var errorString string
-
-	tx, err := sr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE semesters SET published_at=? WHERE semester_id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, semesterId := range semesterIds {
-		_, err := stmt.Exec(now, semesterId)
-		if err != nil {
-			errorString = utils.AppendError(errorString, semesterId, err)
-		}
-	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
 }
 
 func (sr *semesterRepo) Delete(semesterId string) error {

@@ -75,20 +75,6 @@ func UpdateSemester(c *gin.Context) {
 	}
 }
 
-func PublishSemesters(c *gin.Context) {
-	// Incoming JSON
-	var semesterIds []string
-	c.BindJSON(&semesterIds)
-
-	err := repos.SemesterRepo.Publish(semesterIds)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-}
-
 func DeleteSemester(c *gin.Context) {
 	// Incoming Parameters
 	semesterId := c.Param("semesterId")

@@ -23,29 +23,14 @@ func callGetUnpublishedRepos() (domains.UnpublishedDomains, error) {
 	if err != nil {
 		return domains.UnpublishedDomains{}, err
 	}
-	locationList, err := repos.LocationRepo.SelectAllUnpublished()
-	if err != nil {
-		return domains.UnpublishedDomains{}, err
-	}
 	achieveList, err := repos.AchieveRepo.SelectAllUnpublished()
-	if err != nil {
-		return domains.UnpublishedDomains{}, err
-	}
-	semesterList, err := repos.SemesterRepo.SelectAllUnpublished()
-	if err != nil {
-		return domains.UnpublishedDomains{}, err
-	}
-	sessionList, err := repos.SessionRepo.SelectAllUnpublished()
 	if err != nil {
 		return domains.UnpublishedDomains{}, err
 	}
 
 	unpublishedDomains := domains.UnpublishedDomains{
-		Classes:   classList,
-		Locations: locationList,
-		Achieves:  achieveList,
-		Semesters: semesterList,
-		Sessions:  sessionList,
+		Classes:  classList,
+		Achieves: achieveList,
 	}
 
 	return unpublishedDomains, nil
