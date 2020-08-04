@@ -64,10 +64,11 @@ func CreateMockProgram(programId string, name string, grade1 uint, grade2 uint, 
 	}
 }
 
-func CreateMockSemester(semesterId string, title string) domains.Semester {
+func CreateMockSemester(semesterId string, title string, ordering uint) domains.Semester {
 	return domains.Semester{
 		SemesterId: semesterId,
 		Title:      title,
+		Ordering:   ordering,
 	}
 }
 

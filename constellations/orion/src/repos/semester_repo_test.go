@@ -138,11 +138,12 @@ func TestInsertSemester(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO semesters").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "2020_fall", "Fall 2020").
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "2020_fall", "Fall 2020", 1).
 		WillReturnResult(result)
 	semester := domains.Semester{
 		SemesterId: "2020_fall",
 		Title:      "Fall 2020",
+		Ordering:   1,
 	}
 	err := repo.Insert(semester)
 	if err != nil {
@@ -166,11 +167,12 @@ func TestUpdateSemester(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE semesters SET (.*) WHERE semester_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "2021_spring", "Spring 2021", "2020_fall").
+		WithArgs(sqlmock.AnyArg(), "2021_spring", "Spring 2021", 1, "2020_fall").
 		WillReturnResult(result)
 	semester := domains.Semester{
 		SemesterId: "2021_spring",
 		Title:      "Spring 2021",
+		Ordering:   1,
 	}
 	err := repo.Update("2020_fall", semester)
 	if err != nil {
@@ -237,7 +239,7 @@ func TestDeleteSemester(t *testing.T) {
 // Helper Methods
 //
 func getSemesterRows() *sqlmock.Rows {
-	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "SemesterId", "Title"}).
+	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "SemesterId", "Title", "Ordering"}).
 		AddRow(
 			1,
 			testUtils.TimeNow,
@@ -246,6 +248,7 @@ func getSemesterRows() *sqlmock.Rows {
 			domains.NullTime{},
 			"2020_fall",
 			"Fall 2020",
+			1,
 		)
 }
 
@@ -258,5 +261,6 @@ func getSemester() domains.Semester {
 		PublishedAt: domains.NullTime{},
 		SemesterId:  "2020_fall",
 		Title:       "Fall 2020",
+		Ordering:    1,
 	}
 }
