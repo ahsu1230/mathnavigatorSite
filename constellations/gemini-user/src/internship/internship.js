@@ -24,7 +24,7 @@ export class InternshipPage extends React.Component {
                 </p>
                 <h1>Technology Stack</h1>
 
-                <div class="container-main">
+                <div className="container-main">
                     <img src={ReactImg} />
                     <p>
                         ReactJs, created by Facebook, is a popular web framework
@@ -33,7 +33,7 @@ export class InternshipPage extends React.Component {
                     </p>
                 </div>
 
-                <div class="container-main">
+                <div className="container-main">
                     <img src={GoLangImg} />
                     <p>
                         Golang, created by Google, is an open source programming
@@ -42,7 +42,7 @@ export class InternshipPage extends React.Component {
                     </p>
                 </div>
 
-                <div class="container-main">
+                <div className="container-main">
                     <img src={MySQLImg} />
                     <p>
                         MySQL, developed by Oracle, is the most popular
@@ -51,7 +51,7 @@ export class InternshipPage extends React.Component {
                     </p>
                 </div>
 
-                <div class="container-main">
+                <div className="container-main">
                     <img src={DockerImg} />
                     <p>
                         Docker is the leading containerization platform that
@@ -60,7 +60,7 @@ export class InternshipPage extends React.Component {
                     </p>
                 </div>
 
-                <div class="container-main">
+                <div className="container-main">
                     <img src={CircleImg} />
                     <p>
                         CircleCI is a modern continuous integration platform
@@ -79,50 +79,47 @@ export class InternshipPage extends React.Component {
                 </p>
 
                 <h4>Past Interns:</h4>
-                <div class="intern-main">
-                    <p class="name">Cathy Y.</p>{" "}
-                    <p class="school">Richard Montgomery HS 2020</p>
-                    <p>Massachusetts Institute of Technology (MIT)</p>
+                <div className="intern-main">
+                    <span className="name">Cathy Y.</span>
+                    <span className="school">Richard Montgomery HS 2020</span>
+                    <span className="college">
+                        Massachusetts Institute of Technology (MIT)
+                    </span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Tony W.</p>{" "}
-                    <p class="school">Richard Montgomery HS 2021</p>
-                    <p />
+                <div className="intern-main">
+                    <span className="name">Tony W.</span>
+                    <span className="school">Richard Montgomery HS 2021</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Jessica Y.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2020</p>
-                    <p>University of Maryland</p>
+                <div className="intern-main">
+                    <span className="name">Jessica Y.</span>
+                    <span className="school">Montgomery Blair HS 2020</span>
+                    <span className="college">University of Maryland</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Max Z.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2021</p>
-                    <p />
+                <div className="intern-main">
+                    <span className="name">Max Z.</span>
+                    <span className="school">Montgomery Blair HS 2021</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Chujia G.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2022</p>
-                    <p />
+                <div className="intern-main">
+                    <span className="name">Chujia G.</span>
+                    <span className="school">Montgomery Blair HS 2022</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Frederick Z.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2023</p>
-                    <p />
+                <div className="intern-main">
+                    <span className="name">Frederick Z.</span>
+                    <span className="school">Montgomery Blair HS 2023</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Austin H.</p>{" "}
-                    <p class="school">Winston Churchill HS 2017</p>
-                    <p>Carnegie Mellon University</p>
+                <div className="intern-main">
+                    <span className="name">Austin H.</span>
+                    <span className="school">Winston Churchill HS 2017</span>
+                    <span className="college">Carnegie Mellon University</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Serena X.</p>{" "}
-                    <p class="school">Winston Churchill HS 2020</p>
-                    <p>University of Pennsylvania</p>
+                <div className="intern-main">
+                    <span className="name">Serena X.</span>
+                    <span className="school">Winston Churchill HS 2020</span>
+                    <span className="college">University of Pennsylvania</span>
                 </div>
-                <div class="intern-main">
-                    <p class="name">Daniel L.</p>{" "}
-                    <p class="school">Winston Churchill HS 2021</p>
-                    <p />
+                <div className="intern-main">
+                    <span className="name">Daniel L.</span>
+                    <span className="school">Winston Churchill HS 2021</span>
                 </div>
 
                 <p>
