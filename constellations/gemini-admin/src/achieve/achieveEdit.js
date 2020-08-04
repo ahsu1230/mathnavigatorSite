@@ -8,6 +8,7 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class AchieveEditPage extends React.Component {
     constructor(props) {
@@ -169,12 +170,7 @@ export class AchieveEditPage extends React.Component {
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputMessage")
                     }
-                    validators={[
-                        {
-                            validate: (text) => text != "",
-                            message: "You must input a message",
-                        },
-                    ]}
+                    validators={[emptyValidator("message")]}
                 />
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>

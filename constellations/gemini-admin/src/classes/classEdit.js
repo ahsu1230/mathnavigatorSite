@@ -8,6 +8,7 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -294,12 +295,7 @@ export class ClassEditPage extends React.Component {
                         onChangeCallback={(e) =>
                             this.handleChange(e, "inputTimeString")
                         }
-                        validators={[
-                            {
-                                validate: (text) => text != "",
-                                message: "You must input a time string",
-                            },
-                        ]}
+                        validators={[emptyValidator("time")]}
                     />
 
                     <h4 className="availability">Class Availability</h4>

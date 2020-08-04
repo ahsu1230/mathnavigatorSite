@@ -7,6 +7,7 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class SemesterEditPage extends React.Component {
     constructor(props) {
@@ -166,10 +167,7 @@ export class SemesterEditPage extends React.Component {
                         this.handleIdChange(e, "inputSemesterId")
                     }
                     validators={[
-                        {
-                            validate: (text) => text != "",
-                            message: "You must input a semester ID",
-                        },
+                        emptyValidator("semester ID"),
                         {
                             validate: (text) => text == text.toLowerCase(),
                             message: "The semester ID must be all lowercase",
@@ -182,12 +180,7 @@ export class SemesterEditPage extends React.Component {
                     required={true}
                     value={this.state.inputTitle}
                     onChangeCallback={(e) => this.handleChange(e, "inputTitle")}
-                    validators={[
-                        {
-                            validate: (text) => text != "",
-                            message: "You must input a title",
-                        },
-                    ]}
+                    validators={[emptyValidator("title")]}
                 />
 
                 <div className="buttons">
