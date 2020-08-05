@@ -7,6 +7,8 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class AchieveEditPage extends React.Component {
     constructor(props) {
@@ -146,15 +148,29 @@ export class AchieveEditPage extends React.Component {
             <div id="view-achieve-edit">
                 {modalDiv}
                 <h2>{title}</h2>
-                <h4>Year</h4>
-                <input
+                <InputText
+                    label="Year"
+                    description="Enter the achievement year"
+                    required={true}
                     value={this.state.inputYear}
-                    onChange={(e) => this.handleChange(e, "inputYear")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputYear")}
+                    validators={[
+                        {
+                            validate: (text) => parseInt(text) > 2000,
+                            message: "You must input a year greater than 2000",
+                        },
+                    ]}
                 />
-                <h4>Message</h4>
-                <input
+                <InputText
+                    label="Message"
+                    description="Enter the achievement message"
+                    isTextBox={true}
+                    required={true}
                     value={this.state.inputMessage}
-                    onChange={(e) => this.handleChange(e, "inputMessage")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputMessage")
+                    }
+                    validators={[emptyValidator("message")]}
                 />
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>

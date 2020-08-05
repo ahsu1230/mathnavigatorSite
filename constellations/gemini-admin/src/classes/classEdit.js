@@ -10,6 +10,7 @@ import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
 import { InputSelect } from "../utils/inputSelect.js";
 import { Link } from "react-router-dom";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -326,20 +327,17 @@ export class ClassEditPage extends React.Component {
                         }
                     />
 
-                    <h4>Display Time</h4>
-                    <p>
-                        A display string to convey to users the class session
-                        time every week. Each class session should be separated
-                        by a comma.
-                        <br />
-                        Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm
-                    </p>
-                    <input
+                    <InputText
+                        label="Display Time"
+                        description="A display string to convey to users the class session
+                                    time every week. Each class session should be separated
+                                    by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
+                        required={true}
                         value={this.state.inputTimeString}
-                        placeholder="i.e. Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm"
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "inputTimeString")
                         }
+                        validators={[emptyValidator("time")]}
                     />
 
                     <InputSelect

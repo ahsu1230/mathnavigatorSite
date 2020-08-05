@@ -6,6 +6,8 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class SemesterEditPage extends React.Component {
     constructor(props) {
@@ -47,6 +49,15 @@ export class SemesterEditPage extends React.Component {
 
     handleChange(event, value) {
         this.setState({ [value]: event.target.value });
+    }
+
+    handleIdChange(event, value) {
+        this.setState({ [value]: event.target.value });
+        var possibleTitle =
+            event.target.value.substring(5) +
+            " " +
+            event.target.value.substring(0, 4);
+        this.setState({ inputTitle: possibleTitle });
     }
 
     onClickSave() {
@@ -147,16 +158,29 @@ export class SemesterEditPage extends React.Component {
                 {modalDiv}
                 <h2>{title}</h2>
 
-                <h4>Semester ID</h4>
-                <input
+                <InputText
+                    label="Semester ID"
+                    description="Must be in the form year_season (e.g. 2020_fall or 2020_winter)"
+                    required={true}
                     value={this.state.inputSemesterId}
-                    onChange={(e) => this.handleChange(e, "inputSemesterId")}
+                    onChangeCallback={(e) =>
+                        this.handleIdChange(e, "inputSemesterId")
+                    }
+                    validators={[
+                        emptyValidator("semester ID"),
+                        {
+                            validate: (text) => text == text.toLowerCase(),
+                            message: "The semester ID must be all lowercase",
+                        },
+                    ]}
                 />
 
-                <h4>Title</h4>
-                <input
+                <InputText
+                    label="Title"
+                    required={true}
                     value={this.state.inputTitle}
-                    onChange={(e) => this.handleChange(e, "inputTitle")}
+                    onChangeCallback={(e) => this.handleChange(e, "inputTitle")}
+                    validators={[emptyValidator("title")]}
                 />
 
                 <div className="buttons">
