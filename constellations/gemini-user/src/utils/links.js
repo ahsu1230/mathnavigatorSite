@@ -56,8 +56,8 @@ const mainLinks = [
     {
         id: "account",
         name: "Account",
-        url: "/account"
-    }
+        url: "/account",
+    },
 ];
 const allLinks = concat(mainLinks, subLinksPrograms, subLinksAchieve);
 

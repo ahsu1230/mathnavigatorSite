@@ -26,7 +26,7 @@ import { HomePage } from "../home/home.js";
 // import { ProgramsPage } from '../programs/programs.js';
 // import { StudentProjectsPage } from '../student/studentProjects.js';
 // import { StudentWebDevPage } from '../student/studentWebDev.js';
-import { AccountPage } from '../account/account.js';
+import { AccountPage } from "../account/account.js";
 
 const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
@@ -88,7 +88,7 @@ class App extends React.Component {
                     {/* <Route path="/student-webdev" component={StudentWebDev}/>
           <Route path="/student-projects" component={StudentProjects}/>
           <Route path="/" component={Error}/> */}
-                    
+
                     <Route path="/account" component={Account} />
                 </Switch>
                 <Footer />
