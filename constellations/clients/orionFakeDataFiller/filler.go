@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -9,19 +10,28 @@ import (
 	"time"
 )
 
-// This CLI sends http requests to a local orion webserver.
+// This CLI sends http requests to a LOCAL orion webserver.
+// This script should not be used for a non-local orion webserver!
 // Make sure orion is healthy before running this CLI
 //
 // You can run this CLI using:
 // go run filler.go
+// go run filler.go --orionHost http://localhost:8080
 //
 // or via a binary:
 // go build filler.go
 // ./filler
 
+var DEFAULT_LOCAL_ORION_HOST string = "http://localhost:8001"
+
 func main() {
 	log.Println("Orion Fake Data Filler Client starting...")
-	runFiller("http://localhost:8001")
+
+	var orionHost string
+	flag.StringVar(&orionHost, "orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
+	flag.Parse()
+
+	runFiller(orionHost)
 
 	log.Println("Done filling orion")
 }
