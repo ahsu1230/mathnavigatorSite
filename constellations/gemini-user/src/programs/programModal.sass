@@ -1,0 +1,75 @@
+@import "../utils/_constants.sass"
+
+.program-modal
+    width: $propUnit14x
+    padding: $spacing1x $spacing6x $spacing2x
+    box-shadow: 0px 2px 8px $colorBlackDark
+    background-color: $colorWhite
+
+    @media screen and (max-width: $mediaWidth1)
+        width: 100%
+        box-sizing: border-box
+    
+    h1
+        margin-bottom: $spacing4x
+        border-bottom: 1px solid $colorBlackDark
+        color: $colorBlackDark
+        font-family: $fontFamilyRoboto
+        line-height: $propUnit2x
+        font-size: $fontSize1
+        font-weight: 400
+
+        @media screen and (max-width: $mediaWidth1)
+            text-align: center
+
+    ul
+        margin-bottom: $spacing4x
+        padding: 0
+
+        &.use-scrollbar
+            max-height: $propUnit2x
+            padding-right: $spacing2x
+            overflow-y: scroll
+
+    li
+        display: flex
+        justify-content: space-between
+        align-items: center
+        margin-bottom: $spacing2x
+        list-style: none
+        font-family: $fontFamilyRoboto
+        line-height: $lineHeight0
+        font-size: $fontSize0
+
+        @media screen and (max-width: $mediaWidth1)
+            flex-flow: column nowrap
+
+    .name
+        display: inline-block
+        width: $propUnit3x
+        margin-right: $spacing2x
+        color: $colorPrimary
+
+        @media screen and (max-width: $mediaWidth1)
+            display: block
+            width: auto
+            margin: 0
+            text-align: center
+    
+    .times
+        display: inline-flex
+        flex-flow: column nowrap
+        width: $propUnit7x
+    
+        @media screen and (max-width: $mediaWidth1)
+            display: flex
+            text-align: center
+
+    a
+        float: right
+
+        @media screen and (max-width: $mediaWidth1)
+            float: none
+            display: block
+            margin: $spacing1x 0 $spacing4x
+            text-align: center

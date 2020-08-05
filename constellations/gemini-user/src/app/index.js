@@ -17,13 +17,13 @@ import { AchievementPage } from "../achievements/achievements.js";
 import { InternshipPage } from "../internship/internship.js";
 import { AFHPage } from "../afh/afh.js";
 import { AnnouncePage } from "../announcements/announce.js";
-// import { ClassPage } from '../class/class.js';
+import { ClassPage } from "../class/class.js";
 // import { ContactPage } from '../contact/contact.js';
 // import { ErrorPage } from '../errorPage/error.js';
 import Footer from "../footer/footer.js";
 import { Header as HeaderComponent } from "../header/header.js";
 import { HomePage } from "../home/home.js";
-// import { ProgramsPage } from '../programs/programs.js';
+import { ProgramsPage } from "../programs/programs.js";
 // import { StudentProjectsPage } from '../student/studentProjects.js';
 // import { StudentWebDevPage } from '../student/studentWebDev.js';
 
@@ -31,12 +31,12 @@ const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
 const Internship = () => <InternshipPage />;
 const Announce = () => <AnnouncePage />;
-// const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
+const ClassPageWithSlug = ({ match }) => <ClassPage slug={match.params.slug} />;
 // const Contact = () => <ContactPageRouter/>;
 // const ContactPageRouter = withRouter(ContactPage);
 const Header = withRouter(HeaderComponent);
 const Home = () => <HomePage />;
-// const Programs = () => <ProgramsPage/>;
+const Programs = () => <ProgramsPage />;
 // const StudentWebDev = () => <StudentWebDevPage/>;
 // const StudentProjects = () => <StudentProjectsPage/>;
 // const AFH = () => <AFHPage/>;
@@ -73,10 +73,10 @@ class App extends React.Component {
 
                     <Route path="/announcements" component={Announce} />
                     <Route path="/ask-for-help" component={AFH} />
-                    {/* <Route path="/programs" component={Programs}/>
-          <Route path="/contact" component={Contact}/>
-          <Route path="/class/:slug" component={ClassPageWithSlug}/>
-         */}
+                    <Route path="/programs" component={Programs} />
+                    {/* <Route path="/contact" component={Contact}/> */}
+                    <Route path="/class/:slug" component={ClassPageWithSlug} />
+
                     <Route
                         path="/student-achievements"
                         component={Achievements}

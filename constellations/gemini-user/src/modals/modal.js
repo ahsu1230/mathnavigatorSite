@@ -1,6 +1,8 @@
 "use strict";
 require("./modal.sass");
 import React from "react";
+import srcClose from "../../assets/close_black.svg";
+
 const classnames = require("classnames");
 
 export class Modal extends React.Component {
@@ -26,7 +28,7 @@ export class Modal extends React.Component {
         if (withClose) {
             closeButton = (
                 <button className="close-x" onClick={this.handleDismiss}>
-                    Close
+                    <img src={srcClose} />
                 </button>
             );
         }
