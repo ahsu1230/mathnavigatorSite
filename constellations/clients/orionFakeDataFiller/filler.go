@@ -329,7 +329,7 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 
 	for i := 0; i < numSessions; i++ {
 		startJson, _ := start.MarshalJSON()
-		end := start.Add(time.Hour * 2 * 30)
+		end := start.Add(time.Hour * 2)
 		endJson, _ := end.MarshalJSON()
 
 		body += fmt.Sprintf(`{
@@ -342,6 +342,8 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 		if i < numSessions-1 {
 			body += ","
 		}
+
+		start = start.Add(time.Week * 1)
 	}
 	body += "]"
 	sessionBody := strings.NewReader(body)
