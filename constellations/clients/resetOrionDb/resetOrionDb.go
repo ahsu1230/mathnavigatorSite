@@ -10,10 +10,12 @@ import (
 
 // This script exists to easily reset contents of a MySQL server
 // However, if you are using Docker, it's better to use these commands:
+// (from the constellations folder)
 //
 // docker-compose kill db-mysql
 // docker-compose rm db-mysql
 // docker-compose up -d db-mysql
+// docker-compose restart orion
 //
 // If you are using MySQL to support your orion webserver,
 // this CLI connects directly to the MySQL server.
@@ -28,19 +30,21 @@ import (
 // ./resetOrionDb
 
 func main() {
-	fmt.Println("Fetching database information from environment variables...")
+	fmt.Println("Fetching database information...")
+
+	// You may retrieve database information using environment variables
 	dbHost := os.Getenv("DB_HOST")
 	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbDefault := os.Getenv("DB_DEFAULT")
 
-	// Or feel free to hard code the values
+	// Or feel free to hard code the values yourself
 	// dbHost := "127.0.0.1"
 	// dbPort := 3308
 	// dbUser := "user"
 	// dbPassword := "password"
-	// dbDefault := "mathnavdb"
+	// dbDefault := "mathnavdb"			// default database. This shouldn't change
 
 	connection := createConnectionInfo(dbHost, dbPort, dbUser, dbPassword, dbDefault)
 	fmt.Println("Connecting to database... ", connection)
@@ -72,6 +76,7 @@ func resetTable(db *sql.DB, tableName string) error {
 	return nil
 }
 
+// Reset tables (from the orion codebase)
 func resetAllTables(db *sql.DB) {
 	resetTable(db, "sessions")
 	resetTable(db, "classes")
