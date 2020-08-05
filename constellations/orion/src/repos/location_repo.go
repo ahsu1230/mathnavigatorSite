@@ -17,7 +17,7 @@ type locationRepo struct {
 
 type LocationRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll(bool) ([]domains.Location, error)
+	SelectAll() ([]domains.Location, error)
 	SelectByLocationId(string) (domains.Location, error)
 	Insert(domains.Location) error
 	Update(string, domains.Location) error
@@ -28,13 +28,11 @@ func (lr *locationRepo) Initialize(db *sql.DB) {
 	lr.db = db
 }
 
-func (lr *locationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error) {
+func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
 	results := make([]domains.Location, 0)
 
 	statement := "SELECT * FROM locations"
-	if publishedOnly {
-		statement += " WHERE published_at IS NOT NULL"
-	}
+
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
 		return nil, err

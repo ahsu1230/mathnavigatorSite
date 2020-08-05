@@ -19,7 +19,7 @@ type programRepo struct {
 // Interface to implement
 type ProgramRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll(bool) ([]domains.Program, error)
+	SelectAll() ([]domains.Program, error)
 	SelectByProgramId(string) (domains.Program, error)
 	Insert(domains.Program) error
 	Update(string, domains.Program) error
@@ -30,13 +30,11 @@ func (pr *programRepo) Initialize(db *sql.DB) {
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
+func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
-	if publishedOnly {
-		statement += " WHERE published_at IS NOT NULL"
-	}
+
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return nil, err

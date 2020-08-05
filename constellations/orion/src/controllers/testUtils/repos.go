@@ -24,7 +24,7 @@ var UserAfhRepo mockUserAfhRepo
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
 	MockInitialize        func(*sql.DB)
-	MockSelectAll         func(bool) ([]domains.Program, error)
+	MockSelectAll         func() ([]domains.Program, error)
 	MockSelectByProgramId func(string) (domains.Program, error)
 	MockInsert            func(domains.Program) error
 	MockUpdate            func(string, domains.Program) error
@@ -33,8 +33,8 @@ type mockProgramRepo struct {
 
 // Implement methods of ProgramRepo interface with mocked implementations
 func (programRepo *mockProgramRepo) Initialize(db *sql.DB) {}
-func (programRepo *mockProgramRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
-	return programRepo.MockSelectAll(publishedOnly)
+func (programRepo *mockProgramRepo) SelectAll() ([]domains.Program, error) {
+	return programRepo.MockSelectAll()
 }
 func (programRepo *mockProgramRepo) SelectByProgramId(programId string) (domains.Program, error) {
 	return programRepo.MockSelectByProgramId(programId)
@@ -100,7 +100,7 @@ func (classRepo *mockClassRepo) Delete(classId string) error {
 // Fake locationRepo that implements LocationRepo interface
 type mockLocationRepo struct {
 	MockInitialize         func(*sql.DB)
-	MockSelectAll          func(bool) ([]domains.Location, error)
+	MockSelectAll          func() ([]domains.Location, error)
 	MockSelectByLocationId func(string) (domains.Location, error)
 	MockInsert             func(domains.Location) error
 	MockUpdate             func(string, domains.Location) error
@@ -109,8 +109,8 @@ type mockLocationRepo struct {
 
 // Implement methods of LocationRepo interface with mocked implementations
 func (locationRepo *mockLocationRepo) Initialize(db *sql.DB) {}
-func (locationRepo *mockLocationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error) {
-	return locationRepo.MockSelectAll(publishedOnly)
+func (locationRepo *mockLocationRepo) SelectAll() ([]domains.Location, error) {
+	return locationRepo.MockSelectAll()
 }
 func (locationRepo *mockLocationRepo) SelectByLocationId(locationId string) (domains.Location, error) {
 	return locationRepo.MockSelectByLocationId(locationId)
@@ -196,7 +196,7 @@ func (achieveRepo *mockAchieveRepo) Delete(id uint) error {
 // Fake semesterRepo that implements SemesterRepo interface
 type mockSemesterRepo struct {
 	MockInitialize         func(*sql.DB)
-	MockSelectAll          func(bool) ([]domains.Semester, error)
+	MockSelectAll          func() ([]domains.Semester, error)
 	MockSelectBySemesterId func(string) (domains.Semester, error)
 	MockInsert             func(domains.Semester) error
 	MockUpdate             func(string, domains.Semester) error
@@ -205,8 +205,8 @@ type mockSemesterRepo struct {
 
 // Implement methods of SemesterRepo interface with mocked implementations
 func (semesterRepo *mockSemesterRepo) Initialize(db *sql.DB) {}
-func (semesterRepo *mockSemesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error) {
-	return semesterRepo.MockSelectAll(publishedOnly)
+func (semesterRepo *mockSemesterRepo) SelectAll() ([]domains.Semester, error) {
+	return semesterRepo.MockSelectAll()
 }
 func (semesterRepo *mockSemesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
 	return semesterRepo.MockSelectBySemesterId(semesterId)
@@ -224,7 +224,7 @@ func (semesterRepo *mockSemesterRepo) Delete(semesterId string) error {
 // Fake sessionRepo that implements SessionRepo interface
 type mockSessionRepo struct {
 	MockInitialize         func(*sql.DB)
-	MockSelectAllByClassId func(string, bool) ([]domains.Session, error)
+	MockSelectAllByClassId func(string) ([]domains.Session, error)
 	MockSelectBySessionId  func(uint) (domains.Session, error)
 	MockInsert             func([]domains.Session) error
 	MockUpdate             func(uint, domains.Session) error
@@ -233,8 +233,8 @@ type mockSessionRepo struct {
 
 // Implement methods of SessionRepo interface with mocked implementations
 func (sessionRepo *mockSessionRepo) Initialize(db *sql.DB) {}
-func (sessionRepo *mockSessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
-	return sessionRepo.MockSelectAllByClassId(classId, publishedOnly)
+func (sessionRepo *mockSessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
+	return sessionRepo.MockSelectAllByClassId(classId)
 }
 func (sessionRepo *mockSessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 	return sessionRepo.MockSelectBySessionId(id)

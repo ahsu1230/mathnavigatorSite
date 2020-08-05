@@ -18,7 +18,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,

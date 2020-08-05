@@ -34,7 +34,7 @@ func TestSelectAllPrograms(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll(false)
+	got, err := repo.SelectAll()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

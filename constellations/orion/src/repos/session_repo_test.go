@@ -44,7 +44,7 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAllByClassId("id_1", false)
+	got, err := repo.SelectAllByClassId("id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

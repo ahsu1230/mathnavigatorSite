@@ -19,7 +19,7 @@ type sessionRepo struct {
 
 type SessionRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAllByClassId(string, bool) ([]domains.Session, error)
+	SelectAllByClassId(string) ([]domains.Session, error)
 	SelectBySessionId(uint) (domains.Session, error)
 	Insert([]domains.Session) error
 	Update(uint, domains.Session) error
@@ -30,15 +30,11 @@ func (sr *sessionRepo) Initialize(db *sql.DB) {
 	sr.db = db
 }
 
-func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
+func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
 	results := make([]domains.Session, 0)
 
-	var statement string
-	if publishedOnly {
-		statement = "SELECT * FROM sessions WHERE class_id=? AND published_at IS NOT NULL ORDER BY starts_at ASC"
-	} else {
-		statement = "SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC"
-	}
+	statement := "SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC"
+
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return nil, err

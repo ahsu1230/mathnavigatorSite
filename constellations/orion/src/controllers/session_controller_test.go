@@ -20,7 +20,7 @@ import (
 //
 func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
+	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,

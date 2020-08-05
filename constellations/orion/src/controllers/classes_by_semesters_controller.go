@@ -15,8 +15,8 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	// Fetch programs, semesters, classes from repo functions
 	publishedOnly := ParseParamPublishedOnly(c)
 
-	programs, err := repos.ProgramRepo.SelectAll(publishedOnly)
-	semesters, err := repos.SemesterRepo.SelectAll(publishedOnly)
+	programs, err := repos.ProgramRepo.SelectAll()
+	semesters, err := repos.SemesterRepo.SelectAll()
 	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
 
 	// Convert lists into maps

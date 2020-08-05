@@ -19,7 +19,7 @@ type semesterRepo struct {
 // Interface to implement
 type SemesterRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll(bool) ([]domains.Semester, error)
+	SelectAll() ([]domains.Semester, error)
 	SelectBySemesterId(string) (domains.Semester, error)
 	Insert(domains.Semester) error
 	Update(string, domains.Semester) error
@@ -30,15 +30,11 @@ func (sr *semesterRepo) Initialize(db *sql.DB) {
 	sr.db = db
 }
 
-func (sr *semesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error) {
+func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	results := make([]domains.Semester, 0)
 
-	var query string
-	if publishedOnly {
-		query = "SELECT * FROM semesters WHERE published_at IS NOT NULL ORDER BY ordering ASC"
-	} else {
-		query = "SELECT * FROM semesters ORDER BY ordering ASC"
-	}
+	query := "SELECT * FROM semesters ORDER BY ordering ASC"
+
 	stmt, err := sr.db.Prepare(query)
 	if err != nil {
 		return nil, err

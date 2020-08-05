@@ -10,9 +10,7 @@ import (
 
 func GetAllSemesters(c *gin.Context) {
 	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	semesterList, err := repos.SemesterRepo.SelectAll(publishedOnly)
+	semesterList, err := repos.SemesterRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

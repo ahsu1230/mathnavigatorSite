@@ -10,9 +10,8 @@ import (
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
-	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId, publishedOnly)
+	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

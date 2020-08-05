@@ -18,7 +18,7 @@ import (
 // Test Get All
 //
 func TestGetAllSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester("2020_fall", "Fall 2020", 1),
 			testUtils.CreateMockSemester("2020_winter", "Winter 2020", 2),
@@ -48,7 +48,7 @@ func TestGetAllSemesters_Success(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester("2020_fall", "Fall 2020", 1),
 			testUtils.CreateMockSemester("2020_winter", "Winter 2020", 2),
