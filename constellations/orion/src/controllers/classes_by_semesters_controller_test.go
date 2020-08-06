@@ -115,6 +115,11 @@ func TestProgramWithNoClass_Success(t *testing.T) {
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return []domains.Class{}, nil
+	}
+
+	repos.ClassRepo = &testUtils.ClassRepo
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
@@ -125,16 +130,22 @@ func TestProgramWithNoClass_Success(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
-	assert.EqualValues(t, "program1", results[0].ProgramClasses[0].ProgramObj.ProgramId)
 }
 
 func TestSemesterWithNoPrograms_Success(t *testing.T) {
 	// Mock one semester with no programs or classes
+	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+		return []domains.Program{}, nil
+	}
+
 	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return []domains.Class{}, nil
+	}
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
