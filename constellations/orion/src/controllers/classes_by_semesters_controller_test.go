@@ -118,8 +118,8 @@ func TestProgramWithNoClass_Success(t *testing.T) {
 	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return []domains.Class{}, nil
 	}
-
 	repos.ClassRepo = &testUtils.ClassRepo
+
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
@@ -137,6 +137,7 @@ func TestSemesterWithNoPrograms_Success(t *testing.T) {
 	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
 		return []domains.Program{}, nil
 	}
+	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
@@ -146,6 +147,8 @@ func TestSemesterWithNoPrograms_Success(t *testing.T) {
 	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
 		return []domains.Class{}, nil
 	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
