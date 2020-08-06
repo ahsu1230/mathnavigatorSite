@@ -257,8 +257,8 @@ func Test_PublishAchievements(t *testing.T) {
 // Test: Create 2 Semesters and Publish 1
 func Test_PublishSemesters(t *testing.T) {
 	// Create
-	semester1 := createSemester("2020_fall", "Fall 2020")
-	semester2 := createSemester("2020_winter", "Winter 2020")
+	semester1 := createSemester("2020_fall", "Fall 2020", 1)
+	semester2 := createSemester("2020_winter", "Winter 2020", 2)
 	body1 := utils.CreateJsonBody(&semester1)
 	body2 := utils.CreateJsonBody(&semester2)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
@@ -323,8 +323,8 @@ func Test_PublishSessions(t *testing.T) {
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	prog2 := createProgram("slow_track", "Slow Track", 1, 12, "descript1", 1)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	semester1 := createSemester("2020_spring", "Spring 2020")
-	semester2 := createSemester("2020_fall", "Fall 2020")
+	semester1 := createSemester("2020_spring", "Spring 2020", 1)
+	semester2 := createSemester("2020_fall", "Fall 2020", 2)
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", start, end)
 	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm", start, end)
 	session1 := createSession("fast_track_2020_spring_class_A", mid, end, false, "special lecture from guest")

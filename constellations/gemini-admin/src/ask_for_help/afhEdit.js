@@ -206,9 +206,9 @@ export class AskForHelpEditPage extends React.Component {
                 <select
                     value={this.state.subject}
                     onChange={(e) => this.handleChange(e, "subject")}>
-                    <option>Math</option>
-                    <option>English</option>
-                    <option>Computer Programming</option>
+                    <option>math</option>
+                    <option>english</option>
+                    <option>programming</option>
                 </select>
 
                 <h3>Location ID</h3>

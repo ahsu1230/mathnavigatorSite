@@ -65,6 +65,15 @@ func runFiller(hostAddress string) {
 		"Students should take the course if they aim to take the SAT Math Exam",
 	)
 
+	createProgram(
+		hostAddress,
+		"amc_prep",
+		"AMC Prep",
+		"9",
+		"12",
+		"Students should take the course if they aim to take the AMC Test",
+	)
+
 	// Create semesters
 	createSemester(
 		hostAddress,
@@ -155,6 +164,76 @@ func runFiller(hostAddress string) {
 		"class1",
 		"ap_java_2020_fall_class1",
 		"house1",
+		"Wed 1pm - 2pm",
+	)
+
+	createClass(
+		hostAddress,
+		"amc_prep",
+		"2020_fall",
+		"class1",
+		"amc_prep_2020_fall_class1",
+		"house1",
+		"Thurs 1pm - 2pm",
+	)
+
+	createClass(
+		hostAddress,
+		"ap_calculus",
+		"2021_summer",
+		"class1",
+		"ap_calculus_2021_summer_class1",
+		"wchs",
+		"Tues 5pm - 7pm",
+	)
+
+	createClass(
+		hostAddress,
+		"ap_calculus",
+		"2021_summer",
+		"class2",
+		"ap_calculus_2021_summer_class2",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
+
+	createClass(
+		hostAddress,
+		"ap_calculus",
+		"2021_summer",
+		"class3",
+		"ap_calculus_2021_summer_class3",
+		"wchs",
+		"Wed 1pm - 2pm",
+	)
+
+	createClass(
+		hostAddress,
+		"ap_java",
+		"2021_summer",
+		"class1",
+		"ap_java_2021_summer_class1",
+		"house1",
+		"Tues 5pm - 7pm",
+	)
+
+	createClass(
+		hostAddress,
+		"ap_calculus",
+		"2021_winter",
+		"class1",
+		"ap_calculus_2021_winter_class1",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
+
+	createClass(
+		hostAddress,
+		"sat_math",
+		"2021_winter",
+		"class1",
+		"sat_math_2021_winter_class1",
+		"wchs",
 		"Tues 1pm - 2pm",
 	)
 

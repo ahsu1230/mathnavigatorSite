@@ -1,5 +1,5 @@
 "use strict";
-require("./header.styl");
+require("./header.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -38,6 +38,20 @@ const LinkMap = {
             url: "/afh",
         },
     ],
+    accounts: [
+        {
+            title: "Search Users",
+            url: "/users",
+        },
+        {
+            title: "Search Accounts",
+            url: "/accounts",
+        },
+        {
+            title: "Create New Primary Account",
+            url: "/accounts/add",
+        },
+    ],
 };
 
 export class HeaderSection extends React.Component {
@@ -49,9 +63,9 @@ export class HeaderSection extends React.Component {
                 </h2>
                 <div id="header-left">
                     <HeaderDropdown id={"site"} title={"Site"} />
-                    <HeaderLink title={"Accounts"} url={"/accounts"} />
+                    <HeaderDropdown id={"accounts"} title={"Accounts"} />
                     <HeaderLink title={"Help"} url={"/help"} />
-                    <span>Sign Out</span>
+                    <span className="header-section">Sign Out</span>
                 </div>
             </div>
         );
@@ -84,21 +98,24 @@ class HeaderDropdown extends React.Component {
     };
 
     render() {
-        const title = this.props.title;
         const links = LinkMap[this.props.id].map((link, index) => {
             return <HeaderDropdownRow key={index} link={link} />;
         });
-        const listStyle = {
-            height: this.state.hover ? 32 * links.length + "px" : "0px",
-        };
 
         return (
             <div
                 className="header-dropdown header-section"
                 onMouseOver={this.onHoverHeader}
                 onMouseOut={this.onExitHeader}>
-                <div className="title">{title}</div>
-                <ul style={listStyle}>{links}</ul>
+                <div className={this.state.hover ? "title orange" : "title"}>
+                    {this.props.title}
+                </div>
+                <ul
+                    className={
+                        this.state.hover ? "dropdown expand" : "dropdown"
+                    }>
+                    {links}
+                </ul>
             </div>
         );
     }

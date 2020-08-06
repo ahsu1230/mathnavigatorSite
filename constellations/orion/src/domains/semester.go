@@ -16,6 +16,7 @@ type Semester struct {
 	PublishedAt NullTime  `json:"publishedAt" db:"published_at"`
 	SemesterId  string    `json:"semesterId" db:"semester_id"`
 	Title       string    `json:"title"`
+	Ordering    uint      `json:"ordering" db:"ordering"`
 }
 
 // Class Methods

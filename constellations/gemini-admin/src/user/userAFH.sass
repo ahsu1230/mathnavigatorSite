@@ -1,0 +1,66 @@
+@import "../_.constants.sass"
+
+#view-user-afh
+    width: 100%
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+
+    h2
+        margin: $spacing4x 0 $spacing2x
+        font-size: $fontSize3
+        color: $colorTurquoise
+
+    .users-back
+        font-size: $fontSize3
+        text-decoration: none
+    
+    p
+        margin: $spacing1x 0
+
+    #user-afh
+        max-width: $spacing96x
+        margin-top: $spacing6x
+
+        .row
+            display: flex
+            align-items: center
+            justify-content: space-between
+            border-bottom: 1px solid $colorGrayLight
+        
+            span
+                padding: 20px
+                padding-left: 0
+
+        .header
+            border-bottom: 2px solid $colorGrayDark
+
+        .column
+            flex: 2 1 0        
+
+        .large-column
+            flex: 3 1 0
+
+        .status
+            text-align: right
+    
+    #user-schedule
+        margin-top: $spacing6x
+
+        h2
+            margin-bottom: $spacing4x
+
+        span
+            color: $colorRed
+
+        select
+            width: $spacing32x
+            height: $spacing4x
+            margin-right: $spacing8x
+            padding: 4px $spacing1x
+            border-radius: 6px
+
+        button
+            margin: $spacing1x 0
+            padding: 12px $spacing2x
+            color: $colorWhite
+            background-color: $colorTurquoise

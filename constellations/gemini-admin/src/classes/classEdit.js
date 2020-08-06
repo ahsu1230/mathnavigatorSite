@@ -3,11 +3,12 @@ require("./classEdit.sass");
 import axios from "axios";
 import React from "react";
 import moment from "moment";
-import API from "../api.js";
+import API, { executeApiCalls } from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -284,20 +285,17 @@ export class ClassEditPage extends React.Component {
                         {locationOptions}
                     </select>
 
-                    <h4>Display Time</h4>
-                    <p>
-                        A display string to convey to users the class session
-                        time every week. Each class session should be separated
-                        by a comma.
-                        <br />
-                        Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm
-                    </p>
-                    <input
+                    <InputText
+                        label="Display Time"
+                        description="A display string to convey to users the class session
+                                    time every week. Each class session should be separated
+                                    by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
+                        required={true}
                         value={this.state.inputTimeString}
-                        placeholder="i.e. Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm"
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "inputTimeString")
                         }
+                        validators={[emptyValidator("time")]}
                     />
 
                     <h4 className="availability">Class Availability</h4>
@@ -425,38 +423,4 @@ function renderModal(
         );
     }
     return modalDiv;
-}
-
-function executeApiCalls(apiCalls, successCallback, failCallback) {
-    console.log("Reducing " + apiCalls.length);
-
-    let fnResolveTask = function (nextApi) {
-        return new Promise((resolve, reject) => {
-            nextApi
-                .then((resp) => {
-                    console.log("Success: " + moment().format("hh:mm:ss"));
-                    resolve(resp.data);
-                })
-                .catch((res) => {
-                    console.log("Failure: " + moment().format("hh:mm:ss"));
-                    reject(res.response.data);
-                });
-        });
-    };
-
-    let sequence = apiCalls.reduce((accumulatorPromise, nextApi) => {
-        console.log(`Loop! ${moment().format("hh:mm:ss")}`);
-        return accumulatorPromise.then(() => {
-            return fnResolveTask(nextApi);
-        });
-    }, Promise.resolve());
-    sequence
-        .then((results) => {
-            console.log("All success!");
-            successCallback(results);
-        })
-        .catch((results) => {
-            console.log("One error?");
-            failCallback(results);
-        });
 }

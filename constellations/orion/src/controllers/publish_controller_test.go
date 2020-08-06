@@ -59,8 +59,8 @@ func setupMock() {
 	}
 	testUtils.SemesterRepo.MockSelectAllUnpublished = func() ([]domains.Semester, error) {
 		return []domains.Semester{
-			testUtils.CreateMockSemester("2020_fall", "Fall 2020"),
-			testUtils.CreateMockSemester("2020_winter", "Winter 2020"),
+			testUtils.CreateMockSemester("2020_fall", "Fall 2020", 1),
+			testUtils.CreateMockSemester("2020_winter", "Winter 2020", 2),
 		}, nil
 	}
 	testUtils.SessionRepo.MockSelectAllUnpublished = func() ([]domains.Session, error) {
