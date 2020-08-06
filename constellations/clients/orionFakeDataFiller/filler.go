@@ -69,8 +69,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"amc_prep",
 		"AMC Prep",
-		"9",
-		"12",
+		9,
+		12,
 		"Students should take the course if they aim to take the AMC Test",
 	)
 
