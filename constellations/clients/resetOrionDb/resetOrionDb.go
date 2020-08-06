@@ -3,9 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	// "os"
-	// "strconv"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
+	"strconv"
 )
 
 // This script exists to easily reset contents of a MySQL server
