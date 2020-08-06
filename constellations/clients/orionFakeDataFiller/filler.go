@@ -42,8 +42,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"ap_calculus",
 		"AP Calculus",
-		"9",
-		"12",
+		9,
+		12,
 		"Students should take this course if they aim to take the AP Calculus Exam",
 	)
 
@@ -51,8 +51,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"ap_java",
 		"AP Java",
-		"10",
-		"12",
+		10,
+		12,
 		"Students should take this course if they aim to take the AP Java Exam",
 	)
 
@@ -60,8 +60,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"sat_math",
 		"SAT Math",
-		"8",
-		"11",
+		8,
+		11,
 		"Students should take the course if they aim to take the SAT Math Exam",
 	)
 
@@ -173,6 +173,17 @@ func runFiller(hostAddress string) {
 		2,
 	)
 
+	// Create Accounts
+	createAccount(
+		hostAddress,
+		"emailaddress1@gmail.com",
+		"jhdgjhddjhdjuj",
+	)
+	createAccount(hostAddress,
+		"emailaddress2@gmail.com",
+		"2redssssa",
+	)
+
 	// Create Users
 	createUser(
 		hostAddress,
@@ -202,17 +213,6 @@ func runFiller(hostAddress string) {
 		2002,
 	)
 
-	// Create Accounts
-	createAccount(
-		hostAddress,
-		"emailaddress1@gmail.com",
-		"jhdgjhddjhdjuj",
-	)
-	createAccount(hostAddress,
-		"emailaddress2@gmail.com",
-		"2redssssa",
-	)
-
 	// Create transactions
 	createTransaction(
 		hostAddress,
@@ -229,22 +229,14 @@ func runFiller(hostAddress string) {
 		"notes2",
 		2,
 	)
-
-	createTransaction(
-		hostAddress,
-		102,
-		"pay_check",
-		"notes3",
-		3,
-	)
 }
 
-func createProgram(hostAddress, programId string, name string, grade1 string, grade2 string, description string) error {
+func createProgram(hostAddress, programId string, name string, grade1, grade2 int, description string) error {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
-		"grade1": %s,
-		"grade2": %s,
+		"grade1": %d,
+		"grade2": %d,
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
 	log.Println("Creating program " + programId + "...")
@@ -343,7 +335,7 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 			body += ","
 		}
 
-		start = start.Add(time.Week * 1)
+		start = start.Add(time.Hour * 24 * 7)
 	}
 	body += "]"
 	sessionBody := strings.NewReader(body)
@@ -355,15 +347,15 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 
 func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian int, account_id int, notes, school string, graduation_year int) error {
 	userBody := strings.NewReader(fmt.Sprintf(`{
-		"firstName": %s
-		"lastName": %s
-		"middleName": %s
-		"email": %s
-		"phone": %s
-		"isGuardian": %d
-		"accountId": %d
-		"notes": %s
-		"school": %s
+		"firstName": "%s",
+		"lastName": "%s",
+		"middleName": "%s",
+		"email": "%s",
+		"phone": "%s",
+		"isGuardian": %d,
+		"accountId": %d,
+		"notes": "%s",
+		"school": "%s",
 		"graduationYear": %d
 	}`, first_name, last_name, middle_name, email, phone, is_guardian, account_id, notes, school, graduation_year))
 	log.Println("Creating user " + first_name + "...")
@@ -373,20 +365,20 @@ func createUser(hostAddress, first_name, last_name, middle_name, email, phone st
 
 func createAccount(hostAddress, primary_email, password string) error {
 	accountBody := strings.NewReader(fmt.Sprintf(`{
-		"primaryEmail": %s
-		"password": %s
+		"primaryEmail": "%s",
+		"password": "%s"
 	}`, primary_email, password))
 	log.Println("Creating account " + primary_email + "...")
-	sendPostRequest(hostAddress+"/api/account/create", accountBody)
+	sendPostRequest(hostAddress+"/api/accounts/create", accountBody)
 	return nil
 }
 
 func createTransaction(hostAddress string, amount int, paymentType string, paymentNotes string, accountId int) error {
 	transactionBody := strings.NewReader(fmt.Sprintf(`{
-		"amount": "%d"
-		"paymentType": "%s"
-		"paymentNotes": "%s"
-		"accountId": "%d"
+		"amount": %d,
+		"paymentType": "%s",
+		"paymentNotes": "%s",
+		"accountId": %d
 		}`, amount, paymentType, paymentNotes, accountId))
 	log.Println("Creating transaction " + paymentNotes + "...")
 	sendPostRequest(hostAddress+"/api/transactions/create", transactionBody)
