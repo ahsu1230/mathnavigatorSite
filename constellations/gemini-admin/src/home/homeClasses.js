@@ -56,3 +56,26 @@ export class HomeTabSectionClasses extends React.Component {
         );
     }
 }
+
+export class ClassesNotif extends React.Component {
+    state = {
+        unpubClasses: [],
+    };
+
+    // need a counter to keep track of the number of unpublished classes => unpubClasses.length
+    //unpublished classes
+    componentDidMount() {
+        API.get("api/unpublished").then((res) => {
+            const unpublishedList = res.data;
+            this.setState({
+                unpubClasses: unpublishedList.classes,
+            });
+        });
+    }
+
+    render() {
+        let numClasses = this.state.unpubClasses.length;
+
+        return { numClasses };
+    }
+}
