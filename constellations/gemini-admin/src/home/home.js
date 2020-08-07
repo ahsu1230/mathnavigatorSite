@@ -1,11 +1,15 @@
 "use strict";
 require("./home.sass");
 import React from "react";
+import { HomeTabSectionClasses } from "./homeClasses.js";
+import { HomeTabSectionUsers } from "./homeUsers.js";
+import { HomeTabSectionRegistrations } from "./homeRegistrations.js";
+import { HomeTabSectionAccounts } from "./homeAccounts.js";
 
 const sectionDisplayNames = {
     class: "Unpublished Classes",
-    registration: "New Registrations",
     user: "New Users",
+    registration: "New Registrations",
     unpaid: "Unpaid Accounts",
 };
 
@@ -21,6 +25,18 @@ export class HomePage extends React.Component {
     };
 
     render() {
+        var sectionComponent = <div></div>;
+
+        if (this.state.currentSection == "class") {
+            sectionComponent = <HomeTabSectionClasses />;
+        } else if (this.state.currentSection == "user") {
+            sectionComponent = <HomeTabSectionUsers />;
+        } else if (this.state.currentSection == "registration") {
+            sectionComponent = <HomeTabSectionRegistrations />;
+        } else if (this.state.currentSection == "unpaid") {
+            sectionComponent = <HomeTabSectionAccounts />;
+        }
+
         return (
             <div id="view-home">
                 <h1>Administrator Dashboard</h1>
@@ -33,13 +49,13 @@ export class HomePage extends React.Component {
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "registration"}
-                        section={"registration"}
+                        highlight={this.state.currentSection == "user"}
+                        section={"user"}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "user"}
-                        section={"user"}
+                        highlight={this.state.currentSection == "registration"}
+                        section={"registration"}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
@@ -48,9 +64,7 @@ export class HomePage extends React.Component {
                     />
                 </div>
 
-                <div className="showSection">
-                    <HomeTabSection section={this.state.currentSection} />
-                </div>
+                <div className="showSection">{sectionComponent}</div>
             </div>
         );
     }

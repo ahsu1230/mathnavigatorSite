@@ -1,8 +1,10 @@
 "use strict";
-require("./home.sass");
+require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
+
+// does not work
 
 const sectionDisplayNames = {
     unpaid: "Unpaid Accounts",
@@ -12,6 +14,8 @@ export class HomeTabSectionAccounts extends React.Component {
     state = {
         unpaidAcc: [],
     };
+
+    // counter to keep track of the number of unpaid accounts => unpaidAcc.size
 
     //unpaid accounts
     componentDidMount() {
@@ -24,9 +28,6 @@ export class HomeTabSectionAccounts extends React.Component {
     }
 
     render() {
-        //same as sectionDisplayNames
-        let currentSection = this.props.section;
-
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
             return <li key={index}> {row.classId} </li>;
         });

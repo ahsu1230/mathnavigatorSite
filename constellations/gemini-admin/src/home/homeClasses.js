@@ -1,5 +1,5 @@
 "use strict";
-require("./home.sass");
+require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ export class HomeTabSectionClasses extends React.Component {
         unpubClasses: [],
     };
 
+    // need a counter to keep track of the number of unpublished classes => unpubClasses.size
     //unpublished classes
     componentDidMount() {
         API.get("api/unpublished").then((res) => {
@@ -24,17 +25,15 @@ export class HomeTabSectionClasses extends React.Component {
     }
 
     render() {
-        //same as sectionDisplayNames
-        let currentSection = this.props.section;
-
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
             return <li key={index}> {row.classId} </li>;
         });
+
         return (
             <div className="sectionDetails">
                 <div className="container-class">
                     <h3 className="section-header">Unpublished Classes</h3>{" "}
-                    <button id="publish">
+                    <button id="view-details">
                         <Link to={"/classes"}>View All Classes to Publish</Link>
                     </button>
                 </div>

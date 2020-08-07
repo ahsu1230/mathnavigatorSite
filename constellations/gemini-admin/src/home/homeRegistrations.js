@@ -1,8 +1,10 @@
 "use strict";
-require("./home.sass");
+require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
+
+// does not work
 
 const sectionDisplayNames = {
     registration: "New Registrations",
@@ -13,6 +15,8 @@ export class HomeTabSectionRegistrations extends React.Component {
         pendingReg: [],
         afhReg: [],
     };
+
+    // counter to keep track of the number of registrations => pendingReg.size + afhReg.size
 
     //pending registration for classes
     componentDidMount() {
@@ -35,12 +39,10 @@ export class HomeTabSectionRegistrations extends React.Component {
     }
 
     render() {
-        //same as sectionDisplayNames
-        let currentSection = this.props.section;
-
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
             return <li key={index}> {row.classId} </li>;
         });
+
         return (
             <div className="sectionDetails">
                 <div className="container-class">
