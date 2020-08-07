@@ -5,29 +5,14 @@ import API from "../api.js";
 import { Link } from "react-router-dom";
 
 const sectionDisplayNames = {
-    class: "Unpublished Classes",
     registration: "New Registrations",
-    user: "New Users",
-    unpaid: "Unpaid Accounts",
 };
 
-export class HomeTabSection extends React.Component {
+export class HomeTabSectionRegistrations extends React.Component {
     state = {
-        unpubClasses: [],
         pendingReg: [],
         afhReg: [],
-        unpaidAcc: [],
     };
-
-    //unpublished classes
-    componentDidMount() {
-        API.get("api/unpublished").then((res) => {
-            const unpublishedList = res.data;
-            this.setState({
-                unpubClasses: unpublishedList.classes,
-            });
-        });
-    }
 
     //pending registration for classes
     componentDidMount() {
@@ -45,16 +30,6 @@ export class HomeTabSection extends React.Component {
             const userAfh = res.data;
             this.setState({
                 afhReg: userAfh,
-            });
-        });
-    }
-
-    //unpaid accounts
-    componentDidMount() {
-        API.get("api/transactions").then((res) => {
-            const transaction = res.data;
-            this.setState({
-                unpaidAcc: transaction,
             });
         });
     }
