@@ -271,11 +271,25 @@ func runFiller(hostAddress string) {
 		"",
 		"emailaddress1@gmail.com",
 		"301-123-4567",
-		0,
+		false,
 		1,
 		"notes1",
 		"schoolone",
 		2001,
+	)
+
+	createUser(
+		hostAddress,
+		"Joe",
+		"Smith",
+		"Mom",
+		"emailaddress1@gmail.com",
+		"301-123-4567",
+		true,
+		1,
+		"notes1",
+		"",
+		0,
 	)
 
 	createUser(
@@ -285,11 +299,25 @@ func runFiller(hostAddress string) {
 		"Joe",
 		"emailaddress2@gmail.com",
 		"301-123-4568",
-		1,
+		false,
 		2,
 		"notes2",
 		"schooltwo",
 		2002,
+	)
+
+	createUser(
+		hostAddress,
+		"Billy",
+		"Bob",
+		"Joe Dad",
+		"emailaddress2@gmail.com",
+		"301-123-4568",
+		true,
+		2,
+		"notes2",
+		"",
+		0,
 	)
 
 	// Create transactions
@@ -305,6 +333,14 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		101,
 		"pay_cash",
+		"notes2",
+		2,
+	)
+
+	createTransaction(
+		hostAddress,
+		-300,
+		"charge",
 		"notes2",
 		2,
 	)
@@ -424,14 +460,14 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 	return nil
 }
 
-func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian int, account_id int, notes, school string, graduation_year int) error {
+func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian bool, account_id int, notes, school string, graduation_year int) error {
 	userBody := strings.NewReader(fmt.Sprintf(`{
 		"firstName": "%s",
 		"lastName": "%s",
 		"middleName": "%s",
 		"email": "%s",
 		"phone": "%s",
-		"isGuardian": %d,
+		"isGuardian": %t,
 		"accountId": %d,
 		"notes": "%s",
 		"school": "%s",
