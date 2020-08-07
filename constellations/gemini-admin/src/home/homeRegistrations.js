@@ -16,7 +16,7 @@ export class HomeTabSectionRegistrations extends React.Component {
         afhReg: [],
     };
 
-    // counter to keep track of the number of registrations => pendingReg.size + afhReg.size
+    // counter to keep track of the number of registrations => pendingReg.length + afhReg.length
 
     //pending registration for classes
     componentDidMount() {

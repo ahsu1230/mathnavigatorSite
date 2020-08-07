@@ -15,7 +15,7 @@ export class HomeTabSectionAccounts extends React.Component {
         unpaidAcc: [],
     };
 
-    // counter to keep track of the number of unpaid accounts => unpaidAcc.size
+    // counter to keep track of the number of unpaid accounts => unpaidAcc.length
 
     //unpaid accounts
     componentDidMount() {

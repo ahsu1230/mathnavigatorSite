@@ -46,21 +46,25 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "class"}
                         section={"class"}
+                        //unpubClasses.length in homeClasses
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "user"}
                         section={"user"}
+                        //newUsers.length in homeUsers
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "registration"}
                         section={"registration"}
+                        //pendingReg.length + afhReg.length in homeRegistrations
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "unpaid"}
                         section={"unpaid"}
+                        //unpaidAcc.length in homeAccounts
                     />
                 </div>
 

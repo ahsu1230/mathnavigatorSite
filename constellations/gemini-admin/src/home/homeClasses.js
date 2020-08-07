@@ -13,7 +13,7 @@ export class HomeTabSectionClasses extends React.Component {
         unpubClasses: [],
     };
 
-    // need a counter to keep track of the number of unpublished classes => unpubClasses.size
+    // need a counter to keep track of the number of unpublished classes => unpubClasses.length
     //unpublished classes
     componentDidMount() {
         API.get("api/unpublished").then((res) => {
@@ -25,6 +25,15 @@ export class HomeTabSectionClasses extends React.Component {
     }
 
     render() {
+        let numClasses = this.state.unpubClasses.length;
+
+        let publishedMessage = <div></div>;
+        if (numClasses == 0) {
+            publishedMessage = (
+                <p>All classes have been successfully published!</p>
+            );
+        }
+
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
             return <li key={index}> {row.classId} </li>;
         });
@@ -40,6 +49,7 @@ export class HomeTabSectionClasses extends React.Component {
 
                 <div className="class-section">
                     <div className="list-header">Class ID</div>
+                    {publishedMessage}
                     <ul>{unpublishedClasses}</ul>
                 </div>
             </div>

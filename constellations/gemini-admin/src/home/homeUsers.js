@@ -15,7 +15,7 @@ export class HomeTabSectionUsers extends React.Component {
         newUsers: [],
     };
 
-    // counter to keep track of the number of new users => newUsers.size
+    // counter to keep track of the number of new users => newUsers.length
 
     //new users
     componentDidMount() {
