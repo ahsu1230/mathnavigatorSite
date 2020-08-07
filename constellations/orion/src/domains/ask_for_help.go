@@ -32,7 +32,7 @@ func (askForHelp *AskForHelp) Validate() error {
 	subject := askForHelp.Subject
 
 	// Title validation
-	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches || len(title) > 256 {
+	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
 		return errors.New("invalid title")
 	}
 
