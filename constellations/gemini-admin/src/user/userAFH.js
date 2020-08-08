@@ -89,7 +89,7 @@ export class UserAFHPage extends React.Component {
             return {
                 value: afh.id,
                 displayName:
-                    moment(afh.date).format("1") +
+                    moment(afh.date).format("l") +
                     " " +
                     afh.subject +
                     " " +
