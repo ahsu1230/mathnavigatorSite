@@ -20,6 +20,7 @@
         
         & div:hover
             background-color: $colorWhiteLight
+            cursor: pointer
             
             
         & div.selected
@@ -55,6 +56,15 @@
             li
                 width: 33%
         
+        ul.vertical-centered
+            align-items: center
+        
+        ul.password
+            width: 60%
+            
+            input
+                width: 100%
+        
         ul.header
             margin-bottom: $spacing1x
             border-bottom: 1px solid $colorGrayLight
@@ -63,7 +73,33 @@
             li
                 padding: $spacing2x 0
                 
-                
+               
+    .header-two-items
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: space-between
+    
+    .buttons
+        display: flex
+        justify-content: space-between
+        width: calc(60% + 16px)
+        
+    #password-success
+        color: $colorPrimary
+        margin-left: $spacing2x
+    
+    button
+        border-radius: $spacing1x
+    
+    .btn-cancel
+        background-color: #787878
+    
+    input
+        padding: $spacing1x
+        border: 1px solid $colorGrayLight
+        border-radius: $spacing1x
+               
     
     #delete-message
         width: 60%

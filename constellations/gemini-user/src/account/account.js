@@ -9,6 +9,8 @@ import { union } from "lodash";
 export class AccountPage extends React.Component {
     state = {
         id: 1,
+        primaryEmail: "",
+        password: "",
 
         primaryEmail: "",
         users: [],
@@ -18,16 +20,18 @@ export class AccountPage extends React.Component {
         upcomingAFHs: [],
         locationsById: {},
 
-        selectedTab: "registrations",
+        selectedTab: "settings",
+
+        viewAllEnrolledClasses: false,
     };
 
     componentDidMount = () => {
-        const id = this.state.id;
+        const id = this.state.id; // Replace with signin later
 
         if (id) {
             API.get("api/accounts/account/" + id)
                 .then((res) => this.fetchData(res))
-                .catch((err) => this.fetchDataError(err));
+                .catch((err) => alert("Could not fetch data: " + err));
         }
     };
 
@@ -36,8 +40,7 @@ export class AccountPage extends React.Component {
         this.setState({
             id: id,
             primaryEmail: res.data.primaryEmail,
-            users: [],
-            transactions: [],
+            password: res.data.password,
         });
 
         Promise.all([
@@ -111,7 +114,7 @@ export class AccountPage extends React.Component {
                     });
                 });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => alert("Could not fetch data: " + err));
 
         API.get("api/transactions/account/" + id).then((res) =>
             this.setState({ transactions: res.data })
@@ -185,11 +188,11 @@ export class AccountPage extends React.Component {
                             Change primary contact
                         </Link>
                     </p>
-                    <p>
-                        <Link to="" className="orange">
-                            Change password...
-                        </Link>
-                    </p>
+                    <PasswordChange
+                        accountId={this.state.id}
+                        primaryEmail={this.state.primaryEmail}
+                        oldPassword={this.state.password}
+                    />
                 </div>
 
                 <div>
@@ -222,6 +225,12 @@ export class AccountPage extends React.Component {
         );
     };
 
+    toggleViewAllClasses = () => {
+        this.setState({
+            viewAllEnrolledClasses: !this.state.viewAllEnrolledClasses,
+        });
+    };
+
     renderClassList = (classes) => {
         if (!classes.length) {
             return <p>(No classes registered)</p>;
@@ -236,61 +245,103 @@ export class AccountPage extends React.Component {
     };
 
     renderRegistrations = () => {
-        const classRegistrationList = this.state.userClasses.map(
-            (user, index) => {
+        if (this.state.viewAllEnrolledClasses) {
+            const allClasses = [];
+            this.state.userClasses.map((user, index) => {
+                user.classes.map((c, index) => {
+                    allClasses.push({
+                        user: user.name,
+                        classInfo: c,
+                    });
+                });
+            });
+
+            const classRegistrationList = allClasses.map((c, index) => {
                 return (
                     <ul key={index} className="no-borders">
-                        <li className="li-med">
-                            <p>{user.name}</p>
-                        </li>
-                        <li className="li-large classes-list">
-                            {this.renderClassList(user.classes)}
+                        <li className="li-med">{c.user}</li>
+                        <li className="li-large">
+                            {c.classInfo.programName +
+                                " (" +
+                                c.classInfo.semester +
+                                ")"}
                         </li>
                     </ul>
                 );
-            }
-        );
-
-        const afhList = this.state.upcomingAFHs.map((afh, index) => {
-            let titleInfo = this.renderMultiline([afh.title, afh.subject]);
-            let dateInfo = this.renderMultiline([afh.date, afh.timeString]);
-
-            let loc = this.state.locationsById[afh.locationId];
-            let locInfo = this.renderMultiline([
-                loc.street,
-                loc.city + ", " + loc.state,
-                loc.room,
-            ]);
+            });
 
             return (
-                <ul key={index} className="no-borders three-columns">
-                    <li className="li-med">{titleInfo}</li>
-                    <li className="li-med">{dateInfo}</li>
-                    <li className="li-large">{locInfo}</li>
-                </ul>
+                <div className="tab-content">
+                    <div className="header-two-items">
+                        <h2>All Enrolled Classes</h2>
+                        <Link
+                            className="orange"
+                            onClick={this.toggleViewAllClasses}>
+                            View current enrollments
+                        </Link>
+                    </div>
+                    <div>{classRegistrationList}</div>
+                </div>
             );
-        });
+        } else {
+            const classRegistrationList = this.state.userClasses.map(
+                (user, index) => {
+                    return (
+                        <ul key={index} className="no-borders">
+                            <li className="li-med">
+                                <p>{user.name}</p>
+                            </li>
+                            <li className="li-large classes-list">
+                                {this.renderClassList(user.classes)}
+                            </li>
+                        </ul>
+                    );
+                }
+            );
 
-        return (
-            <div className="tab-content">
-                <div>
-                    <h2>Currently Enrolled Classes</h2>
-                    {classRegistrationList}
-                    <Link to="" className="orange">
-                        View all enrolled classes
-                    </Link>
-                </div>
-                <div>
-                    <h2>Upcoming Ask For Help Sessions</h2>
-                    <ul className="no-borders three-columns header">
-                        <li className="li-med">Title</li>
-                        <li className="li-med">Date</li>
-                        <li className="li-large">Location</li>
+            const afhList = this.state.upcomingAFHs.map((afh, index) => {
+                let titleInfo = this.renderMultiline([afh.title, afh.subject]);
+                let dateInfo = this.renderMultiline([afh.date, afh.timeString]);
+
+                let loc = this.state.locationsById[afh.locationId];
+                let locInfo = this.renderMultiline([
+                    loc.street,
+                    loc.city + ", " + loc.state,
+                    loc.room,
+                ]);
+
+                return (
+                    <ul key={index} className="no-borders three-columns">
+                        <li className="li-med">{titleInfo}</li>
+                        <li className="li-med">{dateInfo}</li>
+                        <li className="li-large">{locInfo}</li>
                     </ul>
-                    {afhList}
+                );
+            });
+
+            return (
+                <div className="tab-content">
+                    <div>
+                        <h2>Currently Enrolled Classes</h2>
+                        {classRegistrationList}
+                        <Link
+                            className="orange"
+                            onClick={this.toggleViewAllClasses}>
+                            View all enrolled classes
+                        </Link>
+                    </div>
+                    <div>
+                        <h2>Upcoming Ask For Help Sessions</h2>
+                        <ul className="no-borders three-columns header">
+                            <li className="li-med">Title</li>
+                            <li className="li-med">Date</li>
+                            <li className="li-large">Location</li>
+                        </ul>
+                        {afhList}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     };
 
     renderPayment = () => {
@@ -399,6 +450,122 @@ export class AccountPage extends React.Component {
                 <div id="tab-container">{tabButtons}</div>
 
                 {tabContent}
+            </div>
+        );
+    };
+}
+
+export class PasswordChange extends React.Component {
+    state = {
+        tabOpen: false,
+        successMessage: "",
+
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    };
+
+    onClickChange = () => {
+        this.setState({
+            tabOpen: !this.state.tabOpen,
+            successMessage: false,
+        });
+    };
+
+    onClickSave = () => {
+        if (
+            this.state.oldPassword == this.props.oldPassword &&
+            this.state.newPassword == this.state.confirmPassword
+        ) {
+            let account = {
+                primaryEmail: this.props.primaryEmail,
+                password: this.state.newPassword,
+            };
+            API.post(
+                "api/accounts/account/" + this.props.accountId,
+                account
+            ).then((res) =>
+                this.setState({
+                    tabOpen: false,
+                    successMessage: "New password saved!",
+                })
+            );
+        } else if (this.state.oldPassword == this.props.oldPassword) {
+            this.setState({ successMessage: "New password does not match" });
+        } else {
+            this.setState({ successMessage: "Old password is incorrect" });
+        }
+    };
+
+    handleChange = (event, value) => {
+        this.setState({ [value]: event.target.value });
+    };
+
+    render = () => {
+        const changePasswordDialog = this.state.tabOpen ? (
+            <div>
+                <ul className="no-borders vertical-centered password">
+                    <li className="li-med">Old password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "oldPassword")
+                            }
+                            value={this.state.oldPassword}
+                        />
+                    </li>
+                </ul>
+                <ul className="no-borders vertical-centered password">
+                    <li className="li-med">New password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "newPassword")
+                            }
+                            value={this.state.newPassword}
+                        />
+                    </li>
+                </ul>
+                <ul className="no-borders vertical-centered password">
+                    <li className="li-med">Confirm new password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "confirmPassword")
+                            }
+                            value={this.state.confirmPassword}
+                        />
+                    </li>
+                </ul>
+                <div className="buttons">
+                    <button className="btn-cancel" onClick={this.onClickChange}>
+                        Cancel
+                    </button>
+                    <button className="btn-save" onClick={this.onClickSave}>
+                        Save
+                    </button>
+                </div>
+            </div>
+        ) : (
+            ""
+        );
+
+        const successMessage = (
+            <span id="password-success">{this.state.successMessage}</span>
+        );
+
+        return (
+            <div>
+                <p>
+                    <Link className="orange" onClick={this.onClickChange}>
+                        Change password...
+                    </Link>
+                    {successMessage}
+                </p>
+                {changePasswordDialog}
             </div>
         );
     };
