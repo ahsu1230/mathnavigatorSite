@@ -4,29 +4,79 @@
     width: 80%
     margin: 0 auto $spacing16x
     
-    > div
-        margin: $spacing6x 0
-        
-    ul
+    #tab-container
         display: flex
         flex-direction: row
         align-items: center
-        width: auto
+        margin-bottom: $spacing6x
+        border-bottom: 1px solid $colorGrayLight
         
-        li
-            width: 25%
-            min-width: $spacing16x
-            margin: $spacing1x 0
-    
-    ul.has-edit
-        li:nth-last-child(2)
+        & div
+            padding: $spacing2x
             flex-grow: 1
+            border-bottom: 2px solid transparent
+            text-align: center
+            transition: 0.3s
+        
+        & div:hover
+            background-color: $colorWhiteLight
+            
+            
+        & div.selected
+            border-bottom: 2px solid $colorTurquoise
+    
+    .tab-content
+        > div
+            margin: $spacing6x 0
+            
+        ul
+            display: flex
+            flex-direction: row
+            align-items: stretch
+            
+            li
+                padding: $spacing3x 0
+                border-bottom: 1px solid $colorGrayLight
+                
+                & p
+                    margin: $spacing2x 0
+            
+            .li-med
+                width: $spacing32x
+            .li-large
+                flex-grow: 1
+        
+        ul.no-borders
+            li
+                padding: $spacing1x 0
+                border: none
+        
+        ul.three-columns
+            li
+                width: 33%
+        
+        ul.header
+            margin-bottom: $spacing1x
+            border-bottom: 1px solid $colorGrayLight
+            
+            
+            li
+                padding: $spacing2x 0
+                
+                
+    
+    #delete-message
+        width: 60%
+            
     
     a.edit
         margin-left: $spacing4x
     
-    a.red
+    .red
         color: #d91211
+    
+    .orange
+        color: $colorOrange
         
     h1,h2
         color: $colorTurquoise
@@ -35,12 +85,3 @@
     h1
         margin: $spacing12x 0 $spacing8x
         text-align: center
-        
-    hr
-        margin: $spacing2x 0
-    
-    p
-        margin: $spacing2x 0
-    
-    p.classList-item
-        margin: $spacing1x 0 0 $spacing4x
