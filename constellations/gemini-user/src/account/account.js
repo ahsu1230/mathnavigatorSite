@@ -5,6 +5,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import API from "../utils/api.js";
 import { union } from "lodash";
+import moment from "moment";
+
+const chargeDisplayNames = {
+    charge: "Charge",
+    refund: "Refund",
+    pay_check: "Paid (Check)",
+    pay_cash: "Paid (Cash)",
+    pay_paypal: "Paid (Paypal)",
+};
+const seasonOrder = ["spring", "summer", "fall", "winter"];
 
 export class AccountPage extends React.Component {
     state = {
@@ -89,8 +99,8 @@ export class AccountPage extends React.Component {
                                     matchedClass.semesterId
                             );
                             return {
-                                programName: matchedProgram.name,
-                                semester: matchedSemester.title,
+                                program: matchedProgram,
+                                semester: matchedSemester,
                             };
                         });
 
@@ -238,7 +248,7 @@ export class AccountPage extends React.Component {
         return classes.map((c, index) => {
             return (
                 <p key={index} className="classList-item">
-                    {c.programName + " (" + c.semester + ")"}
+                    {c.program.name + " (" + c.semester.title + ")"}
                 </p>
             );
         });
@@ -256,14 +266,32 @@ export class AccountPage extends React.Component {
                 });
             });
 
+            console.log(allClasses);
+            allClasses.sort((a, b) => {
+                let semA = a.classInfo.semester.semesterId.split("_");
+                let semB = b.classInfo.semester.semesterId.split("_");
+
+                if (semA[0] < semB[0]) {
+                    return 1;
+                } else if (semA[0] > semB[0]) {
+                    return -1;
+                } else {
+                    return seasonOrder.indexOf(semA[1]) <
+                        seasonOrder.indexOf(semB[1])
+                        ? 1
+                        : -1;
+                }
+            });
+            console.log(allClasses);
+
             const classRegistrationList = allClasses.map((c, index) => {
                 return (
                     <ul key={index} className="no-borders">
                         <li className="li-med">{c.user}</li>
                         <li className="li-large">
-                            {c.classInfo.programName +
+                            {c.classInfo.program.name +
                                 " (" +
-                                c.classInfo.semester +
+                                c.classInfo.semester.title +
                                 ")"}
                         </li>
                     </ul>
@@ -301,7 +329,10 @@ export class AccountPage extends React.Component {
 
             const afhList = this.state.upcomingAFHs.map((afh, index) => {
                 let titleInfo = this.renderMultiline([afh.title, afh.subject]);
-                let dateInfo = this.renderMultiline([afh.date, afh.timeString]);
+                let dateInfo = this.renderMultiline([
+                    moment(afh.date).format("MMMM Do, YYYY"),
+                    afh.timeString,
+                ]);
 
                 let loc = this.state.locationsById[afh.locationId];
                 let locInfo = this.renderMultiline([
@@ -351,7 +382,9 @@ export class AccountPage extends React.Component {
                 balance += parseInt(transaction.amount);
                 return (
                     <ul key={index} className="no-borders">
-                        <li className="li-med">{transaction.paymentType}</li>
+                        <li className="li-med">
+                            {chargeDisplayNames[transaction.paymentType]}
+                        </li>
                         <li className="li-med">
                             {this.formatCurrency(transaction.amount)}
                         </li>
@@ -362,6 +395,7 @@ export class AccountPage extends React.Component {
                 );
             }
         );
+        transactionsList.reverse();
 
         const formattedBalance = this.formatCurrency(balance);
 
