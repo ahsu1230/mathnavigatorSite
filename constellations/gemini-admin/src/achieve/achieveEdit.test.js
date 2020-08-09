@@ -1,7 +1,6 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import { AchieveEditPage } from "./achieveEdit.js";
-import { OkayModal } from "../modals/okayModal.js";
 
 describe("test", () => {
     const component = shallow(<AchieveEditPage />);
@@ -9,9 +8,10 @@ describe("test", () => {
     test("renders", () => {
         expect(component.exists()).toBe(true);
         expect(component.find("h2").text()).toContain("Add Achievement");
-        expect(component.find("h4").at(0).text()).toBe("Year");
-        expect(component.find("h4").at(1).text()).toBe("Message");
-        expect(component.find("h4").length).toBe(2);
+        expect(component.find("InputText").at(0).prop("label")).toBe("Year");
+        expect(component.find("InputText").at(1).prop("label")).toBe("Message");
+        expect(component.find("InputText").length).toBe(2);
+
         expect(component.find("button").at(0).text()).toBe("Save");
         expect(component.find("button").at(1).text()).toBe("Cancel");
         expect(component.find("button").length).toBe(2);
@@ -24,13 +24,9 @@ describe("test", () => {
             inputMessage: "Obama",
         });
 
-        let input0 = component.find("input").at(0);
-        expect(input0.props().value).toBe(2016);
-
-        let input1 = component.find("input").at(1);
-        expect(input1.props().value).toBe("Obama");
-
-        expect(component.find("input").length).toBe(2);
+        expect(component.find("InputText").at(0).prop("value")).toBe(2016);
+        expect(component.find("InputText").at(1).prop("value")).toBe("Obama");
+        expect(component.find("InputText").length).toBe(2);
     });
 
     test("renders deleteModal", () => {

@@ -38,13 +38,13 @@ func (class *Class) Validate() error {
 
 	// Class Key validation
 	if classKey.Valid {
-		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches || len(classKey.String) > 64 {
+		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches {
 			return errors.New("invalid class key")
 		}
 	}
 
 	// Times validation
-	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches || len(times) > 64 {
+	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
 		return errors.New("invalid times")
 	}
 

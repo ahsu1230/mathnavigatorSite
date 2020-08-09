@@ -73,13 +73,14 @@ func createProgramClassesForSemester(semesterId string, programs []domains.Progr
 	// Create list of ProgramClass
 	for i := 0; i < len(programs); i++ {
 		programId := programs[i].ProgramId
-		programClass := domains.ProgramClass{
-			ProgramObj: programs[i],
-			Classes:    programClassMap[programId],
+		if _, ok := programClassMap[programId]; ok {
+			programClass := domains.ProgramClass{
+				ProgramObj: programs[i],
+				Classes:    programClassMap[programId],
+			}
+			programClasses = append(programClasses, programClass)
 		}
-		programClasses = append(programClasses, programClass)
 	}
-
 	return programClasses, nil
 }
 

@@ -7,6 +7,8 @@ import { AnnounceEditDateTime } from "./announceEditDateTime.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
+import { emptyValidator } from "../utils/inputText.js";
 
 export class AnnounceEditPage extends React.Component {
     constructor(props) {
@@ -169,16 +171,27 @@ export class AnnounceEditPage extends React.Component {
                     onMomentChange={this.onMomentChange}
                 />
 
-                <h4>Author</h4>
-                <input
+                <InputText
+                    label="Author"
+                    description="Input your name"
+                    required={true}
                     value={this.state.inputAuthor}
-                    onChange={(e) => this.handleChange(e, "inputAuthor")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputAuthor")
+                    }
+                    validators={[emptyValidator("author")]}
                 />
 
-                <h4>Message</h4>
-                <textarea
+                <InputText
+                    label="Message"
+                    description="Enter the announcement message"
+                    isTextBox={true}
+                    required={true}
                     value={this.state.inputMessage}
-                    onChange={(e) => this.handleChange(e, "inputMessage")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputMessage")
+                    }
+                    validators={[emptyValidator("message")]}
                 />
 
                 <div className="buttons">
