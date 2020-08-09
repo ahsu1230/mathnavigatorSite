@@ -43,7 +43,9 @@ export class HomeTabSectionClasses extends React.Component {
                 <div className="container-class">
                     <h3 className="section-header">Unpublished Classes</h3>{" "}
                     <button className="view-details">
-                        <Link to={"/classes"}>View All Classes to Publish</Link>
+                        <Link to={"/classes"}>
+                            View All Classes to Publish{" "}
+                        </Link>
                     </button>
                 </div>
 
@@ -63,7 +65,7 @@ export class ClassesNotif extends React.Component {
     };
 
     // need a counter to keep track of the number of unpublished classes => unpubClasses.length
-    //unpublished classes
+
     componentDidMount() {
         API.get("api/unpublished").then((res) => {
             const unpublishedList = res.data;
@@ -76,6 +78,6 @@ export class ClassesNotif extends React.Component {
     render() {
         let numClasses = this.state.unpubClasses.length;
 
-        return { numClasses };
+        return numClasses;
     }
 }

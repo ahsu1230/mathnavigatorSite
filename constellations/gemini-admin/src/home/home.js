@@ -47,7 +47,7 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "class"}
                         section={"class"}
-                        //buttonNum={<ClassesNotif />}
+                        buttonNum={<ClassesNotif />}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
@@ -76,28 +76,33 @@ export class HomePage extends React.Component {
 }
 
 class TabButton extends React.Component {
-    /*  state = {
+    state = {
         isZero: false,
-    } */
+    };
 
     render() {
         let highlight = this.props.highlight;
         let section = this.props.section;
         let displayName = sectionDisplayNames[section];
-        /*
+
         let numNotif = this.props.buttonNum;
-        if(numNotif == 0){
-            this.state.isZero: true
+        if (numNotif == 0) {
+            this.setState({
+                isZero: true,
+            });
         }
-        let displayNotif = (<button className={this.state.isZero ? "notif-black" : "notif-red"}>
-            {numNotif}
-        </button>) */
+        // is is possible to use something else that isn't <button> ? "active" overrides "notif"
+        let displayNotif = (
+            <button className={"notif" + (this.state.isZero ? " zero" : "")}>
+                {numNotif}
+            </button>
+        );
 
         return (
             <button
                 className={highlight ? "active" : ""}
                 onClick={() => this.props.onChangeTab(section)}>
-                {displayName}
+                {displayName} {displayNotif}
             </button>
         );
     }

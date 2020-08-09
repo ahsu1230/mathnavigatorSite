@@ -31,6 +31,11 @@
     .class-section
         display: inline-block
         width: 100%
+        margin: $spacing2x 0
+
+        .header-flex
+            display: flex
+            flex-direction: row
 
         & p 
             text-align: center
@@ -38,6 +43,12 @@
 
         .list-header
             border-bottom: 1px solid $colorGrayDark
+            &.name
+                width: 30%
+            &.email
+                width: 45%
+            &.other
+                width: 25%
 
         & ul
             list-style-type: none

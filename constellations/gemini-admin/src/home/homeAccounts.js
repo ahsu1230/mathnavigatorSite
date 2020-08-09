@@ -28,8 +28,6 @@ export class HomeTabSectionAccounts extends React.Component {
     } */
 
     render() {
-        // flexbox for headers (Name, Email, Account Number?, Unpaid Amount? )
-
         return (
             <div className="sectionDetails">
                 <div className="container-class">
@@ -40,7 +38,13 @@ export class HomeTabSectionAccounts extends React.Component {
                 </div>
 
                 <div className="class-section">
-                    <div className="list-header">Account Number</div>
+                    <div className="header-flex">
+                        <div className={"list-header" + " name"}>Name</div>
+                        <div className={"list-header" + " email"}>Email</div>
+                        <div className={"list-header" + " other"}>
+                            Unpaid Amount
+                        </div>
+                    </div>
                 </div>
             </div>
         );
