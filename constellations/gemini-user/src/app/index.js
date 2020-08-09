@@ -31,7 +31,7 @@ const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
 const Internship = () => <InternshipPage />;
 const Announce = () => <AnnouncePage />;
-const ClassPageWithSlug = ({ match }) => <ClassPage slug={match.params.slug} />;
+const Class = ({ match }) => <ClassPage classId={match.params.classId} />;
 // const Contact = () => <ContactPageRouter/>;
 // const ContactPageRouter = withRouter(ContactPage);
 const Header = withRouter(HeaderComponent);
@@ -75,7 +75,7 @@ class App extends React.Component {
                     <Route path="/ask-for-help" component={AFH} />
                     <Route path="/programs" component={Programs} />
                     {/* <Route path="/contact" component={Contact}/> */}
-                    <Route path="/class/:slug" component={ClassPageWithSlug} />
+                    <Route path="/class/:classId" component={Class} />
 
                     <Route
                         path="/student-achievements"

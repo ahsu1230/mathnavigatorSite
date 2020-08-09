@@ -1,0 +1,85 @@
+@import "../utils/_constants.sass"
+
+#view-class
+    width: $containerWidthPx3
+    max-width: $containerWidthPct
+    margin: 0 auto $spacing16x
+
+    h1
+        margin: $spacing6x 0
+        line-height: $lineHeight3
+        font-size: $fontSize3
+        color: $colorPrimary
+        
+        a
+            color: $colorPrimary
+
+        @media screen and (max-width: $mediaWidth1)
+            margin: $spacing6x 0
+            line-height: $lineHeight2
+            font-size: $fontSize2
+
+    h4
+        padding: $spacing1x 0
+        margin-top: $spacing4x
+        color: $colorPrimary
+
+    p
+        margin: 0
+
+    #class-description
+        margin-bottom: $spacing4x
+
+    #class-info
+        position: relative
+        margin-bottom: $spacing4x
+
+        button
+            position: absolute
+            top: 0
+            right: 0
+
+            @media screen and (max-width: $mediaWidth1)
+                display: block
+                position: relative
+                width: 100%
+                margin-bottom: $spacing4x
+                border: 1px solid $colorOrange
+                background-color: $colorWhite
+                color: $colorOrange
+
+    #class-session
+        .row
+            display: flex
+            align-items: center
+            justify-content: space-between
+            padding: $spacing3x 0
+            border-bottom: 1px solid $colorGrayLight
+        
+            @media screen and (max-width: $mediaWidth2)
+                display: block
+                width: 100%
+        
+        span
+            @media screen and (max-width: $mediaWidth2)
+                display: block
+                line-height: $lineHeight2
+
+        .index-column
+            flex: 2 1 0
+
+        .date-column
+            flex: 4 1 0
+        
+        .time-column
+            flex: 8 1 0
+        
+        .canceled
+            flex: $spacing10x 0 0
+            color: red
+
+    #class-questions
+        margin-top: $spacing8x
+
+        button
+            margin: $spacing4x 0

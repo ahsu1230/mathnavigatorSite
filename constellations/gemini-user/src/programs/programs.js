@@ -93,7 +93,6 @@ class ProgramSection extends React.Component {
         let programs = [];
         let programClassesMap = {};
         programClasses.forEach((programClass) => {
-            // TODO: remove if statement once backend fixes the bug
             if (!!programClass.classes) {
                 programs.push(programClass.program);
                 programClassesMap[programClass.program.programId] =

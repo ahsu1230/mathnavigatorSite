@@ -5,13 +5,15 @@ import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 
 export class ProgramCard extends React.Component {
-    state = {};
+    state = {
+        showModal: false,
+    };
 
     handleClick = () => {
         const classes = this.props.classes;
         if (classes.length == 1) {
             window.location.hash = "/class/" + classes[0].classId;
-        } else if (classes.length == 2) {
+        } else if (classes.length > 1) {
             this.setState({ showModal: true });
         }
     };
@@ -19,11 +21,11 @@ export class ProgramCard extends React.Component {
     renderModal = () => {
         const classes = this.props.classes || [];
         let modalDiv = <div></div>;
+
         if (classes.length > 1) {
             const modalContent = (
                 <ProgramModal
                     semester={this.props.semester}
-                    program={this.props.program}
                     classes={classes}
                 />
             );
