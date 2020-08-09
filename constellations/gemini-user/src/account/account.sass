@@ -46,10 +46,19 @@
                 width: $spacing32x
             .li-large
                 flex-grow: 1
+                
+            .classes-list
+                display: flex
+                flex-direction: column
+                
+                > span
+                    margin: $spacing2x 0
+                > span:first-child
+                    margin-top: 0
         
         ul.no-borders
             li
-                padding: $spacing1x 0
+                padding: $spacing2x 0
                 border: none
         
         ul.three-columns
@@ -59,6 +68,9 @@
         ul.password
             width: 60%
             align-items: center
+            
+            li
+                padding: $spacing1x 0
             
             input
                 width: 100%
@@ -74,8 +86,12 @@
     .header-two-items
         display: flex
         flex-direction: row
-        align-items: center
         justify-content: space-between
+        align-items: center
+        margin-bottom: $spacing2x
+        
+        h2
+            margin: 0
     
     .password-buttons
         display: flex

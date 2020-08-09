@@ -170,6 +170,10 @@ export class AccountPage extends React.Component {
         this.setState({ selectedTab: tab.toLowerCase() });
     };
 
+    onPasswordChange = (password) => {
+        this.setState({ password: password });
+    };
+
     render = () => {
         const tabButtons = ["Settings", "Registrations", "Payment"].map(
             (item, index) => {
@@ -197,6 +201,7 @@ export class AccountPage extends React.Component {
                         primaryEmail={this.state.primaryEmail}
                         accountId={this.state.id}
                         password={this.state.password}
+                        passwordChangeCallback={this.onPasswordChange}
                     />
                 );
                 break;
@@ -289,6 +294,9 @@ class SettingsTab extends React.Component {
                         accountId={this.props.accountId}
                         primaryEmail={this.props.primaryEmail}
                         oldPassword={this.props.password}
+                        passwordChangeCallback={
+                            this.props.passwordChangeCallback
+                        }
                     />
                 </div>
 
@@ -337,6 +345,7 @@ class PasswordChange extends React.Component {
     };
 
     onClickSave = () => {
+        console.log(this.props.oldPassword);
         if (
             this.state.oldPassword == this.props.oldPassword &&
             this.state.newPassword == this.state.confirmPassword
@@ -348,15 +357,16 @@ class PasswordChange extends React.Component {
             API.post(
                 "api/accounts/account/" + this.props.accountId,
                 account
-            ).then((res) =>
+            ).then((res) => {
+                this.props.passwordChangeCallback(this.state.newPassword);
                 this.setState({
                     tabOpen: false,
                     message: "New password saved!",
                     oldPassword: "",
                     newPassword: "",
                     confirmPassword: "",
-                })
-            );
+                });
+            });
         } else if (this.state.oldPassword == this.props.oldPassword) {
             this.setState({
                 message: "New password does not match confirmation",
@@ -441,13 +451,13 @@ class PasswordChange extends React.Component {
 class RegistrationsTabMain extends React.Component {
     renderClassList = (classes) => {
         if (!classes.length) {
-            return <p>(No classes registered)</p>;
+            return <span>(No classes registered)</span>;
         }
         return classes.map((c, index) => {
             return (
-                <p key={index} className="classList-item">
+                <span key={index} className="classList-item">
                     {c.program.name + " (" + c.semester.title + ")"}
-                </p>
+                </span>
             );
         });
     };
@@ -457,11 +467,12 @@ class RegistrationsTabMain extends React.Component {
             (user, index) => {
                 return (
                     <ul key={index} className="no-borders">
-                        <li className="li-med">
-                            <p>{user.name}</p>
-                        </li>
+                        <li className="li-med">{user.name}</li>
                         <li className="li-large classes-list">
                             {this.renderClassList(user.classes)}
+                        </li>
+                        <li>
+                            Enrolled on: {moment(0).format("l") /*Fake data*/}
                         </li>
                     </ul>
                 );
@@ -554,21 +565,24 @@ class RegistrationsTabAllClasses extends React.Component {
                             c.classInfo.semester.title +
                             ")"}
                     </li>
+                    <li>Enrolled on: {moment(0).format("l") /*Fake data*/}</li>
                 </ul>
             );
         });
 
         return (
             <div className="tab-content">
-                <div className="header-two-items">
-                    <h2>All Enrolled Classes</h2>
-                    <a
-                        className="orange"
-                        onClick={this.props.toggleTabCallback}>
-                        View current enrollments
-                    </a>
+                <div>
+                    <div className="header-two-items">
+                        <h2>All Enrolled Classes</h2>
+                        <a
+                            className="orange"
+                            onClick={this.props.toggleTabCallback}>
+                            View current enrollments
+                        </a>
+                    </div>
+                    <div>{classRegistrationList}</div>
                 </div>
-                <div>{classRegistrationList}</div>
             </div>
         );
     };
@@ -582,6 +596,9 @@ class PaymentTab extends React.Component {
                 balance += parseInt(transaction.amount);
                 return (
                     <ul key={index} className="no-borders">
+                        <li className="li-med">
+                            {moment(0).format("l") /*Fake data*/}
+                        </li>
                         <li className="li-med">
                             {chargeDisplayNames[transaction.paymentType]}
                         </li>
@@ -630,6 +647,7 @@ class PaymentTab extends React.Component {
                 <div>
                     <h2>Your Payment History</h2>
                     <ul className="no-borders header">
+                        <li className="li-med">Date</li>
                         <li className="li-med">Transaction</li>
                         <li className="li-med">Amount</li>
                         <li className="li-large">Balance</li>
