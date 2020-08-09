@@ -4,7 +4,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import API from "../utils/api.js";
-import { union } from "lodash";
 import moment from "moment";
 
 const chargeDisplayNames = {

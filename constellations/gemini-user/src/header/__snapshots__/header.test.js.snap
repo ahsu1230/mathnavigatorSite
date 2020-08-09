@@ -325,15 +325,15 @@ exports[`test snapshot 1`] = `
               Contact
             </a>
           </div>
-            <div
-              className="link-row"
+          <div
+            className="link-row"
+          >
+            <a
+              className=""
+              href="#/account"
+              onClick={[Function]}
             >
-              <a
-                className=""
-                href="#/account"
-                onClick={[Function]}
-              >
-                Account
+              Account
             </a>
           </div>
         </div>
