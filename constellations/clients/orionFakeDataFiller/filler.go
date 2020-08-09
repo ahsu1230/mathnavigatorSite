@@ -255,11 +255,11 @@ func runFiller(hostAddress string) {
 	// Create Accounts
 	createAccount(
 		hostAddress,
-		"emailaddress1@gmail.com",
+		"JoeSmith@gmail.com",
 		"jhdgjhddjhdjuj",
 	)
 	createAccount(hostAddress,
-		"emailaddress2@gmail.com",
+		"billybob@gmail.com",
 		"2redssssa",
 	)
 
@@ -269,12 +269,12 @@ func runFiller(hostAddress string) {
 		"Joe",
 		"Smith",
 		"",
-		"emailaddress1@gmail.com",
-		"301-123-4567",
+		"JoeSmith@gmail.com",
+		"301-543-2412",
 		false,
 		1,
 		"notes1",
-		"schoolone",
+		"Montgomery Blair HS",
 		2001,
 	)
 
@@ -283,8 +283,8 @@ func runFiller(hostAddress string) {
 		"Joe",
 		"Smith",
 		"Mom",
-		"emailaddress1@gmail.com",
-		"301-123-4567",
+		"JoeMom@gmail.com",
+		"301-456-1244",
 		true,
 		1,
 		"notes1",
@@ -297,12 +297,12 @@ func runFiller(hostAddress string) {
 		"Billy",
 		"Bob",
 		"Joe",
-		"emailaddress2@gmail.com",
-		"301-123-4568",
+		"billybob@gmail.com",
+		"301-288-8764",
 		false,
 		2,
 		"notes2",
-		"schooltwo",
+		"Winston Churchill HS",
 		2002,
 	)
 
@@ -310,9 +310,9 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"Billy",
 		"Bob",
-		"Joe Dad",
-		"emailaddress2@gmail.com",
-		"301-123-4568",
+		"Dad",
+		"billydad@gmail.com",
+		"301-223-2442",
 		true,
 		2,
 		"notes2",
