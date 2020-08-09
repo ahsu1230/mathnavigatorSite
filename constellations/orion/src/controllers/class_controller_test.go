@@ -189,7 +189,7 @@ func TestCreateClass_Failure(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields and end time is before start time
+	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 
@@ -220,7 +220,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields and end time is before start time
+	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 

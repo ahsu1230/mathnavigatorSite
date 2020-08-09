@@ -30,14 +30,7 @@ func setupMock() {
 			),
 		}, nil
 	}
-	testUtils.AchieveRepo.MockSelectAllUnpublished = func() ([]domains.Achieve, error) {
-		return []domains.Achieve{
-			testUtils.CreateMockAchievement(1, 2020, "message1"),
-			testUtils.CreateMockAchievement(2, 2021, "message2"),
-		}, nil
-	}
 	repos.ClassRepo = &testUtils.ClassRepo
-	repos.AchieveRepo = &testUtils.AchieveRepo
 }
 
 //
@@ -65,12 +58,4 @@ func TestGetAllUnpublished_Success(t *testing.T) {
 	assert.EqualValues(t, "2020_fall", class1.SemesterId)
 	assert.EqualValues(t, "prog1_2020_fall_classB", class1.ClassId)
 	assert.EqualValues(t, 2, len(unpublishedDomains.Classes))
-
-	assert.EqualValues(t, 1, unpublishedDomains.Achieves[0].Id)
-	assert.EqualValues(t, 2020, unpublishedDomains.Achieves[0].Year)
-	assert.EqualValues(t, "message1", unpublishedDomains.Achieves[0].Message)
-	assert.EqualValues(t, 2, unpublishedDomains.Achieves[1].Id)
-	assert.EqualValues(t, 2021, unpublishedDomains.Achieves[1].Year)
-	assert.EqualValues(t, "message2", unpublishedDomains.Achieves[1].Message)
-	assert.EqualValues(t, 2, len(unpublishedDomains.Achieves))
 }

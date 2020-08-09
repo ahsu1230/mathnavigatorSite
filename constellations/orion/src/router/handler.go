@@ -56,7 +56,6 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAchieves.GET("/all", controllers.GetAllAchievements)
 		apiAchieves.GET("/years", controllers.GetAllAchievementsGroupedByYear)
 		apiAchieves.POST("/create", controllers.CreateAchievement)
-		apiAchieves.POST("/publish", controllers.PublishAchievements)
 		apiAchieves.GET("/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/achievement/:id", controllers.DeleteAchievement)

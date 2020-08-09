@@ -23,14 +23,9 @@ func callGetUnpublishedRepos() (domains.UnpublishedDomains, error) {
 	if err != nil {
 		return domains.UnpublishedDomains{}, err
 	}
-	achieveList, err := repos.AchieveRepo.SelectAllUnpublished()
-	if err != nil {
-		return domains.UnpublishedDomains{}, err
-	}
 
 	unpublishedDomains := domains.UnpublishedDomains{
-		Classes:  classList,
-		Achieves: achieveList,
+		Classes: classList,
 	}
 
 	return unpublishedDomains, nil

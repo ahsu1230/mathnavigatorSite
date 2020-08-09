@@ -156,23 +156,18 @@ func (announceRepo *mockAnnounceRepo) Delete(id uint) error {
 // Fake achieveRepo that implements AchieveRepo interface
 type mockAchieveRepo struct {
 	MockInitialize             func(*sql.DB)
-	MockSelectAll              func(bool) ([]domains.Achieve, error)
-	MockSelectAllUnpublished   func() ([]domains.Achieve, error)
+	MockSelectAll              func() ([]domains.Achieve, error)
 	MockSelectById             func(uint) (domains.Achieve, error)
 	MockSelectAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	MockInsert                 func(domains.Achieve) error
 	MockUpdate                 func(uint, domains.Achieve) error
-	MockPublish                func([]uint) error
 	MockDelete                 func(uint) error
 }
 
 // Implement methods of AchieveRepo interface with mocked implementations
 func (achieveRepo *mockAchieveRepo) Initialize(db *sql.DB) {}
-func (achieveRepo *mockAchieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) {
-	return achieveRepo.MockSelectAll(publishedOnly)
-}
-func (achieveRepo *mockAchieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
-	return achieveRepo.MockSelectAllUnpublished()
+func (achieveRepo *mockAchieveRepo) SelectAll() ([]domains.Achieve, error) {
+	return achieveRepo.MockSelectAll()
 }
 func (achieveRepo *mockAchieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	return achieveRepo.MockSelectById(id)
@@ -185,9 +180,6 @@ func (achieveRepo *mockAchieveRepo) Insert(achieve domains.Achieve) error {
 }
 func (achieveRepo *mockAchieveRepo) Update(id uint, achieve domains.Achieve) error {
 	return achieveRepo.MockUpdate(id, achieve)
-}
-func (achieveRepo *mockAchieveRepo) Publish(ids []uint) error {
-	return achieveRepo.MockPublish(ids)
 }
 func (achieveRepo *mockAchieveRepo) Delete(id uint) error {
 	return achieveRepo.MockDelete(id)
