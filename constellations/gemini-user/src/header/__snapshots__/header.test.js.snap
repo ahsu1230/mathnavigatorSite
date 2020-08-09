@@ -140,6 +140,17 @@ exports[`test snapshot 1`] = `
           Contact
         </a>
       </div>
+      <div
+        className="menu-link-container"
+      >
+        <a
+          className=""
+          href="#/account"
+          onClick={[Function]}
+        >
+          Account
+        </a>
+      </div>
     </ul>
     <div>
       <div
@@ -312,6 +323,17 @@ exports[`test snapshot 1`] = `
               onClick={[Function]}
             >
               Contact
+            </a>
+          </div>
+            <div
+              className="link-row"
+            >
+              <a
+                className=""
+                href="#/account"
+                onClick={[Function]}
+              >
+                Account
             </a>
           </div>
         </div>
