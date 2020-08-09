@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import API from "../api.js";
 import { getFullName } from "../utils/userUtils.js";
+import { InputSelect } from "../utils/inputSelect.js";
 
 export class UserAFHPage extends React.Component {
     state = {
@@ -85,40 +86,42 @@ export class UserAFHPage extends React.Component {
 
     renderScheduleSection = () => {
         const afhOptions = this.state.otherAFHs.map((afh, index) => {
-            return (
-                <option key={index} value={afh.id}>
-                    {moment(afh.date).format("l") +
-                        " " +
-                        afh.subject +
-                        " " +
-                        afh.timeString}
-                </option>
-            );
+            return {
+                value: afh.id,
+                displayName:
+                    moment(afh.date).format("l") +
+                    " " +
+                    afh.subject +
+                    " " +
+                    afh.timeString,
+            };
         });
+        const enrollButton = afhOptions.length ? (
+            <button onClick={this.onClickSchedule}>Schedule</button>
+        ) : (
+            ""
+        );
 
-        var schedule = (
+        return (
             <div>
-                <span>
-                    There are no AFH sessions to choose from. Please add one
-                </span>
-                <Link to="/afh/add"> here</Link>
+                <InputSelect
+                    label="Schedule AskForHelp for User"
+                    description="Select a AFH session for user:"
+                    value={this.state.afhId}
+                    onChangeCallback={(e) => this.onAFHChange(e)}
+                    required={true}
+                    options={afhOptions}
+                    hasNoDefault={true}
+                    errorMessageIfEmpty={
+                        <span>
+                            There are no AFH sessions to choose from. Please add
+                            one <Link to="/afh/add">here</Link>
+                        </span>
+                    }
+                />
+                {enrollButton}
             </div>
         );
-        if (this.state.otherAFHs.length != 0) {
-            schedule = (
-                <div>
-                    <p>Select a AFH session for user:</p>
-                    <select
-                        value={this.state.afhId}
-                        onChange={(e) => this.onAFHChange(e)}>
-                        {afhOptions}
-                    </select>
-
-                    <button onClick={this.onClickSchedule}>Schedule</button>
-                </div>
-            );
-        }
-        return schedule;
     };
 
     render = () => {

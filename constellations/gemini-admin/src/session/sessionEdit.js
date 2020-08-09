@@ -6,6 +6,7 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../utils/inputText.js";
 
 // React DatePicker
 import "react-dates/initialize";
@@ -252,10 +253,12 @@ export class SessionEditPage extends React.Component {
                     />
                 </div>
 
-                <h4>Notes</h4>
-                <input
+                <InputText
+                    label="Notes"
+                    description="You may enter any additional information about this session here"
+                    isTextBox={true}
                     value={this.state.notes}
-                    onChange={(e) => this.onNotesChange(e)}
+                    onChangeCallback={(e) => this.onNotesChange(e)}
                 />
 
                 <div className="buttons">
