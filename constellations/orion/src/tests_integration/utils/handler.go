@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +17,7 @@ import (
 var handler *router.Handler
 
 func SetupTestRouter() {
-	fmt.Println("Initializing Router...")
+	logger.Message("Initializing Router...")
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
 	newHandler := router.Handler{Engine: engine}

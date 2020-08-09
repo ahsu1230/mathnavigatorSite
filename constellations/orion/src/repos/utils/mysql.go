@@ -7,6 +7,8 @@ import (
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/mysql"
 	_ "github.com/golang-migrate/migrate/source/file"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 func createConnectionInfo(host string, port int, user string, pass string, dbName string) string {
@@ -26,7 +28,9 @@ func Open(host string, port int, user string, pass string, dbName string) *sql.D
 
 func Migrate(db *sql.DB, migrationsPath string) {
 	// Create driver using sql db connection
-	fmt.Println("Performing DB Migrations...", migrationsPath)
+	logger.Info("Performing DB Migrations...", logger.Fields{
+		"migrationsPath": migrationsPath
+	})
 	driver, err1 := mysql.WithInstance(db, &mysql.Config{})
 	if err1 != nil {
 		panic(err1)
@@ -40,13 +44,13 @@ func Migrate(db *sql.DB, migrationsPath string) {
 
 	// Execute migrations
 	version, _, _ := m.Version()
-	fmt.Println("Previous migration version: ", version)
+	logger.Info("Previous migration version: ", logger.Fields{ "version": version})
 	err3 := m.Up()
 	if err3 != nil && err3 != migrate.ErrNoChange {
 		panic(err3)
 	}
 	version, _, _ = m.Version()
-	fmt.Println("Current migration version: ", version)
+	logger.Info("Current migration version: ", logger.Fields{ "version": version})
 }
 
 func Close(db *sql.DB) error {

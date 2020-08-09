@@ -2,9 +2,10 @@ package domains
 
 import (
 	"database/sql"
-	"errors"
 	"regexp"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 var TABLE_ACCOUNTS = "accounts"
