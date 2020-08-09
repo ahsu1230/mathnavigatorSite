@@ -2,13 +2,13 @@ package repos_test
 
 import (
 	"database/sql"
-	"reflect"
-	"testing"
-
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
+	"reflect"
+	"testing"
+	"time"
 )
 
 func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterface) {
@@ -131,6 +131,37 @@ func TestSelectUsersByAccountId(t *testing.T) {
 }
 
 //
+// Select New
+//
+func TestSelectNewUsers(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	week := time.Hour * 24 * 7
+	lastweek := time.Now().UTC().Add(-week)
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE created_at>=?").
+		ExpectQuery().
+		WithArgs(lastweek).
+		WillReturnRows(rows)
+	got, err := repo.SelectByNew()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.User{getUser()}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Create
 //
 func TestInsertUser(t *testing.T) {
@@ -152,8 +183,8 @@ func TestInsertUser(t *testing.T) {
 			false,
 			2,
 			domains.NewNullString(""),
-			domains.NewNullString("school1"),
-			domains.NewNullUint(1213),
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
 		).WillReturnResult(result)
 	user := getUser()
 	err := repo.Insert(user)
@@ -188,8 +219,8 @@ func TestUpdateUser(t *testing.T) {
 			true,
 			0,
 			domains.NewNullString("notes"),
-			domains.NewNullString("school1"),
-			domains.NewNullUint(1213),
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
 			1,
 		).WillReturnResult(result)
 	user := domains.User{
@@ -205,8 +236,8 @@ func TestUpdateUser(t *testing.T) {
 		IsGuardian:     true,
 		AccountId:      0,
 		Notes:          domains.NewNullString("notes"),
-		School:         domains.NewNullString("school1"),
-		GraduationYear: domains.NewNullUint(1213),
+		School:         domains.NewNullString("schoolone"),
+		GraduationYear: domains.NewNullUint(2004),
 	}
 	err := repo.Update(1, user)
 	if err != nil {
@@ -275,8 +306,8 @@ func getUserRows() *sqlmock.Rows {
 		false,
 		2,
 		domains.NewNullString(""),
-		domains.NewNullString("school1"),
-		domains.NewNullUint(1213),
+		domains.NewNullString("schoolone"),
+		domains.NewNullUint(2004),
 	)
 }
 
@@ -294,7 +325,7 @@ func getUser() domains.User {
 		IsGuardian:     false,
 		AccountId:      2,
 		Notes:          domains.NewNullString(""),
-		School:         domains.NewNullString("school1"),
-		GraduationYear: domains.NewNullUint(1213),
+		School:         domains.NewNullString("schoolone"),
+		GraduationYear: domains.NewNullUint(2004),
 	}
 }

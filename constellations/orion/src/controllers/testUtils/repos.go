@@ -288,6 +288,7 @@ type mockUserRepo struct {
 	MockSelectAll         func(string, int, int) ([]domains.User, error)
 	MockSelectById        func(uint) (domains.User, error)
 	MockSelectByAccountId func(uint) ([]domains.User, error)
+	MockSelectByNew       func() ([]domains.User, error)
 	MockInsert            func(domains.User) error
 	MockUpdate            func(uint, domains.User) error
 	MockDelete            func(uint) error
@@ -308,6 +309,9 @@ func (userRepo *mockUserRepo) SelectById(id uint) (domains.User, error) {
 }
 func (userRepo *mockUserRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	return userRepo.MockSelectByAccountId(accountId)
+}
+func (userRepo *mockUserRepo) SelectByNew() ([]domains.User, error) {
+	return userRepo.MockSelectByNew()
 }
 func (userRepo *mockUserRepo) Insert(user domains.User) error {
 	return userRepo.MockInsert(user)
