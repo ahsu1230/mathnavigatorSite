@@ -1,6 +1,7 @@
 "use strict";
 require("./afhEdit.sass");
 import React from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import API from "../api.js";
 import { AFHEditDateTime } from "./afhEditDateTime.js";
@@ -8,6 +9,7 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { InputSelect } from "../utils/inputSelect.js";
 
 export class AskForHelpEditPage extends React.Component {
     state = {
@@ -119,9 +121,12 @@ export class AskForHelpEditPage extends React.Component {
         const title =
             (this.state.isEdit ? "Edit" : "Add") + " Ask For Help Session";
 
-        const optLocations = this.state.locations.map((loc, index) => (
-            <option key={index}>{loc.locationId}</option>
-        ));
+        const locationOptions = this.state.locations.map((loc, index) => {
+            return {
+                value: loc.locationId,
+                displayName: loc.locationId,
+            };
+        });
 
         let deleteButton = <div></div>;
         if (this.state.isEdit) {
@@ -164,6 +169,12 @@ export class AskForHelpEditPage extends React.Component {
             );
         }
 
+        const subjectOptions = [
+            { value: "math", displayName: "Math" },
+            { value: "english", displayName: "English" },
+            { value: "programming", displayName: "Computer Programming" },
+        ];
+
         return (
             <div id="view-afh-edit">
                 {modalDiv}
@@ -202,21 +213,31 @@ export class AskForHelpEditPage extends React.Component {
                     ]}
                 />
 
-                <h3>Subject</h3>
-                <select
+                <InputSelect
+                    label="Subject"
+                    description="Select a subject"
                     value={this.state.subject}
-                    onChange={(e) => this.handleChange(e, "subject")}>
-                    <option>math</option>
-                    <option>english</option>
-                    <option>programming</option>
-                </select>
+                    onChangeCallback={(e) => this.handleChange(e, "subject")}
+                    required={true}
+                    options={subjectOptions}
+                />
 
-                <h3>Location ID</h3>
-                <select
-                    value={this.state.locationId}
-                    onChange={(e) => this.handleChange(e, "locationId")}>
-                    {optLocations}
-                </select>
+                <InputSelect
+                    label="LocationId"
+                    description="Select a location id"
+                    value={this.state.selectLocationId}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "selectLocationId")
+                    }
+                    required={true}
+                    options={locationOptions}
+                    errorMessageIfEmpty={
+                        <span>
+                            There are no locations to choose from. Please add
+                            one <Link to="/locations/add">here</Link>
+                        </span>
+                    }
+                />
 
                 <InputText
                     label="Notes"
