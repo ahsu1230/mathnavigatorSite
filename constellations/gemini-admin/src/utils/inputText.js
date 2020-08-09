@@ -102,7 +102,7 @@ export class InputText extends React.Component {
 
         return (
             <div id="text-input-wrapper">
-                <h2>{this.props.label}</h2>
+                <h2 className="inputLabel">{this.props.label}</h2>
                 {formatDescription}
                 <div id="input-wrapper">
                     {input}
