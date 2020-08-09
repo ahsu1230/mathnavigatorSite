@@ -105,15 +105,6 @@ func createProgramClassMap(classSlice []domains.Class, programMap map[string]dom
 	return programClassMap, nil
 }
 
-func Find(slice []string, val string) int {
-	for i, item := range slice {
-		if item == val {
-			return i
-		}
-	}
-	return -1
-}
-
 func createProgramMap(programs []domains.Program) map[string]domains.Program {
 	programMap := make(map[string]domains.Program)
 	for i := 0; i < len(programs); i++ {
