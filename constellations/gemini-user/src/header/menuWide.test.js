@@ -13,6 +13,6 @@ describe("test", () => {
     test("shows links", () => {
         expect(component.children().length).toBe(5);
         expect(component.find("SubMenu").length).toBe(2);
-        expect(component.find("MenuLink").length).toBe(2);
+        expect(component.find("MenuLink").length).toBe(3);
     });
 });
