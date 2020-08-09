@@ -55,12 +55,10 @@
         ul.three-columns
             li
                 width: 33%
-        
-        ul.vertical-centered
-            align-items: center
-        
+                
         ul.password
             width: 60%
+            align-items: center
             
             input
                 width: 100%
@@ -68,7 +66,6 @@
         ul.header
             margin-bottom: $spacing1x
             border-bottom: 1px solid $colorGrayLight
-            
             
             li
                 padding: $spacing2x 0
@@ -80,12 +77,12 @@
         align-items: center
         justify-content: space-between
     
-    .buttons
+    .password-buttons
         display: flex
         justify-content: space-between
         width: calc(60% + 16px)
         
-    #password-success
+    #password-message
         color: $colorPrimary
         margin-left: $spacing2x
     
@@ -104,6 +101,9 @@
     #delete-message
         width: 60%
             
+    
+    a:hover
+        cursor: pointer
     
     a.edit
         margin-left: $spacing4x

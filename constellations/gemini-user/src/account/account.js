@@ -16,6 +16,27 @@ const chargeDisplayNames = {
 };
 const seasonOrder = ["spring", "summer", "fall", "winter"];
 
+function renderMultiline(lines) {
+    return lines.map((line, index) => {
+        return (
+            <span key={index}>
+                {line}
+                <br />
+            </span>
+        );
+    });
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    }).format(amount);
+}
+function fetchError(err) {
+    alert("Could not fetch data: " + err);
+}
+
 export class AccountPage extends React.Component {
     state = {
         id: 1,
@@ -41,7 +62,7 @@ export class AccountPage extends React.Component {
         if (id) {
             API.get("api/accounts/account/" + id)
                 .then((res) => this.fetchData(res))
-                .catch((err) => alert("Could not fetch data: " + err));
+                .catch((err) => fetchError(err));
         }
     };
 
@@ -53,116 +74,183 @@ export class AccountPage extends React.Component {
             password: res.data.password,
         });
 
-        Promise.all([
-            API.get("api/classes/all"),
-            API.get("api/programs/all"),
-            API.get("api/semesters/all"),
-
-            API.get("api/askforhelp/all"),
-
-            API.get("api/users/account/" + id),
-
-            API.get("api/locations/all"),
-        ])
-            .then((res) => {
-                const allClasses = res[0].data;
-                const allPrograms = res[1].data;
-                const allSemesters = res[2].data;
-
-                const allAFHs = res[3].data;
-
-                const users = res[4].data;
+        let classes = [];
+        API.get("api/users/account/" + id)
+            .then((users_res) => {
+                const users = users_res.data;
                 this.setState({ users: users });
 
-                const allLocations = res[5].data;
-                const locationsById = {};
-                allLocations.map((loc, index) => {
+                users.map((user, index) => {
+                    // classes
+                    let organizedUserClasses = [];
+                    API.get("api/user-classes/user/" + user.id)
+                        .then((userClasses_res) => {
+                            const userClasses = userClasses_res.data;
+                            userClasses.map((c, index) => {
+                                API.get("api/classes/class/" + c.classId)
+                                    .then((class_res) => {
+                                        const class_ = class_res.data;
+                                        Promise.all([
+                                            API.get(
+                                                "api/programs/program/" +
+                                                    class_.programId
+                                            ),
+                                            API.get(
+                                                "api/semesters/semester/" +
+                                                    class_.semesterId
+                                            ),
+                                        ])
+                                            .then((programSemester_res) => {
+                                                const program =
+                                                    programSemester_res[0].data;
+                                                const semester =
+                                                    programSemester_res[1].data;
+
+                                                organizedUserClasses.push({
+                                                    program: program,
+                                                    semester: semester,
+                                                });
+                                            })
+                                            .catch((err) => fetchError(err));
+                                    })
+                                    .catch((err) => fetchError(err));
+                            });
+                        })
+                        .catch((err) => fetchError(err));
+                    classes.push({
+                        id: user.id,
+                        name: user.firstName + " " + user.lastName,
+                        classes: organizedUserClasses,
+                    });
+                    this.setState({ userClasses: classes });
+
+                    // afhs
+                    let upcomingAFHs = [];
+                    API.get("api/userafhs/users/" + user.id)
+                        .then((userAFHs_res) => {
+                            const userAFHs = userAFHs_res.data;
+                            userAFHs.map((afh, index) => {
+                                API.get("api/askforhelp/afh/" + afh.afhId)
+                                    .then((afh_res) => {
+                                        upcomingAFHs.push(afh_res.data);
+                                        this.setState({
+                                            upcomingAFHs: upcomingAFHs,
+                                        });
+                                    })
+                                    .catch((err) => fetchError(err));
+                            });
+                        })
+                        .catch((err) => fetchError(err));
+                });
+            })
+            .catch((err) => fetchError(err));
+
+        const locationsById = [];
+        API.get("api/locations/all")
+            .then((locations_res) => {
+                locations_res.data.map((loc, index) => {
                     locationsById[loc.locationId] = loc;
                 });
                 this.setState({ locationsById: locationsById });
-
-                let userClasses = [];
-                let upcomingAFHs = [];
-                users.map((user, index) => {
-                    API.get("api/user-classes/user/" + user.id).then((res) => {
-                        let classes = res.data.map((c, index) => {
-                            let matchedClass = allClasses.find(
-                                (element) => element.classId == c.classId
-                            );
-                            let matchedProgram = allPrograms.find(
-                                (element) =>
-                                    element.programId == matchedClass.programId
-                            );
-                            let matchedSemester = allSemesters.find(
-                                (element) =>
-                                    element.semesterId ==
-                                    matchedClass.semesterId
-                            );
-                            return {
-                                program: matchedProgram,
-                                semester: matchedSemester,
-                            };
-                        });
-
-                        userClasses.push({
-                            id: user.id,
-                            name: user.firstName + " " + user.lastName,
-                            classes: classes,
-                        });
-                        this.setState({ userClasses: userClasses });
-                    });
-
-                    API.get("api/userafhs/users/" + user.id).then((res) => {
-                        let afhs = res.data.map((afh, index) => {
-                            let matchedAFH = allAFHs.find(
-                                (element) => element.id == afh.afhId
-                            );
-                            upcomingAFHs.push(matchedAFH);
-                        });
-                        upcomingAFHs = union(upcomingAFHs);
-                        this.setState({ upcomingAFHs: upcomingAFHs });
-                    });
-                });
             })
-            .catch((err) => alert("Could not fetch data: " + err));
+            .catch((err) => fetchError(err));
 
-        API.get("api/transactions/account/" + id).then((res) =>
-            this.setState({ transactions: res.data })
-        );
+        API.get("api/transactions/account/" + id)
+            .then((res) => this.setState({ transactions: res.data }))
+            .catch((err) => fetchError(err));
     };
 
-    formatCurrency = (amount) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount);
-    };
-
-    renderMultiline = (lines) => {
-        return lines.map((line, index) => {
-            return (
-                <span key={index}>
-                    {line}
-                    <br />
-                </span>
-            );
+    toggleViewAllClasses = () => {
+        this.setState({
+            viewAllEnrolledClasses: !this.state.viewAllEnrolledClasses,
         });
     };
 
-    renderSettings = () => {
+    onTabSelect = (tab) => {
+        this.setState({ selectedTab: tab.toLowerCase() });
+    };
+
+    render = () => {
+        const tabButtons = ["Settings", "Registrations", "Payment"].map(
+            (item, index) => {
+                return (
+                    <div
+                        className={
+                            this.state.selectedTab == item.toLowerCase()
+                                ? "selected"
+                                : ""
+                        }
+                        onClick={(e) => this.onTabSelect(item)}
+                        key={index}>
+                        {item}
+                    </div>
+                );
+            }
+        );
+
+        let tabContent;
+        switch (this.state.selectedTab) {
+            case "settings":
+                tabContent = (
+                    <SettingsTab
+                        users={this.state.users}
+                        primaryEmail={this.state.primaryEmail}
+                        accountId={this.state.id}
+                        password={this.state.password}
+                    />
+                );
+                break;
+            case "registrations":
+                tabContent = this.state.viewAllEnrolledClasses ? (
+                    <RegistrationsTabAllClasses
+                        userClasses={this.state.userClasses}
+                        toggleTabCallback={this.toggleViewAllClasses}
+                    />
+                ) : (
+                    <RegistrationsTabMain
+                        userClasses={this.state.userClasses}
+                        upcomingAFHs={this.state.upcomingAFHs}
+                        locationsById={this.state.locationsById}
+                        toggleTabCallback={this.toggleViewAllClasses}
+                    />
+                );
+                break;
+            case "payment":
+                tabContent = (
+                    <PaymentTab transactions={this.state.transactions} />
+                );
+                break;
+        }
+
+        return (
+            <div id="view-account">
+                <h1>Your Account</h1>
+
+                <div id="tab-container">{tabButtons}</div>
+
+                {tabContent}
+            </div>
+        );
+    };
+}
+
+class SettingsTab extends React.Component {
+    render = () => {
         const currentYear = new Date().getFullYear();
 
-        const usersList = this.state.users.map((user, index) => {
+        const usersList = this.props.users.map((user, index) => {
             let contactInfo = [user.email];
             if (user.phone) {
                 contactInfo.push(user.phone);
             }
-            contactInfo = this.renderMultiline(contactInfo);
+            contactInfo = renderMultiline(contactInfo);
 
-            let otherInfo = [user.isGuardian ? "Guardian" : "Student"];
-            if (user.email == this.state.primaryEmail) {
-                otherInfo[0] = otherInfo[0] + " (Primary Contact)";
-            }
+            let otherInfo = [
+                (user.isGuardian ? "Guardian" : "Student") +
+                    (user.email == this.props.primaryEmail
+                        ? " (Primary Contact)"
+                        : ""),
+            ];
             if (user.school) {
                 otherInfo.push(user.school);
             }
@@ -175,7 +263,7 @@ export class AccountPage extends React.Component {
                         user.graduationYear
                 );
             }
-            otherInfo = this.renderMultiline(otherInfo);
+            otherInfo = renderMultiline(otherInfo);
 
             return (
                 <ul key={index}>
@@ -187,21 +275,20 @@ export class AccountPage extends React.Component {
                 </ul>
             );
         });
+
         return (
             <div className="tab-content">
                 <h2>Your Account Information</h2>
 
                 <div>
                     <p>
-                        <span>Primary email: {this.state.primaryEmail}</span>
-                        <Link to="" className="edit orange">
-                            Change primary contact
-                        </Link>
+                        <span>Primary email: {this.props.primaryEmail}</span>
+                        <a className="edit orange">Change primary contact</a>
                     </p>
                     <PasswordChange
-                        accountId={this.state.id}
-                        primaryEmail={this.state.primaryEmail}
-                        oldPassword={this.state.password}
+                        accountId={this.props.accountId}
+                        primaryEmail={this.props.primaryEmail}
+                        oldPassword={this.props.password}
                     />
                 </div>
 
@@ -214,9 +301,7 @@ export class AccountPage extends React.Component {
                     </ul>
                     {usersList}
                     <p>
-                        <Link to="" className="orange">
-                            Edit users for this account
-                        </Link>
+                        <a className="orange">Edit users for this account</a>
                     </p>
                 </div>
 
@@ -227,20 +312,133 @@ export class AccountPage extends React.Component {
                         However, doing so will delete all your data with Math
                         Navigator, including all user and class information.
                     </p>
-                    <Link to="" className="red">
-                        Request to Delete Account...
-                    </Link>
+                    <a className="red">Request to Delete Account...</a>
                 </div>
             </div>
         );
     };
+}
 
-    toggleViewAllClasses = () => {
+class PasswordChange extends React.Component {
+    state = {
+        tabOpen: false,
+        message: "",
+
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    };
+
+    onClickChange = () => {
         this.setState({
-            viewAllEnrolledClasses: !this.state.viewAllEnrolledClasses,
+            tabOpen: !this.state.tabOpen,
+            message: "",
         });
     };
 
+    onClickSave = () => {
+        if (
+            this.state.oldPassword == this.props.oldPassword &&
+            this.state.newPassword == this.state.confirmPassword
+        ) {
+            let account = {
+                primaryEmail: this.props.primaryEmail,
+                password: this.state.newPassword,
+            };
+            API.post(
+                "api/accounts/account/" + this.props.accountId,
+                account
+            ).then((res) =>
+                this.setState({
+                    tabOpen: false,
+                    message: "New password saved!",
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmPassword: "",
+                })
+            );
+        } else if (this.state.oldPassword == this.props.oldPassword) {
+            this.setState({
+                message: "New password does not match confirmation",
+            });
+        } else {
+            this.setState({ message: "Old password is incorrect" });
+        }
+    };
+
+    handleChange = (event, value) => {
+        this.setState({ [value]: event.target.value });
+    };
+
+    render = () => {
+        const changePasswordDialog = this.state.tabOpen ? (
+            <div>
+                <ul className="no-borders password">
+                    <li className="li-med">Old password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "oldPassword")
+                            }
+                            value={this.state.oldPassword}
+                        />
+                    </li>
+                </ul>
+                <ul className="no-borders password">
+                    <li className="li-med">New password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "newPassword")
+                            }
+                            value={this.state.newPassword}
+                        />
+                    </li>
+                </ul>
+                <ul className="no-borders password">
+                    <li className="li-med">Confirm new password</li>
+                    <li className="li-large">
+                        <input
+                            type="password"
+                            onChange={(e) =>
+                                this.handleChange(e, "confirmPassword")
+                            }
+                            value={this.state.confirmPassword}
+                        />
+                    </li>
+                </ul>
+                <div className="password-buttons">
+                    <button className="btn-cancel" onClick={this.onClickChange}>
+                        Cancel
+                    </button>
+                    <button className="btn-save" onClick={this.onClickSave}>
+                        Save
+                    </button>
+                </div>
+            </div>
+        ) : (
+            ""
+        );
+
+        const message = <span id="password-message">{this.state.message}</span>;
+
+        return (
+            <div>
+                <p>
+                    <a className="orange" onClick={this.onClickChange}>
+                        Change password...
+                    </a>
+                    {message}
+                </p>
+                {changePasswordDialog}
+            </div>
+        );
+    };
+}
+
+class RegistrationsTabMain extends React.Component {
     renderClassList = (classes) => {
         if (!classes.length) {
             return <p>(No classes registered)</p>;
@@ -254,130 +452,132 @@ export class AccountPage extends React.Component {
         });
     };
 
-    renderRegistrations = () => {
-        if (this.state.viewAllEnrolledClasses) {
-            const allClasses = [];
-            this.state.userClasses.map((user, index) => {
-                user.classes.map((c, index) => {
-                    allClasses.push({
-                        user: user.name,
-                        classInfo: c,
-                    });
-                });
-            });
-
-            console.log(allClasses);
-            allClasses.sort((a, b) => {
-                let semA = a.classInfo.semester.semesterId.split("_");
-                let semB = b.classInfo.semester.semesterId.split("_");
-
-                if (semA[0] < semB[0]) {
-                    return 1;
-                } else if (semA[0] > semB[0]) {
-                    return -1;
-                } else {
-                    return seasonOrder.indexOf(semA[1]) <
-                        seasonOrder.indexOf(semB[1])
-                        ? 1
-                        : -1;
-                }
-            });
-            console.log(allClasses);
-
-            const classRegistrationList = allClasses.map((c, index) => {
+    render = () => {
+        const classRegistrationList = this.props.userClasses.map(
+            (user, index) => {
                 return (
                     <ul key={index} className="no-borders">
-                        <li className="li-med">{c.user}</li>
-                        <li className="li-large">
-                            {c.classInfo.program.name +
-                                " (" +
-                                c.classInfo.semester.title +
-                                ")"}
+                        <li className="li-med">
+                            <p>{user.name}</p>
+                        </li>
+                        <li className="li-large classes-list">
+                            {this.renderClassList(user.classes)}
                         </li>
                     </ul>
                 );
-            });
+            }
+        );
+
+        const afhList = this.props.upcomingAFHs.map((afh, index) => {
+            let titleInfo = renderMultiline([afh.title, afh.subject]);
+            let dateInfo = renderMultiline([
+                moment(afh.date).format("MMMM Do, YYYY"),
+                afh.timeString,
+            ]);
+
+            let loc = this.props.locationsById[afh.locationId];
+            let locInfo = renderMultiline([
+                loc.street,
+                loc.city + ", " + loc.state,
+                loc.room,
+            ]);
 
             return (
-                <div className="tab-content">
-                    <div className="header-two-items">
-                        <h2>All Enrolled Classes</h2>
-                        <Link
-                            className="orange"
-                            onClick={this.toggleViewAllClasses}>
-                            View current enrollments
-                        </Link>
-                    </div>
-                    <div>{classRegistrationList}</div>
+                <ul key={index} className="no-borders three-columns">
+                    <li className="li-med">{titleInfo}</li>
+                    <li className="li-med">{dateInfo}</li>
+                    <li className="li-large">{locInfo}</li>
+                </ul>
+            );
+        });
+
+        return (
+            <div className="tab-content">
+                <div>
+                    <h2>Currently Enrolled Classes</h2>
+                    {classRegistrationList}
+                    <a
+                        className="orange"
+                        onClick={this.props.toggleTabCallback}>
+                        View all enrolled classes
+                    </a>
                 </div>
-            );
-        } else {
-            const classRegistrationList = this.state.userClasses.map(
-                (user, index) => {
-                    return (
-                        <ul key={index} className="no-borders">
-                            <li className="li-med">
-                                <p>{user.name}</p>
-                            </li>
-                            <li className="li-large classes-list">
-                                {this.renderClassList(user.classes)}
-                            </li>
-                        </ul>
-                    );
-                }
-            );
-
-            const afhList = this.state.upcomingAFHs.map((afh, index) => {
-                let titleInfo = this.renderMultiline([afh.title, afh.subject]);
-                let dateInfo = this.renderMultiline([
-                    moment(afh.date).format("MMMM Do, YYYY"),
-                    afh.timeString,
-                ]);
-
-                let loc = this.state.locationsById[afh.locationId];
-                let locInfo = this.renderMultiline([
-                    loc.street,
-                    loc.city + ", " + loc.state,
-                    loc.room,
-                ]);
-
-                return (
-                    <ul key={index} className="no-borders three-columns">
-                        <li className="li-med">{titleInfo}</li>
-                        <li className="li-med">{dateInfo}</li>
-                        <li className="li-large">{locInfo}</li>
+                <div>
+                    <h2>Upcoming Ask For Help Sessions</h2>
+                    <ul className="no-borders three-columns header">
+                        <li className="li-med">Title</li>
+                        <li className="li-med">Date</li>
+                        <li className="li-large">Location</li>
                     </ul>
-                );
-            });
-
-            return (
-                <div className="tab-content">
-                    <div>
-                        <h2>Currently Enrolled Classes</h2>
-                        {classRegistrationList}
-                        <Link
-                            className="orange"
-                            onClick={this.toggleViewAllClasses}>
-                            View all enrolled classes
-                        </Link>
-                    </div>
-                    <div>
-                        <h2>Upcoming Ask For Help Sessions</h2>
-                        <ul className="no-borders three-columns header">
-                            <li className="li-med">Title</li>
-                            <li className="li-med">Date</li>
-                            <li className="li-large">Location</li>
-                        </ul>
-                        {afhList}
-                    </div>
+                    {afhList}
                 </div>
-            );
-        }
+            </div>
+        );
     };
+}
 
-    renderPayment = () => {
+class RegistrationsTabAllClasses extends React.Component {
+    render = () => {
+        const allClasses = [];
+        this.props.userClasses.map((user, index) => {
+            user.classes.map((c, index) => {
+                allClasses.push({
+                    user: user.name,
+                    classInfo: c,
+                });
+            });
+        });
+
+        allClasses.sort((a, b) => {
+            let semA = a.classInfo.semester.semesterId.split("_");
+            let semB = b.classInfo.semester.semesterId.split("_");
+
+            if (semA[0] < semB[0]) {
+                return 1;
+            } else if (semA[0] > semB[0]) {
+                return -1;
+            } else {
+                return seasonOrder.indexOf(semA[1]) <
+                    seasonOrder.indexOf(semB[1])
+                    ? 1
+                    : -1;
+            }
+        });
+
+        const classRegistrationList = allClasses.map((c, index) => {
+            return (
+                <ul key={index} className="no-borders">
+                    <li className="li-med">{c.user}</li>
+                    <li className="li-large">
+                        {c.classInfo.program.name +
+                            " (" +
+                            c.classInfo.semester.title +
+                            ")"}
+                    </li>
+                </ul>
+            );
+        });
+
+        return (
+            <div className="tab-content">
+                <div className="header-two-items">
+                    <h2>All Enrolled Classes</h2>
+                    <a
+                        className="orange"
+                        onClick={this.props.toggleTabCallback}>
+                        View current enrollments
+                    </a>
+                </div>
+                <div>{classRegistrationList}</div>
+            </div>
+        );
+    };
+}
+
+class PaymentTab extends React.Component {
+    render = () => {
         let balance = 0;
-        const transactionsList = this.state.transactions.map(
+        const transactionsList = this.props.transactions.map(
             (transaction, index) => {
                 balance += parseInt(transaction.amount);
                 return (
@@ -386,18 +586,16 @@ export class AccountPage extends React.Component {
                             {chargeDisplayNames[transaction.paymentType]}
                         </li>
                         <li className="li-med">
-                            {this.formatCurrency(transaction.amount)}
+                            {formatCurrency(transaction.amount)}
                         </li>
-                        <li className="li-large">
-                            {this.formatCurrency(balance)}
-                        </li>
+                        <li className="li-large">{formatCurrency(balance)}</li>
                     </ul>
                 );
             }
         );
         transactionsList.reverse();
 
-        const formattedBalance = this.formatCurrency(balance);
+        const formattedBalance = formatCurrency(balance);
 
         return (
             <div className="tab-content">
@@ -438,168 +636,6 @@ export class AccountPage extends React.Component {
                     </ul>
                     {transactionsList}
                 </div>
-            </div>
-        );
-    };
-
-    onTabSelect = (tab) => {
-        this.setState({ selectedTab: tab.toLowerCase() });
-    };
-
-    render = () => {
-        const tabButtons = ["Settings", "Registrations", "Payment"].map(
-            (item, index) => {
-                return (
-                    <div
-                        className={
-                            this.state.selectedTab == item.toLowerCase()
-                                ? "selected"
-                                : ""
-                        }
-                        onClick={(e) => this.onTabSelect(item)}
-                        key={index}>
-                        {item}
-                    </div>
-                );
-            }
-        );
-
-        let tabContent;
-        switch (this.state.selectedTab) {
-            case "settings":
-                tabContent = this.renderSettings();
-                break;
-            case "registrations":
-                tabContent = this.renderRegistrations();
-                break;
-            case "payment":
-                tabContent = this.renderPayment();
-                break;
-        }
-
-        return (
-            <div id="view-account">
-                <h1>Your Account</h1>
-
-                <div id="tab-container">{tabButtons}</div>
-
-                {tabContent}
-            </div>
-        );
-    };
-}
-
-export class PasswordChange extends React.Component {
-    state = {
-        tabOpen: false,
-        successMessage: "",
-
-        oldPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-    };
-
-    onClickChange = () => {
-        this.setState({
-            tabOpen: !this.state.tabOpen,
-            successMessage: false,
-        });
-    };
-
-    onClickSave = () => {
-        if (
-            this.state.oldPassword == this.props.oldPassword &&
-            this.state.newPassword == this.state.confirmPassword
-        ) {
-            let account = {
-                primaryEmail: this.props.primaryEmail,
-                password: this.state.newPassword,
-            };
-            API.post(
-                "api/accounts/account/" + this.props.accountId,
-                account
-            ).then((res) =>
-                this.setState({
-                    tabOpen: false,
-                    successMessage: "New password saved!",
-                })
-            );
-        } else if (this.state.oldPassword == this.props.oldPassword) {
-            this.setState({ successMessage: "New password does not match" });
-        } else {
-            this.setState({ successMessage: "Old password is incorrect" });
-        }
-    };
-
-    handleChange = (event, value) => {
-        this.setState({ [value]: event.target.value });
-    };
-
-    render = () => {
-        const changePasswordDialog = this.state.tabOpen ? (
-            <div>
-                <ul className="no-borders vertical-centered password">
-                    <li className="li-med">Old password</li>
-                    <li className="li-large">
-                        <input
-                            type="password"
-                            onChange={(e) =>
-                                this.handleChange(e, "oldPassword")
-                            }
-                            value={this.state.oldPassword}
-                        />
-                    </li>
-                </ul>
-                <ul className="no-borders vertical-centered password">
-                    <li className="li-med">New password</li>
-                    <li className="li-large">
-                        <input
-                            type="password"
-                            onChange={(e) =>
-                                this.handleChange(e, "newPassword")
-                            }
-                            value={this.state.newPassword}
-                        />
-                    </li>
-                </ul>
-                <ul className="no-borders vertical-centered password">
-                    <li className="li-med">Confirm new password</li>
-                    <li className="li-large">
-                        <input
-                            type="password"
-                            onChange={(e) =>
-                                this.handleChange(e, "confirmPassword")
-                            }
-                            value={this.state.confirmPassword}
-                        />
-                    </li>
-                </ul>
-                <div className="buttons">
-                    <button className="btn-cancel" onClick={this.onClickChange}>
-                        Cancel
-                    </button>
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                </div>
-            </div>
-        ) : (
-            ""
-        );
-
-        const successMessage = (
-            <span id="password-success">{this.state.successMessage}</span>
-        );
-
-        return (
-            <div>
-                <p>
-                    <Link className="orange" onClick={this.onClickChange}>
-                        Change password...
-                    </Link>
-                    {successMessage}
-                </p>
-                {changePasswordDialog}
             </div>
         );
     };
