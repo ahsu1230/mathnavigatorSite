@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -9,21 +10,30 @@ import (
 	"time"
 )
 
-// This CLI sends http requests to a local orion webserver.
+// This CLI sends http requests to a LOCAL orion webserver.
+// This script should not be used for a non-local orion webserver!
 // Make sure orion is healthy before running this CLI
 //
 // You can run this CLI using:
 // go run filler.go
+// go run filler.go --orionHost http://localhost:8080
 //
 // or via a binary:
 // go build filler.go
 // ./filler
 
-func main() {
-	fmt.Println("Orion Fake Data Filler Client starting...")
-	runFiller("http://localhost:8001")
+var DEFAULT_LOCAL_ORION_HOST string = "http://localhost:8001"
 
-	fmt.Println("Done filling orion")
+func main() {
+	log.Println("Orion Fake Data Filler Client starting...")
+
+	var orionHost string
+	flag.StringVar(&orionHost, "orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
+	flag.Parse()
+
+	runFiller(orionHost)
+
+	log.Println("Done filling orion")
 }
 
 func runFiller(hostAddress string) {
@@ -32,8 +42,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"ap_calculus",
 		"AP Calculus",
-		"9",
-		"12",
+		9,
+		12,
 		"Students should take this course if they aim to take the AP Calculus Exam",
 	)
 
@@ -41,8 +51,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"ap_java",
 		"AP Java",
-		"10",
-		"12",
+		10,
+		12,
 		"Students should take this course if they aim to take the AP Java Exam",
 	)
 
@@ -50,8 +60,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"sat_math",
 		"SAT Math",
-		"8",
-		"11",
+		8,
+		11,
 		"Students should take the course if they aim to take the SAT Math Exam",
 	)
 
@@ -59,8 +69,8 @@ func runFiller(hostAddress string) {
 		hostAddress,
 		"amc_prep",
 		"AMC Prep",
-		"9",
-		"12",
+		9,
+		12,
 		"Students should take the course if they aim to take the AMC Test",
 	)
 
@@ -228,28 +238,123 @@ func runFiller(hostAddress string) {
 	)
 
 	// Create sessions
-	createSession(
+	createSessions(
 		hostAddress,
-		"id_1",
+		"ap_java_2020_fall_class1",
 		"false",
+		3,
 	)
 
-	createSession(
+	createSessions(
 		hostAddress,
-		"id_2",
+		"ap_calculus_2020_fall_class1",
 		"true",
+		2,
+	)
+
+	// Create Accounts
+	createAccount(
+		hostAddress,
+		"JoeSmith@gmail.com",
+		"jhdgjhddjhdjuj",
+	)
+	createAccount(hostAddress,
+		"billybob@gmail.com",
+		"2redssssa",
+	)
+
+	// Create Users
+	createUser(
+		hostAddress,
+		"Joe",
+		"Smith",
+		"",
+		"JoeSmith@gmail.com",
+		"301-543-2412",
+		false,
+		1,
+		"notes1",
+		"Montgomery Blair HS",
+		2001,
+	)
+
+	createUser(
+		hostAddress,
+		"Joe",
+		"Smith",
+		"Mom",
+		"JoeMom@gmail.com",
+		"301-456-1244",
+		true,
+		1,
+		"notes1",
+		"",
+		0,
+	)
+
+	createUser(
+		hostAddress,
+		"Billy",
+		"Bob",
+		"Joe",
+		"billybob@gmail.com",
+		"301-288-8764",
+		false,
+		2,
+		"notes2",
+		"Winston Churchill HS",
+		2002,
+	)
+
+	createUser(
+		hostAddress,
+		"Billy",
+		"Bob",
+		"Dad",
+		"billydad@gmail.com",
+		"301-223-2442",
+		true,
+		2,
+		"notes2",
+		"",
+		0,
+	)
+
+	// Create transactions
+	createTransaction(
+		hostAddress,
+		100,
+		"pay_paypal",
+		"notes1",
+		1,
+	)
+
+	createTransaction(
+		hostAddress,
+		101,
+		"pay_cash",
+		"notes2",
+		2,
+	)
+
+	createTransaction(
+		hostAddress,
+		-300,
+		"charge",
+		"notes2",
+		2,
 	)
 }
 
-func createProgram(hostAddress, programId string, name string, grade1 string, grade2 string, description string) error {
+func createProgram(hostAddress, programId string, name string, grade1, grade2 int, description string) error {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
-		"grade1": %s,
-		"grade2": %s,
+		"grade1": %d,
+		"grade2": %d,
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
-	fmt.Println("Creating program " + programId + "...")
+	log.Println("Creating program " + programId + "...")
 	sendPostRequest(hostAddress+"/api/programs/create", programBody)
 	return nil
 }
@@ -259,7 +364,7 @@ func createSemester(hostAddress, semesterId string, title string) error {
 		"semesterId": "%s",
 		"title": "%s"
 	}`, semesterId, title))
-	fmt.Println("Creating semester " + semesterId + "...")
+	log.Println("Creating semester " + semesterId + "...")
 	sendPostRequest(hostAddress+"/api/semesters/create", semesterBody)
 	return nil
 }
@@ -272,7 +377,7 @@ func createLocation(hostAddress, locationId, street, city, state, zipcode string
 		"state": "%s",
 		"zipcode": "%s"
 	}`, locationId, street, city, state, zipcode))
-	fmt.Println("Creating location " + locationId + "...")
+	log.Println("Creating location " + locationId + "...")
 	sendPostRequest(hostAddress+"/api/locations/create", locationBody)
 	return nil
 }
@@ -282,7 +387,7 @@ func createAchieve(hostAddress, year, message string) error {
 		"year": %s,
 		"message": "%s"
 	}`, year, message))
-	fmt.Println("Creating achievement " + message + "...")
+	log.Println("Creating achievement " + message + "...")
 	sendPostRequest(hostAddress+"/api/achievements/create", achieveBody)
 	return nil
 }
@@ -297,7 +402,7 @@ func createAnnounce(hostAddress, author, message, onHomePage string) error {
 		"message": "%s",
 		"onHomePage": %s
 	}`, nowJson, author, message, onHomePage))
-	fmt.Println("Creating announcement " + message + "...")
+	log.Println("Creating announcement " + message + "...")
 	sendPostRequest(hostAddress+"/api/announcements/create", announceBody)
 	return nil
 }
@@ -318,25 +423,80 @@ func createClass(hostAddress, programId, semesterId, classKey, classId, location
 		"startDate": %s,
 		"endDate": %s
 	}`, programId, semesterId, classKey, classId, locationId, times, nowJson, laterJson))
-	fmt.Println("Creating class " + classId + "...")
+	log.Println("Creating class " + classId + "...")
 	sendPostRequest(hostAddress+"/api/classes/create", classBody)
 	return nil
 }
 
-func createSession(hostAddress, classId, cancelled string) error {
+func createSessions(hostAddress, classId, cancelled string, numSessions int) error {
+	// Create session takes in a list
+	var body = "["
 	now := time.Now().UTC()
-	nowJson, _ := now.MarshalJSON()
-	var later = now.Add(time.Hour * 24 * 30)
-	laterJson, _ := later.MarshalJSON()
+	start := now
 
-	sessionBody := strings.NewReader(fmt.Sprintf(`{
-		"classId": "%s"
-		"startsAt": %s
-		"endsAt": %s
-		"cancelled": %s
-	}`, classId, nowJson, laterJson, cancelled))
-	fmt.Println("Creating session " + classId + "...")
+	for i := 0; i < numSessions; i++ {
+		startJson, _ := start.MarshalJSON()
+		end := start.Add(time.Hour * 2)
+		endJson, _ := end.MarshalJSON()
+
+		body += fmt.Sprintf(`{
+			"classId": "%s",
+			"startsAt": %s,
+			"endsAt": %s,
+			"cancelled": %s
+		}`, classId, startJson, endJson, cancelled)
+
+		if i < numSessions-1 {
+			body += ","
+		}
+
+		start = start.Add(time.Hour * 24 * 7)
+	}
+	body += "]"
+	sessionBody := strings.NewReader(body)
+	log.Println("Creating session for " + classId + "...")
 	sendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
+
+	return nil
+}
+
+func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian bool, account_id int, notes, school string, graduation_year int) error {
+	userBody := strings.NewReader(fmt.Sprintf(`{
+		"firstName": "%s",
+		"lastName": "%s",
+		"middleName": "%s",
+		"email": "%s",
+		"phone": "%s",
+		"isGuardian": %t,
+		"accountId": %d,
+		"notes": "%s",
+		"school": "%s",
+		"graduationYear": %d
+	}`, first_name, last_name, middle_name, email, phone, is_guardian, account_id, notes, school, graduation_year))
+	log.Println("Creating user " + first_name + "...")
+	sendPostRequest(hostAddress+"/api/users/create", userBody)
+	return nil
+}
+
+func createAccount(hostAddress, primary_email, password string) error {
+	accountBody := strings.NewReader(fmt.Sprintf(`{
+		"primaryEmail": "%s",
+		"password": "%s"
+	}`, primary_email, password))
+	log.Println("Creating account " + primary_email + "...")
+	sendPostRequest(hostAddress+"/api/accounts/create", accountBody)
+	return nil
+}
+
+func createTransaction(hostAddress string, amount int, paymentType string, paymentNotes string, accountId int) error {
+	transactionBody := strings.NewReader(fmt.Sprintf(`{
+		"amount": %d,
+		"paymentType": "%s",
+		"paymentNotes": "%s",
+		"accountId": %d
+		}`, amount, paymentType, paymentNotes, accountId))
+	log.Println("Creating transaction " + paymentNotes + "...")
+	sendPostRequest(hostAddress+"/api/transactions/create", transactionBody)
 	return nil
 }
 
