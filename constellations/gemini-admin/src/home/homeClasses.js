@@ -42,7 +42,7 @@ export class HomeTabSectionClasses extends React.Component {
             <div className="sectionDetails">
                 <div className="container-class">
                     <h3 className="section-header">Unpublished Classes</h3>{" "}
-                    <button id="view-details">
+                    <button className="view-details">
                         <Link to={"/classes"}>View All Classes to Publish</Link>
                     </button>
                 </div>

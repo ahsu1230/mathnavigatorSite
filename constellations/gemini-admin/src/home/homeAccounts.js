@@ -18,31 +18,29 @@ export class HomeTabSectionAccounts extends React.Component {
     // counter to keep track of the number of unpaid accounts => unpaidAcc.length
 
     //unpaid accounts
-    componentDidMount() {
+    /*  componentDidMount() {
         API.get("api/transactions").then((res) => {
             const transaction = res.data;
             this.setState({
                 unpaidAcc: transaction,
             });
         });
-    }
+    } */
 
     render() {
-        let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
-            return <li key={index}> {row.classId} </li>;
-        });
+        // flexbox for headers (Name, Email, Account Number?, Unpaid Amount? )
+
         return (
             <div className="sectionDetails">
                 <div className="container-class">
-                    <h3 className="section-header">Unpublished Classes</h3>{" "}
-                    <button id="publish">
-                        <Link to={"/classes"}>View All Classes to Publish</Link>
+                    <h3 className="section-header">Unpaid Accounts</h3>{" "}
+                    <button className="view-details">
+                        <Link to={"/classes"}>View All Accounts ??</Link>
                     </button>
                 </div>
 
                 <div className="class-section">
-                    <div className="list-header">Class ID</div>
-                    <ul>{unpublishedClasses}</ul>
+                    <div className="list-header">Account Number</div>
                 </div>
             </div>
         );

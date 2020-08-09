@@ -47,7 +47,7 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "class"}
                         section={"class"}
-                        buttonNum={<ClassesNotif />}
+                        //buttonNum={<ClassesNotif />}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
@@ -97,7 +97,7 @@ class TabButton extends React.Component {
             <button
                 className={highlight ? "active" : ""}
                 onClick={() => this.props.onChangeTab(section)}>
-                {displayName} {displayNotif}
+                {displayName}
             </button>
         );
     }

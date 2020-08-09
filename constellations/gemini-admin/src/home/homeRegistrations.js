@@ -19,7 +19,7 @@ export class HomeTabSectionRegistrations extends React.Component {
     // counter to keep track of the number of registrations => pendingReg.length + afhReg.length
 
     //pending registration for classes
-    componentDidMount() {
+    /*  componentDidMount() {
         API.get("api/user-classes").then((res) => {
             const userClass = res.data;
             this.setState({
@@ -36,25 +36,41 @@ export class HomeTabSectionRegistrations extends React.Component {
                 afhReg: userAfh,
             });
         });
-    }
+    } */
 
     render() {
-        let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
-            return <li key={index}> {row.classId} </li>;
-        });
-
+        // flexbox for headers (Name, Email, ClassId)
+        // flexbox for headers (Names, Email, RegisteredAt)
         return (
-            <div className="sectionDetails">
-                <div className="container-class">
-                    <h3 className="section-header">Unpublished Classes</h3>{" "}
-                    <button id="publish">
-                        <Link to={"/classes"}>View All Classes to Publish</Link>
-                    </button>
+            <div id="registrations">
+                <div className="sectionDetails">
+                    <div className="container-class">
+                        <h3 className="section-header">
+                            Pending Registrations For Classes
+                        </h3>{" "}
+                        <button className="view-details">
+                            <Link to={"/classes"}>View By Class</Link>
+                        </button>
+                    </div>
+
+                    <div className="class-section">
+                        <div className="list-header">Name</div>
+                    </div>
                 </div>
 
-                <div className="class-section">
-                    <div className="list-header">Class ID</div>
-                    <ul>{unpublishedClasses}</ul>
+                <div className="sectionDetails">
+                    <div className="container-class">
+                        <h3 className="section-header">
+                            New Registrations For AFH
+                        </h3>{" "}
+                        <button className="view-details">
+                            <Link to={"/classes"}>View By AFH Session</Link>
+                        </button>
+                    </div>
+
+                    <div className="class-section">
+                        <div className="list-header">Name</div>
+                    </div>
                 </div>
             </div>
         );

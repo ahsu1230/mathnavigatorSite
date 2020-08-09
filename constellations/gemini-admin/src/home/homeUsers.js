@@ -18,31 +18,29 @@ export class HomeTabSectionUsers extends React.Component {
     // counter to keep track of the number of new users => newUsers.length
 
     //new users
-    componentDidMount() {
+    /*   componentDidMount() {
         API.get("api/users").then((res) => {
             const users = res.data;
             this.setState({
                 newUsers: users,
             });
         });
-    }
+    } */
 
     render() {
-        let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
-            return <li key={index}> {row.classId} </li>;
-        });
+        // flexbox for headers (Name, Email, Account Number ? )
+
         return (
             <div className="sectionDetails">
                 <div className="container-class">
-                    <h3 className="section-header">Unpublished Classes</h3>{" "}
-                    <button id="publish">
-                        <Link to={"/classes"}>View All Classes to Publish</Link>
+                    <h3 className="section-header">New Users</h3>{" "}
+                    <button className="view-details">
+                        <Link to={"/classes"}>View User Details ? </Link>
                     </button>
                 </div>
 
                 <div className="class-section">
-                    <div className="list-header">Class ID</div>
-                    <ul>{unpublishedClasses}</ul>
+                    <div className="list-header">Name</div>
                 </div>
             </div>
         );
