@@ -9,9 +9,7 @@ import (
 )
 
 func GetAllLocations(c *gin.Context) {
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	locationList, err := repos.LocationRepo.SelectAll(publishedOnly)
+	locationList, err := repos.LocationRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -69,21 +67,6 @@ func UpdateLocation(c *gin.Context) {
 	}
 
 	err := repos.LocationRepo.Update(locationId, locationJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func PublishLocations(c *gin.Context) {
-	// Incoming JSON
-	var locationIdsJson []string
-	c.BindJSON(&locationIdsJson)
-
-	err := repos.LocationRepo.Publish(locationIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
