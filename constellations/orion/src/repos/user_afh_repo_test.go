@@ -28,19 +28,19 @@ func TestSelectByUserId(t *testing.T) {
 	// Mock DB statements and execute
 	rows := sqlmock.NewRows([]string{
 		"Id",
-		"UserId",
-		"AfhId",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"UserId",
+		"AfhId",
 	}).
 		AddRow(
 			1,
-			2,
-			3,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			sql.NullTime{},
+			2,
+			3,
 		)
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE user_id=?").
 		ExpectQuery().
@@ -55,11 +55,11 @@ func TestSelectByUserId(t *testing.T) {
 	want := []domains.UserAfh{
 		{
 			Id:        1,
-			UserId:    2,
-			AfhId:     3,
 			CreatedAt: testUtils.TimeNow,
 			UpdatedAt: testUtils.TimeNow,
 			DeletedAt: sql.NullTime{},
+			UserId:    2,
+			AfhId:     3,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -78,19 +78,19 @@ func TestSelectByAfhId(t *testing.T) {
 	// Mock DB statements and execute
 	rows := sqlmock.NewRows([]string{
 		"Id",
-		"UserId",
-		"AfhId",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"UserId",
+		"AfhId",
 	}).
 		AddRow(
 			1,
-			2,
-			3,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			sql.NullTime{},
+			2,
+			3,
 		)
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE afh_id=?").
 		ExpectQuery().
@@ -105,11 +105,11 @@ func TestSelectByAfhId(t *testing.T) {
 	want := []domains.UserAfh{
 		{
 			Id:        1,
-			UserId:    2,
-			AfhId:     3,
 			CreatedAt: testUtils.TimeNow,
 			UpdatedAt: testUtils.TimeNow,
 			DeletedAt: sql.NullTime{},
+			UserId:    2,
+			AfhId:     3,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -128,19 +128,19 @@ func TestSelectByBothIds(t *testing.T) {
 	// Mock DB statements and execute
 	rows := sqlmock.NewRows([]string{
 		"Id",
-		"UserId",
-		"AfhId",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"UserId",
+		"AfhId",
 	}).
 		AddRow(
 			1,
-			2,
-			3,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			sql.NullTime{},
+			2,
+			3,
 		)
 	mock.ExpectPrepare(`^SELECT (.+) FROM user_afh WHERE user_id=\? AND afh_id=?`).
 		ExpectQuery().
@@ -154,11 +154,11 @@ func TestSelectByBothIds(t *testing.T) {
 	// Validate results
 	want := domains.UserAfh{
 		Id:        1,
-		UserId:    2,
-		AfhId:     3,
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
 		DeletedAt: sql.NullTime{},
+		UserId:    2,
+		AfhId:     3,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -177,7 +177,7 @@ func TestInsertUserAfh(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO user_afh").
 		ExpectExec().
-		WithArgs(2, 3, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2, 3).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
 		UserId: 2,

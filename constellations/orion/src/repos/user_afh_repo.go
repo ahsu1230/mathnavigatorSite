@@ -33,10 +33,10 @@ func (ur *userAfhRepo) Initialize(db *sql.DB) {
 
 func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 	statement := "INSERT INTO user_afh (" +
-		"user_id, " +
-		"afh_id, " +
 		"created_at, " +
-		"updated_at" +
+		"updated_at, " +
+		"user_id, " +
+		"afh_id " +
 		") VALUES (?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
@@ -47,10 +47,10 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
+		now,
+		now,
 		userAfh.UserId,
 		userAfh.AfhId,
-		now,
-		now,
 	)
 	if err != nil {
 		return err
@@ -77,11 +77,11 @@ func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
 		var userAfh domains.UserAfh
 		if errScan := rows.Scan(
 			&userAfh.Id,
-			&userAfh.UserId,
-			&userAfh.AfhId,
 			&userAfh.CreatedAt,
 			&userAfh.UpdatedAt,
-			&userAfh.DeletedAt); errScan != nil {
+			&userAfh.DeletedAt,
+			&userAfh.UserId,
+			&userAfh.AfhId); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, userAfh)
@@ -108,11 +108,11 @@ func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
 		var userAfh domains.UserAfh
 		if errScan := rows.Scan(
 			&userAfh.Id,
-			&userAfh.UserId,
-			&userAfh.AfhId,
 			&userAfh.CreatedAt,
 			&userAfh.UpdatedAt,
-			&userAfh.DeletedAt); errScan != nil {
+			&userAfh.DeletedAt,
+			&userAfh.UserId,
+			&userAfh.AfhId); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, userAfh)
@@ -132,11 +132,11 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 	row := stmt.QueryRow(userId, afhId)
 	errScan := row.Scan(
 		&userAfh.Id,
-		&userAfh.UserId,
-		&userAfh.AfhId,
 		&userAfh.CreatedAt,
 		&userAfh.UpdatedAt,
-		&userAfh.DeletedAt)
+		&userAfh.DeletedAt,
+		&userAfh.UserId,
+		&userAfh.AfhId)
 	return userAfh, errScan
 }
 
