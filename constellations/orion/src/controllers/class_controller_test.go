@@ -189,7 +189,7 @@ func TestCreateClass_Failure(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields
+	class := testUtils.CreateMockClass("", "", "", "", "", 0, 0) // Empty fields
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body)
 
@@ -220,7 +220,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	class := testUtils.CreateMockClass("", "", "", "", "") // Empty fields
+	class := testUtils.CreateMockClass("", "", "", "", "", 0, 0) // Empty fields
 	body := createBodyFromClass(class)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
@@ -327,6 +327,8 @@ func createMockClasses(ids ...int) []domains.Class {
 				"class1",
 				"churchill",
 				"3 pm - 5 pm",
+				50,
+				0,
 			)
 		case 2:
 			classes[i] = testUtils.CreateMockClass(
@@ -335,6 +337,8 @@ func createMockClasses(ids ...int) []domains.Class {
 				"class2",
 				"churchill",
 				"5 pm - 7 pm",
+				50,
+				0,
 			)
 		case 3:
 			classes[i] = testUtils.CreateMockClass(
@@ -343,6 +347,8 @@ func createMockClasses(ids ...int) []domains.Class {
 				"final_review",
 				"churchill",
 				"5 pm - 8 pm",
+				60,
+				0,
 			)
 		case 4:
 			classes[i] = testUtils.CreateMockClass(
@@ -351,6 +357,8 @@ func createMockClasses(ids ...int) []domains.Class {
 				"",
 				"churchill",
 				"4 pm - 6 pm",
+				60,
+				0,
 			)
 		default:
 			classes[i] = domains.Class{}
@@ -368,6 +376,8 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
+		assert.EqualValues(t, domains.NewNullUint(50), class.PricePerSession)
+		assert.EqualValues(t, domains.NewNullUint(0), class.PriceLump)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
@@ -375,6 +385,8 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
+		assert.EqualValues(t, domains.NewNullUint(50), class.PricePerSession)
+		assert.EqualValues(t, domains.NewNullUint(0), class.PriceLump)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -382,6 +394,8 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
+		assert.EqualValues(t, domains.NewNullUint(60), class.PricePerSession)
+		assert.EqualValues(t, domains.NewNullUint(0), class.PriceLump)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
@@ -389,6 +403,8 @@ func assertMockClasses(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
 		assert.EqualValues(t, "churchill", class.LocationId)
 		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
+		assert.EqualValues(t, domains.NewNullUint(60), class.PricePerSession)
+		assert.EqualValues(t, domains.NewNullUint(0), class.PriceLump)
 	}
 }
 
