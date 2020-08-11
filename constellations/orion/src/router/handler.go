@@ -95,6 +95,7 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiAccounts.POST("/create", controllers.CreateAccount)
 		apiAccounts.GET("/account/:id", controllers.GetAccountById)
+		apiAccounts.GET("/unpaid", controllers.GetNegativeBalanceAccounts)
 		apiAccounts.POST("/account/:id", controllers.UpdateAccount)
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
 		apiAccounts.POST("/search", controllers.SearchAccount)
