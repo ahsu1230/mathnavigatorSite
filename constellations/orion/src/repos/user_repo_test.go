@@ -8,7 +8,6 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 	"reflect"
 	"testing"
-	//"time"
 )
 
 func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterface) {
@@ -137,8 +136,6 @@ func TestSelectNewUsers(t *testing.T) {
 	db, mock, repo := initUserTest(t)
 	defer db.Close()
 
-	//week := time.Hour * 24 * 7
-	//lastweek := time.Now().UTC().Add(-week)
 	// Mock DB statements and execute
 	rows := getUserRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE created_at>=*").

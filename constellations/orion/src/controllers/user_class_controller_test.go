@@ -136,6 +136,52 @@ func TestGetUserClassByUserAndClass_Success(t *testing.T) {
 
 }
 
+func TestGetUsersByNew(t *testing.T) {
+	testUtils.UserClassesRepo.MockSelectByNew = func() ([]domains.UserClasses, error) {
+		return []domains.UserClasses{
+			testUtils.CreateMockUserClasses(
+				1,
+				1,
+				"abcd",
+				1,
+				domains.USER_CLASS_ACCEPTED,
+			),
+			testUtils.CreateMockUserClasses(
+				2,
+				2,
+				"abcd",
+				2,
+				domains.USER_CLASS_TRIAL,
+			),
+		}, nil
+	}
+	repos.UserClassesRepo = &testUtils.UserClassesRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/new", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var userClass []domains.UserClasses
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, 1, userClass[0].Id)
+	assert.EqualValues(t, 1, userClass[0].UserId)
+	assert.EqualValues(t, "abcd", userClass[0].ClassId)
+	assert.EqualValues(t, 1, userClass[0].AccountId)
+	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
+
+	assert.EqualValues(t, 2, userClass[1].Id)
+	assert.EqualValues(t, 2, userClass[1].UserId)
+	assert.EqualValues(t, "abcd", userClass[1].ClassId)
+	assert.EqualValues(t, 2, userClass[1].AccountId)
+	assert.EqualValues(t, domains.USER_CLASS_TRIAL, userClass[1].State)
+
+	assert.EqualValues(t, 2, len(userClass))
+}
+
 //
 // Test Create
 //
