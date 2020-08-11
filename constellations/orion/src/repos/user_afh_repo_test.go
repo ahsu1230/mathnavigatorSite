@@ -33,15 +33,14 @@ func TestSelectByUserId(t *testing.T) {
 		"DeletedAt",
 		"UserId",
 		"AfhId",
-	}).
-		AddRow(
-			1,
-			testUtils.TimeNow,
-			testUtils.TimeNow,
-			sql.NullTime{},
-			2,
-			3,
-		)
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+	)
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE user_id=?").
 		ExpectQuery().
 		WithArgs(2).
@@ -83,15 +82,14 @@ func TestSelectByAfhId(t *testing.T) {
 		"DeletedAt",
 		"UserId",
 		"AfhId",
-	}).
-		AddRow(
-			1,
-			testUtils.TimeNow,
-			testUtils.TimeNow,
-			sql.NullTime{},
-			2,
-			3,
-		)
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+	)
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE afh_id=?").
 		ExpectQuery().
 		WithArgs(3).
@@ -133,15 +131,14 @@ func TestSelectByBothIds(t *testing.T) {
 		"DeletedAt",
 		"UserId",
 		"AfhId",
-	}).
-		AddRow(
-			1,
-			testUtils.TimeNow,
-			testUtils.TimeNow,
-			sql.NullTime{},
-			2,
-			3,
-		)
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+	)
 	mock.ExpectPrepare(`^SELECT (.+) FROM user_afh WHERE user_id=\? AND afh_id=?`).
 		ExpectQuery().
 		WithArgs(2, 3).
