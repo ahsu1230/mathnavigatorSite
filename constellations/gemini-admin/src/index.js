@@ -33,6 +33,8 @@ import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./ask_for_help/afh.js";
 import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
+import { PaymentEmails } from "./emails/email.js";
+
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
 
@@ -91,6 +93,8 @@ const AFHEdit = () => <AskForHelpEditPage />;
 const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
+
+const Payments = () => <PaymentEmails />;
 
 class AppContainer extends React.Component {
     render() {
@@ -180,6 +184,8 @@ class App extends React.Component {
                     <Route path="/afh/:afhId/edit" component={AFHMatch} />
                     <Route path="/afh/add" component={AFHEdit} />
                     <Route path="/afh" component={AFH} />
+
+                    <Route path="/emailPayments" component={Payments} />
                 </Switch>
             </div>
         );
