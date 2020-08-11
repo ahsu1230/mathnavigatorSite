@@ -107,6 +107,71 @@ func Test_SelectAccountByPrimaryEmail(t *testing.T) {
 }
 
 //
+// Get accounts with negative balances
+//
+func Test_SelectAllNegativeBalances(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Sum"}).
+		AddRow(
+			1,
+			now,
+			now,
+			sql.NullTime{},
+			"test@gmail.com",
+			"password",
+			-300,
+		).
+		AddRow(
+			2,
+			now,
+			now,
+			sql.NullTime{},
+			"test2@gmail.com",
+			"password2",
+			-200,
+		)
+	mock.ExpectPrepare("^SELECT (.*) FROM accounts (.+)").
+		ExpectQuery().
+		WillReturnRows(rows)
+
+	got, err := repo.SelectAllNegativeBalances()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.AccountSum{
+		{
+			Id:           1,
+			CreatedAt:    now,
+			UpdatedAt:    now,
+			DeletedAt:    sql.NullTime{},
+			PrimaryEmail: "test@gmail.com",
+			Password:     "password",
+			Sum:          -300,
+		},
+		{
+			Id:           2,
+			CreatedAt:    now,
+			UpdatedAt:    now,
+			DeletedAt:    sql.NullTime{},
+			PrimaryEmail: "test2@gmail.com",
+			Password:     "password2",
+			Sum:          -200,
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Create
 //
 func Test_InsertAccount(t *testing.T) {

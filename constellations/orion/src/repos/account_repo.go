@@ -21,6 +21,7 @@ type AccountRepoInterface interface {
 	Initialize(db *sql.DB)
 	SelectById(uint) (domains.Account, error)
 	SelectByPrimaryEmail(string) (domains.Account, error)
+	SelectAllNegativeBalances() ([]domains.AccountSum, error)
 	Insert(domains.Account) error
 	Update(uint, domains.Account) error
 	Delete(uint) error
@@ -70,6 +71,38 @@ func (acc *accountRepo) SelectByPrimaryEmail(primary_email string) (domains.Acco
 		&account.Password)
 
 	return account, errScan
+}
+
+func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
+	results := make([]domains.AccountSum, 0)
+
+	statement := "SELECT accounts.*,SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
+	stmt, err := acc.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var accountSum domains.AccountSum
+		if errScan := rows.Scan(
+			&accountSum.Id,
+			&accountSum.CreatedAt,
+			&accountSum.UpdatedAt,
+			&accountSum.DeletedAt,
+			&accountSum.PrimaryEmail,
+			&accountSum.Password,
+			&accountSum.Sum); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, accountSum)
+	}
+	return results, nil
 }
 
 func (acc *accountRepo) Insert(account domains.Account) error {

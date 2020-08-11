@@ -353,12 +353,13 @@ func (userClassesRepo *mockUserClassesRepo) Delete(id uint) error {
 }
 
 type mockAccountRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectById           func(uint) (domains.Account, error)
-	MockSelectByPrimaryEmail func(string) (domains.Account, error)
-	MockInsert               func(domains.Account) error
-	MockUpdate               func(uint, domains.Account) error
-	MockDelete               func(uint) error
+	MockInitialize                func(*sql.DB)
+	MockSelectById                func(uint) (domains.Account, error)
+	MockSelectByPrimaryEmail      func(string) (domains.Account, error)
+	MockSelectAllNegativeBalances func() ([]domains.AccountSum, error)
+	MockInsert                    func(domains.Account) error
+	MockUpdate                    func(uint, domains.Account) error
+	MockDelete                    func(uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
@@ -369,6 +370,9 @@ func (accountRepo *mockAccountRepo) SelectById(id uint) (domains.Account, error)
 }
 func (accountRepo *mockAccountRepo) SelectByPrimaryEmail(primary_email string) (domains.Account, error) {
 	return accountRepo.MockSelectByPrimaryEmail(primary_email)
+}
+func (accountRepo *mockAccountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
+	return accountRepo.MockSelectAllNegativeBalances()
 }
 func (accountRepo *mockAccountRepo) Insert(account domains.Account) error {
 	return accountRepo.MockInsert(account)
