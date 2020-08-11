@@ -10,9 +10,7 @@ import (
 
 func GetAllSemesters(c *gin.Context) {
 	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	semesterList, err := repos.SemesterRepo.SelectAll(publishedOnly)
+	semesterList, err := repos.SemesterRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -67,20 +65,6 @@ func UpdateSemester(c *gin.Context) {
 	}
 
 	err := repos.SemesterRepo.Update(semesterId, semesterJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-}
-
-func PublishSemesters(c *gin.Context) {
-	// Incoming JSON
-	var semesterIds []string
-	c.BindJSON(&semesterIds)
-
-	err := repos.SemesterRepo.Publish(semesterIds)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

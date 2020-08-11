@@ -33,9 +33,11 @@ func (ur *userAfhRepo) Initialize(db *sql.DB) {
 
 func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 	statement := "INSERT INTO user_afh (" +
+		"created_at, " +
+		"updated_at, " +
 		"user_id, " +
 		"afh_id " +
-		") VALUES (?, ?)"
+		") VALUES (?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -43,9 +45,13 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 	}
 	defer stmt.Close()
 
+	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
+		now,
+		now,
 		userAfh.UserId,
-		userAfh.AfhId)
+		userAfh.AfhId,
+	)
 	if err != nil {
 		return err
 	}
@@ -71,6 +77,9 @@ func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
 		var userAfh domains.UserAfh
 		if errScan := rows.Scan(
 			&userAfh.Id,
+			&userAfh.CreatedAt,
+			&userAfh.UpdatedAt,
+			&userAfh.DeletedAt,
 			&userAfh.UserId,
 			&userAfh.AfhId); errScan != nil {
 			return results, errScan
@@ -99,6 +108,9 @@ func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
 		var userAfh domains.UserAfh
 		if errScan := rows.Scan(
 			&userAfh.Id,
+			&userAfh.CreatedAt,
+			&userAfh.UpdatedAt,
+			&userAfh.DeletedAt,
 			&userAfh.UserId,
 			&userAfh.AfhId); errScan != nil {
 			return results, errScan
@@ -120,6 +132,9 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 	row := stmt.QueryRow(userId, afhId)
 	errScan := row.Scan(
 		&userAfh.Id,
+		&userAfh.CreatedAt,
+		&userAfh.UpdatedAt,
+		&userAfh.DeletedAt,
 		&userAfh.UserId,
 		&userAfh.AfhId)
 	return userAfh, errScan
@@ -159,7 +174,8 @@ func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
 func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 	statement := "UPDATE user_afh SET " +
 		"user_id=?, " +
-		"afh_id=? " +
+		"afh_id=?, " +
+		"updated_at=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -167,10 +183,13 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 	}
 	defer stmt.Close()
 
+	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		userAfh.UserId,
 		userAfh.AfhId,
-		id)
+		now,
+		id,
+	)
 	if err != nil {
 		return err
 	}

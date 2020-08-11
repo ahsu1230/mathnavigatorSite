@@ -14,12 +14,12 @@ import (
 
 func TestOneSemesterOneProgramOneClass_Success(t *testing.T) {
 	// Mock 1 program, 1 semester, 1 class
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -45,12 +45,12 @@ func TestOneSemesterOneProgramOneClass_Success(t *testing.T) {
 
 func TestOneSemesterOneProgramOneClass_Failure(t *testing.T) {
 	// Mock 1 program, 1 semester, no classes created
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -69,12 +69,12 @@ func TestOneSemesterOneProgramOneClass_Failure(t *testing.T) {
 
 func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	// Mock 2 programs, 2 semesters, 2 classes
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1, 2), nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return createMockSemesters(1, 2), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -105,12 +105,12 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 
 func TestProgramWithNoClass_Success(t *testing.T) {
 	// Mock 1 semester, 1 program, 0 class, where program has no class
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -134,12 +134,12 @@ func TestProgramWithNoClass_Success(t *testing.T) {
 
 func TestSemesterWithNoPrograms_Success(t *testing.T) {
 	// Mock one semester with no programs or classes
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return []domains.Program{}, nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return createMockSemesters(1), nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo

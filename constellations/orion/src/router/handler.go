@@ -19,7 +19,6 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
 		apiPrograms.POST("/create", controllers.CreateProgram)
-		apiPrograms.POST("/publish", controllers.PublishPrograms)
 		apiPrograms.GET("/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/program/:programId", controllers.DeleteProgram)
@@ -40,7 +39,6 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiLocations.GET("/all", controllers.GetAllLocations)
 		apiLocations.POST("/create", controllers.CreateLocation)
-		apiLocations.POST("/publish", controllers.PublishLocations)
 		apiLocations.GET("/location/:locationId", controllers.GetLocationById)
 		apiLocations.POST("/location/:locationId", controllers.UpdateLocation)
 		apiLocations.DELETE("/location/:locationId", controllers.DeleteLocation)
@@ -58,7 +56,6 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAchieves.GET("/all", controllers.GetAllAchievements)
 		apiAchieves.GET("/years", controllers.GetAllAchievementsGroupedByYear)
 		apiAchieves.POST("/create", controllers.CreateAchievement)
-		apiAchieves.POST("/publish", controllers.PublishAchievements)
 		apiAchieves.GET("/achievement/:id", controllers.GetAchievementById)
 		apiAchieves.POST("/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/achievement/:id", controllers.DeleteAchievement)
@@ -67,7 +64,6 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiSemesters.GET("/all", controllers.GetAllSemesters)
 		apiSemesters.POST("/create", controllers.CreateSemester)
-		apiSemesters.POST("/publish", controllers.PublishSemesters)
 		apiSemesters.GET("/semester/:semesterId", controllers.GetSemesterById)
 		apiSemesters.POST("/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/semester/:semesterId", controllers.DeleteSemester)
@@ -75,7 +71,6 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSessions := h.Engine.Group("api/sessions")
 	{
 		apiSessions.POST("/create", controllers.CreateSessions)
-		apiSessions.POST("/publish", controllers.PublishSessions)
 		apiSessions.GET("/session/:id", controllers.GetSessionById)
 		apiSessions.POST("/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/delete", controllers.DeleteSessions)

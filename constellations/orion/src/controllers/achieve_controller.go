@@ -10,9 +10,7 @@ import (
 
 func GetAllAchievements(c *gin.Context) {
 	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	achieveList, err := repos.AchieveRepo.SelectAll(publishedOnly)
+	achieveList, err := repos.AchieveRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -77,20 +75,6 @@ func UpdateAchievement(c *gin.Context) {
 	}
 
 	err := repos.AchieveRepo.Update(id, achieveJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-}
-
-func PublishAchievements(c *gin.Context) {
-	// Incoming JSON
-	var ids []uint
-	c.BindJSON(&ids)
-
-	err := repos.AchieveRepo.Publish(ids)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

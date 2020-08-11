@@ -18,7 +18,7 @@ import (
 // Test Get All
 //
 func TestGetAllPrograms_Success(t *testing.T) {
-	testUtils.ProgramRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -171,28 +171,6 @@ func TestUpdateProgram_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
-// Test Publish
-//
-func TestPublishPrograms_Success(t *testing.T) {
-	testUtils.ProgramRepo.MockPublish = func(programIds []string) error {
-		return nil // Successful publish
-	}
-	repos.ProgramRepo = &testUtils.ProgramRepo
-
-	// Create new HTTP request to endpoint
-	programIds := []string{"prog1", "prog2"}
-	marshal, err := json.Marshal(programIds)
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

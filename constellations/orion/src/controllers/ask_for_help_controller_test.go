@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var now = time.Now().UTC()
 var date1 = now.Add(time.Hour * 24 * 30)
 var date2 = now.Add(time.Hour * 24 * 31)
 
