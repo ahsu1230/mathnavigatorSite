@@ -26,6 +26,7 @@ export class ProgramCard extends React.Component {
             const modalContent = (
                 <ProgramModal
                     semester={this.props.semester}
+                    program={this.props.program}
                     classes={classes}
                 />
             );

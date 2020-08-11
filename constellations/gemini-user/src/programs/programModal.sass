@@ -11,12 +11,19 @@
         box-sizing: border-box
     
     h1
-        margin-bottom: $spacing4x
-        border-bottom: 1px solid $colorBlackDark
+        padding-top: $spacing3x
         color: $colorBlackDark
         font-family: $fontFamilyRoboto
-        line-height: $propUnit2x
         font-size: $fontSize1
+        font-weight: 400
+
+        @media screen and (max-width: $mediaWidth1)
+            text-align: center
+
+    h4
+        margin-bottom: $spacing4x
+        padding: $spacing1x 0
+        border-bottom: 1px solid $colorBlackDark
         font-weight: 400
 
         @media screen and (max-width: $mediaWidth1)
@@ -56,6 +63,9 @@
             margin: 0
             text-align: center
     
+    .red
+        color: red
+
     .times
         display: inline-flex
         flex-flow: column nowrap
