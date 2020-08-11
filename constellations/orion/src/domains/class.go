@@ -20,8 +20,6 @@ type Class struct {
 	ClassId         string     `json:"classId" db:"class_id"`
 	LocationId      string     `json:"locationId" db:"location_id"`
 	Times           string     `json:"times"`
-	StartDate       time.Time  `json:"startDate" db:"start_date"`
-	EndDate         time.Time  `json:"endDate" db:"end_date"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       int        `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
@@ -35,8 +33,6 @@ func (class *Class) Validate() error {
 	// Retrieves the inputted values
 	classKey := class.ClassKey
 	times := class.Times
-	startDate := class.StartDate
-	endDate := class.EndDate
 	pricePerSession := class.PricePerSession
 	priceLump := class.PriceLump
 
@@ -50,16 +46,6 @@ func (class *Class) Validate() error {
 	// Times validation
 	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
 		return errors.New("invalid times")
-	}
-
-	// Start Date validation
-	if startDate.Year() < 2000 {
-		return errors.New("invalid start date")
-	}
-
-	// End Date validation
-	if !endDate.After(startDate) {
-		return errors.New("invalid end date")
 	}
 
 	//Price validation

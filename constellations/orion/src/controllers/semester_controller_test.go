@@ -18,7 +18,7 @@ import (
 // Test Get All
 //
 func TestGetAllSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester("2020_fall", "Fall 2020", 1),
 			testUtils.CreateMockSemester("2020_winter", "Winter 2020", 2),
@@ -48,7 +48,7 @@ func TestGetAllSemesters_Success(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester("2020_fall", "Fall 2020", 1),
 			testUtils.CreateMockSemester("2020_winter", "Winter 2020", 2),
@@ -183,45 +183,6 @@ func TestUpdateSemester_Failure(t *testing.T) {
 	semester := testUtils.CreateMockSemester("2020_winter", "Winter 2020", 1)
 	body := createBodyFromSemester(semester)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_fall", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
-// Test Publish
-//
-func TestPublishSemesters_Success(t *testing.T) {
-	testUtils.SemesterRepo.MockPublish = func(semesterId []string) error {
-		return nil // Return no error, successful publish!
-	}
-	repos.SemesterRepo = &testUtils.SemesterRepo
-
-	// Create new HTTP request to endpoint
-	semesterIds := []string{"2020_fall"}
-	marshal, err := json.Marshal(semesterIds)
-	if err != nil {
-		panic(err)
-	}
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/publish", bytes.NewBuffer(marshal))
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestPublishSemesters_Failure(t *testing.T) {
-	testUtils.SemesterRepo.MockPublish = func(semesterId []string) error {
-		return errors.New("not found")
-	}
-	repos.SemesterRepo = &testUtils.SemesterRepo
-
-	// Create new HTTP request to endpoint
-	semesterIds := []string{"2020_fall"}
-	marshal, err := json.Marshal(semesterIds)
-	if err != nil {
-		panic(err)
-	}
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
