@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import API from "../utils/api.js";
+import { union } from "lodash";
 import moment from "moment";
 
 const chargeDisplayNames = {
@@ -12,6 +13,11 @@ const chargeDisplayNames = {
     pay_check: "Paid (Check)",
     pay_cash: "Paid (Cash)",
     pay_paypal: "Paid (Paypal)",
+};
+const subjectDisplayNames = {
+    math: "Math",
+    english: "English",
+    programming: "Computer Programming",
 };
 const seasonOrder = ["spring", "summer", "fall", "winter"];
 
@@ -72,91 +78,82 @@ export class AccountPage extends React.Component {
             primaryEmail: res.data.primaryEmail,
             password: res.data.password,
         });
+        Promise.all([
+            API.get("api/classes/all"),
+            API.get("api/programs/all"),
+            API.get("api/semesters/all"),
 
-        let classes = [];
-        API.get("api/users/account/" + id)
-            .then((users_res) => {
-                const users = users_res.data;
+            API.get("api/askforhelp/all"),
+
+            API.get("api/users/account/" + id),
+
+            API.get("api/locations/all"),
+        ])
+            .then((res) => {
+                const allClasses = res[0].data;
+                const allPrograms = res[1].data;
+                const allSemesters = res[2].data;
+
+                const allAFHs = res[3].data;
+
+                const users = res[4].data;
                 this.setState({ users: users });
 
-                users.map((user, index) => {
-                    // classes
-                    let organizedUserClasses = [];
-                    API.get("api/user-classes/user/" + user.id)
-                        .then((userClasses_res) => {
-                            const userClasses = userClasses_res.data;
-                            userClasses.map((c, index) => {
-                                API.get("api/classes/class/" + c.classId)
-                                    .then((class_res) => {
-                                        const class_ = class_res.data;
-                                        Promise.all([
-                                            API.get(
-                                                "api/programs/program/" +
-                                                    class_.programId
-                                            ),
-                                            API.get(
-                                                "api/semesters/semester/" +
-                                                    class_.semesterId
-                                            ),
-                                        ])
-                                            .then((programSemester_res) => {
-                                                const program =
-                                                    programSemester_res[0].data;
-                                                const semester =
-                                                    programSemester_res[1].data;
-
-                                                organizedUserClasses.push({
-                                                    program: program,
-                                                    semester: semester,
-                                                });
-                                            })
-                                            .catch((err) => fetchError(err));
-                                    })
-                                    .catch((err) => fetchError(err));
-                            });
-                        })
-                        .catch((err) => fetchError(err));
-                    classes.push({
-                        id: user.id,
-                        name: user.firstName + " " + user.lastName,
-                        classes: organizedUserClasses,
-                    });
-                    this.setState({ userClasses: classes });
-
-                    // afhs
-                    let upcomingAFHs = [];
-                    API.get("api/userafhs/users/" + user.id)
-                        .then((userAFHs_res) => {
-                            const userAFHs = userAFHs_res.data;
-                            userAFHs.map((afh, index) => {
-                                API.get("api/askforhelp/afh/" + afh.afhId)
-                                    .then((afh_res) => {
-                                        upcomingAFHs.push(afh_res.data);
-                                        this.setState({
-                                            upcomingAFHs: upcomingAFHs,
-                                        });
-                                    })
-                                    .catch((err) => fetchError(err));
-                            });
-                        })
-                        .catch((err) => fetchError(err));
-                });
-            })
-            .catch((err) => fetchError(err));
-
-        const locationsById = [];
-        API.get("api/locations/all")
-            .then((locations_res) => {
-                locations_res.data.map((loc, index) => {
+                const allLocations = res[5].data;
+                const locationsById = {};
+                allLocations.map((loc, index) => {
                     locationsById[loc.locationId] = loc;
                 });
                 this.setState({ locationsById: locationsById });
-            })
-            .catch((err) => fetchError(err));
 
-        API.get("api/transactions/account/" + id)
-            .then((res) => this.setState({ transactions: res.data }))
-            .catch((err) => fetchError(err));
+                let userClasses = [];
+                let upcomingAFHs = [];
+                users.map((user, index) => {
+                    API.get("api/user-classes/user/" + user.id).then((res) => {
+                        let classes = res.data.map((c, index) => {
+                            let matchedClass = allClasses.find(
+                                (element) => element.classId == c.classId
+                            );
+                            let matchedProgram = allPrograms.find(
+                                (element) =>
+                                    element.programId == matchedClass.programId
+                            );
+                            let matchedSemester = allSemesters.find(
+                                (element) =>
+                                    element.semesterId ==
+                                    matchedClass.semesterId
+                            );
+                            return {
+                                programName: matchedProgram.name,
+                                semester: matchedSemester.title,
+                                program: matchedProgram,
+                                semester: matchedSemester,
+                            };
+                        });
+
+                        userClasses.push({
+                            id: user.id,
+                            name: user.firstName + " " + user.lastName,
+                            classes: classes,
+                        });
+                        this.setState({ userClasses: userClasses });
+                    });
+                    API.get("api/userafhs/users/" + user.id).then((res) => {
+                        let afhs = res.data.map((afh, index) => {
+                            let matchedAFH = allAFHs.find(
+                                (element) => element.id == afh.afhId
+                            );
+                            upcomingAFHs.push(matchedAFH);
+                        });
+                        upcomingAFHs = union(upcomingAFHs);
+                        this.setState({ upcomingAFHs: upcomingAFHs });
+                    });
+                });
+            })
+            .catch((err) => alert("Could not fetch data: " + err));
+        API.get("api/transactions/account/" + id).then((res) =>
+            this.setState({ transactions: res.data })
+        );
     };
 
     toggleViewAllClasses = () => {
@@ -281,13 +278,12 @@ class SettingsTab extends React.Component {
         });
 
         return (
-            <div className="tab-content">
-                <h2>Your Account Information</h2>
-
+            <div className="tab-content" id="settings-tab">
                 <div>
-                    <p>
+                    <h2>Your Account Information</h2>
+                    <p className="vertical-mobile">
                         <span>Primary email: {this.props.primaryEmail}</span>
-                        <a className="edit orange">Change primary contact</a>
+                        <a className="edit orange"> Change primary contact</a>
                     </p>
                     <PasswordChange
                         accountId={this.props.accountId}
@@ -301,7 +297,7 @@ class SettingsTab extends React.Component {
 
                 <div>
                     <h2>User Information</h2>
-                    <ul>
+                    <ul className="header hide-mobile">
                         <li className="li-med">Name</li>
                         <li className="li-med">Contact</li>
                         <li className="li-large">Other Information</li>
@@ -313,7 +309,7 @@ class SettingsTab extends React.Component {
                 </div>
 
                 <div>
-                    <p id="delete-message">
+                    <p>
                         You may opt to delete your Math Navigator account.
                         <br />
                         However, doing so will delete all your data with Math
@@ -344,7 +340,6 @@ class PasswordChange extends React.Component {
     };
 
     onClickSave = () => {
-        console.log(this.props.oldPassword);
         if (
             this.state.oldPassword == this.props.oldPassword &&
             this.state.newPassword == this.state.confirmPassword
@@ -382,7 +377,7 @@ class PasswordChange extends React.Component {
     render = () => {
         const changePasswordDialog = this.state.tabOpen ? (
             <div>
-                <ul className="no-borders password">
+                <ul className="vertical-centered no-border">
                     <li className="li-med">Old password</li>
                     <li className="li-large">
                         <input
@@ -394,7 +389,7 @@ class PasswordChange extends React.Component {
                         />
                     </li>
                 </ul>
-                <ul className="no-borders password">
+                <ul className="vertical-centered no-border">
                     <li className="li-med">New password</li>
                     <li className="li-large">
                         <input
@@ -406,7 +401,7 @@ class PasswordChange extends React.Component {
                         />
                     </li>
                 </ul>
-                <ul className="no-borders password">
+                <ul className="vertical-centered no-border">
                     <li className="li-med">Confirm new password</li>
                     <li className="li-large">
                         <input
@@ -418,7 +413,7 @@ class PasswordChange extends React.Component {
                         />
                     </li>
                 </ul>
-                <div className="password-buttons">
+                <div className="password-buttons space-between">
                     <button className="btn-cancel" onClick={this.onClickChange}>
                         Cancel
                     </button>
@@ -431,11 +426,11 @@ class PasswordChange extends React.Component {
             ""
         );
 
-        const message = <span id="password-message">{this.state.message}</span>;
+        const message = <span> {this.state.message}</span>;
 
         return (
-            <div>
-                <p>
+            <div id="password-change">
+                <p className="vertical-mobile">
                     <a className="orange" onClick={this.onClickChange}>
                         Change password...
                     </a>
@@ -454,9 +449,14 @@ class RegistrationsTabMain extends React.Component {
         }
         return classes.map((c, index) => {
             return (
-                <span key={index} className="classList-item">
-                    {c.program.name + " (" + c.semester.title + ")"}
-                </span>
+                <div key={index} className="classList-item space-between">
+                    <span>
+                        {c.program.name + " (" + c.semester.title + ")"}
+                    </span>
+                    <span>
+                        Enrolled on: {moment(0).format("l") /*Fake data*/}
+                    </span>
+                </div>
             );
         });
     };
@@ -465,13 +465,10 @@ class RegistrationsTabMain extends React.Component {
         const classRegistrationList = this.props.userClasses.map(
             (user, index) => {
                 return (
-                    <ul key={index} className="no-borders">
+                    <ul key={index}>
                         <li className="li-med">{user.name}</li>
-                        <li className="li-large classes-list">
+                        <li className="li-large">
                             {this.renderClassList(user.classes)}
-                        </li>
-                        <li>
-                            Enrolled on: {moment(0).format("l") /*Fake data*/}
                         </li>
                     </ul>
                 );
@@ -479,7 +476,10 @@ class RegistrationsTabMain extends React.Component {
         );
 
         const afhList = this.props.upcomingAFHs.map((afh, index) => {
-            let titleInfo = renderMultiline([afh.title, afh.subject]);
+            let titleInfo = renderMultiline([
+                afh.title,
+                subjectDisplayNames[afh.subject],
+            ]);
             let dateInfo = renderMultiline([
                 moment(afh.date).format("MMMM Do, YYYY"),
                 afh.timeString,
@@ -493,7 +493,7 @@ class RegistrationsTabMain extends React.Component {
             ]);
 
             return (
-                <ul key={index} className="no-borders three-columns">
+                <ul key={index} className="three-columns">
                     <li className="li-med">{titleInfo}</li>
                     <li className="li-med">{dateInfo}</li>
                     <li className="li-large">{locInfo}</li>
@@ -502,19 +502,21 @@ class RegistrationsTabMain extends React.Component {
         });
 
         return (
-            <div className="tab-content">
+            <div className="tab-content" id="reg-tab-main">
                 <div>
                     <h2>Currently Enrolled Classes</h2>
                     {classRegistrationList}
-                    <a
-                        className="orange"
-                        onClick={this.props.toggleTabCallback}>
-                        View all enrolled classes
-                    </a>
+                    <p>
+                        <a
+                            className="orange"
+                            onClick={this.props.toggleTabCallback}>
+                            View all enrolled classes
+                        </a>
+                    </p>
                 </div>
                 <div>
                     <h2>Upcoming Ask For Help Sessions</h2>
-                    <ul className="no-borders three-columns header">
+                    <ul className="three-columns header hide-mobile">
                         <li className="li-med">Title</li>
                         <li className="li-med">Date</li>
                         <li className="li-large">Location</li>
@@ -556,7 +558,7 @@ class RegistrationsTabAllClasses extends React.Component {
 
         const classRegistrationList = allClasses.map((c, index) => {
             return (
-                <ul key={index} className="no-borders">
+                <ul key={index}>
                     <li className="li-med">{c.user}</li>
                     <li className="li-large">
                         {c.classInfo.program.name +
@@ -570,9 +572,9 @@ class RegistrationsTabAllClasses extends React.Component {
         });
 
         return (
-            <div className="tab-content">
+            <div className="tab-content" id="reg-tab-all">
                 <div>
-                    <div className="header-two-items">
+                    <div className="vertical-centered space-between">
                         <h2>All Enrolled Classes</h2>
                         <a
                             className="orange"
@@ -594,7 +596,7 @@ class PaymentTab extends React.Component {
             (transaction, index) => {
                 balance += parseInt(transaction.amount);
                 return (
-                    <ul key={index} className="no-borders">
+                    <ul key={index}>
                         <li className="li-med">
                             {moment(0).format("l") /*Fake data*/}
                         </li>
@@ -614,7 +616,7 @@ class PaymentTab extends React.Component {
         const formattedBalance = formatCurrency(balance);
 
         return (
-            <div className="tab-content">
+            <div className="tab-content" id="payment-tab">
                 <div>
                     <h2>Account Balance: {formattedBalance}</h2>
                     <p>
@@ -645,7 +647,7 @@ class PaymentTab extends React.Component {
                 </div>
                 <div>
                     <h2>Your Payment History</h2>
-                    <ul className="no-borders header">
+                    <ul className="header">
                         <li className="li-med">Date</li>
                         <li className="li-med">Transaction</li>
                         <li className="li-med">Amount</li>
