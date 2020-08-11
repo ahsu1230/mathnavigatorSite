@@ -16,18 +16,11 @@
         align-items: center
         border-bottom: 1px solid $colorGrayLight
 
-        .active
+        .activeTab
             border-bottom: 2px solid $colorTurquoise
 
-    .notif
-        background-color: $colorRed
-        color: $colorWhite
-        
-        &.zero
-            background-color: $colorBlack
-
     .tabs button 
-        width: 33.333%
+        width: 25%
         height: 100%
         padding: $spacing2x
         background-color: $colorWhite
@@ -40,6 +33,17 @@
     .tabs button:hover
         background-color: $colorGrayLight
         cursor: pointer
+
+    .notif
+        display: inline-block
+        border-radius: 50%
+        width: $lineHeight0
+        height: $lineHeight0
+        background-color: $colorOrange
+        color: $colorWhite
+        
+        &.zero
+            background-color: $colorGrayDark
 
     .showSection
         display: inline-block

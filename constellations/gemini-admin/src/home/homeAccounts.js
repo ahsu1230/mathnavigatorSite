@@ -33,7 +33,7 @@ export class HomeTabSectionAccounts extends React.Component {
                 <div className="container-class">
                     <h3 className="section-header">Unpaid Accounts</h3>{" "}
                     <button className="view-details">
-                        <Link to={"/classes"}>View All Accounts ??</Link>
+                        <Link to={"/classes"}>View All Accounts</Link>
                     </button>
                 </div>
 

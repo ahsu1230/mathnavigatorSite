@@ -34,9 +34,9 @@ export class HomePage extends React.Component {
             sectionComponent = <HomeTabSectionUsers />;
         } else if (this.state.currentSection == "registration") {
             sectionComponent = <HomeTabSectionRegistrations />;
-        } else if (this.state.currentSection == "unpaid") {
+        } else {
             sectionComponent = <HomeTabSectionAccounts />;
-        }
+        } //unpaid account
 
         return (
             <div id="view-home">
@@ -53,19 +53,19 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "user"}
                         section={"user"}
-                        //buttonNum = newUsers.length in homeUsers
+                        //buttonNum = {<UsersNotif />}cnewUsers.length in homeUsers
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "registration"}
                         section={"registration"}
-                        //buttonNum = pendingReg.length + afhReg.length in homeRegistrations
+                        //buttonNum = {<RegNotif />}cpendingReg.length + afhReg.length in homeRegistrations
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "unpaid"}
                         section={"unpaid"}
-                        //buttonNum = unpaidAcc.length in homeAccounts
+                        //buttonNum = {<UnpaidNotif />} unpaidAcc.length in homeAccounts
                     />
                 </div>
 
@@ -84,23 +84,24 @@ class TabButton extends React.Component {
         let highlight = this.props.highlight;
         let section = this.props.section;
         let displayName = sectionDisplayNames[section];
-
         let numNotif = this.props.buttonNum;
+
         if (numNotif == 0) {
             this.setState({
                 isZero: true,
             });
+            console.log("state is " + this.state.isZero);
         }
-        // is is possible to use something else that isn't <button> ? "active" overrides "notif"
+
         let displayNotif = (
-            <button className={"notif" + (this.state.isZero ? " zero" : "")}>
+            <div className={"notif" + (this.state.isZero ? " zero" : "")}>
                 {numNotif}
-            </button>
+            </div>
         );
 
         return (
             <button
-                className={highlight ? "active" : ""}
+                className={highlight ? "activeTab" : ""}
                 onClick={() => this.props.onChangeTab(section)}>
                 {displayName} {displayNotif}
             </button>

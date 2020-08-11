@@ -33,7 +33,7 @@ export class HomeTabSectionUsers extends React.Component {
                 <div className="container-class">
                     <h3 className="section-header">New Users</h3>{" "}
                     <button className="view-details">
-                        <Link to={"/classes"}>View User Details ? </Link>
+                        <Link to={"/classes"}>View All Users</Link>
                     </button>
                 </div>
 
