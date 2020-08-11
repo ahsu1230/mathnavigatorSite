@@ -30,61 +30,7 @@ func TestSelectAllSemesters(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getSemesterRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM semesters").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll(false)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Semester{getSemester()}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Test Select Published
-//
-func TestSelectPublishedSemesters(t *testing.T) {
-	db, mock, repo := initSemesterTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	rows := getSemesterRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM semesters WHERE published_at IS NOT NULL").
-		ExpectQuery().
-		WillReturnRows(rows)
-	got, err := repo.SelectAll(true)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	want := []domains.Semester{getSemester()}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Values not equal: got = %v, want = %v", got, want)
-	}
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
-// Select Unpublished
-//
-func TestSelectAllUnpublishedSemesters(t *testing.T) {
-	db, mock, repo := initSemesterTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	rows := getSemesterRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM semesters WHERE published_at IS NULL").
-		ExpectQuery().
-		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
+	got, err := repo.SelectAll()
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -186,32 +132,6 @@ func TestUpdateSemester(t *testing.T) {
 }
 
 //
-// Publish
-//
-func TestPublishSemesters(t *testing.T) {
-	db, mock, repo := initSemesterTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectBegin()
-	mock.ExpectPrepare(`^UPDATE semesters SET published_at=\? WHERE semester_id=\? AND published_at IS NULL`).
-		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "2020_fall").
-		WillReturnResult(result)
-	mock.ExpectCommit()
-	err := repo.Publish([]string{"2020_fall"})
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Delete
 //
 func TestDeleteSemester(t *testing.T) {
@@ -239,12 +159,11 @@ func TestDeleteSemester(t *testing.T) {
 // Helper Methods
 //
 func getSemesterRows() *sqlmock.Rows {
-	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PublishedAt", "SemesterId", "Title", "Ordering"}).
+	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "SemesterId", "Title", "Ordering"}).
 		AddRow(
 			1,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
-			domains.NullTime{},
 			domains.NullTime{},
 			"2020_fall",
 			"Fall 2020",
@@ -254,13 +173,12 @@ func getSemesterRows() *sqlmock.Rows {
 
 func getSemester() domains.Semester {
 	return domains.Semester{
-		Id:          1,
-		CreatedAt:   testUtils.TimeNow,
-		UpdatedAt:   testUtils.TimeNow,
-		DeletedAt:   domains.NullTime{},
-		PublishedAt: domains.NullTime{},
-		SemesterId:  "2020_fall",
-		Title:       "Fall 2020",
-		Ordering:    1,
+		Id:         1,
+		CreatedAt:  testUtils.TimeNow,
+		UpdatedAt:  testUtils.TimeNow,
+		DeletedAt:  domains.NullTime{},
+		SemesterId: "2020_fall",
+		Title:      "Fall 2020",
+		Ordering:   1,
 	}
 }
