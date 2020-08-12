@@ -19,13 +19,8 @@ type Account struct {
 }
 
 type AccountSum struct {
-	Id           uint         `json:"id"`
-	CreatedAt    time.Time    `json:"-" db:"created_at"`
-	UpdatedAt    time.Time    `json:"-" db:"updated_at"`
-	DeletedAt    sql.NullTime `json:"-" db:"deleted_at"`
-	PrimaryEmail string       `json:"primaryEmail" db:"primary_email"`
-	Password     string       `json:"password" db:"password"`
-	Sum          int          `json:"sum" db:"sum"`
+	Account Account `json:"account"`
+	Balance int     `json:"balance"`
 }
 
 // Class Methods

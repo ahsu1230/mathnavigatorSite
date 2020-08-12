@@ -114,7 +114,7 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Sum"}).
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Balance"}).
 		AddRow(
 			1,
 			now,
@@ -145,22 +145,26 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 	// Validate results
 	want := []domains.AccountSum{
 		{
-			Id:           1,
-			CreatedAt:    now,
-			UpdatedAt:    now,
-			DeletedAt:    sql.NullTime{},
-			PrimaryEmail: "test@gmail.com",
-			Password:     "password",
-			Sum:          -300,
+			Account: domains.Account{
+				Id:           1,
+				CreatedAt:    now,
+				UpdatedAt:    now,
+				DeletedAt:    sql.NullTime{},
+				PrimaryEmail: "test@gmail.com",
+				Password:     "password",
+			},
+			Balance: -300,
 		},
 		{
-			Id:           2,
-			CreatedAt:    now,
-			UpdatedAt:    now,
-			DeletedAt:    sql.NullTime{},
-			PrimaryEmail: "test2@gmail.com",
-			Password:     "password2",
-			Sum:          -200,
+			Account: domains.Account{
+				Id:           2,
+				CreatedAt:    now,
+				UpdatedAt:    now,
+				DeletedAt:    sql.NullTime{},
+				PrimaryEmail: "test2@gmail.com",
+				Password:     "password2",
+			},
+			Balance: -200,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {

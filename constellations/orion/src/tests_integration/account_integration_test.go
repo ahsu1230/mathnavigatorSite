@@ -90,14 +90,15 @@ func Test_GetNegativeBalanceAccounts(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &accountSums); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, accountSums[0].Id)
-	assert.EqualValues(t, "john_smith@example.com", accountSums[0].PrimaryEmail)
-	assert.EqualValues(t, "password1", accountSums[0].Password)
-	assert.EqualValues(t, -300, accountSums[0].Sum)
-	assert.EqualValues(t, 2, accountSums[1].Id)
-	assert.EqualValues(t, "bob_smith@example.com", accountSums[1].PrimaryEmail)
-	assert.EqualValues(t, "password2", accountSums[1].Password)
-	assert.EqualValues(t, -100, accountSums[1].Sum)
+	assert.EqualValues(t, 1, accountSums[0].Account.Id)
+	assert.EqualValues(t, "john_smith@example.com", accountSums[0].Account.PrimaryEmail)
+	assert.EqualValues(t, "password1", accountSums[0].Account.Password)
+	assert.EqualValues(t, -300, accountSums[0].Balance)
+	assert.EqualValues(t, 2, accountSums[1].Account.Id)
+	assert.EqualValues(t, "bob_smith@example.com", accountSums[1].Account.PrimaryEmail)
+	assert.EqualValues(t, "password2", accountSums[1].Account.Password)
+	assert.EqualValues(t, -100, accountSums[1].Balance)
+	assert.EqualValues(t, 2, len(accountSums))
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -204,7 +205,7 @@ func createTransactions(t *testing.T) {
 	trans2 := createTransaction(2, 200, domains.PAY_CASH, "notes2", 2)
 	trans3 := createTransaction(3, 300, domains.PAY_CHECK, "notes3", 3)
 	trans4 := createTransaction(4, -400, domains.CHARGE, "notes4", 1)
-	trans5 := createTransaction(5, -300, domains.CHARGE, "notes4", 2)
+	trans5 := createTransaction(5, -300, domains.CHARGE, "", 2)
 
 	body1 := utils.CreateJsonBody(&trans1)
 	body2 := utils.CreateJsonBody(&trans2)
