@@ -1,8 +1,8 @@
 "use strict";
 require("./home.sass");
 import React from "react";
+import API from "../api.js";
 import { HomeTabSectionClasses } from "./homeClasses.js";
-import { ClassesNotif } from "./homeClasses.js";
 import { HomeTabSectionUsers } from "./homeUsers.js";
 import { HomeTabSectionRegistrations } from "./homeRegistrations.js";
 import { HomeTabSectionAccounts } from "./homeAccounts.js";
@@ -17,11 +17,26 @@ const sectionDisplayNames = {
 export class HomePage extends React.Component {
     state = {
         currentSection: "class",
+
+        unpublishedClasses: [],
+        newUsers: [],
+        newUserClasses: [],
+        newUserAfh: [],
+        unpaidAccounts: [],
     };
 
     changeSection = (sectionName) => {
         this.setState({
             currentSection: sectionName,
+        });
+    };
+
+    componentDidMount = () => {
+        API.get("api/unpublished").then((res) => {
+            const unpublishedList = res.data;
+            this.setState({
+                unpublishedClasses: unpublishedList.classes,
+            });
         });
     };
 
@@ -47,25 +62,25 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "class"}
                         section={"class"}
-                        buttonNum={<ClassesNotif />}
+                        buttonNum={this.state.unpublishedClasses.length}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "user"}
                         section={"user"}
-                        //buttonNum = {<UsersNotif />}cnewUsers.length in homeUsers
+                        //buttonNum = newUsers.length in homeUsers
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "registration"}
                         section={"registration"}
-                        //buttonNum = {<RegNotif />}cpendingReg.length + afhReg.length in homeRegistrations
+                        //buttonNum = pendingReg.length + afhReg.length in homeRegistrations
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "unpaid"}
                         section={"unpaid"}
-                        //buttonNum = {<UnpaidNotif />} unpaidAcc.length in homeAccounts
+                        //buttonNum = unpaidAccounts.length in homeAccounts
                     />
                 </div>
 
@@ -80,18 +95,20 @@ class TabButton extends React.Component {
         isZero: false,
     };
 
+    componentDidMount = () => {
+        if (this.props.buttonNum == 0) {
+            this.setState({
+                isZero: true,
+            });
+        }
+        console.log("isZero state is " + this.state.isZero);
+    };
+
     render() {
         let highlight = this.props.highlight;
         let section = this.props.section;
         let displayName = sectionDisplayNames[section];
         let numNotif = this.props.buttonNum;
-
-        if (numNotif == 0) {
-            this.setState({
-                isZero: true,
-            });
-            console.log("state is " + this.state.isZero);
-        }
 
         let displayNotif = (
             <div className={"notif" + (this.state.isZero ? " zero" : "")}>

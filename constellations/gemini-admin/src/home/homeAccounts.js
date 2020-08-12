@@ -12,7 +12,7 @@ const sectionDisplayNames = {
 
 export class HomeTabSectionAccounts extends React.Component {
     state = {
-        unpaidAcc: [],
+        unpaidAccounts: [],
     };
 
     // counter to keep track of the number of unpaid accounts => unpaidAcc.length
