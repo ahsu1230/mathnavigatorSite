@@ -2,7 +2,7 @@ package logger
 
 import (
 	"fmt"
-	// "os"
+	"os"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -15,7 +15,7 @@ var standardFields = Fields {
 }
 
 func SetupTest() {
-	logrus.New()
+	log.New()
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)

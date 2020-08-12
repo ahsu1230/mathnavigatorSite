@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch programs, semesters, classes from repo functions
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	programs, err := repos.ProgramRepo.SelectAll(publishedOnly)
 	semesters, err := repos.SemesterRepo.SelectAll(publishedOnly)

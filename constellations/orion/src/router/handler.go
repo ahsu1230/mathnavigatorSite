@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 

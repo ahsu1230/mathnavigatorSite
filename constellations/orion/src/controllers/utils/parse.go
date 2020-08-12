@@ -13,14 +13,6 @@ func ParseParamIdString(c *gin.Context, idString string) (uint, error) {
 	return uint(id), nil
 }
 
-func ParseParamUint(numStr string) (uint, error) {
-	id, err := strconv.ParseUint(numStr, 10, 32)
-	if err != nil {
-		return 0, err
-	}
-	return uint(id), nil
-}
-
 func ParseParamInt(str string, preset int) (int, error) {
 	if len(str) == 0 {
 		return preset, nil

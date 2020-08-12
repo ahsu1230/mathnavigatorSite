@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,7 @@ func GetUsersByClassId(c *gin.Context) {
 
 func GetClassesByUserId(c *gin.Context) {
 	// Incoming parameters
-	id := ParseParamUint(c.Param("userId"))
+	id, _ := utils.ParseParamIdString(c, "userId")
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserId(id)
 	if err != nil {
@@ -40,7 +41,7 @@ func GetClassesByUserId(c *gin.Context) {
 
 func GetUserClassByUserAndClass(c *gin.Context) {
 	// Incoming parameters
-	id := ParseParamUint(c.Param("userId"))
+	id, _ := utils.ParseParamIdString(c, "userId")
 	classId := c.Param("classId")
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(id, classId)
@@ -74,7 +75,7 @@ func CreateUserClass(c *gin.Context) {
 
 func UpdateUserClass(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 	var userClassesJson domains.UserClasses
 	c.BindJSON(&userClassesJson)
 
@@ -95,7 +96,7 @@ func UpdateUserClass(c *gin.Context) {
 
 func DeleteUserClass(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	err := repos.UserClassesRepo.Delete(id)
 	if err != nil {

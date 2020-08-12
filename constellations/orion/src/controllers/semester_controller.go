@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 
 func GetAllSemesters(c *gin.Context) {
 	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	semesterList, err := repos.SemesterRepo.SelectAll(publishedOnly)
 	if err != nil {

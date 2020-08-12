@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/pkg/errors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 )
 
 var TABLE_ACCOUNTS = "accounts"
@@ -27,11 +27,10 @@ func (account *Account) Validate() error {
 	password := account.Password
 
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
-		return errors.New("invalid email")
+		return appErrors.ERR_INVALID_EMAIL
 	}
-
 	if len(password) < 8 {
-		return errors.New("invalid password")
+		return appErrors.ERR_INVALID_PASSWORD
 	}
 	return nil
 }

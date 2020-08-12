@@ -29,7 +29,7 @@ func Open(host string, port int, user string, pass string, dbName string) *sql.D
 func Migrate(db *sql.DB, migrationsPath string) {
 	// Create driver using sql db connection
 	logger.Info("Performing DB Migrations...", logger.Fields{
-		"migrationsPath": migrationsPath
+		"migrationsPath": migrationsPath,
 	})
 	driver, err1 := mysql.WithInstance(db, &mysql.Config{})
 	if err1 != nil {

@@ -3,13 +3,14 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllLocations(c *gin.Context) {
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	locationList, err := repos.LocationRepo.SelectAll(publishedOnly)
 	if err != nil {

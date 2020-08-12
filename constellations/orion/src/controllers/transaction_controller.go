@@ -3,13 +3,14 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetTransactionsByAccountId(c *gin.Context) {
-	accountId := ParseParamUint(c.Param("accountId"))
+	accountId, _ := utils.ParseParamIdString(c, "accountId")
 
 	transactionList, err := repos.TransactionRepo.SelectByAccountId(accountId)
 	if err != nil {
@@ -22,7 +23,7 @@ func GetTransactionsByAccountId(c *gin.Context) {
 
 func GetTransactionById(c *gin.Context) {
 	//Incoming params
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	transaction, err := repos.TransactionRepo.SelectById(id)
 	if err != nil {
@@ -55,7 +56,7 @@ func CreateTransaction(c *gin.Context) {
 
 func UpdateTransaction(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 	var transactionJson domains.Transaction
 	c.BindJSON(&transactionJson)
 
@@ -76,7 +77,7 @@ func UpdateTransaction(c *gin.Context) {
 
 func DeleteTransaction(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	err := repos.TransactionRepo.Delete(id)
 	if err != nil {

@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 
 func GetAllSessionsByClassId(c *gin.Context) {
 	classId := c.Param("classId")
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId, publishedOnly)
 	if err != nil {
@@ -24,7 +25,7 @@ func GetAllSessionsByClassId(c *gin.Context) {
 
 func GetSessionById(c *gin.Context) {
 	// Incoming parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	session, err := repos.SessionRepo.SelectBySessionId(id)
 	if err != nil {
@@ -53,7 +54,7 @@ func CreateSessions(c *gin.Context) {
 
 func UpdateSession(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 	var sessionJson domains.Session
 	c.BindJSON(&sessionJson)
 

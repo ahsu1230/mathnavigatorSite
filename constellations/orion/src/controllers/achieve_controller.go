@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 
 func GetAllAchievements(c *gin.Context) {
 	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	achieveList, err := repos.AchieveRepo.SelectAll(publishedOnly)
 	if err != nil {
@@ -23,7 +24,7 @@ func GetAllAchievements(c *gin.Context) {
 
 func GetAchievementById(c *gin.Context) {
 	// Incoming parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	achieve, err := repos.AchieveRepo.SelectById(id)
 	if err != nil {
@@ -66,7 +67,7 @@ func CreateAchievement(c *gin.Context) {
 
 func UpdateAchievement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 	var achieveJson domains.Achieve
 	c.BindJSON(&achieveJson)
 
@@ -101,7 +102,7 @@ func PublishAchievements(c *gin.Context) {
 
 func DeleteAchievement(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 
 	err := repos.AchieveRepo.Delete(id)
 	if err != nil {

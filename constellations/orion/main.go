@@ -21,13 +21,14 @@ func main() {
 	// Setup Logging
 	fmt.Println("Setting up Logger...")
 	logger.SetupDev()
-	if production {
-		err := logger.SetupProd()
-		if err != nil {
-			fmt.Fatalf("Logger failed to setup! %w", err)
-			return
-		}
-	}
+	// if production {
+	// 	err := logger.SetupProd()
+	// 	if err != nil {
+	// 		fmt.Printf("Logger failed to setup! %w", err)
+	// 		os.Exit(1)
+	// 		return
+	// 	}
+	// }
 	logger.Message("Logger successfully setup!")
 
 	// App Repos
@@ -53,6 +54,8 @@ func main() {
 	corsOrigins := []string{corsOriginEnvVar}
 	configCors := middlewares.CreateCorsConfig(corsOrigins)
 	engine.Use(cors.New(configCors))
+	engine.Use(router.AppRequestHandler())
+	engine.NoRoute(router.NoRouteHandler())
 	handler := router.Handler{Engine: engine}
 	handler.SetupApiEndpoints()
 

@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 
 func GetUserAfhByUserId(c *gin.Context) {
 	// Incoming parameters
-	userId := ParseParamUserId(c)
+	userId, _ := utils.ParseParamIdString(c, "userId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByUserId(userId)
 	if err != nil {
@@ -23,7 +24,7 @@ func GetUserAfhByUserId(c *gin.Context) {
 
 func GetUserAfhByAfhId(c *gin.Context) {
 	// Incoming parameters
-	afhId := ParseParamAfhId(c)
+	afhId, _ := utils.ParseParamIdString(c, "afhId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByAfhId(afhId)
 	if err != nil {
@@ -36,8 +37,8 @@ func GetUserAfhByAfhId(c *gin.Context) {
 
 func GetUserAfhByBothIds(c *gin.Context) {
 	// Incoming parameters
-	userId := ParseParamUserId(c)
-	afhId := ParseParamAfhId(c)
+	userId, _ := utils.ParseParamIdString(c, "userId")
+	afhId, _ := utils.ParseParamIdString(c, "afhId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByBothIds(userId, afhId)
 	if err != nil {
@@ -64,7 +65,7 @@ func CreateUserAfh(c *gin.Context) {
 
 func UpdateUserAfh(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "id")
 	var userAfhJson domains.UserAfh
 	c.BindJSON(&userAfhJson)
 
@@ -79,7 +80,7 @@ func UpdateUserAfh(c *gin.Context) {
 
 func DeleteUserAfh(c *gin.Context) {
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamIdString(c, "Id")
 
 	err := repos.UserAfhRepo.Delete(id)
 	if err != nil {
