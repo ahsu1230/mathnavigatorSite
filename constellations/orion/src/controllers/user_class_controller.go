@@ -28,7 +28,7 @@ func GetUsersByClassId(c *gin.Context) {
 
 func GetClassesByUserId(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "userId")
+	id, _ := utils.ParseParamId(c, "userId")
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserId(id)
 	if err != nil {
@@ -41,7 +41,7 @@ func GetClassesByUserId(c *gin.Context) {
 
 func GetUserClassByUserAndClass(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "userId")
+	id, _ := utils.ParseParamId(c, "userId")
 	classId := c.Param("classId")
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(id, classId)
@@ -75,7 +75,7 @@ func CreateUserClass(c *gin.Context) {
 
 func UpdateUserClass(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var userClassesJson domains.UserClasses
 	c.BindJSON(&userClassesJson)
 
@@ -96,7 +96,7 @@ func UpdateUserClass(c *gin.Context) {
 
 func DeleteUserClass(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.UserClassesRepo.Delete(id)
 	if err != nil {

@@ -21,7 +21,7 @@ func GetAllAFH(c *gin.Context) {
 
 func GetAFHById(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	askForHelp, err := repos.AskForHelpRepo.SelectById(id)
 	if err != nil {
@@ -54,7 +54,7 @@ func CreateAFH(c *gin.Context) {
 
 func UpdateAFH(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var afhJson domains.AskForHelp
 	c.BindJSON(&afhJson)
 
@@ -75,7 +75,7 @@ func UpdateAFH(c *gin.Context) {
 
 func DeleteAFH(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.AskForHelpRepo.Delete(id)
 	if err != nil {

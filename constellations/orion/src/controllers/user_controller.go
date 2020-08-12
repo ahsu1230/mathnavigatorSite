@@ -31,7 +31,7 @@ func SearchUsers(c *gin.Context) {
 
 func GetUserById(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	user, err := repos.UserRepo.SelectById(id)
 	if err != nil {
@@ -44,7 +44,7 @@ func GetUserById(c *gin.Context) {
 
 func GetUsersByAccountId(c *gin.Context) {
 	// Incoming parameters
-	accountId, _ := utils.ParseParamIdString(c, "accountId")
+	accountId, _ := utils.ParseParamId(c, "accountId")
 
 	user, err := repos.UserRepo.SelectByAccountId(accountId)
 	if err != nil {
@@ -77,7 +77,7 @@ func CreateUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var userJson domains.User
 	c.BindJSON(&userJson)
 
@@ -98,7 +98,7 @@ func UpdateUser(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.UserRepo.Delete(id)
 	if err != nil {

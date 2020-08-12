@@ -10,7 +10,7 @@ import (
 )
 
 func GetTransactionsByAccountId(c *gin.Context) {
-	accountId, _ := utils.ParseParamIdString(c, "accountId")
+	accountId, _ := utils.ParseParamId(c, "accountId")
 
 	transactionList, err := repos.TransactionRepo.SelectByAccountId(accountId)
 	if err != nil {
@@ -23,7 +23,7 @@ func GetTransactionsByAccountId(c *gin.Context) {
 
 func GetTransactionById(c *gin.Context) {
 	//Incoming params
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	transaction, err := repos.TransactionRepo.SelectById(id)
 	if err != nil {
@@ -56,7 +56,7 @@ func CreateTransaction(c *gin.Context) {
 
 func UpdateTransaction(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var transactionJson domains.Transaction
 	c.BindJSON(&transactionJson)
 
@@ -77,7 +77,7 @@ func UpdateTransaction(c *gin.Context) {
 
 func DeleteTransaction(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.TransactionRepo.Delete(id)
 	if err != nil {

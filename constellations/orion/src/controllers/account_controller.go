@@ -18,7 +18,7 @@ type AccountSearchBody struct {
 func GetAccountById(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountRepo.GetAccountById")
 
-	id, err := utils.ParseParamIdString(c, "id")
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
 		err = appErrors.WrapParse(err, c.Param("id"))
 		c.Error(err)
@@ -86,7 +86,7 @@ func CreateAccount(c *gin.Context) {
 func UpdateAccount(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountRepo.UpdateAccount")
 
-	id, err := utils.ParseParamIdString(c, "id")
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
 		err = appErrors.WrapParse(err, c.Param("id"))
 		c.Error(err)
@@ -121,7 +121,7 @@ func UpdateAccount(c *gin.Context) {
 func DeleteAccount(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountRepo.DeleteAccount")
 
-	id, err := utils.ParseParamIdString(c, "id")
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
 		err = appErrors.WrapParse(err, c.Param("id"))
 		c.Error(err)

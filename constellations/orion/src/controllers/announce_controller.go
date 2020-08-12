@@ -21,7 +21,7 @@ func GetAllAnnouncements(c *gin.Context) {
 
 func GetAnnouncementById(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	announce, err := repos.AnnounceRepo.SelectByAnnounceId(id)
 	if err != nil {
@@ -54,7 +54,7 @@ func CreateAnnouncement(c *gin.Context) {
 
 func UpdateAnnouncement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var announceJson domains.Announce
 	c.BindJSON(&announceJson)
 
@@ -75,7 +75,7 @@ func UpdateAnnouncement(c *gin.Context) {
 
 func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.AnnounceRepo.Delete(id)
 	if err != nil {

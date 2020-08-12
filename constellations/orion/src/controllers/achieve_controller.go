@@ -21,7 +21,7 @@ func GetAllAchievements(c *gin.Context) {
 
 func GetAchievementById(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	achieve, err := repos.AchieveRepo.SelectById(id)
 	if err != nil {
@@ -64,7 +64,7 @@ func CreateAchievement(c *gin.Context) {
 
 func UpdateAchievement(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var achieveJson domains.Achieve
 	c.BindJSON(&achieveJson)
 
@@ -85,7 +85,7 @@ func UpdateAchievement(c *gin.Context) {
 
 func DeleteAchievement(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.AchieveRepo.Delete(id)
 	if err != nil {

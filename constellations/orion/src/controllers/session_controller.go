@@ -24,7 +24,7 @@ func GetAllSessionsByClassId(c *gin.Context) {
 
 func GetSessionById(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	session, err := repos.SessionRepo.SelectBySessionId(id)
 	if err != nil {
@@ -53,7 +53,7 @@ func CreateSessions(c *gin.Context) {
 
 func UpdateSession(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var sessionJson domains.Session
 	c.BindJSON(&sessionJson)
 

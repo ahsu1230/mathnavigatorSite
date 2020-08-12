@@ -11,7 +11,7 @@ import (
 
 func GetUserAfhByUserId(c *gin.Context) {
 	// Incoming parameters
-	userId, _ := utils.ParseParamIdString(c, "userId")
+	userId, _ := utils.ParseParamId(c, "userId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByUserId(userId)
 	if err != nil {
@@ -24,7 +24,7 @@ func GetUserAfhByUserId(c *gin.Context) {
 
 func GetUserAfhByAfhId(c *gin.Context) {
 	// Incoming parameters
-	afhId, _ := utils.ParseParamIdString(c, "afhId")
+	afhId, _ := utils.ParseParamId(c, "afhId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByAfhId(afhId)
 	if err != nil {
@@ -37,8 +37,8 @@ func GetUserAfhByAfhId(c *gin.Context) {
 
 func GetUserAfhByBothIds(c *gin.Context) {
 	// Incoming parameters
-	userId, _ := utils.ParseParamIdString(c, "userId")
-	afhId, _ := utils.ParseParamIdString(c, "afhId")
+	userId, _ := utils.ParseParamId(c, "userId")
+	afhId, _ := utils.ParseParamId(c, "afhId")
 
 	userAfh, err := repos.UserAfhRepo.SelectByBothIds(userId, afhId)
 	if err != nil {
@@ -65,7 +65,7 @@ func CreateUserAfh(c *gin.Context) {
 
 func UpdateUserAfh(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamIdString(c, "id")
+	id, _ := utils.ParseParamId(c, "id")
 	var userAfhJson domains.UserAfh
 	c.BindJSON(&userAfhJson)
 
@@ -80,7 +80,7 @@ func UpdateUserAfh(c *gin.Context) {
 
 func DeleteUserAfh(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamIdString(c, "Id")
+	id, _ := utils.ParseParamId(c, "Id")
 
 	err := repos.UserAfhRepo.Delete(id)
 	if err != nil {
