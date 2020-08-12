@@ -1,15 +1,13 @@
 "use strict";
-require("./email.sass");
+require("./emailPayments.sass");
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import API, { executeApiCalls } from "../api.js";
 import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
-import { Modal } from "../modals/modal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
 import { AccountInfo } from "./accountInfo.js";
 
-export class PaymentEmails extends React.Component {
+export class EmailPayments extends React.Component {
     state = {
         id: getCurrentAccountId() || 0,
         email: "",
@@ -95,34 +93,6 @@ export class PaymentEmails extends React.Component {
             .catch((err) => this.fetchDataError(err));
     };
 
-    onModalDismiss = () => {
-        this.setState({
-            showDeleteModal: false,
-        });
-    };
-
-    renderModal = (showDeleteModal, onModalDeleteConfirm, onModalDismiss) => {
-        let modalDiv;
-        let modalContent;
-        if (showDeleteModal) {
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={onModalDeleteConfirm}
-                    onReject={onModalDismiss}
-                />
-            );
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showDeleteModal}
-                    onDismiss={onModalDismiss}
-                />
-            );
-        }
-        return modalDiv;
-    };
-
     generateErrorMessage = (errorType, errorValue) => {
         var errorMessage = <div></div>;
         switch (errorType) {
@@ -156,12 +126,6 @@ export class PaymentEmails extends React.Component {
     };
 
     render = () => {
-        const modalDiv = this.renderModal(
-            this.state.showDeleteModal,
-            this.onModalDeleteConfirm,
-            this.onModalDismiss
-        );
-
         const errorMessage = this.generateErrorMessage(
             this.state.errorType,
             this.state.errorValue
@@ -178,7 +142,6 @@ export class PaymentEmails extends React.Component {
 
         return (
             <div id="view-account">
-                {modalDiv}
                 <section id="search-accounts">
                     <h1>Generate Payment Reminder Email</h1>
                     <div className="container">

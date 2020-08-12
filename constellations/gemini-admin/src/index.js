@@ -33,7 +33,7 @@ import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./ask_for_help/afh.js";
 import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
-import { PaymentEmails } from "./emails/email.js";
+import { EmailPayments } from "./emailPayment/emailPayments.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -94,7 +94,7 @@ const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
-const Payments = () => <PaymentEmails />;
+const Payments = () => <EmailPayments />;
 
 class AppContainer extends React.Component {
     render() {
