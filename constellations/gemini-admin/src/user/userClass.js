@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import API from "../api.js";
 import { getFullName } from "../utils/userUtils.js";
 import { UserClassRow } from "./userClassRow.js";
+import { InputSelect } from "../utils/inputSelect.js";
 
 export class UserClassPage extends React.Component {
     state = {
@@ -95,30 +96,34 @@ export class UserClassPage extends React.Component {
 
     renderEnrollSection = () => {
         const classOptions = this.state.otherClassIds.map((classId, index) => {
-            return <option key={index}>{classId}</option>;
+            return { value: classId, displayName: classId };
         });
+        const enrollButton = classOptions.length ? (
+            <button onClick={this.onClickEnroll}>Enroll</button>
+        ) : (
+            ""
+        );
 
-        var enroll = (
+        return (
             <div>
-                <span>There are no classes to choose from. Please add one</span>
-                <Link to="/classes/add"> here</Link>
+                <InputSelect
+                    label="Enroll User for Class"
+                    description="Select a Class ID to enroll user into:"
+                    value={this.state.classId}
+                    onChangeCallback={(e) => this.onClassChange(e)}
+                    required={true}
+                    options={classOptions}
+                    hasNoDefault={true}
+                    errorMessageIfEmpty={
+                        <span>
+                            There are no classes to choose from. Please add one{" "}
+                            <Link to="/classes/add">here</Link>
+                        </span>
+                    }
+                />
+                {enrollButton}
             </div>
         );
-        if (this.state.otherClassIds.length != 0) {
-            enroll = (
-                <div>
-                    <p>Select a Class ID to enroll user into:</p>
-                    <select
-                        value={this.state.classId}
-                        onChange={(e) => this.onClassChange(e)}>
-                        {classOptions}
-                    </select>
-
-                    <button onClick={this.onClickEnroll}>Enroll</button>
-                </div>
-            );
-        }
-        return enroll;
     };
 
     render = () => {
@@ -160,10 +165,7 @@ export class UserClassPage extends React.Component {
                     {userClasses}
                 </div>
 
-                <div id="user-enroll">
-                    <h2>Enroll User for Class</h2>
-                    {this.renderEnrollSection()}
-                </div>
+                <div id="user-enroll">{this.renderEnrollSection()}</div>
             </div>
         );
     };

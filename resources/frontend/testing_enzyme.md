@@ -1,8 +1,6 @@
 # Enzyme Tests with ReactJs
 
-You may have seen either from CircleCI or in a project's `package.json` file that you can run `npm run test` and the program will run front-end tests for a website.
-
-For these projects, we use [EnzymeJs](https://enzymejs.github.io/enzyme/) which is a ReactJs web development testing framework created by AirBnB.
+You may have seen either from CircleCI or in a project's `package.json` file that you can run `npm run test` and the program will run front-end tests for a website. For these projects, we use [EnzymeJs](https://enzymejs.github.io/enzyme/) which is a ReactJs web development testing framework created by AirBnB.
 
 ## Testing the Front-End
 

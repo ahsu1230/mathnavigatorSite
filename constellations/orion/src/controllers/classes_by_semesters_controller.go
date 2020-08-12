@@ -16,8 +16,8 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	// Fetch programs, semesters, classes from repo functions
 	publishedOnly := utils.ParseParamPublishedOnly(c)
 
-	programs, err := repos.ProgramRepo.SelectAll(publishedOnly)
-	semesters, err := repos.SemesterRepo.SelectAll(publishedOnly)
+	programs, err := repos.ProgramRepo.SelectAll()
+	semesters, err := repos.SemesterRepo.SelectAll()
 	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
 
 	// Convert lists into maps
@@ -104,15 +104,6 @@ func createProgramClassMap(classSlice []domains.Class, programMap map[string]dom
 		}
 	}
 	return programClassMap, nil
-}
-
-func Find(slice []string, val string) int {
-	for i, item := range slice {
-		if item == val {
-			return i
-		}
-	}
-	return -1
 }
 
 func createProgramMap(programs []domains.Program) map[string]domains.Program {

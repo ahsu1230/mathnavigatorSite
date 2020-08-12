@@ -8,6 +8,8 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText } from "../utils/inputText.js";
+import { InputSelect } from "../utils/inputSelect.js";
+import { Link } from "react-router-dom";
 import { emptyValidator } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
@@ -67,13 +69,19 @@ export class ClassEditPage extends React.Component {
 
                     let selectedProgramId = hasClassId
                         ? classObj.programId
-                        : programs[0].programId;
+                        : programs.length
+                        ? programs[0].programId
+                        : undefined;
                     let selectedSemesterId = hasClassId
                         ? classObj.semesterId
-                        : semesters[0].semesterId;
+                        : semesters.length
+                        ? semesters[0].semesterId
+                        : undefined;
                     let selectedLocationId = hasClassId
                         ? classObj.locationId
-                        : locations[0].locationId;
+                        : programs.length
+                        ? locations[0].locationId
+                        : undefined;
 
                     this.setState({
                         isEdit: !!classId,
@@ -201,17 +209,27 @@ export class ClassEditPage extends React.Component {
     render = () => {
         const title = this.state.isEdit ? "Edit Class" : "Add Class";
 
-        const programOptions = this.state.programs.map((program, index) => (
-            <option key={index}>{program.programId}</option>
-        ));
+        const programOptions = this.state.programs.map((program, index) => ({
+            value: program.programId,
+            displayName: program.name,
+        }));
 
-        const semesterOptions = this.state.semesters.map((semester, index) => (
-            <option key={index}>{semester.semesterId}</option>
-        ));
+        const semesterOptions = this.state.semesters.map((semester, index) => ({
+            value: semester.semesterId,
+            displayName: semester.title,
+        }));
 
-        const locationOptions = this.state.locations.map((location, index) => (
-            <option key={index}>{location.locationId}</option>
-        ));
+        const locationOptions = this.state.locations.map((location, index) => ({
+            value: location.locationId,
+            displayName: location.locationId,
+        }));
+
+        const fullStateOptions = ["Normal", "Almost Full", "Full"].map(
+            (item, index) => ({
+                value: index,
+                displayName: item,
+            })
+        );
 
         const classId = this.createClassId();
 
@@ -221,23 +239,39 @@ export class ClassEditPage extends React.Component {
                 <div className="edit-section">
                     <h3>Class Information</h3>
 
-                    <h4>ProgramId</h4>
-                    <select
+                    <InputSelect
+                        label="ProgramId"
+                        description="Select a program id"
                         value={this.state.selectProgramId}
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "selectProgramId")
-                        }>
-                        {programOptions}
-                    </select>
+                        }
+                        required={true}
+                        options={programOptions}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no programs to choose from. Please add
+                                one <Link to="/programs/add">here</Link>
+                            </span>
+                        }
+                    />
 
-                    <h4>SemesterId</h4>
-                    <select
+                    <InputSelect
+                        label="SemesterId"
+                        description="Select a semester id"
                         value={this.state.selectSemesterId}
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "selectSemesterId")
-                        }>
-                        {semesterOptions}
-                    </select>
+                        }
+                        required={true}
+                        options={semesterOptions}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no semesters to choose from. Please
+                                add one <Link to="/semesters/add">here</Link>
+                            </span>
+                        }
+                    />
 
                     <h4>ClassKey</h4>
                     <input
@@ -276,14 +310,22 @@ export class ClassEditPage extends React.Component {
                 <div className="edit-section">
                     <h3>Class Schedule</h3>
 
-                    <h4>LocationId</h4>
-                    <select
+                    <InputSelect
+                        label="LocationId"
+                        description="Select a location id"
                         value={this.state.selectLocationId}
-                        onChange={(e) =>
+                        onChangeCallback={(e) =>
                             this.handleChange(e, "selectLocationId")
-                        }>
-                        {locationOptions}
-                    </select>
+                        }
+                        required={true}
+                        options={locationOptions}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no locations to choose from. Please
+                                add one <Link to="/locations/add">here</Link>
+                            </span>
+                        }
+                    />
 
                     <InputText
                         label="Display Time"
@@ -298,14 +340,14 @@ export class ClassEditPage extends React.Component {
                         validators={[emptyValidator("time")]}
                     />
 
-                    <h4 className="availability">Class Availability</h4>
-                    <select
+                    <InputSelect
+                        label="Class Availability"
+                        description="Select a level of availability"
                         value={this.state.fullState}
-                        onChange={(e) => this.onChangeFullState(e)}>
-                        <option value="0">Normal</option>
-                        <option value="1">Almost Full</option>
-                        <option value="2">Full</option>
-                    </select>
+                        onChangeCallback={(e) => this.onChangeFullState(e)}
+                        required={true}
+                        options={fullStateOptions}
+                    />
 
                     <InputText
                         label="Google Classroom Code"

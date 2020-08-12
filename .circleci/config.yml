@@ -50,20 +50,24 @@ jobs:
             sudo apt install nodejs
             nodejs --version
             npm --version
-            
+      
       - run:
-          name: Check Javascript format and run Gemini-Admin Enzyme tests
+          name: Check Javascript Formatting
           command: |
             cd constellations/gemini-admin
             sudo npm install -g prettier
             prettier --check "./**/*.js"
+            cd ../gemini-user
+            prettier --check "./**/*.js"      
+      - run:
+          name: Run Gemini-Admin Enzyme tests
+          command: |
+            cd constellations/gemini-admin
             npm install
             npm run test
       - run:
-          name: Check Javascript format and run Gemini-User Enzyme tests
+          name: Run Gemini-User Enzyme tests
           command: |
             cd constellations/gemini-user
-            sudo npm install -g prettier
-            prettier --check "./**/*.js"
             npm install
             npm run test
