@@ -22,9 +22,9 @@ export class AccountInfo extends React.Component {
         if (e.target.checked) {
             var emails = this.state.selectedUserEmails;
             var currentSelectedUsers = this.state.selectedUsers;
-            const checkedUser = users.find(user => user.id == userId);
+            const checkedUser = users.find((user) => user.id == userId);
             emails.push(checkedUser.email);
-            currentSelectedUsers.push(checkedUser)
+            currentSelectedUsers.push(checkedUser);
             this.setState({
                 selectedUserEmails: emails,
                 selectedUsers: currentSelectedUsers,
@@ -32,9 +32,12 @@ export class AccountInfo extends React.Component {
         } else {
             var emails = this.state.selectedUserEmails;
             var currentSelectedUsers = this.state.selectedUsers;
-            const uncheckedUser = users.find(user => user.id == userId);
+            const uncheckedUser = users.find((user) => user.id == userId);
             emails.splice(emails.indexOf(uncheckedUser.email), 1);
-            currentSelectedUsers.splice(currentSelectedUsers.indexOf(uncheckedUser), 1);
+            currentSelectedUsers.splice(
+                currentSelectedUsers.indexOf(uncheckedUser),
+                1
+            );
             this.setState({
                 selectedUserEmails: emails,
                 selectedUsers: currentSelectedUsers,
@@ -44,8 +47,7 @@ export class AccountInfo extends React.Component {
 
     checkUserExists = () => {
         const users = this.props.users;
-        
-    }
+    };
 
     render = () => {
         const id = this.props.id;
@@ -63,7 +65,11 @@ export class AccountInfo extends React.Component {
 
             if (this.state.selectedUsers.length > 0) {
                 for (var i = 0; i < this.state.selectedUsers.length; i++) {
-                    if (users.find(user => user == this.state.selectedUsers[i]) == undefined){
+                    if (
+                        users.find(
+                            (user) => user == this.state.selectedUsers[i]
+                        ) == undefined
+                    ) {
                         this.setState({
                             selectedUserEmails: [],
                             selectedUsers: [],
@@ -72,7 +78,7 @@ export class AccountInfo extends React.Component {
                     }
                 }
             }
-            
+
             return (
                 <div className="row" key={index}>
                     <input
@@ -104,14 +110,17 @@ export class AccountInfo extends React.Component {
                     </div>
                     <div id="transaction-footer">
                         <span>
-                            Account Balance: <b>{this.formatCurrency(balance)}</b>
+                            Account Balance:{" "}
+                            <b>{this.formatCurrency(balance)}</b>
                         </span>
                     </div>
                 </section>
 
-                <section id = "generated-email">
+                <section id="generated-email">
                     <div className="email-template">
-                        <span id="template-title">Generated Email Template</span>
+                        <span id="template-title">
+                            Generated Email Template
+                        </span>
                         <h3>To: {this.state.selectedUserEmails.toString()}</h3>
                         <h3>
                             Subject: Math Navigator: Account Balance Payment
@@ -121,15 +130,16 @@ export class AccountInfo extends React.Component {
                         <div className="generated-email">
                             <p>Hello {name},</p>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit, sed do eiusmod tempor incididunt ut labore et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris nisi ut aliquip
-                                ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore
-                                eu fugiat nulla pariatur. Excepteur sint occaecat
-                                cupidatat non proident, sunt in culpa qui officia
-                                deserunt mollit anim id est laborum.
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum
+                                dolore eu fugiat nulla pariatur. Excepteur sint
+                                occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.
                             </p>
                             <p>Best wishes from the Math Navigator Family</p>
                         </div>
