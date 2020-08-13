@@ -20,7 +20,7 @@ import (
 //
 func TestGetAllSessionsByClassId_Success(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string, publishedOnly bool) ([]domains.Session, error) {
+	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -179,28 +179,6 @@ func TestUpdateSession_Failure(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
-}
-
-//
-// Test Publish
-//
-func TestPublishSessions_Success(t *testing.T) {
-	testUtils.SessionRepo.MockPublish = func(ids []uint) error {
-		return nil // Successful publish
-	}
-	repos.SessionRepo = &testUtils.SessionRepo
-
-	// Create new HTTP request to endpoint
-	ids := []uint{1, 2}
-	marshal, err := json.Marshal(ids)
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := bytes.NewBuffer(marshal)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/publish", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
 //

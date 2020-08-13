@@ -11,8 +11,8 @@ var TABLE_USERS = "users"
 
 type User struct {
 	Id             uint         `json:"id"`
-	CreatedAt      time.Time    `json:"-" db:"created_at"`
-	UpdatedAt      time.Time    `json:"-" db:"updated_at"`
+	CreatedAt      time.Time    `json:"createdAt" db:"created_at"`
+	UpdatedAt      time.Time    `json:"updatedAt" db:"updated_at"`
 	DeletedAt      sql.NullTime `json:"-" db:"deleted_at"`
 	FirstName      string       `json:"firstName" db:"first_name"`
 	LastName       string       `json:"lastName" db:"last_name"`

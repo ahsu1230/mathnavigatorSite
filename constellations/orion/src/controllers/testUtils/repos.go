@@ -23,23 +23,18 @@ var UserAfhRepo mockUserAfhRepo
 
 // Fake programRepo that implements ProgramRepo interface
 type mockProgramRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectAll            func(bool) ([]domains.Program, error)
-	MockSelectAllUnpublished func() ([]domains.Program, error)
-	MockSelectByProgramId    func(string) (domains.Program, error)
-	MockInsert               func(domains.Program) error
-	MockUpdate               func(string, domains.Program) error
-	MockPublish              func([]string) error
-	MockDelete               func(string) error
+	MockInitialize        func(*sql.DB)
+	MockSelectAll         func() ([]domains.Program, error)
+	MockSelectByProgramId func(string) (domains.Program, error)
+	MockInsert            func(domains.Program) error
+	MockUpdate            func(string, domains.Program) error
+	MockDelete            func(string) error
 }
 
 // Implement methods of ProgramRepo interface with mocked implementations
 func (programRepo *mockProgramRepo) Initialize(db *sql.DB) {}
-func (programRepo *mockProgramRepo) SelectAll(publishedOnly bool) ([]domains.Program, error) {
-	return programRepo.MockSelectAll(publishedOnly)
-}
-func (programRepo *mockProgramRepo) SelectAllUnpublished() ([]domains.Program, error) {
-	return programRepo.MockSelectAllUnpublished()
+func (programRepo *mockProgramRepo) SelectAll() ([]domains.Program, error) {
+	return programRepo.MockSelectAll()
 }
 func (programRepo *mockProgramRepo) SelectByProgramId(programId string) (domains.Program, error) {
 	return programRepo.MockSelectByProgramId(programId)
@@ -49,9 +44,6 @@ func (programRepo *mockProgramRepo) Insert(program domains.Program) error {
 }
 func (programRepo *mockProgramRepo) Update(programId string, program domains.Program) error {
 	return programRepo.MockUpdate(programId, program)
-}
-func (programRepo *mockProgramRepo) Publish(programIds []string) error {
-	return programRepo.MockPublish(programIds)
 }
 func (programRepo *mockProgramRepo) Delete(programId string) error {
 	return programRepo.MockDelete(programId)
@@ -107,23 +99,18 @@ func (classRepo *mockClassRepo) Delete(classId string) error {
 
 // Fake locationRepo that implements LocationRepo interface
 type mockLocationRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectAll            func(bool) ([]domains.Location, error)
-	MockSelectAllUnpublished func() ([]domains.Location, error)
-	MockSelectByLocationId   func(string) (domains.Location, error)
-	MockInsert               func(domains.Location) error
-	MockUpdate               func(string, domains.Location) error
-	MockPublish              func([]string) error
-	MockDelete               func(string) error
+	MockInitialize         func(*sql.DB)
+	MockSelectAll          func() ([]domains.Location, error)
+	MockSelectByLocationId func(string) (domains.Location, error)
+	MockInsert             func(domains.Location) error
+	MockUpdate             func(string, domains.Location) error
+	MockDelete             func(string) error
 }
 
 // Implement methods of LocationRepo interface with mocked implementations
 func (locationRepo *mockLocationRepo) Initialize(db *sql.DB) {}
-func (locationRepo *mockLocationRepo) SelectAll(publishedOnly bool) ([]domains.Location, error) {
-	return locationRepo.MockSelectAll(publishedOnly)
-}
-func (locationRepo *mockLocationRepo) SelectAllUnpublished() ([]domains.Location, error) {
-	return locationRepo.MockSelectAllUnpublished()
+func (locationRepo *mockLocationRepo) SelectAll() ([]domains.Location, error) {
+	return locationRepo.MockSelectAll()
 }
 func (locationRepo *mockLocationRepo) SelectByLocationId(locationId string) (domains.Location, error) {
 	return locationRepo.MockSelectByLocationId(locationId)
@@ -133,9 +120,6 @@ func (locationRepo *mockLocationRepo) Insert(location domains.Location) error {
 }
 func (locationRepo *mockLocationRepo) Update(locationId string, location domains.Location) error {
 	return locationRepo.MockUpdate(locationId, location)
-}
-func (locationRepo *mockLocationRepo) Publish(locationIds []string) error {
-	return locationRepo.MockPublish(locationIds)
 }
 func (locationRepo *mockLocationRepo) Delete(locationId string) error {
 	return locationRepo.MockDelete(locationId)
@@ -172,23 +156,18 @@ func (announceRepo *mockAnnounceRepo) Delete(id uint) error {
 // Fake achieveRepo that implements AchieveRepo interface
 type mockAchieveRepo struct {
 	MockInitialize             func(*sql.DB)
-	MockSelectAll              func(bool) ([]domains.Achieve, error)
-	MockSelectAllUnpublished   func() ([]domains.Achieve, error)
+	MockSelectAll              func() ([]domains.Achieve, error)
 	MockSelectById             func(uint) (domains.Achieve, error)
 	MockSelectAllGroupedByYear func() ([]domains.AchieveYearGroup, error)
 	MockInsert                 func(domains.Achieve) error
 	MockUpdate                 func(uint, domains.Achieve) error
-	MockPublish                func([]uint) error
 	MockDelete                 func(uint) error
 }
 
 // Implement methods of AchieveRepo interface with mocked implementations
 func (achieveRepo *mockAchieveRepo) Initialize(db *sql.DB) {}
-func (achieveRepo *mockAchieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) {
-	return achieveRepo.MockSelectAll(publishedOnly)
-}
-func (achieveRepo *mockAchieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
-	return achieveRepo.MockSelectAllUnpublished()
+func (achieveRepo *mockAchieveRepo) SelectAll() ([]domains.Achieve, error) {
+	return achieveRepo.MockSelectAll()
 }
 func (achieveRepo *mockAchieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	return achieveRepo.MockSelectById(id)
@@ -202,32 +181,24 @@ func (achieveRepo *mockAchieveRepo) Insert(achieve domains.Achieve) error {
 func (achieveRepo *mockAchieveRepo) Update(id uint, achieve domains.Achieve) error {
 	return achieveRepo.MockUpdate(id, achieve)
 }
-func (achieveRepo *mockAchieveRepo) Publish(ids []uint) error {
-	return achieveRepo.MockPublish(ids)
-}
 func (achieveRepo *mockAchieveRepo) Delete(id uint) error {
 	return achieveRepo.MockDelete(id)
 }
 
 // Fake semesterRepo that implements SemesterRepo interface
 type mockSemesterRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectAll            func(bool) ([]domains.Semester, error)
-	MockSelectAllUnpublished func() ([]domains.Semester, error)
-	MockSelectBySemesterId   func(string) (domains.Semester, error)
-	MockInsert               func(domains.Semester) error
-	MockUpdate               func(string, domains.Semester) error
-	MockPublish              func([]string) error
-	MockDelete               func(string) error
+	MockInitialize         func(*sql.DB)
+	MockSelectAll          func() ([]domains.Semester, error)
+	MockSelectBySemesterId func(string) (domains.Semester, error)
+	MockInsert             func(domains.Semester) error
+	MockUpdate             func(string, domains.Semester) error
+	MockDelete             func(string) error
 }
 
 // Implement methods of SemesterRepo interface with mocked implementations
 func (semesterRepo *mockSemesterRepo) Initialize(db *sql.DB) {}
-func (semesterRepo *mockSemesterRepo) SelectAll(publishedOnly bool) ([]domains.Semester, error) {
-	return semesterRepo.MockSelectAll(publishedOnly)
-}
-func (semesterRepo *mockSemesterRepo) SelectAllUnpublished() ([]domains.Semester, error) {
-	return semesterRepo.MockSelectAllUnpublished()
+func (semesterRepo *mockSemesterRepo) SelectAll() ([]domains.Semester, error) {
+	return semesterRepo.MockSelectAll()
 }
 func (semesterRepo *mockSemesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
 	return semesterRepo.MockSelectBySemesterId(semesterId)
@@ -238,32 +209,24 @@ func (semesterRepo *mockSemesterRepo) Insert(semester domains.Semester) error {
 func (semesterRepo *mockSemesterRepo) Update(semesterId string, semester domains.Semester) error {
 	return semesterRepo.MockUpdate(semesterId, semester)
 }
-func (semesterRepo *mockSemesterRepo) Publish(semesterIds []string) error {
-	return semesterRepo.MockPublish(semesterIds)
-}
 func (semesterRepo *mockSemesterRepo) Delete(semesterId string) error {
 	return semesterRepo.MockDelete(semesterId)
 }
 
 // Fake sessionRepo that implements SessionRepo interface
 type mockSessionRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectAllByClassId   func(string, bool) ([]domains.Session, error)
-	MockSelectAllUnpublished func() ([]domains.Session, error)
-	MockSelectBySessionId    func(uint) (domains.Session, error)
-	MockInsert               func([]domains.Session) error
-	MockUpdate               func(uint, domains.Session) error
-	MockPublish              func([]uint) error
-	MockDelete               func([]uint) error
+	MockInitialize         func(*sql.DB)
+	MockSelectAllByClassId func(string) ([]domains.Session, error)
+	MockSelectBySessionId  func(uint) (domains.Session, error)
+	MockInsert             func([]domains.Session) error
+	MockUpdate             func(uint, domains.Session) error
+	MockDelete             func([]uint) error
 }
 
 // Implement methods of SessionRepo interface with mocked implementations
 func (sessionRepo *mockSessionRepo) Initialize(db *sql.DB) {}
-func (sessionRepo *mockSessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
-	return sessionRepo.MockSelectAllByClassId(classId, publishedOnly)
-}
-func (sessionRepo *mockSessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
-	return sessionRepo.MockSelectAllUnpublished()
+func (sessionRepo *mockSessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
+	return sessionRepo.MockSelectAllByClassId(classId)
 }
 func (sessionRepo *mockSessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 	return sessionRepo.MockSelectBySessionId(id)
@@ -273,9 +236,6 @@ func (sessionRepo *mockSessionRepo) Insert(sessions []domains.Session) error {
 }
 func (sessionRepo *mockSessionRepo) Update(id uint, session domains.Session) error {
 	return sessionRepo.MockUpdate(id, session)
-}
-func (sessionRepo *mockSessionRepo) Publish(ids []uint) error {
-	return sessionRepo.MockPublish(ids)
 }
 func (sessionRepo *mockSessionRepo) Delete(ids []uint) error {
 	return sessionRepo.MockDelete(ids)
@@ -288,6 +248,7 @@ type mockUserRepo struct {
 	MockSelectAll         func(string, int, int) ([]domains.User, error)
 	MockSelectById        func(uint) (domains.User, error)
 	MockSelectByAccountId func(uint) ([]domains.User, error)
+	MockSelectByNew       func() ([]domains.User, error)
 	MockInsert            func(domains.User) error
 	MockUpdate            func(uint, domains.User) error
 	MockDelete            func(uint) error
@@ -309,6 +270,9 @@ func (userRepo *mockUserRepo) SelectById(id uint) (domains.User, error) {
 func (userRepo *mockUserRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	return userRepo.MockSelectByAccountId(accountId)
 }
+func (userRepo *mockUserRepo) SelectByNew() ([]domains.User, error) {
+	return userRepo.MockSelectByNew()
+}
 func (userRepo *mockUserRepo) Insert(user domains.User) error {
 	return userRepo.MockInsert(user)
 }
@@ -325,6 +289,7 @@ type mockUserClassesRepo struct {
 	MockSelectByClassId      func(string) ([]domains.UserClasses, error)
 	MockSelectByUserId       func(uint) ([]domains.UserClasses, error)
 	MockSelectByUserAndClass func(uint, string) (domains.UserClasses, error)
+	MockSelectByNew          func() ([]domains.UserClasses, error)
 	MockInsert               func(domains.UserClasses) error
 	MockUpdate               func(uint, domains.UserClasses) error
 	MockDelete               func(uint) error
@@ -341,6 +306,9 @@ func (userClassesRepo *mockUserClassesRepo) SelectByUserId(id uint) ([]domains.U
 }
 func (userClassesRepo *mockUserClassesRepo) SelectByUserAndClass(id uint, classId string) (domains.UserClasses, error) {
 	return userClassesRepo.MockSelectByUserAndClass(id, classId)
+}
+func (userClassesRepo *mockUserClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByNew()
 }
 func (userClassesRepo *mockUserClassesRepo) Insert(userClasses domains.UserClasses) error {
 	return userClassesRepo.MockInsert(userClasses)
@@ -441,6 +409,7 @@ type mockUserAfhRepo struct {
 	MockSelectByUserId  func(uint) ([]domains.UserAfh, error)
 	MockSelectByAfhId   func(uint) ([]domains.UserAfh, error)
 	MockSelectByBothIds func(uint, uint) (domains.UserAfh, error)
+	MockSelectByNew     func() ([]domains.UserAfh, error)
 	MockInsert          func(domains.UserAfh) error
 	MockUpdate          func(uint, domains.UserAfh) error
 	MockDelete          func(uint) error
@@ -457,6 +426,9 @@ func (userAfhRepo *mockUserAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh
 }
 func (userAfhRepo *mockUserAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, error) {
 	return userAfhRepo.MockSelectByBothIds(userId, afhId)
+}
+func (userAfhRepo *mockUserAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
+	return userAfhRepo.MockSelectByNew()
 }
 func (userAfhRepo *mockUserAfhRepo) Insert(userAfh domains.UserAfh) error {
 	return userAfhRepo.MockInsert(userAfh)

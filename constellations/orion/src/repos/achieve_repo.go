@@ -2,8 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -21,13 +19,11 @@ type achieveRepo struct {
 // Interface to implement
 type AchieveRepoInterface interface {
 	Initialize(db *sql.DB)
-	SelectAll(bool) ([]domains.Achieve, error)
-	SelectAllUnpublished() ([]domains.Achieve, error)
+	SelectAll() ([]domains.Achieve, error)
 	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
 	SelectById(uint) (domains.Achieve, error)
 	Insert(domains.Achieve) error
 	Update(uint, domains.Achieve) error
-	Publish([]uint) error
 	Delete(uint) error
 }
 
@@ -35,15 +31,11 @@ func (ar *achieveRepo) Initialize(db *sql.DB) {
 	ar.db = db
 }
 
-func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) {
+func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 	results := make([]domains.Achieve, 0)
 
-	var query string
-	if publishedOnly {
-		query = "SELECT * FROM achievements WHERE published_at IS NOT NULL"
-	} else {
-		query = "SELECT * FROM achievements"
-	}
+	query := "SELECT * FROM achievements"
+
 	stmt, err := ar.db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -62,39 +54,6 @@ func (ar *achieveRepo) SelectAll(publishedOnly bool) ([]domains.Achieve, error) 
 			&achieve.CreatedAt,
 			&achieve.UpdatedAt,
 			&achieve.DeletedAt,
-			&achieve.PublishedAt,
-			&achieve.Year,
-			&achieve.Message,
-			&achieve.Position); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, achieve)
-	}
-	return results, nil
-}
-
-func (ar *achieveRepo) SelectAllUnpublished() ([]domains.Achieve, error) {
-	results := make([]domains.Achieve, 0)
-
-	stmt, err := ar.db.Prepare("SELECT * FROM achievements WHERE published_at IS NULL")
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var achieve domains.Achieve
-		if errScan := rows.Scan(
-			&achieve.Id,
-			&achieve.CreatedAt,
-			&achieve.UpdatedAt,
-			&achieve.DeletedAt,
-			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message,
 			&achieve.Position); errScan != nil {
@@ -128,7 +87,6 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 			&achieve.CreatedAt,
 			&achieve.UpdatedAt,
 			&achieve.DeletedAt,
-			&achieve.PublishedAt,
 			&achieve.Year,
 			&achieve.Message,
 			&achieve.Position); errScan != nil {
@@ -163,7 +121,6 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 		&achieve.CreatedAt,
 		&achieve.UpdatedAt,
 		&achieve.DeletedAt,
-		&achieve.PublishedAt,
 		&achieve.Year,
 		&achieve.Message,
 		&achieve.Position)
@@ -222,34 +179,6 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		return err
 	}
 	return utils.HandleSqlExecResult(execResult, 1, "achievement was not updated")
-}
-
-func (ar *achieveRepo) Publish(ids []uint) error {
-	var errorString string
-
-	tx, err := ar.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("UPDATE achievements SET published_at=? WHERE id=? AND published_at IS NULL")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	for _, id := range ids {
-		_, err := stmt.Exec(now, id)
-		if err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
-		}
-	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
 }
 
 func (ar *achieveRepo) Delete(id uint) error {
