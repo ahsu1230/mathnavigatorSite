@@ -124,10 +124,9 @@ export class AccountPage extends React.Component {
                                     matchedClass.semesterId
                             );
                             return {
-                                programName: matchedProgram.name,
-                                semester: matchedSemester.title,
                                 program: matchedProgram,
                                 semester: matchedSemester,
+                                enrollDate: c.updatedAt,
                             };
                         });
 
@@ -453,9 +452,7 @@ class RegistrationsTabMain extends React.Component {
                     <span>
                         {c.program.name + " (" + c.semester.title + ")"}
                     </span>
-                    <span>
-                        Enrolled on: {moment(0).format("l") /*Fake data*/}
-                    </span>
+                    <span>Enrolled on: {moment(c.enrollDate).format("l")}</span>
                 </div>
             );
         });
@@ -566,7 +563,7 @@ class RegistrationsTabAllClasses extends React.Component {
                             c.classInfo.semester.title +
                             ")"}
                     </li>
-                    <li>Enrolled on: {moment(0).format("l") /*Fake data*/}</li>
+                    <li>Enrolled on: {moment(c.enrollDate).format("l")}</li>
                 </ul>
             );
         });
