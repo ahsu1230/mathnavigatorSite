@@ -36,11 +36,11 @@ func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
 	logger.Info("accountRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
+	defer stmt.Close()
 	if err != nil {
 		err = appErrors.WrapDbPrepare(err, statement)
 		return domains.Account{}, err
 	}
-	defer stmt.Close()
 
 	var account domains.Account
 	row := stmt.QueryRow(id)
@@ -55,18 +55,18 @@ func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
 		err = appErrors.WrapDbQuery(err, statement, id)
 		return domains.Account{}, err
 	}
-	return account, err
+	return account, nil
 }
 
 func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Account, error) {
 	logger.Info("accountRepo.SelectByPrimaryEmail", logger.Fields{"primaryEmail": primaryEmail})
 	statement := "SELECT * FROM accounts WHERE primary_email=?"
 	stmt, err := acc.db.Prepare(statement)
+	defer stmt.Close()
 	if err != nil {
 		err = appErrors.WrapDbPrepare(err, statement)
 		return domains.Account{}, err
 	}
-	defer stmt.Close()
 
 	var account domains.Account
 	row := stmt.QueryRow(primaryEmail)
@@ -116,7 +116,7 @@ func (acc *accountRepo) Insert(account domains.Account) error {
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {
 	logger.Info("accountRepo.Update", logger.Fields{
-		"id": id, 
+		"id":      id,
 		"account": account,
 	})
 	statement := "UPDATE accounts SET " +

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -81,7 +82,7 @@ func TestSearchAccount_Success(t *testing.T) {
 
 func TestSearchAccount_Failure(t *testing.T) {
 	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
-		return domains.Account{}, errors.New("not found")
+		return domains.Account{}, appErrors.TestDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -94,7 +95,7 @@ func TestSearchAccount_Failure(t *testing.T) {
 
 func TestGetAccounts_Failure(t *testing.T) {
 	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
-		return domains.Account{}, errors.New("not found")
+		return domains.Account{}, appErrors.TestDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 

@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"

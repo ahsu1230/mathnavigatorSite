@@ -16,7 +16,7 @@ type AccountSearchBody struct {
 }
 
 func GetAccountById(c *gin.Context) {
-	utils.LogControllerMethod(c, "accountRepo.GetAccountById")
+	utils.LogControllerMethod(c, "accountController.GetAccountById")
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -36,7 +36,7 @@ func GetAccountById(c *gin.Context) {
 }
 
 func SearchAccount(c *gin.Context) {
-	utils.LogControllerMethod(c, "accountRepo.SearchAccount")
+	utils.LogControllerMethod(c, "accountController.SearchAccount")
 
 	var body AccountSearchBody
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -57,7 +57,7 @@ func SearchAccount(c *gin.Context) {
 }
 
 func CreateAccount(c *gin.Context) {
-	utils.LogControllerMethod(c, "accountRepo.CreateAccount")
+	utils.LogControllerMethod(c, "accountController.CreateAccount")
 
 	var accountJson domains.Account
 	if err := c.BindJSON(&accountJson); err != nil {
@@ -73,7 +73,7 @@ func CreateAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	
+
 	if err := repos.AccountRepo.Insert(accountJson); err != nil {
 		err = appErrors.WrapRepo(err)
 		c.Error(err)
@@ -84,7 +84,7 @@ func CreateAccount(c *gin.Context) {
 }
 
 func UpdateAccount(c *gin.Context) {
-	utils.LogControllerMethod(c, "accountRepo.UpdateAccount")
+	utils.LogControllerMethod(c, "accountController.UpdateAccount")
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -119,7 +119,7 @@ func UpdateAccount(c *gin.Context) {
 }
 
 func DeleteAccount(c *gin.Context) {
-	utils.LogControllerMethod(c, "accountRepo.DeleteAccount")
+	utils.LogControllerMethod(c, "accountController.DeleteAccount")
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {

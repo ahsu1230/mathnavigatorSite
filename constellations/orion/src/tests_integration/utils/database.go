@@ -20,11 +20,11 @@ func SetupTestDatabase(host string, port int, username string, password string, 
 
 	logger.Message("Creating test database connection...")
 	logFields := logger.Fields{
-		"host": host,
-		"port": strconv.Itoa(port),
-		"username": username,
-		"password": password,
-		"defaultDb": dbName
+		"host":      host,
+		"port":      strconv.Itoa(port),
+		"username":  username,
+		"password":  password,
+		"defaultDb": dbName,
 	}
 	logger.Debug("Database properties", logFields)
 
@@ -57,7 +57,7 @@ func SetupTestDatabase(host string, port int, username string, password string, 
 }
 
 func ResetTable(t *testing.T, tableName string) error {
-	logger.Debug("Resetting table", logger.Fields{ "table": tableName })
+	logger.Debug("Resetting table", logger.Fields{"table": tableName})
 	_, err := db.Exec(fmt.Sprintf("DELETE FROM %s; ", tableName))
 	if err != nil {
 		t.Fatalf("Error deleting table rows: %s", err)
@@ -85,6 +85,6 @@ func ResetAllTables(t *testing.T) {
 }
 
 func CloseDb() {
-	logger.Message("Closing DB connection"))
+	logger.Message("Closing DB connection")
 	db.Close()
 }

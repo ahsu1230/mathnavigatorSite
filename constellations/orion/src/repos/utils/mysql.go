@@ -44,13 +44,13 @@ func Migrate(db *sql.DB, migrationsPath string) {
 
 	// Execute migrations
 	version, _, _ := m.Version()
-	logger.Info("Previous migration version: ", logger.Fields{ "version": version})
+	logger.Info("Previous migration version: ", logger.Fields{"version": version})
 	err3 := m.Up()
 	if err3 != nil && err3 != migrate.ErrNoChange {
 		panic(err3)
 	}
 	version, _, _ = m.Version()
-	logger.Info("Current migration version: ", logger.Fields{ "version": version})
+	logger.Info("Current migration version: ", logger.Fields{"version": version})
 }
 
 func Close(db *sql.DB) error {

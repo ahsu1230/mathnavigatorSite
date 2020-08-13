@@ -3,7 +3,6 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -20,6 +19,8 @@ func SetupTestRouter() {
 	logger.Message("Initializing Router...")
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
+	engine.NoRoute(router.NoRouteHandler())
+	engine.Use(router.AppRequestHandler())
 	newHandler := router.Handler{Engine: engine}
 	newHandler.SetupApiEndpoints()
 	handler = &newHandler

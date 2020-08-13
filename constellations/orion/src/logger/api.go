@@ -2,53 +2,54 @@ package logger
 
 import (
 	"fmt"
-	"os"
 	log "github.com/sirupsen/logrus"
+	"os"
 )
 
-var LOG_FILE_NAME string = "service.log"
+var PROD_LOG_FILE_NAME string = "service.log"
 
 type Fields = log.Fields
 
-var standardFields = Fields {
-	"appName":  "orion",
+var standardFields = Fields{
+	"app": "orion",
 }
 
 func SetupTest() {
 	log.New()
 	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
+	log.SetOutput(os.Stdout)
 }
 
 func SetupDev() {
+	log.New()
 	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
+	log.SetOutput(os.Stderr)
 }
 
 func SetupProd() error {
+	log.New()
 	log.SetFormatter(&log.JSONFormatter{})
+	log.SetLevel(log.InfoLevel)
 
 	// Log to local file
-	file, err := os.OpenFile(LOG_FILE_NAME, os.O_APPEND | os.O_CREATE | os.O_RDWR, 0666)
-    if err != nil {
+	file, err := os.OpenFile("service.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
 		fmt.Printf("error opening file: %v", err)
 		return err
-    }
+	}
 	log.SetOutput(file)
 	log.Println("Service log re-opened")
-
-	log.SetLevel(log.InfoLevel)
 	return nil
 }
 
-func ClearLogFile() error {
-	err := os.Remove(LOG_FILE_NAME) 
-    if err != nil { 
-		log.Printf("Error deleting file %s (%w)", LOG_FILE_NAME, err)
+func ClearLogFile(filePath string) error {
+	err := os.Remove(PROD_LOG_FILE_NAME)
+	if err != nil {
+		log.Printf("Error deleting file %s (%w)", filePath, err)
 		return err
-	} 
+	}
 	return nil
 }
 
@@ -71,5 +72,7 @@ func Message(message string) {
 func Error(message string, err error, fields Fields) {
 	log.WithFields(standardFields).
 		WithFields(fields).
-		Error(fmt.Sprintf("%s (%w)", message, err))
+		Error(fmt.Sprintf("%s (%v)", message, err))
+	// Error(fmt.Spritnf("%s (%+v)", message, err)) // <- use if want to see stacktrace
+	// Error(fmt.Sprintf("%s (%w)", message, err)) // <- displays object memory address
 }

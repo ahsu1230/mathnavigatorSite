@@ -7,10 +7,14 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
-func LogControllerMethod(c *gin.Context, label string) uuid.UUID {
-	requestUuid := c.MustGet("requestUuid").(uuid.UUID)
-	logger.Info(label, logger.Fields{
-		"requestUuid": requestUuid,
-	})
-	return requestUuid
+func LogControllerMethod(c *gin.Context, label string) (uuid.UUID, bool) {
+	v, ok := c.Get("requestUuid")
+	if ok {
+		requestUuid := v.(uuid.UUID)
+		logger.Info(label, logger.Fields{
+			"requestUuid": requestUuid,
+		})
+		return requestUuid, true
+	}
+	return uuid.UUID{}, false
 }

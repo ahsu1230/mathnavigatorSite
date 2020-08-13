@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"strconv"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func ParseParamId(c *gin.Context, idString string) (uint, error) {
