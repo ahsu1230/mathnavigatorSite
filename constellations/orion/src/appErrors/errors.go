@@ -15,12 +15,6 @@ type ResponseError struct {
 	Error   error  `json:"error"`
 }
 
-// Domain errors
-// These errors indicate that there could be a problem with a
-// invalid field value in a domain object
-var ERR_INVALID_EMAIL = errors.New("INVALID_EMAIL_ERROR")
-var ERR_INVALID_PASSWORD = errors.New("INVALID_PASSWORD_ERROR")
-
 // JSON errors
 // These errors indicate that there could be a problem with the incoming JSON request body
 var ERR_JSON_NULL_BODY = errors.New("JSON_NULL_BODY_ERROR")
@@ -53,14 +47,15 @@ var ERR_MYSQL_DUPLICATE_ENTRY = errors.New("MYSQL_DUP_ENTRY_ERROR")
 var ERR_MYSQL_UNKNOWN = errors.New("MYSQL_UNKNOWN_ERROR")
 
 // Other errors
-var ERR_PARSE = errors.New("PARSE_ERROR")
 var ERR_CTRL = errors.New("CTRL_ERROR")
+var ERR_INVALID_DOMAIN = errors.New("INVALID_DOMAIN_ERROR")
+var ERR_PARSE = errors.New("PARSE_ERROR")
 
-func WrapInvalidDomain(e error, reason string) error {
-	return errors.Wrapf(e, "Invalid Domain (%s)", reason)
+func WrapInvalidDomain(reason string) error {
+	return errors.Wrapf(ERR_INVALID_DOMAIN, "Invalid Domain (%s)", reason)
 }
 
-func WrapCtrl(message string, v ...interface{}) error {
+func WrapCtrlf(message string, v ...interface{}) error {
 	return errors.Wrapf(ERR_CTRL, message, v)
 }
 

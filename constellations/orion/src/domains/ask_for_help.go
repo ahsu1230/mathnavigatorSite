@@ -33,12 +33,12 @@ func (askForHelp *AskForHelp) Validate() error {
 
 	// Title validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
-		return errors.New("invalid title")
+		return appErrors.WrapInvalidDomain("Invalid Title")
 	}
 
 	// Subject validation
 	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
-		return errors.New("invalid subject")
+		return appErrors.WrapInvalidDomain("Unrecognized subject")
 	}
 	return nil
 }

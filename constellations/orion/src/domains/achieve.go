@@ -32,12 +32,12 @@ func (achieve *Achieve) Validate() error {
 
 	// Year validation
 	if year < 2000 {
-		return errors.New("invalid year")
+		return appErrors.WrapInvalidDomain("Year must be later than 2000")
 	}
 
 	// Message validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
-		return errors.New("invalid message")
+		return appErrors.WrapInvalidDomain("Message must contain at least an alphabetic letter")
 	}
 
 	return nil

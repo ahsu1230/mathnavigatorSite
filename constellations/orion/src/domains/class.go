@@ -39,19 +39,19 @@ func (class *Class) Validate() error {
 	// Class Key validation
 	if classKey.Valid {
 		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches {
-			return errors.New("invalid class key")
+			return appErrors.WrapInvalidDomain("Invalid Class Key")
 		}
 	}
 
 	// Times validation
 	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
-		return errors.New("invalid times")
+		return appErrors.WrapInvalidDomain("Invalid Time Format")
 	}
 
 	//Price validation
 	//Both valid
 	if priceLump.Valid && pricePerSession.Valid {
-		return errors.New("invalid price: both valid")
+		return appErrors.WrapInvalidDomain("Cannot have both priceLump and pricePerSession defined")
 	}
 
 	return nil

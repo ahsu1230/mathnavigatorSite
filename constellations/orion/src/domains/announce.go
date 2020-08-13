@@ -26,12 +26,13 @@ func (announce *Announce) Validate() error {
 
 	// Author validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, author); !matches {
-		return errors.New("invalid author")
+		return appErrors.WrapInvalidDomain("Must be a valid author's name")
 	}
 
 	// Message validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
 		return errors.New("invalid message")
+		return appErrors.WrapInvalidDomain("Message must contain at least one alphabetic letter")
 	}
 
 	return nil

@@ -27,10 +27,10 @@ func (account *Account) Validate() error {
 	password := account.Password
 
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
-		return appErrors.ERR_INVALID_EMAIL
+		return appErrors.WrapInvalidDomain("Invalid Email")
 	}
 	if len(password) < 8 {
-		return appErrors.ERR_INVALID_PASSWORD
+		return appErrors.WrapInvalidDomain("Password must be at least 8 characters long")
 	}
 	return nil
 }

@@ -27,12 +27,12 @@ func (semester *Semester) Validate() error {
 
 	// Semester ID validation
 	if matches, _ := regexp.MatchString(REGEX_SEMESTER_ID, semesterId); !matches {
-		return errors.New("invalid semester id")
+		return appErrors.WrapInvalidDomain("Invalid Semester ID (should be format `year_season`)")
 	}
 
 	// Title validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
-		return errors.New("invalid semester title")
+		return appErrors.WrapInvalidDomain("Invalid Semester Title")
 	}
 
 	return nil

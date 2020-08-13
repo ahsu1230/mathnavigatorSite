@@ -32,33 +32,33 @@ func (location *Location) Validate() error {
 
 	// Location ID validation
 	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, locationId); !matches {
-		return errors.New("invalid location id")
+		return appErrors.WrapInvalidDomain("Invalid ID")
 	}
 
 	// Street validation
 	if matches, _ := regexp.MatchString(REGEX_STREET, street); !matches {
-		return errors.New("invalid street")
+		return appErrors.WrapInvalidDomain("Invalid Street format")
 	}
 
 	// City validation
 	if matches, _ := regexp.MatchString(REGEX_CITY, city); !matches {
-		return errors.New("invalid city")
+		return appErrors.WrapInvalidDomain("Invalid City name")
 	}
 
 	// State validation
 	if matches, _ := regexp.MatchString(REGEX_STATE, state); !matches {
-		return errors.New("invalid state")
+		return appErrors.WrapInvalidDomain("Invalid State - must be two capitalized letters")
 	}
 
 	// Zipcode validation
 	if matches, _ := regexp.MatchString(REGEX_ZIPCODE, zipcode); !matches {
-		return errors.New("invalid zipcode")
+		return appErrors.WrapInvalidDomain("Invalid Zipcode format")
 	}
 
 	// Room validation
 	if room.Valid {
 		if matches, _ := regexp.MatchString(REGEX_ALPHA, room.String); !matches {
-			return errors.New("invalid room")
+			return appErrors.WrapInvalidDomain("Invalid room entry")
 		}
 	}
 

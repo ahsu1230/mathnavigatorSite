@@ -27,7 +27,7 @@ func (session *Session) Validate() error {
 	// Notes validation
 	if notes.Valid {
 		if matches, _ := regexp.MatchString(REGEX_LETTER, notes.String); !matches {
-			return errors.New("invalid notes")
+			return appErrors.WrapInvalidDomain("Invalid session notes entry")
 		}
 	}
 
