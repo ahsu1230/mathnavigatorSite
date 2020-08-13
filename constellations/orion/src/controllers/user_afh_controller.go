@@ -11,83 +11,122 @@ import (
 
 func GetUserAfhByUserId(c *gin.Context) {
 	// Incoming parameters
-	userId, _ := utils.ParseParamId(c, "userId")
+	userId, err := utils.ParseParamId(c, "userId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("userId")))
+		c.Abort()
+		return
+	}
 
 	userAfh, err := repos.UserAfhRepo.SelectByUserId(userId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &userAfh)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &userAfh)
 }
 
 func GetUserAfhByAfhId(c *gin.Context) {
 	// Incoming parameters
-	afhId, _ := utils.ParseParamId(c, "afhId")
+	afhId, err := utils.ParseParamId(c, "afhId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("afhId")))
+		c.Abort()
+		return
+	}
 
 	userAfh, err := repos.UserAfhRepo.SelectByAfhId(afhId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &userAfh)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &userAfh)
 }
 
 func GetUserAfhByBothIds(c *gin.Context) {
 	// Incoming parameters
-	userId, _ := utils.ParseParamId(c, "userId")
-	afhId, _ := utils.ParseParamId(c, "afhId")
+	userId, err := utils.ParseParamId(c, "userId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("userId")))
+		c.Abort()
+		return
+	}
+
+	afhId, err := utils.ParseParamId(c, "afhId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("afhId")))
+		c.Abort()
+		return
+	}
 
 	userAfh, err := repos.UserAfhRepo.SelectByBothIds(userId, afhId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &userAfh)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &userAfh)
 }
 
 func CreateUserAfh(c *gin.Context) {
 	// Incoming JSON
 	var userAfhJson domains.UserAfh
-	c.BindJSON(&userAfhJson)
+	if err := c.ShouldBindJSON(&userAfhJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	err := repos.UserAfhRepo.Insert(userAfhJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateUserAfh(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
 	var userAfhJson domains.UserAfh
-	c.BindJSON(&userAfhJson)
+	if err := c.ShouldBindJSON(&userAfhJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	err := repos.UserAfhRepo.Update(id, userAfhJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteUserAfh(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
 
 	err := repos.UserAfhRepo.Delete(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }

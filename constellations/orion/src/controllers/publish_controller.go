@@ -12,21 +12,20 @@ func GetAllUnpublished(c *gin.Context) {
 	unpublishedDomains, err := callGetUnpublishedRepos()
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, unpublishedDomains)
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, unpublishedDomains)
 }
 
 func callGetUnpublishedRepos() (domains.UnpublishedDomains, error) {
 	classList, err := repos.ClassRepo.SelectAllUnpublished()
 	if err != nil {
-		return domains.UnpublishedDomains{}, err
+		return domains.UnpublishedDomains{}, appErrors.WrapRepo(err)
 	}
-
 	unpublishedDomains := domains.UnpublishedDomains{
 		Classes: classList,
+		// Other domains were removed (unused)
 	}
-
 	return unpublishedDomains, nil
 }

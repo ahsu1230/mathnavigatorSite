@@ -54,9 +54,14 @@ var ERR_MYSQL_UNKNOWN = errors.New("MYSQL_UNKNOWN_ERROR")
 
 // Other errors
 var ERR_PARSE = errors.New("PARSE_ERROR")
+var ERR_CTRL = errors.New("CTRL_ERROR")
 
 func WrapInvalidDomain(e error, reason string) error {
 	return errors.Wrapf(e, "Invalid Domain (%s)", reason)
+}
+
+func WrapCtrl(message string, v ...interface{}) error {
+	return errors.Wrapf(ERR_CTRL, message, v)
 }
 
 func WrapBindJSON(e error, request *http.Request) error {

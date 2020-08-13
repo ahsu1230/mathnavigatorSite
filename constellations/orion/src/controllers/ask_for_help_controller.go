@@ -12,11 +12,11 @@ import (
 func GetAllAFH(c *gin.Context) {
 	afhList, err := repos.AskForHelpRepo.SelectAll()
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, afhList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, afhList)
 }
 
 func GetAFHById(c *gin.Context) {
@@ -25,52 +25,60 @@ func GetAFHById(c *gin.Context) {
 
 	askForHelp, err := repos.AskForHelpRepo.SelectById(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &askForHelp)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &askForHelp)
 }
 
 func CreateAFH(c *gin.Context) {
 	// Incoming JSON
 	var afhJson domains.AskForHelp
-	c.BindJSON(&afhJson)
+	if err := c.ShouldBindJSON(&afhJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := afhJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid AFH"))
+		c.Abort()
 		return
 	}
 
 	err := repos.AskForHelpRepo.Insert(afhJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateAFH(c *gin.Context) {
 	// Incoming JSON & Parameters
 	id, _ := utils.ParseParamId(c, "id")
 	var afhJson domains.AskForHelp
-	c.BindJSON(&afhJson)
+	if err := c.ShouldBindJSON(&afhJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := afhJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid AFH"))
+		c.Abort()
 		return
 	}
 
 	err := repos.AskForHelpRepo.Update(id, afhJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteAFH(c *gin.Context) {
@@ -79,9 +87,9 @@ func DeleteAFH(c *gin.Context) {
 
 	err := repos.AskForHelpRepo.Delete(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }

@@ -58,7 +58,7 @@ func CreateAccount(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountController.CreateAccount")
 
 	var accountJson domains.Account
-	if err := c.BindJSON(&accountJson); err != nil {
+	if err := c.ShouldBindJSON(&accountJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
@@ -75,7 +75,7 @@ func CreateAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateAccount(c *gin.Context) {
@@ -89,7 +89,7 @@ func UpdateAccount(c *gin.Context) {
 	}
 
 	var accountJson domains.Account
-	if err = c.BindJSON(&accountJson); err != nil {
+	if err = c.ShouldBindJSON(&accountJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
@@ -106,7 +106,7 @@ func UpdateAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteAccount(c *gin.Context) {
@@ -124,5 +124,5 @@ func DeleteAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }

@@ -11,12 +11,11 @@ import (
 func GetAllPrograms(c *gin.Context) {
 	programList, err := repos.ProgramRepo.SelectAll()
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, programList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, programList)
 }
 
 func GetProgramById(c *gin.Context) {
@@ -25,55 +24,60 @@ func GetProgramById(c *gin.Context) {
 
 	program, err := repos.ProgramRepo.SelectByProgramId(programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &program)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, &program)
 }
 
 func CreateProgram(c *gin.Context) {
 	// Incoming JSON
 	var programJson domains.Program
-	c.BindJSON(&programJson)
+	if err := c.ShouldBindJSON(&programJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := programJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Program"))
+		c.Abort()
 		return
 	}
 
 	err := repos.ProgramRepo.Insert(programJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateProgram(c *gin.Context) {
 	// Incoming JSON & Parameters
 	programId := c.Param("programId")
 	var programJson domains.Program
-	c.BindJSON(&programJson)
+	if err := c.ShouldBindJSON(&programJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := programJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Program"))
+		c.Abort()
 		return
 	}
 
 	err := repos.ProgramRepo.Update(programId, programJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteProgram(c *gin.Context) {
@@ -82,10 +86,9 @@ func DeleteProgram(c *gin.Context) {
 
 	err := repos.ProgramRepo.Delete(programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }

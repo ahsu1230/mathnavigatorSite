@@ -10,12 +10,17 @@ import (
 )
 
 func GetTransactionsByAccountId(c *gin.Context) {
-	accountId, _ := utils.ParseParamId(c, "accountId")
+	accountId, err := utils.ParseParamId(c, "accountId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("accountId")))
+		c.Abort()
+		return
+	}
 
 	transactionList, err := repos.TransactionRepo.SelectByAccountId(accountId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, &transactionList)
@@ -23,12 +28,17 @@ func GetTransactionsByAccountId(c *gin.Context) {
 
 func GetTransactionById(c *gin.Context) {
 	//Incoming params
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
 
 	transaction, err := repos.TransactionRepo.SelectById(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, &transaction)
@@ -37,55 +47,74 @@ func GetTransactionById(c *gin.Context) {
 func CreateTransaction(c *gin.Context) {
 	//JSON
 	var transactionJson domains.Transaction
-	c.BindJSON(&transactionJson)
+	if err := c.ShouldBindJSON(&transactionJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := transactionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Transaction"))
+		c.Abort()
 		return
 	}
 
 	err := repos.TransactionRepo.Insert(transactionJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateTransaction(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
 	var transactionJson domains.Transaction
-	c.BindJSON(&transactionJson)
+	if err := c.ShouldBindJSON(&transactionJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := transactionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Transaction"))
+		c.Abort()
 		return
 	}
 
 	err := repos.TransactionRepo.Update(id, transactionJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteTransaction(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
 
 	err := repos.TransactionRepo.Delete(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func GetAllPaymentTypes(c *gin.Context) {

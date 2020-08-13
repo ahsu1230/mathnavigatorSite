@@ -15,12 +15,11 @@ func GetAllClasses(c *gin.Context) {
 
 	classList, err := repos.ClassRepo.SelectAll(publishedOnly)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classList)
 }
 
 func GetClassById(c *gin.Context) {
@@ -29,12 +28,11 @@ func GetClassById(c *gin.Context) {
 
 	class, err := repos.ClassRepo.SelectByClassId(classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &class)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, &class)
 }
 
 func GetClassesByProgram(c *gin.Context) {
@@ -43,12 +41,11 @@ func GetClassesByProgram(c *gin.Context) {
 
 	classes, err := repos.ClassRepo.SelectByProgramId(programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
 }
 
 func GetClassesBySemester(c *gin.Context) {
@@ -57,12 +54,11 @@ func GetClassesBySemester(c *gin.Context) {
 
 	classes, err := repos.ClassRepo.SelectBySemesterId(semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
 }
 
 func GetClassesByProgramAndSemester(c *gin.Context) {
@@ -72,60 +68,70 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 
 	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(programId, semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
 }
 
 func CreateClass(c *gin.Context) {
 	// Incoming JSON
 	var classJson domains.Class
-	c.BindJSON(&classJson)
+	if err := c.ShouldBindJSON(&classJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
+
 	if err := classJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Class"))
+		c.Abort()
 		return
 	}
 
 	err := repos.ClassRepo.Insert(classJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateClass(c *gin.Context) {
 	// Incoming JSON & Parameters
 	classId := c.Param("classId")
 	var classJson domains.Class
-	c.BindJSON(&classJson)
+	if err := c.ShouldBindJSON(&classJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := classJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Class"))
+		c.Abort()
 		return
 	}
 
 	err := repos.ClassRepo.Update(classId, classJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func PublishClasses(c *gin.Context) {
 	// Incoming JSON
 	var classIds []string
-	c.BindJSON(&classIds)
+	if err := c.ShouldBindJSON(&classIds); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	errs := repos.ClassRepo.Publish(classIds)
 	if len(errs) > 0 {
@@ -135,7 +141,7 @@ func PublishClasses(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteClass(c *gin.Context) {
@@ -144,10 +150,9 @@ func DeleteClass(c *gin.Context) {
 
 	err := repos.ClassRepo.Delete(classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }

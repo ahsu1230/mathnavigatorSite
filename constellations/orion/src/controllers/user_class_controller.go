@@ -19,8 +19,8 @@ func GetUsersByClassId(c *gin.Context) {
 
 	userClasses, err := repos.UserClassesRepo.SelectByClassId(classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, &userClasses)
@@ -28,12 +28,17 @@ func GetUsersByClassId(c *gin.Context) {
 
 func GetClassesByUserId(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamId(c, "userId")
+	id, err := utils.ParseParamId(c, "userId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("userId")))
+		c.Abort()
+		return
+	}
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserId(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, &userClasses)
@@ -41,13 +46,19 @@ func GetClassesByUserId(c *gin.Context) {
 
 func GetUserClassByUserAndClass(c *gin.Context) {
 	// Incoming parameters
-	id, _ := utils.ParseParamId(c, "userId")
+	id, err := utils.ParseParamId(c, "userId")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
 	classId := c.Param("classId")
 
 	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(id, classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, &userClasses)
@@ -56,55 +67,74 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 func CreateUserClass(c *gin.Context) {
 	// Incoming JSON
 	var userClassesJson domains.UserClasses
-	c.BindJSON(&userClassesJson)
+	if err := c.ShouldBindJSON(&userClassesJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := userClassesJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid UserClasses"))
+		c.Abort()
 		return
 	}
 
 	err := repos.UserClassesRepo.Insert(userClassesJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateUserClass(c *gin.Context) {
 	// Incoming JSON & Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
 	var userClassesJson domains.UserClasses
-	c.BindJSON(&userClassesJson)
+	if err := c.ShouldBindJSON(&userClassesJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := userClassesJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid UserClasses"))
+		c.Abort()
 		return
 	}
 
 	err := repos.UserClassesRepo.Update(id, userClassesJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteUserClass(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamId(c, "id")
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
 
 	err := repos.UserClassesRepo.Delete(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.Status(http.StatusNoContent)
 }
 
 func GetStateValues(c *gin.Context) {

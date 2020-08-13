@@ -11,12 +11,11 @@ import (
 func GetAllLocations(c *gin.Context) {
 	locationList, err := repos.LocationRepo.SelectAll()
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, locationList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, locationList)
 }
 
 func GetLocationById(c *gin.Context) {
@@ -25,55 +24,60 @@ func GetLocationById(c *gin.Context) {
 
 	location, err := repos.LocationRepo.SelectByLocationId(locationId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &location)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, &location)
 }
 
 func CreateLocation(c *gin.Context) {
 	// Incoming JSON
 	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	if err := c.ShouldBindJSON(&locationJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := locationJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Location"))
+		c.Abort()
 		return
 	}
 
 	err := repos.LocationRepo.Insert(locationJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func UpdateLocation(c *gin.Context) {
 	// Incoming JSON & Parameters
 	locationId := c.Param("locationId")
 	var locationJson domains.Location
-	c.BindJSON(&locationJson)
+	if err := c.ShouldBindJSON(&locationJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := locationJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Location"))
+		c.Abort()
 		return
 	}
 
 	err := repos.LocationRepo.Update(locationId, locationJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteLocation(c *gin.Context) {
@@ -82,10 +86,9 @@ func DeleteLocation(c *gin.Context) {
 
 	err := repos.LocationRepo.Delete(locationId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
 }
