@@ -76,7 +76,7 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 
 	var session domains.Session
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&session.Id,
 		&session.CreatedAt,
 		&session.UpdatedAt,
@@ -85,9 +85,11 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 		&session.StartsAt,
 		&session.EndsAt,
 		&session.Canceled,
-		&session.Notes)
+		&session.Notes); err != nil {
+		return domains.Session{}, appErrors.WrapDbExec(err, statement, id)
+	}
 
-	return session, errScan
+	return session, nil
 }
 
 func (sr *sessionRepo) Insert(sessions []domains.Session) []error {

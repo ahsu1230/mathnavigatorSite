@@ -110,6 +110,10 @@ func wrapDbErrorHelper(
 	statement string,
 	v ...interface{}) error {
 
+	if originalErr == nil {
+		return nil
+	}
+
 	if err, found := checkSqlError(originalErr, statement, v); found {
 		return err
 	}
@@ -124,7 +128,11 @@ func wrapDbErrorHelper(
 	)
 }
 
+// This function attemps to match external errors from "database/sql" or "mysql"
+// And wraps them as a error type defined by this app
+// With this, we can identify what kind of errors are being caught by MySQL
 func checkSqlError(e error, statement string, v ...interface{}) (error, bool) {
+	// Check by comparing to "sql" errors
 	if errors.Is(e, sql.ErrNoRows) {
 		return errors.Wrapf(
 			ERR_SQL_NO_ROWS,
@@ -140,9 +148,32 @@ func checkSqlError(e error, statement string, v ...interface{}) (error, bool) {
 			statement,
 			e,
 		), true
-	} else {
-		return nil, false
 	}
+
+	// Attempt to convert to MySQLError
+	me, ok := e.(*mysql.MySQLError)
+	if ok {
+		if me.Number == 1062 {
+			return errors.Wrapf(
+				ERR_MYSQL_DUPLICATE_ENTRY,
+				"Duplicate entry (%v) when executing SQL statement (%s) with args (%v)",
+				me,
+				statement,
+				v,
+			), true
+		} else {
+			return errors.Wrapf(
+				ERR_MYSQL_UNKNOWN,
+				"Unrecognized MySQL error (%v) from executing SQL statement (%s) with args (%v)",
+				me,
+				statement,
+				v,
+			), true
+		}
+	}
+
+	// If can't match, return false
+	return nil, false
 }
 
 func ValidateDbResult(result sql.Result, expected int64, message string) error {
@@ -171,10 +202,7 @@ func WrapRepo(err error) error {
 // For testing/mocking purposes only
 
 func MockMySQLDuplicateEntryError() error {
-	return &mysql.MySQLError{
-		1062,
-		"Mocked duplicate entry",
-	}
+	return errors.Wrap(ERR_MYSQL_DUPLICATE_ENTRY, "Caused by mock")
 }
 
 func MockDbNoRowsError() error {

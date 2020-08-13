@@ -154,7 +154,7 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 
 	var user domains.User
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if errScan := row.Scan(
 		&user.Id,
 		&user.CreatedAt,
 		&user.UpdatedAt,
@@ -168,8 +168,10 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.AccountId,
 		&user.Notes,
 		&user.School,
-		&user.GraduationYear)
-	return user, errScan
+		&user.GraduationYear); errScan != nil {
+		return domains.User{}, appErrors.WrapDbQuery(errScan, statement, id)
+	}
+	return user, nil
 }
 
 func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {

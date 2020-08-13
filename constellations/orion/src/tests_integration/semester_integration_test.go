@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Semesters and GetAll(false)
-func Test_CreateSemesters(t *testing.T) {
+func TestCreateSemesters(t *testing.T) {
 	semester1 := createSemester("2020_fall", "Fall 2020", 1)
 	semester2 := createSemester("2020_winter", "Winter 2020", 2)
 	semester3 := createSemester("2020_spring", "Spring 2020", 3)
@@ -54,7 +54,7 @@ func Test_CreateSemesters(t *testing.T) {
 }
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
-func Test_UniqueSemesterId(t *testing.T) {
+func TestUniqueSemesterId(t *testing.T) {
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
 	semester2 := createSemester("2020_spring", "Fall 2020", 2) // Same semesterId
 	body1 := utils.CreateJsonBody(&semester1)
@@ -62,9 +62,9 @@ func Test_UniqueSemesterId(t *testing.T) {
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 	errBody := recorder2.Body.String()
-	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
+	assert.Contains(t, errBody, "duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -82,7 +82,7 @@ func Test_UniqueSemesterId(t *testing.T) {
 }
 
 // Test: Create 1 Semester, Update it, GetBySemesterId()
-func Test_UpdateSemester(t *testing.T) {
+func TestUpdateSemester(t *testing.T) {
 	// Create 1 Semester
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
 	body1 := utils.CreateJsonBody(&semester1)
@@ -114,7 +114,7 @@ func Test_UpdateSemester(t *testing.T) {
 }
 
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
-func Test_DeleteSemester(t *testing.T) {
+func TestDeleteSemester(t *testing.T) {
 	// Create
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
 	body1 := utils.CreateJsonBody(&semester1)
@@ -123,7 +123,7 @@ func Test_DeleteSemester(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/2020_spring", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)

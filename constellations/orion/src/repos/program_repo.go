@@ -77,7 +77,7 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 
 	var program domains.Program
 	row := stmt.QueryRow(programId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&program.Id,
 		&program.CreatedAt,
 		&program.UpdatedAt,
@@ -87,8 +87,10 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.Grade1,
 		&program.Grade2,
 		&program.Description,
-		&program.Featured)
-	return program, errScan
+		&program.Featured); err != nil {
+		return domains.Program{}, appErrors.WrapDbExec(err, statement, programId)
+	}
+	return program, nil
 }
 
 func (pr *programRepo) Insert(program domains.Program) error {

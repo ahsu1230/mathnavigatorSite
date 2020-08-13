@@ -76,7 +76,7 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 
 	var transaction domains.Transaction
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&transaction.Id,
 		&transaction.CreatedAt,
 		&transaction.UpdatedAt,
@@ -84,8 +84,10 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 		&transaction.Amount,
 		&transaction.PaymentType,
 		&transaction.PaymentNotes,
-		&transaction.AccountId)
-	return transaction, errScan
+		&transaction.AccountId); err != nil {
+		return domains.Transaction{}, appErrors.WrapDbExec(err, statement, id)
+	}
+	return transaction, nil
 }
 
 func (tr *transactionRepo) Insert(transaction domains.Transaction) error {

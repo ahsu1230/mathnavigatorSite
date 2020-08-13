@@ -189,5 +189,5 @@ func TestDeleteUserAfhFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/userafhs/userafh/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }

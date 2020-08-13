@@ -90,26 +90,8 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 
 	} else {
 		message = "Unknown error"
-		code = http.StatusBadRequest
+		code = http.StatusNotImplemented // (501)
 	}
-
-	// switch cause := errors.Cause(wrappedErr); cause {
-	// 	case appErrors.ERR_INVALID_EMAIL:
-
-	// 	case :
-
-	// 	case :
-
-	// 	case :
-
-	// 	case :
-
-	// 	case
-	// 	case :
-
-	// 	default:
-
-	// }
 
 	return appErrors.ResponseError{
 		code,

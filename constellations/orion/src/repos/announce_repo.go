@@ -74,7 +74,7 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 
 	var announce domains.Announce
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err := row.Scan(
 		&announce.Id,
 		&announce.CreatedAt,
 		&announce.UpdatedAt,
@@ -82,9 +82,11 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 		&announce.PostedAt,
 		&announce.Author,
 		&announce.Message,
-		&announce.OnHomePage)
+		&announce.OnHomePage); err != nil {
+		return domains.Announce{}, appErrors.WrapDbExec(err, statement, id)
+	}
 
-	return announce, errScan
+	return announce, nil
 }
 
 func (ar *announceRepo) Insert(announce domains.Announce) error {

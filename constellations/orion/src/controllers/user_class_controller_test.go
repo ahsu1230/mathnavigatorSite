@@ -275,7 +275,7 @@ func TestDeleteUserClassFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 func TestStateValuesSuccess(t *testing.T) {

@@ -205,16 +205,11 @@ func TestDeleteSessionsSuccess(t *testing.T) {
 }
 
 func TestDeleteSessionsFailure(t *testing.T) {
-	testUtils.SessionRepo.MockDelete = func(id []uint) []error {
-		return []error{appErrors.MockDbNoRowsError()}
-	}
-	repos.SessionRepo = &testUtils.SessionRepo
-
-	// Create new HTTP request to endpoint
+	// Create new HTTP request to endpoint (no JSON body)
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 //

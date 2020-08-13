@@ -78,7 +78,8 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 
 	var askForHelp domains.AskForHelp
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+
+	if err = row.Scan(
 		&askForHelp.Id,
 		&askForHelp.CreatedAt,
 		&askForHelp.UpdatedAt,
@@ -88,8 +89,10 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 		&askForHelp.TimeString,
 		&askForHelp.Subject,
 		&askForHelp.LocationId,
-		&askForHelp.Notes)
-	return askForHelp, errScan
+		&askForHelp.Notes); err != nil {
+		return domains.AskForHelp{}, appErrors.WrapDbExec(err, statement, id)
+	}
+	return askForHelp, nil
 }
 
 func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {

@@ -77,7 +77,7 @@ func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location,
 
 	var location domains.Location
 	row := stmt.QueryRow(locationId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&location.Id,
 		&location.CreatedAt,
 		&location.UpdatedAt,
@@ -87,9 +87,11 @@ func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location,
 		&location.City,
 		&location.State,
 		&location.Zipcode,
-		&location.Room)
+		&location.Room); err != nil {
+		return domains.Location{}, appErrors.WrapDbExec(err, statement, locationId)
+	}
 
-	return location, errScan
+	return location, nil
 }
 
 func (lr *locationRepo) Insert(location domains.Location) error {

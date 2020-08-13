@@ -75,15 +75,17 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 
 	var semester domains.Semester
 	row := stmt.QueryRow(semesterId)
-	errScan := row.Scan(
+	if err := row.Scan(
 		&semester.Id,
 		&semester.CreatedAt,
 		&semester.UpdatedAt,
 		&semester.DeletedAt,
 		&semester.SemesterId,
 		&semester.Title,
-		&semester.Ordering)
-	return semester, errScan
+		&semester.Ordering); err != nil {
+		return domains.Semester{}, appErrors.WrapDbExec(err, statement, semesterId)
+	}
+	return semester, nil
 }
 
 func (sr *semesterRepo) Insert(semester domains.Semester) error {

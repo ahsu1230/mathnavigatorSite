@@ -134,7 +134,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 
 	var class domains.Class
 	row := stmt.QueryRow(classId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&class.Id,
 		&class.CreatedAt,
 		&class.UpdatedAt,
@@ -150,8 +150,10 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.FullState,
 		&class.PricePerSession,
 		&class.PriceLump,
-		&class.PaymentNotes)
-	return class, errScan
+		&class.PaymentNotes); err != nil {
+		return domains.Class{}, appErrors.WrapDbExec(err, statement, classId)
+	}
+	return class, nil
 }
 
 func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {

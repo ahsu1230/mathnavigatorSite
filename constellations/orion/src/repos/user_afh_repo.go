@@ -126,20 +126,24 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 	statement := "SELECT * FROM user_afh WHERE user_id=? AND afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.UserAfh{}, appErrors.WrapDbPrepare(err, statement)
+		err = appErrors.WrapDbPrepare(err, statement)
+		return domains.UserAfh{}, err
 	}
 	defer stmt.Close()
 
 	var userAfh domains.UserAfh
 	row := stmt.QueryRow(userId, afhId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&userAfh.Id,
 		&userAfh.CreatedAt,
 		&userAfh.UpdatedAt,
 		&userAfh.DeletedAt,
 		&userAfh.UserId,
-		&userAfh.AfhId)
-	return userAfh, errScan
+		&userAfh.AfhId); err != nil {
+		err = appErrors.WrapDbExec(err, statement, userId, afhId)
+		return domains.UserAfh{}, err
+	}
+	return userAfh, nil
 }
 
 func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {

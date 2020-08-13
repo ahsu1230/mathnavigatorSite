@@ -103,13 +103,14 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.UserClasses{}, appErrors.WrapDbPrepare(err, statement)
+		err = appErrors.WrapDbPrepare(err, statement)
+		return domains.UserClasses{}, err
 	}
 	defer stmt.Close()
 
 	var userClasses domains.UserClasses
 	row := stmt.QueryRow(userId, classId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&userClasses.Id,
 		&userClasses.CreatedAt,
 		&userClasses.UpdatedAt,
@@ -117,8 +118,11 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 		&userClasses.UserId,
 		&userClasses.ClassId,
 		&userClasses.AccountId,
-		&userClasses.State)
-	return userClasses, errScan
+		&userClasses.State); err != nil {
+		err = appErrors.WrapDbExec(err, statement, userId, classId)
+		return domains.UserClasses{}, err
+	}
+	return userClasses, nil
 }
 
 func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {

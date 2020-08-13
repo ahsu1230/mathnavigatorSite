@@ -119,15 +119,17 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 
 	var achieve domains.Achieve
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&achieve.Id,
 		&achieve.CreatedAt,
 		&achieve.UpdatedAt,
 		&achieve.DeletedAt,
 		&achieve.Year,
 		&achieve.Message,
-		&achieve.Position)
-	return achieve, errScan
+		&achieve.Position); err != nil {
+		return domains.Achieve{}, appErrors.WrapDbExec(err, statement, id)
+	}
+	return achieve, nil
 }
 
 func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
