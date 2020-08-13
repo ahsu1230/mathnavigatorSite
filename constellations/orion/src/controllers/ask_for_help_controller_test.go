@@ -20,7 +20,7 @@ var date1 = now.Add(time.Hour * 24 * 30)
 var date2 = now.Add(time.Hour * 24 * 31)
 
 // Test Get All
-func TestGetAllAFH_Success(t *testing.T) {
+func TestGetAllAFHSuccess(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectAll = func() ([]domains.AskForHelp, error) {
 		return []domains.AskForHelp{
 			testUtils.CreateMockAFH(
@@ -73,7 +73,7 @@ func TestGetAllAFH_Success(t *testing.T) {
 }
 
 // Test Get Ask For Help
-func TestGetAFH_Success(t *testing.T) {
+func TestGetAFHSuccess(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
 		askForHelp := testUtils.CreateMockAFH(
 			1,
@@ -105,7 +105,7 @@ func TestGetAFH_Success(t *testing.T) {
 	assert.EqualValues(t, domains.NewNullString("test note"), askForHelp.Notes)
 }
 
-func TestGetAFH_Failure(t *testing.T) {
+func TestGetAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
 		return domains.AskForHelp{}, errors.New("not found")
 	}
@@ -119,7 +119,7 @@ func TestGetAFH_Failure(t *testing.T) {
 }
 
 // Test Create
-func TestCreateAFH_Success(t *testing.T) {
+func TestCreateAFHSuccess(t *testing.T) {
 	testUtils.AskForHelpRepo.MockInsert = func(askForHelp domains.AskForHelp) error {
 		return nil
 	}
@@ -141,7 +141,7 @@ func TestCreateAFH_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateAFH_Failure(t *testing.T) {
+func TestCreateAFHFailure(t *testing.T) {
 	// no mock needed
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -162,7 +162,7 @@ func TestCreateAFH_Failure(t *testing.T) {
 }
 
 // Test Update
-func TestUpdateAFH_Success(t *testing.T) {
+func TestUpdateAFHSuccess(t *testing.T) {
 	testUtils.AskForHelpRepo.MockUpdate = func(id uint, askForHelp domains.AskForHelp) error {
 		return nil // Successful update
 	}
@@ -204,7 +204,7 @@ func TestUpdateAFH_Invalid(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestUpdateAFH_Failure(t *testing.T) {
+func TestUpdateAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockUpdate = func(id uint, askForHelp domains.AskForHelp) error {
 		return errors.New("not found")
 	}
@@ -227,7 +227,7 @@ func TestUpdateAFH_Failure(t *testing.T) {
 }
 
 // Test Delete
-func TestDeleteAFH_Success(t *testing.T) {
+func TestDeleteAFHSuccess(t *testing.T) {
 	testUtils.AskForHelpRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
@@ -240,7 +240,7 @@ func TestDeleteAFH_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestDeleteAFH_Failure(t *testing.T) {
+func TestDeleteAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}

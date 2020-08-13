@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOneSemesterOneProgramOneClass_Success(t *testing.T) {
+func TestOneSemesterOneProgramOneClassSuccess(t *testing.T) {
 	// Mock 1 program, 1 semester, 1 class
 	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
@@ -43,7 +43,7 @@ func TestOneSemesterOneProgramOneClass_Success(t *testing.T) {
 	assert.EqualValues(t, "program1_2020_spring_class1", results[0].ProgramClasses[0].Classes[0].ClassId)
 }
 
-func TestOneSemesterOneProgramOneClass_Failure(t *testing.T) {
+func TestOneSemesterOneProgramOneClassFailure(t *testing.T) {
 	// Mock 1 program, 1 semester, no classes created
 	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
@@ -67,7 +67,7 @@ func TestOneSemesterOneProgramOneClass_Failure(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
+func TestGetClassesAndProgramsBySemesterSuccess(t *testing.T) {
 	// Mock 2 programs, 2 semesters, 2 classes
 	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1, 2), nil
@@ -103,7 +103,7 @@ func TestGetClassesAndProgramsBySemester_Success(t *testing.T) {
 	assert.EqualValues(t, "program2", results[1].ProgramClasses[1].ProgramObj.ProgramId)
 }
 
-func TestProgramWithNoClass_Success(t *testing.T) {
+func TestProgramWithNoClassSuccess(t *testing.T) {
 	// Mock 1 semester, 1 program, 0 class, where program has no class
 	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return createMockPrograms(1), nil
@@ -132,7 +132,7 @@ func TestProgramWithNoClass_Success(t *testing.T) {
 	assert.EqualValues(t, "2020_spring", results[0].Semester.SemesterId)
 }
 
-func TestSemesterWithNoPrograms_Success(t *testing.T) {
+func TestSemesterWithNoProgramsSuccess(t *testing.T) {
 	// Mock one semester with no programs or classes
 	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
 		return []domains.Program{}, nil

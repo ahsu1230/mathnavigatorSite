@@ -17,7 +17,7 @@ import (
 //
 // Test Get All
 //
-func TestGetAllAchievements_Success(t *testing.T) {
+func TestGetAllAchievementsSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectAll = func() ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			testUtils.CreateMockAchievement(1, 2020, "message1"),
@@ -47,7 +47,7 @@ func TestGetAllAchievements_Success(t *testing.T) {
 //
 // Test Get All Grouped By Year
 //
-func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
+func TestGetAllAchievementsGroupedByYearSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
 		return []domains.AchieveYearGroup{
 			{
@@ -87,7 +87,7 @@ func TestGetAllAchievementsGroupedByYear_Success(t *testing.T) {
 //
 // Test Get Achievement
 //
-func TestGetAchievement_Success(t *testing.T) {
+func TestGetAchievementSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
 		achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 		return achieve, nil
@@ -108,7 +108,7 @@ func TestGetAchievement_Success(t *testing.T) {
 	assert.EqualValues(t, "message1", achieve.Message)
 }
 
-func TestGetAchievement_Failure(t *testing.T) {
+func TestGetAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
 		return domains.Achieve{}, errors.New("not found")
 	}
@@ -124,7 +124,7 @@ func TestGetAchievement_Failure(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateAchievement_Success(t *testing.T) {
+func TestCreateAchievementSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockInsert = func(achieve domains.Achieve) error {
 		return nil
 	}
@@ -139,7 +139,7 @@ func TestCreateAchievement_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateAchievement_Failure(t *testing.T) {
+func TestCreateAchievementFailure(t *testing.T) {
 	// no mock needed
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
@@ -155,7 +155,7 @@ func TestCreateAchievement_Failure(t *testing.T) {
 //
 // Test Update
 //
-func TestUpdateAchievement_Success(t *testing.T) {
+func TestUpdateAchievementSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockUpdate = func(id uint, achieve domains.Achieve) error {
 		return nil // Successful update
 	}
@@ -183,7 +183,7 @@ func TestUpdateAchievement_Invalid(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestUpdateAchievement_Failure(t *testing.T) {
+func TestUpdateAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockUpdate = func(id uint, achieve domains.Achieve) error {
 		return errors.New("not found")
 	}
@@ -201,7 +201,7 @@ func TestUpdateAchievement_Failure(t *testing.T) {
 //
 // Test Delete
 //
-func TestDeleteAchievement_Success(t *testing.T) {
+func TestDeleteAchievementSuccess(t *testing.T) {
 	testUtils.AchieveRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
@@ -214,7 +214,7 @@ func TestDeleteAchievement_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestDeleteAchievement_Failure(t *testing.T) {
+func TestDeleteAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}

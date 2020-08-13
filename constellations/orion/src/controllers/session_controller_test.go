@@ -18,7 +18,7 @@ import (
 //
 // Test Get All
 //
-func TestGetAllSessionsByClassId_Success(t *testing.T) {
+func TestGetAllSessionsByClassIdSuccess(t *testing.T) {
 	now := time.Now().UTC()
 	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string) ([]domains.Session, error) {
 		return []domains.Session{
@@ -61,7 +61,7 @@ func TestGetAllSessionsByClassId_Success(t *testing.T) {
 //
 // Test Get Session
 //
-func TestGetSession_Success(t *testing.T) {
+func TestGetSessionSuccess(t *testing.T) {
 	now := time.Now().UTC()
 	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
 		session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
@@ -82,7 +82,7 @@ func TestGetSession_Success(t *testing.T) {
 	assert.EqualValues(t, "id_1", session.ClassId)
 }
 
-func TestGetSession_Failure(t *testing.T) {
+func TestGetSessionFailure(t *testing.T) {
 	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
 		return domains.Session{}, errors.New("Not Found")
 	}
@@ -98,7 +98,7 @@ func TestGetSession_Failure(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateSessions_Success(t *testing.T) {
+func TestCreateSessionsSuccess(t *testing.T) {
 	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
 		return nil
 	}
@@ -115,7 +115,7 @@ func TestCreateSessions_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateSessions_Failure(t *testing.T) {
+func TestCreateSessionsFailure(t *testing.T) {
 	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
 		return errors.New("invalid notes")
 	}
@@ -135,7 +135,7 @@ func TestCreateSessions_Failure(t *testing.T) {
 //
 // Test Update
 //
-func TestUpdateSession_Success(t *testing.T) {
+func TestUpdateSessionSuccess(t *testing.T) {
 	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
 		return nil // Successful update
 	}
@@ -165,7 +165,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestUpdateSession_Failure(t *testing.T) {
+func TestUpdateSessionFailure(t *testing.T) {
 	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
 		return errors.New("not found")
 	}
@@ -184,7 +184,7 @@ func TestUpdateSession_Failure(t *testing.T) {
 //
 // Test Delete
 //
-func TestDeleteSessions_Success(t *testing.T) {
+func TestDeleteSessionsSuccess(t *testing.T) {
 	testUtils.SessionRepo.MockDelete = func(ids []uint) error {
 		return nil // Return no error, successful delete!
 	}
@@ -203,7 +203,7 @@ func TestDeleteSessions_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestDeleteSessions_Failure(t *testing.T) {
+func TestDeleteSessionsFailure(t *testing.T) {
 	testUtils.SessionRepo.MockDelete = func(id []uint) error {
 		return errors.New("not found")
 	}

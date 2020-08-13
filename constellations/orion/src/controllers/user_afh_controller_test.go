@@ -15,7 +15,7 @@ import (
 )
 
 // Test Get UserAfh By UserId
-func TestGetUserAfhByUserId_Success(t *testing.T) {
+func TestGetUserAfhByUserIdSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
 			testUtils.CreateMockUserAfh(2, 3),
@@ -39,7 +39,7 @@ func TestGetUserAfhByUserId_Success(t *testing.T) {
 	assert.EqualValues(t, 4, userAfh[1].AfhId)
 }
 
-func TestGetUserAfhByUserId_Failure(t *testing.T) {
+func TestGetUserAfhByUserIdFailure(t *testing.T) {
 	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{}, errors.New("Not Found")
 	}
@@ -53,7 +53,7 @@ func TestGetUserAfhByUserId_Failure(t *testing.T) {
 }
 
 // Test Get UserAfh By AfhId
-func TestGetUserAfhByAfhId_Success(t *testing.T) {
+func TestGetUserAfhByAfhIdSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
 			testUtils.CreateMockUserAfh(2, 4),
@@ -77,7 +77,7 @@ func TestGetUserAfhByAfhId_Success(t *testing.T) {
 	assert.EqualValues(t, 4, userAfh[1].AfhId)
 }
 
-func TestGetUserAfhByAfhId_Failure(t *testing.T) {
+func TestGetUserAfhByAfhIdFailure(t *testing.T) {
 	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{}, errors.New("Not Found")
 	}
@@ -91,7 +91,7 @@ func TestGetUserAfhByAfhId_Failure(t *testing.T) {
 }
 
 // Test Get UserAfh by UserId and AfhId
-func TestGetUserAfhByBothIds_Success(t *testing.T) {
+func TestGetUserAfhByBothIdsSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockSelectByBothIds = func(userId, afhId uint) (domains.UserAfh, error) {
 		userAfh := testUtils.CreateMockUserAfh(2, 3)
 		return userAfh, nil
@@ -110,7 +110,7 @@ func TestGetUserAfhByBothIds_Success(t *testing.T) {
 }
 
 // Test Create
-func TestCreateUserAfh_Success(t *testing.T) {
+func TestCreateUserAfhSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockInsert = func(userAfh domains.UserAfh) error {
 		return nil
 	}
@@ -134,7 +134,7 @@ func createBodyFromUserAfh(userAfh domains.UserAfh) io.Reader {
 }
 
 // Test Update
-func TestUpdateUserAfh_Success(t *testing.T) {
+func TestUpdateUserAfhSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
 		return nil // Successful update
 	}
@@ -149,7 +149,7 @@ func TestUpdateUserAfh_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUserAfh_Failure(t *testing.T) {
+func TestUpdateUserAfhFailure(t *testing.T) {
 	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
 		return errors.New("not found")
 	}
@@ -165,7 +165,7 @@ func TestUpdateUserAfh_Failure(t *testing.T) {
 }
 
 // Test Delete
-func TestDeleteUserAfh_Success(t *testing.T) {
+func TestDeleteUserAfhSuccess(t *testing.T) {
 	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
@@ -178,7 +178,7 @@ func TestDeleteUserAfh_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestDeleteUserAfh_Failure(t *testing.T) {
+func TestDeleteUserAfhFailure(t *testing.T) {
 	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
 		return errors.New("not found")
 	}

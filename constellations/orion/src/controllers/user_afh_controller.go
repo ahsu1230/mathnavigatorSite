@@ -80,7 +80,7 @@ func UpdateUserAfh(c *gin.Context) {
 
 func DeleteUserAfh(c *gin.Context) {
 	// Incoming Parameters
-	id, _ := utils.ParseParamId(c, "Id")
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.UserAfhRepo.Delete(id)
 	if err != nil {
