@@ -11,7 +11,7 @@
         border-bottom: 1px solid $colorGrayLight
 
         & div
-            padding: $spacing2x
+            padding: $spacing2x 0
             flex-grow: 1
             border-bottom: 2px solid transparent
             text-align: center
@@ -29,7 +29,7 @@
             margin: $spacing6x 0 $spacing10x
 
 
-    @media screen and (min-width: $mediaWidth2)
+    @media screen and (min-width: $mediaWidth3)
         .tab-content
             ul
                 display: flex
@@ -62,7 +62,7 @@
                 width: 60%
 
 
-    @media screen and (max-width: $mediaWidth2)
+    @media screen and (max-width: $mediaWidth1)
         h2
             margin-bottom: $spacing2x
 
@@ -106,16 +106,22 @@
                     font-weight: bold
 
         .tab-content#reg-tab-all
-            h2
-                margin: 0
+            div.space-between
+                flex-direction: column
+                align-content: center
 
             ul
+                padding: $spacing1x 0
+
                 li:first-child
                     width: 100%
-                    padding-bottom: 0
 
-                li:nth-child(2)
+                .li-large
                     flex: 1
+
+                li:last-child
+                    max-width: 40%
+                    text-align: right
 
 
         .tab-content#settings-tab
@@ -129,6 +135,95 @@
 
             .password-buttons
                 justify-content: space-around
+
+        ul.hide-mobile
+            display: none
+
+        .vertical-mobile
+            display: flex
+            flex-direction: column
+
+
+    @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+        h2
+            margin-bottom: $spacing2x
+
+        .tab-content
+            ul
+                display: flex
+                flex-direction: row
+                flex-wrap: wrap
+                border-bottom: 1px solid $colorWhiteLight
+                text-align: left
+
+                li
+                    padding: $spacing1x 0
+
+        .tab-content#payment-tab
+            ul
+                li:first-child
+                    width: 100%
+                    padding-bottom: 0
+                li
+                    width: calc(100% / 3)
+
+        .tab-content#reg-tab-main
+            ul
+                li
+                    width: 50%
+
+                    .classList-item
+                        display: flex
+                        flex-direction: column
+                        align-items: baseline
+                        padding-bottom: $spacing1x
+
+                        span:last-child
+                            color: #888888
+
+            ul.afh-table
+                .li-large
+                    flex: 1
+                    padding-left: 50%
+
+        .tab-content#reg-tab-all
+            div.space-between
+                align-items: center
+
+                h2
+                    margin: 0
+
+            ul
+                padding: $spacing1x 0
+
+                li:first-child
+                    width: 100%
+
+                .li-large
+                    flex: 1
+
+                li:last-child
+                    max-width: 40%
+                    text-align: right
+
+
+        .tab-content#settings-tab
+            ul
+                .li-med
+                    width: 50%
+                .li-large
+                    flex: 1
+
+            ul.users-table
+                li:last-child
+                    padding-left: 50%
+
+            input
+                width: calc(100% - 16px)
+                /* not a great solution for overflowing padding, but it works */
+
+            .password-buttons
+                justify-content: space-between
 
         ul.hide-mobile
             display: none

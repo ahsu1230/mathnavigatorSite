@@ -267,7 +267,7 @@ class SettingsTab extends React.Component {
             otherInfo = renderMultiline(otherInfo);
 
             return (
-                <ul key={index}>
+                <ul key={index} className="users-table">
                     <li className="li-med">
                         {user.firstName + " " + user.lastName}
                     </li>
@@ -493,7 +493,7 @@ class RegistrationsTabMain extends React.Component {
             ]);
 
             return (
-                <ul key={index} className="three-columns">
+                <ul key={index} className="afh-table three-columns">
                     <li className="li-med">{titleInfo}</li>
                     <li className="li-med">{dateInfo}</li>
                     <li className="li-large">{locInfo}</li>
