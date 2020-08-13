@@ -3,8 +3,10 @@ package repos
 import (
 	"database/sql"
 	"fmt"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+
 	"strings"
 	"time"
 )
@@ -30,26 +32,30 @@ type UserRepoInterface interface {
 }
 
 func (ur *userRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize UserRepo", logger.Fields{})
 	ur.db = db
 }
-
-//TODO
 
 func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
 	lcSearch := strings.ToLower(search)
-	query := fmt.Sprintf("SELECT * FROM users WHERE LOWER(`first_name`) LIKE '%%%s%%' OR LOWER(`middle_name`) LIKE '%%%s%%' OR LOWER(`last_name`) LIKE '%%%s%%' OR LOWER(`email`) LIKE '%%%s%%'", lcSearch, lcSearch, lcSearch, lcSearch)
+	query := fmt.Sprintf("SELECT * FROM users WHERE LOWER(`first_name`) "+
+		"LIKE '%%%s%%' OR "+
+		"LOWER(`middle_name`) LIKE '%%%s%%' OR "+
+		"LOWER(`last_name`) LIKE '%%%s%%' OR "+
+		"LOWER(`email`) LIKE '%%%s%%'",
+		lcSearch, lcSearch, lcSearch, lcSearch)
 
 	stmt, err := ur.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query, search)
 	}
 	defer rows.Close()
 
@@ -90,7 +96,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 	}
 	stmt, err := ur.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 
@@ -101,7 +107,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 		rows, err = stmt.Query(search, pageSize, offset)
 	}
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query, search, pageSize, offset)
 	}
 	defer rows.Close()
 
@@ -133,7 +139,7 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 	statement := "SELECT * FROM users WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.User{}, err
+		return domains.User{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -160,14 +166,15 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	results := make([]domains.User, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE account_id=?")
+	query := "SELECT * FROM users WHERE account_id=?"
+	stmt, err := ur.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query, accountId)
 	}
 	defer rows.Close()
 
@@ -213,7 +220,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -233,9 +240,9 @@ func (ur *userRepo) Insert(user domains.User) error {
 		user.GraduationYear,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, user)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "user was not inserted")
 }
 
 func (ur *userRepo) Update(id uint, user domains.User) error {
@@ -254,7 +261,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -273,24 +280,24 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 		user.GraduationYear,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id, user)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "user was not updated")
 }
 
 func (ur *userRepo) Delete(id uint) error {
 	statement := "DELETE FROM users WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "user was not deleted")
 }
 
 // For Tests Only

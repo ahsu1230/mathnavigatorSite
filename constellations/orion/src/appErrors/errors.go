@@ -29,6 +29,10 @@ var ERR_JSON_BIND_BODY = errors.New("JSON_BIND_BODY_ERROR")
 
 // Repo errors
 // These errors indicate that there could be a problem with the Go code in Repo
+var ERR_REPO_TX_BEGIN = errors.New("REPO_TX_BEGIN_ERROR")
+var ERR_REPO_TX_COMMIT = errors.New("REPO_TX_COMMIT_ERROR")
+var ERR_REPO_TX_ROLLBACK = errors.New("REPO_TX_ROLLBACK_ERROR")
+
 var ERR_REPO_PREPARE = errors.New("REPO_PREPARE_ERROR")
 var ERR_REPO_QUERY = errors.New("REPO_QUERY_ERROR")
 var ERR_REPO_EXEC = errors.New("REPO_EXEC_ERROR")
@@ -70,6 +74,18 @@ func WrapParse(e error, v interface{}) error {
 	return errors.Wrapf(ERR_PARSE, "Error (%v) parsing parameter (%v)", e, v)
 }
 
+func WrapDbTxBegin(e error) error {
+	return errors.Wrapf(ERR_REPO_TX_BEGIN, "Error (%v) starting a transaction", e)
+}
+
+func WrapDbTxCommit(e error) error {
+	return errors.Wrapf(ERR_REPO_TX_COMMIT, "Error (%v) commiting a transaction", e)
+}
+
+func WrapDbTxRollback(e error) error {
+	return errors.Wrapf(ERR_REPO_TX_ROLLBACK, "Error (%v) rolling back a transaction", e)
+}
+
 func WrapDbPrepare(e error, statement string) error {
 	return errors.Wrapf(
 		ERR_REPO_PREPARE,
@@ -80,6 +96,35 @@ func WrapDbPrepare(e error, statement string) error {
 }
 
 func WrapDbQuery(e error, statement string, v ...interface{}) error {
+	return wrapDbErrorHelper(ERR_REPO_QUERY, "querying SQL statement", e, statement, v)
+}
+
+func WrapDbExec(e error, statement string, v ...interface{}) error {
+	return wrapDbErrorHelper(ERR_REPO_EXEC, "executing SQL statement", e, statement, v)
+}
+
+func wrapDbErrorHelper(
+	parentError error,
+	verb string,
+	originalErr error,
+	statement string,
+	v ...interface{}) error {
+
+	if err, found := checkSqlError(originalErr, statement, v); found {
+		return err
+	}
+
+	return errors.Wrapf(
+		parentError,
+		"Error (%v) %s (%s) with args (%v)",
+		originalErr,
+		verb,
+		statement,
+		v,
+	)
+}
+
+func checkSqlError(e error, statement string, v ...interface{}) (error, bool) {
 	if errors.Is(e, sql.ErrNoRows) {
 		return errors.Wrapf(
 			ERR_SQL_NO_ROWS,
@@ -87,29 +132,20 @@ func WrapDbQuery(e error, statement string, v ...interface{}) error {
 			e,
 			statement,
 			v,
-		)
+		), true
+	} else if errors.Is(e, sql.ErrTxDone) {
+		return errors.Wrapf(
+			ERR_SQL_TX_DONE,
+			"Attempted to operate (%s) when SQL transaction has already been committed or rolled back. (%v)",
+			statement,
+			e,
+		), true
+	} else {
+		return nil, false
 	}
-
-	return errors.Wrapf(
-		ERR_REPO_QUERY,
-		"Error (%v) querying SQL statement (%s) with args (%v)",
-		e,
-		statement,
-		v,
-	)
 }
 
-func WrapDbExec(e error, statement string, v ...interface{}) error {
-	return errors.Wrapf(
-		ERR_REPO_EXEC,
-		"Error (%v) executing SQL statement (%s) with args (%v)",
-		e,
-		statement,
-		v,
-	)
-}
-
-func HandleDbResult(result sql.Result, expected int64, message string) error {
+func ValidateDbResult(result sql.Result, expected int64, message string) error {
 	numAffected, err := result.RowsAffected()
 	if err != nil {
 		return errors.Wrapf(
@@ -128,55 +164,8 @@ func HandleDbResult(result sql.Result, expected int64, message string) error {
 
 func WrapRepo(err error) error {
 	// TODO: do we want to wrap repo errors?
-	// Errors are usually caught from Prepare, Query, Exec
+	// Errors are usually caught from Prepare, Query, Exec, and ValidateDbResult
 	return err
-
-	// // if errors.Is(err, sql.ErrNoRows) {
-	// if sql.ErrNoRows == err {
-	// 	return errors.Wrapf(
-	// 		ERR_SQL_NO_ROWS,
-	// 		"SQL Query resulted in no rows (%v)",
-	// 		err,
-	// 	)
-	// } else if errors.Is(err, sql.ErrConnDone) {
-	// 	return errors.Wrapf(
-	// 		ERR_SQL_CONN_DONE,
-	// 		"Attempted to execute SQL but connection has already closed (%v)",
-	// 		err,
-	// 	)
-	// } else if errors.Is(err, sql.ErrTxDone) {
-	// 	return errors.Wrapf(
-	// 		ERR_SQL_TX_DONE,
-	// 		"Attempted to execute SQL operation within a transaction that has already been committed or rolled back (%v)",
-	// 		err,
-	// 	)
-	// }
-
-	// // Attempt to parse as MySQL Error
-	// me, ok := err.(*mysql.MySQLError)
-	// if !ok {
-	// 	// If not a MySQL Error, return as a generic repo error
-	// 	return errors.Wrapf(ERR_REPO, "Error running Repo function (%v)", err)
-	// }
-
-	// var mysqlErr error
-	// switch me.Number {
-	// 	case 1062:
-	// 		mysqlErr = errors.Wrapf(
-	// 			ERR_MYSQL_DUPLICATE_ENTRY,
-	// 			"MySQL Duplicate Entry error %d (%v)",
-	// 			me.Number,
-	// 			err,
-	// 		)
-	// 	default:
-	// 		mysqlErr = errors.Wrapf(
-	// 			ERR_MYSQL_UNKNOWN,
-	// 			"Unknown MySQL error %d (%v)",
-	// 			me.Number,
-	// 			err,
-	// 		)
-	// }
-	// return mysqlErr
 }
 
 // For testing purposes only

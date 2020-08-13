@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global Variable
@@ -27,20 +28,22 @@ type TransactionRepoInterface interface {
 }
 
 func (tr *transactionRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize TransactionRepo", logger.Fields{})
 	tr.db = db
 }
 
 func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transaction, error) {
 	results := make([]domains.Transaction, 0)
 
-	stmt, err := tr.db.Prepare("SELECT * FROM transactions WHERE account_id=?")
+	statement := "SELECT * FROM transactions WHERE account_id=?"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, accountId)
 	}
 	defer rows.Close()
 
@@ -67,7 +70,7 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 	statement := "SELECT * FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return domains.Transaction{}, err
+		return domains.Transaction{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -86,16 +89,17 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 }
 
 func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
-	stmt, err := tr.db.Prepare("INSERT INTO transactions (" +
+	statement := "INSERT INTO transactions (" +
 		"created_at, " +
 		"updated_at, " +
 		"amount, " +
 		"payment_type, " +
 		"payment_notes, " +
 		"account_id " +
-		") VALUES (?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?)"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -108,21 +112,22 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 		transaction.PaymentNotes,
 		transaction.AccountId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, transaction)
 	}
-	return utils.HandleSqlExecResult(result, 1, "transaction was not inserted")
+	return appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
 }
 
 func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) error {
-	stmt, err := tr.db.Prepare("UPDATE transactions SET " +
+	statement := "UPDATE transactions SET " +
 		"updated_at=?, " +
 		"amount=?, " +
 		"payment_type=?, " +
 		"payment_notes=?, " +
 		"account_id=? " +
-		"WHERE id=?")
+		"WHERE id=?"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -135,24 +140,24 @@ func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) erro
 		transaction.AccountId,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, transaction, id)
 	}
-	return utils.HandleSqlExecResult(result, 1, "transaction was not updated")
+	return appErrors.ValidateDbResult(result, 1, "transaction was not updated")
 }
 
 func (tr *transactionRepo) Delete(id uint) error {
 	statement := "DELETE FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "transaction was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "transaction was not deleted")
 }
 
 func CreateTestTransactionRepo(db *sql.DB) TransactionRepoInterface {

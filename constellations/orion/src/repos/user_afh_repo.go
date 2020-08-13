@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -28,6 +29,7 @@ type UserAfhRepoInterface interface {
 }
 
 func (ur *userAfhRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize UserAfhRepo", logger.Fields{})
 	ur.db = db
 }
 
@@ -41,7 +43,7 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -53,9 +55,9 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 		userAfh.AfhId,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userAfh.UserId, userAfh.AfhId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "userAfh was not inserted")
 }
 
 func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
@@ -64,12 +66,12 @@ func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
 	statement := "SELECT * FROM user_afh WHERE user_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(userId)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, userId)
 	}
 	defer rows.Close()
 
@@ -95,7 +97,7 @@ func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
 	statement := "SELECT * FROM user_afh WHERE afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(afhId)
@@ -124,7 +126,7 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 	statement := "SELECT * FROM user_afh WHERE user_id=? AND afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.UserAfh{}, err
+		return domains.UserAfh{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -148,7 +150,7 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -160,24 +162,24 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 		id,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userAfh.UserId, userAfh.AfhId, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "userAfh was not updated")
 }
 
 func (ur *userAfhRepo) Delete(id uint) error {
 	statement := "DELETE FROM user_afh WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "userAfh was not deleted")
 }
 
 // For Tests Only

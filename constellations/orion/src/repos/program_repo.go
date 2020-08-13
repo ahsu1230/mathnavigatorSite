@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -27,6 +28,7 @@ type ProgramRepoInterface interface {
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize ProgramRepo", logger.Fields{})
 	pr.db = db
 }
 
@@ -34,15 +36,14 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
-
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -70,7 +71,7 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 	statement := "SELECT * FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return domains.Program{}, err
+		return domains.Program{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -101,10 +102,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		"description, " +
 		"featured" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -119,9 +119,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Description,
 		program.Featured)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, program)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
@@ -136,7 +136,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -151,24 +151,24 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		program.Featured,
 		programId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, program, programId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not updated")
 }
 
 func (pr *programRepo) Delete(programId string) error {
 	statement := "DELETE FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(programId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, programId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not deleted")
 }
 
 // For Tests Only

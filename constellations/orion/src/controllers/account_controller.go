@@ -20,8 +20,7 @@ func GetAccountById(c *gin.Context) {
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		err = appErrors.WrapParse(err, c.Param("id"))
-		c.Error(err)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
 		c.Abort()
 		return
 	}
@@ -40,8 +39,7 @@ func SearchAccount(c *gin.Context) {
 
 	var body AccountSearchBody
 	if err := c.ShouldBindJSON(&body); err != nil {
-		err = appErrors.WrapBindJSON(err, c.Request)
-		c.Error(err)
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
 	}
@@ -61,22 +59,19 @@ func CreateAccount(c *gin.Context) {
 
 	var accountJson domains.Account
 	if err := c.BindJSON(&accountJson); err != nil {
-		err = appErrors.WrapBindJSON(err, c.Request)
-		c.Error(err)
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
 	}
 
 	if err := accountJson.Validate(); err != nil {
-		err = appErrors.WrapInvalidDomain(err, "Invalid Account")
-		c.Error(err)
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Account"))
 		c.Abort()
 		return
 	}
 
 	if err := repos.AccountRepo.Insert(accountJson); err != nil {
-		err = appErrors.WrapRepo(err)
-		c.Error(err)
+		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
@@ -88,30 +83,26 @@ func UpdateAccount(c *gin.Context) {
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		err = appErrors.WrapParse(err, c.Param("id"))
-		c.Error(err)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
 		c.Abort()
 		return
 	}
 
 	var accountJson domains.Account
 	if err = c.BindJSON(&accountJson); err != nil {
-		err = appErrors.WrapBindJSON(err, c.Request)
-		c.Error(err)
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
 	}
 
 	if err = accountJson.Validate(); err != nil {
-		err = appErrors.WrapInvalidDomain(err, "Invalid Account")
-		c.Error(err)
+		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Account"))
 		c.Abort()
 		return
 	}
 
 	if err = repos.AccountRepo.Update(id, accountJson); err != nil {
-		err = appErrors.WrapRepo(err)
-		c.Error(err)
+		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
@@ -123,15 +114,13 @@ func DeleteAccount(c *gin.Context) {
 
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		err = appErrors.WrapParse(err, c.Param("id"))
-		c.Error(err)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
 		c.Abort()
 		return
 	}
 
 	if err := repos.AccountRepo.Delete(id); err != nil {
-		err = appErrors.WrapRepo(err)
-		c.Error(err)
+		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}

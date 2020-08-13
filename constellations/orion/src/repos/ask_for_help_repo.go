@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -27,20 +28,22 @@ type AskForHelpRepoInterface interface {
 }
 
 func (ar *askForHelpRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize AFHRepo", logger.Fields{})
 	ar.db = db
 }
 
 func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
 	results := make([]domains.AskForHelp, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM ask_for_help")
+	statement := "SELECT * FROM ask_for_help"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -69,7 +72,7 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 	statement := "SELECT * FROM ask_for_help WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return domains.AskForHelp{}, err
+		return domains.AskForHelp{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -90,7 +93,7 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 }
 
 func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
-	stmt, err := ar.db.Prepare("INSERT INTO ask_for_help (" +
+	statement := "INSERT INTO ask_for_help (" +
 		"created_at, " +
 		"updated_at, " +
 		"title, " +
@@ -99,9 +102,10 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 		"subject, " +
 		"location_id, " +
 		"notes" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -116,13 +120,13 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 		askForHelp.LocationId,
 		askForHelp.Notes)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, askForHelp)
 	}
-	return utils.HandleSqlExecResult(result, 1, "ask for help was not inserted")
+	return appErrors.ValidateDbResult(result, 1, "ask for help was not inserted")
 }
 
 func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
-	stmt, err := ar.db.Prepare("UPDATE ask_for_help SET " +
+	statement := "UPDATE ask_for_help SET " +
 		"updated_at=?, " +
 		"id=?, " +
 		"title=?, " +
@@ -131,9 +135,10 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 		"subject=?, " +
 		"location_id=?, " +
 		"notes=? " +
-		"WHERE id=?")
+		"WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -149,24 +154,24 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 		askForHelp.Notes,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, askForHelp)
 	}
-	return utils.HandleSqlExecResult(result, 1, "ask for help was not updated")
+	return appErrors.ValidateDbResult(result, 1, "ask for help was not updated")
 }
 
 func (ar *askForHelpRepo) Delete(id uint) error {
 	statement := "DELETE FROM ask_for_help WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "ask for help was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "ask for help was not deleted")
 }
 func CreateTestAFHRepo(db *sql.DB) AskForHelpRepoInterface {
 	ar := &askForHelpRepo{}

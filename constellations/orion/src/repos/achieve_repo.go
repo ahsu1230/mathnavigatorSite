@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -28,6 +29,7 @@ type AchieveRepoInterface interface {
 }
 
 func (ar *achieveRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize AchieveRepo", logger.Fields{})
 	ar.db = db
 }
 
@@ -38,12 +40,12 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 
 	stmt, err := ar.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query, nil)
 	}
 	defer rows.Close()
 
@@ -67,14 +69,15 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
 	results := make([]domains.AchieveYearGroup, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM achievements ORDER BY year DESC, position ASC")
+	statement := "SELECT * FROM achievements ORDER BY year DESC, position ASC"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -110,7 +113,7 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	statement := "SELECT * FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return domains.Achieve{}, err
+		return domains.Achieve{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -138,7 +141,7 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -150,9 +153,9 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 		achieve.Message,
 		achieve.Position)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, achieve)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "achievement was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "achievement was not inserted")
 }
 
 func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
@@ -164,7 +167,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		"WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -176,24 +179,24 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 		achieve.Position,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id, achieve)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "achievement was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "achievement was not updated")
 }
 
 func (ar *achieveRepo) Delete(id uint) error {
 	statement := "DELETE FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "achievement was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "achievement was not deleted")
 }
 
 // For Tests Only

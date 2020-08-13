@@ -2,11 +2,11 @@ package repos
 
 import (
 	"database/sql"
-	"errors"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -28,11 +28,12 @@ type ClassRepoInterface interface {
 	SelectByProgramAndSemesterId(string, string) ([]domains.Class, error)
 	Insert(domains.Class) error
 	Update(string, domains.Class) error
-	Publish([]string) error
+	Publish([]string) []error
 	Delete(string) error
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize ClassRepo", logger.Fields{})
 	cr.db = db
 }
 
@@ -47,12 +48,12 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 	}
 	stmt, err := cr.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query)
 	}
 	defer rows.Close()
 
@@ -85,14 +86,15 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
-	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE published_at IS NULL")
+	statement := "SELECT * FROM classes WHERE published_at IS NULL"
+	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -126,7 +128,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 	statement := "SELECT * FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return domains.Class{}, err
+		return domains.Class{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -155,14 +157,15 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
-	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE program_id=?")
+	statement := "SELECT * FROM classes WHERE program_id=?"
+	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(programId)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, programId)
 	}
 	defer rows.Close()
 
@@ -195,14 +198,15 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
-	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE semester_id=?")
+	statement := "SELECT * FROM classes WHERE semester_id=?"
+	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(semesterId)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, semesterId)
 	}
 	defer rows.Close()
 
@@ -235,14 +239,15 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
 	results := make([]domains.Class, 0)
 
-	stmt, err := cr.db.Prepare("SELECT * FROM classes WHERE program_id=? AND semester_id=?")
+	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=?"
+	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(programId, semesterId)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, semesterId)
 	}
 	defer rows.Close()
 
@@ -288,10 +293,9 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"price_lump, " +
 		"payment_notes " +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -312,9 +316,9 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		class.PaymentNotes,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, class)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "class was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "class was not inserted")
 }
 
 func (cr *classRepo) Update(classId string, class domains.Class) error {
@@ -334,7 +338,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -354,52 +358,57 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		class.PaymentNotes,
 		classId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, class, classId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "class was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "class was not updated")
 }
 
-func (cr *classRepo) Publish(classIds []string) error {
-	var errorString string
-
+func (cr *classRepo) Publish(classIds []string) []error {
 	tx, err := cr.db.Begin()
 	if err != nil {
-		return err
+		return []error{appErrors.WrapDbTxBegin(err)}
 	}
-	stmt, err := tx.Prepare("UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL")
+	statement := "UPDATE classes SET published_at=? WHERE class_id=? AND published_at IS NULL"
+	stmt, err := tx.Prepare(statement)
 	if err != nil {
-		return err
+		return []error{appErrors.WrapDbPrepare(err, statement)}
 	}
 	defer stmt.Close()
 
+	var errorList []error
 	now := time.Now().UTC()
 	for _, classId := range classIds {
-		_, err := stmt.Exec(now, classId)
+		result, err := stmt.Exec(now, classId)
 		if err != nil {
-			errorString = utils.AppendError(errorString, classId, err)
+			err = appErrors.WrapDbExec(err, statement, classId)
+			errorList = append(errorList, err)
+			continue
+		}
+		if err = appErrors.ValidateDbResult(result, 1, "class was not inserted"); err != nil {
+			errorList = append(errorList, err)
 		}
 	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
 
-	if len(errorString) == 0 {
-		return nil
+	if err = tx.Commit(); err != nil {
+		// TODO: Commit failed, need to rollback?
+		return append(errorList, appErrors.WrapDbTxCommit(err))
 	}
-	return errors.New(errorString)
+	return errorList
 }
 
 func (cr *classRepo) Delete(classId string) error {
 	statement := "DELETE FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(classId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, classId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "class was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "class was not deleted")
 }
 
 // For Tests Only

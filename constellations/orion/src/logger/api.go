@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 	"os"
 )
 
@@ -12,6 +13,10 @@ type Fields = log.Fields
 
 var standardFields = Fields{
 	"app": "orion",
+}
+
+func SetupDisabled() {
+	log.SetOutput(ioutil.Discard)
 }
 
 func SetupTest() {

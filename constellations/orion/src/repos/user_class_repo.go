@@ -2,8 +2,10 @@ package repos
 
 import (
 	"database/sql"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+
 	"time"
 )
 
@@ -27,20 +29,22 @@ type UserClassesRepoInterface interface {
 }
 
 func (ur *userClassesRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize UserClassRepo", logger.Fields{})
 	ur.db = db
 }
 
 func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
 	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE class_id=?")
+	statement := "SELECT * FROM user_classes WHERE class_id=?"
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullString(classId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, classId)
 	}
 	defer rows.Close()
 
@@ -65,14 +69,15 @@ func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasse
 func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, error) {
 	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE user_id=?")
+	statement := "SELECT * FROM user_classes WHERE user_id=?"
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullUint(userId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, userId)
 	}
 	defer rows.Close()
 
@@ -98,7 +103,7 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return domains.UserClasses{}, err
+		return domains.UserClasses{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -128,7 +133,7 @@ func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -142,9 +147,9 @@ func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
 		userClasses.State,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userClasses)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
 }
 
 func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
@@ -157,7 +162,7 @@ func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) erro
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -170,24 +175,24 @@ func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) erro
 		userClasses.State,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userClasses, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not updated")
 }
 
 func (ur *userClassesRepo) Delete(id uint) error {
 	statement := "DELETE FROM user_classes WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not deleted")
 }
 
 // For Tests Only

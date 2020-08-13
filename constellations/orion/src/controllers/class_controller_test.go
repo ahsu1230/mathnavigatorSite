@@ -247,7 +247,7 @@ func TestUpdateClassFailure(t *testing.T) {
 // Test Publish
 //
 func TestPublishClassesSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockPublish = func(classIds []string) error {
+	testUtils.ClassRepo.MockPublish = func(classIds []string) []error {
 		return nil // Return no error, successful publish!
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -256,7 +256,7 @@ func TestPublishClassesSuccess(t *testing.T) {
 	classIds := []string{"program1_2020_spring_class1"}
 	marshal, err := json.Marshal(classIds)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/publish", bytes.NewBuffer(marshal))
 
@@ -265,8 +265,8 @@ func TestPublishClassesSuccess(t *testing.T) {
 }
 
 func TestPublishClassesFailure(t *testing.T) {
-	testUtils.ClassRepo.MockPublish = func(classIds []string) error {
-		return errors.New("not found")
+	testUtils.ClassRepo.MockPublish = func(classIds []string) []error {
+		return []error{errors.New("not found")}
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 

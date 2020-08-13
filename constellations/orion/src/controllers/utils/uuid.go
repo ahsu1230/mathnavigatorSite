@@ -11,7 +11,7 @@ func LogControllerMethod(c *gin.Context, label string) (uuid.UUID, bool) {
 	v, ok := c.Get("requestUuid")
 	if ok {
 		requestUuid := v.(uuid.UUID)
-		logger.Info(label, logger.Fields{
+		logger.Debug(label, logger.Fields{
 			"requestUuid": requestUuid,
 		})
 		return requestUuid, true

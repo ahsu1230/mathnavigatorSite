@@ -41,14 +41,15 @@ func CreateSessions(c *gin.Context) {
 	var sessionsJson []domains.Session
 	c.BindJSON(&sessionsJson)
 
-	err := repos.SessionRepo.Insert(sessionsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	errs := repos.SessionRepo.Insert(sessionsJson)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusOK)
 }
 
 func UpdateSession(c *gin.Context) {
@@ -78,12 +79,13 @@ func DeleteSessions(c *gin.Context) {
 	var idsJson []uint
 	c.BindJSON(&idsJson)
 
-	err := repos.SessionRepo.Delete(idsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	errs := repos.SessionRepo.Delete(idsJson)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusOK)
 }

@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -27,6 +28,7 @@ type SemesterRepoInterface interface {
 }
 
 func (sr *semesterRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize SemesterRepo", logger.Fields{})
 	sr.db = db
 }
 
@@ -37,12 +39,12 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 
 	stmt, err := sr.db.Prepare(query)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, query)
 	}
 	defer rows.Close()
 
@@ -67,7 +69,7 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 	statement := "SELECT * FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return domains.Semester{}, err
+		return domains.Semester{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -95,7 +97,7 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -107,9 +109,9 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		semester.Title,
 		semester.Ordering)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, semester)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "semester was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "semester was not inserted")
 }
 
 func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
@@ -121,7 +123,7 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 		"WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -133,24 +135,24 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 		semester.Ordering,
 		semesterId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, semester, semesterId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "semester was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "semester was not updated")
 }
 
 func (sr *semesterRepo) Delete(semesterId string) error {
 	statement := "DELETE FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(semesterId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, semesterId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "semester was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "semester was not deleted")
 }
 
 // For Tests Only

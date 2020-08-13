@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
 // Global variable
@@ -25,20 +26,22 @@ type AnnounceRepoInterface interface {
 }
 
 func (ar *announceRepo) Initialize(db *sql.DB) {
+	logger.Debug("Initialize AnnounceRepo", logger.Fields{})
 	ar.db = db
 }
 
 func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 	results := make([]domains.Announce, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM announcements ORDER BY posted_at DESC")
+	statement := "SELECT * FROM announcements ORDER BY posted_at DESC"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -62,9 +65,10 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 }
 
 func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
-	stmt, err := ar.db.Prepare("SELECT * FROM announcements WHERE id=?")
+	statement := "SELECT * FROM announcements WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return domains.Announce{}, err
+		return domains.Announce{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -84,16 +88,17 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 }
 
 func (ar *announceRepo) Insert(announce domains.Announce) error {
-	stmt, err := ar.db.Prepare("INSERT INTO announcements (" +
+	statement := "INSERT INTO announcements (" +
 		"created_at, " +
 		"updated_at, " +
 		"posted_at, " +
 		"author, " +
 		"message," +
 		"on_home_page" +
-		") VALUES (?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?)"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -106,22 +111,22 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		announce.Message,
 		announce.OnHomePage)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, announce)
 	}
-
-	return utils.HandleSqlExecResult(result, 1, "announcement was not inserted")
+	return appErrors.ValidateDbResult(result, 1, "announcement was not inserted")
 }
 
 func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
-	stmt, err := ar.db.Prepare("UPDATE announcements SET " +
+	statement := "UPDATE announcements SET " +
 		"updated_at=?, " +
 		"posted_at=?, " +
 		"author=?, " +
 		"message=?, " +
 		"on_home_page=? " +
-		"WHERE id=?")
+		"WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -134,25 +139,25 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 		announce.OnHomePage,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, announce, id)
 	}
-
-	return utils.HandleSqlExecResult(result, 1, "announcement was not updated")
+	return appErrors.ValidateDbResult(result, 1, "announcement was not updated")
 }
 
 func (ar *announceRepo) Delete(id uint) error {
-	stmt, err := ar.db.Prepare("DELETE FROM announcements WHERE id=?")
+	statement := "DELETE FROM announcements WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	result, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
 
-	return utils.HandleSqlExecResult(result, 1, "announcement was not deleted")
+	return appErrors.ValidateDbResult(result, 1, "announcement was not deleted")
 }
 
 func CreateTestAnnounceRepo(db *sql.DB) AnnounceRepoInterface {

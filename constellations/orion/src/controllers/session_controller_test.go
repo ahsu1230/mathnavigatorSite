@@ -99,7 +99,7 @@ func TestGetSessionFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateSessionsSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
+	testUtils.SessionRepo.MockInsert = func(session []domains.Session) []error {
 		return nil
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -116,8 +116,8 @@ func TestCreateSessionsSuccess(t *testing.T) {
 }
 
 func TestCreateSessionsFailure(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(session []domains.Session) error {
-		return errors.New("invalid notes")
+	testUtils.SessionRepo.MockInsert = func(session []domains.Session) []error {
+		return []error{errors.New("invalid notes")}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -185,7 +185,7 @@ func TestUpdateSessionFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteSessionsSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockDelete = func(ids []uint) error {
+	testUtils.SessionRepo.MockDelete = func(ids []uint) []error {
 		return nil // Return no error, successful delete!
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -204,8 +204,8 @@ func TestDeleteSessionsSuccess(t *testing.T) {
 }
 
 func TestDeleteSessionsFailure(t *testing.T) {
-	testUtils.SessionRepo.MockDelete = func(id []uint) error {
-		return errors.New("not found")
+	testUtils.SessionRepo.MockDelete = func(id []uint) []error {
+		return []error{errors.New("not found")}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 

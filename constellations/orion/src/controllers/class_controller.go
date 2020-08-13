@@ -127,13 +127,15 @@ func PublishClasses(c *gin.Context) {
 	var classIds []string
 	c.BindJSON(&classIds)
 
-	err := repos.ClassRepo.Publish(classIds)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	errs := repos.ClassRepo.Publish(classIds)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteClass(c *gin.Context) {
