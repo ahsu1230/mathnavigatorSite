@@ -3,7 +3,8 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -90,7 +91,7 @@ func TestGetTransactionSuccess(t *testing.T) {
 
 func TestGetTransactionFailure(t *testing.T) {
 	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
-		return domains.Transaction{}, errors.New("not found")
+		return domains.Transaction{}, appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -161,7 +162,7 @@ func TestUpdateTransactionSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateTransaction_Invalid(t *testing.T) {
+func TestUpdateTransactionInvalid(t *testing.T) {
 	// no mock needed
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -181,7 +182,7 @@ func TestUpdateTransaction_Invalid(t *testing.T) {
 
 func TestUpdateTransactionFailure(t *testing.T) {
 	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -196,7 +197,7 @@ func TestUpdateTransactionFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/transactions/transaction/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Delete
@@ -210,12 +211,12 @@ func TestDeleteTransactionSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteTransactionFailure(t *testing.T) {
 	testUtils.TransactionRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -223,7 +224,7 @@ func TestDeleteTransactionFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 func TestGetAllPaymentTypes(t *testing.T) {

@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -121,7 +122,7 @@ func TestGetUsersByAccountSuccess(t *testing.T) {
 
 func TestGetUserFailure(t *testing.T) {
 	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
-		return domains.User{}, errors.New("not found")
+		return domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -282,7 +283,7 @@ func TestSearchUsersSuccess(t *testing.T) {
 
 func TestSearchUsersFailure(t *testing.T) {
 	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
-		return []domains.User{}, errors.New("not found")
+		return []domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -321,7 +322,7 @@ func TestUpdateUserSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUser_Invalid(t *testing.T) {
+func TestUpdateUserInvalid(t *testing.T) {
 	// no mock needed
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -346,7 +347,7 @@ func TestUpdateUser_Invalid(t *testing.T) {
 
 func TestUpdateUserFailure(t *testing.T) {
 	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -366,7 +367,7 @@ func TestUpdateUserFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -382,12 +383,12 @@ func TestDeleteUserSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteUserFailure(t *testing.T) {
 	testUtils.UserRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -395,7 +396,7 @@ func TestDeleteUserFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

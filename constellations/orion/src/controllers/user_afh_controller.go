@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -85,7 +86,7 @@ func CreateUserAfh(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateUserAfh(c *gin.Context) {
@@ -104,13 +105,12 @@ func UpdateUserAfh(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserAfhRepo.Update(id, userAfhJson)
-	if err != nil {
+	if err := repos.UserAfhRepo.Update(id, userAfhJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteUserAfh(c *gin.Context) {
@@ -122,8 +122,7 @@ func DeleteUserAfh(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserAfhRepo.Delete(id)
-	if err != nil {
+	if err := repos.UserAfhRepo.Delete(id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

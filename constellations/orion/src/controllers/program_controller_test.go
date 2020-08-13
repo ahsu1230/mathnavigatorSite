@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -83,7 +84,7 @@ func TestGetProgramSuccess(t *testing.T) {
 
 func TestGetProgramFailure(t *testing.T) {
 	testUtils.ProgramRepo.MockSelectByProgramId = func(programId string) (domains.Program, error) {
-		return domains.Program{}, errors.New("not found")
+		return domains.Program{}, appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -145,7 +146,7 @@ func TestUpdateProgramSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateProgram_Invalid(t *testing.T) {
+func TestUpdateProgramInvalid(t *testing.T) {
 	// no mock needed
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -160,7 +161,7 @@ func TestUpdateProgram_Invalid(t *testing.T) {
 
 func TestUpdateProgramFailure(t *testing.T) {
 	testUtils.ProgramRepo.MockUpdate = func(programId string, program domains.Program) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -170,7 +171,7 @@ func TestUpdateProgramFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -186,12 +187,12 @@ func TestDeleteProgramSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/programs/program/some_program", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteProgramFailure(t *testing.T) {
 	testUtils.ProgramRepo.MockDelete = func(programId string) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -199,7 +200,7 @@ func TestDeleteProgramFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/programs/program/some_program", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

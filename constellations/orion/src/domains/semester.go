@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -21,18 +21,20 @@ type Semester struct {
 // Class Methods
 
 func (semester *Semester) Validate() error {
+	messageFmt := "Invalid Semester: %s"
+
 	// Retrieves the inputted values
 	semesterId := semester.SemesterId
 	title := semester.Title
 
 	// Semester ID validation
 	if matches, _ := regexp.MatchString(REGEX_SEMESTER_ID, semesterId); !matches {
-		return appErrors.WrapInvalidDomain("Invalid Semester ID (should be format `year_season`)")
+		return fmt.Errorf(messageFmt, "Invalid Semester ID (should be format `year_season`)")
 	}
 
 	// Title validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
-		return appErrors.WrapInvalidDomain("Invalid Semester Title")
+		return fmt.Errorf(messageFmt, "Invalid Semester Title")
 	}
 
 	return nil

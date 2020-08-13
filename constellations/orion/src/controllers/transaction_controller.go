@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -54,7 +55,7 @@ func CreateTransaction(c *gin.Context) {
 	}
 
 	if err := transactionJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Transaction"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -65,7 +66,7 @@ func CreateTransaction(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateTransaction(c *gin.Context) {
@@ -85,18 +86,17 @@ func UpdateTransaction(c *gin.Context) {
 	}
 
 	if err := transactionJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Transaction"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
 
-	err := repos.TransactionRepo.Update(id, transactionJson)
-	if err != nil {
+	if err := repos.TransactionRepo.Update(id, transactionJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteTransaction(c *gin.Context) {
@@ -108,8 +108,7 @@ func DeleteTransaction(c *gin.Context) {
 		return
 	}
 
-	err := repos.TransactionRepo.Delete(id)
-	if err != nil {
+	if err := repos.TransactionRepo.Delete(id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

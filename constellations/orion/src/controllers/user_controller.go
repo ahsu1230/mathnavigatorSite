@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -14,6 +15,8 @@ type UserSearchBody struct {
 }
 
 func SearchUsers(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.SearchUsers")
+
 	// Incoming parameters
 	var body UserSearchBody
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -34,6 +37,8 @@ func SearchUsers(c *gin.Context) {
 }
 
 func GetUserById(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.GetUserById")
+
 	// Incoming parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -52,6 +57,8 @@ func GetUserById(c *gin.Context) {
 }
 
 func GetUsersByAccountId(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.GetUsersByAccountId")
+
 	// Incoming parameters
 	accountId, err := utils.ParseParamId(c, "accountId")
 	if err != nil {
@@ -70,6 +77,8 @@ func GetUsersByAccountId(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.CreateUser")
+
 	// Incoming JSON
 	var userJson domains.User
 	if err := c.ShouldBindJSON(&userJson); err != nil {
@@ -79,21 +88,22 @@ func CreateUser(c *gin.Context) {
 	}
 
 	if err := userJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid User"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
 
-	err := repos.UserRepo.Insert(userJson)
-	if err != nil {
+	if err := repos.UserRepo.Insert(userJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateUser(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.UpdateUser")
+
 	// Incoming JSON & Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -110,21 +120,22 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	if err := userJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid User"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
 
-	err := repos.UserRepo.Update(id, userJson)
-	if err != nil {
+	if err := repos.UserRepo.Update(id, userJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteUser(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.DeleteUser")
+
 	// Incoming Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -133,8 +144,7 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserRepo.Delete(id)
-	if err != nil {
+	if err := repos.UserRepo.Delete(id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

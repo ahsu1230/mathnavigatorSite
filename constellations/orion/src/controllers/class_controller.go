@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -85,7 +86,7 @@ func CreateClass(c *gin.Context) {
 	}
 
 	if err := classJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Class"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -96,7 +97,7 @@ func CreateClass(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateClass(c *gin.Context) {
@@ -110,7 +111,7 @@ func UpdateClass(c *gin.Context) {
 	}
 
 	if err := classJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Class"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -121,7 +122,7 @@ func UpdateClass(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func PublishClasses(c *gin.Context) {

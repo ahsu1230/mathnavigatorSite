@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -74,7 +75,7 @@ func CreateUserClass(c *gin.Context) {
 	}
 
 	if err := userClassesJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid UserClasses"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -85,7 +86,7 @@ func CreateUserClass(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateUserClass(c *gin.Context) {
@@ -105,18 +106,17 @@ func UpdateUserClass(c *gin.Context) {
 	}
 
 	if err := userClassesJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid UserClasses"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
 
-	err := repos.UserClassesRepo.Update(id, userClassesJson)
-	if err != nil {
+	if err := repos.UserClassesRepo.Update(id, userClassesJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteUserClass(c *gin.Context) {
@@ -128,8 +128,7 @@ func DeleteUserClass(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserClassesRepo.Delete(id)
-	if err != nil {
+	if err := repos.UserClassesRepo.Delete(id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -20,19 +20,20 @@ type Announce struct {
 }
 
 func (announce *Announce) Validate() error {
+	messageFmt := "Invalid Announcement: %s"
+
 	// Retrieves the inputted values
 	author := announce.Author
 	message := announce.Message
 
 	// Author validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, author); !matches {
-		return appErrors.WrapInvalidDomain("Must be a valid author's name")
+		return fmt.Errorf(messageFmt, "Must be a valid author's name")
 	}
 
 	// Message validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
-		return errors.New("invalid message")
-		return appErrors.WrapInvalidDomain("Message must contain at least one alphabetic letter")
+		return fmt.Errorf(messageFmt, "Message must contain at least one alphabetic letter")
 	}
 
 	return nil

@@ -68,12 +68,8 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 	var message string
 	var code int
 
-	if errors.Is(wrappedErr, appErrors.ERR_INVALID_EMAIL) {
-		message = "Invalid Email. Please provide a valid email."
-		code = http.StatusBadRequest
-
-	} else if errors.Is(wrappedErr, appErrors.ERR_INVALID_PASSWORD) {
-		message = "Invalid Password. Please provide a valid password."
+	if errors.Is(wrappedErr, appErrors.ERR_INVALID_DOMAIN) {
+		message = wrappedErr.Error()
 		code = http.StatusBadRequest
 
 	} else if errors.Is(wrappedErr, appErrors.ERR_JSON_NULL_BODY) {
@@ -86,7 +82,7 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 
 	} else if errors.Is(wrappedErr, appErrors.ERR_MYSQL_DUPLICATE_ENTRY) {
 		message = "Database duplicate entry conflict. Please change some fields."
-		code = http.StatusInternalServerError
+		code = http.StatusBadRequest
 
 	} else if errors.Is(wrappedErr, appErrors.ERR_SQL_NO_ROWS) {
 		message = "No results from query. Please change your search terms."
@@ -94,7 +90,7 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 
 	} else {
 		message = "Unknown error"
-		code = http.StatusInternalServerError
+		code = http.StatusBadRequest
 	}
 
 	// switch cause := errors.Cause(wrappedErr); cause {

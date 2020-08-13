@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -21,13 +21,15 @@ type Session struct {
 }
 
 func (session *Session) Validate() error {
+	messageFmt := "Invalid Session: %s"
+
 	// Retrieves the inputted values
 	notes := session.Notes
 
 	// Notes validation
 	if notes.Valid {
 		if matches, _ := regexp.MatchString(REGEX_LETTER, notes.String); !matches {
-			return appErrors.WrapInvalidDomain("Invalid session notes entry")
+			return fmt.Errorf(messageFmt, "Invalid session notes entry")
 		}
 	}
 

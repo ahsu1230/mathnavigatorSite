@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -110,7 +111,7 @@ func TestGetAchievementSuccess(t *testing.T) {
 
 func TestGetAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
-		return domains.Achieve{}, errors.New("not found")
+		return domains.Achieve{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
@@ -170,7 +171,7 @@ func TestUpdateAchievementSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateAchievement_Invalid(t *testing.T) {
+func TestUpdateAchievementInvalid(t *testing.T) {
 	// no mock needed
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
@@ -185,7 +186,7 @@ func TestUpdateAchievement_Invalid(t *testing.T) {
 
 func TestUpdateAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockUpdate = func(id uint, achieve domains.Achieve) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
@@ -195,7 +196,7 @@ func TestUpdateAchievementFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -211,12 +212,12 @@ func TestDeleteAchievementSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteAchievementFailure(t *testing.T) {
 	testUtils.AchieveRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
 
@@ -224,7 +225,7 @@ func TestDeleteAchievementFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

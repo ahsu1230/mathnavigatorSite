@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -100,7 +101,7 @@ func TestGetSemesterSuccess(t *testing.T) {
 
 func TestGetSemesterFailure(t *testing.T) {
 	testUtils.SemesterRepo.MockSelectBySemesterId = func(semesterId string) (domains.Semester, error) {
-		return domains.Semester{}, errors.New("not found")
+		return domains.Semester{}, appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
@@ -160,7 +161,7 @@ func TestUpdateSemesterSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateSemester_Invalid(t *testing.T) {
+func TestUpdateSemesterInvalid(t *testing.T) {
 	// no mock needed
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
@@ -175,7 +176,7 @@ func TestUpdateSemester_Invalid(t *testing.T) {
 
 func TestUpdateSemesterFailure(t *testing.T) {
 	testUtils.SemesterRepo.MockUpdate = func(semesterId string, semester domains.Semester) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
@@ -185,7 +186,7 @@ func TestUpdateSemesterFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_fall", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -201,12 +202,12 @@ func TestDeleteSemesterSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/some_semester", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteSemesterFailure(t *testing.T) {
 	testUtils.SemesterRepo.MockDelete = func(semesterId string) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
@@ -214,7 +215,7 @@ func TestDeleteSemesterFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/some_semester", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

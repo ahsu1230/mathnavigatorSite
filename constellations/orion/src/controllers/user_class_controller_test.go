@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -162,7 +163,7 @@ func TestCreateUserClassSuccess(t *testing.T) {
 
 func TestCreateUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockMySQLDuplicateEntryError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -178,7 +179,7 @@ func TestCreateUserClassFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 //
@@ -205,9 +206,9 @@ func TestUpdateUserClassSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUserClass_Invalid(t *testing.T) {
+func TestUpdateUserClassInvalid(t *testing.T) {
 	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	// no mock needed
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
@@ -224,12 +225,12 @@ func TestUpdateUserClass_Invalid(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 func TestUpdateUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -245,7 +246,7 @@ func TestUpdateUserClassFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -261,12 +262,12 @@ func TestDeleteUserClassSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 

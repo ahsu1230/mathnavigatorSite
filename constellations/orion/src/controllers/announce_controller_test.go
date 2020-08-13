@@ -3,12 +3,13 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -85,7 +86,7 @@ func TestGetAnnouncementSuccess(t *testing.T) {
 
 func TestGetAnnounceFailure(t *testing.T) {
 	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(id uint) (domains.Announce, error) {
-		return domains.Announce{}, errors.New("not found")
+		return domains.Announce{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
 
@@ -150,7 +151,7 @@ func TestUpdateAnnounceSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateAnnounce_Invalid(t *testing.T) {
+func TestUpdateAnnounceInvalid(t *testing.T) {
 	// no mock needed
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
 
@@ -166,7 +167,7 @@ func TestUpdateAnnounce_Invalid(t *testing.T) {
 
 func TestUpdateAnnounceFailure(t *testing.T) {
 	testUtils.AnnounceRepo.MockUpdate = func(id uint, announce domains.Announce) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
 
@@ -177,7 +178,7 @@ func TestUpdateAnnounceFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -193,12 +194,12 @@ func TestDeleteAnnounceSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteAnnounceFailure(t *testing.T) {
 	testUtils.AnnounceRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
 
@@ -206,7 +207,7 @@ func TestDeleteAnnounceFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

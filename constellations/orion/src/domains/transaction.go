@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"time"
 )
 
@@ -29,6 +29,8 @@ type Transaction struct {
 }
 
 func (transaction *Transaction) Validate() error {
+	messageFmt := "Invalid Transaction: %s"
+
 	amount := transaction.Amount
 	paymentType := transaction.PaymentType
 
@@ -37,15 +39,15 @@ func (transaction *Transaction) Validate() error {
 		paymentType != PAY_CASH &&
 		paymentType != CHARGE &&
 		paymentType != REFUND {
-		return appErrors.WrapInvalidDomain("Unrecognized payment type")
+		return fmt.Errorf(messageFmt, "Unrecognized payment type")
 	}
 
 	if paymentType != CHARGE && amount < 0 {
-		return appErrors.WrapInvalidDomain("Cannot have payment amount < 0. Must be positive.")
+		return fmt.Errorf(messageFmt, "Cannot have payment amount < 0. Must be positive.")
 	}
 
 	if paymentType == CHARGE && amount > 0 {
-		return appErrors.WrapInvalidDomain("Cannot have charge amount > 0. Must be negative.")
+		return fmt.Errorf(messageFmt, "Cannot have charge amount > 0. Must be negative.")
 	}
 
 	return nil

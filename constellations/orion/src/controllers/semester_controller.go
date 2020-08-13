@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -42,7 +43,7 @@ func CreateSemester(c *gin.Context) {
 	}
 
 	if err := semesterJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Semester"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -53,7 +54,7 @@ func CreateSemester(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateSemester(c *gin.Context) {
@@ -67,7 +68,7 @@ func UpdateSemester(c *gin.Context) {
 	}
 
 	if err := semesterJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Semester"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -78,7 +79,7 @@ func UpdateSemester(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteSemester(c *gin.Context) {

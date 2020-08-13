@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -88,7 +89,7 @@ func TestGetClassSuccess(t *testing.T) {
 
 func TestGetClassFailure(t *testing.T) {
 	testUtils.ClassRepo.MockSelectByClassId = func(classId string) (domains.Class, error) {
-		return domains.Class{}, errors.New("not found")
+		return domains.Class{}, appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -215,7 +216,7 @@ func TestUpdateClassSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateClass_Invalid(t *testing.T) {
+func TestUpdateClassInvalid(t *testing.T) {
 	// no mock needed
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -230,7 +231,7 @@ func TestUpdateClass_Invalid(t *testing.T) {
 
 func TestUpdateClassFailure(t *testing.T) {
 	testUtils.ClassRepo.MockUpdate = func(classId string, class domains.Class) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -240,7 +241,7 @@ func TestUpdateClassFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/class/program1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -261,12 +262,12 @@ func TestPublishClassesSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestPublishClassesFailure(t *testing.T) {
 	testUtils.ClassRepo.MockPublish = func(classIds []string) []error {
-		return []error{errors.New("not found")}
+		return []error{appErrors.MockDbNoRowsError()}
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -279,7 +280,7 @@ func TestPublishClassesFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/classes/publish", bytes.NewBuffer(marshal))
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -295,12 +296,12 @@ func TestDeleteClassSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/classes/class/some_class", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteClassFailure(t *testing.T) {
 	testUtils.ClassRepo.MockDelete = func(classId string) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -308,7 +309,7 @@ func TestDeleteClassFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/classes/class/some_class", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

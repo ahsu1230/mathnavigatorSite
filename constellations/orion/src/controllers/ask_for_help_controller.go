@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -42,7 +43,7 @@ func CreateAFH(c *gin.Context) {
 	}
 
 	if err := afhJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid AFH"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -53,7 +54,7 @@ func CreateAFH(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateAFH(c *gin.Context) {
@@ -67,7 +68,7 @@ func UpdateAFH(c *gin.Context) {
 	}
 
 	if err := afhJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid AFH"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -78,7 +79,7 @@ func UpdateAFH(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteAFH(c *gin.Context) {

@@ -3,12 +3,13 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -84,7 +85,7 @@ func TestGetSessionSuccess(t *testing.T) {
 
 func TestGetSessionFailure(t *testing.T) {
 	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
-		return domains.Session{}, errors.New("Not Found")
+		return domains.Session{}, appErrors.MockDbNoRowsError()
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -117,7 +118,7 @@ func TestCreateSessionsSuccess(t *testing.T) {
 
 func TestCreateSessionsFailure(t *testing.T) {
 	testUtils.SessionRepo.MockInsert = func(session []domains.Session) []error {
-		return []error{errors.New("invalid notes")}
+		return []error{appErrors.MockInvalidDomainError("invalid notes")}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -151,7 +152,7 @@ func TestUpdateSessionSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateSession_Invalid(t *testing.T) {
+func TestUpdateSessionInvalid(t *testing.T) {
 	// no mock needed
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -167,7 +168,7 @@ func TestUpdateSession_Invalid(t *testing.T) {
 
 func TestUpdateSessionFailure(t *testing.T) {
 	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -178,7 +179,7 @@ func TestUpdateSessionFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/sessions/session/2", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -200,12 +201,12 @@ func TestDeleteSessionsSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteSessionsFailure(t *testing.T) {
 	testUtils.SessionRepo.MockDelete = func(id []uint) []error {
-		return []error{errors.New("not found")}
+		return []error{appErrors.MockDbNoRowsError()}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -213,7 +214,7 @@ func TestDeleteSessionsFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

@@ -3,7 +3,6 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"testing"
@@ -82,7 +81,7 @@ func TestSearchAccountSuccess(t *testing.T) {
 
 func TestSearchAccountFailure(t *testing.T) {
 	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
-		return domains.Account{}, appErrors.TestDbNoRowsError()
+		return domains.Account{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -95,7 +94,7 @@ func TestSearchAccountFailure(t *testing.T) {
 
 func TestGetAccountsFailure(t *testing.T) {
 	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
-		return domains.Account{}, appErrors.TestDbNoRowsError()
+		return domains.Account{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -167,7 +166,7 @@ func TestUpdateAccountSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateAccount_Invalid(t *testing.T) {
+func TestUpdateAccountInvalid(t *testing.T) {
 	// no mock needed
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -185,8 +184,9 @@ func TestUpdateAccount_Invalid(t *testing.T) {
 }
 
 func TestUpdateAccountFailure(t *testing.T) {
+	t.Log("Testing failure case, expected error...")
 	testUtils.AccountRepo.MockUpdate = func(id uint, account domains.Account) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -200,7 +200,7 @@ func TestUpdateAccountFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/account/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -216,12 +216,12 @@ func TestDeleteAccountSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/accounts/account/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteAccountFailure(t *testing.T) {
 	testUtils.AccountRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
@@ -229,7 +229,7 @@ func TestDeleteAccountFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/accounts/account/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

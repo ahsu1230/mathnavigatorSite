@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
@@ -41,7 +42,7 @@ func CreateProgram(c *gin.Context) {
 	}
 
 	if err := programJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Program"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -52,7 +53,7 @@ func CreateProgram(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateProgram(c *gin.Context) {
@@ -66,7 +67,7 @@ func UpdateProgram(c *gin.Context) {
 	}
 
 	if err := programJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Program"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -77,7 +78,7 @@ func UpdateProgram(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteProgram(c *gin.Context) {

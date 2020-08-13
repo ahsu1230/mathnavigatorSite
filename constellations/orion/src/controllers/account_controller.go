@@ -65,7 +65,7 @@ func CreateAccount(c *gin.Context) {
 	}
 
 	if err := accountJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Account"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -75,7 +75,7 @@ func CreateAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateAccount(c *gin.Context) {
@@ -96,7 +96,7 @@ func UpdateAccount(c *gin.Context) {
 	}
 
 	if err = accountJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Account"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -106,7 +106,7 @@ func UpdateAccount(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteAccount(c *gin.Context) {

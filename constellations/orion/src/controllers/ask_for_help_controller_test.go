@@ -3,12 +3,13 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -107,7 +108,7 @@ func TestGetAFHSuccess(t *testing.T) {
 
 func TestGetAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
-		return domains.AskForHelp{}, errors.New("not found")
+		return domains.AskForHelp{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -184,7 +185,7 @@ func TestUpdateAFHSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateAFH_Invalid(t *testing.T) {
+func TestUpdateAFHInvalid(t *testing.T) {
 	// no mock needed
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -206,7 +207,7 @@ func TestUpdateAFH_Invalid(t *testing.T) {
 
 func TestUpdateAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockUpdate = func(id uint, askForHelp domains.AskForHelp) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -223,7 +224,7 @@ func TestUpdateAFHFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/afh/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Delete
@@ -237,12 +238,12 @@ func TestDeleteAFHSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/askforhelp/afh/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteAFHFailure(t *testing.T) {
 	testUtils.AskForHelpRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -250,7 +251,7 @@ func TestDeleteAFHFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/askforhelp/afh/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Helper Methods

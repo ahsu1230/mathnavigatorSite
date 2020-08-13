@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"fmt"
 )
 
 var TABLE_ACCOUNTS = "accounts"
@@ -22,15 +22,16 @@ type Account struct {
 // Class Methods
 
 func (account *Account) Validate() error {
+	messageFmt := "Invalid Account: %s"
 	// Retrieves the inputted values
 	primaryEmail := account.PrimaryEmail
 	password := account.Password
 
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
-		return appErrors.WrapInvalidDomain("Invalid Email")
+		return fmt.Errorf(messageFmt, "Invalid Email")
 	}
 	if len(password) < 8 {
-		return appErrors.WrapInvalidDomain("Password must be at least 8 characters long")
+		return fmt.Errorf(messageFmt, "Password must be at least 8 characters long")
 	}
 	return nil
 }

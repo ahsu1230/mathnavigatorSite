@@ -56,7 +56,7 @@ func WrapInvalidDomain(reason string) error {
 }
 
 func WrapCtrlf(message string, v ...interface{}) error {
-	return errors.Wrapf(ERR_CTRL, message, v)
+	return errors.Wrapf(ERR_CTRL, message, v...)
 }
 
 func WrapBindJSON(e error, request *http.Request) error {
@@ -168,15 +168,23 @@ func WrapRepo(err error) error {
 	return err
 }
 
-// For testing purposes only
+// For testing/mocking purposes only
 
-func TestMySQLDuplicateEntryError() error {
+func MockMySQLDuplicateEntryError() error {
 	return &mysql.MySQLError{
 		1062,
-		"Fake duplicate entry",
+		"Mocked duplicate entry",
 	}
 }
 
-func TestDbNoRowsError() error {
-	return ERR_SQL_NO_ROWS
+func MockDbNoRowsError() error {
+	return errors.Wrap(ERR_SQL_NO_ROWS, "Caused by mock")
+}
+
+func MockMySQLUnknownError() error {
+	return errors.Wrap(ERR_MYSQL_UNKNOWN, "Caused by mock")
+}
+
+func MockInvalidDomainError(message string) error {
+	return WrapInvalidDomain("Caused by mock: " + message)
 }

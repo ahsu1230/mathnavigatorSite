@@ -2,10 +2,11 @@ package controllers_test
 
 import (
 	"encoding/json"
-	"errors"
+
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -56,7 +57,8 @@ func TestOneSemesterOneProgramOneClassFailure(t *testing.T) {
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
 	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
-		return []domains.Class{}, errors.New("error in class")
+		return []domains.Class{}, appErrors.MockDbNoRowsError()
+		// return []domains.Class{}, appErrors.MockMySQLUnknownError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 

@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -56,7 +57,7 @@ func CreateSessions(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateSession(c *gin.Context) {
@@ -81,13 +82,12 @@ func UpdateSession(c *gin.Context) {
 		return
 	}
 
-	err := repos.SessionRepo.Update(id, sessionJson)
-	if err != nil {
+	if err := repos.SessionRepo.Update(id, sessionJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteSessions(c *gin.Context) {

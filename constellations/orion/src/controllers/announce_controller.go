@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -42,7 +43,7 @@ func CreateAnnouncement(c *gin.Context) {
 	}
 
 	if err := announceJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Announcement"))
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
@@ -53,7 +54,7 @@ func CreateAnnouncement(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func UpdateAnnouncement(c *gin.Context) {
@@ -67,7 +68,8 @@ func UpdateAnnouncement(c *gin.Context) {
 	}
 
 	if err := announceJson.Validate(); err != nil {
-		c.Error(appErrors.WrapInvalidDomain(err, "Invalid Announcement"))
+		err = appErrors.WrapInvalidDomain(err.Error())
+		c.Error(err)
 		c.Abort()
 		return
 	}
@@ -78,7 +80,7 @@ func UpdateAnnouncement(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusNoContent)
+	c.Status(http.StatusOK)
 }
 
 func DeleteAnnouncement(c *gin.Context) {

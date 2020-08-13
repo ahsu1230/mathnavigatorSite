@@ -3,11 +3,12 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -83,7 +84,7 @@ func TestGetLocationSuccess(t *testing.T) {
 
 func TestGetLocationFailure(t *testing.T) {
 	testUtils.LocationRepo.MockSelectByLocationId = func(LocationId string) (domains.Location, error) {
-		return domains.Location{}, errors.New("Not Found")
+		return domains.Location{}, appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
 
@@ -145,7 +146,7 @@ func TestUpdateLocationSuccess(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateLocation_Invalid(t *testing.T) {
+func TestUpdateLocationInvalid(t *testing.T) {
 	// no mock needed
 	repos.LocationRepo = &testUtils.LocationRepo
 
@@ -160,7 +161,7 @@ func TestUpdateLocation_Invalid(t *testing.T) {
 
 func TestUpdateLocationFailure(t *testing.T) {
 	testUtils.LocationRepo.MockUpdate = func(LocationId string, location domains.Location) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
 
@@ -170,7 +171,7 @@ func TestUpdateLocationFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc2", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -186,12 +187,12 @@ func TestDeleteLocationSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/locations/location/some_location", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
 func TestDeleteLocationFailure(t *testing.T) {
 	testUtils.LocationRepo.MockDelete = func(LocationId string) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
 
@@ -199,7 +200,7 @@ func TestDeleteLocationFailure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/locations/location/some_location", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //

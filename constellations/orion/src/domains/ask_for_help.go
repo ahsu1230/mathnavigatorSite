@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -28,17 +28,18 @@ type AskForHelp struct {
 }
 
 func (askForHelp *AskForHelp) Validate() error {
+	messageFmt := "Invalid AskForHelp: %s"
 	title := askForHelp.Title
 	subject := askForHelp.Subject
 
 	// Title validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
-		return appErrors.WrapInvalidDomain("Invalid Title")
+		return fmt.Errorf(messageFmt, "Invalid Title")
 	}
 
 	// Subject validation
 	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
-		return appErrors.WrapInvalidDomain("Unrecognized subject")
+		return fmt.Errorf(messageFmt, "Unrecognized subject")
 	}
 	return nil
 }

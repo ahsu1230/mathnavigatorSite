@@ -37,6 +37,7 @@ func (ur *userRepo) Initialize(db *sql.DB) {
 }
 
 func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
+	logger.Debug("userRepo.SelectUsers", logger.Fields{"search": search})
 	results := make([]domains.User, 0)
 
 	lcSearch := strings.ToLower(search)
@@ -85,6 +86,12 @@ func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
 }
 
 func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
+	logger.Debug("userRepo.SelectAll", logger.Fields{
+		"search":   search,
+		"pageSize": pageSize,
+		"offset":   offset,
+	})
+
 	results := make([]domains.User, 0)
 
 	getAll := len(search) == 0
@@ -136,6 +143,8 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 }
 
 func (ur *userRepo) SelectById(id uint) (domains.User, error) {
+	logger.Debug("userRepo.SelectById", logger.Fields{"id": id})
+
 	statement := "SELECT * FROM users WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -164,6 +173,7 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 }
 
 func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
+	logger.Debug("userRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
 	results := make([]domains.User, 0)
 
 	query := "SELECT * FROM users WHERE account_id=?"
@@ -203,6 +213,7 @@ func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 }
 
 func (ur *userRepo) Insert(user domains.User) error {
+	logger.Debug("userRepo.Insert", logger.Fields{"user": user})
 	statement := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
@@ -246,6 +257,7 @@ func (ur *userRepo) Insert(user domains.User) error {
 }
 
 func (ur *userRepo) Update(id uint, user domains.User) error {
+	logger.Debug("userRepo.Update", logger.Fields{"id": id, "user": user})
 	statement := "UPDATE users SET " +
 		"updated_at=?, " +
 		"first_name=?, " +
@@ -286,6 +298,7 @@ func (ur *userRepo) Update(id uint, user domains.User) error {
 }
 
 func (ur *userRepo) Delete(id uint) error {
+	logger.Debug("userRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM users WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
