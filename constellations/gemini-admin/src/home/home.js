@@ -45,6 +45,29 @@ export class HomePage extends React.Component {
                 newUsers: users,
             });
         });
+
+        //pending registration for classes
+        API.get("api/user-classes/new").then((res) => {
+            const userClass = res.data;
+            this.setState({
+                newUserClasses: userClass,
+            });
+        });
+
+        //afh registration
+        API.get("api/userafhs/new").then((res) => {
+            const userAfh = res.data;
+            this.setState({
+                newUserAfh: userAfh,
+            });
+        });
+
+        API.get("api/accounts/unpaid").then((res) => {
+            const accounts = res.data;
+            this.setState({
+                unpaidAccounts: accounts,
+            });
+        });
     };
 
     render() {
@@ -81,13 +104,16 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "registration"}
                         section={"registration"}
-                        //buttonNum = pendingReg.length + afhReg.length in homeRegistrations
+                        buttonNum={
+                            this.state.newUserClasses.length +
+                            this.state.newUserAfh.length
+                        }
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "unpaid"}
                         section={"unpaid"}
-                        //buttonNum = unpaidAccounts.length in homeAccounts
+                        buttonNum={this.state.unpaidAccounts.length}
                     />
                 </div>
 
