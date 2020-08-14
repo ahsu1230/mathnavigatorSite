@@ -30,11 +30,12 @@ type UserClassesRepoInterface interface {
 }
 
 func (ur *userClassesRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize UserClassRepo", logger.Fields{})
+	utils.LogWithContext("userClassRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
 func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
+	utils.LogWithContext("userRepo.SelectByClassId", logger.Fields{"classId": classId})
 	results := make([]domains.UserClasses, 0)
 
 	statement := "SELECT * FROM user_classes WHERE class_id=?"
@@ -68,6 +69,7 @@ func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasse
 }
 
 func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByUserId", logger.Fields{"userId": userId})
 	results := make([]domains.UserClasses, 0)
 
 	statement := "SELECT * FROM user_classes WHERE user_id=?"
@@ -101,6 +103,9 @@ func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, e
 }
 
 func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByUserAndClass", logger.Fields{
+		"userId":  userId,
+		"classId": classId})
 	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -127,6 +132,7 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 }
 
 func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByNew", logger.Fields{})
 	results := make([]domains.UserClasses, 0)
 
 	now := time.Now().UTC()
@@ -163,6 +169,7 @@ func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
 }
 
 func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
+	utils.LogWithContext("userClassRepo.Insert", logger.Fields{"userClass", userClasses})
 	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
 		"updated_at, " +
@@ -194,6 +201,7 @@ func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
 }
 
 func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
+	utils.LogWithContext("userClassRepo.Update", logger.Fields{"userClass": userClasses})
 	statement := "UPDATE user_classes SET " +
 		"updated_at=?, " +
 		"user_id=?, " +
@@ -222,6 +230,7 @@ func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) erro
 }
 
 func (ur *userClassesRepo) Delete(id uint) error {
+	utils.LogWithContext("userClassRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM user_classes WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {

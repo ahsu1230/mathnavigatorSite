@@ -29,11 +29,12 @@ type AchieveRepoInterface interface {
 }
 
 func (ar *achieveRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize AchieveRepo", logger.Fields{})
+	utils.LogWithContext("achieveRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
 func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
+	utils.LogWithContext("achieveRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Achieve, 0)
 
 	query := "SELECT * FROM achievements"
@@ -67,6 +68,7 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 }
 
 func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
+	utils.LogWithContext("achieveRepo.SelectAllGroupedByYear", logger.Fields{})
 	results := make([]domains.AchieveYearGroup, 0)
 
 	statement := "SELECT * FROM achievements ORDER BY year DESC, position ASC"
@@ -110,6 +112,7 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 }
 
 func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
+	utils.LogWithContext("achieveRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -133,6 +136,7 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 }
 
 func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
+	utils.LogWithContext("achieveRepo.Insert", logger.Fields{"achieve": achieve})
 	statement := "INSERT INTO achievements (" +
 		"created_at, " +
 		"updated_at, " +
@@ -161,6 +165,7 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 }
 
 func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
+	utils.LogWithContext("achieveRepo.Update", logger.Fields{"achieve": achieve})
 	statement := "UPDATE achievements SET " +
 		"updated_at=?, " +
 		"year=?, " +
@@ -187,6 +192,7 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 }
 
 func (ar *achieveRepo) Delete(id uint) error {
+	utils.LogWithContext("achieveRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {

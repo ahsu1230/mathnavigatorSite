@@ -26,11 +26,12 @@ type LocationRepoInterface interface {
 }
 
 func (lr *locationRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize LocationRepo", logger.Fields{})
+	utils.LogWithContext("locationRepo.Initialize", logger.Fields{})
 	lr.db = db
 }
 
 func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
+	utils.LogWithContext("locationRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Location, 0)
 
 	statement := "SELECT * FROM locations"
@@ -68,6 +69,7 @@ func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
 }
 
 func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location, error) {
+	utils.LogWithContext("locationRepo.SelectByLocationId", logger.Fields{"locationId": locationId})
 	statement := "SELECT * FROM locations WHERE location_id=?"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
@@ -95,6 +97,7 @@ func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location,
 }
 
 func (lr *locationRepo) Insert(location domains.Location) error {
+	utils.LogWithContext("locationRepo.Insert", logger.Fields{"location": location})
 	statement := "INSERT INTO locations (" +
 		"created_at, " +
 		"updated_at, " +
@@ -129,6 +132,9 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 }
 
 func (lr *locationRepo) Update(locationId string, location domains.Location) error {
+	utils.LogWithContext("locationRepo.Update", logger.Fields{
+		"locationId": locationId,
+		"location":   location})
 	statement := "UPDATE locations SET " +
 		"updated_at=?, " +
 		"location_id=?, " +
@@ -162,6 +168,7 @@ func (lr *locationRepo) Update(locationId string, location domains.Location) err
 }
 
 func (lr *locationRepo) Delete(locationId string) error {
+	utils.LogWithContext("locationRepo.Delete", logger.Fields{"locationId": locationId})
 	statement := "DELETE FROM locations WHERE location_id=?"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {

@@ -34,7 +34,7 @@ type UserRepoInterface interface {
 }
 
 func (ur *userRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("Initialize UserRepo", logger.Fields{})
+	utils.LogWithContext("userRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 

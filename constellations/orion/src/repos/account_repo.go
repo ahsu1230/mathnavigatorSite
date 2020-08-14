@@ -29,7 +29,7 @@ type AccountRepoInterface interface {
 }
 
 func (acc *accountRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("Initialize AccountRepo", logger.Fields{})
+	utils.LogWithContext("accountRepo.Initialize", logger.Fields{})
 	acc.db = db
 }
 

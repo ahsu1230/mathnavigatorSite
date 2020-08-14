@@ -30,11 +30,12 @@ type UserAfhRepoInterface interface {
 }
 
 func (ur *userAfhRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize UserAfhRepo", logger.Fields{})
+	utils.LogWithContext("userAfhRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
 func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
+	utils.LogWithContext("userAfhRepo.Insert", logger.Fields{"userAfh": userAfh})
 	statement := "INSERT INTO user_afh (" +
 		"created_at, " +
 		"updated_at, " +
@@ -62,6 +63,7 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 }
 
 func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
+	utils.LogWithContext("userAfhRepo.SelectByUserId", logger.Fields{"userId": userId})
 	results := make([]domains.UserAfh, 0)
 
 	statement := "SELECT * FROM user_afh WHERE user_id=?"
@@ -93,6 +95,7 @@ func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
 }
 
 func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
+	utils.LogWithContext("userAfhRepo.SelectByAfhId", logger.Fields{"afhId": afhId})
 	results := make([]domains.UserAfh, 0)
 
 	statement := "SELECT * FROM user_afh WHERE afh_id=?"
@@ -124,6 +127,7 @@ func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
 }
 
 func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, error) {
+	utils.LogWithContext("userAfhRepo.SelectByBothIds", logger.Fields{"userId": userId, "afhId": afhId})
 	statement := "SELECT * FROM user_afh WHERE user_id=? AND afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -147,6 +151,7 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 	return userAfh, nil
 }
 func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
+	utils.LogWithContext("userAfhRepo.SelectByNew", logger.Fields{})
 	results := make([]domains.UserAfh, 0)
 
 	now := time.Now().UTC()
@@ -179,6 +184,7 @@ func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
 }
 
 func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
+	utils.LogWithContext("userAfhRepo.Update", logger.Fields{"userAfh": userAfh})
 	statement := "UPDATE user_afh SET " +
 		"user_id=?, " +
 		"afh_id=?, " +
@@ -204,6 +210,7 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 }
 
 func (ur *userAfhRepo) Delete(id uint) error {
+	utils.LogWithContext("userAfhRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM user_afh WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {

@@ -33,11 +33,13 @@ type ClassRepoInterface interface {
 }
 
 func (cr *classRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize ClassRepo", logger.Fields{})
+	utils.LogWithContext("classRepo.Initialize", logger.Fields{})
 	cr.db = db
 }
 
 func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectAll", logger.Fields{
+		"publishedOnly": publishedOnly})
 	results := make([]domains.Class, 0)
 
 	var query string
@@ -84,6 +86,7 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 }
 
 func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectAllUnpublished", logger.Fields{})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE published_at IS NULL"
@@ -125,6 +128,7 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 }
 
 func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectByClassId", logger.Fields{"classId": classId})
 	statement := "SELECT * FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -157,6 +161,7 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 }
 
 func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE program_id=?"
@@ -198,6 +203,7 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 }
 
 func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE semester_id=?"
@@ -239,6 +245,9 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 }
 
 func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
+	utils.LogWithContext("classRepo.SelectByProgramAndSemesterId", logger.Fields{
+		"programId":  programId,
+		"semesterId": semesterId})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=?"
@@ -280,6 +289,7 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 }
 
 func (cr *classRepo) Insert(class domains.Class) error {
+	utils.LogWithContext("classRepo.Insert", logger.Fields{"class": class})
 	statement := "INSERT INTO classes (" +
 		"created_at, " +
 		"updated_at, " +
@@ -324,6 +334,7 @@ func (cr *classRepo) Insert(class domains.Class) error {
 }
 
 func (cr *classRepo) Update(classId string, class domains.Class) error {
+	utils.LogWithContext("classRepo.Update", logger.Fields{"classId": classId})
 	statement := "UPDATE classes SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
@@ -366,6 +377,7 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 }
 
 func (cr *classRepo) Publish(classIds []string) []error {
+	utils.LogWithContext("classRepo.Publish", logger.Fields{"classIds": classIds})
 	tx, err := cr.db.Begin()
 	if err != nil {
 		return []error{appErrors.WrapDbTxBegin(err)}
@@ -399,6 +411,7 @@ func (cr *classRepo) Publish(classIds []string) []error {
 }
 
 func (cr *classRepo) Delete(classId string) error {
+	utils.LogWithContext("classRepo.Delete", logger.Fields{"classId": classId})
 	statement := "DELETE FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {

@@ -28,11 +28,12 @@ type ProgramRepoInterface interface {
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize ProgramRepo", logger.Fields{})
+	utils.LogWithContext("programRepo.Initialize", logger.Fields{})
 	pr.db = db
 }
 
 func (pr *programRepo) SelectAll() ([]domains.Program, error) {
+	utils.LogWithContext("programRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
@@ -68,6 +69,7 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 }
 
 func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, error) {
+	utils.LogWithContext("programRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	statement := "SELECT * FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -94,6 +96,7 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 }
 
 func (pr *programRepo) Insert(program domains.Program) error {
+	utils.LogWithContext("programRepo.Insert", logger.Fields{"program": program})
 	statement := "INSERT INTO programs (" +
 		"created_at, " +
 		"updated_at, " +
@@ -127,6 +130,7 @@ func (pr *programRepo) Insert(program domains.Program) error {
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
+	utils.LogWithContext("programRepo.Update", logger.Fields{"programId": programId, "program": program})
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
@@ -159,6 +163,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 }
 
 func (pr *programRepo) Delete(programId string) error {
+	utils.LogWithContext("programRepo.Delete", logger.Fields{"programId": programId})
 	statement := "DELETE FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {

@@ -28,11 +28,12 @@ type AskForHelpRepoInterface interface {
 }
 
 func (ar *askForHelpRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize AFHRepo", logger.Fields{})
+	utils.LogWithContext("afhRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
 func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
+	utils.LogWithContext("afhRepo.SelectAll", logger.Fields{})
 	results := make([]domains.AskForHelp, 0)
 
 	statement := "SELECT * FROM ask_for_help"
@@ -69,6 +70,7 @@ func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
 }
 
 func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
+	utils.LogWithContext("afhRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM ask_for_help WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -96,6 +98,7 @@ func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
 }
 
 func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
+	utils.LogWithContext("afhRepo.Insert", logger.Fields{"afh": askForHelp})
 	statement := "INSERT INTO ask_for_help (" +
 		"created_at, " +
 		"updated_at, " +
@@ -129,6 +132,7 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 }
 
 func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
+	utils.LogWithContext("afhRepo.Update", logger.Fields{"afh": askForHelp})
 	statement := "UPDATE ask_for_help SET " +
 		"updated_at=?, " +
 		"id=?, " +
@@ -163,6 +167,7 @@ func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
 }
 
 func (ar *askForHelpRepo) Delete(id uint) error {
+	utils.LogWithContext("afhRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM ask_for_help WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {

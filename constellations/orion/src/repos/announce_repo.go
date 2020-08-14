@@ -26,11 +26,12 @@ type AnnounceRepoInterface interface {
 }
 
 func (ar *announceRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize AnnounceRepo", logger.Fields{})
+	utils.LogWithContext("announceRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
 func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
+	utils.LogWithContext("announceRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Announce, 0)
 
 	statement := "SELECT * FROM announcements ORDER BY posted_at DESC"
@@ -65,6 +66,7 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 }
 
 func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
+	utils.LogWithContext("announceRepo.SelectByAnnounceId", logger.Fields{"id": id})
 	statement := "SELECT * FROM announcements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -90,6 +92,7 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 }
 
 func (ar *announceRepo) Insert(announce domains.Announce) error {
+	utils.LogWithContext("announceRepo.Insert", logger.Fields{"announce": announce})
 	statement := "INSERT INTO announcements (" +
 		"created_at, " +
 		"updated_at, " +
@@ -119,6 +122,7 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 }
 
 func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
+	utils.LogWithContext("announceRepo.Update", logger.Fields{"announce": announce})
 	statement := "UPDATE announcements SET " +
 		"updated_at=?, " +
 		"posted_at=?, " +
@@ -147,6 +151,7 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 }
 
 func (ar *announceRepo) Delete(id uint) error {
+	utils.LogWithContext("Repo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM announcements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {

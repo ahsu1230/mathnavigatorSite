@@ -28,11 +28,12 @@ type SemesterRepoInterface interface {
 }
 
 func (sr *semesterRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize SemesterRepo", logger.Fields{})
+	utils.LogWithContext("semesterRepo.Initialize", logger.Fields{})
 	sr.db = db
 }
 
 func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
+	utils.LogWithContext("semesterRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Semester, 0)
 
 	query := "SELECT * FROM semesters ORDER BY ordering ASC"
@@ -66,6 +67,7 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 }
 
 func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
+	utils.LogWithContext("semesterRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
 	statement := "SELECT * FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -89,6 +91,7 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 }
 
 func (sr *semesterRepo) Insert(semester domains.Semester) error {
+	utils.LogWithContext("semesterRepo.Insert", logger.Fields{"semester": semester})
 	statement := "INSERT INTO semesters (" +
 		"created_at, " +
 		"updated_at, " +
@@ -117,6 +120,7 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 }
 
 func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
+	utils.LogWithContext("semesterRepo.Update", logger.Fields{"semester": semester})
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
@@ -143,6 +147,7 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 }
 
 func (sr *semesterRepo) Delete(semesterId string) error {
+	utils.LogWithContext("semesterRepo.Delete", logger.Fields{"semesterId": semesterId})
 	statement := "DELETE FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {

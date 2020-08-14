@@ -26,11 +26,12 @@ type SessionRepoInterface interface {
 }
 
 func (sr *sessionRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize SessionRepo", logger.Fields{})
+	utils.LogWithContext("sessionRepo.Initialize", logger.Fields{})
 	sr.db = db
 }
 
 func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, error) {
+	utils.LogWithContext("sessionRepo.SelectAllByClassId", logger.Fields{"classId": classId})
 	results := make([]domains.Session, 0)
 
 	statement := "SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC"
@@ -67,6 +68,7 @@ func (sr *sessionRepo) SelectAllByClassId(classId string) ([]domains.Session, er
 }
 
 func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
+	utils.LogWithContext("sessionRepo.SelectBySessionId", logger.Fields{"id": id})
 	statement := "SELECT * FROM sessions WHERE id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -93,6 +95,7 @@ func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 }
 
 func (sr *sessionRepo) Insert(sessions []domains.Session) []error {
+	utils.LogWithContext("sessionRepo.Insert", logger.Fields{"sessions": sessions})
 	tx, err := sr.db.Begin()
 	if err != nil {
 		return []error{appErrors.WrapDbTxBegin(err)}
@@ -139,6 +142,7 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) []error {
 }
 
 func (sr *sessionRepo) Update(id uint, session domains.Session) error {
+	utils.LogWithContext("sessionRepo.Update", logger.Fields{"session": session})
 	statement := "UPDATE sessions SET " +
 		"updated_at=?, " +
 		"class_id=?, " +
@@ -170,6 +174,7 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 }
 
 func (sr *sessionRepo) Delete(ids []uint) []error {
+	utils.LogWithContext("sessionRepo.Delete", logger.Fields{"ids": ids})
 	tx, err := sr.db.Begin()
 	if err != nil {
 		return []error{appErrors.WrapDbTxBegin(err)}

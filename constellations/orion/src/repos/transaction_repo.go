@@ -28,11 +28,12 @@ type TransactionRepoInterface interface {
 }
 
 func (tr *transactionRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize TransactionRepo", logger.Fields{})
+	utils.LogWithContext("transactionRepo.Initialize", logger.Fields{})
 	tr.db = db
 }
 
 func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transaction, error) {
+	utils.LogWithContext("transactionRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
 	results := make([]domains.Transaction, 0)
 
 	statement := "SELECT * FROM transactions WHERE account_id=?"
@@ -67,6 +68,7 @@ func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transact
 }
 
 func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
+	utils.LogWithContext("transactionRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
@@ -91,6 +93,7 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 }
 
 func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
+	utils.LogWithContext("transactionRepo.Insert", logger.Fields{"transaction": transaction})
 	statement := "INSERT INTO transactions (" +
 		"created_at, " +
 		"updated_at, " +
@@ -120,6 +123,7 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 }
 
 func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) error {
+	utils.LogWithContext("transactionRepo.Update", logger.Fields{"transaction": transaction})
 	statement := "UPDATE transactions SET " +
 		"updated_at=?, " +
 		"amount=?, " +
@@ -148,6 +152,7 @@ func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) erro
 }
 
 func (tr *transactionRepo) Delete(id uint) error {
+	utils.LogWithContext("transactionRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
