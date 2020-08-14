@@ -7,6 +7,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
 // Global variable
@@ -28,12 +29,12 @@ type AccountRepoInterface interface {
 }
 
 func (acc *accountRepo) Initialize(db *sql.DB) {
-	logger.Debug("Initialize AccountRepo", logger.Fields{})
+	utils.LogWithContext("Initialize AccountRepo", logger.Fields{})
 	acc.db = db
 }
 
 func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
-	logger.Debug("accountRepo.SelectById", logger.Fields{"id": id})
+	utils.LogWithContext("accountRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	defer stmt.Close()
@@ -57,7 +58,7 @@ func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
 }
 
 func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Account, error) {
-	logger.Debug("accountRepo.SelectByPrimaryEmail",
+	utils.LogWithContext("accountRepo.SelectByPrimaryEmail",
 		logger.Fields{"primaryEmail": primaryEmail},
 	)
 	statement := "SELECT * FROM accounts WHERE primary_email=?"
@@ -84,7 +85,7 @@ func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Accou
 }
 
 func (acc *accountRepo) Insert(account domains.Account) error {
-	logger.Debug("accountRepo.Insert", logger.Fields{"account": account})
+	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
 	statement := "INSERT INTO accounts (" +
 		"created_at, " +
 		"updated_at, " +
@@ -112,7 +113,7 @@ func (acc *accountRepo) Insert(account domains.Account) error {
 }
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {
-	logger.Debug("accountRepo.Update", logger.Fields{
+	utils.LogWithContext("accountRepo.Update", logger.Fields{
 		"id":      id,
 		"account": account,
 	})
@@ -142,7 +143,7 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 }
 
 func (acc *accountRepo) Delete(id uint) error {
-	logger.Debug("accountRepo.Delete", logger.Fields{"id": id})
+	utils.LogWithContext("accountRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
