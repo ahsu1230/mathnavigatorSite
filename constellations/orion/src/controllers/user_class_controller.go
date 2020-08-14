@@ -52,6 +52,16 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 	c.JSON(http.StatusOK, &userClasses)
 }
 
+func GetNewClasses(c *gin.Context) {
+	userClasses, err := repos.UserClassesRepo.SelectByNew()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, &userClasses)
+}
+
 func CreateUserClass(c *gin.Context) {
 	// Incoming JSON
 	var userClassesJson domains.UserClasses

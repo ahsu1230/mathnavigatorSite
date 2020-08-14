@@ -24,6 +24,7 @@ type UserRepoInterface interface {
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
 	SelectByAccountId(uint) ([]domains.User, error)
+	SelectByNew() ([]domains.User, error)
 	Insert(domains.User) error
 	Update(uint, domains.User) error
 	Delete(uint) error
@@ -166,6 +167,47 @@ func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullUint(accountId))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.DeletedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.MiddleName,
+			&user.Email,
+			&user.Phone,
+			&user.IsGuardian,
+			&user.AccountId,
+			&user.Notes,
+			&user.School,
+			&user.GraduationYear); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, user)
+	}
+	return results, nil
+}
+
+func (ur *userRepo) SelectByNew() ([]domains.User, error) {
+	results := make([]domains.User, 0)
+
+	now := time.Now().UTC()
+	week := time.Hour * 24 * 7
+	lastWeek := now.Add(-week)
+	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE created_at>=?")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(lastWeek)
 	if err != nil {
 		return nil, err
 	}
