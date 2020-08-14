@@ -75,6 +75,22 @@ func Test_GetAccountById(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
+// Test: Create 2 accounts with the same email
+func Test_CreateSameEmailAccountsFailure(t *testing.T) {
+	account1 := createAccount(1)
+	body1 := utils.CreateJsonBody(&account1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	// Create account with same email
+	account2 := createAccount(4)
+	body2 := utils.CreateJsonBody(&account2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
+	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+}
+
 // Test: Create 1 Account, Update it, GetAccountById()
 func Test_UpdateAccount(t *testing.T) {
 	// Create 1 Account
@@ -142,6 +158,12 @@ func createAccount(id int) domains.Account {
 			Id:           3,
 			PrimaryEmail: "foobar@example.com",
 			Password:     "password3",
+		}
+	case 4:
+		return domains.Account{
+			Id:           4,
+			PrimaryEmail: "john_smith@example.com",
+			Password:     "password4",
 		}
 	default:
 		return domains.Account{}

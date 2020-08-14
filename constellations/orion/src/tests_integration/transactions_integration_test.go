@@ -2,11 +2,12 @@ package tests_integration
 
 import (
 	"encoding/json"
+	"net/http"
+	"testing"
+
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
-	"net/http"
-	"testing"
 )
 
 // Test: Create 3 Transactions and GetAll()
@@ -55,10 +56,12 @@ func Test_CreateTransactions(t *testing.T) {
 	assert.EqualValues(t, 1, transactions[1].AccountId)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Test: Create 1 Transaction, Update, Get By ID
 func Test_UpdateTransaction(t *testing.T) {
+	createAccounts(t)
 
 	// Create 1 Transaction
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -89,10 +92,12 @@ func Test_UpdateTransaction(t *testing.T) {
 	assert.EqualValues(t, 1, transaction.AccountId)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
 func Test_DeleteTransaction(t *testing.T) {
+	createAccounts(t)
 
 	// Create
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -109,6 +114,7 @@ func Test_DeleteTransaction(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Helper methods

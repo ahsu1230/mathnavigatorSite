@@ -2,12 +2,13 @@ package tests_integration
 
 import (
 	"encoding/json"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 // Test: Create 3 Users and GetAll()
@@ -125,6 +126,34 @@ func Test_GetUsersByAccountId(t *testing.T) {
 
 }
 
+// Test: Create 2 Users with the same email
+func Test_CreateSameEmailUsersFailure(t *testing.T) {
+	account1 := createAccount(1)
+	body1 := utils.CreateJsonBody(&account1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	account2 := createAccount(2)
+	body2 := utils.CreateJsonBody(&account2)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+
+	user1 := createUser(1)
+	user2 := createUser(5)
+
+	body := utils.CreateJsonBody(&user1)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	// Create user with same email
+	body3 := utils.CreateJsonBody(&user2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
+	assert.EqualValues(t, http.StatusInternalServerError, recorder3.Code)
+
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+}
+
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
 	account := createAccount(1)
@@ -238,6 +267,19 @@ func createUser(id int) domains.User {
 			AccountId:      1,
 			Notes:          domains.NewNullString("notes4"),
 			School:         domains.NewNullString("schoolfour"),
+			GraduationYear: domains.NewNullUint(2004),
+		}
+	case 5:
+		return domains.User{
+			FirstName:      "Jonathan",
+			LastName:       "Smith",
+			MiddleName:     domains.NewNullString(""),
+			Email:          "john_smith@example.com",
+			Phone:          "555-555-0103",
+			IsGuardian:     false,
+			AccountId:      1,
+			Notes:          domains.NewNullString("notes5"),
+			School:         domains.NewNullString("schoolfive"),
 			GraduationYear: domains.NewNullUint(2004),
 		}
 	default:
