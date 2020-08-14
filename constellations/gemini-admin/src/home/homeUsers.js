@@ -47,7 +47,6 @@ export class HomeTabSectionUsers extends React.Component {
                     </div>
 
                     <ul>{newUsers}</ul>
-
                 </div>
             </div>
         );

@@ -5,7 +5,6 @@ import API from "../api.js";
 import { Link } from "react-router-dom";
 import { getFullName } from "../utils/userUtils.js";
 
-
 export class HomeTabSectionRegistrations extends React.Component {
     state = {
         pendingReg: [],
@@ -53,7 +52,6 @@ export class HomeTabSectionRegistrations extends React.Component {
             );
         });
 
-
         return (
             <div id="registrations">
                 <div className="sectionDetails">
@@ -69,12 +67,15 @@ export class HomeTabSectionRegistrations extends React.Component {
                     <div className="class-section">
                         <div className="container-flex">
                             <div className={"list-header" + " name"}>Name</div>
-                            <div className={"list-header" + " email"}>Email</div>
-                            <div className={"list-header" + " other"}>ClassId</div>
+                            <div className={"list-header" + " email"}>
+                                Email
+                            </div>
+                            <div className={"list-header" + " other"}>
+                                ClassId
+                            </div>
                         </div>
 
                         <ul>{userClasses}</ul>
-
                     </div>
                 </div>
 
@@ -91,12 +92,15 @@ export class HomeTabSectionRegistrations extends React.Component {
                     <div className="class-section">
                         <div className="container-flex">
                             <div className={"list-header" + " name"}>Name</div>
-                            <div className={"list-header" + " email"}>Email</div>
-                            <div className={"list-header" + " other"}>Registered For</div>
+                            <div className={"list-header" + " email"}>
+                                Email
+                            </div>
+                            <div className={"list-header" + " other"}>
+                                Registered For
+                            </div>
                         </div>
 
                         <ul>{userAfh}</ul>
-
                     </div>
                 </div>
             </div>

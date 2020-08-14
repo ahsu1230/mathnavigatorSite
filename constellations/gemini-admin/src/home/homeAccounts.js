@@ -20,7 +20,6 @@ export class HomeTabSectionAccounts extends React.Component {
     }
 
     render() {
-
         let unpaidAcc = this.state.unpaidAccounts.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
@@ -44,11 +43,12 @@ export class HomeTabSectionAccounts extends React.Component {
                     <div className="container-flex">
                         <div className={"list-header" + " name"}>Name</div>
                         <div className={"list-header" + " email"}>Email</div>
-                        <div className={"list-header" + " other"}>Account Id</div>
+                        <div className={"list-header" + " other"}>
+                            Account Id
+                        </div>
                     </div>
 
                     <ul>{unpaidAcc}</ul>
-
                 </div>
             </div>
         );
