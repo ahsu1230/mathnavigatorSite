@@ -91,30 +91,22 @@ export class HomePage extends React.Component {
 }
 
 class TabButton extends React.Component {
-    state = {
-        isZero: false,
-    };
-
-    componentDidMount = () => {
-        if (this.props.buttonNum == 0) {
-            this.setState({
-                isZero: true,
-            });
-        }
-        console.log("isZero state is " + this.state.isZero);
-    };
-
     render() {
         let highlight = this.props.highlight;
         let section = this.props.section;
         let displayName = sectionDisplayNames[section];
         let numNotif = this.props.buttonNum;
 
-        let displayNotif = (
-            <div className={"notif" + (this.state.isZero ? " zero" : "")}>
-                {numNotif}
-            </div>
-        );
+        var isZero = "";
+
+        if (numNotif == 0) {
+            isZero = "notif zero";
+        } else {
+            isZero = "notif";
+        }
+        console.log("isZero state is " + isZero);
+
+        let displayNotif = <div className={isZero}>{numNotif}</div>;
 
         return (
             <button
