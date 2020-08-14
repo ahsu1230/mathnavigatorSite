@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -18,17 +19,23 @@ import (
 func main() {
 	fmt.Println("Orion service starting...")
 
+	// Parse flags
+	var production bool
+	flag.BoolVar(&production, "production", false, "Production mode")
+	flag.Parse()
+
 	// Setup Logging
 	fmt.Println("Setting up Logger...")
-	logger.SetupDev()
-	// if production {
-	// 	err := logger.SetupProd()
-	// 	if err != nil {
-	// 		fmt.Printf("Logger failed to setup! %w", err)
-	// 		os.Exit(1)
-	// 		return
-	// 	}
-	// }
+	if production {
+		err := logger.SetupProd()
+		if err != nil {
+			fmt.Printf("Logger failed to setup! %w", err)
+			os.Exit(1)
+			return
+		}
+	} else {
+		logger.SetupDev()
+	}
 	logger.Message("Logger successfully setup!")
 
 	// App Repos
