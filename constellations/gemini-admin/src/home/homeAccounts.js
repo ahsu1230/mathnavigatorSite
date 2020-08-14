@@ -3,6 +3,7 @@ require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
+import { getFullName } from "../utils/userUtils.js";
 
 export class HomeTabSectionAccounts extends React.Component {
     state = {
@@ -11,9 +12,9 @@ export class HomeTabSectionAccounts extends React.Component {
 
     componentDidMount() {
         API.get("api/accounts/unpaid").then((res) => {
-            const transaction = res.data;
+            const accounts = res.data;
             this.setState({
-                unpaidAccounts: transaction,
+                unpaidAccounts: accounts,
             });
         });
     }
@@ -25,7 +26,7 @@ export class HomeTabSectionAccounts extends React.Component {
                 <li className="container-flex" key={index}>
                     <div className="name">{getFullName(row)} </div>
                     <div className="email">{row.email} </div>
-                    <div className="other">{row.accountId} </div>
+                    <div className="other">{row.id} </div>
                 </li>
             );
         });
@@ -43,7 +44,7 @@ export class HomeTabSectionAccounts extends React.Component {
                     <div className="container-flex">
                         <div className={"list-header" + " name"}>Name</div>
                         <div className={"list-header" + " email"}>Email</div>
-                        <div className={"list-header" + " other"}>Unpaid Amount</div>
+                        <div className={"list-header" + " other"}>Account Id</div>
                     </div>
 
                     <ul>{unpaidAcc}</ul>
