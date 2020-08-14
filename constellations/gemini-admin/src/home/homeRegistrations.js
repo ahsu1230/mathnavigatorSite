@@ -38,7 +38,7 @@ export class HomeTabSectionRegistrations extends React.Component {
                 <li className="container-flex" key={index}>
                     <div className="name">{getFullName(row)} </div>
                     <div className="email">{row.email} </div>
-
+                    <div className="other">{row.classId} </div>
                 </li>
             );
         });
@@ -48,7 +48,7 @@ export class HomeTabSectionRegistrations extends React.Component {
                 <li className="container-flex" key={index}>
                     <div className="name">{getFullName(row)} </div>
                     <div className="email">{row.email} </div>
-
+                    <div className="other">{row.title} </div>
                 </li>
             );
         });
