@@ -106,17 +106,31 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	if err != nil {
 		return err
 	}
-	_, err = tx.Exec("INSERT INTO accounts (" +
+	statement := "INSERT INTO accounts (" +
 		"created_at, " +
 		"updated_at, " +
 		"primary_email, " +
 		"password" +
-		") VALUES (?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?)"
+	stmt, err := acc.db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	_, err = stmt.Exec(
+		now,
+		now,
+		account.PrimaryEmail,
+		account.Password,
+	)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	_, err = tx.Exec("INSERT INTO users (" +
+
+	statement2 := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
 		"first_name, " +
@@ -129,7 +143,27 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 		"notes," +
 		"school," +
 		"graduation_year" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+	stmt2, err := acc.db.Prepare(statement2)
+	if err != nil {
+		return err
+	}
+	defer stmt2.Close()
+
+	_, err = stmt2.Exec(
+		now,
+		now,
+		user.FirstName,
+		user.LastName,
+		user.MiddleName,
+		user.Email,
+		user.Phone,
+		user.IsGuardian,
+		user.AccountId,
+		user.Notes,
+		user.School,
+		user.GraduationYear,
+	)
 	if err != nil {
 		tx.Rollback()
 		return err

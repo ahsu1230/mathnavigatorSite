@@ -145,14 +145,16 @@ func Test_InsertAccountAndUser(t *testing.T) {
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectBegin()
-	mock.ExpectExec("^INSERT INTO accounts").
+	mock.ExpectPrepare("^INSERT INTO accounts").
+		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
 			"john_smith@example.com",
 			"password",
 		).WillReturnResult(result)
-	mock.ExpectExec("^INSERT INTO users").
+	mock.ExpectPrepare("^INSERT INTO users").
+		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
