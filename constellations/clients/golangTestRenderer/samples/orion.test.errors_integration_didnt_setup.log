@@ -137,13 +137,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateAchievementSuccess
-=== RUN   TestUpdateAchievement_Invalid
+=== RUN   TestUpdateAchievementInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/achievement/1 requestUuid=eb55a0ac-cc4d-439b-a26d-620cbe989b0d
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=eb55a0ac-cc4d-439b-a26d-620cbe989b0d
 [GIN] 2020/08/13 - 11:58:44 | 400 |       58.12µs |                 | POST     /api/achievements/achievement/1
 Error #01: Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateAchievement_Invalid (0.00s)
+--- PASS: TestUpdateAchievementInvalid (0.00s)
 === RUN   TestUpdateAchievementFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/achievement/1 requestUuid=d9536ee9-7f17-47aa-88fa-7ec0cce8ef4c
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -227,13 +227,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateAnnounceSuccess
-=== RUN   TestUpdateAnnounce_Invalid
+=== RUN   TestUpdateAnnounceInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/announcement/1 requestUuid=c0fc598c-7d7b-4677-b6aa-3b29a59fd15f
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=c0fc598c-7d7b-4677-b6aa-3b29a59fd15f
 [GIN] 2020/08/13 - 11:58:44 | 400 |      78.919µs |                 | POST     /api/announcements/announcement/1
 Error #01: Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateAnnounce_Invalid (0.00s)
+--- PASS: TestUpdateAnnounceInvalid (0.00s)
 === RUN   TestUpdateAnnounceFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/announcement/1 requestUuid=bf5618a5-7614-4abe-880d-5ad8dc79080c
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -317,13 +317,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateAFHSuccess
-=== RUN   TestUpdateAFH_Invalid
+=== RUN   TestUpdateAFHInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/afh/1 requestUuid=9de6ce3f-f3ad-48aa-b962-c81a46206b16
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=9de6ce3f-f3ad-48aa-b962-c81a46206b16
 [GIN] 2020/08/13 - 11:58:44 | 400 |      93.921µs |                 | POST     /api/askforhelp/afh/1
 Error #01: Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateAFH_Invalid (0.00s)
+--- PASS: TestUpdateAFHInvalid (0.00s)
 === RUN   TestUpdateAFHFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/afh/1 requestUuid=ebf0a3c5-2847-4268-b4d3-267748af0b93
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -427,13 +427,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateClassSuccess
-=== RUN   TestUpdateClass_Invalid
+=== RUN   TestUpdateClassInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/class/program1 requestUuid=487f83ea-170b-44b1-a080-abba3e8617ec
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=487f83ea-170b-44b1-a080-abba3e8617ec
 [GIN] 2020/08/13 - 11:58:44 | 400 |      70.142µs |                 | POST     /api/classes/class/program1
 Error #01: Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateClass_Invalid (0.00s)
+--- PASS: TestUpdateClassInvalid (0.00s)
 === RUN   TestUpdateClassFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/class/program1 requestUuid=72b4b88a-3cfb-4140-97c9-ec5d65f06284
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -568,13 +568,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateLocationSuccess
-=== RUN   TestUpdateLocation_Invalid
+=== RUN   TestUpdateLocationInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/location/loc1 requestUuid=0ba26f67-7614-43b9-8652-c227c4b62307
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=0ba26f67-7614-43b9-8652-c227c4b62307
 [GIN] 2020/08/13 - 11:58:44 | 400 |     237.455µs |                 | POST     /api/locations/location/loc1
 Error #01: Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateLocation_Invalid (0.00s)
+--- PASS: TestUpdateLocationInvalid (0.00s)
 === RUN   TestUpdateLocationFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/location/loc2 requestUuid=b47bb578-aa0c-42b4-9cde-6f0d264395f3
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -658,13 +658,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateProgramSuccess
-=== RUN   TestUpdateProgram_Invalid
+=== RUN   TestUpdateProgramInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/program/prog1 requestUuid=a14585fa-567e-4bee-9f72-5c1ab435a998
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=a14585fa-567e-4bee-9f72-5c1ab435a998
 [GIN] 2020/08/13 - 11:58:44 | 400 |     117.771µs |                 | POST     /api/programs/program/prog1
 Error #01: Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateProgram_Invalid (0.00s)
+--- PASS: TestUpdateProgramInvalid (0.00s)
 === RUN   TestUpdateProgramFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/program/prog1 requestUuid=bf57cecd-9e5e-4150-9bf2-dfed0460dfd3
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -758,13 +758,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateSemesterSuccess
-=== RUN   TestUpdateSemester_Invalid
+=== RUN   TestUpdateSemesterInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/semester/2020_fall requestUuid=591a3770-abae-4928-86c8-a4ff7898dcf6
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=591a3770-abae-4928-86c8-a4ff7898dcf6
 [GIN] 2020/08/13 - 11:58:44 | 400 |     102.757µs |                 | POST     /api/semesters/semester/2020_fall
 Error #01: Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateSemester_Invalid (0.00s)
+--- PASS: TestUpdateSemesterInvalid (0.00s)
 === RUN   TestUpdateSemesterFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/semester/2020_fall requestUuid=1e7a012a-ab3d-4c7b-b4ba-8548695d726f
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -848,13 +848,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateSessionSuccess
-=== RUN   TestUpdateSession_Invalid
+=== RUN   TestUpdateSessionInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/session/1 requestUuid=78505a7b-1091-4aeb-9128-bf7d70c09161
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Session: Invalid session notes entry)" app=orion cause="Invalid Session: Invalid session notes entry"
 time="2020-08-13T11:58:44-04:00" level=error msg="Unknown error (Invalid Session: Invalid session notes entry)" app=orion code=400 requestUuid=78505a7b-1091-4aeb-9128-bf7d70c09161
 [GIN] 2020/08/13 - 11:58:44 | 400 |     146.257µs |                 | POST     /api/sessions/session/1
 Error #01: Invalid Session: Invalid session notes entry
---- PASS: TestUpdateSession_Invalid (0.00s)
+--- PASS: TestUpdateSessionInvalid (0.00s)
 === RUN   TestUpdateSessionFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/session/2 requestUuid=a47c0c67-677c-4531-8200-2b4c0005fafe
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -932,13 +932,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateTransactionSuccess
-=== RUN   TestUpdateTransaction_Invalid
+=== RUN   TestUpdateTransactionInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=3c2b33dd-1dc2-4a9c-bb33-e5b5240be9d5
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=3c2b33dd-1dc2-4a9c-bb33-e5b5240be9d5
 [GIN] 2020/08/13 - 11:58:44 | 400 |      52.614µs |                 | POST     /api/transactions/transaction/1
 Error #01: Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateTransaction_Invalid (0.00s)
+--- PASS: TestUpdateTransactionInvalid (0.00s)
 === RUN   TestUpdateTransactionFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=4c45797a-3baf-4e7a-a2ff-ba3726fdc6f0
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -1119,19 +1119,19 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateUserClassSuccess
-=== RUN   TestUpdateUserClass_Invalid
+=== RUN   TestUpdateUserClassInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/user-class/1 requestUuid=d87095b6-d45b-414c-9cf3-40f5f4ddafa5
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=d87095b6-d45b-414c-9cf3-40f5f4ddafa5
 [GIN] 2020/08/13 - 11:58:44 | 404 |      43.863µs |                 | POST     /api/user-classes/user-class/1
 Error #01: Caused by mock: SQL_NO_ROWS_ERROR
---- FAIL: TestUpdateUserClass_Invalid (0.00s)
+--- FAIL: TestUpdateUserClassInvalid (0.00s)
     user_class_controller_test.go:228: 
         	Error Trace:	user_class_controller_test.go:228
         	Error:      	Not equal: 
         	            	expected: 500
         	            	actual  : 404
-        	Test:       	TestUpdateUserClass_Invalid
+        	Test:       	TestUpdateUserClassInvalid
 === RUN   TestUpdateUserClassFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/user-class/1 requestUuid=2e4798b9-cb41-4edd-a2a5-49eb95ff42ef
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
@@ -1232,13 +1232,13 @@ time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!"
         	            	expected: 200
         	            	actual  : 204
         	Test:       	TestUpdateUserSuccess
-=== RUN   TestUpdateUser_Invalid
+=== RUN   TestUpdateUserInvalid
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/user/1 requestUuid=81488bb1-e83a-44a7-bc9d-b42cc3ca4026
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
 time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=81488bb1-e83a-44a7-bc9d-b42cc3ca4026
 [GIN] 2020/08/13 - 11:58:44 | 400 |      57.935µs |                 | POST     /api/users/user/1
 Error #01: Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR
---- PASS: TestUpdateUser_Invalid (0.00s)
+--- PASS: TestUpdateUserInvalid (0.00s)
 === RUN   TestUpdateUserFailure
 time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/user/1 requestUuid=b6857320-0ee5-4201-89fe-9b2a46a18f9f
 time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
