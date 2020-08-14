@@ -1,0 +1,33 @@
+body {
+    font-family: 'Helvetica', 'sans-serif';
+    line-height: 1.5;
+}
+
+p {
+    margin: 16px 0 32px;
+}
+
+span.log {
+    color: #6a6a6a;
+}
+
+span.gin {
+    color: mediumblue;
+}
+
+.error {
+    color: orangered;
+}
+
+.success {
+    color: darkgreen;
+}
+
+.failed {
+    color: red;
+}
+
+.failed span.log {
+    color: darkred;
+}
+

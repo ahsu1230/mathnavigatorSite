@@ -10,4 +10,6 @@
 **/*.iml
 **/*.project
 **/*.DS_Store
-**/*.log
+
+constellations/orion/**/*.log
+constellations/clients/golangTestRenderer/index.html
