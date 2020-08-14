@@ -15,8 +15,8 @@ const (
 
 type UserClasses struct {
 	Id        uint         `json:"id"`
-	CreatedAt time.Time    `json:"-" db:"created_at"`
-	UpdatedAt time.Time    `json:"-" db:"updated_at"`
+	CreatedAt time.Time    `json:"createdAt" db:"created_at"`
+	UpdatedAt time.Time    `json:"updatedAt" db:"updated_at"`
 	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
 	UserId    uint         `json:"userId" db:"user_id"`
 	ClassId   string       `json:"classId" db:"class_id"`

@@ -76,6 +76,16 @@ func GetUsersByAccountId(c *gin.Context) {
 	c.JSON(http.StatusOK, &user)
 }
 
+func GetNewUsers(c *gin.Context) {
+	users, err := repos.UserRepo.SelectByNew()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, err.Error())
+	} else {
+		c.JSON(http.StatusOK, &users)
+	}
+}
+
 func CreateUser(c *gin.Context) {
 	utils.LogControllerMethod(c, "userController.CreateUser")
 

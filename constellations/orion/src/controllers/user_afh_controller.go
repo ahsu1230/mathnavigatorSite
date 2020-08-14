@@ -71,6 +71,16 @@ func GetUserAfhByBothIds(c *gin.Context) {
 	c.JSON(http.StatusOK, &userAfh)
 }
 
+func GetUserAfhByNew(c *gin.Context) {
+	userAfh, err := repos.UserAfhRepo.SelectByNew()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, &userAfh)
+	}
+}
+
 func CreateUserAfh(c *gin.Context) {
 	// Incoming JSON
 	var userAfhJson domains.UserAfh

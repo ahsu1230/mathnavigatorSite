@@ -108,6 +108,34 @@ func TestSelectByUserAndClass(t *testing.T) {
 }
 
 //
+// Select New Classes
+//
+func TestSelectByNow(t *testing.T) {
+	db, mock, repo := initUserClassesTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserClassesRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE created_at>=*").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectByNew()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.UserClasses{getUserClasses()}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Create
 //
 func TestInsertUserClass(t *testing.T) {

@@ -248,6 +248,7 @@ type mockUserRepo struct {
 	MockSelectAll         func(string, int, int) ([]domains.User, error)
 	MockSelectById        func(uint) (domains.User, error)
 	MockSelectByAccountId func(uint) ([]domains.User, error)
+	MockSelectByNew       func() ([]domains.User, error)
 	MockInsert            func(domains.User) error
 	MockUpdate            func(uint, domains.User) error
 	MockDelete            func(uint) error
@@ -269,6 +270,9 @@ func (userRepo *mockUserRepo) SelectById(id uint) (domains.User, error) {
 func (userRepo *mockUserRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	return userRepo.MockSelectByAccountId(accountId)
 }
+func (userRepo *mockUserRepo) SelectByNew() ([]domains.User, error) {
+	return userRepo.MockSelectByNew()
+}
 func (userRepo *mockUserRepo) Insert(user domains.User) error {
 	return userRepo.MockInsert(user)
 }
@@ -285,6 +289,7 @@ type mockUserClassesRepo struct {
 	MockSelectByClassId      func(string) ([]domains.UserClasses, error)
 	MockSelectByUserId       func(uint) ([]domains.UserClasses, error)
 	MockSelectByUserAndClass func(uint, string) (domains.UserClasses, error)
+	MockSelectByNew          func() ([]domains.UserClasses, error)
 	MockInsert               func(domains.UserClasses) error
 	MockUpdate               func(uint, domains.UserClasses) error
 	MockDelete               func(uint) error
@@ -301,6 +306,9 @@ func (userClassesRepo *mockUserClassesRepo) SelectByUserId(id uint) ([]domains.U
 }
 func (userClassesRepo *mockUserClassesRepo) SelectByUserAndClass(id uint, classId string) (domains.UserClasses, error) {
 	return userClassesRepo.MockSelectByUserAndClass(id, classId)
+}
+func (userClassesRepo *mockUserClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
+	return userClassesRepo.MockSelectByNew()
 }
 func (userClassesRepo *mockUserClassesRepo) Insert(userClasses domains.UserClasses) error {
 	return userClassesRepo.MockInsert(userClasses)
@@ -401,6 +409,7 @@ type mockUserAfhRepo struct {
 	MockSelectByUserId  func(uint) ([]domains.UserAfh, error)
 	MockSelectByAfhId   func(uint) ([]domains.UserAfh, error)
 	MockSelectByBothIds func(uint, uint) (domains.UserAfh, error)
+	MockSelectByNew     func() ([]domains.UserAfh, error)
 	MockInsert          func(domains.UserAfh) error
 	MockUpdate          func(uint, domains.UserAfh) error
 	MockDelete          func(uint) error
@@ -417,6 +426,9 @@ func (userAfhRepo *mockUserAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh
 }
 func (userAfhRepo *mockUserAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, error) {
 	return userAfhRepo.MockSelectByBothIds(userId, afhId)
+}
+func (userAfhRepo *mockUserAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
+	return userAfhRepo.MockSelectByNew()
 }
 func (userAfhRepo *mockUserAfhRepo) Insert(userAfh domains.UserAfh) error {
 	return userAfhRepo.MockInsert(userAfh)
