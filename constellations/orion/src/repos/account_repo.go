@@ -2,6 +2,7 @@ package repos
 
 import (
 	"database/sql"
+	"log"
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -22,6 +23,7 @@ type AccountRepoInterface interface {
 	SelectById(uint) (domains.Account, error)
 	SelectByPrimaryEmail(string) (domains.Account, error)
 	Insert(domains.Account) error
+	InsertWithUser(domains.Account, domains.User) error
 	Update(uint, domains.Account) error
 	Delete(uint) error
 }
@@ -97,6 +99,47 @@ func (acc *accountRepo) Insert(account domains.Account) error {
 		return err
 	}
 	return utils.HandleSqlExecResult(execResult, 1, "account was not inserted")
+}
+
+func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.User) error {
+	tx, err := acc.db.Begin()
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec("INSERT INTO accounts (" +
+		"created_at, " +
+		"updated_at, " +
+		"primary_email, " +
+		"password" +
+		") VALUES (?, ?, ?, ?)")
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("INSERT INTO users (" +
+		"created_at, " +
+		"updated_at, " +
+		"first_name, " +
+		"last_name," +
+		"middle_name, " +
+		"email," +
+		"phone, " +
+		"is_guardian," +
+		"account_id," +
+		"notes," +
+		"school," +
+		"graduation_year" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return nil
 }
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {

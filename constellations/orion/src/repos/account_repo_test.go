@@ -136,6 +136,53 @@ func Test_InsertAccount(t *testing.T) {
 }
 
 //
+// Create User and Account
+//
+func Test_InsertAccountAndUser(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
+	mock.ExpectExec("^INSERT INTO accounts").
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"john_smith@example.com",
+			"password",
+		).WillReturnResult(result)
+	mock.ExpectExec("^INSERT INTO users").
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"John",
+			"Smith",
+			domains.NewNullString(""),
+			"john_smith@example.com",
+			"555-555-0100",
+			false,
+			2,
+			domains.NewNullString(""),
+			domains.NewNullString("school1"),
+			domains.NewNullUint(1213),
+		).WillReturnResult(result)
+	mock.ExpectCommit()
+	account := getAccount()
+	user := getUser()
+	err := repo.InsertWithUser(account, user)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+
+}
+
+//
 // Update
 //
 func Test_UpdateAccount(t *testing.T) {
