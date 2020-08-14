@@ -1,11 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
-	"os"
-	"bufio"
 	"log"
+	"os"
 	"strings"
 	"time"
 )
@@ -20,13 +20,16 @@ import (
 //
 // Then traverse to this folder (or open a new console tab/window) and run these commands.
 // go run render.go
-// go run render.go --filePath ../orion/orion.test.log
+// go run render.go --filePath ../../orion/orion.test.log
 // go run render.go --filePath samples/orion.test.compile.log
 //
 // by default the program will pick up the file at `orion/orion.test.log`.
 // but you can specify any file using the `filePath` flag
+//
+// Once the CLI is run, you can open the generated `index.html`
+// with an Internet browser to see your results
 
-var DEFAULT_FILE_PATH string = "../orion/orion.test.log"
+var DEFAULT_FILE_PATH string = "../../orion/orion.test.log"
 
 func main() {
 	log.Println("Starting render program...")
@@ -72,9 +75,10 @@ func writeToOutputFile(inputFile, outputFile *os.File) {
 	writer.WriteString("<h1>Test Results</h1>\n")
 
 	var hasCompileErrors = false
-	var numTests  = 0
+	var numTests = 0
 	var failedTestNames []string
 	var currentTestName string
+	var currentlyFailingTest = false
 
 	// Read inputFile and write to outputFile as we go
 	var builder strings.Builder
@@ -89,22 +93,22 @@ func writeToOutputFile(inputFile, outputFile *os.File) {
 		}
 
 		if strings.HasPrefix(line, "=== RUN") {
+			if numTests > 0 {
+				writeWholeTest(writer, builder, currentlyFailingTest)
+			}
+
 			numTests++
 			currentTestName = extractCurrentTestName(line)
 			builder.Reset()
 			builder.WriteString("<b>" + line + "</b><br/>")
+			currentlyFailingTest = false
 		} else if strings.HasPrefix(line, "--- PASS:") {
-			writer.WriteString("<p class=\"success\">\n")
-			writer.WriteString(builder.String())
-			writer.WriteString(line)
-			writer.WriteString("</p>\n")
+			builder.WriteString(line + "<br/>")
 			continue
 		} else if strings.HasPrefix(line, "--- FAIL:") {
-			writer.WriteString("<p class=\"failed\">\n")
-			writer.WriteString(builder.String())
-			writer.WriteString(line)
-			writer.WriteString("</p>\n")
+			currentlyFailingTest = true
 			failedTestNames = append(failedTestNames, currentTestName)
+			builder.WriteString(line + "<br/>")
 			continue
 		} else if strings.HasPrefix(line, "time=") {
 			builder.WriteString("<span class=\"log\">" + line + "</span><br/>")
@@ -114,6 +118,10 @@ func writeToOutputFile(inputFile, outputFile *os.File) {
 			builder.WriteString(line + "<br/>")
 		}
 	}
+
+	// Write last test
+	writeWholeTest(writer, builder, currentlyFailingTest)
+
 	writer.WriteString("</body></html>\n")
 	writer.Flush()
 	log.Println("Finish first write to temporary file.")
@@ -136,9 +144,19 @@ func writeToOutputFile(inputFile, outputFile *os.File) {
 	os.Remove(tmpFilePath)
 }
 
+func writeWholeTest(writer *bufio.Writer, builder strings.Builder, currentlyFailingTest bool) {
+	if currentlyFailingTest {
+		writer.WriteString("<p class=\"failed\">\n")
+	} else {
+		writer.WriteString("<p class=\"success\">\n")
+	}
+	writer.WriteString(builder.String())
+	writer.WriteString("</p>\n")
+}
+
 func writeHeader(writer *bufio.Writer, hasCompileErrors bool, numTests int, failedTestNames []string) {
 	if hasCompileErrors {
-		writer.WriteString("<h3>Some tests cannot run until code can successfully compile. " + 
+		writer.WriteString("<h3 class=\"compile\">Some tests cannot run until code can successfully compile. " +
 			"Please resolve the compilation errors.</h3>\n")
 		return
 	}
@@ -151,21 +169,21 @@ func writeHeader(writer *bufio.Writer, hasCompileErrors bool, numTests int, fail
 
 	if len(failedTestNames) > 0 {
 		writer.WriteString(fmt.Sprintf(
-			"<div class=\"failed\">\n" + 
-			"<h3>Failed %d Tests</h3>\n" + 
-			"<ul>\n", 
+			"<div class=\"failed\">\n"+
+				"<h3>Failed %d Tests</h3>\n"+
+				"<ul>\n",
 			len(failedTestNames)))
 		for _, testName := range failedTestNames {
 			writer.WriteString(fmt.Sprintf("<li>%s</li>\n", testName))
 		}
 		writer.WriteString("</ul></div>\n")
-	}	
+	}
 }
 
 func createCompileErrorMessage(line string) string {
 	return fmt.Sprintf(
-		"<h2 class=\"error compile\">There's a compile error!</h2>\n" + 
-		"<p>%s</p>\n",
+		"<h2 class=\"compile\">Compilation error</h2>\n"+
+			"<p>%s</p>\n",
 		line)
 }
 
