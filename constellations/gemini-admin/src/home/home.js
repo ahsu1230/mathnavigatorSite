@@ -38,6 +38,13 @@ export class HomePage extends React.Component {
                 unpublishedClasses: unpublishedList.classes,
             });
         });
+
+        API.get("api/users/new").then((res) => {
+            const users = res.data;
+            this.setState({
+                newUsers: users,
+            });
+        });
     };
 
     render() {
@@ -68,7 +75,7 @@ export class HomePage extends React.Component {
                         onChangeTab={this.changeSection}
                         highlight={this.state.currentSection == "user"}
                         section={"user"}
-                        //buttonNum = newUsers.length in homeUsers
+                        buttonNum={this.state.newUsers.length}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
