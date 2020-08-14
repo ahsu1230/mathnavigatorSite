@@ -5,7 +5,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
-
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 	"time"
 )
 
@@ -169,7 +169,7 @@ func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
 }
 
 func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
-	utils.LogWithContext("userClassRepo.Insert", logger.Fields{"userClass", userClasses})
+	utils.LogWithContext("userClassRepo.Insert", logger.Fields{"userClass": userClasses})
 	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
 		"updated_at, " +
