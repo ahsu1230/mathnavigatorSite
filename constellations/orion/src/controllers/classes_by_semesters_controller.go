@@ -11,6 +11,7 @@ import (
 )
 
 func GetAllProgramsSemestersClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "controller.GetAllProgramsSemestersClasses")
 	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch programs, semesters, classes from repo functions

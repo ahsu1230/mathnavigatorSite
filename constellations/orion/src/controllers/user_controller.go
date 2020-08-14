@@ -77,6 +77,7 @@ func GetUsersByAccountId(c *gin.Context) {
 }
 
 func GetNewUsers(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.GetNewUsers")
 	users, err := repos.UserRepo.SelectByNew()
 	if err != nil {
 		c.Error(err)

@@ -10,6 +10,7 @@ import (
 )
 
 func GetAllUnpublished(c *gin.Context) {
+	utils.LogControllerMethod(c, "publishController.GetAllUnpublished")
 	unpublishedDomains, err := callGetUnpublishedRepos()
 	if err != nil {
 		c.Error(err)

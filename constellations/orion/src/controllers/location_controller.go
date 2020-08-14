@@ -10,6 +10,7 @@ import (
 )
 
 func GetAllLocations(c *gin.Context) {
+	utils.LogControllerMethod(c, "locationController.GetAllLocations")
 	locationList, err := repos.LocationRepo.SelectAll()
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
@@ -20,6 +21,7 @@ func GetAllLocations(c *gin.Context) {
 }
 
 func GetLocationById(c *gin.Context) {
+	utils.LogControllerMethod(c, "locationController.GetLocationById")
 	// Incoming parameters
 	locationId := c.Param("locationId")
 
@@ -33,6 +35,7 @@ func GetLocationById(c *gin.Context) {
 }
 
 func CreateLocation(c *gin.Context) {
+	utils.LogControllerMethod(c, "locationController.CreateLocation")
 	// Incoming JSON
 	var locationJson domains.Location
 	if err := c.ShouldBindJSON(&locationJson); err != nil {
@@ -57,6 +60,7 @@ func CreateLocation(c *gin.Context) {
 }
 
 func UpdateLocation(c *gin.Context) {
+	utils.LogControllerMethod(c, "locationController.UpdateLocation")
 	// Incoming JSON & Parameters
 	locationId := c.Param("locationId")
 	var locationJson domains.Location
@@ -82,6 +86,7 @@ func UpdateLocation(c *gin.Context) {
 }
 
 func DeleteLocation(c *gin.Context) {
+	utils.LogControllerMethod(c, "locationController.DeleteLocation")
 	// Incoming Parameters
 	locationId := c.Param("locationId")
 

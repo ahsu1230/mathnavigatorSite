@@ -15,6 +15,7 @@ type StateValues struct {
 }
 
 func GetUsersByClassId(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.GetUsersByClassId")
 	// Incoming parameters
 	classId := c.Param("classId")
 
@@ -28,6 +29,7 @@ func GetUsersByClassId(c *gin.Context) {
 }
 
 func GetClassesByUserId(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.GetClassesByUserId")
 	// Incoming parameters
 	id, err := utils.ParseParamId(c, "userId")
 	if err != nil {
@@ -46,6 +48,7 @@ func GetClassesByUserId(c *gin.Context) {
 }
 
 func GetUserClassByUserAndClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.GetUserClassByUserAndClass")
 	// Incoming parameters
 	id, err := utils.ParseParamId(c, "userId")
 	if err != nil {
@@ -66,6 +69,7 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 }
 
 func GetNewClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.GetNewClasses")
 	userClasses, err := repos.UserClassesRepo.SelectByNew()
 	if err != nil {
 		c.Error(err)
@@ -76,6 +80,7 @@ func GetNewClasses(c *gin.Context) {
 }
 
 func CreateUserClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.CreateUserClass")
 	// Incoming JSON
 	var userClassesJson domains.UserClasses
 	if err := c.ShouldBindJSON(&userClassesJson); err != nil {
@@ -100,6 +105,7 @@ func CreateUserClass(c *gin.Context) {
 }
 
 func UpdateUserClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.UpdateUserClass")
 	// Incoming JSON & Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -130,6 +136,7 @@ func UpdateUserClass(c *gin.Context) {
 }
 
 func DeleteUserClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.DeleteUserClass")
 	// Incoming Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -147,11 +154,12 @@ func DeleteUserClass(c *gin.Context) {
 }
 
 func GetStateValues(c *gin.Context) {
+	utils.LogControllerMethod(c, "userClassController.GetStateValues")
 	arr := make([]StateValues, 0)
 	// create 3 stateValues variables and push them to arr
-	stateValue1 := StateValues{"pending", 0}
-	stateValue2 := StateValues{"accepted", 1}
-	stateValue3 := StateValues{"trial", 2}
+	stateValue1 := StateValues{"pending", domains.USER_CLASS_PENDING}
+	stateValue2 := StateValues{"accepted", domains.USER_CLASS_ACCEPTED}
+	stateValue3 := StateValues{"trial", domains.USER_CLASS_TRIAL}
 
 	arr = append(arr, stateValue1, stateValue2, stateValue3)
 	c.JSON(http.StatusOK, arr)

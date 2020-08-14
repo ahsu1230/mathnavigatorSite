@@ -10,6 +10,7 @@ import (
 )
 
 func GetAllPrograms(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.GetAllPrograms")
 	programList, err := repos.ProgramRepo.SelectAll()
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
@@ -20,6 +21,7 @@ func GetAllPrograms(c *gin.Context) {
 }
 
 func GetProgramById(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.GetProgramById")
 	// Incoming parameters
 	programId := c.Param("programId")
 
@@ -33,6 +35,7 @@ func GetProgramById(c *gin.Context) {
 }
 
 func CreateProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.CreateProgram")
 	// Incoming JSON
 	var programJson domains.Program
 	if err := c.ShouldBindJSON(&programJson); err != nil {
@@ -57,6 +60,7 @@ func CreateProgram(c *gin.Context) {
 }
 
 func UpdateProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.UpdateProgram")
 	// Incoming JSON & Parameters
 	programId := c.Param("programId")
 	var programJson domains.Program
@@ -82,6 +86,7 @@ func UpdateProgram(c *gin.Context) {
 }
 
 func DeleteProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.DeleteProgram")
 	// Incoming Parameters
 	programId := c.Param("programId")
 

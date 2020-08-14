@@ -11,6 +11,7 @@ import (
 )
 
 func GetAllAFH(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.GetAllAFH")
 	afhList, err := repos.AskForHelpRepo.SelectAll()
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
@@ -21,6 +22,7 @@ func GetAllAFH(c *gin.Context) {
 }
 
 func GetAFHById(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.GetAFHById")
 	// Incoming parameters
 	id, _ := utils.ParseParamId(c, "id")
 
@@ -34,6 +36,7 @@ func GetAFHById(c *gin.Context) {
 }
 
 func CreateAFH(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.CreateAFH")
 	// Incoming JSON
 	var afhJson domains.AskForHelp
 	if err := c.ShouldBindJSON(&afhJson); err != nil {
@@ -58,6 +61,7 @@ func CreateAFH(c *gin.Context) {
 }
 
 func UpdateAFH(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.UpdateAFH")
 	// Incoming JSON & Parameters
 	id, _ := utils.ParseParamId(c, "id")
 	var afhJson domains.AskForHelp
@@ -83,6 +87,7 @@ func UpdateAFH(c *gin.Context) {
 }
 
 func DeleteAFH(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.DeleteAFH")
 	// Incoming Parameters
 	id, _ := utils.ParseParamId(c, "id")
 

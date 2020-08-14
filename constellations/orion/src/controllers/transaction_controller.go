@@ -11,6 +11,7 @@ import (
 )
 
 func GetTransactionsByAccountId(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetTransactionsByAccountId")
 	accountId, err := utils.ParseParamId(c, "accountId")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("accountId")))
@@ -28,6 +29,7 @@ func GetTransactionsByAccountId(c *gin.Context) {
 }
 
 func GetTransactionById(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetTransactionById")
 	//Incoming params
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -46,6 +48,7 @@ func GetTransactionById(c *gin.Context) {
 }
 
 func CreateTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.CreateTransaction")
 	//JSON
 	var transactionJson domains.Transaction
 	if err := c.ShouldBindJSON(&transactionJson); err != nil {
@@ -70,6 +73,7 @@ func CreateTransaction(c *gin.Context) {
 }
 
 func UpdateTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.UpdateTransaction")
 	// Incoming JSON & Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -100,6 +104,7 @@ func UpdateTransaction(c *gin.Context) {
 }
 
 func DeleteTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.DeleteTransaction")
 	// Incoming Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -117,5 +122,6 @@ func DeleteTransaction(c *gin.Context) {
 }
 
 func GetAllPaymentTypes(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetAllPaymentTypes")
 	c.JSON(http.StatusOK, domains.ALL_TRANSACTION_TYPES)
 }

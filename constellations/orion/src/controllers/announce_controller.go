@@ -11,6 +11,7 @@ import (
 )
 
 func GetAllAnnouncements(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.GetAllAnnouncements")
 	announceList, err := repos.AnnounceRepo.SelectAll()
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
@@ -21,6 +22,7 @@ func GetAllAnnouncements(c *gin.Context) {
 }
 
 func GetAnnouncementById(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.GetAnnouncementById")
 	// Incoming parameters
 	id, _ := utils.ParseParamId(c, "id")
 
@@ -34,6 +36,7 @@ func GetAnnouncementById(c *gin.Context) {
 }
 
 func CreateAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.CreateAnnouncement")
 	// Incoming JSON
 	var announceJson domains.Announce
 	if err := c.ShouldBindJSON(&announceJson); err != nil {
@@ -58,6 +61,7 @@ func CreateAnnouncement(c *gin.Context) {
 }
 
 func UpdateAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.UpdateAnnouncement")
 	// Incoming JSON & Parameters
 	id, _ := utils.ParseParamId(c, "id")
 	var announceJson domains.Announce
@@ -84,6 +88,7 @@ func UpdateAnnouncement(c *gin.Context) {
 }
 
 func DeleteAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.DeleteAnnouncement")
 	// Incoming Parameters
 	id, _ := utils.ParseParamId(c, "id")
 

@@ -11,6 +11,7 @@ import (
 )
 
 func GetAllClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetAllClasses")
 	// Incoming optional parameter
 	publishedOnly := utils.ParseParamPublishedOnly(c)
 
@@ -24,6 +25,7 @@ func GetAllClasses(c *gin.Context) {
 }
 
 func GetClassById(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetClassById")
 	// Incoming parameters
 	classId := c.Param("classId")
 
@@ -37,6 +39,7 @@ func GetClassById(c *gin.Context) {
 }
 
 func GetClassesByProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetClassesByProgram")
 	// Incoming parameters
 	programId := c.Param("programId")
 
@@ -50,6 +53,7 @@ func GetClassesByProgram(c *gin.Context) {
 }
 
 func GetClassesBySemester(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetClassesBySemester")
 	// Incoming parameters
 	semesterId := c.Param("semesterId")
 
@@ -63,6 +67,7 @@ func GetClassesBySemester(c *gin.Context) {
 }
 
 func GetClassesByProgramAndSemester(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetClassesByProgramAndSemester")
 	// Incoming parameters
 	programId := c.Param("programId")
 	semesterId := c.Param("semesterId")
@@ -77,6 +82,7 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 }
 
 func CreateClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.CreateClass")
 	// Incoming JSON
 	var classJson domains.Class
 	if err := c.ShouldBindJSON(&classJson); err != nil {
@@ -101,6 +107,7 @@ func CreateClass(c *gin.Context) {
 }
 
 func UpdateClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.UpdateClass")
 	// Incoming JSON & Parameters
 	classId := c.Param("classId")
 	var classJson domains.Class
@@ -126,6 +133,7 @@ func UpdateClass(c *gin.Context) {
 }
 
 func PublishClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.PublishClass")
 	// Incoming JSON
 	var classIds []string
 	if err := c.ShouldBindJSON(&classIds); err != nil {
@@ -146,6 +154,7 @@ func PublishClasses(c *gin.Context) {
 }
 
 func DeleteClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.DeleteClass")
 	// Incoming Parameters
 	classId := c.Param("classId")
 

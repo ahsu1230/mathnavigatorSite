@@ -11,6 +11,7 @@ import (
 )
 
 func GetAllSessionsByClassId(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.GetAllSessionsByClassId")
 	classId := c.Param("classId")
 
 	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId)
@@ -23,6 +24,7 @@ func GetAllSessionsByClassId(c *gin.Context) {
 }
 
 func GetSessionById(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.GetSessionById")
 	// Incoming parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -41,6 +43,7 @@ func GetSessionById(c *gin.Context) {
 }
 
 func CreateSessions(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.CreateSession")
 	// Incoming JSON
 	var sessionsJson []domains.Session
 	if err := c.ShouldBindJSON(&sessionsJson); err != nil {
@@ -61,6 +64,7 @@ func CreateSessions(c *gin.Context) {
 }
 
 func UpdateSession(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.UpdateSession")
 	// Incoming JSON & Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
@@ -91,6 +95,7 @@ func UpdateSession(c *gin.Context) {
 }
 
 func DeleteSessions(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.DeleteSessions")
 	// Incoming Parameters
 	var idsJson []uint
 	if err := c.ShouldBindJSON(&idsJson); err != nil {
