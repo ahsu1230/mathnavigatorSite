@@ -94,8 +94,8 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 	}
 
 	return appErrors.ResponseError{
-		code,
-		message,
-		wrappedErr,
+		Code:    code,
+		Message: message,
+		Error:   wrappedErr,
 	}
 }
