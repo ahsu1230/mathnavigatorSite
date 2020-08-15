@@ -109,6 +109,30 @@ func TestGetUserAfhByBothIds_Success(t *testing.T) {
 	}
 }
 
+func TestGetUserAfhByNew(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByNew = func() ([]domains.UserAfh, error) {
+		return []domains.UserAfh{
+			testUtils.CreateMockUserAfh(2, 3),
+			testUtils.CreateMockUserAfh(2, 4),
+		}, nil
+	}
+	repos.UserAfhRepo = &testUtils.UserAfhRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/new", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var userAfh []domains.UserAfh
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userAfh); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 2, userAfh[0].UserId)
+	assert.EqualValues(t, 3, userAfh[0].AfhId)
+	assert.EqualValues(t, 2, userAfh[1].UserId)
+	assert.EqualValues(t, 4, userAfh[1].AfhId)
+}
+
 // Test Create
 func TestCreateUserAfh_Success(t *testing.T) {
 	testUtils.UserAfhRepo.MockInsert = func(userAfh domains.UserAfh) error {

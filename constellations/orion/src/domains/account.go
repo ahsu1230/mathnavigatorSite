@@ -18,6 +18,11 @@ type Account struct {
 	Password     string       `json:"password" db:"password"`
 }
 
+type AccountSum struct {
+	Account Account `json:"account"`
+	Balance int     `json:"balance"`
+}
+
 // Class Methods
 
 func (account *Account) Validate() error {

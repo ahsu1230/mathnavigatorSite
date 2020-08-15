@@ -40,6 +40,16 @@ func SearchAccount(c *gin.Context) {
 	}
 }
 
+func GetNegativeBalanceAccounts(c *gin.Context) {
+	accountSum, err := repos.AccountRepo.SelectAllNegativeBalances()
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, accountSum)
+	}
+}
+
 func CreateAccount(c *gin.Context) {
 	// Incoming JSON
 	var accountJson domains.Account
