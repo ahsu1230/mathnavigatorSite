@@ -2,10 +2,9 @@ package repos
 
 import (
 	"database/sql"
-	"time"
-
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"time"
 )
 
 // Global variable
@@ -23,6 +22,7 @@ type UserAfhRepoInterface interface {
 	SelectByUserId(uint) ([]domains.UserAfh, error)
 	SelectByAfhId(uint) ([]domains.UserAfh, error)
 	SelectByBothIds(uint, uint) (domains.UserAfh, error)
+	SelectByNew() ([]domains.UserAfh, error)
 	Update(uint, domains.UserAfh) error
 	Delete(uint) error
 }
@@ -138,6 +138,37 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 		&userAfh.UserId,
 		&userAfh.AfhId)
 	return userAfh, errScan
+}
+func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
+	results := make([]domains.UserAfh, 0)
+
+	now := time.Now().UTC()
+	week := time.Hour * 24 * 7
+	lastWeek := now.Add(-week)
+	statement := "SELECT * FROM user_afh WHERE created_at>=?"
+
+	stmt, err := ur.db.Prepare(statement)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(lastWeek)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userAfh domains.UserAfh
+		if errScan := rows.Scan(
+			&userAfh.Id,
+			&userAfh.UserId,
+			&userAfh.AfhId); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, userAfh)
+	}
+	return results, nil
 }
 
 func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {

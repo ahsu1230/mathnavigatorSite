@@ -106,6 +106,51 @@ func TestGetAccounts_Failure(t *testing.T) {
 }
 
 //
+// Test Get Negative Balances
+//
+func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
+	testUtils.AccountRepo.MockSelectAllNegativeBalances = func() ([]domains.AccountSum, error) {
+		return []domains.AccountSum{
+			{
+				Account: domains.Account{
+					Id:           1,
+					PrimaryEmail: "test@gmail.com",
+					Password:     "password",
+				},
+				Balance: -300,
+			},
+			{
+				Account: domains.Account{
+					Id:           2,
+					PrimaryEmail: "test2@gmail.com",
+					Password:     "password2",
+				},
+				Balance: -200,
+			},
+		}, nil
+	}
+	repos.AccountRepo = &testUtils.AccountRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/accounts/unpaid", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var accountSums []domains.AccountSum
+	if err := json.Unmarshal(recorder.Body.Bytes(), &accountSums); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, accountSums[0].Account.Id)
+	assert.EqualValues(t, "test@gmail.com", accountSums[0].Account.PrimaryEmail)
+	assert.EqualValues(t, "password", accountSums[0].Account.Password)
+	assert.EqualValues(t, -300, accountSums[0].Balance)
+	assert.EqualValues(t, 2, accountSums[1].Account.Id)
+	assert.EqualValues(t, "test2@gmail.com", accountSums[1].Account.PrimaryEmail)
+	assert.EqualValues(t, "password2", accountSums[1].Account.Password)
+	assert.EqualValues(t, -200, accountSums[1].Balance)
+}
+
+//
 // Test Create
 //
 func TestCreateAccount_Success(t *testing.T) {

@@ -52,6 +52,16 @@ const LinkMap = {
             url: "/accounts/add",
         },
     ],
+    emails: [
+        {
+            title: "Payment Reminders",
+            url: "/emailPayments",
+        },
+        {
+            title: "Program Announcements",
+            url: "/programAnnouncements",
+        },
+    ],
 };
 
 export class HeaderSection extends React.Component {
@@ -65,6 +75,7 @@ export class HeaderSection extends React.Component {
                     <HeaderDropdown id={"site"} title={"Site"} />
                     <HeaderDropdown id={"accounts"} title={"Accounts"} />
                     <HeaderLink title={"Help"} url={"/help"} />
+                    <HeaderDropdown id={"emails"} title={"Emails"} />
                     <span className="header-section">Sign Out</span>
                 </div>
             </div>
