@@ -23,8 +23,7 @@ export class HomeTabSectionAccounts extends React.Component {
         let unpaidAcc = this.state.unpaidAccounts.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <div className="name">{getFullName(row)} </div>
-                    <div className="email">{row.email} </div>
+                    <AccountInfo accountId={row.id} />
                     <div className="other">{row.id} </div>
                 </li>
             );
@@ -50,6 +49,31 @@ export class HomeTabSectionAccounts extends React.Component {
 
                     <ul>{unpaidAcc}</ul>
                 </div>
+            </div>
+        );
+    }
+}
+
+class AccountInfo extends React.Component {
+    state = {
+        account: {},
+    };
+    componentDidMount() {
+        API.get("api/accounts/account/" + this.props.accountId).then((res) => {
+            const accountData = res.data;
+            this.setState({
+                account: accountData,
+            });
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="name">
+                    {getFullName(this.state.account.user)}{" "}
+                </div>
+                <div className="email">{this.state.account.email} </div>
             </div>
         );
     }

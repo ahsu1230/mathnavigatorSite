@@ -7,22 +7,21 @@ import { getFullName } from "../utils/userUtils.js";
 
 export class HomeTabSectionRegistrations extends React.Component {
     state = {
-        pendingReg: [],
+        classReg: [],
         afhReg: [],
     };
 
-    //pending registration for classes
     componentDidMount() {
+        //pending registration for classes
         API.get("api/user-classes/new").then((res) => {
             const userClass = res.data;
             this.setState({
-                pendingReg: userClass,
+                classReg: userClass,
             });
         });
-    }
+        console.log("registrations for classes " + this.state.classReg);
 
-    //afh registration
-    componentDidMount() {
+        //afh registration
         API.get("api/userafhs/new").then((res) => {
             const userAfh = res.data;
             this.setState({
@@ -32,11 +31,10 @@ export class HomeTabSectionRegistrations extends React.Component {
     }
 
     render() {
-        let userClasses = this.state.pendingReg.map((row, index) => {
+        let userClasses = this.state.classReg.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <div className="name">{getFullName(row)} </div>
-                    <div className="email">{row.email} </div>
+                    <UserInfo userId={row.userId} />
                     <div className="other">{row.classId} </div>
                 </li>
             );
@@ -45,8 +43,8 @@ export class HomeTabSectionRegistrations extends React.Component {
         let userAfh = this.state.afhReg.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <div className="name">{getFullName(row)} </div>
-                    <div className="email">{row.email} </div>
+                    <div className="name">{row.userId} </div>
+
                     <div className="other">{row.title} </div>
                 </li>
             );
@@ -99,10 +97,31 @@ export class HomeTabSectionRegistrations extends React.Component {
                                 Registered For
                             </div>
                         </div>
-
-                        <ul>{userAfh}</ul>
                     </div>
                 </div>
+            </div>
+        );
+    }
+}
+
+class UserInfo extends React.Component {
+    state = {
+        user: {},
+    };
+    componentDidMount() {
+        API.get("api/users/user/" + this.props.userId).then((res) => {
+            const userData = res.data;
+            this.setState({
+                user: userData,
+            });
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="name">{getFullName(this.state.user)} </div>
+                <div className="email">{this.state.user.email} </div>
             </div>
         );
     }
