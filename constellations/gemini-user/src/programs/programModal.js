@@ -41,7 +41,7 @@ class ProgramClass extends React.Component {
 
         return (
             <li>
-                <div className={fullState ? "name red" : "name"}>{name}</div>
+                <div className={fullState ? "name full" : "name"}>{name}</div>
                 <div className="times">{times}</div>
                 <Link to={url}>{"Details >"}</Link>
             </li>

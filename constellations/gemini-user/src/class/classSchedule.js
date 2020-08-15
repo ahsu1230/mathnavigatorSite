@@ -16,8 +16,8 @@ export class ClassSchedule extends React.Component {
             const canceled = session.canceled;
             var state = "row";
             if (moment().isAfter(endTime))
-                state += canceled ? " pink" : " gray";
-            else state += canceled ? " red" : "";
+                state += canceled ? " canceled-past" : " past";
+            else state += canceled ? " canceled" : "";
 
             return (
                 <div key={index} className={state}>

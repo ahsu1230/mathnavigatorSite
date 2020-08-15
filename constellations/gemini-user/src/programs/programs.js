@@ -12,9 +12,7 @@ export class ProgramsPage extends React.Component {
     };
 
     componentDidMount = () => {
-        // TODO: Change to below line when published_at is removed from all tables except classes
-        // API.get("api/classesbysemesters?published=true").then((res) => {
-        API.get("api/classesbysemesters").then((res) => {
+        API.get("api/classesbysemesters?published=true").then((res) => {
             const classesbysemesters = res.data || [];
             let semesters = [];
             let programClassesMap = {};
