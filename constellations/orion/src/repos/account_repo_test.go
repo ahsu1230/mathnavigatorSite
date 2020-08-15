@@ -235,8 +235,8 @@ func Test_InsertAccountAndUser(t *testing.T) {
 			false,
 			2,
 			domains.NewNullString(""),
-			domains.NewNullString("school1"),
-			domains.NewNullUint(1213),
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
 		).WillReturnResult(result)
 	mock.ExpectCommit()
 	account := getAccount()

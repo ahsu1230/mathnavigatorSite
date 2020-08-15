@@ -102,8 +102,8 @@ func Test_CreateAccountAndUserSuccess(t *testing.T) {
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Test: Create 3 Accounts, GetNegativeBalances()
