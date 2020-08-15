@@ -60,6 +60,33 @@ func CreateAccount(c *gin.Context) {
 	}
 }
 
+func CreateAccountAndUser(c *gin.Context) {
+	// Incoming JSON
+	var accountUser domains.AccountUser
+	c.BindJSON(&accountUser)
+	account := accountUser.Account
+	user := accountUser.User
+
+	if err := account.Validate(); err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, err.Error())
+		return
+	}
+	if err := user.Validate(); err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := repos.AccountRepo.InsertWithUser(account, user)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		c.Status(http.StatusOK)
+	}
+}
+
 func UpdateAccount(c *gin.Context) {
 	// Incoming JSON & Parameters
 	id := ParseParamId(c)

@@ -144,6 +144,67 @@ func TestCreateAccount_Failure(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
+func TestCreateAccountWithUser_Success(t *testing.T) {
+	testUtils.AccountRepo.MockInsertWithUser = func(account domains.Account, user domains.User) error {
+		return nil
+	}
+	repos.AccountRepo = &testUtils.AccountRepo
+
+	// Create new HTTP request to endpoint
+	accountUser := domains.AccountUser{
+		Account: createMockAccount(
+			1,
+			"john_smith@example.com",
+			"password",
+		),
+		User: testUtils.CreateMockUser(
+			1,
+			"John",
+			"Smith",
+			"",
+			"john_smith@example.com",
+			"555-555-0199",
+			true,
+			0,
+			"notes1",
+		),
+	}
+	body := createBodyFromAccountUser(accountUser)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+}
+
+func TestCreateAccountWithUser_Failure(t *testing.T) {
+	repos.AccountRepo = &testUtils.AccountRepo
+
+	// Create new HTTP request to endpoint
+	accountUser := domains.AccountUser{
+		Account: createMockAccount(
+			1,
+			"john_smith@example.com",
+			"password",
+		),
+		User: testUtils.CreateMockUser(
+			1,
+			"",
+			"",
+			"",
+			"",
+			"",
+			false,
+			0,
+			"",
+		),
+	}
+	body := createBodyFromAccountUser(accountUser)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
+}
+
 //
 // Test Update
 //
@@ -244,6 +305,14 @@ func createMockAccount(id uint, primary_email string, password string) domains.A
 
 func createBodyFromAccount(account domains.Account) io.Reader {
 	marshal, err := json.Marshal(&account)
+	if err != nil {
+		panic(err)
+	}
+	return bytes.NewBuffer(marshal)
+}
+
+func createBodyFromAccountUser(accountUser domains.AccountUser) io.Reader {
+	marshal, err := json.Marshal(&accountUser)
 	if err != nil {
 		panic(err)
 	}

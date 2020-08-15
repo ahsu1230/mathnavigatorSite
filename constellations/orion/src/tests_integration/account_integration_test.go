@@ -91,6 +91,21 @@ func Test_CreateSameEmailAccountsFailure(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
+// Test: Create account with user
+func Test_CreateAccountAndUserSuccess(t *testing.T) {
+	accountUser := domains.AccountUser{
+		Account: createAccount(1),
+		User:    createUser(1),
+	}
+	body := utils.CreateJsonBody(&accountUser)
+
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+	utils.ResetTable(t, domains.TABLE_USERS)
+}
+
 // Test: Create 1 Account, Update it, GetAccountById()
 func Test_UpdateAccount(t *testing.T) {
 	// Create 1 Account
