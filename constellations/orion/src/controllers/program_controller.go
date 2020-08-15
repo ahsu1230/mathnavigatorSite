@@ -9,9 +9,7 @@ import (
 )
 
 func GetAllPrograms(c *gin.Context) {
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	programList, err := repos.ProgramRepo.SelectAll(publishedOnly)
+	programList, err := repos.ProgramRepo.SelectAll()
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -69,21 +67,6 @@ func UpdateProgram(c *gin.Context) {
 	}
 
 	err := repos.ProgramRepo.Update(programId, programJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
-}
-
-func PublishPrograms(c *gin.Context) {
-	// Incoming JSON
-	var programIdsJson []string
-	c.BindJSON(&programIdsJson)
-
-	err := repos.ProgramRepo.Publish(programIdsJson)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())

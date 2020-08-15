@@ -21,6 +21,7 @@ type UserClassesRepoInterface interface {
 	SelectByClassId(string) ([]domains.UserClasses, error)
 	SelectByUserId(uint) ([]domains.UserClasses, error)
 	SelectByUserAndClass(uint, string) (domains.UserClasses, error)
+	SelectByNew() ([]domains.UserClasses, error)
 	Insert(domains.UserClasses) error
 	Update(uint, domains.UserClasses) error
 	Delete(uint) error
@@ -114,6 +115,42 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 		&userClasses.AccountId,
 		&userClasses.State)
 	return userClasses, errScan
+}
+
+func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
+	results := make([]domains.UserClasses, 0)
+
+	now := time.Now().UTC()
+	week := time.Hour * 24 * 7
+	lastWeek := now.Add(-week)
+	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE created_at>=?")
+
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(lastWeek)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userClasses domains.UserClasses
+		if errScan := rows.Scan(
+			&userClasses.Id,
+			&userClasses.CreatedAt,
+			&userClasses.UpdatedAt,
+			&userClasses.DeletedAt,
+			&userClasses.UserId,
+			&userClasses.ClassId,
+			&userClasses.AccountId,
+			&userClasses.State); errScan != nil {
+			return results, errScan
+		}
+		results = append(results, userClasses)
+	}
+	return results, nil
 }
 
 func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {

@@ -70,8 +70,6 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 			&class.ClassId,
 			&class.LocationId,
 			&class.Times,
-			&class.StartDate,
-			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
@@ -112,8 +110,6 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 			&class.ClassId,
 			&class.LocationId,
 			&class.Times,
-			&class.StartDate,
-			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
@@ -148,8 +144,6 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 		&class.ClassId,
 		&class.LocationId,
 		&class.Times,
-		&class.StartDate,
-		&class.EndDate,
 		&class.GoogleClassCode,
 		&class.FullState,
 		&class.PricePerSession,
@@ -186,8 +180,6 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 			&class.ClassId,
 			&class.LocationId,
 			&class.Times,
-			&class.StartDate,
-			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
@@ -228,8 +220,6 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 			&class.ClassId,
 			&class.LocationId,
 			&class.Times,
-			&class.StartDate,
-			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
@@ -270,8 +260,6 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 			&class.ClassId,
 			&class.LocationId,
 			&class.Times,
-			&class.StartDate,
-			&class.EndDate,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
@@ -294,14 +282,12 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		"class_id, " +
 		"location_id, " +
 		"times, " +
-		"start_date, " +
-		"end_date, " +
 		"google_class_code, " +
 		"full_state, " +
 		"price_per_session, " +
 		"price_lump, " +
 		"payment_notes " +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -319,8 +305,6 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		generateClassId(class),
 		class.LocationId,
 		class.Times,
-		class.StartDate,
-		class.EndDate,
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
@@ -342,8 +326,6 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		"class_id=?, " +
 		"location_id=?, " +
 		"times=?, " +
-		"start_date=?, " +
-		"end_date=?, " +
 		"google_class_code=?, " +
 		"full_state=?, " +
 		"price_per_session=?, " +
@@ -365,8 +347,6 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		generateClassId(class),
 		class.LocationId,
 		class.Times,
-		class.StartDate,
-		class.EndDate,
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
