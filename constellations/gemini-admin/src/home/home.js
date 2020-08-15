@@ -125,18 +125,12 @@ export class HomePage extends React.Component {
 
 class TabButton extends React.Component {
     render() {
-        let highlight = this.props.highlight;
-        let section = this.props.section;
-        let displayName = sectionDisplayNames[section];
-        let numNotif = this.props.buttonNum;
+        const highlight = this.props.highlight;
+        const section = this.props.section;
+        const displayName = sectionDisplayNames[section];
+        const numNotif = this.props.buttonNum;
 
-        var isZero = "";
-
-        if (numNotif == 0) {
-            isZero = "notif zero";
-        } else {
-            isZero = "notif";
-        }
+        const isZero = numNotif == 0 ? "notif zero" : "notif";
         console.log("isZero state is " + isZero);
 
         let displayNotif = <div className={isZero}>{numNotif}</div>;

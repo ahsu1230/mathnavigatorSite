@@ -34,7 +34,17 @@ export class HomeTabSectionRegistrations extends React.Component {
         let userClasses = this.state.classReg.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <UserInfo userId={row.userId} />
+                    <div className="name">
+                        {" "}
+                        <UserInfo userId={row.userId} className={"name"} />{" "}
+                    </div>
+                    <div className="email">
+                        {" "}
+                        <UserInfo
+                            userId={row.userId}
+                            className={"email"}
+                        />{" "}
+                    </div>
                     <div className="other">{row.classId} </div>
                 </li>
             );
@@ -43,9 +53,7 @@ export class HomeTabSectionRegistrations extends React.Component {
         let userAfh = this.state.afhReg.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <div className="name">{row.userId} </div>
-
-                    <div className="other">{row.title} </div>
+                    <div className="name">{row} </div>
                 </li>
             );
         });
@@ -97,6 +105,8 @@ export class HomeTabSectionRegistrations extends React.Component {
                                 Registered For
                             </div>
                         </div>
+
+                        <ul>{userAfh}</ul>
                     </div>
                 </div>
             </div>
@@ -118,11 +128,13 @@ class UserInfo extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <div className="name">{getFullName(this.state.user)} </div>
-                <div className="email">{this.state.user.email} </div>
-            </div>
-        );
+        const userItem = this.props.className;
+
+        let returnData =
+            userItem == "name"
+                ? getFullName(this.state.user)
+                : this.state.user.email;
+
+        return <div>{returnData}</div>;
     }
 }
