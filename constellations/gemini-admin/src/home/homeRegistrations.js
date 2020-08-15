@@ -77,7 +77,7 @@ export class HomeTabSectionRegistrations extends React.Component {
                                 Email
                             </div>
                             <div className={"list-header" + " other"}>
-                                ClassId
+                                Class Id
                             </div>
                         </div>
 

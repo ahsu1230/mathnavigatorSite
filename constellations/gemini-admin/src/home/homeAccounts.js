@@ -60,22 +60,22 @@ export class HomeTabSectionAccounts extends React.Component {
 
 class AccountInfo extends React.Component {
     state = {
-        account: {},
+        users: [],
     };
     componentDidMount() {
-        API.get("api/accounts/account/" + this.props.accountId).then((res) => {
-            const accountData = res.data;
+        API.get("api/users/account/" + this.props.accountId).then((res) => {
+            const userData = res.data;
             this.setState({
-                account: accountData,
+                users: userData,
             });
         });
     }
 
     render() {
-        console.log("account info " + this.state.account);
+        let returnName = this.state.users.map((row, index) => {
+            return <div key={index}> {getFullName(row)} </div>;
+        });
 
-        let returnName = this.state.account;
-
-        return <div>{returnName}</div>;
+        return <div> {returnName} </div>;
     }
 }
