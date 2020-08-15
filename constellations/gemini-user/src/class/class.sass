@@ -1,0 +1,61 @@
+@import "../utils/_constants.sass"
+
+#view-class
+    width: $containerWidthPx3
+    max-width: $containerWidthPct
+    margin: 0 auto $spacing16x
+
+    h1
+        margin: $spacing6x 0
+        color: $colorPrimary
+        line-height: $lineHeight3
+        font-size: $fontSize3
+        
+        a
+            color: $colorPrimary
+
+        @media screen and (max-width: $mediaWidth1)
+            margin: $spacing6x 0
+            line-height: $lineHeight2
+            font-size: $fontSize2
+
+    h3
+        margin-top: $spacing4x
+        padding: $spacing1x 0
+        color: $colorPrimary
+
+    p
+        margin: 0
+
+    #class-description
+        margin-bottom: $spacing4x
+
+        h4
+            margin-top: $spacing1x
+
+        p
+            margin-top: $spacing2x
+
+        .red
+            color: red
+
+    #class-info
+        position: relative
+        margin-bottom: $spacing4x
+
+        button
+            position: absolute
+            top: 0
+            right: 0
+
+            @media screen and (max-width: $mediaWidth1)
+                position: relative
+                display: block
+                width: 100%
+                margin-bottom: $spacing4x
+                border: 1px solid $colorOrange
+                color: $colorOrange
+                background-color: $colorWhite
+        
+        #class-times
+            margin-top: $spacing2x
