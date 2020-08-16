@@ -7,7 +7,7 @@ import API from "../utils/api.js";
 import { formatCurrency, getFullStateName } from "../utils/utils.js";
 import { Link } from "react-router-dom";
 import { ClassSchedule } from "./classSchedule.js";
-import { ErrorPage } from '../error/error.js';
+import { ErrorPage } from "../error/error.js";
 
 export class ClassPage extends React.Component {
     state = {
@@ -30,7 +30,9 @@ export class ClassPage extends React.Component {
             .then(
                 axios.spread((...responses) => this.fetchOtherData(responses))
             )
-            .catch((err) => console.log("Error: could not fetch class: " + err));
+            .catch((err) =>
+                console.log("Error: could not fetch class: " + err)
+            );
     };
 
     fetchOtherData = (responses) => {
@@ -131,47 +133,49 @@ export class ClassPage extends React.Component {
         const sessions = this.state.sessions;
         const url = "/contact?interest=" + classObj.classId;
 
-        if (_.isEmpty(classObj)) return <ErrorPage classId={this.props.classId}/>;
-        else return (
-            <div id="view-class">
-                {this.getTitle(program, semester, classObj)}
+        if (_.isEmpty(classObj))
+            return <ErrorPage classId={this.props.classId} />;
+        else
+            return (
+                <div id="view-class">
+                    {this.getTitle(program, semester, classObj)}
 
-                <div id="class-description">
-                    <h4 className="red">
-                        {getFullStateName(classObj.fullState)}
-                    </h4>
-                    <h4>
-                        Grades: {program.grade1} - {program.grade2}
-                    </h4>
-                    <p>{program.description}</p>
-                </div>
-
-                <div id="class-info">
-                    <Link to={url}>
-                        <button>Register</button>
-                    </Link>
-
-                    <h3>Location</h3>
-                    {this.getLocation(location)}
-                    <h3>Times</h3>
-                    {this.getTimes(classObj, sessions)}
-                    <h3>Pricing</h3>
-                    {this.getPricing(classObj)}
-                </div>
-
-                <ClassSchedule sessions={sessions} />
-
-                <div id="class-questions">
-                    <div>
-                        Questions? <Link to={url}>Contact Us</Link>
+                    <div id="class-description">
+                        <h4 className="red">
+                            {getFullStateName(classObj.fullState)}
+                        </h4>
+                        <h4>
+                            Grades: {program.grade1} - {program.grade2}
+                        </h4>
+                        <p>{program.description}</p>
                     </div>
-                    <Link to="/programs">
-                        <button className="inverted">
-                            {"< More Programs"}
-                        </button>
-                    </Link>
+
+                    <div id="class-info">
+                        <Link to={url}>
+                            <button>Register</button>
+                        </Link>
+
+                        <h3>Location</h3>
+                        {this.getLocation(location)}
+                        <h3>Times</h3>
+                        {this.getTimes(classObj, sessions)}
+                        <h3>Pricing</h3>
+                        {this.getPricing(classObj)}
+                    </div>
+
+                    <ClassSchedule sessions={sessions} />
+
+                    <div id="class-questions">
+                        <div>
+                            Questions? <Link to={url}>Contact Us</Link>
+                        </div>
+                        <Link to="/programs">
+                            <button className="inverted">
+                                {"< More Programs"}
+                            </button>
+                        </Link>
+                    </div>
                 </div>
-            </div>
-        );
+            );
     };
 }

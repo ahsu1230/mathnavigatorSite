@@ -1,13 +1,15 @@
 "use strict";
 require("./error.sass");
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import srcBroken from "../../assets/compass_broken.png";
 
 export class ErrorPage extends React.Component {
-	render = () => {
+    render = () => {
         const classId = this.props.classId;
-        const errorMsg = classId ? "Class ID '" + classId + "' does not exist." : "";
+        const errorMsg = classId
+            ? "Class ID '" + classId + "' does not exist."
+            : "";
 
         return (
             <div id="view-error">
@@ -20,5 +22,5 @@ export class ErrorPage extends React.Component {
                 <span>{errorMsg}</span>
             </div>
         );
-    }
+    };
 }
