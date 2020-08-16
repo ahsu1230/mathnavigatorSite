@@ -1,8 +1,6 @@
 "use strict";
 require("./achieveEdit.sass");
 import React from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
@@ -11,107 +9,81 @@ import { InputText } from "../utils/inputText.js";
 import { emptyValidator } from "../utils/inputText.js";
 
 export class AchieveEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isEdit: false,
-            inputYear: 0,
-            inputMessage: "",
-            showDeleteModal: false,
-            showSaveModal: false,
-        };
+    state = {
+        isEdit: false,
+        year: "",
+        position: "",
+        message: "",
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onDeleted = this.onDeleted.bind(this);
-        this.onSaved = this.onSaved.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-    }
-
-    componentDidMount() {
-        const Id = this.props.Id;
-        if (Id) {
-            API.get("api/achievements/achievement/" + Id).then((res) => {
+    componentDidMount = () => {
+        console.log(this.props.id);
+        const id = this.props.id;
+        if (id) {
+            API.get("api/achievements/achievement/" + id).then((res) => {
                 const achieve = res.data;
                 this.setState({
-                    inputYear: achieve.year,
-                    inputMessage: achieve.message,
                     isEdit: true,
+                    year: achieve.year,
+                    position: achieve.position,
+                    message: achieve.message,
                 });
             });
         }
-    }
+    };
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
-    onClickCancel() {
+    onClickCancel = () => {
         window.location.hash = "achievements";
-    }
+    };
 
-    onClickDelete() {
+    onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    }
+    };
 
-    onClickSave() {
+    onClickSave = () => {
         let achieve = {
-            year: parseInt(this.state.inputYear),
-            message: this.state.inputMessage,
+            year: parseInt(this.state.year),
+            position: parseInt(this.state.position),
+            message: this.state.message,
         };
         let successCallback = () => this.setState({ showSaveModal: true });
         let failCallback = (err) =>
             alert("Could not save achievement: " + err.response.data);
+
         if (this.state.isEdit) {
-            API.post("api/achievements/achievement/" + this.props.Id, achieve)
-                .then((res) => successCallback())
+            API.post("api/achievements/achievement/" + this.props.id, achieve)
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         } else {
             API.post("api/achievements/create", achieve)
-                .then((res) => successCallback())
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         }
-    }
+    };
 
-    onSaved() {
+    onSaved = () => {
         this.onDismissModal();
         window.location.hash = "achievements";
-    }
+    };
 
-    onDeleted() {
-        const Id = this.props.Id;
-        API.delete("api/achievements/achievement/" + Id)
-            .then((res) => {
-                window.location.hash = "achievements";
-            })
+    onDeleted = () => {
+        API.delete("api/achievements/achievement/" + this.props.id)
+            .then(() => (window.location.hash = "achievements"))
             .finally(() => this.onDismissModal());
-    }
+    };
 
-    onDismissModal() {
+    onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
-    render() {
-        const isEdit = this.state.isEdit;
-        const achieve = this.state.achieve;
-        const title = isEdit ? "Edit Achievement" : "Add Achievement";
-
-        let deleteButton = <div></div>;
-        if (isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
-
+    renderModal = () => {
         let modalDiv;
         let modalContent;
         let showModal;
@@ -143,35 +115,66 @@ export class AchieveEditPage extends React.Component {
                 />
             );
         }
+        return modalDiv;
+    };
+
+    render = () => {
+        const isEdit = this.state.isEdit;
+        const title = isEdit ? "Edit Achievement" : "Add Achievement";
+
+        let deleteButton = isEdit ? (
+            <button className="btn-delete" onClick={this.onClickDelete}>
+                Delete
+            </button>
+        ) : (
+            <div></div>
+        );
 
         return (
             <div id="view-achieve-edit">
-                {modalDiv}
+                {this.renderModal()}
                 <h2>{title}</h2>
+
                 <InputText
                     label="Year"
                     description="Enter the achievement year"
                     required={true}
-                    value={this.state.inputYear}
-                    onChangeCallback={(e) => this.handleChange(e, "inputYear")}
+                    value={this.state.year}
+                    onChangeCallback={(e) => this.handleChange(e, "year")}
                     validators={[
                         {
-                            validate: (text) => parseInt(text) > 2000,
+                            validate: (number) => parseInt(number) > 2000,
                             message: "You must input a year greater than 2000",
                         },
                     ]}
                 />
+
+                <InputText
+                    label="Position"
+                    description="Enter the position (Lower position numbers are shown first in that year)"
+                    required={true}
+                    value={this.state.position}
+                    onChangeCallback={(e) => this.handleChange(e, "position")}
+                    validators={[
+                        {
+                            validate: (number) =>
+                                Number.isInteger(parseInt(number)) &&
+                                parseInt(number) > 0,
+                            message: "You must input a positive integer",
+                        },
+                    ]}
+                />
+
                 <InputText
                     label="Message"
                     description="Enter the achievement message"
-                    isTextBox={true}
                     required={true}
-                    value={this.state.inputMessage}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputMessage")
-                    }
+                    isTextBox={true}
+                    value={this.state.message}
+                    onChangeCallback={(e) => this.handleChange(e, "message")}
                     validators={[emptyValidator("message")]}
                 />
+
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save
@@ -183,5 +186,5 @@ export class AchieveEditPage extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }
