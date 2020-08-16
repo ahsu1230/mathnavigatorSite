@@ -18,7 +18,7 @@ export class AchievePage extends React.Component {
     render = () => {
         let length = 0;
         const rows = this.state.achievements.map((group, index) =>
-            group.achievements.map((achieve, index) => {
+            (group.achievements || []).map((achieve, index) => {
                 length++;
                 return <AchieveRow key={index} achieve={achieve} />;
             })
