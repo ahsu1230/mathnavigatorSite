@@ -15,13 +15,15 @@ describe("Achievement Page", () => {
     test("renders 2 rows", () => {
         const achievements = [
             {
-                Id: 1,
+                id: 1,
                 year: 2020,
+                position: 1,
                 message: "Awesome",
             },
             {
-                Id: 2,
+                id: 2,
                 year: 2019,
+                position: 1,
                 message: "Possum",
             },
         ];
@@ -29,13 +31,15 @@ describe("Achievement Page", () => {
         expect(component.find("AchieveRow").length).toBe(2);
 
         let row0 = component.find("AchieveRow").at(0);
-        expect(row0.prop("achieve")).toHaveProperty("Id", 1);
+        expect(row0.prop("achieve")).toHaveProperty("id", 1);
         expect(row0.prop("achieve")).toHaveProperty("year", 2020);
+        expect(row0.prop("achieve")).toHaveProperty("position", 1);
         expect(row0.prop("achieve")).toHaveProperty("message", "Awesome");
 
         let row1 = component.find("AchieveRow").at(1);
-        expect(row1.prop("achieve")).toHaveProperty("Id", 2);
+        expect(row1.prop("achieve")).toHaveProperty("id", 2);
         expect(row1.prop("achieve")).toHaveProperty("year", 2019);
+        expect(row1.prop("achieve")).toHaveProperty("position", 1);
         expect(row1.prop("achieve")).toHaveProperty("message", "Possum");
     });
 });
