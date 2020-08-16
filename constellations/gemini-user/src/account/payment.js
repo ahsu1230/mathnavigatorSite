@@ -47,14 +47,20 @@ export class PaymentTab extends React.Component {
         );
         transactionsList.reverse();
 
+        const balanceMessage =
+            balance > 0
+                ? "You currently have " +
+                  formatCurrency(balance) +
+                  " in your account. Our payment options are:"
+                : "You currently owe " +
+                  formatCurrency(-balance) +
+                  ". Please pay through any of the following methods:";
+
         return (
             <div className="tab-content" id="payment-tab">
                 <div>
                     <h2>Account Balance: {formatCurrency(balance)}</h2>
-                    <p>
-                        You currently owe {formatCurrency(-balance)}. Please pay
-                        through any of the following methods:
-                    </p>
+                    <p>{balanceMessage}</p>
 
                     <span>
                         - <Link to="">Cash</Link>

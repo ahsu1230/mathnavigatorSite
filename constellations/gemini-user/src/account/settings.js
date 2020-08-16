@@ -127,6 +127,8 @@ class PasswordChange extends React.Component {
     state = {
         tabOpen: false,
         message: "",
+        validated: false,
+        successMessage: "",
 
         oldPassword: "",
         newPassword: "",
@@ -137,14 +139,12 @@ class PasswordChange extends React.Component {
         this.setState({
             tabOpen: !this.state.tabOpen,
             message: "",
+            successMessage: "",
         });
     };
 
     onClickSave = () => {
-        if (
-            this.state.oldPassword == this.props.oldPassword &&
-            this.state.newPassword == this.state.confirmPassword
-        ) {
+        if (this.state.validated) {
             let account = {
                 primaryEmail: this.props.primaryEmail,
                 password: this.state.newPassword,
@@ -156,26 +156,47 @@ class PasswordChange extends React.Component {
                 this.props.passwordChangeCallback(this.state.newPassword);
                 this.setState({
                     tabOpen: false,
-                    message: "New password saved!",
+                    message: "",
+                    validated: false,
+                    successMessage: " New password saved!",
                     oldPassword: "",
                     newPassword: "",
                     confirmPassword: "",
                 });
             });
-        } else if (this.state.oldPassword == this.props.oldPassword) {
-            this.setState({
-                message: "New password does not match confirmation",
-            });
-        } else {
-            this.setState({ message: "Old password is incorrect" });
         }
     };
 
     handleChange = (event, value) => {
-        this.setState({ [value]: event.target.value });
+        this.setState({ [value]: event.target.value }, () =>
+            this.validateInput()
+        );
+    };
+
+    validateInput = () => {
+        if (this.state.oldPassword != this.props.oldPassword) {
+            this.setState({
+                message: "Old password is incorrect",
+                validated: false,
+            });
+        } else if (this.state.newPassword.length < 8) {
+            this.setState({
+                message: "New password must be at least 8 characters long",
+                validated: false,
+            });
+        } else if (this.state.newPassword != this.state.confirmPassword) {
+            this.setState({
+                message: "New password does not match confirmation",
+                validated: false,
+            });
+        } else {
+            this.setState({ message: "", validated: true });
+        }
     };
 
     render = () => {
+        const message = <p>{this.state.message}</p>;
+
         const changePasswordDialog = this.state.tabOpen ? (
             <div>
                 <ul className="vertical-centered no-border">
@@ -214,11 +235,16 @@ class PasswordChange extends React.Component {
                         />
                     </li>
                 </ul>
+                <span className="red">{message}</span>
                 <div className="password-buttons space-between">
                     <button className="btn-cancel" onClick={this.onClickChange}>
                         Cancel
                     </button>
-                    <button className="btn-save" onClick={this.onClickSave}>
+                    <button
+                        className={
+                            this.state.validated ? "btn-save" : "btn-cancel"
+                        }
+                        onClick={this.onClickSave}>
                         Save
                     </button>
                 </div>
@@ -227,15 +253,13 @@ class PasswordChange extends React.Component {
             ""
         );
 
-        const message = <span> {this.state.message}</span>;
-
         return (
             <div id="password-change">
                 <p className="vertical-mobile">
                     <a className="orange" onClick={this.onClickChange}>
                         Change password...
                     </a>
-                    {message}
+                    {this.state.successMessage}
                 </p>
                 {changePasswordDialog}
             </div>

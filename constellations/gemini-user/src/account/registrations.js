@@ -173,6 +173,27 @@ export class RegistrationsTabMain extends React.Component {
             );
         });
 
+        const afhSection =
+            this.props.upcomingAFHs.length > 0 ? (
+                <div>
+                    <h2>Upcoming Ask For Help Sessions</h2>
+                    <ul className="three-columns header hide-mobile">
+                        <li className="li-med">Title</li>
+                        <li className="li-med">Date</li>
+                        <li className="li-large">Location</li>
+                    </ul>
+                    {afhList}
+                </div>
+            ) : (
+                <div>
+                    <h2>Upcoming Ask For Help Sessions</h2>
+                    <p>
+                        There are no scheduled Ask For Help sessions for this
+                        account.
+                    </p>
+                </div>
+            );
+
         return (
             <div className="tab-content" id="reg-tab-main">
                 <div>
@@ -186,15 +207,7 @@ export class RegistrationsTabMain extends React.Component {
                         </a>
                     </p>
                 </div>
-                <div>
-                    <h2>Upcoming Ask For Help Sessions</h2>
-                    <ul className="three-columns header hide-mobile">
-                        <li className="li-med">Title</li>
-                        <li className="li-med">Date</li>
-                        <li className="li-large">Location</li>
-                    </ul>
-                    {afhList}
-                </div>
+                {afhSection}
             </div>
         );
     };
@@ -238,7 +251,10 @@ export class RegistrationsTabAllClasses extends React.Component {
                             c.classInfo.semester.title +
                             ")"}
                     </li>
-                    <li>Enrolled on: {moment(c.enrollDate).format("l")}</li>
+                    <li>
+                        Enrolled on:{" "}
+                        {moment(c.classInfo.enrollDate).format("l")}
+                    </li>
                 </ul>
             );
         });
