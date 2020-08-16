@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Ask For Helps and GetAll()
-func Test_CreateAskForHelps(t *testing.T) {
+func TestCreateAskForHelps(t *testing.T) {
 	createLocations(t)
 
 	var date1 = now.Add(time.Hour * 24 * 30)
@@ -67,7 +67,7 @@ func Test_CreateAskForHelps(t *testing.T) {
 }
 
 // Test: Create 1 Ask For Help, Update, Get By ID
-func Test_UpdateAFH(t *testing.T) {
+func TestUpdateAFH(t *testing.T) {
 	createLocations(t)
 
 	// Create 1 AFH
@@ -106,7 +106,7 @@ func Test_UpdateAFH(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
-func Test_DeleteAFH(t *testing.T) {
+func TestDeleteAFH(t *testing.T) {
 	createLocations(t)
 
 	// Create
@@ -118,7 +118,7 @@ func Test_DeleteAFH(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/askforhelp/afh/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/askforhelp/afh/1", nil)

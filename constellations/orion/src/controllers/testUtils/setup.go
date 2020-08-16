@@ -17,6 +17,8 @@ var Handler router.Handler
 func init() {
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
+	engine.NoRoute(router.NoRouteHandler())
+	engine.Use(router.AppRequestHandler())
 	Handler = router.Handler{Engine: engine}
 	Handler.SetupApiEndpoints()
 }

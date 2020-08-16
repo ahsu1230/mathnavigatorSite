@@ -3,12 +3,12 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 	"github.com/gin-gonic/gin"
 )
@@ -16,9 +16,11 @@ import (
 var handler *router.Handler
 
 func SetupTestRouter() {
-	fmt.Println("Initializing Router...")
+	logger.Message("Initializing Router...")
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
+	engine.NoRoute(router.NoRouteHandler())
+	engine.Use(router.AppRequestHandler())
 	newHandler := router.Handler{Engine: engine}
 	newHandler.SetupApiEndpoints()
 	handler = &newHandler

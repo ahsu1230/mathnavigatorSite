@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Programs and GetAll()
-func Test_CreatePrograms(t *testing.T) {
+func TestCreatePrograms(t *testing.T) {
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	program2 := createProgram("prog2", "Program2", 2, 3, "descript2", 1)
 	program3 := createProgram("prog3", "Program3", 2, 3, "descript3", 0)
@@ -47,7 +47,7 @@ func Test_CreatePrograms(t *testing.T) {
 }
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
-func Test_UniqueProgramId(t *testing.T) {
+func TestUniqueProgramId(t *testing.T) {
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	program2 := createProgram("prog1", "Program2", 2, 3, "descript2", 1) // Same programId
 	body1 := utils.CreateJsonBody(&program1)
@@ -55,9 +55,9 @@ func Test_UniqueProgramId(t *testing.T) {
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 	errBody := recorder2.Body.String()
-	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
+	assert.Contains(t, errBody, "duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -74,7 +74,7 @@ func Test_UniqueProgramId(t *testing.T) {
 }
 
 // Test: Create 1 Program, Update it, GetByProgramId()
-func Test_UpdateProgram(t *testing.T) {
+func TestUpdateProgram(t *testing.T) {
 	// Create 1 Program
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := utils.CreateJsonBody(&program1)
@@ -105,7 +105,7 @@ func Test_UpdateProgram(t *testing.T) {
 }
 
 // Test: Create 1 Program, Delete it, GetByProgramId()
-func Test_DeleteProgram(t *testing.T) {
+func TestDeleteProgram(t *testing.T) {
 	// Create
 	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", 0)
 	body1 := utils.CreateJsonBody(&program1)
@@ -114,7 +114,7 @@ func Test_DeleteProgram(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/programs/program/prog1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)

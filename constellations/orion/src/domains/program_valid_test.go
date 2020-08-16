@@ -84,7 +84,7 @@ func TestValidProgramName(t *testing.T) {
 	}
 
 	// Checks for invalid names
-	program.Name = "Test__"
+	program.Name = "Test_"
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}

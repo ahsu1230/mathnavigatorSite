@@ -36,7 +36,7 @@ func setupMock() {
 //
 // Test Get Unpublished
 //
-func TestGetAllUnpublished_Success(t *testing.T) {
+func TestGetAllUnpublishedSuccess(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint
