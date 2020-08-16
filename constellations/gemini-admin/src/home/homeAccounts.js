@@ -28,7 +28,8 @@ export class HomeTabSectionAccounts extends React.Component {
                         <AccountInfo accountId={row.account.id} />{" "}
                     </div>
                     <div className="email">{row.account.primaryEmail} </div>
-                    <div className="other">{row.account.id} </div>
+                    <div className="accountId">{row.account.id} </div>
+                    <div className="balance">{row.balance} </div>
                 </li>
             );
         });
@@ -46,8 +47,11 @@ export class HomeTabSectionAccounts extends React.Component {
                     <div className="container-flex">
                         <div className={"list-header" + " name"}>Name</div>
                         <div className={"list-header" + " email"}>Email</div>
-                        <div className={"list-header" + " other"}>
+                        <div className={"list-header" + " accountId"}>
                             Account Id
+                        </div>
+                        <div className={"list-header" + " balance"}>
+                            Balance
                         </div>
                     </div>
 
@@ -73,7 +77,12 @@ class AccountInfo extends React.Component {
 
     render() {
         let returnName = this.state.users.map((row, index) => {
-            return <div key={index}> {getFullName(row)} </div>;
+            return (
+                <div key={index} className="list-names">
+                    {" "}
+                    {getFullName(row)}{" "}
+                </div>
+            );
         });
 
         return <div> {returnName} </div>;

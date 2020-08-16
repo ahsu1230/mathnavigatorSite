@@ -19,7 +19,6 @@ export class HomeTabSectionRegistrations extends React.Component {
                 classReg: userClass,
             });
         });
-        console.log("registrations for classes " + this.state.classReg);
 
         //afh registration
         API.get("api/userafhs/new").then((res) => {
@@ -35,15 +34,10 @@ export class HomeTabSectionRegistrations extends React.Component {
             return (
                 <li className="container-flex" key={index}>
                     <div className="name">
-                        {" "}
-                        <UserInfo userId={row.userId} className={"name"} />{" "}
+                        <UserInfo userId={row.userId} className={"name"} />
                     </div>
                     <div className="email">
-                        {" "}
-                        <UserInfo
-                            userId={row.userId}
-                            className={"email"}
-                        />{" "}
+                        <UserInfo userId={row.userId} className={"email"} />
                     </div>
                     <div className="other">{row.classId} </div>
                 </li>
@@ -53,7 +47,15 @@ export class HomeTabSectionRegistrations extends React.Component {
         let userAfh = this.state.afhReg.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
-                    <div className="name">{row} </div>
+                    <div className="name">
+                        <UserInfo userId={row.userId} className={"name"} />
+                    </div>
+                    <div className="email">
+                        <UserInfo userId={row.userId} className={"email"} />
+                    </div>
+                    <div className="other">
+                        <AfhInfo afhId={row.afhId} />
+                    </div>
                 </li>
             );
         });
@@ -129,11 +131,30 @@ class UserInfo extends React.Component {
 
     render() {
         const userItem = this.props.className;
-
         let returnData =
             userItem == "name"
                 ? getFullName(this.state.user)
                 : this.state.user.email;
+
+        return <div>{returnData}</div>;
+    }
+}
+
+class AfhInfo extends React.Component {
+    state = {
+        afh: {},
+    };
+    componentDidMount() {
+        API.get("api/askforhelp/afh/" + this.props.afhId).then((res) => {
+            const afhData = res.data;
+            this.setState({
+                afh: afhData,
+            });
+        });
+    }
+
+    render() {
+        let returnData = this.state.afh.title;
 
         return <div>{returnData}</div>;
     }
