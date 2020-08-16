@@ -10,8 +10,8 @@ var TABLE_CLASSES = "classes"
 
 type Class struct {
 	Id              uint       `json:"id"`
-	CreatedAt       time.Time  `json:"-" db:"created_at"`
-	UpdatedAt       time.Time  `json:"-" db:"updated_at"`
+	CreatedAt       time.Time  `json:"createdAt" db:"created_at"`
+	UpdatedAt       time.Time  `json:"updatedAt" db:"updated_at"`
 	DeletedAt       NullTime   `json:"-" db:"deleted_at"`
 	PublishedAt     NullTime   `json:"publishedAt" db:"published_at"`
 	ProgramId       string     `json:"programId" db:"program_id"`
