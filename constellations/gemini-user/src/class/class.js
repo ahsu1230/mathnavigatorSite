@@ -7,6 +7,7 @@ import API from "../utils/api.js";
 import { formatCurrency, getFullStateName } from "../utils/utils.js";
 import { Link } from "react-router-dom";
 import { ClassSchedule } from "./classSchedule.js";
+import { ErrorPage } from '../error/error.js';
 
 export class ClassPage extends React.Component {
     state = {
@@ -29,10 +30,7 @@ export class ClassPage extends React.Component {
             .then(
                 axios.spread((...responses) => this.fetchOtherData(responses))
             )
-            .catch(
-                (err) => console.log("Error: could not fetch class: " + err)
-                // TODO: error page?
-            );
+            .catch((err) => console.log("Error: could not fetch class: " + err));
     };
 
     fetchOtherData = (responses) => {
@@ -133,7 +131,8 @@ export class ClassPage extends React.Component {
         const sessions = this.state.sessions;
         const url = "/contact?interest=" + classObj.classId;
 
-        return (
+        if (_.isEmpty(classObj)) return <ErrorPage classId={this.props.classId}/>;
+        else return (
             <div id="view-class">
                 {this.getTitle(program, semester, classObj)}
 
