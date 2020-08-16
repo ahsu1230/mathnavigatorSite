@@ -147,6 +147,7 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 		") VALUES (?, ?, ?, ?)"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	defer stmt.Close()
@@ -179,6 +180,7 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt2, err := acc.db.Prepare(statement2)
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	defer stmt2.Close()
