@@ -92,7 +92,7 @@ func Test_CreateSameEmailAccountsFailure(t *testing.T) {
 	}
 	body2 := utils.CreateJsonBody(&accountUser2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+	assert.EqualValues(t, http.StatusNotImplemented, recorder2.Code)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -182,7 +182,7 @@ func TestDeleteAccount(t *testing.T) {
 
 	// Delete
 	recorder4 := utils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder4.Code)
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/accounts/account/1", nil)
 	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 

@@ -64,53 +64,33 @@ func GetNegativeBalanceAccounts(c *gin.Context) {
 	}
 }
 
-<<<<<<< HEAD
 func CreateAccountAndUser(c *gin.Context) {
-	// Incoming JSON
-	var accountUser domains.AccountUser
-	c.BindJSON(&accountUser)
-	account := accountUser.Account
-	user := accountUser.User
-
-	if err := account.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
-	if err := user.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	err := repos.AccountRepo.InsertWithUser(account, user)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-=======
-func CreateAccount(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountController.CreateAccount")
 
-	var accountJson domains.Account
-	if err := c.ShouldBindJSON(&accountJson); err != nil {
+	// Incoming JSON
+	var accountUser domains.AccountUser
+	if err := c.ShouldBindJSON(&accountUser); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
 	}
+	account := accountUser.Account
+	user := accountUser.User
 
-	if err := accountJson.Validate(); err != nil {
+	if err := account.Validate(); err != nil {
 		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
-
-	if err := repos.AccountRepo.Insert(accountJson); err != nil {
+	if err := user.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+	if err := repos.AccountRepo.InsertWithUser(account, user); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
->>>>>>> d86c9422930737631a3be40c592368ffdd73398b
 	}
 	c.Status(http.StatusOK)
 }
