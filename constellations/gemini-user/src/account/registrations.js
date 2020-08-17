@@ -68,7 +68,7 @@ export class RegistrationsTab extends React.Component {
                             return {
                                 program: matchedProgram,
                                 semester: matchedSemester,
-                                enrollDate: c.updatedAt,
+                                enrollDate: c.createdAt,
                             };
                         });
 
