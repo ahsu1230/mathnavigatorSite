@@ -325,7 +325,6 @@ type mockAccountRepo struct {
 	MockSelectById                func(uint) (domains.Account, error)
 	MockSelectByPrimaryEmail      func(string) (domains.Account, error)
 	MockSelectAllNegativeBalances func() ([]domains.AccountSum, error)
-	MockInsert                    func(domains.Account) error
 	MockInsertWithUser            func(domains.Account, domains.User) error
 	MockUpdate                    func(uint, domains.Account) error
 	MockDelete                    func(uint) error
@@ -342,9 +341,6 @@ func (accountRepo *mockAccountRepo) SelectByPrimaryEmail(primary_email string) (
 }
 func (accountRepo *mockAccountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
 	return accountRepo.MockSelectAllNegativeBalances()
-}
-func (accountRepo *mockAccountRepo) Insert(account domains.Account) error {
-	return accountRepo.MockInsert(account)
 }
 func (accountRepo *mockAccountRepo) InsertWithUser(account domains.Account, user domains.User) error {
 	return accountRepo.MockInsertWithUser(account, user)

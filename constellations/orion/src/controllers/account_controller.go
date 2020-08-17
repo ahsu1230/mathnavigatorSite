@@ -50,26 +50,6 @@ func GetNegativeBalanceAccounts(c *gin.Context) {
 	}
 }
 
-func CreateAccount(c *gin.Context) {
-	// Incoming JSON
-	var accountJson domains.Account
-	c.BindJSON(&accountJson)
-
-	if err := accountJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	err := repos.AccountRepo.Insert(accountJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-}
-
 func CreateAccountAndUser(c *gin.Context) {
 	// Incoming JSON
 	var accountUser domains.AccountUser

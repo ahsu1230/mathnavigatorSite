@@ -176,35 +176,6 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 }
 
 //
-// Create
-//
-func Test_InsertAccount(t *testing.T) {
-	db, mock, repo := initAccountTest(t)
-	defer db.Close()
-
-	// Mock DB statements and execute
-	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO accounts").
-		ExpectExec().
-		WithArgs(
-			sqlmock.AnyArg(),
-			sqlmock.AnyArg(),
-			"john_smith@example.com",
-			"password",
-		).WillReturnResult(result)
-	account := getAccount()
-	err := repo.Insert(account)
-	if err != nil {
-		t.Errorf("Unexpected error %v", err)
-	}
-
-	// Validate results
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Unfulfilled expectations: %s", err)
-	}
-}
-
-//
 // Create User and Account
 //
 func Test_InsertAccountAndUser(t *testing.T) {

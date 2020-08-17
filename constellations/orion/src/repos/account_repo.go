@@ -23,7 +23,6 @@ type AccountRepoInterface interface {
 	SelectById(uint) (domains.Account, error)
 	SelectByPrimaryEmail(string) (domains.Account, error)
 	SelectAllNegativeBalances() ([]domains.AccountSum, error)
-	Insert(domains.Account) error
 	InsertWithUser(domains.Account, domains.User) error
 	Update(uint, domains.Account) error
 	Delete(uint) error
@@ -105,33 +104,6 @@ func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error
 		results = append(results, accountSum)
 	}
 	return results, nil
-}
-
-func (acc *accountRepo) Insert(account domains.Account) error {
-	statement := "INSERT INTO accounts (" +
-		"created_at, " +
-		"updated_at, " +
-		"primary_email, " +
-		"password" +
-		") VALUES (?, ?, ?, ?)"
-
-	stmt, err := acc.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		now,
-		account.PrimaryEmail,
-		account.Password,
-	)
-	if err != nil {
-		return err
-	}
-	return utils.HandleSqlExecResult(execResult, 1, "account was not inserted")
 }
 
 func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.User) error {

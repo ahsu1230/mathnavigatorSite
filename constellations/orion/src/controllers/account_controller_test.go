@@ -153,42 +153,6 @@ func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateAccount_Success(t *testing.T) {
-	testUtils.AccountRepo.MockInsert = func(account domains.Account) error {
-		return nil
-	}
-	repos.AccountRepo = &testUtils.AccountRepo
-
-	// Create new HTTP request to endpoint
-	account := createMockAccount(
-		1,
-		"john_smith@example.com",
-		"password",
-	)
-	body := createBodyFromAccount(account)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-}
-
-func TestCreateAccount_Failure(t *testing.T) {
-	// no mock needed
-	repos.AccountRepo = &testUtils.AccountRepo
-
-	// Create new HTTP request to endpoint
-	account := createMockAccount(
-		1,
-		"",
-		"",
-	)
-	body := createBodyFromAccount(account)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
-}
-
 func TestCreateAccountWithUser_Success(t *testing.T) {
 	testUtils.AccountRepo.MockInsertWithUser = func(account domains.Account, user domains.User) error {
 		return nil
@@ -215,7 +179,7 @@ func TestCreateAccountWithUser_Success(t *testing.T) {
 		),
 	}
 	body := createBodyFromAccountUser(accountUser)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -244,7 +208,7 @@ func TestCreateAccountWithUser_Failure(t *testing.T) {
 		),
 	}
 	body := createBodyFromAccountUser(accountUser)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create-with-user", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)

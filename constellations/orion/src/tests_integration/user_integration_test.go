@@ -13,34 +13,37 @@ import (
 
 // Test: Create 3 Users and GetAll()
 func Test_CreateUsers(t *testing.T) {
-	account1 := createAccount(1)
+	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	account2 := createAccount(2)
+	account2 := createAccountAndUser(2)
 	body2 := utils.CreateJsonBody(&account2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-	createAllUsers(t)
-
-	// Call Get All!
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
-
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	user := createUser(3)
+	body := utils.CreateJsonBody(&user)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
+	// Call Get All!
+	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
+	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+
 	var users []domains.User
-	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assertUser(t, 1, users[0])
 	assert.EqualValues(t, 1, len(users))
 
-	if err := json.Unmarshal(recorder3.Body.Bytes(), &users); err != nil {
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
@@ -55,17 +58,20 @@ func Test_CreateUsers(t *testing.T) {
 
 // Test: Create 3 Users and search by pagination
 func Test_SearchUsers(t *testing.T) {
-	account1 := createAccount(1)
+	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	account2 := createAccount(2)
+	account2 := createAccountAndUser(2)
 	body2 := utils.CreateJsonBody(&account2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-	createAllUsers(t)
+	user3 := createUser(3)
+	body3 := utils.CreateJsonBody(&user3)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
 	body := strings.NewReader(`{
 		"query": "smith"	
@@ -88,23 +94,27 @@ func Test_SearchUsers(t *testing.T) {
 
 // Test: Create 3 Users and GetUserByAccountId
 func Test_GetUsersByAccountId(t *testing.T) {
-	account1 := createAccount(1)
+	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	account2 := createAccount(2)
+	account2 := createAccountAndUser(2)
 	body2 := utils.CreateJsonBody(&account2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-	createAllUsers(t)
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
+	user3 := createUser(3)
+	body3 := utils.CreateJsonBody(&user3)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
-	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
+	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
+
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 
 	var users []domains.User
 	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
@@ -113,7 +123,7 @@ func Test_GetUsersByAccountId(t *testing.T) {
 	assertUser(t, 1, users[0])
 	assert.EqualValues(t, 1, len(users))
 
-	if err := json.Unmarshal(recorder3.Body.Bytes(), &users); err != nil {
+	if err := json.Unmarshal(recorder4.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
@@ -128,27 +138,16 @@ func Test_GetUsersByAccountId(t *testing.T) {
 
 // Test: Create 2 Users with the same email
 func Test_CreateSameEmailUsersFailure(t *testing.T) {
-	account1 := createAccount(1)
+	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
-	account2 := createAccount(2)
+	// Create account and user with same email
+	account2 := createAccountAndUser(2)
 	body2 := utils.CreateJsonBody(&account2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-
-	user1 := createUser(1)
-	user2 := createUser(5)
-
-	body := utils.CreateJsonBody(&user1)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-
-	// Create user with same email
-	body3 := utils.CreateJsonBody(&user2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -156,16 +155,10 @@ func Test_CreateSameEmailUsersFailure(t *testing.T) {
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
 func Test_UpdateUser(t *testing.T) {
-	account := createAccount(1)
+	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-
-	// Create 1 User
-	user1 := createUser(1)
-	body1 := utils.CreateJsonBody(&user1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
 	updatedUser := createUser(4)
@@ -190,16 +183,10 @@ func Test_UpdateUser(t *testing.T) {
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func Test_DeleteUser(t *testing.T) {
-	account := createAccount(1)
+	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-
-	// Create
-	user1 := createUser(1)
-	body1 := utils.CreateJsonBody(&user1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
