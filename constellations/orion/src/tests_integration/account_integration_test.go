@@ -144,7 +144,7 @@ func Test_GetNegativeBalanceAccounts(t *testing.T) {
 }
 
 // Test: Create 1 Account, Update it, GetAccountById()
-func Test_UpdateAccount(t *testing.T) {
+func TestUpdateAccount(t *testing.T) {
 	// Create 1 Account
 	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
@@ -173,7 +173,7 @@ func Test_UpdateAccount(t *testing.T) {
 }
 
 // Test: Create 1 Account, Delete it, GetByAccountId()
-func Test_DeleteAccount(t *testing.T) {
+func TestDeleteAccount(t *testing.T) {
 	// Create
 	accountUser := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&accountUser)
@@ -184,7 +184,7 @@ func Test_DeleteAccount(t *testing.T) {
 	recorder4 := utils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/accounts/account/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/accounts/account/1", nil)

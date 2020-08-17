@@ -109,7 +109,7 @@ func Test_DeleteTransaction(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/transactions/transaction/1", nil)

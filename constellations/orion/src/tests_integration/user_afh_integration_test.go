@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 UserAfhs. Then get by userId
-func Test_GetUserAfhsByUserId(t *testing.T) {
+func TestGetUserAfhsByUserId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call GetUserAfhsByUserId()
@@ -32,7 +32,7 @@ func Test_GetUserAfhsByUserId(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then update one. Then get by afhId
-func Test_GetUserAfhsByAfhId(t *testing.T) {
+func TestGetUserAfhsByAfhId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Update
@@ -60,12 +60,12 @@ func Test_GetUserAfhsByAfhId(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then delete, then get that one by userId and afhId
-func Test_DeleteUserAfh(t *testing.T) {
+func TestDeleteUserAfh(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/userafhs/userafh/3", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get by both ids
 	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2/afh/2", nil)
@@ -75,7 +75,7 @@ func Test_DeleteUserAfh(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then get one by userId and afhId
-func Test_GetUserAfhsByBothIds(t *testing.T) {
+func TestGetUserAfhsByBothIds(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call get userAfh by both ids

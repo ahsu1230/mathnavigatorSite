@@ -18,7 +18,7 @@ var later2 = now.Add(time.Hour * 24 * 31)
 var later3 = now.Add(time.Hour * 24 * 60)
 
 // Test: Create 4 Classes and GetAll(false)
-func Test_CreateClasses(t *testing.T) {
+func TestCreateClasses(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -41,7 +41,7 @@ func Test_CreateClasses(t *testing.T) {
 }
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
-func Test_UniqueClassId(t *testing.T) {
+func TestUniqueClassId(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(1)
@@ -50,9 +50,9 @@ func Test_UniqueClassId(t *testing.T) {
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 	errBody := recorder2.Body.String()
-	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
+	assert.Contains(t, errBody, "duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -68,7 +68,7 @@ func Test_UniqueClassId(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgram()
-func Test_GetClassesByProgram(t *testing.T) {
+func TestGetClassesByProgram(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -90,7 +90,7 @@ func Test_GetClassesByProgram(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesBySemester()
-func Test_GetClassesBySemester(t *testing.T) {
+func TestGetClassesBySemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -111,7 +111,7 @@ func Test_GetClassesBySemester(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
-func Test_GetClassesByProgramAndSemester(t *testing.T) {
+func TestGetClassesByProgramAndSemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -132,7 +132,7 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 }
 
 // Test: Create 1 Class, Update it, GetByClassId()
-func Test_UpdateClass(t *testing.T) {
+func TestUpdateClass(t *testing.T) {
 	// Create 1 Class
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -163,7 +163,7 @@ func Test_UpdateClass(t *testing.T) {
 }
 
 // Test: Create 1 Class, Delete it, GetByClassId()
-func Test_DeleteClass(t *testing.T) {
+func TestDeleteClass(t *testing.T) {
 	// Create
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -173,7 +173,7 @@ func Test_DeleteClass(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/class/program1_2020_spring_class1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)

@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -22,6 +22,8 @@ type Location struct {
 }
 
 func (location *Location) Validate() error {
+	messageFmt := "Invalid Location: %s"
+
 	// Retrieves the inputted values
 	locationId := location.LocationId
 	street := location.Street
@@ -32,33 +34,33 @@ func (location *Location) Validate() error {
 
 	// Location ID validation
 	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, locationId); !matches {
-		return errors.New("invalid location id")
+		return fmt.Errorf(messageFmt, "Invalid ID")
 	}
 
 	// Street validation
 	if matches, _ := regexp.MatchString(REGEX_STREET, street); !matches {
-		return errors.New("invalid street")
+		return fmt.Errorf(messageFmt, "Invalid Street format")
 	}
 
 	// City validation
 	if matches, _ := regexp.MatchString(REGEX_CITY, city); !matches {
-		return errors.New("invalid city")
+		return fmt.Errorf(messageFmt, "Invalid City name")
 	}
 
 	// State validation
 	if matches, _ := regexp.MatchString(REGEX_STATE, state); !matches {
-		return errors.New("invalid state")
+		return fmt.Errorf(messageFmt, "Invalid State - must be two capitalized letters")
 	}
 
 	// Zipcode validation
 	if matches, _ := regexp.MatchString(REGEX_ZIPCODE, zipcode); !matches {
-		return errors.New("invalid zipcode")
+		return fmt.Errorf(messageFmt, "Invalid Zipcode format")
 	}
 
 	// Room validation
 	if room.Valid {
 		if matches, _ := regexp.MatchString(REGEX_ALPHA, room.String); !matches {
-			return errors.New("invalid room")
+			return fmt.Errorf(messageFmt, "Invalid room entry")
 		}
 	}
 

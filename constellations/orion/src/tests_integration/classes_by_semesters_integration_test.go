@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 2 semesters, 2 programs, 4 classes and sort
-func Test_TwoSemestersTwoProgramsFourClasses(t *testing.T) {
+func TestTwoSemestersTwoProgramsFourClasses(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 

@@ -120,9 +120,9 @@ func Test_DeleteUserClass(t *testing.T) {
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	// Update
+	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user-class/1", nil)
