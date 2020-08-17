@@ -3,6 +3,8 @@ require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { EmptyMessage } from "./home.js";
 
 const sectionDisplayNames = {
     class: "Unpublished Classes",
@@ -23,17 +25,12 @@ export class HomeTabSectionClasses extends React.Component {
     }
 
     render() {
-        let numClasses = this.state.unpubClasses.length;
-
-        let publishedMessage = <div></div>;
-        if (numClasses == 0) {
-            publishedMessage = (
-                <p>All classes have been successfully published!</p>
-            );
-        }
 
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
-            return <li key={index}> {row.classId} </li>;
+            return <li className="container-flex" key={index}> 
+                <div className="width50"> {row.classId} </div>
+                <div className="width50"> {moment(row.publishedAt).fromNow()} </div>
+            </li>;
         });
 
         return (
@@ -47,9 +44,12 @@ export class HomeTabSectionClasses extends React.Component {
                     </button>
                 </div>
 
-                <div className="class-section">
-                    <div className="list-header">Class ID</div>
-                    {publishedMessage}
+                <div className="class-section"> 
+                    <div className="container-flex">
+                        <div className={"list-header" + " width50"}>Class Id</div>
+                        <div className={"list-header" + " width50"}>Created On</div>
+                    </div>
+                    <EmptyMessage section={"class"} length={this.state.unpubClasses.length} />
                     <ul>{unpublishedClasses}</ul>
                 </div>
             </div>

@@ -3,12 +3,6 @@
 .sectionDetails
     margin-bottom: $spacing10x
 
-    .section-header
-        display: inline-block
-        width: 80%
-        margin: $spacing3x 0
-        color: $colorTurquoise
-
     & li
         padding: $spacing3x 0
         width: 100% 
@@ -17,7 +11,12 @@
     .container-class
         display: flex
         flex-direction: row
-        align-items: center
+        justify-content: space-between 
+
+        .section-header
+            display: inline-block
+            margin: $spacing3x 0
+            color: $colorTurquoise
 
         .view-details
             background-color: $colorWhite
@@ -42,6 +41,7 @@
             font-size: $fontSize1
 
         .list-header
+            padding: 0 0 $spacing1x
             border-bottom: 1px solid $colorGrayDark
 
         & ul
@@ -49,16 +49,23 @@
             padding: 0
             margin: 0
 
-        .name
-            width: 30%
-        .email
-            width: 40%
-        .other
-            width: 30%
-        .accountId
-            width: 15%
-        .balance
-            width: 15%
-
         .list-names
             padding: 4px
+        
+        #account
+            margin: 0 0 $spacing1x
+            text-align: left
+            font-size: 16px
+        .name
+            width: 20%
+        .email , .fromNow
+            width: 25%
+        .id , .balance
+            width: 15%
+        .classLong
+            width: 30%
+        .width50
+            width: 50%
+        .view
+            width: 15%
+            text-align: right

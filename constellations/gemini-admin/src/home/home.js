@@ -144,3 +144,27 @@ class TabButton extends React.Component {
         );
     }
 }
+
+export class EmptyMessage extends React.Component {
+    render() {
+        const emptySection = this.props.section;
+        const length = this.props.length;
+        var publishMessage = <div></div>;
+
+        if(length == 0){
+            if (emptySection == "class") {
+                publishMessage = <p>All classes have been successfully published!</p>;
+            } else if (emptySection == "user") {
+                publishMessage = <p>There are no new users!</p>;
+            } else if (emptySection == "registration") {
+                publishMessage = <p>There are no registrations!</p>;
+            } else {
+                publishMessage = <p>All accounts have paid!</p>;
+            } //unpaid account
+        }
+
+        return (
+            publishMessage
+        );
+    }
+}
