@@ -25,12 +25,16 @@ export class HomeTabSectionClasses extends React.Component {
     }
 
     render() {
-
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
-            return <li className="container-flex" key={index}> 
-                <div className="width50"> {row.classId} </div>
-                <div className="width50"> {moment(row.publishedAt).fromNow()} </div>
-            </li>;
+            return (
+                <li className="container-flex" key={index}>
+                    <div className="width50"> {row.classId} </div>
+                    <div className="width50">
+                        {" "}
+                        {moment(row.updatedAt).fromNow()}{" "}
+                    </div>
+                </li>
+            );
         });
 
         return (
@@ -44,12 +48,19 @@ export class HomeTabSectionClasses extends React.Component {
                     </button>
                 </div>
 
-                <div className="class-section"> 
+                <div className="class-section">
                     <div className="container-flex">
-                        <div className={"list-header" + " width50"}>Class Id</div>
-                        <div className={"list-header" + " width50"}>Created On</div>
+                        <div className={"list-header" + " width50"}>
+                            Class Id
+                        </div>
+                        <div className={"list-header" + " width50"}>
+                            Last Updated
+                        </div>
                     </div>
-                    <EmptyMessage section={"class"} length={this.state.unpubClasses.length} />
+                    <EmptyMessage
+                        section={"class"}
+                        length={this.state.unpubClasses.length}
+                    />
                     <ul>{unpublishedClasses}</ul>
                 </div>
             </div>

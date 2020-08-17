@@ -151,9 +151,11 @@ export class EmptyMessage extends React.Component {
         const length = this.props.length;
         var publishMessage = <div></div>;
 
-        if(length == 0){
+        if (length == 0) {
             if (emptySection == "class") {
-                publishMessage = <p>All classes have been successfully published!</p>;
+                publishMessage = (
+                    <p>All classes have been successfully published!</p>
+                );
             } else if (emptySection == "user") {
                 publishMessage = <p>There are no new users!</p>;
             } else if (emptySection == "registration") {
@@ -163,8 +165,6 @@ export class EmptyMessage extends React.Component {
             } //unpaid account
         }
 
-        return (
-            publishMessage
-        );
+        return publishMessage;
     }
 }
