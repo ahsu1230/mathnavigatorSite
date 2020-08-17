@@ -10,7 +10,7 @@ import (
 )
 
 // Test: Create 3 Transactions and GetAll()
-func Test_CreateTransactions(t *testing.T) {
+func TestCreateTransactions(t *testing.T) {
 	createAccounts(t)
 
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -58,7 +58,7 @@ func Test_CreateTransactions(t *testing.T) {
 }
 
 // Test: Create 1 Transaction, Update, Get By ID
-func Test_UpdateTransaction(t *testing.T) {
+func TestUpdateTransaction(t *testing.T) {
 
 	// Create 1 Transaction
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -92,7 +92,7 @@ func Test_UpdateTransaction(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
-func Test_DeleteTransaction(t *testing.T) {
+func TestDeleteTransaction(t *testing.T) {
 
 	// Create
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -102,7 +102,7 @@ func Test_DeleteTransaction(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/transactions/transaction/1", nil)

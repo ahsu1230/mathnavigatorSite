@@ -2,9 +2,10 @@ package domains
 
 import (
 	"database/sql"
-	"errors"
 	"regexp"
 	"time"
+
+	"fmt"
 )
 
 var TABLE_ACCOUNTS = "accounts"
@@ -26,16 +27,16 @@ type AccountSum struct {
 // Class Methods
 
 func (account *Account) Validate() error {
+	messageFmt := "Invalid Account: %s"
 	// Retrieves the inputted values
 	primaryEmail := account.PrimaryEmail
 	password := account.Password
 
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, primaryEmail); !matches {
-		return errors.New("invalid email")
+		return fmt.Errorf(messageFmt, "Invalid Email")
 	}
-
 	if len(password) < 8 {
-		return errors.New("invalid password")
+		return fmt.Errorf(messageFmt, "Password must be at least 8 characters long")
 	}
 	return nil
 }

@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -30,6 +30,8 @@ type Class struct {
 // Class Methods
 
 func (class *Class) Validate() error {
+	messageFmt := "Invalid Class: %s"
+
 	// Retrieves the inputted values
 	classKey := class.ClassKey
 	times := class.Times
@@ -39,19 +41,19 @@ func (class *Class) Validate() error {
 	// Class Key validation
 	if classKey.Valid {
 		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches {
-			return errors.New("invalid class key")
+			return fmt.Errorf(messageFmt, "Invalid Class Key")
 		}
 	}
 
 	// Times validation
 	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
-		return errors.New("invalid times")
+		return fmt.Errorf(messageFmt, "Invalid Time Format")
 	}
 
 	//Price validation
 	//Both valid
 	if priceLump.Valid && pricePerSession.Valid {
-		return errors.New("invalid price: both valid")
+		return fmt.Errorf(messageFmt, "Cannot have both priceLump and pricePerSession defined")
 	}
 
 	return nil
