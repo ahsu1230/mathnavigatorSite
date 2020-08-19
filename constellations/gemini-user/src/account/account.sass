@@ -67,6 +67,10 @@
                     input
                         width: calc(100% - 16px)
 
+        .tab-content#settings-tab
+            ul
+                padding: $spacing2x 0
+
 
     @media screen and (max-width: $mediaWidth1)
         h2
@@ -86,6 +90,8 @@
                     padding: $spacing1x 0
 
         .tab-content#payment-tab
+            text-align: left
+
             ul
                 li:first-child
                     width: 100%
@@ -103,10 +109,15 @@
                     .classList-item
                         display: flex
                         flex-direction: column
-                        padding-bottom: $spacing1x
+                        margin: $spacing2x 0
 
                         span:last-child
                             color: #888888
+
+                    .classList-item:first-child
+                        margin-top: 0
+                    .classList-item:last-child
+                        margin-bottom: 0
 
                 li:first-child
                     font-weight: bold
@@ -132,6 +143,7 @@
 
         .tab-content#settings-tab
             ul
+                padding: $spacing2x 0
                 text-align: center
 
                 li
@@ -182,10 +194,15 @@
                         display: flex
                         flex-direction: column
                         align-items: baseline
-                        padding-bottom: $spacing1x
+                        margin: $spacing2x 0
 
                         span:last-child
                             color: #888888
+
+                    .classList-item:first-child
+                        margin-top: 0
+                    .classList-item:last-child
+                        margin-bottom: 0
 
             ul.afh-table
                 .li-large
@@ -215,6 +232,7 @@
 
         .tab-content#settings-tab
             ul
+                padding: $spacing2x 0
                 .li-med
                     width: 50%
                 .li-large
