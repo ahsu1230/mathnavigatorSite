@@ -31,8 +31,8 @@ export class HomeTabSectionAccounts extends React.Component {
                     </div>
                     <div className="email">{row.account.primaryEmail} </div>
                     <div className="balance">
-                        {row.balance}
-                        {"$"}{" "}
+                        {"-$"}
+                        {Math.abs(row.balance)}
                     </div>
                     <div className="fromNow">
                         {moment(row.updatedAt).fromNow()}{" "}

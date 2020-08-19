@@ -25,9 +25,9 @@ export class HomeTabSectionUsers extends React.Component {
         let newUsers = this.state.newUsers.map((row, index) => {
             return (
                 <li className="container-flex" key={index}>
+                    <div className="id">{row.id} </div>
                     <div className="name">{getFullName(row)} </div>
                     <div className="email">{row.email} </div>
-                    <div className="id">{row.id} </div>
                     <div className="fromNow">
                         {moment(row.createdAt).fromNow()}{" "}
                     </div>
@@ -51,9 +51,9 @@ export class HomeTabSectionUsers extends React.Component {
 
                 <div className="class-section">
                     <div className="container-flex">
+                        <div className={"list-header" + " id"}>User ID</div>
                         <div className={"list-header" + " name"}>Name</div>
                         <div className={"list-header" + " email"}>Email</div>
-                        <div className={"list-header" + " id"}>User ID</div>
                         <div className={"list-header" + " fromNow"}>
                             Created
                         </div>
