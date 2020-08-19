@@ -59,7 +59,7 @@ const LinkMap = {
         },
         {
             title: "Program Announcements",
-            url: "/programAnnouncements",
+            url: "/emailPrograms",
         },
     ],
 };
