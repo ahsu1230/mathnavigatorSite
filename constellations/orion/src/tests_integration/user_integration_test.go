@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Users and GetAll()
-func Test_CreateUsers(t *testing.T) {
+func TestCreateUsers(t *testing.T) {
 	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
@@ -57,7 +57,7 @@ func Test_CreateUsers(t *testing.T) {
 }
 
 // Test: Create 3 Users and search by pagination
-func Test_SearchUsers(t *testing.T) {
+func TestSearchUsers(t *testing.T) {
 	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
@@ -93,7 +93,7 @@ func Test_SearchUsers(t *testing.T) {
 }
 
 // Test: Create 3 Users and GetUserByAccountId
-func Test_GetUsersByAccountId(t *testing.T) {
+func TestGetUsersByAccountId(t *testing.T) {
 	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
@@ -137,7 +137,7 @@ func Test_GetUsersByAccountId(t *testing.T) {
 }
 
 // Test: Create 2 Users with the same email
-func Test_CreateSameEmailUsersFailure(t *testing.T) {
+func TestCreateSameEmailUsersFailure(t *testing.T) {
 	account1 := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&account1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
@@ -154,7 +154,7 @@ func Test_CreateSameEmailUsersFailure(t *testing.T) {
 }
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
-func Test_UpdateUser(t *testing.T) {
+func TestUpdateUser(t *testing.T) {
 	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
@@ -182,7 +182,7 @@ func Test_UpdateUser(t *testing.T) {
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
-func Test_DeleteUser(t *testing.T) {
+func TestDeleteUser(t *testing.T) {
 	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)

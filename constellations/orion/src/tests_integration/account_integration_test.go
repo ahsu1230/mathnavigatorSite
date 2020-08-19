@@ -12,7 +12,7 @@ import (
 )
 
 //create 1 account then get by id
-func Test_SearchAccountById(t *testing.T) {
+func TestSearchAccountById(t *testing.T) {
 	accountUser := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&accountUser)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
@@ -32,7 +32,7 @@ func Test_SearchAccountById(t *testing.T) {
 }
 
 // Test: Create 3 Accounts and search by pagination
-func Test_SearchAccountByPrimaryEmail(t *testing.T) {
+func TestSearchAccountByPrimaryEmail(t *testing.T) {
 	accountUser := createAccountAndUser(1)
 	body1 := utils.CreateJsonBody(&accountUser)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
@@ -56,7 +56,7 @@ func Test_SearchAccountByPrimaryEmail(t *testing.T) {
 }
 
 // Test: Create 3 Accounts and GetAccountById
-func Test_GetAccountById(t *testing.T) {
+func TestGetAccountById(t *testing.T) {
 	createAllAccountsAndUsers(t)
 
 	// Call Get All!
@@ -76,7 +76,7 @@ func Test_GetAccountById(t *testing.T) {
 }
 
 // Test: Create 2 accounts with the same email
-func Test_CreateSameEmailAccountsFailure(t *testing.T) {
+func TestCreateSameEmailAccountsFailure(t *testing.T) {
 	accountUser := domains.AccountUser{
 		Account: createAccount(1),
 		User:    createUser(1),
@@ -92,14 +92,14 @@ func Test_CreateSameEmailAccountsFailure(t *testing.T) {
 	}
 	body2 := utils.CreateJsonBody(&accountUser2)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusNotImplemented, recorder2.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
 // Test: Create account with user
-func Test_CreateAccountAndUserSuccess(t *testing.T) {
+func TestCreateAccountAndUserSuccess(t *testing.T) {
 	accountUser := domains.AccountUser{
 		Account: createAccount(1),
 		User:    createUser(1),
@@ -114,7 +114,7 @@ func Test_CreateAccountAndUserSuccess(t *testing.T) {
 }
 
 // Test: Create 3 Accounts, GetNegativeBalances()
-func Test_GetNegativeBalanceAccounts(t *testing.T) {
+func TestGetNegativeBalanceAccounts(t *testing.T) {
 	// Create 3 accounts and 5 transactions, accounts 1 and 2 are negative
 	createAllAccountsAndUsers(t)
 	createTransactions(t)

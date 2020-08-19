@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"log"
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
@@ -87,17 +86,18 @@ func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Accou
 }
 
 func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
+	utils.LogWithContext("accountRepo.SelectAllNegativeBalances", logger.Fields{})
 	results := make([]domains.AccountSum, 0)
 
 	statement := "SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -119,11 +119,12 @@ func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error
 }
 
 func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.User) error {
+	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
 	tx, err := acc.db.Begin()
 	if err != nil {
-		return err
+		return appErrors.WrapDbTxBegin(err)
 	}
-	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
+
 	statement := "INSERT INTO accounts (" +
 		"created_at, " +
 		"updated_at, " +
@@ -138,7 +139,7 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	_, err = stmt.Exec(
+	result1, err := stmt.Exec(
 		now,
 		now,
 		account.PrimaryEmail,
@@ -146,7 +147,11 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	)
 	if err != nil {
 		tx.Rollback()
-		return err
+		return appErrors.WrapDbExec(err, statement, account)
+	}
+	if err = appErrors.ValidateDbResult(result1, 1, "account was not inserted"); err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, account)
 	}
 
 	statement2 := "INSERT INTO users (" +
@@ -166,11 +171,11 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	stmt2, err := acc.db.Prepare(statement2)
 	if err != nil {
 		tx.Rollback()
-		return err
+		return appErrors.WrapDbPrepare(err, statement2)
 	}
 	defer stmt2.Close()
 
-	_, err = stmt2.Exec(
+	result2, err := stmt2.Exec(
 		now,
 		now,
 		user.FirstName,
@@ -186,14 +191,19 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	)
 	if err != nil {
 		tx.Rollback()
-		return err
+		return appErrors.WrapDbExec(err, statement, user)
+	}
+	if err = appErrors.ValidateDbResult(result2, 1, "user was not inserted"); err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, user)
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		log.Fatal(err)
+		tx.Rollback()
+		return appErrors.WrapDbTxCommit(err)
 	}
-	return appErrors.WrapDbExec(err, statement, account)
+	return nil
 }
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {

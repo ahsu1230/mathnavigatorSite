@@ -20,7 +20,7 @@ import (
 //
 func TestGetAccountSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
-		account := createMockAccount(
+		account := testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -46,7 +46,7 @@ func TestGetAccountSuccess(t *testing.T) {
 
 func TestSearchAccountSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
-		return createMockAccount(
+		return testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -108,7 +108,7 @@ func TestGetAccountsFailure(t *testing.T) {
 //
 // Test Get Negative Balances
 //
-func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
+func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectAllNegativeBalances = func() ([]domains.AccountSum, error) {
 		return []domains.AccountSum{
 			{
@@ -153,7 +153,7 @@ func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateAccountWithUser_Success(t *testing.T) {
+func TestCreateAccountWithUserSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockInsertWithUser = func(account domains.Account, user domains.User) error {
 		return nil
 	}
@@ -161,7 +161,7 @@ func TestCreateAccountWithUser_Success(t *testing.T) {
 
 	// Create new HTTP request to endpoint
 	accountUser := domains.AccountUser{
-		Account: createMockAccount(
+		Account: testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -185,12 +185,12 @@ func TestCreateAccountWithUser_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateAccountWithUser_Failure(t *testing.T) {
+func TestCreateAccountWithUserFailure(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
 	accountUser := domains.AccountUser{
-		Account: createMockAccount(
+		Account: testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -224,7 +224,7 @@ func TestUpdateAccountSuccess(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"john_smith@example.com",
 		"password",
@@ -241,7 +241,7 @@ func TestUpdateAccountInvalid(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"",
 		"",
@@ -261,7 +261,7 @@ func TestUpdateAccountFailure(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"john_smith@example.com",
 		"password",
@@ -305,14 +305,6 @@ func TestDeleteAccountFailure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockAccount(id uint, primary_email string, password string) domains.Account {
-	return domains.Account{
-		Id:           id,
-		PrimaryEmail: primary_email,
-		Password:     password,
-	}
-}
-
 func createBodyFromAccount(account domains.Account) io.Reader {
 	marshal, err := json.Marshal(&account)
 	if err != nil {

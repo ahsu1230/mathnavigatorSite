@@ -109,7 +109,7 @@ func TestSelectAccountByPrimaryEmail(t *testing.T) {
 //
 // Get accounts with negative balances
 //
-func Test_SelectAllNegativeBalances(t *testing.T) {
+func TestSelectAllNegativeBalances(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -178,7 +178,7 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 //
 // Create User and Account
 //
-func Test_InsertAccountAndUser(t *testing.T) {
+func TestInsertAccountAndUser(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -221,7 +221,6 @@ func Test_InsertAccountAndUser(t *testing.T) {
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
-
 }
 
 //

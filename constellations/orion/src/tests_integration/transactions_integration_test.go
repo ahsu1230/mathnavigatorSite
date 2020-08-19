@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 3 Transactions and GetAll()
-func Test_CreateTransactions(t *testing.T) {
+func TestCreateTransactions(t *testing.T) {
 	createAllAccountsAndUsers(t)
 
 	trans1 := createTransaction(1, 100, domains.PAY_PAYPAL, "notes1", 1)
@@ -61,7 +61,7 @@ func Test_CreateTransactions(t *testing.T) {
 }
 
 // Test: Create 1 Transaction, Update, Get By ID
-func Test_UpdateTransaction(t *testing.T) {
+func TestUpdateTransaction(t *testing.T) {
 	createAllAccountsAndUsers(t)
 
 	// Create 1 Transaction
@@ -98,7 +98,7 @@ func Test_UpdateTransaction(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
-func Test_DeleteTransaction(t *testing.T) {
+func TestDeleteTransaction(t *testing.T) {
 	createAllAccountsAndUsers(t)
 
 	// Create
