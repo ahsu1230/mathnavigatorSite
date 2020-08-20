@@ -41,6 +41,8 @@ export class SemesterEditPage extends React.Component {
     handleIdChange = (event, value) => {
         const newValue = event.target.value;
         this.setState({ [value]: newValue });
+
+        // If the id is 2020_fall, this will become Fall 2020
         var possibleTitle =
             newValue.substring(5, 6).toUpperCase() +
             newValue.substring(6) +
