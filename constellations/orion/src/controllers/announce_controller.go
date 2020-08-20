@@ -3,84 +3,100 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllAnnouncements(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.GetAllAnnouncements")
 	announceList, err := repos.AnnounceRepo.SelectAll()
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, announceList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, announceList)
 }
 
 func GetAnnouncementById(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.GetAnnouncementById")
 	// Incoming parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 
 	announce, err := repos.AnnounceRepo.SelectByAnnounceId(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, announce)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, announce)
 }
 
 func CreateAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.CreateAnnouncement")
 	// Incoming JSON
 	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	if err := c.ShouldBindJSON(&announceJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := announceJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
 		return
 	}
 
 	err := repos.AnnounceRepo.Insert(announceJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func UpdateAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.UpdateAnnouncement")
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 	var announceJson domains.Announce
-	c.BindJSON(&announceJson)
+	if err := c.ShouldBindJSON(&announceJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := announceJson.Validate(); err != nil {
+		err = appErrors.WrapInvalidDomain(err.Error())
 		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+		c.Abort()
 		return
 	}
 
 	err := repos.AnnounceRepo.Update(id, announceJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteAnnouncement(c *gin.Context) {
+	utils.LogControllerMethod(c, "announceController.DeleteAnnouncement")
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 
 	err := repos.AnnounceRepo.Delete(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }

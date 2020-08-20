@@ -1,0 +1,4 @@
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers [build failed]
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains [build failed]
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos [build failed]
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration [build failed]

@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -24,6 +24,8 @@ type Program struct {
 // Class Methods
 
 func (program *Program) Validate() error {
+	messageFmt := "Invalid Program: %s"
+
 	// Retrieves the inputted values
 	programId := program.ProgramId
 	name := program.Name
@@ -33,22 +35,22 @@ func (program *Program) Validate() error {
 
 	// Program ID validation
 	if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, programId); !matches {
-		return errors.New("invalid program id")
+		return fmt.Errorf(messageFmt, "Invalid program ID")
 	}
 
 	// Name validation
 	if matches, _ := regexp.MatchString(REGEX_TITLE, name); !matches {
-		return errors.New("invalid program name")
+		return fmt.Errorf(messageFmt, "Invalid program name")
 	}
 
 	// Grade validation
 	if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
-		return errors.New("invalid grades")
+		return fmt.Errorf(messageFmt, "Invalid grades (must be between 1 and 12) and grade1 <= grade2")
 	}
 
 	// Description validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, description); !matches {
-		return errors.New("invalid description")
+		return fmt.Errorf(messageFmt, "Invalid description entry")
 	}
 
 	return nil

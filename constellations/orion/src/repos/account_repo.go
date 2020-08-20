@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -28,49 +30,59 @@ type AccountRepoInterface interface {
 }
 
 func (acc *accountRepo) Initialize(db *sql.DB) {
+	utils.LogWithContext("accountRepo.Initialize", logger.Fields{})
 	acc.db = db
 }
 
 func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
+	utils.LogWithContext("accountRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
-	if err != nil {
-		return domains.Account{}, err
-	}
 	defer stmt.Close()
+	if err != nil {
+		return domains.Account{}, appErrors.WrapDbPrepare(err, statement)
+	}
 
 	var account domains.Account
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&account.Id,
 		&account.CreatedAt,
 		&account.UpdatedAt,
 		&account.DeletedAt,
 		&account.PrimaryEmail,
-		&account.Password)
-	return account, errScan
+		&account.Password,
+	); err != nil {
+		return domains.Account{}, appErrors.WrapDbQuery(err, statement, id)
+	}
+	return account, nil
 }
 
-func (acc *accountRepo) SelectByPrimaryEmail(primary_email string) (domains.Account, error) {
+func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Account, error) {
+	utils.LogWithContext("accountRepo.SelectByPrimaryEmail",
+		logger.Fields{"primaryEmail": primaryEmail},
+	)
 	statement := "SELECT * FROM accounts WHERE primary_email=?"
 	stmt, err := acc.db.Prepare(statement)
-	if err != nil {
-		return domains.Account{}, err
-	}
 	defer stmt.Close()
+	if err != nil {
+		return domains.Account{}, appErrors.WrapDbPrepare(err, statement)
+	}
 
 	var account domains.Account
-	row := stmt.QueryRow(primary_email)
-
-	errScan := row.Scan(
+	row := stmt.QueryRow(primaryEmail)
+	if err = row.Scan(
 		&account.Id,
 		&account.CreatedAt,
 		&account.UpdatedAt,
 		&account.DeletedAt,
 		&account.PrimaryEmail,
-		&account.Password)
-
-	return account, errScan
+		&account.Password,
+	); err != nil {
+		err = appErrors.WrapDbQuery(err, statement, primaryEmail)
+		return domains.Account{}, err
+	}
+	return account, nil
 }
 
 func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
@@ -106,6 +118,7 @@ func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error
 }
 
 func (acc *accountRepo) Insert(account domains.Account) error {
+	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
 	statement := "INSERT INTO accounts (" +
 		"created_at, " +
 		"updated_at, " +
@@ -115,7 +128,7 @@ func (acc *accountRepo) Insert(account domains.Account) error {
 
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -127,12 +140,16 @@ func (acc *accountRepo) Insert(account domains.Account) error {
 		account.Password,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, account)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "account was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "account was not inserted")
 }
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {
+	utils.LogWithContext("accountRepo.Update", logger.Fields{
+		"id":      id,
+		"account": account,
+	})
 	statement := "UPDATE accounts SET " +
 		"updated_at=?, " +
 		"primary_email=?, " +
@@ -140,6 +157,7 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 		"WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
+		err = appErrors.WrapDbPrepare(err, statement)
 		return err
 	}
 	defer stmt.Close()
@@ -151,24 +169,28 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 		account.Password,
 		id)
 	if err != nil {
+		err = appErrors.WrapDbExec(err, statement, id, account)
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "account was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "account was not updated")
 }
 
 func (acc *accountRepo) Delete(id uint) error {
+	utils.LogWithContext("accountRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
+		err = appErrors.WrapDbPrepare(err, statement)
 		return err
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
+		err = appErrors.WrapDbExec(err, statement, id)
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "account was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "account was not deleted")
 }
 
 // For Tests Only
