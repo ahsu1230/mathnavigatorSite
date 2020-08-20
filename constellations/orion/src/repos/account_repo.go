@@ -177,20 +177,65 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 
 func (acc *accountRepo) Delete(id uint) error {
 	utils.LogWithContext("accountRepo.Delete", logger.Fields{"id": id})
-	statement := "DELETE FROM accounts WHERE id=?"
-	stmt, err := acc.db.Prepare(statement)
+	now := time.Now().UTC()
+
+	trans, err := acc.db.Begin()
 	if err != nil {
-		err = appErrors.WrapDbPrepare(err, statement)
+		return err
+	}
+
+	// Accounts
+	stmt, err := acc.db.Prepare("UPDATE accounts SET deleted_at=? WHERE id=?")
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbPrepare(err, stmt)
 		return err
 	}
 	defer stmt.Close()
 
-	execResult, err := stmt.Exec(id)
+	_, err = stmt.Exec(now, id)
 	if err != nil {
+		trans.Rollback()
 		err = appErrors.WrapDbExec(err, statement, id)
 		return err
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "account was not deleted")
+
+	// Transactions
+	stmt2, err := acc.db.Prepare("UPDATE transactions SET deleted_at=? WHERE account_id=?")
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbPrepare(err, stmt2)
+		return err
+	}
+	defer stmt2.Close()
+
+	_, err = stmt2.Exec(now, id)
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbExec(err, stmt2, id)
+		return err
+	}
+
+	// Get User Ids
+	users, err := repos.users.SelectByAccountId(id)
+
+	// Users
+	stmt3, err := acc.db.Prepare("UPDATE users SET deleted_at=? WHERE account_id=?")
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbPrepare(err, stmt3)
+		return err
+	}
+	defer stmt3.Close()
+
+	_, err = stmt3.Exec(now, id)
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbExec(err, stmt3, id)
+		return err
+	}
+
+	return nil
 }
 
 // For Tests Only
