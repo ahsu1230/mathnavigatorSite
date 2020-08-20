@@ -52,7 +52,7 @@ func (class *Class) Validate() error {
 
 	// Price validation
 	if priceLump.Valid == pricePerSession.Valid {
-		return errors.New("invalid price: choose one or the other")
+		return fmt.Errorf(messageFmt, "Only One Price Can Be Defined")
 	}
 
 	return nil
