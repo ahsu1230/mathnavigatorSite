@@ -2,12 +2,12 @@ package repos
 
 import (
 	"database/sql"
-	"time"
-
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	"time"
 )
 
 // Global variable
@@ -185,10 +185,11 @@ func (acc *accountRepo) Delete(id uint) error {
 	}
 
 	// Accounts
-	stmt, err := acc.db.Prepare("UPDATE accounts SET deleted_at=? WHERE id=?")
+	query := "UPDATE accounts SET deleted_at=? WHERE id=?"
+	stmt, err := acc.db.Prepare(query)
 	if err != nil {
 		trans.Rollback()
-		err = appErrors.WrapDbPrepare(err, stmt)
+		err = appErrors.WrapDbPrepare(err, query)
 		return err
 	}
 	defer stmt.Close()
@@ -196,15 +197,16 @@ func (acc *accountRepo) Delete(id uint) error {
 	_, err = stmt.Exec(now, id)
 	if err != nil {
 		trans.Rollback()
-		err = appErrors.WrapDbExec(err, statement, id)
+		err = appErrors.WrapDbExec(err, query, id)
 		return err
 	}
 
 	// Transactions
-	stmt2, err := acc.db.Prepare("UPDATE transactions SET deleted_at=? WHERE account_id=?")
+	query2 := "UPDATE transactions SET deleted_at=? WHERE account_id=?"
+	stmt2, err := acc.db.Prepare(query2)
 	if err != nil {
 		trans.Rollback()
-		err = appErrors.WrapDbPrepare(err, stmt2)
+		err = appErrors.WrapDbPrepare(err, query2)
 		return err
 	}
 	defer stmt2.Close()
@@ -212,26 +214,49 @@ func (acc *accountRepo) Delete(id uint) error {
 	_, err = stmt2.Exec(now, id)
 	if err != nil {
 		trans.Rollback()
-		err = appErrors.WrapDbExec(err, stmt2, id)
+		err = appErrors.WrapDbExec(err, query2, id)
 		return err
 	}
 
 	// Get User Ids
-	users, err := repos.users.SelectByAccountId(id)
-
-	// Users
-	stmt3, err := acc.db.Prepare("UPDATE users SET deleted_at=? WHERE account_id=?")
+	results := make([]uint, 0)
+	query3 := "SELECT id FROM users WHERE account_id=?"
+	stmt3, err := acc.db.Prepare(query3)
 	if err != nil {
-		trans.Rollback()
-		err = appErrors.WrapDbPrepare(err, stmt3)
-		return err
+		return appErrors.WrapDbPrepare(err, query3)
 	}
 	defer stmt3.Close()
+	rows, err := stmt3.Query(domains.NewNullUint(id))
+	if err != nil {
+		return appErrors.WrapDbQuery(err, query3, id)
+	}
+	defer rows.Close()
 
-	_, err = stmt3.Exec(now, id)
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id); errScan != nil {
+			return errScan
+		}
+		results = append(results, user.Id)
+	}
+
+	fmt.Println(results)
+
+	// Users
+	query4 := "UPDATE users SET deleted_at=? WHERE account_id=?"
+	stmt4, err := acc.db.Prepare(query4)
 	if err != nil {
 		trans.Rollback()
-		err = appErrors.WrapDbExec(err, stmt3, id)
+		err = appErrors.WrapDbPrepare(err, query4)
+		return err
+	}
+	defer stmt4.Close()
+
+	_, err = stmt4.Exec(now, id)
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbExec(err, query4, id)
 		return err
 	}
 

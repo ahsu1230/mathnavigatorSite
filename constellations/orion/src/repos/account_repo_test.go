@@ -2,13 +2,13 @@ package repos_test
 
 import (
 	"database/sql"
-	"reflect"
-	"testing"
-
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
+	"reflect"
+	"testing"
+	"time"
 )
 
 func initAccountTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AccountRepoInterface) {
@@ -113,6 +113,7 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
+	now := time.Now().UTC()
 	// Mock DB statements and execute
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Balance"}).
 		AddRow(
@@ -249,7 +250,7 @@ func TestDeleteAccount(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM accounts WHERE id=?").
+	mock.ExpectPrepare("^UPDATE accounts SET deleted_at=* WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
