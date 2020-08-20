@@ -13,16 +13,17 @@ describe("test", () => {
     });
 
     test("renders 1 card, 2 announcements", () => {
-        const now = new Date();
+        const now = moment();
+        const earlier = now.subtract(30, 'minutes');
         const fakeAnnouncements = [
             {
                 id: 1,
-                postedAt: now,
+                postedAt: now.toDate(),
                 message: "Awesome",
             },
             {
                 id: 2,
-                postedAt: now,
+                postedAt: earlier.toDate(),
                 message: "Possum",
             },
         ];
@@ -41,22 +42,22 @@ describe("test", () => {
     });
 
     test("renders 2 cards, 3 announcements", () => {
-        const now = new Date();
-        const earlier = now.setDate(now.getDate() - 3);
+        const now = moment();
+        const earlier = moment(now).subtract(3, 'days')
         const fakeAnnouncements = [
             {
                 id: 1,
-                postedAt: now,
+                postedAt: now.toDate(),
                 message: "Awesome",
             },
             {
                 id: 2,
-                postedAt: now,
+                postedAt: now.toDate(),
                 message: "Possum",
             },
             {
                 id: 3,
-                postedAt: earlier,
+                postedAt: earlier.toDate(),
                 message: "Dossum",
             },
         ];
