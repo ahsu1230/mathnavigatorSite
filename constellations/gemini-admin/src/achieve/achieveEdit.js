@@ -1,6 +1,7 @@
 "use strict";
 require("./achieveEdit.sass");
 import React from "react";
+import moment from "moment";
 import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
@@ -11,13 +12,12 @@ import { emptyValidator } from "../utils/inputText.js";
 export class AchieveEditPage extends React.Component {
     state = {
         isEdit: false,
-        year: "",
-        position: "",
+        year: moment().year(),
+        position: 0,
         message: "",
     };
 
     componentDidMount = () => {
-        console.log(this.props.id);
         const id = this.props.id;
         if (id) {
             API.get("api/achievements/achievement/" + id).then((res) => {
