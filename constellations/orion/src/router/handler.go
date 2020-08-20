@@ -100,6 +100,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAFH.GET("/afh/:id", controllers.GetAFHById)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
+		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 	}
 
 	apiUserClasses := h.Engine.Group("api/user-classes")
