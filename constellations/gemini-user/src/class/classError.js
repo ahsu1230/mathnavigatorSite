@@ -1,10 +1,10 @@
 "use strict";
-require("./error.sass");
+require("./classError.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import srcBroken from "../../assets/compass_broken.png";
 
-export class ErrorPage extends React.Component {
+export class ClassErrorPage extends React.Component {
     render = () => {
         const classId = this.props.classId;
         const errorMsg = classId

@@ -7,7 +7,7 @@ import API from "../utils/api.js";
 import { formatCurrency, getFullStateName } from "../utils/utils.js";
 import { Link } from "react-router-dom";
 import { ClassSchedule } from "./classSchedule.js";
-import { ErrorPage } from "../error/error.js";
+import { ClassErrorPage } from "./classError.js";
 
 export class ClassPage extends React.Component {
     state = {
@@ -134,14 +134,14 @@ export class ClassPage extends React.Component {
         const url = "/contact?interest=" + classObj.classId;
 
         if (_.isEmpty(classObj))
-            return <ErrorPage classId={this.props.classId} />;
+            return <ClassErrorPage classId={this.props.classId} />;
         else
             return (
                 <div id="view-class">
                     {this.getTitle(program, semester, classObj)}
 
                     <div id="class-description">
-                        <h4 className="red">
+                        <h4 className="full">
                             {getFullStateName(classObj.fullState)}
                         </h4>
                         <h4>
