@@ -100,8 +100,8 @@ export class ClassEditPage extends React.Component {
 
                         fullState: classObj.fullState,
                         googleClassCode: classObj.googleClassCode || "",
-                        priceLump: classObj.priceLump || "",
-                        pricePerSession: classObj.pricePerSession || "",
+                        priceLump: classObj.priceLump || 0,
+                        pricePerSession: classObj.pricePerSession || 0,
                         paymentNotes: classObj.paymentNotes || "",
                     });
                 })
@@ -307,9 +307,9 @@ export class ClassEditPage extends React.Component {
                     <InputText
                         label="ClassKey"
                         description="Enter the class key. (Example: class1)"
-                        value={this.state.classKey}
+                        value={this.state.inputClassKey}
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "classKey")
+                            this.handleChange(e, "inputClassKey")
                         }
                     />
 
