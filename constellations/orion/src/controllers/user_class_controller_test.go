@@ -3,18 +3,19 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetUsersByClassId_Success(t *testing.T) {
+func TestGetUsersByClassIdSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockSelectByClassId = func(classId string) ([]domains.UserClasses, error) {
 		return []domains.UserClasses{
 			testUtils.CreateMockUserClasses(
@@ -60,7 +61,7 @@ func TestGetUsersByClassId_Success(t *testing.T) {
 	assert.EqualValues(t, 2, len(userClass))
 }
 
-func TestGetClassesByUserId_Success(t *testing.T) {
+func TestGetClassesByUserIdSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockSelectByUserId = func(id uint) ([]domains.UserClasses, error) {
 		return []domains.UserClasses{
 			testUtils.CreateMockUserClasses(
@@ -106,7 +107,7 @@ func TestGetClassesByUserId_Success(t *testing.T) {
 	assert.EqualValues(t, 2, len(userClass))
 }
 
-func TestGetUserClassByUserAndClass_Success(t *testing.T) {
+func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockSelectByUserAndClass = func(id uint, classId string) (domains.UserClasses, error) {
 		userClass := testUtils.CreateMockUserClasses(
 			1,
@@ -185,7 +186,7 @@ func TestGetUsersByNew(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateUserClass_Success(t *testing.T) {
+func TestCreateUserClassSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
 		return nil
 	}
@@ -206,9 +207,9 @@ func TestCreateUserClass_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateUserClass_Failure(t *testing.T) {
+func TestCreateUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockMySQLDuplicateEntryError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -224,13 +225,13 @@ func TestCreateUserClass_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
 //
 // Test Update
 //
-func TestUpdateUserClass_Success(t *testing.T) {
+func TestUpdateUserClassSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
 		return nil // Successful update
 	}
@@ -251,9 +252,9 @@ func TestUpdateUserClass_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUserClass_Invalid(t *testing.T) {
+func TestUpdateUserClassInvalid(t *testing.T) {
 	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	// no mock needed
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
@@ -270,12 +271,12 @@ func TestUpdateUserClass_Invalid(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestUpdateUserClass_Failure(t *testing.T) {
+func TestUpdateUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -291,13 +292,13 @@ func TestUpdateUserClass_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
 // Test Delete
 //
-func TestDeleteUserClass_Success(t *testing.T) {
+func TestDeleteUserClassSuccess(t *testing.T) {
 	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
 		return nil // Return no error, successful delete!
 	}
@@ -307,12 +308,12 @@ func TestDeleteUserClass_Success(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
-func TestDeleteUserClass_Failure(t *testing.T) {
+func TestDeleteUserClassFailure(t *testing.T) {
 	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -320,10 +321,10 @@ func TestDeleteUserClass_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestStateValues_Success(t *testing.T) {
+func TestStateValuesSuccess(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/states", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }

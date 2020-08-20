@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 2 Classes and Publish 1
-func Test_PublishClasses(t *testing.T) {
+func TestPublishClasses(t *testing.T) {
 	// Create
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -38,7 +38,7 @@ func Test_PublishClasses(t *testing.T) {
 	classIds := []string{"program1_2020_spring_class2"}
 	body3 := utils.CreateJsonBody(&classIds)
 	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/publish", body3)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder4.Code)
 
 	// Get All Published
 	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)

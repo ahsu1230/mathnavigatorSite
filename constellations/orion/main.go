@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -8,6 +9,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
@@ -17,8 +19,27 @@ import (
 func main() {
 	fmt.Println("Orion service starting...")
 
+	// Parse flags
+	var production bool
+	flag.BoolVar(&production, "production", false, "Production mode")
+	flag.Parse()
+
+	// Setup Logging
+	fmt.Println("Setting up Logger...")
+	if production {
+		err := logger.SetupProd()
+		if err != nil {
+			fmt.Printf("Logger failed to setup! %w", err)
+			os.Exit(1)
+			return
+		}
+	} else {
+		logger.SetupDev()
+	}
+	logger.Message("Logger successfully setup!")
+
 	// App Repos
-	fmt.Println("Setting up Repos...")
+	logger.Message("Setting up Repos...")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 	dbUser := os.Getenv("DB_USER")
@@ -29,16 +50,19 @@ func main() {
 	repoUtils.Migrate(db, "file://src/repos/migrations")
 	repos.SetupRepos(db)
 	defer repoUtils.Close(db)
-	fmt.Println("Database started!")
+	logger.Message("Database started!")
 
 	// App Router
-	fmt.Println("Setting up Router...")
+	logger.Message("Setting up Router...")
 	engine := gin.Default()
-	fmt.Println("Setting up Middlewares...")
+
+	logger.Message("Setting up Middlewares...")
 	corsOriginEnvVar := os.Getenv("CORS_ORIGIN")
 	corsOrigins := []string{corsOriginEnvVar}
 	configCors := middlewares.CreateCorsConfig(corsOrigins)
 	engine.Use(cors.New(configCors))
+	engine.NoRoute(router.NoRouteHandler())
+	engine.Use(router.AppRequestHandler())
 	handler := router.Handler{Engine: engine}
 	handler.SetupApiEndpoints()
 

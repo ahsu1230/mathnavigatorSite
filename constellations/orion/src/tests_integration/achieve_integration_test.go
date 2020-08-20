@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 3 Achievements and GetAll(false)
-func Test_CreateAchievements(t *testing.T) {
+func TestCreateAchievements(t *testing.T) {
 	achieve1 := createAchievement(2020, "message1", 1)
 	achieve2 := createAchievement(2021, "message2", 2)
 	achieve3 := createAchievement(2022, "message3", 3)
@@ -52,7 +52,7 @@ func Test_CreateAchievements(t *testing.T) {
 }
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
-func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
+func TestGetAllAchievementsGroupedByYear(t *testing.T) {
 	achieve1 := createAchievement(2020, "message1", 1)
 	achieve2 := createAchievement(2021, "message2", 2)
 	achieve3 := createAchievement(2022, "message3", 3)
@@ -97,7 +97,7 @@ func Test_GetAllAchievementsGroupedByYear(t *testing.T) {
 }
 
 // Test: Create 1 Achievement, Update it, GetById()
-func Test_UpdateAchievement(t *testing.T) {
+func TestUpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
 	achieve1 := createAchievement(2020, "message1", 1)
 	body1 := utils.CreateJsonBody(&achieve1)
@@ -127,7 +127,7 @@ func Test_UpdateAchievement(t *testing.T) {
 }
 
 // Test: Create 1 Achievement, Delete it, GetById()
-func Test_DeleteAchievement(t *testing.T) {
+func TestDeleteAchievement(t *testing.T) {
 	// Create
 	achieve1 := createAchievement(2020, "message1", 1)
 	body1 := utils.CreateJsonBody(&achieve1)
@@ -136,7 +136,7 @@ func Test_DeleteAchievement(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/achievements/achievement/1", nil)

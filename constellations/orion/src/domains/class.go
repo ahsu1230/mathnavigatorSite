@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -21,7 +21,7 @@ type Class struct {
 	LocationId      string     `json:"locationId" db:"location_id"`
 	Times           string     `json:"times"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
-	FullState       int        `json:"fullState" db:"full_state"`
+	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
@@ -30,6 +30,8 @@ type Class struct {
 // Class Methods
 
 func (class *Class) Validate() error {
+	messageFmt := "Invalid Class: %s"
+
 	// Retrieves the inputted values
 	classKey := class.ClassKey
 	times := class.Times
@@ -39,19 +41,18 @@ func (class *Class) Validate() error {
 	// Class Key validation
 	if classKey.Valid {
 		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches {
-			return errors.New("invalid class key")
+			return fmt.Errorf(messageFmt, "Invalid Class Key")
 		}
 	}
 
 	// Times validation
 	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
-		return errors.New("invalid times")
+		return fmt.Errorf(messageFmt, "Invalid Time Format")
 	}
 
-	//Price validation
-	//Both valid
-	if priceLump.Valid && pricePerSession.Valid {
-		return errors.New("invalid price: both valid")
+	// Price validation
+	if priceLump.Valid == pricePerSession.Valid {
+		return fmt.Errorf(messageFmt, "Only One Price Can Be Defined")
 	}
 
 	return nil

@@ -2,7 +2,9 @@ package repos
 
 import (
 	"database/sql"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 	"time"
 )
@@ -28,20 +30,23 @@ type UserClassesRepoInterface interface {
 }
 
 func (ur *userClassesRepo) Initialize(db *sql.DB) {
+	utils.LogWithContext("userClassRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
 func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasses, error) {
+	utils.LogWithContext("userRepo.SelectByClassId", logger.Fields{"classId": classId})
 	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE class_id=?")
+	statement := "SELECT * FROM user_classes WHERE class_id=?"
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullString(classId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, classId)
 	}
 	defer rows.Close()
 
@@ -64,16 +69,18 @@ func (ur *userClassesRepo) SelectByClassId(classId string) ([]domains.UserClasse
 }
 
 func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByUserId", logger.Fields{"userId": userId})
 	results := make([]domains.UserClasses, 0)
 
-	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE user_id=?")
+	statement := "SELECT * FROM user_classes WHERE user_id=?"
+	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(domains.NewNullUint(userId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, userId)
 	}
 	defer rows.Close()
 
@@ -96,16 +103,20 @@ func (ur *userClassesRepo) SelectByUserId(userId uint) ([]domains.UserClasses, e
 }
 
 func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByUserAndClass", logger.Fields{
+		"userId":  userId,
+		"classId": classId})
 	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
+		err = appErrors.WrapDbPrepare(err, statement)
 		return domains.UserClasses{}, err
 	}
 	defer stmt.Close()
 
 	var userClasses domains.UserClasses
 	row := stmt.QueryRow(userId, classId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&userClasses.Id,
 		&userClasses.CreatedAt,
 		&userClasses.UpdatedAt,
@@ -113,11 +124,15 @@ func (ur *userClassesRepo) SelectByUserAndClass(userId uint, classId string) (do
 		&userClasses.UserId,
 		&userClasses.ClassId,
 		&userClasses.AccountId,
-		&userClasses.State)
-	return userClasses, errScan
+		&userClasses.State); err != nil {
+		err = appErrors.WrapDbExec(err, statement, userId, classId)
+		return domains.UserClasses{}, err
+	}
+	return userClasses, nil
 }
 
 func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
+	utils.LogWithContext("userClassRepo.SelectByNew", logger.Fields{})
 	results := make([]domains.UserClasses, 0)
 
 	now := time.Now().UTC()
@@ -154,6 +169,7 @@ func (ur *userClassesRepo) SelectByNew() ([]domains.UserClasses, error) {
 }
 
 func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
+	utils.LogWithContext("userClassRepo.Insert", logger.Fields{"userClass": userClasses})
 	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
 		"updated_at, " +
@@ -165,7 +181,7 @@ func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -179,12 +195,13 @@ func (ur *userClassesRepo) Insert(userClasses domains.UserClasses) error {
 		userClasses.State,
 	)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userClasses)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
 }
 
 func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) error {
+	utils.LogWithContext("userClassRepo.Update", logger.Fields{"userClass": userClasses})
 	statement := "UPDATE user_classes SET " +
 		"updated_at=?, " +
 		"user_id=?, " +
@@ -194,7 +211,7 @@ func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) erro
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -207,24 +224,25 @@ func (ur *userClassesRepo) Update(id uint, userClasses domains.UserClasses) erro
 		userClasses.State,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, userClasses, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not updated")
 }
 
 func (ur *userClassesRepo) Delete(id uint) error {
+	utils.LogWithContext("userClassRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM user_classes WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userClasses was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not deleted")
 }
 
 // For Tests Only

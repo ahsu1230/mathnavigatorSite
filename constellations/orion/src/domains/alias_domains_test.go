@@ -2,7 +2,6 @@ package domains_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 	"time"
 
@@ -19,7 +18,7 @@ func TestNullString(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullString
 	err = json.Unmarshal(bytes, &result)
@@ -36,7 +35,7 @@ func TestNullStringEmpty(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullString
 	err = json.Unmarshal(bytes, &result)
@@ -57,7 +56,7 @@ func TestNullTime(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullTime
 	err = json.Unmarshal(bytes, &result)
@@ -75,7 +74,7 @@ func TestNullTimeEmpty(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullTime
 	err = json.Unmarshal(bytes, &result)
@@ -92,7 +91,7 @@ func TestNullUint(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullUint
 	err = json.Unmarshal(bytes, &result)
@@ -109,7 +108,7 @@ func TestNullUintEmpty(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error %v", err)
 	}
-	fmt.Println("json", string(bytes))
+	t.Log("json", string(bytes))
 
 	var result domains.NullUint
 	err = json.Unmarshal(bytes, &result)

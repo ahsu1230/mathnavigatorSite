@@ -2,7 +2,7 @@ package domains
 
 import (
 	"database/sql"
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -29,6 +29,8 @@ type User struct {
 // Class Methods
 
 func (user *User) Validate() error {
+	messageFmt := "Invalid User: %s"
+
 	// Retrieves the inputted values
 	firstName := user.FirstName
 	lastName := user.LastName
@@ -39,32 +41,32 @@ func (user *User) Validate() error {
 
 	// First name validation
 	if firstName == "" {
-		return errors.New("invalid first name")
+		return fmt.Errorf(messageFmt, "Please provide a first name")
 	}
 
 	// Last name validation
 	if lastName == "" {
-		return errors.New("invalid last name")
+		return fmt.Errorf(messageFmt, "Please provide a last name")
 	}
 
 	// Email validation
 	if matches, _ := regexp.MatchString(REGEX_EMAIL, email); !matches {
-		return errors.New("invalid email")
+		return fmt.Errorf(messageFmt, "Invalid email format")
 	}
 
 	// Phone validation
 	if matches, _ := regexp.MatchString(REGEX_PHONE, phone); !matches {
-		return errors.New("invalid phone")
+		return fmt.Errorf(messageFmt, "Invalid phone format")
 	}
 
 	// School validation
 	if matches, _ := regexp.MatchString(REGEX_WORDS, school); matches && user.School.Valid {
-		return errors.New("school contains non alphabetic characters")
+		return fmt.Errorf(messageFmt, "School contains non alphabetic characters")
 	}
 
 	// Year validation
 	if year < 2000 && user.GraduationYear.Valid {
-		return errors.New("invalid graduation year")
+		return fmt.Errorf(messageFmt, "Invalid graduation year. Must be > 2000")
 	}
 	return nil
 }

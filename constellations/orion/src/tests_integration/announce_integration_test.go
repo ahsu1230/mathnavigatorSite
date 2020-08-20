@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Announcements and GetAll()
-func Test_CreateAnnouncements(t *testing.T) {
+func TestCreateAnnouncements(t *testing.T) {
 	early := time.Unix(0, 0)
 	mid := time.Unix(55, 123)
 	now := time.Now().UTC()
@@ -56,7 +56,7 @@ func Test_CreateAnnouncements(t *testing.T) {
 }
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
-func Test_UpdateAnnouncement(t *testing.T) {
+func TestUpdateAnnouncement(t *testing.T) {
 	// Create 1 Announcement
 	now := time.Now().UTC()
 	announce1 := createAnnouncement(now, "Author 1", "Message 1", false)
@@ -88,7 +88,7 @@ func Test_UpdateAnnouncement(t *testing.T) {
 }
 
 // Test: Create 1 Announcement, Delete it, GetByAnnounceId()
-func Test_DeleteAnnouncement(t *testing.T) {
+func TestDeleteAnnouncement(t *testing.T) {
 	// Create
 	now := time.Now().UTC()
 	announce1 := createAnnouncement(now, "Author 1", "Message 1", true)
@@ -98,7 +98,7 @@ func Test_DeleteAnnouncement(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)

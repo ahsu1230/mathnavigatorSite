@@ -9,8 +9,9 @@ import (
 func TestValidClassKey(t *testing.T) {
 	// Checks for valid class keys
 	class := domains.Class{
-		ClassKey: domains.NewNullString("final_review"),
-		Times:    "3 pm - 5 pm",
+		ClassKey:  domains.NewNullString("final_review"),
+		Times:     "3 pm - 5 pm",
+		PriceLump: domains.NewNullUint(1000),
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -41,8 +42,9 @@ func TestValidClassKey(t *testing.T) {
 func TestValidTimes(t *testing.T) {
 	// Checks for valid times
 	class := domains.Class{
-		ClassKey: domains.NewNullString("final_review"),
-		Times:    "6 pm - 8 pm",
+		ClassKey:  domains.NewNullString("final_review"),
+		Times:     "6 pm - 8 pm",
+		PriceLump: domains.NewNullUint(1000),
 	}
 	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
@@ -66,47 +68,35 @@ func TestValidTimes(t *testing.T) {
 }
 
 func TestValidPrice(t *testing.T) {
-	//Check valid prices
-	validClass := domains.Class{
-		ClassKey: domains.NewNullString("final_review"),
-		Times:    "6 pm - 8 pm",
+	// Check valid prices
+	class := domains.Class{
+		ClassKey:  domains.NewNullString("final_review"),
+		Times:     "6 pm - 8 pm",
+		PriceLump: domains.NewNullUint(1000),
 	}
-	if err := validClass.Validate(); err != nil {
+
+	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	//Valid PriceLump
-	validClass.PriceLump = domains.NewNullUint(100)
-	if err := validClass.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-	validClass.PriceLump = domains.NewNullUint(0)
-	if err := validClass.Validate(); err != nil {
+	// Valid PricePerSession and no PriceLump
+	class.PricePerSession = domains.NewNullUint(100)
+	class.PriceLump = domains.NewNullUint(0)
+	if err := class.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	//Valid PricePerSession
-	validClass.PricePerSession = domains.NewNullUint(100)
-	if err := validClass.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-	validClass.PricePerSession = domains.NewNullUint(0)
-	if err := validClass.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	// Both PricePerSession and PriceLump
+	class.PricePerSession = domains.NewNullUint(100)
+	class.PriceLump = domains.NewNullUint(1000)
+	if err := class.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid price: choose one or the other", err.Error())
 	}
 
-	//Check invalid prices
-	invalidClass := domains.Class{
-		ClassKey: domains.NewNullString("final_review"),
-		Times:    "6 pm - 8 pm",
-	}
-	if err := invalidClass.Validate(); err != nil {
-		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
-	}
-	//Both valid
-	invalidClass.PriceLump = domains.NewNullUint(10)
-	invalidClass.PricePerSession = domains.NewNullUint(50)
-	if err := invalidClass.Validate(); err == nil {
-		t.Errorf("Check was incorrect, got: nil, expected: invalid price: both valid")
+	// Both empty
+	class.PriceLump = domains.NewNullUint(0)
+	class.PricePerSession = domains.NewNullUint(0)
+	if err := class.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid price: choose one or the other")
 	}
 }

@@ -99,6 +99,10 @@ export class ClassEditPage extends React.Component {
                         sessions: sessions,
 
                         fullState: classObj.fullState,
+                        googleClassCode: classObj.googleClassCode || "",
+                        priceLump: classObj.priceLump || 0,
+                        pricePerSession: classObj.pricePerSession || 0,
+                        paymentNotes: classObj.paymentNotes || "",
                     });
                 })
             )
@@ -120,16 +124,20 @@ export class ClassEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
-    handleIntegerChange = (event, value) => {
-        let number = event.target.value;
-        this.setState({ [value]: parseInt(number) });
-    };
-
     onChangeFullState = (e) => {
         const value = e.target.value;
         this.setState({
             fullState: parseInt(value),
         });
+    };
+
+    getPaymentValidator = () => {
+        const values = [this.state.priceLump, this.state.pricePerSession];
+        return {
+            validate: () => values.filter((x) => x).length == 1,
+            message:
+                "Only one of PriceLump or PricePerSession should be filled.",
+        };
     };
 
     onClickSave = () => {
@@ -144,11 +152,9 @@ export class ClassEditPage extends React.Component {
             times: this.state.inputTimeString,
             fullState: this.state.fullState,
             googleClassCode: this.state.googleClassCode,
-            priceLump: this.state.priceLump,
-            pricePerSession: this.state.pricePerSession,
+            priceLump: parseInt(this.state.priceLump),
+            pricePerSession: parseInt(this.state.pricePerSession),
             paymentNotes: this.state.paymentNotes,
-            startDate: moment().toJSON(), // TODO: need to remove
-            endDate: moment().add(30, "d").toJSON(), // TODO: need to remove
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
@@ -206,8 +212,49 @@ export class ClassEditPage extends React.Component {
         });
     };
 
-    render = () => {
-        const title = this.state.isEdit ? "Edit Class" : "Add Class";
+    renderModal = (
+        showSaveModal,
+        showDeleteModal,
+        onModalOkSaved,
+        onModalDeleteConfirm,
+        onModalDismiss
+    ) => {
+        let modalDiv;
+        let modalContent;
+        let showModal;
+        if (showDeleteModal) {
+            showModal = showDeleteModal;
+            modalContent = (
+                <YesNoModal
+                    text={"Are you sure you want to delete?"}
+                    onAccept={onModalDeleteConfirm}
+                    onReject={onModalDismiss}
+                />
+            );
+        }
+        if (showSaveModal) {
+            showModal = showSaveModal;
+            modalContent = (
+                <OkayModal
+                    text={"Class information saved!"}
+                    onOkay={onModalOkSaved}
+                />
+            );
+        }
+        if (modalContent) {
+            modalDiv = (
+                <Modal
+                    content={modalContent}
+                    show={showModal}
+                    onDismiss={onModalDismiss}
+                />
+            );
+        }
+        return modalDiv;
+    };
+
+    renderClassInformation = () => {
+        const classId = this.createClassId();
 
         const programOptions = this.state.programs.map((program, index) => ({
             value: program.programId,
@@ -218,6 +265,65 @@ export class ClassEditPage extends React.Component {
             value: semester.semesterId,
             displayName: semester.title,
         }));
+
+        let classInformation = <div></div>;
+        if (!this.state.isEdit) {
+            classInformation = (
+                <div id="class-information">
+                    <InputSelect
+                        label="ProgramId"
+                        description="Select a program id"
+                        required={true}
+                        value={this.state.selectProgramId}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "selectProgramId")
+                        }
+                        options={programOptions}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no programs to choose from. Please add
+                                one <Link to="/programs/add">here</Link>
+                            </span>
+                        }
+                    />
+
+                    <InputSelect
+                        label="SemesterId"
+                        description="Select a semester id"
+                        required={true}
+                        value={this.state.selectSemesterId}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "selectSemesterId")
+                        }
+                        options={semesterOptions}
+                        errorMessageIfEmpty={
+                            <span>
+                                There are no semesters to choose from. Please
+                                add one <Link to="/semesters/add">here</Link>
+                            </span>
+                        }
+                    />
+
+                    <InputText
+                        label="ClassKey"
+                        description="Enter the class key. (Example: class1)"
+                        value={this.state.inputClassKey}
+                        onChangeCallback={(e) =>
+                            this.handleChange(e, "inputClassKey")
+                        }
+                    />
+
+                    <h3 className="class-id">ClassId: {classId}</h3>
+                </div>
+            );
+        }
+        return classInformation;
+    };
+
+    render = () => {
+        const title = this.state.isEdit
+            ? "Edit Class: " + this.createClassId()
+            : "Add Class";
 
         const locationOptions = this.state.locations.map((location, index) => ({
             value: location.locationId,
@@ -231,60 +337,6 @@ export class ClassEditPage extends React.Component {
             })
         );
 
-        const classId = this.createClassId();
-
-        let classInformation = <h3 className="class-id">ClassId: {classId}</h3>;
-        if (!this.state.isEdit) {
-            classInformation = (
-                <div className="edit-section">
-                    <h3>Class Information</h3>
-
-                    <InputSelect
-                        label="ProgramId"
-                        description="Select a program id"
-                        value={this.state.selectProgramId}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "selectProgramId")
-                        }
-                        required={true}
-                        options={programOptions}
-                        errorMessageIfEmpty={
-                            <span>
-                                There are no programs to choose from. Please add
-                                one <Link to="/programs/add">here</Link>
-                            </span>
-                        }
-                    />
-
-                    <InputSelect
-                        label="SemesterId"
-                        description="Select a semester id"
-                        value={this.state.selectSemesterId}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "selectSemesterId")
-                        }
-                        required={true}
-                        options={semesterOptions}
-                        errorMessageIfEmpty={
-                            <span>
-                                There are no semesters to choose from. Please
-                                add one <Link to="/semesters/add">here</Link>
-                            </span>
-                        }
-                    />
-
-                    <h4>ClassKey</h4>
-                    <input
-                        value={this.state.inputClassKey}
-                        placeholder="Optional"
-                        onChange={(e) => this.handleChange(e, "inputClassKey")}
-                    />
-
-                    <h3 className="class-id">ClassId: {classId}</h3>
-                </div>
-            );
-        }
-
         let deleteButton = <div></div>;
         if (this.state.isEdit) {
             deleteButton = (
@@ -294,7 +346,7 @@ export class ClassEditPage extends React.Component {
             );
         }
 
-        const modalDiv = renderModal(
+        const modalDiv = this.renderModal(
             this.state.showSaveModal,
             this.state.showDeleteModal,
             this.onModalOkSaved,
@@ -306,18 +358,16 @@ export class ClassEditPage extends React.Component {
             <div id="view-class-edit">
                 {modalDiv}
                 <h2>{title}</h2>
-                {classInformation}
-                <div className="edit-section">
-                    <h3>Class Schedule</h3>
-
+                {this.renderClassInformation()}
+                <div id="edit-section">
                     <InputSelect
                         label="LocationId"
                         description="Select a location id"
+                        required={true}
                         value={this.state.selectLocationId}
                         onChangeCallback={(e) =>
                             this.handleChange(e, "selectLocationId")
                         }
-                        required={true}
                         options={locationOptions}
                         errorMessageIfEmpty={
                             <span>
@@ -343,15 +393,14 @@ export class ClassEditPage extends React.Component {
                     <InputSelect
                         label="Class Availability"
                         description="Select a level of availability"
+                        required={true}
                         value={this.state.fullState}
                         onChangeCallback={(e) => this.onChangeFullState(e)}
-                        required={true}
                         options={fullStateOptions}
                     />
 
                     <InputText
                         label="Google Classroom Code"
-                        required={false}
                         description="Enter the google classroom code"
                         value={this.state.googleClassCode}
                         onChangeCallback={(e) =>
@@ -361,57 +410,37 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="Price Lump"
-                        required={false}
                         description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
+                        required={true}
+                        value={this.state.priceLump}
                         onChangeCallback={(e) =>
-                            this.handleIntegerChange(e, "priceLump")
+                            this.handleChange(e, "priceLump")
                         }
-                        validators={[
-                            {
-                                validate: (input) => parseInt(input) != NaN,
-                                message: "Price must be a valid number",
-                            },
-                            {
-                                validate: (input) => input != "",
-                                validate: this.state.pricePerSession != 0,
-                                message:
-                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
-                            },
-                        ]}
+                        validators={[this.getPaymentValidator()]}
                     />
 
                     <InputText
                         label="Price Per Session"
-                        required={false}
                         description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
+                        required={true}
+                        value={this.state.pricePerSession}
                         onChangeCallback={(e) =>
-                            this.handleIntegerChange(e, "pricePerSession")
+                            this.handleChange(e, "pricePerSession")
                         }
-                        validators={[
-                            {
-                                validate: (input) => parseInt(input) != "NaN",
-                                message: "Price must be a valid number",
-                            },
-                            {
-                                validate: (input) => input != "",
-                                validate: this.state.priceLump != 0,
-                                message:
-                                    "Only one of PriceLump or PricePerSession should be filled. Both cannot be filled",
-                            },
-                        ]}
+                        validators={[this.getPaymentValidator()]}
                     />
 
                     <InputText
                         label="Payment Notes"
-                        isTextBox={true}
-                        required={false}
                         description="Enter payment notes"
+                        isTextBox={true}
                         value={this.state.paymentNotes}
                         onChangeCallback={(e) =>
                             this.handleChange(e, "paymentNotes")
                         }
                     />
                 </div>
+
                 <div className="buttons">
                     <button className="btn-save" onClick={this.onClickSave}>
                         Save
@@ -424,45 +453,4 @@ export class ClassEditPage extends React.Component {
             </div>
         );
     };
-}
-
-function renderModal(
-    showSaveModal,
-    showDeleteModal,
-    onModalOkSaved,
-    onModalDeleteConfirm,
-    onModalDismiss
-) {
-    let modalDiv;
-    let modalContent;
-    let showModal;
-    if (showDeleteModal) {
-        showModal = showDeleteModal;
-        modalContent = (
-            <YesNoModal
-                text={"Are you sure you want to delete?"}
-                onAccept={onModalDeleteConfirm}
-                onReject={onModalDismiss}
-            />
-        );
-    }
-    if (showSaveModal) {
-        showModal = showSaveModal;
-        modalContent = (
-            <OkayModal
-                text={"Class information saved!"}
-                onOkay={onModalOkSaved}
-            />
-        );
-    }
-    if (modalContent) {
-        modalDiv = (
-            <Modal
-                content={modalContent}
-                show={showModal}
-                onDismiss={onModalDismiss}
-            />
-        );
-    }
-    return modalDiv;
 }
