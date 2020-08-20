@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
@@ -181,7 +180,7 @@ func (acc *accountRepo) Delete(id uint) error {
 
 	trans, err := acc.db.Begin()
 	if err != nil {
-		return err
+		return appErrors.WrapDbTxBegin(err)
 	}
 
 	// Accounts
@@ -194,7 +193,7 @@ func (acc *accountRepo) Delete(id uint) error {
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(now, id)
+	_, err = stmt.Exec(domains.NewNullTime(now), id)
 	if err != nil {
 		trans.Rollback()
 		err = appErrors.WrapDbExec(err, query, id)
@@ -219,7 +218,7 @@ func (acc *accountRepo) Delete(id uint) error {
 	}
 
 	// Get User Ids
-	results := make([]uint, 0)
+	userIds := make([]uint, 0)
 	query3 := "SELECT id FROM users WHERE account_id=?"
 	stmt3, err := acc.db.Prepare(query3)
 	if err != nil {
@@ -231,17 +230,14 @@ func (acc *accountRepo) Delete(id uint) error {
 		return appErrors.WrapDbQuery(err, query3, id)
 	}
 	defer rows.Close()
-
 	for rows.Next() {
 		var user domains.User
 		if errScan := rows.Scan(
 			&user.Id); errScan != nil {
 			return errScan
 		}
-		results = append(results, user.Id)
+		userIds = append(userIds, user.Id)
 	}
-
-	fmt.Println(results)
 
 	// Users
 	query4 := "UPDATE users SET deleted_at=? WHERE account_id=?"
@@ -260,6 +256,42 @@ func (acc *accountRepo) Delete(id uint) error {
 		return err
 	}
 
+	// User Classes
+	query5 := "UPDATE user_classes SET deleted_at=? WHERE account_id=?"
+	stmt5, err := acc.db.Prepare(query5)
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbPrepare(err, query5)
+		return err
+	}
+	defer stmt5.Close()
+
+	_, err = stmt5.Exec(now, id)
+	if err != nil {
+		trans.Rollback()
+		err = appErrors.WrapDbExec(err, query5, id)
+		return err
+	}
+
+	// User Classes
+	for _, uid := range userIds {
+		query6 := "UPDATE user_afh SET deleted_at=? WHERE user_id=?"
+		stmt6, err := acc.db.Prepare(query6)
+		if err != nil {
+			trans.Rollback()
+			err = appErrors.WrapDbPrepare(err, query6)
+			return err
+		}
+		defer stmt6.Close()
+
+		_, err = stmt6.Exec(now, uid)
+		if err != nil {
+			trans.Rollback()
+			err = appErrors.WrapDbExec(err, query6, uid)
+			return err
+		}
+	}
+	trans.Commit()
 	return nil
 }
 
