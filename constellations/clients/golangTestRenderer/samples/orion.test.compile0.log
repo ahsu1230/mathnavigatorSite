@@ -1,0 +1,89 @@
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers [build failed]
+=== RUN   TestHash
+--- PASS: TestHash (0.41s)
+=== RUN   TestValidPrimaryEmail
+--- PASS: TestValidPrimaryEmail (0.00s)
+=== RUN   TestValidPassword
+--- PASS: TestValidPassword (0.00s)
+=== RUN   TestValidYear
+--- PASS: TestValidYear (0.00s)
+=== RUN   TestValidAchievementMessage
+--- PASS: TestValidAchievementMessage (0.00s)
+=== RUN   TestNullString
+--- PASS: TestNullString (0.00s)
+    alias_domains_test.go:21: json "asdf"
+=== RUN   TestNullStringEmpty
+--- PASS: TestNullStringEmpty (0.00s)
+    alias_domains_test.go:38: json null
+=== RUN   TestNullTime
+--- PASS: TestNullTime (0.00s)
+    alias_domains_test.go:59: json "2020-08-13T16:47:34.38388Z"
+=== RUN   TestNullTimeEmpty
+--- PASS: TestNullTimeEmpty (0.00s)
+    alias_domains_test.go:77: json null
+=== RUN   TestNullUint
+--- PASS: TestNullUint (0.00s)
+    alias_domains_test.go:94: json 14
+=== RUN   TestNullUintEmpty
+--- PASS: TestNullUintEmpty (0.00s)
+    alias_domains_test.go:111: json null
+=== RUN   TestValidAuthor
+--- PASS: TestValidAuthor (0.00s)
+=== RUN   TestValidAnnouncementMessage
+--- PASS: TestValidAnnouncementMessage (0.00s)
+=== RUN   TestValidAFHTitle
+--- PASS: TestValidAFHTitle (0.00s)
+=== RUN   TestValidAFHSubject
+--- PASS: TestValidAFHSubject (0.00s)
+=== RUN   TestValidClassKey
+--- PASS: TestValidClassKey (0.00s)
+=== RUN   TestValidTimes
+--- PASS: TestValidTimes (0.00s)
+=== RUN   TestValidPrice
+--- PASS: TestValidPrice (0.00s)
+=== RUN   TestValidLocationId
+--- PASS: TestValidLocationId (0.00s)
+=== RUN   TestValidLocationStreet
+--- PASS: TestValidLocationStreet (0.00s)
+=== RUN   TestValidLocationCity
+--- PASS: TestValidLocationCity (0.00s)
+=== RUN   TestValidLocationState
+--- PASS: TestValidLocationState (0.00s)
+=== RUN   TestValidLocationZipcode
+--- PASS: TestValidLocationZipcode (0.00s)
+=== RUN   TestValidLocationRoom
+--- PASS: TestValidLocationRoom (0.00s)
+=== RUN   TestValidProgramId
+--- PASS: TestValidProgramId (0.00s)
+=== RUN   TestValidProgramName
+--- PASS: TestValidProgramName (0.00s)
+=== RUN   TestValidGrades
+--- PASS: TestValidGrades (0.00s)
+=== RUN   TestValidDescription
+--- PASS: TestValidDescription (0.00s)
+=== RUN   TestValidSemesterId
+--- PASS: TestValidSemesterId (0.00s)
+=== RUN   TestValidTitle
+--- PASS: TestValidTitle (0.00s)
+=== RUN   TestValidNotes
+--- PASS: TestValidNotes (0.00s)
+=== RUN   TestValidPaymentTypes
+--- PASS: TestValidPaymentTypes (0.00s)
+=== RUN   TestValidAmounts
+--- PASS: TestValidAmounts (0.00s)
+=== RUN   TestValidFirstName
+--- PASS: TestValidFirstName (0.00s)
+=== RUN   TestValidLastName
+--- PASS: TestValidLastName (0.00s)
+=== RUN   TestValidEmail
+--- PASS: TestValidEmail (0.00s)
+=== RUN   TestValidPhone
+--- PASS: TestValidPhone (0.00s)
+=== RUN   TestValidSchool
+--- PASS: TestValidSchool (0.00s)
+=== RUN   TestValidGradYear
+--- PASS: TestValidGradYear (0.00s)
+PASS
+ok  	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains	(cached)
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos [build failed]
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration [build failed]

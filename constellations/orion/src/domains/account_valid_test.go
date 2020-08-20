@@ -8,7 +8,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
-func Test_ValidPrimaryEmail(t *testing.T) {
+func TestValidPrimaryEmail(t *testing.T) {
 	// Checks for valid emails
 	account := domains.Account{
 		PrimaryEmail: "gmail@gmail.com",
@@ -30,7 +30,7 @@ func Test_ValidPrimaryEmail(t *testing.T) {
 	}
 }
 
-func Test_ValidPassword(t *testing.T) {
+func TestValidPassword(t *testing.T) {
 	// Checks for passwords
 	account := domains.Account{
 		PrimaryEmail: "gmail@gmail.com",

@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
-func Test_CreateSessions(t *testing.T) {
+func TestCreateSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
@@ -71,7 +71,7 @@ func Test_CreateSessions(t *testing.T) {
 }
 
 // Test: Create 1 Session, Update it, GetBySessionId()
-func Test_UpdateSession(t *testing.T) {
+func TestUpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -119,7 +119,7 @@ func Test_UpdateSession(t *testing.T) {
 }
 
 // Test: Create 2 Sessions, Delete them, GetBySessionId()
-func Test_DeleteSessions(t *testing.T) {
+func TestDeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -148,7 +148,7 @@ func Test_DeleteSessions(t *testing.T) {
 	// Delete
 	body6 := utils.CreateJsonBody([]uint{1, 2})
 	recorder6 := utils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body6)
-	assert.EqualValues(t, http.StatusOK, recorder6.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder6.Code)
 
 	// Get
 	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)

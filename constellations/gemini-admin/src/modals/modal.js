@@ -22,15 +22,13 @@ export class Modal extends React.Component {
         });
 
         const onClickOverlay = persistent ? undefined : this.handleDismiss;
-        var closeButton;
+        var closeButton = <div></div>;
         if (withClose) {
             closeButton = (
                 <button className="close-x" onClick={this.handleDismiss}>
                     Close
                 </button>
             );
-        } else {
-            <div></div>;
         }
 
         var modalClasses = classnames("modal", this.props.modalClassName);

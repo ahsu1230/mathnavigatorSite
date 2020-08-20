@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -26,18 +26,19 @@ type AchieveYearGroup struct {
 // Class Methods
 
 func (achieve *Achieve) Validate() error {
+	messageFmt := "Invalid Achievement: %s"
 	// Retrieves the inputted values
 	year := achieve.Year
 	message := achieve.Message
 
 	// Year validation
 	if year < 2000 {
-		return errors.New("invalid year")
+		return fmt.Errorf(messageFmt, "Year must be later than 2000")
 	}
 
 	// Message validation
 	if matches, _ := regexp.MatchString(REGEX_LETTER, message); !matches {
-		return errors.New("invalid message")
+		return fmt.Errorf(messageFmt, "Message must contain at least an alphabetic letter")
 	}
 
 	return nil

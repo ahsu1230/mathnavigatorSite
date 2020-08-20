@@ -1,0 +1,45 @@
+@import "../utils/_constants.sass"
+
+#class-session
+    .row
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: $spacing3x 0
+        border-bottom: 1px solid $colorGrayLight
+    
+        @media screen and (max-width: $mediaWidth2)
+            display: block
+            width: 100%
+        
+    .canceled span
+        color: $colorRed
+    
+    .canceled-past span
+        color: pink
+
+    .past span
+        color: $colorGrayLight
+    
+    span
+        @media screen and (max-width: $mediaWidth2)
+            display: block
+            line-height: $lineHeight2
+
+    .index-column
+        flex: 1 1 0
+
+    .date-column
+        flex: 2 1 0
+    
+    .time-column
+        flex: 4 1 0
+    
+    .canceled
+        flex: $spacing10x 0 0
+
+#class-questions
+    margin-top: $spacing8x
+
+    button
+        margin: $spacing4x 0

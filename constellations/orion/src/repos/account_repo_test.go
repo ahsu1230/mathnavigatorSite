@@ -23,7 +23,7 @@ func initAccountTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AccountRepoI
 //
 // Test Search
 //
-func Test_SearchAccount(t *testing.T) {
+func TestSearchAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -51,7 +51,7 @@ func Test_SearchAccount(t *testing.T) {
 //
 // Select One
 //
-func Test_SelectAccount(t *testing.T) {
+func TestSelectAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -80,7 +80,7 @@ func Test_SelectAccount(t *testing.T) {
 //
 // Select One By Primary Email
 //
-func Test_SelectAccountByPrimaryEmail(t *testing.T) {
+func TestSelectAccountByPrimaryEmail(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -178,7 +178,7 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 //
 // Create
 //
-func Test_InsertAccount(t *testing.T) {
+func TestInsertAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -207,7 +207,7 @@ func Test_InsertAccount(t *testing.T) {
 //
 // Update
 //
-func Test_UpdateAccount(t *testing.T) {
+func TestUpdateAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -243,7 +243,7 @@ func Test_UpdateAccount(t *testing.T) {
 //
 // Delete
 //
-func Test_DeleteAccount(t *testing.T) {
+func TestDeleteAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
