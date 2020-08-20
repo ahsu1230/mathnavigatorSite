@@ -7,7 +7,7 @@ import moment from "moment";
 
 export class AnnouncementGroup extends React.Component {
     render() {
-        const postedAt = moment(this.props.postedAt).format("l");
+        const postedAt = moment(this.props.postedAt);
         const announcements = this.props.announcements.map(
             (announcement, index) => (
                 <li key={announcement.id}>
@@ -18,7 +18,7 @@ export class AnnouncementGroup extends React.Component {
 
         return (
             <div className="announcement-card">
-                <h2>{postedAt}</h2>
+                <h2>{postedAt.format("l")}</h2>
                 <ul>{announcements}</ul>
             </div>
         );
@@ -30,7 +30,7 @@ export class AnnouncePage extends React.Component {
         announcementList: [],
     };
     componentDidMount() {
-        console.log("api attempt ");
+        console.log("api attempt");
         API.get("api/announcements/all").then((res) => {
             const list = res.data;
             console.log("api success!");
@@ -43,16 +43,13 @@ export class AnnouncePage extends React.Component {
             moment(a.postedAt).format("l")
         );
         const dates = sortBy(keys(sorted)).reverse();
-        let items = [];
-        dates.forEach((date) => {
-            items.push(
-                <AnnouncementGroup
-                    key={date}
-                    postedAt={date}
-                    announcements={sorted[date]}
-                />
-            );
-        });
+        const items = dates.map((date, index) => (
+            <AnnouncementGroup
+                key={index}
+                postedAt={date}
+                announcements={sorted[date]}
+            />
+        ));
         return (
             <div id="view-announce">
                 <h1>Announcements</h1>
