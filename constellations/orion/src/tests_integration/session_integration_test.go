@@ -22,8 +22,8 @@ func TestCreateSessions(t *testing.T) {
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
 	semester2 := createSemester("2020_fall", "Fall 2020", 2)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
-	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
+	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", mid, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	session3 := createSession("slow_track_2020_fall_class_B", start, end, false, "May 5th regular meeting")
@@ -78,7 +78,7 @@ func TestUpdateSession(t *testing.T) {
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := utils.CreateJsonBody(&prog1)
 	body2 := utils.CreateJsonBody(&loc1)
@@ -126,7 +126,7 @@ func TestDeleteSessions(t *testing.T) {
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	body1 := utils.CreateJsonBody(&prog1)
@@ -170,13 +170,15 @@ func createSession(classId string, startsAt time.Time, endsAt time.Time, cancele
 	}
 }
 
-func createClassUtil(programId, semesterId, classKey, locationId, times string) domains.Class {
+func createClassUtil(programId, semesterId, classKey, locationId, times string, pricePerSession, priceLump uint) domains.Class {
 	return domains.Class{
-		ProgramId:  programId,
-		SemesterId: semesterId,
-		ClassKey:   domains.NewNullString(classKey),
-		LocationId: locationId,
-		Times:      times,
+		ProgramId:       programId,
+		SemesterId:      semesterId,
+		ClassKey:        domains.NewNullString(classKey),
+		LocationId:      locationId,
+		Times:           times,
+		PricePerSession: domains.NewNullUint(pricePerSession),
+		PriceLump:       domains.NewNullUint(priceLump),
 	}
 }
 

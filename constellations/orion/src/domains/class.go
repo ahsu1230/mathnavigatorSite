@@ -21,7 +21,7 @@ type Class struct {
 	LocationId      string     `json:"locationId" db:"location_id"`
 	Times           string     `json:"times"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
-	FullState       int        `json:"fullState" db:"full_state"`
+	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
 	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
@@ -50,10 +50,9 @@ func (class *Class) Validate() error {
 		return fmt.Errorf(messageFmt, "Invalid Time Format")
 	}
 
-	//Price validation
-	//Both valid
-	if priceLump.Valid && pricePerSession.Valid {
-		return fmt.Errorf(messageFmt, "Cannot have both priceLump and pricePerSession defined")
+	// Price validation
+	if priceLump.Valid == pricePerSession.Valid {
+		return fmt.Errorf(messageFmt, "Only One Price Can Be Defined")
 	}
 
 	return nil
