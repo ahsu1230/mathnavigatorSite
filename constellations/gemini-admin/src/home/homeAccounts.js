@@ -7,6 +7,8 @@ import { getFullName } from "../utils/userUtils.js";
 import { EmptyMessage } from "./home.js";
 import moment from "moment";
 
+const TAB_UNPAID = "unpaid";
+
 export class HomeTabSectionAccounts extends React.Component {
     state = {
         unpaidAccounts: [],
@@ -34,7 +36,7 @@ export class HomeTabSectionAccounts extends React.Component {
                         {"-$"}
                         {Math.abs(row.balance)}
                     </div>
-                    <div className="fromNow">
+                    <div className="from-now">
                         {moment(row.updatedAt).fromNow()}{" "}
                     </div>
                     <div className="view">
@@ -47,7 +49,7 @@ export class HomeTabSectionAccounts extends React.Component {
         });
 
         return (
-            <div className="sectionDetails">
+            <div className="section-details">
                 <div className="container-class">
                     <h3 className="section-header">Unpaid Accounts</h3>{" "}
                     <button className="view-details">
@@ -57,18 +59,16 @@ export class HomeTabSectionAccounts extends React.Component {
 
                 <div className="class-section">
                     <div className="container-flex">
-                        <div className={"list-header" + " name"}>Account</div>
-                        <div className={"list-header" + " email"}>Email</div>
-                        <div className={"list-header" + " balance"}>
-                            Balance
-                        </div>
-                        <div className={"list-header" + " fromNow"}>
+                        <div className={"list-header name"}>Account</div>
+                        <div className={"list-header email"}>Email</div>
+                        <div className={"list-header balance"}>Balance</div>
+                        <div className={"list-header from-now"}>
                             Last Updated
                         </div>
-                        <div className={"list-header" + " view"}> </div>
+                        <div className={"list-header view"}> </div>
                     </div>
                     <EmptyMessage
-                        section={"unpaid"}
+                        section={TAB_UNPAID}
                         length={this.state.unpaidAccounts.length}
                     />
                     <ul>{unpaidAcc}</ul>

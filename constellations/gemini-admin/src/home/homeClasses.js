@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { EmptyMessage } from "./home.js";
 
-const sectionDisplayNames = {
-    class: "Unpublished Classes",
-};
+const TAB_CLASSES = "classes";
 
 export class HomeTabSectionClasses extends React.Component {
     state = {
@@ -38,7 +36,7 @@ export class HomeTabSectionClasses extends React.Component {
         });
 
         return (
-            <div className="sectionDetails">
+            <div className="section-details">
                 <div className="container-class">
                     <h3 className="section-header">Unpublished Classes</h3>{" "}
                     <button className="view-details">
@@ -50,15 +48,13 @@ export class HomeTabSectionClasses extends React.Component {
 
                 <div className="class-section">
                     <div className="container-flex">
-                        <div className={"list-header" + " width50"}>
-                            Class Id
-                        </div>
-                        <div className={"list-header" + " width50"}>
+                        <div className={"list-header width50"}>Class Id</div>
+                        <div className={"list-header width50"}>
                             Last Updated
                         </div>
                     </div>
                     <EmptyMessage
-                        section={"class"}
+                        section={TAB_CLASSES}
                         length={this.state.unpubClasses.length}
                     />
                     <ul>{unpublishedClasses}</ul>

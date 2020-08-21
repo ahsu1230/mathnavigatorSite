@@ -8,15 +8,19 @@ import { HomeTabSectionRegistrations } from "./homeRegistrations.js";
 import { HomeTabSectionAccounts } from "./homeAccounts.js";
 
 const sectionDisplayNames = {
-    class: "Unpublished Classes",
-    user: "New Users",
-    registration: "New Registrations",
+    classes: "Unpublished Classes",
+    users: "New Users",
+    registrations: "New Registrations",
     unpaid: "Unpaid Accounts",
 };
+const TAB_CLASSES = "classes";
+const TAB_USERS = "users";
+const TAB_REGISTRATIONS = "registrations";
+const TAB_UNPAID = "unpaid";
 
 export class HomePage extends React.Component {
     state = {
-        currentSection: "class",
+        selectedTab: TAB_CLASSES,
 
         unpublishedClasses: [],
         newUsers: [],
@@ -27,7 +31,7 @@ export class HomePage extends React.Component {
 
     changeSection = (sectionName) => {
         this.setState({
-            currentSection: sectionName,
+            selectedTab: sectionName,
         });
     };
 
@@ -46,7 +50,6 @@ export class HomePage extends React.Component {
             });
         });
 
-        //pending registration for classes
         API.get("api/user-classes/new").then((res) => {
             const userClass = res.data;
             this.setState({
@@ -54,7 +57,6 @@ export class HomePage extends React.Component {
             });
         });
 
-        //afh registration
         API.get("api/userafhs/new").then((res) => {
             const userAfh = res.data;
             this.setState({
@@ -73,15 +75,19 @@ export class HomePage extends React.Component {
     render() {
         var sectionComponent = <div></div>;
 
-        if (this.state.currentSection == "class") {
-            sectionComponent = <HomeTabSectionClasses />;
-        } else if (this.state.currentSection == "user") {
-            sectionComponent = <HomeTabSectionUsers />;
-        } else if (this.state.currentSection == "registration") {
-            sectionComponent = <HomeTabSectionRegistrations />;
-        } else {
-            sectionComponent = <HomeTabSectionAccounts />;
-        } //unpaid account
+        switch (this.state.selectedTab) {
+            case TAB_CLASSES:
+                sectionComponent = <HomeTabSectionClasses />;
+                break;
+            case TAB_USERS:
+                sectionComponent = <HomeTabSectionUsers />;
+                break;
+            case TAB_REGISTRATIONS:
+                sectionComponent = <HomeTabSectionRegistrations />;
+                break;
+            default:
+                sectionComponent = <HomeTabSectionAccounts />;
+        }
 
         return (
             <div id="view-home">
@@ -90,20 +96,20 @@ export class HomePage extends React.Component {
                 <div className="tabs">
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "class"}
-                        section={"class"}
+                        highlight={this.state.selectedTab == TAB_CLASSES}
+                        section={TAB_CLASSES}
                         buttonNum={this.state.unpublishedClasses.length}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "user"}
-                        section={"user"}
+                        highlight={this.state.selectedTab == TAB_USERS}
+                        section={TAB_USERS}
                         buttonNum={this.state.newUsers.length}
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "registration"}
-                        section={"registration"}
+                        highlight={this.state.selectedTab == TAB_REGISTRATIONS}
+                        section={TAB_REGISTRATIONS}
                         buttonNum={
                             this.state.newUserClasses.length +
                             this.state.newUserAfh.length
@@ -111,8 +117,8 @@ export class HomePage extends React.Component {
                     />
                     <TabButton
                         onChangeTab={this.changeSection}
-                        highlight={this.state.currentSection == "unpaid"}
-                        section={"unpaid"}
+                        highlight={this.state.selectedTab == TAB_UNPAID}
+                        section={TAB_UNPAID}
                         buttonNum={this.state.unpaidAccounts.length}
                     />
                 </div>
@@ -131,7 +137,6 @@ class TabButton extends React.Component {
         const numNotif = this.props.buttonNum;
 
         const isZero = numNotif == 0 ? "notif zero" : "notif";
-        console.log("isZero state is " + isZero);
 
         let displayNotif = <div className={isZero}>{numNotif}</div>;
 
@@ -152,6 +157,23 @@ export class EmptyMessage extends React.Component {
         var publishMessage = <div></div>;
 
         if (length == 0) {
+            switch (emptySection) {
+                case TAB_CLASSES:
+                    publishMessage = (
+                        <p>All classes have been successfully published!</p>
+                    );
+                    break;
+                case TAB_USERS:
+                    publishMessage = <p>There are no new users!</p>;
+                    break;
+                case TAB_REGISTRATIONS:
+                    publishMessage = <p>There are no registrations!</p>;
+                    break;
+                default:
+                    publishMessage = <p>All accounts have paid!</p>;
+            }
+        }
+        /*
             if (emptySection == "class") {
                 publishMessage = (
                     <p>All classes have been successfully published!</p>
@@ -162,8 +184,8 @@ export class EmptyMessage extends React.Component {
                 publishMessage = <p>There are no registrations!</p>;
             } else {
                 publishMessage = <p>All accounts have paid!</p>;
-            } //unpaid account
-        }
+            }
+        } */
 
         return publishMessage;
     }

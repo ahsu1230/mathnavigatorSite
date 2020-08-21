@@ -7,6 +7,8 @@ import { getFullName } from "../utils/userUtils.js";
 import { EmptyMessage } from "./home.js";
 import moment from "moment";
 
+const TAB_REGISTRATIONS = "registrations";
+
 export class HomeTabSectionRegistrations extends React.Component {
     state = {
         classReg: [],
@@ -41,8 +43,8 @@ export class HomeTabSectionRegistrations extends React.Component {
                     <div className="email">
                         <UserInfo userId={row.userId} className={"email"} />
                     </div>
-                    <div className="classLong">{row.classId} </div>
-                    <div className="fromNow">
+                    <div className="class-long">{row.classId} </div>
+                    <div className="from-now">
                         {moment(row.updatedAt).fromNow()}{" "}
                     </div>
                 </li>
@@ -58,10 +60,10 @@ export class HomeTabSectionRegistrations extends React.Component {
                     <div className="email">
                         <UserInfo userId={row.userId} className={"email"} />
                     </div>
-                    <div className="classLong">
+                    <div className="class-long">
                         <AfhInfo afhId={row.afhId} />
                     </div>
-                    <div className="fromNow">
+                    <div className="from-now">
                         {moment(row.updatedAt).fromNow()}{" "}
                     </div>
                 </li>
@@ -70,7 +72,7 @@ export class HomeTabSectionRegistrations extends React.Component {
 
         return (
             <div id="registrations">
-                <div className="sectionDetails">
+                <div className="section-details">
                     <div className="container-class">
                         <h3 className="section-header">
                             Pending Registrations For Classes
@@ -82,26 +84,24 @@ export class HomeTabSectionRegistrations extends React.Component {
 
                     <div className="class-section">
                         <div className="container-flex">
-                            <div className={"list-header" + " name"}>Name</div>
-                            <div className={"list-header" + " email"}>
-                                Email
-                            </div>
-                            <div className={"list-header" + " classLong"}>
+                            <div className={"list-header name"}>Name</div>
+                            <div className={"list-header email"}>Email</div>
+                            <div className={"list-header class-long"}>
                                 Class Id
                             </div>
-                            <div className={"list-header" + " fromNow"}>
+                            <div className={"list-header from-now"}>
                                 Registered
                             </div>
                         </div>
                         <EmptyMessage
-                            section={"registration"}
+                            section={TAB_REGISTRATIONS}
                             length={this.state.classReg.length}
                         />
                         <ul>{userClasses}</ul>
                     </div>
                 </div>
 
-                <div className="sectionDetails">
+                <div className="section-details">
                     <div className="container-class">
                         <h3 className="section-header">
                             New Registrations For AFH
@@ -113,19 +113,17 @@ export class HomeTabSectionRegistrations extends React.Component {
 
                     <div className="class-section">
                         <div className="container-flex">
-                            <div className={"list-header" + " name"}>Name</div>
-                            <div className={"list-header" + " email"}>
-                                Email
-                            </div>
-                            <div className={"list-header" + " classLong"}>
+                            <div className={"list-header name"}>Name</div>
+                            <div className={"list-header email"}>Email</div>
+                            <div className={"list-header class-long"}>
                                 AFH Session
                             </div>
-                            <div className={"list-header" + " fromNow"}>
+                            <div className={"list-header from-now"}>
                                 Registered
                             </div>
                         </div>
                         <EmptyMessage
-                            section={"registration"}
+                            section={TAB_REGISTRATIONS}
                             length={this.state.afhReg.length}
                         />
                         <ul>{userAfh}</ul>
