@@ -16,17 +16,17 @@ export class AchievePage extends React.Component {
     };
 
     render = () => {
-        let length = 0;
+        let numAchievements = 0;
         const rows = this.state.achievements.map((group, index) =>
             (group.achievements || []).map((achieve, index) => {
-                length++;
+                numAchievements++;
                 return <AchieveRow key={index} achieve={achieve} />;
             })
         );
 
         return (
             <div id="view-achieve">
-                <h1>All Achievements ({length})</h1>
+                <h1>All Achievements ({numAchievements})</h1>
                 <div className="row header">
                     <span className="medium-column">Year</span>
                     <span className="medium-column">Position</span>
