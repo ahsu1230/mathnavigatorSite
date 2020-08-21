@@ -101,6 +101,36 @@ func TestSelectUser(t *testing.T) {
 }
 
 //
+// Select Many by IDs
+//
+func TestSelectManyUsers(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	var ids = make([]uint, 1)
+	ids[0] = 1
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id IN (.+)").
+		ExpectQuery().
+		WithArgs(1).
+		WillReturnRows(rows)
+	got, err := repo.SelectByIds(ids)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := [1]domains.User{getUser()}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Select Many By Account ID
 //
 func TestSelectUsersByAccountId(t *testing.T) {

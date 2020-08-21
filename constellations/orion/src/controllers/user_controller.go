@@ -87,6 +87,27 @@ func GetNewUsers(c *gin.Context) {
 	}
 }
 
+func GetManyUsersByIds(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.GetManyUsersByIds")
+
+	// Incoming parameters
+	var ids []uint
+	if err := c.ShouldBindJSON(&ids); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
+
+	users, err := repos.UserRepo.SelectByIds(ids)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+
+	c.JSON(http.StatusOK, &users)
+}
+
 func CreateUser(c *gin.Context) {
 	utils.LogControllerMethod(c, "userController.CreateUser")
 

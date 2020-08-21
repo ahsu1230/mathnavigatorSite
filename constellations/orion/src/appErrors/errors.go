@@ -30,6 +30,7 @@ var ERR_REPO_TX_ROLLBACK = errors.New("REPO_TX_ROLLBACK_ERROR")
 var ERR_REPO_PREPARE = errors.New("REPO_PREPARE_ERROR")
 var ERR_REPO_QUERY = errors.New("REPO_QUERY_ERROR")
 var ERR_REPO_EXEC = errors.New("REPO_EXEC_ERROR")
+var ERR_REPO_SCAN = errors.New("REPO_EXEC_SCAN")
 var ERR_REPO_BAD_RESULTS = errors.New("REPO_BAD_RESULTS_ERROR")
 var ERR_REPO_EXEC_MISMATCH = errors.New("REPO_EXEC_MISMATCH_ERROR")
 var ERR_REPO = errors.New("REPO_ERROR") // Generic Repo error
@@ -101,6 +102,10 @@ func WrapDbQuery(e error, statement string, v ...interface{}) error {
 
 func WrapDbExec(e error, statement string, v ...interface{}) error {
 	return wrapDbErrorHelper(ERR_REPO_EXEC, "executing SQL statement", e, statement, v)
+}
+
+func WrapDbScan(e error, statement string, v ...interface{}) error {
+	return wrapDbErrorHelper(ERR_REPO_SCAN, "scanning SQL row into Go struct", e, statement, v)
 }
 
 func wrapDbErrorHelper(

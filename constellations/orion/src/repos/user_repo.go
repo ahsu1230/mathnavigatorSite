@@ -26,6 +26,7 @@ type UserRepoInterface interface {
 	SearchUsers(string) ([]domains.User, error)
 	SelectAll(string, int, int) ([]domains.User, error)
 	SelectById(uint) (domains.User, error)
+	SelectByIds([]uint) ([]domains.User, error)
 	SelectByAccountId(uint) ([]domains.User, error)
 	SelectByNew() ([]domains.User, error)
 	Insert(domains.User) error
@@ -79,7 +80,7 @@ func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
 			&user.Notes,
 			&user.School,
 			&user.GraduationYear); errScan != nil {
-			return results, errScan
+			return results, appErrors.WrapDbScan(err, query, search)
 		}
 		results = append(results, user)
 	}
@@ -93,9 +94,8 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 		"pageSize": pageSize,
 		"offset":   offset,
 	})
-
+	
 	results := make([]domains.User, 0)
-
 	getAll := len(search) == 0
 	var query string
 	if getAll {
@@ -108,7 +108,7 @@ func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.Us
 		return nil, appErrors.WrapDbPrepare(err, query)
 	}
 	defer stmt.Close()
-
+	 
 	var rows *sql.Rows
 	if getAll {
 		rows, err = stmt.Query(pageSize, offset)
@@ -171,9 +171,60 @@ func (ur *userRepo) SelectById(id uint) (domains.User, error) {
 		&user.Notes,
 		&user.School,
 		&user.GraduationYear); errScan != nil {
-		return domains.User{}, appErrors.WrapDbQuery(errScan, statement, id)
+		return domains.User{}, appErrors.WrapDbScan(err, statement, id)
 	}
 	return user, nil
+}
+
+func (ur *userRepo) SelectByIds(ids []uint) ([]domains.User, error) {
+	utils.LogWithContext("userRepo.SelectByIds", logger.Fields{"ids": ids})
+
+	statement := "SELECT * FROM users WHERE id IN (?"
+	statement += strings.Repeat(", ?", len(ids) - 1)
+	statement += ")"
+	stmt, err := ur.db.Prepare(statement)
+	if err != nil {
+		return []domains.User{}, appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	// args := fmt.Sprint(ids)
+	// args = strings.Replace(args, "[", "", 1)
+	// args = strings.Replace(args, "]", "", 1)
+	// args = strings.Replace(args, " ", ", ", -1)
+	// utils.LogWithContext("userRepo.SelectByIds", logger.Fields{"ids": ids, "args": args})
+	args := make([]interface{}, len(ids))
+	for i, id := range ids {
+    	args[i] = id
+	}
+	rows, err := stmt.Query(args...)
+	if err != nil {
+		return []domains.User{}, appErrors.WrapDbQuery(err, statement, args)
+	}
+
+	results := make([]domains.User, 0)
+	for rows.Next() {
+		var user domains.User
+		if errScan := rows.Scan(
+			&user.Id,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.DeletedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.MiddleName,
+			&user.Email,
+			&user.Phone,
+			&user.IsGuardian,
+			&user.AccountId,
+			&user.Notes,
+			&user.School,
+			&user.GraduationYear); errScan != nil {
+			return results, appErrors.WrapDbScan(err, statement, args)
+		}
+		results = append(results, user)
+	}
+	return results, nil
 }
 
 func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {

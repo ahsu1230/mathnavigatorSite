@@ -198,6 +198,72 @@ func TestGetNewUsers(t *testing.T) {
 	assert.EqualValues(t, 2, len(users))
 }
 
+func TestGetManyUsersByIds(t *testing.T) {
+	testUtils.UserRepo.MockSelectByIds = func(ids []uint) ([]domains.User, error) {
+		return []domains.User{
+			testUtils.CreateMockUser(
+				1,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes1",
+			),
+			testUtils.CreateMockUser(
+				2,
+				"Bob",
+				"Joe",
+				"Middle",
+				"bob_joe@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes2",
+			),
+		}, nil
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create new HTTP request to endpoint
+	ids := []uint {1, 2}
+	marshal, _ := json.Marshal(&ids)
+	body := bytes.NewBuffer(marshal)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/many", body)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, 1, users[0].Id)
+	assert.EqualValues(t, "John", users[0].FirstName)
+	assert.EqualValues(t, "Smith", users[0].LastName)
+	assert.EqualValues(t, "", users[0].MiddleName.String)
+	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone)
+	assert.EqualValues(t, false, users[0].IsGuardian)
+	assert.EqualValues(t, 2, users[0].AccountId)
+	assert.EqualValues(t, "notes1", users[0].Notes.String)
+
+	assert.EqualValues(t, 2, users[1].Id)
+	assert.EqualValues(t, "Bob", users[1].FirstName)
+	assert.EqualValues(t, "Joe", users[1].LastName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
+	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone)
+	assert.EqualValues(t, false, users[1].IsGuardian)
+	assert.EqualValues(t, 2, users[1].AccountId)
+	assert.EqualValues(t, "notes2", users[1].Notes.String)
+
+	assert.EqualValues(t, 2, len(users))
+}
+
+
 //
 // Test Create
 //

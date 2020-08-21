@@ -247,6 +247,7 @@ type mockUserRepo struct {
 	MockSearchUsers       func(string) ([]domains.User, error)
 	MockSelectAll         func(string, int, int) ([]domains.User, error)
 	MockSelectById        func(uint) (domains.User, error)
+	MockSelectByIds       func([]uint) ([]domains.User, error)
 	MockSelectByAccountId func(uint) ([]domains.User, error)
 	MockSelectByNew       func() ([]domains.User, error)
 	MockInsert            func(domains.User) error
@@ -260,12 +261,14 @@ func (userRepo *mockUserRepo) Initialize(db *sql.DB) {}
 func (userRepo *mockUserRepo) SearchUsers(search string) ([]domains.User, error) {
 	return userRepo.MockSearchUsers(search)
 }
-
 func (userRepo *mockUserRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
 	return userRepo.MockSelectAll(search, pageSize, offset)
 }
 func (userRepo *mockUserRepo) SelectById(id uint) (domains.User, error) {
 	return userRepo.MockSelectById(id)
+}
+func (userRepo *mockUserRepo) SelectByIds(ids []uint) ([]domains.User, error) {
+	return userRepo.MockSelectByIds(ids)
 }
 func (userRepo *mockUserRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
 	return userRepo.MockSelectByAccountId(accountId)
