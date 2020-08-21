@@ -188,11 +188,6 @@ func (ur *userRepo) SelectByIds(ids []uint) ([]domains.User, error) {
 	}
 	defer stmt.Close()
 
-	// args := fmt.Sprint(ids)
-	// args = strings.Replace(args, "[", "", 1)
-	// args = strings.Replace(args, "]", "", 1)
-	// args = strings.Replace(args, " ", ", ", -1)
-	// utils.LogWithContext("userRepo.SelectByIds", logger.Fields{"ids": ids, "args": args})
 	args := make([]interface{}, len(ids))
 	for i, id := range ids {
     	args[i] = id
