@@ -47,22 +47,16 @@ export class EmailPrograms extends React.Component {
     };
 
     handleProgramChange = (event, value) => {
-        const length = event.target.value.length;
-        const classes = this.state.classes.map((classes) => classes.classId);
         var selectedProgram = this.state.programs.find(
             (program) => program.programId === event.target.value
         );
         selectedProgram = selectedProgram.name;
-        var classesForProgram = [];
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i].substring(0, length) == event.target.value) {
-                classesForProgram.push(classes[i]);
-            }
-        }
-
+        let classesForProgram = this.state.classes.filter(classes => classes.programId == event.target.value);
+        const classes = classesForProgram.map((classes) => classes.classId);
+        
         this.setState({
             [value]: event.target.value,
-            classesForProgram: classesForProgram,
+            classesForProgram: classes,
             selectedProgramName: selectedProgram,
             selectedUsers: [],
             usersInClass: [],
@@ -143,7 +137,7 @@ export class EmailPrograms extends React.Component {
 
     render = () => {
         const programOptions = this.state.programs.map((program, index) => (
-            <option key={index}>{program.programId}</option>
+            <option key={index} value={program.programId}>{program.name}</option>
         ));
 
         const classOptions = this.state.classesForProgram.map(
@@ -174,7 +168,7 @@ export class EmailPrograms extends React.Component {
                         {programOptions}
                     </select>
 
-                    <h2>Select a class for {this.state.selectProgramId}</h2>
+                    <h2>Select a class for {this.state.selectedProgramName}</h2>
                     {classOptions}
 
                     <section>
