@@ -96,11 +96,11 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAFH := h.Engine.Group("api/askforhelp")
 	{
 		apiAFH.GET("/all", controllers.GetAllAFH)
-		apiAFH.POST("/create", controllers.CreateAFH)
+		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 		apiAFH.GET("/afh/:id", controllers.GetAFHById)
+		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
-		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 	}
 
 	apiUserClasses := h.Engine.Group("api/user-classes")
