@@ -137,7 +137,7 @@ class App extends React.Component {
                     <Route path="/announcements/add" component={AnnounceEdit} />
                     <Route path="/announcements" component={Announce} />
                     <Route
-                        path="/achievements/:Id/edit"
+                        path="/achievements/:id/edit"
                         component={AchieveEditMatch}
                     />
                     <Route path="/achievements/add" component={AchieveEdit} />

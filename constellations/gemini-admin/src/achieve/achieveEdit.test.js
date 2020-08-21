@@ -9,8 +9,11 @@ describe("test", () => {
         expect(component.exists()).toBe(true);
         expect(component.find("h2").text()).toContain("Add Achievement");
         expect(component.find("InputText").at(0).prop("label")).toBe("Year");
-        expect(component.find("InputText").at(1).prop("label")).toBe("Message");
-        expect(component.find("InputText").length).toBe(2);
+        expect(component.find("InputText").at(1).prop("label")).toBe(
+            "Position"
+        );
+        expect(component.find("InputText").at(2).prop("label")).toBe("Message");
+        expect(component.find("InputText").length).toBe(3);
 
         expect(component.find("button").at(0).text()).toBe("Save");
         expect(component.find("button").at(1).text()).toBe("Cancel");
@@ -20,13 +23,15 @@ describe("test", () => {
     test("renders input data", () => {
         component.setState({
             isEdit: true,
-            inputYear: 2016,
-            inputMessage: "Obama",
+            year: 2016,
+            position: 1,
+            message: "Obama",
         });
 
         expect(component.find("InputText").at(0).prop("value")).toBe(2016);
-        expect(component.find("InputText").at(1).prop("value")).toBe("Obama");
-        expect(component.find("InputText").length).toBe(2);
+        expect(component.find("InputText").at(1).prop("value")).toBe(1);
+        expect(component.find("InputText").at(2).prop("value")).toBe("Obama");
+        expect(component.find("InputText").length).toBe(3);
     });
 
     test("renders deleteModal", () => {
