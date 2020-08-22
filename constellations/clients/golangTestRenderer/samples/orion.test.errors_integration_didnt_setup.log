@@ -1,0 +1,1551 @@
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion	[no test files]
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors	[no test files]
+=== RUN   TestGetAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/accounts/account/1 requestUuid=6c63fb6e-1fd0-4d60-9021-47a90ac002f7
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/accounts/account/:id" requestUuid=6c63fb6e-1fd0-4d60-9021-47a90ac002f7 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |     1.21537ms |                 | GET      /api/accounts/account/1
+--- PASS: TestGetAccountSuccess (0.00s)
+=== RUN   TestSearchAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/search requestUuid=8ca54be0-68b9-4fd7-8877-75520264f4bd
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/accounts/search requestUuid=8ca54be0-68b9-4fd7-8877-75520264f4bd status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |     131.286µs |                 | POST     /api/accounts/search
+--- PASS: TestSearchAccountSuccess (0.00s)
+=== RUN   TestSearchAccountFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/search requestUuid=e65d9e77-5bc6-4982-a5ab-1b001bbc57bf
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion cause=JSON_NULL_BODY_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Must provide a JSON body for this request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion code=400 requestUuid=e65d9e77-5bc6-4982-a5ab-1b001bbc57bf
+[GIN] 2020/08/13 - 11:58:44 | 400 |     198.074µs |                 | POST     /api/accounts/search
+Error #01: Unexpected null JSON body: JSON_NULL_BODY_ERROR
+--- PASS: TestSearchAccountFailure (0.00s)
+=== RUN   TestGetAccountsFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/accounts/account/1 requestUuid=db164817-540b-447c-ba59-d9d3fe552a32
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=db164817-540b-447c-ba59-d9d3fe552a32
+[GIN] 2020/08/13 - 11:58:44 | 404 |      75.144µs |                 | GET      /api/accounts/account/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetAccountsFailure (0.00s)
+=== RUN   TestCreateAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/create requestUuid=f66bf511-b4a5-4bf7-97b7-d6aa270c3616
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/accounts/create requestUuid=f66bf511-b4a5-4bf7-97b7-d6aa270c3616 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      79.979µs |                 | POST     /api/accounts/create
+--- PASS: TestCreateAccountSuccess (0.00s)
+=== RUN   TestCreateAccountFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/create requestUuid=596e4fef-c4c8-4735-a7b0-cbf09074835c
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=596e4fef-c4c8-4735-a7b0-cbf09074835c
+[GIN] 2020/08/13 - 11:58:44 | 400 |      74.222µs |                 | POST     /api/accounts/create
+Error #01: Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateAccountFailure (0.00s)
+=== RUN   TestUpdateAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/account/1 requestUuid=3ab4f4ea-e39f-4040-ae7d-d7d2a25af370
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/accounts/account/:id" requestUuid=3ab4f4ea-e39f-4040-ae7d-d7d2a25af370 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      55.568µs |                 | POST     /api/accounts/account/1
+--- PASS: TestUpdateAccountSuccess (0.00s)
+=== RUN   TestUpdateAccountInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/account/1 requestUuid=0fca7064-a55e-4582-ac5f-cda4a3769c15
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=0fca7064-a55e-4582-ac5f-cda4a3769c15
+[GIN] 2020/08/13 - 11:58:44 | 400 |      100.86µs |                 | POST     /api/accounts/account/1
+Error #01: Invalid Domain (Invalid Account: Invalid Email): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateAccountInvalid (0.00s)
+=== RUN   TestUpdateAccountFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/accounts/account/1 requestUuid=a7f5aa20-63a7-41c6-a37d-c4b4391d5583
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=a7f5aa20-63a7-41c6-a37d-c4b4391d5583
+[GIN] 2020/08/13 - 11:58:44 | 404 |      82.729µs |                 | POST     /api/accounts/account/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateAccountFailure (0.00s)
+    account_controller_test.go:187: Testing failure case, expected error...
+    account_controller_test.go:203: 
+        	Error Trace:	account_controller_test.go:203
+        	Error:      	Not equal: 
+        	            	expected: 400
+        	            	actual  : 404
+        	Test:       	TestUpdateAccountFailure
+=== RUN   TestDeleteAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/accounts/account/1 requestUuid=1e9b4867-9b05-43d3-97fe-6f3b4fa152bb
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/accounts/account/:id" requestUuid=1e9b4867-9b05-43d3-97fe-6f3b4fa152bb status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      49.125µs |                 | DELETE   /api/accounts/account/1
+--- FAIL: TestDeleteAccountSuccess (0.00s)
+    account_controller_test.go:219: 
+        	Error Trace:	account_controller_test.go:219
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteAccountSuccess
+=== RUN   TestDeleteAccountFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/accounts/account/1 requestUuid=0daeb4dd-ff0e-4356-ae25-a0713510f927
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=0daeb4dd-ff0e-4356-ae25-a0713510f927
+[GIN] 2020/08/13 - 11:58:44 | 404 |      79.771µs |                 | DELETE   /api/accounts/account/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteAccountFailure (0.00s)
+    account_controller_test.go:232: 
+        	Error Trace:	account_controller_test.go:232
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteAccountFailure
+=== RUN   TestGetAllAchievementsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/achievements/all requestUuid=56e3bf95-aafd-4fc8-9dc7-36c40ab0df2f
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/achievements/all requestUuid=56e3bf95-aafd-4fc8-9dc7-36c40ab0df2f status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |     125.063µs |                 | GET      /api/achievements/all
+--- PASS: TestGetAllAchievementsSuccess (0.00s)
+=== RUN   TestGetAllAchievementsGroupedByYearSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/achievements/years requestUuid=a2c9ce02-0c78-4b93-aaeb-ed3b2d226bed
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/achievements/years requestUuid=a2c9ce02-0c78-4b93-aaeb-ed3b2d226bed status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      74.592µs |                 | GET      /api/achievements/years
+--- PASS: TestGetAllAchievementsGroupedByYearSuccess (0.00s)
+=== RUN   TestGetAchievementSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/achievements/achievement/1 requestUuid=d1f2e0e5-a4f0-4d33-91ec-8cf07577669a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/achievements/achievement/:id" requestUuid=d1f2e0e5-a4f0-4d33-91ec-8cf07577669a status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      69.758µs |                 | GET      /api/achievements/achievement/1
+--- PASS: TestGetAchievementSuccess (0.00s)
+=== RUN   TestGetAchievementFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/achievements/achievement/1 requestUuid=c43adb74-1e47-4cfb-83e3-043f12ac62f0
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=c43adb74-1e47-4cfb-83e3-043f12ac62f0
+[GIN] 2020/08/13 - 11:58:44 | 404 |       67.92µs |                 | GET      /api/achievements/achievement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetAchievementFailure (0.00s)
+=== RUN   TestCreateAchievementSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/create requestUuid=c8475ccc-d3df-43be-a882-62b7b1e477cd
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/achievements/create requestUuid=c8475ccc-d3df-43be-a882-62b7b1e477cd status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      52.297µs |                 | POST     /api/achievements/create
+--- FAIL: TestCreateAchievementSuccess (0.00s)
+    achieve_controller_test.go:140: 
+        	Error Trace:	achieve_controller_test.go:140
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateAchievementSuccess
+=== RUN   TestCreateAchievementFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/create requestUuid=bb57cd13-33ad-404d-b94a-44013577f80d
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=bb57cd13-33ad-404d-b94a-44013577f80d
+[GIN] 2020/08/13 - 11:58:44 | 400 |      63.351µs |                 | POST     /api/achievements/create
+Error #01: Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateAchievementFailure (0.00s)
+=== RUN   TestUpdateAchievementSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/achievement/1 requestUuid=b22beae2-4a57-4010-9d07-00c3782de296
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/achievements/achievement/:id" requestUuid=b22beae2-4a57-4010-9d07-00c3782de296 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      49.242µs |                 | POST     /api/achievements/achievement/1
+--- FAIL: TestUpdateAchievementSuccess (0.00s)
+    achieve_controller_test.go:171: 
+        	Error Trace:	achieve_controller_test.go:171
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateAchievementSuccess
+=== RUN   TestUpdateAchievementInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/achievement/1 requestUuid=eb55a0ac-cc4d-439b-a26d-620cbe989b0d
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=eb55a0ac-cc4d-439b-a26d-620cbe989b0d
+[GIN] 2020/08/13 - 11:58:44 | 400 |       58.12µs |                 | POST     /api/achievements/achievement/1
+Error #01: Invalid Domain (Invalid Achievement: Year must be later than 2000): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateAchievementInvalid (0.00s)
+=== RUN   TestUpdateAchievementFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/achievements/achievement/1 requestUuid=d9536ee9-7f17-47aa-88fa-7ec0cce8ef4c
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=d9536ee9-7f17-47aa-88fa-7ec0cce8ef4c
+[GIN] 2020/08/13 - 11:58:44 | 404 |      73.935µs |                 | POST     /api/achievements/achievement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateAchievementFailure (0.00s)
+    achieve_controller_test.go:199: 
+        	Error Trace:	achieve_controller_test.go:199
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateAchievementFailure
+=== RUN   TestDeleteAchievementSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/achievements/achievement/1 requestUuid=0c66f280-7166-4818-8bb5-4ac9e53ce223
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/achievements/achievement/:id" requestUuid=0c66f280-7166-4818-8bb5-4ac9e53ce223 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      39.678µs |                 | DELETE   /api/achievements/achievement/1
+--- FAIL: TestDeleteAchievementSuccess (0.00s)
+    achieve_controller_test.go:215: 
+        	Error Trace:	achieve_controller_test.go:215
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteAchievementSuccess
+=== RUN   TestDeleteAchievementFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/achievements/achievement/1 requestUuid=bd05d480-8c5d-43dc-a2ae-facf2abbc33f
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=bd05d480-8c5d-43dc-a2ae-facf2abbc33f
+[GIN] 2020/08/13 - 11:58:44 | 404 |     104.002µs |                 | DELETE   /api/achievements/achievement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteAchievementFailure (0.00s)
+    achieve_controller_test.go:228: 
+        	Error Trace:	achieve_controller_test.go:228
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteAchievementFailure
+=== RUN   TestGetAllAnnouncementsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/announcements/all requestUuid=956a140a-8960-4d73-b5da-64747e8649ab
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/announcements/all requestUuid=956a140a-8960-4d73-b5da-64747e8649ab status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |     120.434µs |                 | GET      /api/announcements/all
+--- PASS: TestGetAllAnnouncementsSuccess (0.00s)
+=== RUN   TestGetAnnouncementSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/announcements/announcement/1 requestUuid=a2707fdb-ca00-4db1-95d3-bd6760518d27
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/announcements/announcement/:id" requestUuid=a2707fdb-ca00-4db1-95d3-bd6760518d27 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |       86.27µs |                 | GET      /api/announcements/announcement/1
+--- PASS: TestGetAnnouncementSuccess (0.00s)
+=== RUN   TestGetAnnounceFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/announcements/announcement/1 requestUuid=e8a9b41a-14c4-4b17-9d8e-4f271739bbf8
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=e8a9b41a-14c4-4b17-9d8e-4f271739bbf8
+[GIN] 2020/08/13 - 11:58:44 | 404 |      76.495µs |                 | GET      /api/announcements/announcement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetAnnounceFailure (0.00s)
+=== RUN   TestCreateAnnounceSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/create requestUuid=d51898da-290f-457e-ba15-620ef715a642
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/announcements/create requestUuid=d51898da-290f-457e-ba15-620ef715a642 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      91.107µs |                 | POST     /api/announcements/create
+--- FAIL: TestCreateAnnounceSuccess (0.00s)
+    announce_controller_test.go:117: 
+        	Error Trace:	announce_controller_test.go:117
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateAnnounceSuccess
+=== RUN   TestCreateAnnounceFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/create requestUuid=6cc4410b-6c13-4420-8413-0b2d656071ec
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=6cc4410b-6c13-4420-8413-0b2d656071ec
+[GIN] 2020/08/13 - 11:58:44 | 400 |     116.504µs |                 | POST     /api/announcements/create
+Error #01: Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateAnnounceFailure (0.00s)
+=== RUN   TestUpdateAnnounceSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/announcement/1 requestUuid=cc31d8da-fd28-418c-9057-a4512adb2568
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/announcements/announcement/:id" requestUuid=cc31d8da-fd28-418c-9057-a4512adb2568 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      53.507µs |                 | POST     /api/announcements/announcement/1
+--- FAIL: TestUpdateAnnounceSuccess (0.00s)
+    announce_controller_test.go:151: 
+        	Error Trace:	announce_controller_test.go:151
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateAnnounceSuccess
+=== RUN   TestUpdateAnnounceInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/announcement/1 requestUuid=c0fc598c-7d7b-4677-b6aa-3b29a59fd15f
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=c0fc598c-7d7b-4677-b6aa-3b29a59fd15f
+[GIN] 2020/08/13 - 11:58:44 | 400 |      78.919µs |                 | POST     /api/announcements/announcement/1
+Error #01: Invalid Domain (Invalid Announcement: Must be a valid author's name): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateAnnounceInvalid (0.00s)
+=== RUN   TestUpdateAnnounceFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/announcements/announcement/1 requestUuid=bf5618a5-7614-4abe-880d-5ad8dc79080c
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=bf5618a5-7614-4abe-880d-5ad8dc79080c
+[GIN] 2020/08/13 - 11:58:44 | 404 |      76.586µs |                 | POST     /api/announcements/announcement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateAnnounceFailure (0.00s)
+    announce_controller_test.go:181: 
+        	Error Trace:	announce_controller_test.go:181
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateAnnounceFailure
+=== RUN   TestDeleteAnnounceSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/announcements/announcement/1 requestUuid=f0253c04-0715-49fc-b84e-471368e832da
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/announcements/announcement/:id" requestUuid=f0253c04-0715-49fc-b84e-471368e832da status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      26.884µs |                 | DELETE   /api/announcements/announcement/1
+--- FAIL: TestDeleteAnnounceSuccess (0.00s)
+    announce_controller_test.go:197: 
+        	Error Trace:	announce_controller_test.go:197
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteAnnounceSuccess
+=== RUN   TestDeleteAnnounceFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/announcements/announcement/1 requestUuid=e2560267-65f8-4e41-9bb6-020f0569101b
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=e2560267-65f8-4e41-9bb6-020f0569101b
+[GIN] 2020/08/13 - 11:58:44 | 404 |      47.693µs |                 | DELETE   /api/announcements/announcement/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteAnnounceFailure (0.00s)
+    announce_controller_test.go:210: 
+        	Error Trace:	announce_controller_test.go:210
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteAnnounceFailure
+=== RUN   TestGetAllAFHSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/askforhelp/all requestUuid=b4a6aaaf-1d72-4945-b87f-c8977600a9f2
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/askforhelp/all requestUuid=b4a6aaaf-1d72-4945-b87f-c8977600a9f2 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      95.303µs |                 | GET      /api/askforhelp/all
+--- PASS: TestGetAllAFHSuccess (0.00s)
+=== RUN   TestGetAFHSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/askforhelp/afh/1 requestUuid=79669046-e568-4659-a71c-f765686c7b5f
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/askforhelp/afh/:id" requestUuid=79669046-e568-4659-a71c-f765686c7b5f status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      37.503µs |                 | GET      /api/askforhelp/afh/1
+--- PASS: TestGetAFHSuccess (0.00s)
+=== RUN   TestGetAFHFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/askforhelp/afh/1 requestUuid=fa2753be-74d5-4f51-a5a2-d216bd18862b
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=fa2753be-74d5-4f51-a5a2-d216bd18862b
+[GIN] 2020/08/13 - 11:58:44 | 404 |       45.87µs |                 | GET      /api/askforhelp/afh/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetAFHFailure (0.00s)
+=== RUN   TestCreateAFHSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/create requestUuid=f7e739e3-b14d-4e07-af7b-53f52d7c9e1e
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/askforhelp/create requestUuid=f7e739e3-b14d-4e07-af7b-53f52d7c9e1e status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |     122.865µs |                 | POST     /api/askforhelp/create
+--- FAIL: TestCreateAFHSuccess (0.00s)
+    ask_for_help_controller_test.go:142: 
+        	Error Trace:	ask_for_help_controller_test.go:142
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateAFHSuccess
+=== RUN   TestCreateAFHFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/create requestUuid=28942756-4fcb-4707-8cfc-259358397536
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid AskForHelp: Invalid Title): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid AskForHelp: Invalid Title): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid AskForHelp: Invalid Title): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=28942756-4fcb-4707-8cfc-259358397536
+[GIN] 2020/08/13 - 11:58:44 | 400 |      97.098µs |                 | POST     /api/askforhelp/create
+Error #01: Invalid Domain (Invalid AskForHelp: Invalid Title): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateAFHFailure (0.00s)
+=== RUN   TestUpdateAFHSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/afh/1 requestUuid=2f80e2f5-7002-48a7-bd51-fb7bfbd9a816
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/askforhelp/afh/:id" requestUuid=2f80e2f5-7002-48a7-bd51-fb7bfbd9a816 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      72.308µs |                 | POST     /api/askforhelp/afh/1
+--- FAIL: TestUpdateAFHSuccess (0.00s)
+    ask_for_help_controller_test.go:185: 
+        	Error Trace:	ask_for_help_controller_test.go:185
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateAFHSuccess
+=== RUN   TestUpdateAFHInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/afh/1 requestUuid=9de6ce3f-f3ad-48aa-b962-c81a46206b16
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=9de6ce3f-f3ad-48aa-b962-c81a46206b16
+[GIN] 2020/08/13 - 11:58:44 | 400 |      93.921µs |                 | POST     /api/askforhelp/afh/1
+Error #01: Invalid Domain (Invalid AskForHelp: Unrecognized subject): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateAFHInvalid (0.00s)
+=== RUN   TestUpdateAFHFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/askforhelp/afh/1 requestUuid=ebf0a3c5-2847-4268-b4d3-267748af0b93
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=ebf0a3c5-2847-4268-b4d3-267748af0b93
+[GIN] 2020/08/13 - 11:58:44 | 404 |      91.927µs |                 | POST     /api/askforhelp/afh/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateAFHFailure (0.00s)
+    ask_for_help_controller_test.go:227: 
+        	Error Trace:	ask_for_help_controller_test.go:227
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateAFHFailure
+=== RUN   TestDeleteAFHSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/askforhelp/afh/1 requestUuid=7e7ec5f8-8285-43f0-b1e5-4b8cf3e68aa5
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/askforhelp/afh/:id" requestUuid=7e7ec5f8-8285-43f0-b1e5-4b8cf3e68aa5 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      33.844µs |                 | DELETE   /api/askforhelp/afh/1
+--- FAIL: TestDeleteAFHSuccess (0.00s)
+    ask_for_help_controller_test.go:241: 
+        	Error Trace:	ask_for_help_controller_test.go:241
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteAFHSuccess
+=== RUN   TestDeleteAFHFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/askforhelp/afh/1 requestUuid=91d4a238-6be8-49ab-a86b-dd067054d026
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=91d4a238-6be8-49ab-a86b-dd067054d026
+[GIN] 2020/08/13 - 11:58:44 | 404 |      48.722µs |                 | DELETE   /api/askforhelp/afh/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteAFHFailure (0.00s)
+    ask_for_help_controller_test.go:254: 
+        	Error Trace:	ask_for_help_controller_test.go:254
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteAFHFailure
+=== RUN   TestGetAllClassesSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/all requestUuid=e719e5f4-215f-44ff-a4c5-bcc465f74da4
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classes/all requestUuid=e719e5f4-215f-44ff-a4c5-bcc465f74da4 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      149.73µs |                 | GET      /api/classes/all
+--- PASS: TestGetAllClassesSuccess (0.00s)
+=== RUN   TestGetPublishedClassesSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL="/api/classes/all?published=true" requestUuid=32d7485d-8688-4892-92ef-390be59d22cc
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classes/all requestUuid=32d7485d-8688-4892-92ef-390be59d22cc status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      66.855µs |                 | GET      /api/classes/all?published=true
+--- PASS: TestGetPublishedClassesSuccess (0.00s)
+=== RUN   TestGetClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/class/program1_2020_spring_class1 requestUuid=e1e39c7b-139f-48a8-83c0-f0b8c4df6994
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/class/:classId" requestUuid=e1e39c7b-139f-48a8-83c0-f0b8c4df6994 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      67.686µs |                 | GET      /api/classes/class/program1_2020_spring_class1
+--- PASS: TestGetClassSuccess (0.00s)
+=== RUN   TestGetClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/class/program2_2020_summer requestUuid=acc73a08-4066-44d2-85f1-7477b6776b07
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=acc73a08-4066-44d2-85f1-7477b6776b07
+[GIN] 2020/08/13 - 11:58:44 | 404 |      56.011µs |                 | GET      /api/classes/class/program2_2020_summer
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetClassFailure (0.00s)
+=== RUN   TestGetClassesByProgramSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/classes/program/program1 requestUuid=c4dc8321-1d2d-41c6-a54f-55ced43952d8
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/classes/program/:programId" requestUuid=c4dc8321-1d2d-41c6-a54f-55ced43952d8 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      57.434µs |                 | GET      /api/classes/classes/program/program1
+--- PASS: TestGetClassesByProgramSuccess (0.00s)
+=== RUN   TestGetClassesBySemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/classes/semester/2020_summer requestUuid=164320a7-5100-4195-9f1e-24aa1f881f0a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/classes/semester/:semesterId" requestUuid=164320a7-5100-4195-9f1e-24aa1f881f0a status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      54.152µs |                 | GET      /api/classes/classes/semester/2020_summer
+--- PASS: TestGetClassesBySemesterSuccess (0.00s)
+=== RUN   TestGetClassesByProgramAndSemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classes/classes/program/program1/semester/2020_spring requestUuid=1d0c1509-122c-40db-9e1d-f388c5aaa0cb
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/classes/program/:programId/semester/:semesterId" requestUuid=1d0c1509-122c-40db-9e1d-f388c5aaa0cb status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      35.601µs |                 | GET      /api/classes/classes/program/program1/semester/2020_spring
+--- PASS: TestGetClassesByProgramAndSemesterSuccess (0.00s)
+=== RUN   TestCreateClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/create requestUuid=91fb1848-674f-4648-8605-5060ef3ae8bb
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classes/create requestUuid=91fb1848-674f-4648-8605-5060ef3ae8bb status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |     101.503µs |                 | POST     /api/classes/create
+--- FAIL: TestCreateClassSuccess (0.00s)
+    class_controller_test.go:185: 
+        	Error Trace:	class_controller_test.go:185
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateClassSuccess
+=== RUN   TestCreateClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/create requestUuid=aac18229-1581-4982-b76b-73118c32d988
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=aac18229-1581-4982-b76b-73118c32d988
+[GIN] 2020/08/13 - 11:58:44 | 400 |      64.584µs |                 | POST     /api/classes/create
+Error #01: Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateClassFailure (0.00s)
+=== RUN   TestUpdateClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/class/program1 requestUuid=f30cb70f-3cb5-4e77-b4ac-2c2a5b21af7a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/class/:classId" requestUuid=f30cb70f-3cb5-4e77-b4ac-2c2a5b21af7a status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      64.269µs |                 | POST     /api/classes/class/program1
+--- FAIL: TestUpdateClassSuccess (0.00s)
+    class_controller_test.go:216: 
+        	Error Trace:	class_controller_test.go:216
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateClassSuccess
+=== RUN   TestUpdateClassInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/class/program1 requestUuid=487f83ea-170b-44b1-a080-abba3e8617ec
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=487f83ea-170b-44b1-a080-abba3e8617ec
+[GIN] 2020/08/13 - 11:58:44 | 400 |      70.142µs |                 | POST     /api/classes/class/program1
+Error #01: Invalid Domain (Invalid Class: Invalid Time Format): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateClassInvalid (0.00s)
+=== RUN   TestUpdateClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/class/program1 requestUuid=72b4b88a-3cfb-4140-97c9-ec5d65f06284
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=72b4b88a-3cfb-4140-97c9-ec5d65f06284
+[GIN] 2020/08/13 - 11:58:44 | 404 |      79.675µs |                 | POST     /api/classes/class/program1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateClassFailure (0.00s)
+    class_controller_test.go:244: 
+        	Error Trace:	class_controller_test.go:244
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateClassFailure
+=== RUN   TestPublishClassesSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/publish requestUuid=9a13556f-77e9-42d9-9cf6-06642b3373c7
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classes/publish requestUuid=9a13556f-77e9-42d9-9cf6-06642b3373c7 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      37.425µs |                 | POST     /api/classes/publish
+--- FAIL: TestPublishClassesSuccess (0.00s)
+    class_controller_test.go:265: 
+        	Error Trace:	class_controller_test.go:265
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestPublishClassesSuccess
+=== RUN   TestPublishClassesFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/classes/publish requestUuid=674b8611-e3a3-45dd-9eb6-e85c01fae8ed
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=674b8611-e3a3-45dd-9eb6-e85c01fae8ed
+[GIN] 2020/08/13 - 11:58:44 | 404 |      48.367µs |                 | POST     /api/classes/publish
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestPublishClassesFailure (0.00s)
+    class_controller_test.go:283: 
+        	Error Trace:	class_controller_test.go:283
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestPublishClassesFailure
+=== RUN   TestDeleteClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/classes/class/some_class requestUuid=5a77bbc5-01f9-498d-aca9-f4bb84b02b72
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/classes/class/:classId" requestUuid=5a77bbc5-01f9-498d-aca9-f4bb84b02b72 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      58.314µs |                 | DELETE   /api/classes/class/some_class
+--- FAIL: TestDeleteClassSuccess (0.00s)
+    class_controller_test.go:299: 
+        	Error Trace:	class_controller_test.go:299
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteClassSuccess
+=== RUN   TestDeleteClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/classes/class/some_class requestUuid=49643051-5867-47a0-88f7-f751628b43ed
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=49643051-5867-47a0-88f7-f751628b43ed
+[GIN] 2020/08/13 - 11:58:44 | 404 |      46.805µs |                 | DELETE   /api/classes/class/some_class
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteClassFailure (0.00s)
+    class_controller_test.go:312: 
+        	Error Trace:	class_controller_test.go:312
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteClassFailure
+=== RUN   TestOneSemesterOneProgramOneClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classesbysemesters requestUuid=691a3794-13cb-4462-b764-fb4ada2b1302
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classesbysemesters requestUuid=691a3794-13cb-4462-b764-fb4ada2b1302 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |     130.794µs |                 | GET      /api/classesbysemesters
+--- PASS: TestOneSemesterOneProgramOneClassSuccess (0.00s)
+=== RUN   TestOneSemesterOneProgramOneClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classesbysemesters requestUuid=725d8b5b-c56c-4624-89eb-bb077aeefe63
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=725d8b5b-c56c-4624-89eb-bb077aeefe63
+[GIN] 2020/08/13 - 11:58:44 | 404 |       86.22µs |                 | GET      /api/classesbysemesters
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestOneSemesterOneProgramOneClassFailure (0.00s)
+=== RUN   TestGetClassesAndProgramsBySemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classesbysemesters requestUuid=7ebd570d-c33f-4c10-91d2-3da5adb66498
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classesbysemesters requestUuid=7ebd570d-c33f-4c10-91d2-3da5adb66498 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      70.343µs |                 | GET      /api/classesbysemesters
+--- PASS: TestGetClassesAndProgramsBySemesterSuccess (0.00s)
+=== RUN   TestProgramWithNoClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classesbysemesters requestUuid=2c1979c0-1629-4294-ab5e-b93c91882748
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classesbysemesters requestUuid=2c1979c0-1629-4294-ab5e-b93c91882748 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      31.091µs |                 | GET      /api/classesbysemesters
+--- PASS: TestProgramWithNoClassSuccess (0.00s)
+=== RUN   TestSemesterWithNoProgramsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/classesbysemesters requestUuid=f59b3254-1a5a-4b6b-a455-ab529c56b468
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/classesbysemesters requestUuid=f59b3254-1a5a-4b6b-a455-ab529c56b468 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      27.204µs |                 | GET      /api/classesbysemesters
+--- PASS: TestSemesterWithNoProgramsSuccess (0.00s)
+=== RUN   TestGetAllLocationsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/locations/all requestUuid=c179d35a-54ec-4ccd-97ba-ef924499f0d9
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/locations/all requestUuid=c179d35a-54ec-4ccd-97ba-ef924499f0d9 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      79.451µs |                 | GET      /api/locations/all
+--- PASS: TestGetAllLocationsSuccess (0.00s)
+=== RUN   TestGetLocationSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/locations/location/loc1 requestUuid=fd15f8dc-59a7-49df-8b47-592e51c5d51a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/locations/location/:locationId" requestUuid=fd15f8dc-59a7-49df-8b47-592e51c5d51a status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      44.008µs |                 | GET      /api/locations/location/loc1
+--- PASS: TestGetLocationSuccess (0.00s)
+=== RUN   TestGetLocationFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/locations/location/loc2 requestUuid=79c00bb8-b746-4b32-b6cc-3730f6cf8365
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=79c00bb8-b746-4b32-b6cc-3730f6cf8365
+[GIN] 2020/08/13 - 11:58:44 | 404 |      44.223µs |                 | GET      /api/locations/location/loc2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetLocationFailure (0.00s)
+=== RUN   TestCreateLocationSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/create requestUuid=88c4af7f-0aa8-4167-b506-25d9a3435e54
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/locations/create requestUuid=88c4af7f-0aa8-4167-b506-25d9a3435e54 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |     165.666µs |                 | POST     /api/locations/create
+--- FAIL: TestCreateLocationSuccess (0.00s)
+    location_controller_test.go:114: 
+        	Error Trace:	location_controller_test.go:114
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateLocationSuccess
+=== RUN   TestCreateLocationFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/create requestUuid=2d62bf67-d295-4f9e-80e3-c6b0c45237da
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=2d62bf67-d295-4f9e-80e3-c6b0c45237da
+[GIN] 2020/08/13 - 11:58:44 | 400 |     104.499µs |                 | POST     /api/locations/create
+Error #01: Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateLocationFailure (0.00s)
+=== RUN   TestUpdateLocationSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/location/loc1 requestUuid=916b102c-4baf-4ca5-8f0f-6826c100f423
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/locations/location/:locationId" requestUuid=916b102c-4baf-4ca5-8f0f-6826c100f423 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |     462.367µs |                 | POST     /api/locations/location/loc1
+--- FAIL: TestUpdateLocationSuccess (0.00s)
+    location_controller_test.go:146: 
+        	Error Trace:	location_controller_test.go:146
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateLocationSuccess
+=== RUN   TestUpdateLocationInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/location/loc1 requestUuid=0ba26f67-7614-43b9-8652-c227c4b62307
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=0ba26f67-7614-43b9-8652-c227c4b62307
+[GIN] 2020/08/13 - 11:58:44 | 400 |     237.455µs |                 | POST     /api/locations/location/loc1
+Error #01: Invalid Domain (Invalid Location: Invalid Street format): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateLocationInvalid (0.00s)
+=== RUN   TestUpdateLocationFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/locations/location/loc2 requestUuid=b47bb578-aa0c-42b4-9cde-6f0d264395f3
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=b47bb578-aa0c-42b4-9cde-6f0d264395f3
+[GIN] 2020/08/13 - 11:58:44 | 404 |     182.328µs |                 | POST     /api/locations/location/loc2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateLocationFailure (0.00s)
+    location_controller_test.go:174: 
+        	Error Trace:	location_controller_test.go:174
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateLocationFailure
+=== RUN   TestDeleteLocationSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/locations/location/some_location requestUuid=255e5b24-d34f-48a9-9775-57bccd4aa70c
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/locations/location/:locationId" requestUuid=255e5b24-d34f-48a9-9775-57bccd4aa70c status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      28.747µs |                 | DELETE   /api/locations/location/some_location
+--- FAIL: TestDeleteLocationSuccess (0.00s)
+    location_controller_test.go:190: 
+        	Error Trace:	location_controller_test.go:190
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteLocationSuccess
+=== RUN   TestDeleteLocationFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/locations/location/some_location requestUuid=29f88eac-f8a4-4432-8d40-64eccffe9ff3
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=29f88eac-f8a4-4432-8d40-64eccffe9ff3
+[GIN] 2020/08/13 - 11:58:44 | 404 |      46.364µs |                 | DELETE   /api/locations/location/some_location
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteLocationFailure (0.00s)
+    location_controller_test.go:203: 
+        	Error Trace:	location_controller_test.go:203
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteLocationFailure
+=== RUN   TestGetAllProgramsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/programs/all requestUuid=cafe9b6c-a537-43cd-83f0-a5103943fc39
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/programs/all requestUuid=cafe9b6c-a537-43cd-83f0-a5103943fc39 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      39.612µs |                 | GET      /api/programs/all
+--- PASS: TestGetAllProgramsSuccess (0.00s)
+=== RUN   TestGetProgramSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/programs/program/prog1 requestUuid=df0ec2f0-bb3e-4655-8b7a-df16769b0d75
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/programs/program/:programId" requestUuid=df0ec2f0-bb3e-4655-8b7a-df16769b0d75 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      35.567µs |                 | GET      /api/programs/program/prog1
+--- PASS: TestGetProgramSuccess (0.00s)
+=== RUN   TestGetProgramFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/programs/program/prog2 requestUuid=cfb289f0-1519-413a-be19-b8b1fa3b341c
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=cfb289f0-1519-413a-be19-b8b1fa3b341c
+[GIN] 2020/08/13 - 11:58:44 | 404 |      45.846µs |                 | GET      /api/programs/program/prog2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetProgramFailure (0.00s)
+=== RUN   TestCreateProgramSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/create requestUuid=2d19a160-4cad-4267-9e51-59978f352900
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/programs/create requestUuid=2d19a160-4cad-4267-9e51-59978f352900 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      92.306µs |                 | POST     /api/programs/create
+--- FAIL: TestCreateProgramSuccess (0.00s)
+    program_controller_test.go:114: 
+        	Error Trace:	program_controller_test.go:114
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateProgramSuccess
+=== RUN   TestCreateProgramFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/create requestUuid=cd8446ff-342a-48c9-a146-bc6d28420f52
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=cd8446ff-342a-48c9-a146-bc6d28420f52
+[GIN] 2020/08/13 - 11:58:44 | 400 |     106.816µs |                 | POST     /api/programs/create
+Error #01: Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateProgramFailure (0.00s)
+=== RUN   TestUpdateProgramSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/program/prog1 requestUuid=a326a372-fb98-4314-8544-becd28e38467
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/programs/program/:programId" requestUuid=a326a372-fb98-4314-8544-becd28e38467 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      73.412µs |                 | POST     /api/programs/program/prog1
+--- FAIL: TestUpdateProgramSuccess (0.00s)
+    program_controller_test.go:146: 
+        	Error Trace:	program_controller_test.go:146
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateProgramSuccess
+=== RUN   TestUpdateProgramInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/program/prog1 requestUuid=a14585fa-567e-4bee-9f72-5c1ab435a998
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=a14585fa-567e-4bee-9f72-5c1ab435a998
+[GIN] 2020/08/13 - 11:58:44 | 400 |     117.771µs |                 | POST     /api/programs/program/prog1
+Error #01: Invalid Domain (Invalid Program: Invalid program name): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateProgramInvalid (0.00s)
+=== RUN   TestUpdateProgramFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/programs/program/prog1 requestUuid=bf57cecd-9e5e-4150-9bf2-dfed0460dfd3
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=bf57cecd-9e5e-4150-9bf2-dfed0460dfd3
+[GIN] 2020/08/13 - 11:58:44 | 404 |      93.893µs |                 | POST     /api/programs/program/prog1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateProgramFailure (0.00s)
+    program_controller_test.go:174: 
+        	Error Trace:	program_controller_test.go:174
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateProgramFailure
+=== RUN   TestDeleteProgramSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/programs/program/some_program requestUuid=2e0c67ca-0e6c-450a-bf5b-e7071b4d9261
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/programs/program/:programId" requestUuid=2e0c67ca-0e6c-450a-bf5b-e7071b4d9261 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      25.554µs |                 | DELETE   /api/programs/program/some_program
+--- FAIL: TestDeleteProgramSuccess (0.00s)
+    program_controller_test.go:190: 
+        	Error Trace:	program_controller_test.go:190
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteProgramSuccess
+=== RUN   TestDeleteProgramFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/programs/program/some_program requestUuid=b4d85765-7f03-4ca5-b912-efa076eb4b8e
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=b4d85765-7f03-4ca5-b912-efa076eb4b8e
+[GIN] 2020/08/13 - 11:58:44 | 404 |      44.372µs |                 | DELETE   /api/programs/program/some_program
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteProgramFailure (0.00s)
+    program_controller_test.go:203: 
+        	Error Trace:	program_controller_test.go:203
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteProgramFailure
+=== RUN   TestGetAllUnpublishedSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/unpublished requestUuid=604cf24e-8fc6-40ef-a19c-faaa2fda4bc8
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/unpublished requestUuid=604cf24e-8fc6-40ef-a19c-faaa2fda4bc8 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |       92.07µs |                 | GET      /api/unpublished
+--- PASS: TestGetAllUnpublishedSuccess (0.00s)
+=== RUN   TestGetAllSemestersSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/semesters/all requestUuid=ede17557-5744-4bc0-82e8-c0dcb8e913c3
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/semesters/all requestUuid=ede17557-5744-4bc0-82e8-c0dcb8e913c3 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      39.867µs |                 | GET      /api/semesters/all
+--- PASS: TestGetAllSemestersSuccess (0.00s)
+=== RUN   TestGetPublishedSemestersSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL="/api/semesters/all?published=true" requestUuid=aec44869-518e-47b9-9cf8-a8b72b3593cf
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/semesters/all requestUuid=aec44869-518e-47b9-9cf8-a8b72b3593cf status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      53.845µs |                 | GET      /api/semesters/all?published=true
+--- PASS: TestGetPublishedSemestersSuccess (0.00s)
+=== RUN   TestGetSemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/semesters/semester/2020_fall requestUuid=c06d05ac-9d9e-4764-a2cf-456d6dfb074d
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/semesters/semester/:semesterId" requestUuid=c06d05ac-9d9e-4764-a2cf-456d6dfb074d status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      50.636µs |                 | GET      /api/semesters/semester/2020_fall
+--- PASS: TestGetSemesterSuccess (0.00s)
+=== RUN   TestGetSemesterFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/semesters/semester/2020_winter requestUuid=9fe9defc-cbf4-4e20-ad25-939da6964f85
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=9fe9defc-cbf4-4e20-ad25-939da6964f85
+[GIN] 2020/08/13 - 11:58:44 | 404 |      61.585µs |                 | GET      /api/semesters/semester/2020_winter
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetSemesterFailure (0.00s)
+=== RUN   TestCreateSemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/create requestUuid=bf8b51be-cea7-43bf-b945-d531846eb50d
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/semesters/create requestUuid=bf8b51be-cea7-43bf-b945-d531846eb50d status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |     104.196µs |                 | POST     /api/semesters/create
+--- FAIL: TestCreateSemesterSuccess (0.00s)
+    semester_controller_test.go:130: 
+        	Error Trace:	semester_controller_test.go:130
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateSemesterSuccess
+=== RUN   TestCreateSemesterFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/create requestUuid=ccb480f8-5894-4b7b-af65-70f9921bbec5
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=ccb480f8-5894-4b7b-af65-70f9921bbec5
+[GIN] 2020/08/13 - 11:58:44 | 400 |     102.758µs |                 | POST     /api/semesters/create
+Error #01: Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateSemesterFailure (0.00s)
+=== RUN   TestUpdateSemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/semester/2020_fall requestUuid=d7fef342-5c0b-4a48-8871-df2ecd729dc7
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/semesters/semester/:semesterId" requestUuid=d7fef342-5c0b-4a48-8871-df2ecd729dc7 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |       79.62µs |                 | POST     /api/semesters/semester/2020_fall
+--- FAIL: TestUpdateSemesterSuccess (0.00s)
+    semester_controller_test.go:161: 
+        	Error Trace:	semester_controller_test.go:161
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateSemesterSuccess
+=== RUN   TestUpdateSemesterInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/semester/2020_fall requestUuid=591a3770-abae-4928-86c8-a4ff7898dcf6
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=591a3770-abae-4928-86c8-a4ff7898dcf6
+[GIN] 2020/08/13 - 11:58:44 | 400 |     102.757µs |                 | POST     /api/semesters/semester/2020_fall
+Error #01: Invalid Domain (Invalid Semester: Invalid Semester Title): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateSemesterInvalid (0.00s)
+=== RUN   TestUpdateSemesterFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/semesters/semester/2020_fall requestUuid=1e7a012a-ab3d-4c7b-b4ba-8548695d726f
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=1e7a012a-ab3d-4c7b-b4ba-8548695d726f
+[GIN] 2020/08/13 - 11:58:44 | 404 |      96.833µs |                 | POST     /api/semesters/semester/2020_fall
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateSemesterFailure (0.00s)
+    semester_controller_test.go:189: 
+        	Error Trace:	semester_controller_test.go:189
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateSemesterFailure
+=== RUN   TestDeleteSemesterSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/semesters/semester/some_semester requestUuid=a2b75794-c0b3-46eb-9d28-6ef6c24eecf4
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/semesters/semester/:semesterId" requestUuid=a2b75794-c0b3-46eb-9d28-6ef6c24eecf4 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      26.306µs |                 | DELETE   /api/semesters/semester/some_semester
+--- FAIL: TestDeleteSemesterSuccess (0.00s)
+    semester_controller_test.go:205: 
+        	Error Trace:	semester_controller_test.go:205
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteSemesterSuccess
+=== RUN   TestDeleteSemesterFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/semesters/semester/some_semester requestUuid=2b6b02b8-0885-4d51-82c2-0d8b1fbf6b8a
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=2b6b02b8-0885-4d51-82c2-0d8b1fbf6b8a
+[GIN] 2020/08/13 - 11:58:44 | 404 |      39.187µs |                 | DELETE   /api/semesters/semester/some_semester
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteSemesterFailure (0.00s)
+    semester_controller_test.go:218: 
+        	Error Trace:	semester_controller_test.go:218
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteSemesterFailure
+=== RUN   TestGetAllSessionsByClassIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/sessions/class/id_1 requestUuid=d90d8ccb-9236-45bf-b778-83d1b851ce42
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/sessions/class/:classId" requestUuid=d90d8ccb-9236-45bf-b778-83d1b851ce42 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      44.118µs |                 | GET      /api/sessions/class/id_1
+--- PASS: TestGetAllSessionsByClassIdSuccess (0.00s)
+=== RUN   TestGetSessionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/sessions/session/1 requestUuid=e5013418-fbb7-4ebe-9406-001eecb7cdf7
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/sessions/session/:id" requestUuid=e5013418-fbb7-4ebe-9406-001eecb7cdf7 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      38.685µs |                 | GET      /api/sessions/session/1
+--- PASS: TestGetSessionSuccess (0.00s)
+=== RUN   TestGetSessionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/sessions/session/2 requestUuid=7e6bc2e1-bbd6-47ab-bdcb-bef6d322f8dc
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=7e6bc2e1-bbd6-47ab-bdcb-bef6d322f8dc
+[GIN] 2020/08/13 - 11:58:44 | 404 |      41.301µs |                 | GET      /api/sessions/session/2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetSessionFailure (0.00s)
+=== RUN   TestCreateSessionsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/create requestUuid=76323292-39da-409c-bd3c-1a74fb45d823
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/sessions/create requestUuid=76323292-39da-409c-bd3c-1a74fb45d823 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      32.153µs |                 | POST     /api/sessions/create
+--- FAIL: TestCreateSessionsSuccess (0.00s)
+    session_controller_test.go:116: 
+        	Error Trace:	session_controller_test.go:116
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateSessionsSuccess
+=== RUN   TestCreateSessionsFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/create requestUuid=e0eb8008-a07b-4365-a8bc-3bfbc257c345
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Caused by mock: invalid notes): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Caused by mock: invalid notes): INVALID_DOMAIN_ERROR (Invalid Domain (Caused by mock: invalid notes): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=e0eb8008-a07b-4365-a8bc-3bfbc257c345
+[GIN] 2020/08/13 - 11:58:44 | 400 |      59.694µs |                 | POST     /api/sessions/create
+Error #01: Invalid Domain (Caused by mock: invalid notes): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateSessionsFailure (0.00s)
+=== RUN   TestUpdateSessionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/session/1 requestUuid=140c4196-8660-4983-8436-7dba2a39e315
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/sessions/session/:id" requestUuid=140c4196-8660-4983-8436-7dba2a39e315 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      50.175µs |                 | POST     /api/sessions/session/1
+--- FAIL: TestUpdateSessionSuccess (0.00s)
+    session_controller_test.go:152: 
+        	Error Trace:	session_controller_test.go:152
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateSessionSuccess
+=== RUN   TestUpdateSessionInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/session/1 requestUuid=78505a7b-1091-4aeb-9128-bf7d70c09161
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Session: Invalid session notes entry)" app=orion cause="Invalid Session: Invalid session notes entry"
+time="2020-08-13T11:58:44-04:00" level=error msg="Unknown error (Invalid Session: Invalid session notes entry)" app=orion code=400 requestUuid=78505a7b-1091-4aeb-9128-bf7d70c09161
+[GIN] 2020/08/13 - 11:58:44 | 400 |     146.257µs |                 | POST     /api/sessions/session/1
+Error #01: Invalid Session: Invalid session notes entry
+--- PASS: TestUpdateSessionInvalid (0.00s)
+=== RUN   TestUpdateSessionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/sessions/session/2 requestUuid=a47c0c67-677c-4531-8200-2b4c0005fafe
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=a47c0c67-677c-4531-8200-2b4c0005fafe
+[GIN] 2020/08/13 - 11:58:44 | 404 |     101.544µs |                 | POST     /api/sessions/session/2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateSessionFailure (0.00s)
+    session_controller_test.go:182: 
+        	Error Trace:	session_controller_test.go:182
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateSessionFailure
+=== RUN   TestDeleteSessionsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/sessions/delete requestUuid=bf23431a-d7a0-4c9b-81fd-de70dc2537f6
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/sessions/delete requestUuid=bf23431a-d7a0-4c9b-81fd-de70dc2537f6 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      41.631µs |                 | DELETE   /api/sessions/delete
+--- FAIL: TestDeleteSessionsSuccess (0.00s)
+    session_controller_test.go:204: 
+        	Error Trace:	session_controller_test.go:204
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteSessionsSuccess
+=== RUN   TestDeleteSessionsFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/sessions/delete requestUuid=0b74ad41-bdd4-4b19-a2e4-aa368215ff9c
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion cause=JSON_NULL_BODY_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Must provide a JSON body for this request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion code=400 requestUuid=0b74ad41-bdd4-4b19-a2e4-aa368215ff9c
+[GIN] 2020/08/13 - 11:58:44 | 400 |      88.368µs |                 | DELETE   /api/sessions/delete
+Error #01: Unexpected null JSON body: JSON_NULL_BODY_ERROR
+--- PASS: TestDeleteSessionsFailure (0.00s)
+=== RUN   TestGetTransactionsByAccountIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/transactions/account/1 requestUuid=eb1ba4ac-391a-4e62-a740-6aad17bf8e0d
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/transactions/account/:accountId" requestUuid=eb1ba4ac-391a-4e62-a740-6aad17bf8e0d status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      70.925µs |                 | GET      /api/transactions/account/1
+--- PASS: TestGetTransactionsByAccountIdSuccess (0.00s)
+=== RUN   TestGetTransactionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/transactions/transaction/1 requestUuid=0c0ab4e5-caf4-44ce-bbb9-0527bff50d6a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/transactions/transaction/:id" requestUuid=0c0ab4e5-caf4-44ce-bbb9-0527bff50d6a status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      34.205µs |                 | GET      /api/transactions/transaction/1
+--- PASS: TestGetTransactionSuccess (0.00s)
+=== RUN   TestGetTransactionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/transactions/transaction/1 requestUuid=47d5905b-c353-47f3-a8af-b270d276727a
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=47d5905b-c353-47f3-a8af-b270d276727a
+[GIN] 2020/08/13 - 11:58:44 | 404 |      45.685µs |                 | GET      /api/transactions/transaction/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetTransactionFailure (0.00s)
+=== RUN   TestCreateTransactionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=a07688e3-6f9d-4692-8abe-39f3a1b95299
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/transactions/transaction/:id" requestUuid=a07688e3-6f9d-4692-8abe-39f3a1b95299 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      42.777µs |                 | POST     /api/transactions/transaction/1
+--- FAIL: TestCreateTransactionSuccess (0.00s)
+    transaction_controller_test.go:123: 
+        	Error Trace:	transaction_controller_test.go:123
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateTransactionSuccess
+=== RUN   TestCreateTransactionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/create requestUuid=72919dd4-c2d8-4d76-ad82-a0e9359455d9
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=72919dd4-c2d8-4d76-ad82-a0e9359455d9
+[GIN] 2020/08/13 - 11:58:44 | 400 |       51.88µs |                 | POST     /api/transactions/create
+Error #01: Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateTransactionFailure (0.00s)
+=== RUN   TestUpdateTransactionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=d1639b7c-9561-483c-a677-45397a853617
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/transactions/transaction/:id" requestUuid=d1639b7c-9561-483c-a677-45397a853617 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      31.882µs |                 | POST     /api/transactions/transaction/1
+--- FAIL: TestUpdateTransactionSuccess (0.00s)
+    transaction_controller_test.go:162: 
+        	Error Trace:	transaction_controller_test.go:162
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateTransactionSuccess
+=== RUN   TestUpdateTransactionInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=3c2b33dd-1dc2-4a9c-bb33-e5b5240be9d5
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=3c2b33dd-1dc2-4a9c-bb33-e5b5240be9d5
+[GIN] 2020/08/13 - 11:58:44 | 400 |      52.614µs |                 | POST     /api/transactions/transaction/1
+Error #01: Invalid Domain (Invalid Transaction: Unrecognized payment type): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateTransactionInvalid (0.00s)
+=== RUN   TestUpdateTransactionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/transactions/transaction/1 requestUuid=4c45797a-3baf-4e7a-a2ff-ba3726fdc6f0
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=4c45797a-3baf-4e7a-a2ff-ba3726fdc6f0
+[GIN] 2020/08/13 - 11:58:44 | 404 |      43.911µs |                 | POST     /api/transactions/transaction/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateTransactionFailure (0.00s)
+    transaction_controller_test.go:200: 
+        	Error Trace:	transaction_controller_test.go:200
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateTransactionFailure
+=== RUN   TestDeleteTransactionSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/transactions/transaction/1 requestUuid=92b4bc64-56d0-4564-b481-8f7de5639e54
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/transactions/transaction/:id" requestUuid=92b4bc64-56d0-4564-b481-8f7de5639e54 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      24.034µs |                 | DELETE   /api/transactions/transaction/1
+--- FAIL: TestDeleteTransactionSuccess (0.00s)
+    transaction_controller_test.go:214: 
+        	Error Trace:	transaction_controller_test.go:214
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteTransactionSuccess
+=== RUN   TestDeleteTransactionFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/transactions/transaction/1 requestUuid=7a25a611-a0e8-44dc-8999-7b7a3ce149f1
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=7a25a611-a0e8-44dc-8999-7b7a3ce149f1
+[GIN] 2020/08/13 - 11:58:44 | 404 |      46.507µs |                 | DELETE   /api/transactions/transaction/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteTransactionFailure (0.00s)
+    transaction_controller_test.go:227: 
+        	Error Trace:	transaction_controller_test.go:227
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteTransactionFailure
+=== RUN   TestGetAllPaymentTypes
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/transactions/types requestUuid=7ba4ad83-4474-4590-8cea-bdfe1f3334e6
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/transactions/types requestUuid=7ba4ad83-4474-4590-8cea-bdfe1f3334e6 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      25.751µs |                 | GET      /api/transactions/types
+--- PASS: TestGetAllPaymentTypes (0.00s)
+=== RUN   TestGetUserAfhByUserIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/userafhs/users/2 requestUuid=ac8fafa3-db83-4c2a-8f33-a0377a76a55b
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/userafhs/users/:userId" requestUuid=ac8fafa3-db83-4c2a-8f33-a0377a76a55b status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      65.033µs |                 | GET      /api/userafhs/users/2
+--- PASS: TestGetUserAfhByUserIdSuccess (0.00s)
+=== RUN   TestGetUserAfhByUserIdFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/userafhs/users/3 requestUuid=c8b01743-1091-4ab7-bc9b-a5c17e1d4580
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=c8b01743-1091-4ab7-bc9b-a5c17e1d4580
+[GIN] 2020/08/13 - 11:58:44 | 404 |      39.454µs |                 | GET      /api/userafhs/users/3
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetUserAfhByUserIdFailure (0.00s)
+=== RUN   TestGetUserAfhByAfhIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/userafhs/afh/4 requestUuid=aa7225e3-bbec-42ca-9959-e0cd2ee44f04
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/userafhs/afh/:afhId" requestUuid=aa7225e3-bbec-42ca-9959-e0cd2ee44f04 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      29.393µs |                 | GET      /api/userafhs/afh/4
+--- PASS: TestGetUserAfhByAfhIdSuccess (0.00s)
+=== RUN   TestGetUserAfhByAfhIdFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/userafhs/afh/5 requestUuid=668b42b2-9513-43ac-bd06-0223715bf377
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=668b42b2-9513-43ac-bd06-0223715bf377
+[GIN] 2020/08/13 - 11:58:44 | 404 |      43.152µs |                 | GET      /api/userafhs/afh/5
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetUserAfhByAfhIdFailure (0.00s)
+=== RUN   TestGetUserAfhByBothIdsSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/userafhs/users/2/afh/3 requestUuid=a11d2b28-54bf-4398-8bc9-a21e330124a3
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/userafhs/users/:userId/afh/:afhId" requestUuid=a11d2b28-54bf-4398-8bc9-a21e330124a3 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      53.965µs |                 | GET      /api/userafhs/users/2/afh/3
+--- PASS: TestGetUserAfhByBothIdsSuccess (0.00s)
+=== RUN   TestCreateUserAfhSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/userafhs/create requestUuid=df01dc37-4419-423b-8bc7-569c812142d9
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/userafhs/create requestUuid=df01dc37-4419-423b-8bc7-569c812142d9 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      40.861µs |                 | POST     /api/userafhs/create
+--- FAIL: TestCreateUserAfhSuccess (0.00s)
+    user_afh_controller_test.go:126: 
+        	Error Trace:	user_afh_controller_test.go:126
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateUserAfhSuccess
+=== RUN   TestUpdateUserAfhSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/userafhs/userafh/1 requestUuid=b1c140b3-3886-4ab1-923d-63e1eecd710b
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/userafhs/userafh/:id" requestUuid=b1c140b3-3886-4ab1-923d-63e1eecd710b status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      52.938µs |                 | POST     /api/userafhs/userafh/1
+--- FAIL: TestUpdateUserAfhSuccess (0.00s)
+    user_afh_controller_test.go:150: 
+        	Error Trace:	user_afh_controller_test.go:150
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateUserAfhSuccess
+=== RUN   TestUpdateUserAfhFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/userafhs/userafh/2 requestUuid=0b7fdffd-24c8-4805-a978-613a460a07ae
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=0b7fdffd-24c8-4805-a978-613a460a07ae
+[GIN] 2020/08/13 - 11:58:44 | 404 |      72.881µs |                 | POST     /api/userafhs/userafh/2
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateUserAfhFailure (0.00s)
+    user_afh_controller_test.go:165: 
+        	Error Trace:	user_afh_controller_test.go:165
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateUserAfhFailure
+=== RUN   TestDeleteUserAfhSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/userafhs/userafh/1 requestUuid=d6257440-a583-467f-9c97-cda9c320db8c
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/userafhs/userafh/:id" requestUuid=d6257440-a583-467f-9c97-cda9c320db8c status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      38.752µs |                 | DELETE   /api/userafhs/userafh/1
+--- FAIL: TestDeleteUserAfhSuccess (0.00s)
+    user_afh_controller_test.go:179: 
+        	Error Trace:	user_afh_controller_test.go:179
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteUserAfhSuccess
+=== RUN   TestDeleteUserAfhFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/userafhs/userafh/1 requestUuid=7adaf0a7-769a-4764-9df0-2b4f0f43215e
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=7adaf0a7-769a-4764-9df0-2b4f0f43215e
+[GIN] 2020/08/13 - 11:58:44 | 404 |      40.969µs |                 | DELETE   /api/userafhs/userafh/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteUserAfhFailure (0.00s)
+    user_afh_controller_test.go:192: 
+        	Error Trace:	user_afh_controller_test.go:192
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteUserAfhFailure
+=== RUN   TestGetUsersByClassIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/user-classes/class/abcd requestUuid=97b1c30d-c346-4969-bf96-c4f782c3d47f
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/user-classes/class/:classId" requestUuid=97b1c30d-c346-4969-bf96-c4f782c3d47f status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      64.468µs |                 | GET      /api/user-classes/class/abcd
+--- PASS: TestGetUsersByClassIdSuccess (0.00s)
+=== RUN   TestGetClassesByUserIdSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/user-classes/user/1 requestUuid=ae982a6c-64d0-4279-9594-65c066983658
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/user-classes/user/:userId" requestUuid=ae982a6c-64d0-4279-9594-65c066983658 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      29.045µs |                 | GET      /api/user-classes/user/1
+--- PASS: TestGetClassesByUserIdSuccess (0.00s)
+=== RUN   TestGetUserClassByUserAndClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/user-classes/class/abcd/user/1 requestUuid=e596a8b2-b9f9-409b-8a71-521a71119c27
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/user-classes/class/:classId/user/:userId" requestUuid=e596a8b2-b9f9-409b-8a71-521a71119c27 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      32.019µs |                 | GET      /api/user-classes/class/abcd/user/1
+--- PASS: TestGetUserClassByUserAndClassSuccess (0.00s)
+=== RUN   TestCreateUserClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/create requestUuid=0e19b3bb-2a6d-4757-a961-39f5584d8353
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/user-classes/create requestUuid=0e19b3bb-2a6d-4757-a961-39f5584d8353 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      36.974µs |                 | POST     /api/user-classes/create
+--- FAIL: TestCreateUserClassSuccess (0.00s)
+    user_class_controller_test.go:161: 
+        	Error Trace:	user_class_controller_test.go:161
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateUserClassSuccess
+=== RUN   TestCreateUserClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/create requestUuid=584750f9-d540-4b15-b74f-31ccf39433f8
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=584750f9-d540-4b15-b74f-31ccf39433f8
+[GIN] 2020/08/13 - 11:58:44 | 404 |      49.851µs |                 | POST     /api/user-classes/create
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestCreateUserClassFailure (0.00s)
+    user_class_controller_test.go:182: 
+        	Error Trace:	user_class_controller_test.go:182
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestCreateUserClassFailure
+=== RUN   TestUpdateUserClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/user-class/1 requestUuid=d3c317c0-7b8a-49b1-95ce-106daec58952
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/user-classes/user-class/:id" requestUuid=d3c317c0-7b8a-49b1-95ce-106daec58952 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      29.846µs |                 | POST     /api/user-classes/user-class/1
+--- FAIL: TestUpdateUserClassSuccess (0.00s)
+    user_class_controller_test.go:206: 
+        	Error Trace:	user_class_controller_test.go:206
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateUserClassSuccess
+=== RUN   TestUpdateUserClassInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/user-class/1 requestUuid=d87095b6-d45b-414c-9cf3-40f5f4ddafa5
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=d87095b6-d45b-414c-9cf3-40f5f4ddafa5
+[GIN] 2020/08/13 - 11:58:44 | 404 |      43.863µs |                 | POST     /api/user-classes/user-class/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateUserClassInvalid (0.00s)
+    user_class_controller_test.go:228: 
+        	Error Trace:	user_class_controller_test.go:228
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateUserClassInvalid
+=== RUN   TestUpdateUserClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/user-classes/user-class/1 requestUuid=2e4798b9-cb41-4edd-a2a5-49eb95ff42ef
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=2e4798b9-cb41-4edd-a2a5-49eb95ff42ef
+[GIN] 2020/08/13 - 11:58:44 | 404 |      45.888µs |                 | POST     /api/user-classes/user-class/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateUserClassFailure (0.00s)
+    user_class_controller_test.go:249: 
+        	Error Trace:	user_class_controller_test.go:249
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateUserClassFailure
+=== RUN   TestDeleteUserClassSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/user-classes/user-class/1 requestUuid=4f1b7d57-6322-409d-a9a2-aac6e8c8790b
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/user-classes/user-class/:id" requestUuid=4f1b7d57-6322-409d-a9a2-aac6e8c8790b status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      26.619µs |                 | DELETE   /api/user-classes/user-class/1
+--- FAIL: TestDeleteUserClassSuccess (0.00s)
+    user_class_controller_test.go:265: 
+        	Error Trace:	user_class_controller_test.go:265
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteUserClassSuccess
+=== RUN   TestDeleteUserClassFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/user-classes/user-class/1 requestUuid=ec4b2df5-b74d-4b61-86da-7c6f292a0031
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=ec4b2df5-b74d-4b61-86da-7c6f292a0031
+[GIN] 2020/08/13 - 11:58:44 | 404 |      40.473µs |                 | DELETE   /api/user-classes/user-class/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteUserClassFailure (0.00s)
+    user_class_controller_test.go:278: 
+        	Error Trace:	user_class_controller_test.go:278
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteUserClassFailure
+=== RUN   TestStateValuesSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/user-classes/states requestUuid=5e533f57-4771-496b-abe0-ee8f2945f3cf
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/user-classes/states requestUuid=5e533f57-4771-496b-abe0-ee8f2945f3cf status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |       65.07µs |                 | GET      /api/user-classes/states
+--- PASS: TestStateValuesSuccess (0.00s)
+=== RUN   TestGetUserSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/users/user/1 requestUuid=35bfcb91-a176-4d8e-8312-1ee14c9a3cce
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/users/user/:id" requestUuid=35bfcb91-a176-4d8e-8312-1ee14c9a3cce status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      69.954µs |                 | GET      /api/users/user/1
+--- PASS: TestGetUserSuccess (0.00s)
+=== RUN   TestGetUsersByAccountSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/users/account/2 requestUuid=9b6fbfc6-66f9-46f6-b756-8b192b1d45b5
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/users/account/:accountId" requestUuid=9b6fbfc6-66f9-46f6-b756-8b192b1d45b5 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |      39.482µs |                 | GET      /api/users/account/2
+--- PASS: TestGetUsersByAccountSuccess (0.00s)
+=== RUN   TestGetUserFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=GET requestURL=/api/users/user/1 requestUuid=ff2890de-67aa-4985-a70f-d625fa3b0384
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=ff2890de-67aa-4985-a70f-d625fa3b0384
+[GIN] 2020/08/13 - 11:58:44 | 404 |      41.085µs |                 | GET      /api/users/user/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- PASS: TestGetUserFailure (0.00s)
+=== RUN   TestCreateUserSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/create requestUuid=80450d84-cba9-4735-97ca-1825528d9094
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/users/create requestUuid=80450d84-cba9-4735-97ca-1825528d9094 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |       90.65µs |                 | POST     /api/users/create
+--- FAIL: TestCreateUserSuccess (0.00s)
+    user_controller_test.go:161: 
+        	Error Trace:	user_controller_test.go:161
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestCreateUserSuccess
+=== RUN   TestCreateUserFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/create requestUuid=97de2fb2-12c4-481c-8756-fdecc95639c9
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=97de2fb2-12c4-481c-8756-fdecc95639c9
+[GIN] 2020/08/13 - 11:58:44 | 400 |      57.841µs |                 | POST     /api/users/create
+Error #01: Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR
+--- PASS: TestCreateUserFailure (0.00s)
+=== RUN   TestSearchUsersSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/search requestUuid=1a73b9f6-6e08-4be9-98e6-ee91cd422c05
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath=/api/users/search requestUuid=1a73b9f6-6e08-4be9-98e6-ee91cd422c05 status=200
+[GIN] 2020/08/13 - 11:58:44 | 200 |       49.45µs |                 | POST     /api/users/search
+--- PASS: TestSearchUsersSuccess (0.00s)
+=== RUN   TestSearchUsersFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/search requestUuid=75de2220-d300-4d2d-a5be-5c9ae09d9de9
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion cause=JSON_NULL_BODY_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Must provide a JSON body for this request (Unexpected null JSON body: JSON_NULL_BODY_ERROR)" app=orion code=400 requestUuid=75de2220-d300-4d2d-a5be-5c9ae09d9de9
+[GIN] 2020/08/13 - 11:58:44 | 400 |      98.485µs |                 | POST     /api/users/search
+Error #01: Unexpected null JSON body: JSON_NULL_BODY_ERROR
+--- PASS: TestSearchUsersFailure (0.00s)
+=== RUN   TestUpdateUserSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/user/1 requestUuid=e914a269-512f-420f-8594-acc5c8168e8a
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/users/user/:id" requestUuid=e914a269-512f-420f-8594-acc5c8168e8a status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      80.183µs |                 | POST     /api/users/user/1
+--- FAIL: TestUpdateUserSuccess (0.00s)
+    user_controller_test.go:322: 
+        	Error Trace:	user_controller_test.go:322
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestUpdateUserSuccess
+=== RUN   TestUpdateUserInvalid
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/user/1 requestUuid=81488bb1-e83a-44a7-bc9d-b42cc3ca4026
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion cause=INVALID_DOMAIN_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR (Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR)" app=orion code=400 requestUuid=81488bb1-e83a-44a7-bc9d-b42cc3ca4026
+[GIN] 2020/08/13 - 11:58:44 | 400 |      57.935µs |                 | POST     /api/users/user/1
+Error #01: Invalid Domain (Invalid User: Please provide a first name): INVALID_DOMAIN_ERROR
+--- PASS: TestUpdateUserInvalid (0.00s)
+=== RUN   TestUpdateUserFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=POST requestURL=/api/users/user/1 requestUuid=b6857320-0ee5-4201-89fe-9b2a46a18f9f
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=b6857320-0ee5-4201-89fe-9b2a46a18f9f
+[GIN] 2020/08/13 - 11:58:44 | 404 |      87.132µs |                 | POST     /api/users/user/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestUpdateUserFailure (0.00s)
+    user_controller_test.go:370: 
+        	Error Trace:	user_controller_test.go:370
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestUpdateUserFailure
+=== RUN   TestDeleteUserSuccess
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/users/user/1 requestUuid=0e565193-9ebf-4c81-8884-23e8542f6ce0
+time="2020-08-13T11:58:44-04:00" level=info msg="Succesfully completed request!" app=orion fullPath="/api/users/user/:id" requestUuid=0e565193-9ebf-4c81-8884-23e8542f6ce0 status=204
+[GIN] 2020/08/13 - 11:58:44 | 204 |      26.289µs |                 | DELETE   /api/users/user/1
+--- FAIL: TestDeleteUserSuccess (0.00s)
+    user_controller_test.go:386: 
+        	Error Trace:	user_controller_test.go:386
+        	Error:      	Not equal: 
+        	            	expected: 200
+        	            	actual  : 204
+        	Test:       	TestDeleteUserSuccess
+=== RUN   TestDeleteUserFailure
+time="2020-08-13T11:58:44-04:00" level=info msg="Received Request" app=orion requestHost= requestMethod=DELETE requestURL=/api/users/user/1 requestUuid=3c90efc3-6658-433f-a4f3-5c9a756cd29e
+time="2020-08-13T11:58:44-04:00" level=error msg="Handling error from request (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion cause=SQL_NO_ROWS_ERROR
+time="2020-08-13T11:58:44-04:00" level=error msg="No results from query. Please change your search terms. (Caused by mock: SQL_NO_ROWS_ERROR)" app=orion code=404 requestUuid=3c90efc3-6658-433f-a4f3-5c9a756cd29e
+[GIN] 2020/08/13 - 11:58:44 | 404 |      44.003µs |                 | DELETE   /api/users/user/1
+Error #01: Caused by mock: SQL_NO_ROWS_ERROR
+--- FAIL: TestDeleteUserFailure (0.00s)
+    user_controller_test.go:399: 
+        	Error Trace:	user_controller_test.go:399
+        	Error:      	Not equal: 
+        	            	expected: 500
+        	            	actual  : 404
+        	Test:       	TestDeleteUserFailure
+FAIL
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers	0.039s
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils	[no test files]
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils	[no test files]
+=== RUN   TestHash
+--- PASS: TestHash (0.43s)
+=== RUN   Test_ValidPrimaryEmail
+--- PASS: Test_ValidPrimaryEmail (0.00s)
+=== RUN   Test_ValidPassword
+--- PASS: Test_ValidPassword (0.00s)
+=== RUN   TestValidYear
+--- PASS: TestValidYear (0.00s)
+=== RUN   TestValidAchievementMessage
+--- PASS: TestValidAchievementMessage (0.00s)
+=== RUN   TestNullString
+json "asdf"
+--- PASS: TestNullString (0.00s)
+=== RUN   TestNullStringEmpty
+json null
+--- PASS: TestNullStringEmpty (0.00s)
+=== RUN   TestNullTime
+json "2020-08-13T15:32:59.720289Z"
+--- PASS: TestNullTime (0.00s)
+=== RUN   TestNullTimeEmpty
+json null
+--- PASS: TestNullTimeEmpty (0.00s)
+=== RUN   TestNullUint
+json 14
+--- PASS: TestNullUint (0.00s)
+=== RUN   TestNullUintEmpty
+json null
+--- PASS: TestNullUintEmpty (0.00s)
+=== RUN   TestValidAuthor
+--- PASS: TestValidAuthor (0.00s)
+=== RUN   TestValidAnnouncementMessage
+--- PASS: TestValidAnnouncementMessage (0.00s)
+=== RUN   TestValidAFHTitle
+--- PASS: TestValidAFHTitle (0.00s)
+=== RUN   TestValidAFHSubject
+--- PASS: TestValidAFHSubject (0.00s)
+=== RUN   TestValidClassKey
+--- PASS: TestValidClassKey (0.00s)
+=== RUN   TestValidTimes
+--- PASS: TestValidTimes (0.00s)
+=== RUN   TestValidPrice
+--- PASS: TestValidPrice (0.00s)
+=== RUN   TestValidLocationId
+--- PASS: TestValidLocationId (0.00s)
+=== RUN   TestValidLocationStreet
+--- PASS: TestValidLocationStreet (0.00s)
+=== RUN   TestValidLocationCity
+--- PASS: TestValidLocationCity (0.00s)
+=== RUN   TestValidLocationState
+--- PASS: TestValidLocationState (0.00s)
+=== RUN   TestValidLocationZipcode
+--- PASS: TestValidLocationZipcode (0.00s)
+=== RUN   TestValidLocationRoom
+--- PASS: TestValidLocationRoom (0.00s)
+=== RUN   TestValidProgramId
+--- PASS: TestValidProgramId (0.00s)
+=== RUN   TestValidProgramName
+--- PASS: TestValidProgramName (0.00s)
+=== RUN   TestValidGrades
+--- PASS: TestValidGrades (0.00s)
+=== RUN   TestValidDescription
+--- PASS: TestValidDescription (0.00s)
+=== RUN   TestValidSemesterId
+--- PASS: TestValidSemesterId (0.00s)
+=== RUN   TestValidTitle
+--- PASS: TestValidTitle (0.00s)
+=== RUN   TestValidNotes
+--- PASS: TestValidNotes (0.00s)
+=== RUN   TestValidPaymentTypes
+--- PASS: TestValidPaymentTypes (0.00s)
+=== RUN   TestValidAmounts
+--- PASS: TestValidAmounts (0.00s)
+=== RUN   TestValidFirstName
+--- PASS: TestValidFirstName (0.00s)
+=== RUN   TestValidLastName
+--- PASS: TestValidLastName (0.00s)
+=== RUN   TestValidEmail
+--- PASS: TestValidEmail (0.00s)
+=== RUN   TestValidPhone
+--- PASS: TestValidPhone (0.00s)
+=== RUN   TestValidSchool
+--- PASS: TestValidSchool (0.00s)
+=== RUN   TestValidGradYear
+--- PASS: TestValidGradYear (0.00s)
+PASS
+ok  	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains	(cached)
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger	[no test files]
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/middlewares	[no test files]
+=== RUN   Test_SearchAccount
+--- PASS: Test_SearchAccount (0.00s)
+=== RUN   Test_SelectAccount
+--- PASS: Test_SelectAccount (0.00s)
+=== RUN   Test_SelectAccountByPrimaryEmail
+--- PASS: Test_SelectAccountByPrimaryEmail (0.00s)
+=== RUN   Test_InsertAccount
+--- PASS: Test_InsertAccount (0.00s)
+=== RUN   Test_UpdateAccount
+--- PASS: Test_UpdateAccount (0.00s)
+=== RUN   Test_DeleteAccount
+--- PASS: Test_DeleteAccount (0.00s)
+=== RUN   TestSelectAllAchieves
+--- PASS: TestSelectAllAchieves (0.00s)
+=== RUN   TestSelectAllGroupedByYear
+--- PASS: TestSelectAllGroupedByYear (0.00s)
+=== RUN   TestSelectAchieve
+--- PASS: TestSelectAchieve (0.00s)
+=== RUN   TestInsertAchieve
+--- PASS: TestInsertAchieve (0.00s)
+=== RUN   TestUpdateAchieve
+--- PASS: TestUpdateAchieve (0.00s)
+=== RUN   TestDeleteAchieve
+--- PASS: TestDeleteAchieve (0.00s)
+=== RUN   TestSelectAllAnnouncements
+--- PASS: TestSelectAllAnnouncements (0.00s)
+=== RUN   TestSelectAnnouncement
+--- PASS: TestSelectAnnouncement (0.00s)
+=== RUN   TestInsertAnnouncement
+--- PASS: TestInsertAnnouncement (0.00s)
+=== RUN   TestUpdateAnnouncement
+--- PASS: TestUpdateAnnouncement (0.00s)
+=== RUN   TestDeleteAnnouncement
+--- PASS: TestDeleteAnnouncement (0.00s)
+=== RUN   TestSelectAllAFH
+--- PASS: TestSelectAllAFH (0.00s)
+=== RUN   TestSelectAFH
+--- PASS: TestSelectAFH (0.00s)
+=== RUN   TestInsertAFH
+--- PASS: TestInsertAFH (0.00s)
+=== RUN   TestUpdateAFH
+--- PASS: TestUpdateAFH (0.00s)
+=== RUN   TestDeleteAFH
+--- PASS: TestDeleteAFH (0.00s)
+=== RUN   TestSelectAllClasses
+--- PASS: TestSelectAllClasses (0.00s)
+=== RUN   TestSelectPublishedClasses
+--- PASS: TestSelectPublishedClasses (0.00s)
+=== RUN   TestSelectAllUnpublishedClasses
+--- PASS: TestSelectAllUnpublishedClasses (0.00s)
+=== RUN   TestSelectClass
+--- PASS: TestSelectClass (0.00s)
+=== RUN   TestSelectClassesByProgramId
+--- PASS: TestSelectClassesByProgramId (0.00s)
+=== RUN   TestSelectClassesBySemesterId
+--- PASS: TestSelectClassesBySemesterId (0.00s)
+=== RUN   TestSelectClassesByProgramIdAndSemesterId
+--- PASS: TestSelectClassesByProgramIdAndSemesterId (0.00s)
+=== RUN   TestInsertClass
+--- PASS: TestInsertClass (0.00s)
+=== RUN   TestUpdateClass
+--- PASS: TestUpdateClass (0.00s)
+=== RUN   TestPublishClasses
+--- PASS: TestPublishClasses (0.00s)
+=== RUN   TestDeleteClass
+--- PASS: TestDeleteClass (0.00s)
+=== RUN   TestSelectAllLocations
+--- PASS: TestSelectAllLocations (0.00s)
+=== RUN   TestSelectLocation
+--- PASS: TestSelectLocation (0.00s)
+=== RUN   TestInsertLocation
+--- PASS: TestInsertLocation (0.00s)
+=== RUN   TestUpdateLocation
+--- PASS: TestUpdateLocation (0.00s)
+=== RUN   TestDeleteLocation
+--- PASS: TestDeleteLocation (0.00s)
+=== RUN   TestSelectAllPrograms
+--- PASS: TestSelectAllPrograms (0.00s)
+=== RUN   TestSelectProgram
+--- PASS: TestSelectProgram (0.00s)
+=== RUN   TestInsertProgram
+--- PASS: TestInsertProgram (0.00s)
+=== RUN   TestUpdateProgram
+--- PASS: TestUpdateProgram (0.00s)
+=== RUN   TestDeleteProgram
+--- PASS: TestDeleteProgram (0.00s)
+=== RUN   TestSelectAllSemesters
+--- PASS: TestSelectAllSemesters (0.00s)
+=== RUN   TestSelectSemester
+--- PASS: TestSelectSemester (0.00s)
+=== RUN   TestInsertSemester
+--- PASS: TestInsertSemester (0.00s)
+=== RUN   TestUpdateSemester
+--- PASS: TestUpdateSemester (0.00s)
+=== RUN   TestDeleteSemester
+--- PASS: TestDeleteSemester (0.00s)
+=== RUN   TestSelectAllSessionsByClassId
+--- PASS: TestSelectAllSessionsByClassId (0.00s)
+=== RUN   TestSelectSession
+--- PASS: TestSelectSession (0.00s)
+=== RUN   TestInsertSession
+--- PASS: TestInsertSession (0.00s)
+=== RUN   TestUpdateSession
+--- PASS: TestUpdateSession (0.00s)
+=== RUN   TestDeleteSession
+--- PASS: TestDeleteSession (0.00s)
+=== RUN   TestSelectByAccountId
+--- PASS: TestSelectByAccountId (0.00s)
+=== RUN   TestSelectTransaction
+--- PASS: TestSelectTransaction (0.00s)
+=== RUN   TestInsertTransaction
+--- PASS: TestInsertTransaction (0.00s)
+=== RUN   TestUpdateTransaction
+--- PASS: TestUpdateTransaction (0.00s)
+=== RUN   TestDeleteTransaction
+--- PASS: TestDeleteTransaction (0.00s)
+=== RUN   TestSelectByUserId
+--- PASS: TestSelectByUserId (0.00s)
+=== RUN   TestSelectByAfhId
+--- PASS: TestSelectByAfhId (0.00s)
+=== RUN   TestSelectByBothIds
+--- PASS: TestSelectByBothIds (0.00s)
+=== RUN   TestInsertUserAfh
+--- PASS: TestInsertUserAfh (0.00s)
+=== RUN   TestUpdateUserAfh
+--- PASS: TestUpdateUserAfh (0.00s)
+=== RUN   TestDeleteUserAfh
+--- PASS: TestDeleteUserAfh (0.00s)
+=== RUN   TestSelectUsersByClassId
+--- PASS: TestSelectUsersByClassId (0.00s)
+=== RUN   TestSelectClassesByUserId
+--- PASS: TestSelectClassesByUserId (0.00s)
+=== RUN   TestSelectByUserAndClass
+--- PASS: TestSelectByUserAndClass (0.00s)
+=== RUN   TestInsertUserClass
+--- PASS: TestInsertUserClass (0.00s)
+=== RUN   TestUpdateUserClass
+--- PASS: TestUpdateUserClass (0.00s)
+=== RUN   TestDeleteUserClass
+--- PASS: TestDeleteUserClass (0.00s)
+=== RUN   TestSelectAllUsers
+--- PASS: TestSelectAllUsers (0.00s)
+=== RUN   TestSearchUsers
+--- PASS: TestSearchUsers (0.00s)
+=== RUN   TestSelectUser
+--- PASS: TestSelectUser (0.00s)
+=== RUN   TestSelectUsersByAccountId
+--- PASS: TestSelectUsersByAccountId (0.00s)
+=== RUN   TestInsertUser
+--- PASS: TestInsertUser (0.00s)
+=== RUN   TestUpdateUser
+--- PASS: TestUpdateUser (0.00s)
+=== RUN   TestDeleteUser
+--- PASS: TestDeleteUser (0.00s)
+PASS
+ok  	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos	(cached)
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils	[no test files]
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils	[no test files]
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router	[no test files]
+Setting up Test Environment...
+Setting up test logger
+time="2020-08-13T11:58:44-04:00" level=info msg="Retrieving configurations..." app=orion
+Configuration File:  ./configs/local.yml
+time="2020-08-13T11:58:44-04:00" level=info msg="Connecting to database..." app=orion
+time="2020-08-13T11:58:44-04:00" level=info msg="Creating test database connection..." app=orion
+time="2020-08-13T11:58:44-04:00" level=debug msg="Database properties" app=orion defaultDb=mathnavdb host=127.0.0.1 password=password port=3306 username=user1
+time="2020-08-13T11:58:44-04:00" level=error msg="Error connecting to db (Error 1049: Unknown database 'mathnavdb')" app=orion defaultDb=mathnavdb host=127.0.0.1 password=password port=3306 username=user1
+panic: Error 1049: Unknown database 'mathnavdb'
+
+goroutine 1 [running]:
+github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils.SetupTestDatabase(0xc000231064, 0x9, 0xcea, 0xc000231088, 0x5, 0xc000231098, 0x8, 0xc0002310a6, 0x9)
+	/Users/aaronhsu/mathNavRepoSite/constellations/orion/src/tests_integration/utils/database.go:34 +0xa86
+github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils.SetupTestEnvironment(0xc00010fc80)
+	/Users/aaronhsu/mathNavRepoSite/constellations/orion/src/tests_integration/utils/setup.go:29 +0x35b
+github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration.TestMain(...)
+	/Users/aaronhsu/mathNavRepoSite/constellations/orion/src/tests_integration/main_test.go:9
+main.main()
+	_testmain.go:152 +0x136
+FAIL	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration	0.032s
+?   	github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils	[no test files]
+FAIL

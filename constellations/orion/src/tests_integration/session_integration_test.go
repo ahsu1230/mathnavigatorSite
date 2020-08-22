@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
-func Test_CreateSessions(t *testing.T) {
+func TestCreateSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
@@ -22,8 +22,8 @@ func Test_CreateSessions(t *testing.T) {
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
 	semester2 := createSemester("2020_fall", "Fall 2020", 2)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
-	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
+	class2 := createClassUtil("slow_track", "2020_fall", "class_B", "loc_1", "3 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", mid, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	session3 := createSession("slow_track_2020_fall_class_B", start, end, false, "May 5th regular meeting")
@@ -71,14 +71,14 @@ func Test_CreateSessions(t *testing.T) {
 }
 
 // Test: Create 1 Session, Update it, GetBySessionId()
-func Test_UpdateSession(t *testing.T) {
+func TestUpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	body1 := utils.CreateJsonBody(&prog1)
 	body2 := utils.CreateJsonBody(&loc1)
@@ -119,14 +119,14 @@ func Test_UpdateSession(t *testing.T) {
 }
 
 // Test: Create 2 Sessions, Delete them, GetBySessionId()
-func Test_DeleteSessions(t *testing.T) {
+func TestDeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
 	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
 	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm")
+	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
 	session2 := createSession("fast_track_2020_spring_class_A", start, end, true, "May 5th regular meeting")
 	body1 := utils.CreateJsonBody(&prog1)
@@ -148,7 +148,7 @@ func Test_DeleteSessions(t *testing.T) {
 	// Delete
 	body6 := utils.CreateJsonBody([]uint{1, 2})
 	recorder6 := utils.SendHttpRequest(t, http.MethodDelete, "/api/sessions/delete", body6)
-	assert.EqualValues(t, http.StatusOK, recorder6.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder6.Code)
 
 	// Get
 	recorder7 := utils.SendHttpRequest(t, http.MethodGet, "/api/sessions/session/1", nil)
@@ -170,13 +170,15 @@ func createSession(classId string, startsAt time.Time, endsAt time.Time, cancele
 	}
 }
 
-func createClassUtil(programId, semesterId, classKey, locationId, times string) domains.Class {
+func createClassUtil(programId, semesterId, classKey, locationId, times string, pricePerSession, priceLump uint) domains.Class {
 	return domains.Class{
-		ProgramId:  programId,
-		SemesterId: semesterId,
-		ClassKey:   domains.NewNullString(classKey),
-		LocationId: locationId,
-		Times:      times,
+		ProgramId:       programId,
+		SemesterId:      semesterId,
+		ClassKey:        domains.NewNullString(classKey),
+		LocationId:      locationId,
+		Times:           times,
+		PricePerSession: domains.NewNullUint(pricePerSession),
+		PriceLump:       domains.NewNullUint(priceLump),
 	}
 }
 

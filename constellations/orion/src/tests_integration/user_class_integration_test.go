@@ -10,7 +10,7 @@ import (
 )
 
 // Test: Create UserClasses and Get by GetClassesByUserId()
-func Test_CreateUserClasses(t *testing.T) {
+func TestCreateUserClasses(t *testing.T) {
 	createAccountUser(t)
 	createClasses(t)
 
@@ -35,7 +35,7 @@ func Test_CreateUserClasses(t *testing.T) {
 }
 
 // Test: Create UserClasses and GetUserByClassId
-func Test_GetUsersByClassId(t *testing.T) {
+func TestGetUsersByClassId(t *testing.T) {
 	createAccountUser(t)
 	createClasses(t)
 	createAllUserClasses(t)
@@ -59,7 +59,7 @@ func Test_GetUsersByClassId(t *testing.T) {
 }
 
 //Test: Create UserClasses and GetUserByUserAndClass
-func Test_GetUserClassByUserAndClass(t *testing.T) {
+func TestGetUserClassByUserAndClass(t *testing.T) {
 	createAccountUser(t)
 	createClasses(t)
 	createAllUserClasses(t)
@@ -80,7 +80,7 @@ func Test_GetUserClassByUserAndClass(t *testing.T) {
 }
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
-func Test_UpdateUserClass(t *testing.T) {
+func TestUpdateUserClass(t *testing.T) {
 	createAccountUser(t)
 	createClasses(t)
 
@@ -110,7 +110,7 @@ func Test_UpdateUserClass(t *testing.T) {
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
-func Test_DeleteUserClass(t *testing.T) {
+func TestDeleteUserClass(t *testing.T) {
 	createAccountUser(t)
 	createClasses(t)
 
@@ -119,9 +119,9 @@ func Test_DeleteUserClass(t *testing.T) {
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	// Update
+	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user-class/1", nil)

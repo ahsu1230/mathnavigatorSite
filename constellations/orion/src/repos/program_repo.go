@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -27,22 +29,23 @@ type ProgramRepoInterface interface {
 }
 
 func (pr *programRepo) Initialize(db *sql.DB) {
+	utils.LogWithContext("programRepo.Initialize", logger.Fields{})
 	pr.db = db
 }
 
 func (pr *programRepo) SelectAll() ([]domains.Program, error) {
+	utils.LogWithContext("programRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
-
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -67,16 +70,17 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 }
 
 func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, error) {
+	utils.LogWithContext("programRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	statement := "SELECT * FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return domains.Program{}, err
+		return domains.Program{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	var program domains.Program
 	row := stmt.QueryRow(programId)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&program.Id,
 		&program.CreatedAt,
 		&program.UpdatedAt,
@@ -86,11 +90,14 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 		&program.Grade1,
 		&program.Grade2,
 		&program.Description,
-		&program.Featured)
-	return program, errScan
+		&program.Featured); err != nil {
+		return domains.Program{}, appErrors.WrapDbExec(err, statement, programId)
+	}
+	return program, nil
 }
 
 func (pr *programRepo) Insert(program domains.Program) error {
+	utils.LogWithContext("programRepo.Insert", logger.Fields{"program": program})
 	statement := "INSERT INTO programs (" +
 		"created_at, " +
 		"updated_at, " +
@@ -101,10 +108,9 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		"description, " +
 		"featured" +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -119,12 +125,13 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Description,
 		program.Featured)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, program)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not inserted")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
 }
 
 func (pr *programRepo) Update(programId string, program domains.Program) error {
+	utils.LogWithContext("programRepo.Update", logger.Fields{"programId": programId, "program": program})
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
@@ -136,7 +143,7 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		"WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -151,24 +158,25 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 		program.Featured,
 		programId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, program, programId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not updated")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not updated")
 }
 
 func (pr *programRepo) Delete(programId string) error {
+	utils.LogWithContext("programRepo.Delete", logger.Fields{"programId": programId})
 	statement := "DELETE FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(programId)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, programId)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "program was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "program was not deleted")
 }
 
 // For Tests Only

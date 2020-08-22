@@ -33,6 +33,8 @@ import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./ask_for_help/afh.js";
 import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
+import { EmailPayments } from "./emailPayment/emailPayments.js";
+
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
 
@@ -92,6 +94,8 @@ const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
+const Payments = () => <EmailPayments />;
+
 class AppContainer extends React.Component {
     render() {
         return (
@@ -133,7 +137,7 @@ class App extends React.Component {
                     <Route path="/announcements/add" component={AnnounceEdit} />
                     <Route path="/announcements" component={Announce} />
                     <Route
-                        path="/achievements/:Id/edit"
+                        path="/achievements/:id/edit"
                         component={AchieveEditMatch}
                     />
                     <Route path="/achievements/add" component={AchieveEdit} />
@@ -180,6 +184,8 @@ class App extends React.Component {
                     <Route path="/afh/:afhId/edit" component={AFHMatch} />
                     <Route path="/afh/add" component={AFHEdit} />
                     <Route path="/afh" component={AFH} />
+
+                    <Route path="/emailPayments" component={Payments} />
                 </Switch>
             </div>
         );

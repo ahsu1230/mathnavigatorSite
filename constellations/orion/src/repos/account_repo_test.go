@@ -23,7 +23,7 @@ func initAccountTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AccountRepoI
 //
 // Test Search
 //
-func Test_SearchAccount(t *testing.T) {
+func TestSearchAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -51,7 +51,7 @@ func Test_SearchAccount(t *testing.T) {
 //
 // Select One
 //
-func Test_SelectAccount(t *testing.T) {
+func TestSelectAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -80,7 +80,7 @@ func Test_SelectAccount(t *testing.T) {
 //
 // Select One By Primary Email
 //
-func Test_SelectAccountByPrimaryEmail(t *testing.T) {
+func TestSelectAccountByPrimaryEmail(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -107,9 +107,78 @@ func Test_SelectAccountByPrimaryEmail(t *testing.T) {
 }
 
 //
+// Get accounts with negative balances
+//
+func Test_SelectAllNegativeBalances(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Balance"}).
+		AddRow(
+			1,
+			now,
+			now,
+			sql.NullTime{},
+			"test@gmail.com",
+			"password",
+			-300,
+		).
+		AddRow(
+			2,
+			now,
+			now,
+			sql.NullTime{},
+			"test2@gmail.com",
+			"password2",
+			-200,
+		)
+	mock.ExpectPrepare("^SELECT (.*) FROM accounts (.+)").
+		ExpectQuery().
+		WillReturnRows(rows)
+
+	got, err := repo.SelectAllNegativeBalances()
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.AccountSum{
+		{
+			Account: domains.Account{
+				Id:           1,
+				CreatedAt:    now,
+				UpdatedAt:    now,
+				DeletedAt:    sql.NullTime{},
+				PrimaryEmail: "test@gmail.com",
+				Password:     "password",
+			},
+			Balance: -300,
+		},
+		{
+			Account: domains.Account{
+				Id:           2,
+				CreatedAt:    now,
+				UpdatedAt:    now,
+				DeletedAt:    sql.NullTime{},
+				PrimaryEmail: "test2@gmail.com",
+				Password:     "password2",
+			},
+			Balance: -200,
+		},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
 // Create
 //
-func Test_InsertAccount(t *testing.T) {
+func TestInsertAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -138,7 +207,7 @@ func Test_InsertAccount(t *testing.T) {
 //
 // Update
 //
-func Test_UpdateAccount(t *testing.T) {
+func TestUpdateAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -174,7 +243,7 @@ func Test_UpdateAccount(t *testing.T) {
 //
 // Delete
 //
-func Test_DeleteAccount(t *testing.T) {
+func TestDeleteAccount(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 

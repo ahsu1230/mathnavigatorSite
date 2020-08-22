@@ -60,7 +60,7 @@ type mockClassRepo struct {
 	MockSelectByProgramAndSemesterId func(string, string) ([]domains.Class, error)
 	MockInsert                       func(domains.Class) error
 	MockUpdate                       func(string, domains.Class) error
-	MockPublish                      func([]string) error
+	MockPublish                      func([]string) []error
 	MockDelete                       func(string) error
 }
 
@@ -90,7 +90,7 @@ func (classRepo *mockClassRepo) Insert(class domains.Class) error {
 func (classRepo *mockClassRepo) Update(classId string, class domains.Class) error {
 	return classRepo.MockUpdate(classId, class)
 }
-func (classRepo *mockClassRepo) Publish(classIds []string) error {
+func (classRepo *mockClassRepo) Publish(classIds []string) []error {
 	return classRepo.MockPublish(classIds)
 }
 func (classRepo *mockClassRepo) Delete(classId string) error {
@@ -218,9 +218,9 @@ type mockSessionRepo struct {
 	MockInitialize         func(*sql.DB)
 	MockSelectAllByClassId func(string) ([]domains.Session, error)
 	MockSelectBySessionId  func(uint) (domains.Session, error)
-	MockInsert             func([]domains.Session) error
+	MockInsert             func([]domains.Session) []error
 	MockUpdate             func(uint, domains.Session) error
-	MockDelete             func([]uint) error
+	MockDelete             func([]uint) []error
 }
 
 // Implement methods of SessionRepo interface with mocked implementations
@@ -231,13 +231,13 @@ func (sessionRepo *mockSessionRepo) SelectAllByClassId(classId string) ([]domain
 func (sessionRepo *mockSessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
 	return sessionRepo.MockSelectBySessionId(id)
 }
-func (sessionRepo *mockSessionRepo) Insert(sessions []domains.Session) error {
+func (sessionRepo *mockSessionRepo) Insert(sessions []domains.Session) []error {
 	return sessionRepo.MockInsert(sessions)
 }
 func (sessionRepo *mockSessionRepo) Update(id uint, session domains.Session) error {
 	return sessionRepo.MockUpdate(id, session)
 }
-func (sessionRepo *mockSessionRepo) Delete(ids []uint) error {
+func (sessionRepo *mockSessionRepo) Delete(ids []uint) []error {
 	return sessionRepo.MockDelete(ids)
 }
 
@@ -321,12 +321,13 @@ func (userClassesRepo *mockUserClassesRepo) Delete(id uint) error {
 }
 
 type mockAccountRepo struct {
-	MockInitialize           func(*sql.DB)
-	MockSelectById           func(uint) (domains.Account, error)
-	MockSelectByPrimaryEmail func(string) (domains.Account, error)
-	MockInsert               func(domains.Account) error
-	MockUpdate               func(uint, domains.Account) error
-	MockDelete               func(uint) error
+	MockInitialize                func(*sql.DB)
+	MockSelectById                func(uint) (domains.Account, error)
+	MockSelectByPrimaryEmail      func(string) (domains.Account, error)
+	MockSelectAllNegativeBalances func() ([]domains.AccountSum, error)
+	MockInsert                    func(domains.Account) error
+	MockUpdate                    func(uint, domains.Account) error
+	MockDelete                    func(uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
@@ -337,6 +338,9 @@ func (accountRepo *mockAccountRepo) SelectById(id uint) (domains.Account, error)
 }
 func (accountRepo *mockAccountRepo) SelectByPrimaryEmail(primary_email string) (domains.Account, error) {
 	return accountRepo.MockSelectByPrimaryEmail(primary_email)
+}
+func (accountRepo *mockAccountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
+	return accountRepo.MockSelectAllNegativeBalances()
 }
 func (accountRepo *mockAccountRepo) Insert(account domains.Account) error {
 	return accountRepo.MockInsert(account)

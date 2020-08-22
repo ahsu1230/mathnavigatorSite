@@ -1,0 +1,45 @@
+@import "../utils/_constants.sass"
+
+$cardSpacing: $spacing6x
+
+#view-programs .section .program-card-container
+    position: relative
+    display: inline-block
+    width: 220px
+    height: 200px
+    margin: 0 $cardSpacing $cardSpacing 0
+    box-sizing: border-box
+
+    @media screen and (max-width: $mediaWidth1)
+        display: block
+        margin: 0 auto $cardSpacing
+    
+    h2
+        width: $propUnit6x
+        margin: 0
+        color: $colorWhite
+        line-height: $lineHeight1
+        font-size: $fontSize1
+
+    h3
+        margin: $spacing1x 0 $spacing4x
+        color: $colorWhite
+        line-height: $fontSize0
+        font-size: $fontSize0
+
+    .program-card
+        width: 100%
+        height: 100%
+        background-color: $colorPrimary
+        text-align: center
+        vertical-align: top
+        cursor: pointer
+
+        &:hover
+            filter: brightness(110%)
+        
+        .content
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)

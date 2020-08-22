@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,9 +10,6 @@ type Handler struct {
 }
 
 func (h *Handler) SetupApiEndpoints() {
-	// h.Engine.Use(static.Serve("/", static.LocalFile("./sites/home", true)))
-	h.Engine.Use(static.Serve("/", static.LocalFile("./sites/admin", true)))
-
 	h.Engine.GET("/api/unpublished", controllers.GetAllUnpublished)
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
@@ -89,8 +85,9 @@ func (h *Handler) SetupApiEndpoints() {
 
 	apiAccounts := h.Engine.Group("api/accounts")
 	{
-		apiAccounts.POST("/create", controllers.CreateAccount)
 		apiAccounts.GET("/account/:id", controllers.GetAccountById)
+		apiAccounts.GET("/unpaid", controllers.GetNegativeBalanceAccounts)
+		apiAccounts.POST("/create", controllers.CreateAccount)
 		apiAccounts.POST("/account/:id", controllers.UpdateAccount)
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
 		apiAccounts.POST("/search", controllers.SearchAccount)

@@ -10,54 +10,46 @@
         margin-top: $spacing10x
         color: $colorTurquoise
 
-    .section
-        margin-bottom: $spacing10x
-
-    .section-header
-        display: inline-block
-        width: 80%
-        margin: $spacing3x 0
-        color: $colorTurquoise
-
-    & li
-        padding: $spacing3x 0
-        width: 100% 
+    .tabs 
+        display: flex
+        flex-direction: row
+        align-items: stretch
         border-bottom: 1px solid $colorGrayLight
 
-    .container-class
-        display: flex
-        flex-direction: row
-        align-items: center
+        .activeTab
+            border-bottom: 2px solid $colorTurquoise
 
-        #publish
-            background-color: $colorWhite
-            color: $colorTurquoise
-            font-size: $fontSize1
+    .tabs button 
+        width: 25%
+        padding: $spacing2x
+        border-radius: 0px
+        border-bottom: 2px solid transparent
+        background-color: $colorWhite
+        color: $colorBlack
+        font-size: $fontSize1
+        cursor: pointer
+        transition: 0.3s
 
-            &:hover
-                cursor: pointer
-                filter: brightness(1.1)
+    .tabs button:hover
+        background-color: $colorGrayLight
+        cursor: pointer
 
-    .class-section
+    .notif
+        display: inline-block
+        border-radius: 50%
+        width: $lineHeight1
+        height: $lineHeight1
+        line-height: $lineHeight1
+        text-align: center
+        background-color: $colorOrange
+        color: $colorWhite
+        
+        &.zero
+            background-color: $colorGrayDark
+
+    .showSection
         display: inline-block
         width: 100%
-
-        .list-header
-            border-bottom: 1px solid $colorGrayDark
-        & ul
-            list-style-type: none
-            padding: 0
-            margin: 0
-
-
-    .container-user
-        display: flex
-        flex-direction: row
-        align-items: center
-        border: 1px solid $colorGrayLight
-
-    .container-registration
-        display: flex
-        flex-direction: row
-        align-items: center
-        border: 1px solid $colorGrayLight
+        margin: $spacing4x auto
+        padding: $spacing1x $spacing2x
+        border: none

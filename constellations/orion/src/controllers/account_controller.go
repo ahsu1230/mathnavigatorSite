@@ -3,9 +3,12 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
-	"github.com/gin-gonic/gin"
 )
 
 type AccountSearchBody struct {
@@ -13,83 +16,123 @@ type AccountSearchBody struct {
 }
 
 func GetAccountById(c *gin.Context) {
-	// Incoming parameters
-	id := ParseParamId(c)
+	utils.LogControllerMethod(c, "accountController.GetAccountById")
+
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
 
 	account, err := repos.AccountRepo.SelectById(id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &account)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &account)
 }
 
 func SearchAccount(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "accountController.SearchAccount")
+
 	var body AccountSearchBody
-	c.BindJSON(&body)
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 	primaryEmail := body.PrimaryEmail
 
 	account, err := repos.AccountRepo.SelectByPrimaryEmail(primaryEmail)
 	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &account)
+}
+
+func GetNegativeBalanceAccounts(c *gin.Context) {
+	accountSum, err := repos.AccountRepo.SelectAllNegativeBalances()
+	if err != nil {
 		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
+		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.JSON(http.StatusOK, &account)
+		c.JSON(http.StatusOK, accountSum)
 	}
 }
 
 func CreateAccount(c *gin.Context) {
-	// Incoming JSON
-	var accountJson domains.Account
-	c.BindJSON(&accountJson)
+	utils.LogControllerMethod(c, "accountController.CreateAccount")
 
-	if err := accountJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	var accountJson domains.Account
+	if err := c.ShouldBindJSON(&accountJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.AccountRepo.Insert(accountJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := accountJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
+
+	if err := repos.AccountRepo.Insert(accountJson); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusOK)
 }
 
 func UpdateAccount(c *gin.Context) {
-	// Incoming JSON & Parameters
-	id := ParseParamId(c)
-	var accountJson domains.Account
-	c.BindJSON(&accountJson)
+	utils.LogControllerMethod(c, "accountController.UpdateAccount")
 
-	if err := accountJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
 		return
 	}
 
-	err := repos.AccountRepo.Update(id, accountJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	var accountJson domains.Account
+	if err = c.ShouldBindJSON(&accountJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
+
+	if err = accountJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+
+	if err = repos.AccountRepo.Update(id, accountJson); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteAccount(c *gin.Context) {
-	// Incoming Parameters
-	id := ParseParamId(c)
+	utils.LogControllerMethod(c, "accountController.DeleteAccount")
 
-	err := repos.AccountRepo.Delete(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
+
+	if err := repos.AccountRepo.Delete(id); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
 }

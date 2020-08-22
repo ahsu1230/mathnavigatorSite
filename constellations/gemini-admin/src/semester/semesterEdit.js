@@ -10,27 +10,14 @@ import { InputText } from "../utils/inputText.js";
 import { emptyValidator } from "../utils/inputText.js";
 
 export class SemesterEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            oldSemesterId: "",
-            inputSemesterId: "",
-            inputTitle: "",
-            isEdit: false,
-        };
+    state = {
+        oldSemesterId: "",
+        inputSemesterId: "",
+        inputTitle: "",
+        isEdit: false,
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onConfirmDelete = this.onConfirmDelete.bind(this);
-        this.onSavedOk = this.onSavedOk.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         const semesterId = this.props.semesterId;
         if (semesterId) {
             API.get("api/semesters/semester/" + semesterId).then((res) => {
@@ -45,23 +32,27 @@ export class SemesterEditPage extends React.Component {
                 });
             });
         }
-    }
+    };
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
-    handleIdChange(event, value) {
-        this.setState({ [value]: event.target.value });
+    handleIdChange = (event, value) => {
+        const newValue = event.target.value;
+        this.setState({ [value]: newValue });
+
+        // If the id is 2020_fall, this will become Fall 2020
         var possibleTitle =
-            event.target.value.substring(5) +
+            newValue.substring(5, 6).toUpperCase() +
+            newValue.substring(6) +
             " " +
-            event.target.value.substring(0, 4);
+            newValue.substring(0, 4);
         this.setState({ inputTitle: possibleTitle });
-    }
+    };
 
-    onClickSave() {
-        let semester = {
+    onClickSave = () => {
+        const semester = {
             semesterId: this.state.inputSemesterId,
             title: this.state.inputTitle,
         };
@@ -74,43 +65,43 @@ export class SemesterEditPage extends React.Component {
                 "api/semesters/semester/" + this.state.oldSemesterId,
                 semester
             )
-                .then((res) => successCallback())
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         } else {
             API.post("api/semesters/create", semester)
-                .then((res) => successCallback())
+                .then(() => successCallback())
                 .catch((err) => failCallback(err));
         }
-    }
+    };
 
-    onClickCancel() {
+    onClickCancel = () => {
         window.location.hash = "semesters";
-    }
+    };
 
-    onClickDelete() {
+    onClickDelete = () => {
         this.setState({ showDeleteModal: true });
-    }
+    };
 
-    onConfirmDelete() {
+    onConfirmDelete = () => {
         const semesterId = this.props.semesterId;
-        API.delete("api/semesters/semester/" + semesterId).then((res) => {
-            window.location.hash = "semesters";
-        });
-    }
+        API.delete("api/semesters/semester/" + semesterId).then(
+            (res) => (window.location.hash = "semesters")
+        );
+    };
 
-    onSavedOk() {
+    onSavedOk = () => {
         this.onDismissModal();
         window.location.hash = "semesters";
-    }
+    };
 
-    onDismissModal() {
+    onDismissModal = () => {
         this.setState({
             showDeleteModal: false,
             showSaveModal: false,
         });
-    }
+    };
 
-    render() {
+    render = () => {
         const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
         let deleteButton = <div></div>;
         if (this.state.isEdit) {
@@ -194,5 +185,5 @@ export class SemesterEditPage extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }

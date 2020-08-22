@@ -20,6 +20,8 @@ func setupMock() {
 				"classA",
 				"churchill",
 				"3 pm - 5 pm",
+				50,
+				0,
 			),
 			testUtils.CreateMockClass(
 				"prog1",
@@ -27,6 +29,8 @@ func setupMock() {
 				"classB",
 				"churchill",
 				"3 pm - 5 pm",
+				50,
+				0,
 			),
 		}, nil
 	}
@@ -36,7 +40,7 @@ func setupMock() {
 //
 // Test Get Unpublished
 //
-func TestGetAllUnpublished_Success(t *testing.T) {
+func TestGetAllUnpublishedSuccess(t *testing.T) {
 	setupMock()
 
 	// Create new HTTP request to endpoint

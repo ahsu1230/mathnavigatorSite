@@ -1,23 +1,42 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllProgramsSemestersClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "controller.GetAllProgramsSemestersClasses")
 	var listResults []domains.ProgramClassesBySemester
 
 	// Fetch programs, semesters, classes from repo functions
-	publishedOnly := ParseParamPublishedOnly(c)
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
 	programs, err := repos.ProgramRepo.SelectAll()
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+
 	semesters, err := repos.SemesterRepo.SelectAll()
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+
 	classes, err := repos.ClassRepo.SelectAll(publishedOnly)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
 
 	// Convert lists into maps
 	programMap := createProgramMap(programs)
@@ -30,8 +49,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 		// Make ProgramClass structs
 		programClasses, err := createProgramClassesForSemester(semesters[i].SemesterId, programs, classes, programMap)
 		if err != nil {
-			c.Error(err)
-			c.String(http.StatusInternalServerError, err.Error())
+			c.Error(appErrors.WrapRepo(err))
 			return
 		}
 
@@ -44,12 +62,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 		listResults = append(listResults, programClassesBySemester)
 	}
 
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &listResults)
-	}
+	c.JSON(http.StatusOK, &listResults)
 }
 
 // Helper functions
@@ -92,7 +105,7 @@ func createProgramClassMap(classSlice []domains.Class, programMap map[string]dom
 	for i := 0; i < len(classSlice); i++ {
 		programId := classSlice[i].ProgramId
 		if _, ok := programMap[programId]; !ok {
-			err := errors.New("programId not found in list of programs")
+			err := appErrors.WrapCtrlf("programId %s not found in list of programs", programId)
 			return map[string][]domains.Class{}, err
 		}
 
