@@ -52,7 +52,7 @@ export class AccountEditPage extends React.Component {
             },
         };
 
-        console.log(accountUser)
+        console.log(accountUser);
 
         API.post("api/accounts/create", accountUser)
             .then(() => {
@@ -61,7 +61,7 @@ export class AccountEditPage extends React.Component {
             })
             .catch((err) =>
                 alert("Could not create account or user: " + err.response.data)
-            )
+            );
     };
 
     onModalOkSaved = () => {
