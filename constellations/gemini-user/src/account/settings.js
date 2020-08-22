@@ -3,7 +3,7 @@ require("./settings.sass");
 import React from "react";
 import API from "../utils/api.js";
 
-import { renderMultiline, fetchError } from "./accountUtils.js";
+import { renderMultiline, fetchError } from "../utils/utils.js";
 import { PasswordChange } from "./passwordChange.js";
 
 export class SettingsTab extends React.Component {

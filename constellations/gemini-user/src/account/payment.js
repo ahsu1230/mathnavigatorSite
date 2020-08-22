@@ -9,7 +9,7 @@ import {
     chargeDisplayNames,
     formatCurrency,
     fetchError,
-} from "./accountUtils.js";
+} from "../utils/utils.js";
 
 export class PaymentTab extends React.Component {
     state = {

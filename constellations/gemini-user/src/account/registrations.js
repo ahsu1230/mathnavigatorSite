@@ -7,10 +7,10 @@ import moment from "moment";
 
 import {
     subjectDisplayNames,
-    seasonOrder,
     renderMultiline,
     fetchError,
-} from "./accountUtils.js";
+    sortBySemester,
+} from "../utils/utils.js";
 
 export class RegistrationsTab extends React.Component {
     state = {
@@ -224,19 +224,9 @@ class RegistrationsTabAllClasses extends React.Component {
         });
 
         allClasses.sort((a, b) => {
-            let semA = a.classInfo.semester.semesterId.split("_");
-            let semB = b.classInfo.semester.semesterId.split("_");
-
-            if (semA[0] < semB[0]) {
-                return 1;
-            } else if (semA[0] > semB[0]) {
-                return -1;
-            } else {
-                return seasonOrder.indexOf(semA[1]) <
-                    seasonOrder.indexOf(semB[1])
-                    ? 1
-                    : -1;
-            }
+            let semA = a.classInfo.semester.semesterId;
+            let semB = b.classInfo.semester.semesterId;
+            return sortBySemester(semA, semB);
         });
 
         const classRegistrationList = allClasses.map((c, index) => {
