@@ -1,5 +1,5 @@
 "use strict";
-require("./account.sass");
+require("./payment.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import API from "../utils/api.js";
@@ -48,7 +48,7 @@ export class PaymentTab extends React.Component {
         transactionsList.reverse();
 
         const balanceMessage =
-            balance > 0
+            balance >= 0
                 ? "You currently have " +
                   formatCurrency(balance) +
                   " in your account. Our payment options are:"
@@ -81,17 +81,15 @@ export class PaymentTab extends React.Component {
                     <h2>Account Balance: {formatCurrency(balance)}</h2>
                     <p>{balanceMessage}</p>
 
-                    <span>
+                    <div>
                         - <Link to="">Cash</Link>
-                        <br />
-                    </span>
-                    <span>
+                    </div>
+                    <div>
                         - <Link to="">Check</Link> (written to Math Navigator)
-                        <br />
-                    </span>
-                    <span>
+                    </div>
+                    <div>
                         - <Link to="">Paypal</Link>
-                    </span>
+                    </div>
 
                     <p>
                         For questions about your account, please contact us at{" "}

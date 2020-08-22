@@ -1,5 +1,4 @@
 "use strict";
-require("./account.sass");
 import React from "react";
 
 export const chargeDisplayNames = {

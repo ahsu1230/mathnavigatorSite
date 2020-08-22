@@ -1,21 +1,21 @@
 "use strict";
-require("./account.sass");
+require("./account_base.sass");
 import React from "react";
 import API from "../utils/api.js";
 import { union } from "lodash";
 
 import { SettingsTab } from "./settings.js";
-import {
-    RegistrationsTab,
-    RegistrationsTabMain,
-    RegistrationsTabAllClasses,
-} from "./registrations.js";
+import { RegistrationsTab } from "./registrations.js";
 import { PaymentTab } from "./payment.js";
+
+const TAB_SETTINGS = "settings";
+const TAB_REGISTRATIONS = "registrations";
+const TAB_PAYMENT = "payment";
 
 export class AccountPage extends React.Component {
     state = {
         id: 0,
-        selectedTab: "settings",
+        selectedTab: TAB_SETTINGS,
 
         users: [],
     };
@@ -57,7 +57,7 @@ export class AccountPage extends React.Component {
 
         let tabContent;
         switch (this.state.selectedTab) {
-            case "settings":
+            case TAB_SETTINGS:
                 tabContent = (
                     <SettingsTab
                         accountId={this.state.id}
@@ -66,7 +66,7 @@ export class AccountPage extends React.Component {
                     />
                 );
                 break;
-            case "registrations":
+            case TAB_REGISTRATIONS:
                 tabContent = (
                     <RegistrationsTab
                         accountId={this.state.id}
@@ -75,7 +75,7 @@ export class AccountPage extends React.Component {
                     />
                 );
                 break;
-            case "payment":
+            case TAB_PAYMENT:
                 tabContent = (
                     <PaymentTab accountId={this.state.id} key={this.state.id} />
                 );

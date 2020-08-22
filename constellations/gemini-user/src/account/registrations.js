@@ -1,5 +1,5 @@
 "use strict";
-require("./account.sass");
+require("./registrations.sass");
 import React from "react";
 import API from "../utils/api.js";
 import { union } from "lodash";
@@ -15,10 +15,8 @@ import {
 export class RegistrationsTab extends React.Component {
     state = {
         userClasses: [],
-
         upcomingAFHs: [],
         locationsById: {},
-
         viewAllEnrolledClasses: false,
     };
 
@@ -116,7 +114,7 @@ export class RegistrationsTab extends React.Component {
     };
 }
 
-export class RegistrationsTabMain extends React.Component {
+class RegistrationsTabMain extends React.Component {
     renderClassList = (classes) => {
         if (!classes.length) {
             return <span>(No classes registered)</span>;
@@ -213,7 +211,7 @@ export class RegistrationsTabMain extends React.Component {
     };
 }
 
-export class RegistrationsTabAllClasses extends React.Component {
+class RegistrationsTabAllClasses extends React.Component {
     render = () => {
         const allClasses = [];
         this.props.userClasses.map((user, index) => {
