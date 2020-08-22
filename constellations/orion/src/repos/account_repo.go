@@ -35,7 +35,7 @@ func (acc *accountRepo) Initialize(db *sql.DB) {
 
 func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
 	utils.LogWithContext("accountRepo.SelectById", logger.Fields{"id": id})
-	statement := "SELECT * FROM accounts WHERE id=?"
+	statement := "SELECT * FROM accounts WHERE id=? AND deleted_at IS NULL"
 	stmt, err := acc.db.Prepare(statement)
 	defer stmt.Close()
 	if err != nil {
@@ -61,7 +61,7 @@ func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Accou
 	utils.LogWithContext("accountRepo.SelectByPrimaryEmail",
 		logger.Fields{"primaryEmail": primaryEmail},
 	)
-	statement := "SELECT * FROM accounts WHERE primary_email=?"
+	statement := "SELECT * FROM accounts WHERE primary_email=? AND deleted_at IS NULL"
 	stmt, err := acc.db.Prepare(statement)
 	defer stmt.Close()
 	if err != nil {
@@ -174,6 +174,9 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 	return appErrors.ValidateDbResult(execResult, 1, "account was not updated")
 }
 
+// Sets the "deleted_at" column in the following tables (accounts, transactions,
+// users, user_afh, user_classes) to time.Now().UTC()
+
 func (acc *accountRepo) Delete(id uint) error {
 	utils.LogWithContext("accountRepo.Delete", logger.Fields{"id": id})
 	now := time.Now().UTC()
@@ -273,7 +276,7 @@ func (acc *accountRepo) Delete(id uint) error {
 		return err
 	}
 
-	// User Classes
+	// User AFH
 	for _, uid := range userIds {
 		query6 := "UPDATE user_afh SET deleted_at=? WHERE user_id=?"
 		stmt6, err := acc.db.Prepare(query6)
