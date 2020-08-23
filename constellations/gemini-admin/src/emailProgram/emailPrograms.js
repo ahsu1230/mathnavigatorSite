@@ -1,3 +1,5 @@
+// TODO: Add Select All and Deselect All Buttons
+
 "use strict";
 require("./emailPrograms.sass");
 import axios from "axios";
@@ -46,18 +48,19 @@ export class EmailProgramsPage extends React.Component {
             });
     };
 
-    handleProgramChange = (event, value) => {
+    handleProgramChange = (event) => {
+        const programId = event.target.value;
         var selectedProgram = this.state.programs.find(
-            (program) => program.programId === event.target.value
+            (program) => program.programId === programId
         );
         selectedProgram = selectedProgram.name;
         let classesForProgram = this.state.classes.filter(
-            (classes) => classes.programId == event.target.value
+            (classes) => classes.programId == programId
         );
         const classes = classesForProgram.map((classes) => classes.classId);
 
         this.setState({
-            [value]: event.target.value,
+            selectProgramId: programId,
             classesForProgram: classes,
             selectedProgramName: selectedProgram,
             selectedUsers: [],
@@ -71,7 +74,7 @@ export class EmailProgramsPage extends React.Component {
                 .then((response) => {
                     const users = response.data;
                     const userIds = users.map((user) => user.userId);
-                    userIds.map((userId) => {
+                    userIds.forEach((userId) => {
                         API.get("api/users/user/" + userId)
                             .then((response) => {
                                 const user = response.data;
@@ -169,9 +172,7 @@ export class EmailProgramsPage extends React.Component {
                     <h2>Select a Program</h2>
                     <select
                         value={this.state.selectProgramId}
-                        onChange={(e) =>
-                            this.handleProgramChange(e, "selectProgramId")
-                        }>
+                        onChange={(e) => this.handleProgramChange(e)}>
                         {programOptions}
                     </select>
 
