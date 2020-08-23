@@ -2,16 +2,9 @@
 require("./accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { getFullName } from "../utils/userUtils.js";
+import { getFullName, formatCurrency } from "../utils/userUtils.js";
 
 export class AccountInfo extends React.Component {
-    formatCurrency = (amount) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount);
-    };
-
     render = () => {
         const id = this.props.id;
         const email = this.props.email;
@@ -44,7 +37,7 @@ export class AccountInfo extends React.Component {
                 <div className="row" key={index}>
                     <span className="column">{transaction.paymentType}</span>
                     <span className="medium-column">
-                        {this.formatCurrency(amount)}
+                        {formatCurrency(amount)}
                     </span>
                     <span className="large-column">
                         {transaction.paymentNotes}
@@ -82,8 +75,7 @@ export class AccountInfo extends React.Component {
                     {transactionRows}
                     <div id="transaction-footer">
                         <span>
-                            Account Balance:{" "}
-                            <b>{this.formatCurrency(balance)}</b>
+                            Account Balance: <b>{formatCurrency(balance)}</b>
                         </span>
                         <button id="add-transaction">
                             <Link

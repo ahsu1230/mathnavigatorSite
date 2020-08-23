@@ -25,3 +25,10 @@ export const validateEmail = (email) => {
 export const validatePhoneNumber = (phone) => {
     return /^[\d\s+.()/-]{3,}$/.test(phone);
 };
+
+export const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    }).format(amount);
+};

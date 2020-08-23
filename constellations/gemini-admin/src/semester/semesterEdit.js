@@ -38,9 +38,8 @@ export class SemesterEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
-    handleIdChange = (event, value) => {
+    handleIdChange = (event) => {
         const newValue = event.target.value;
-        this.setState({ [value]: newValue });
 
         // If the id is 2020_fall, this will become Fall 2020
         var possibleTitle =
@@ -84,9 +83,9 @@ export class SemesterEditPage extends React.Component {
 
     onConfirmDelete = () => {
         const semesterId = this.props.semesterId;
-        API.delete("api/semesters/semester/" + semesterId).then(
-            (res) => (window.location.hash = "semesters")
-        );
+        API.delete("api/semesters/semester/" + semesterId)
+            .then(() => (window.location.hash = "semesters"))
+            .catch((err) => alert("Could not delete semester: " + err));
     };
 
     onSavedOk = () => {
@@ -154,9 +153,7 @@ export class SemesterEditPage extends React.Component {
                     description="Must be in the form year_season (e.g. 2020_fall or 2020_winter)"
                     required={true}
                     value={this.state.inputSemesterId}
-                    onChangeCallback={(e) =>
-                        this.handleIdChange(e, "inputSemesterId")
-                    }
+                    onChangeCallback={(e) => this.handleIdChange(e)}
                     validators={[
                         emptyValidator("semester ID"),
                         {

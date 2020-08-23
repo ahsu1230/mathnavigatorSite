@@ -121,14 +121,14 @@ export class ClassPage extends React.Component {
     };
 
     render = () => {
-        const rows = this.state.classes.map((row, index) => {
-            const isSelected = !!this.state.selectedIds[row.classId];
+        const classes = this.state.classes.map((classObj, index) => {
+            const isSelected = !!this.state.selectedIds[classObj.classId];
             return (
                 <div key={index} className="container">
                     <ClassRow
-                        row={row}
+                        classObj={classObj}
                         isCollapsed={this.state.numUnpublished == 0}
-                        isUnpublished={!row.publishedAt}
+                        isUnpublished={!classObj.publishedAt}
                         isSelected={isSelected}
                         onSelectRow={this.onSelectRow}
                     />
@@ -138,23 +138,21 @@ export class ClassPage extends React.Component {
 
         return (
             <div id="view-class">
-                <h1>All Classes ({rows.length}) </h1>
+                <h1>All Classes ({classes.length}) </h1>
 
                 <section id="class-rows">
                     <div className="header-container">
                         <div id="header" className="row">
                             {this.renderSelectAllButton()}
-                            <span className="column">State</span>
+                            <span className="small-column">State</span>
                             <span className="large-column">ClassId</span>
-                            <span className="column">LocationId</span>
-                            <span className="medium-column">
-                                StartDate - EndDate
-                            </span>
+                            <span className="medium-column">LocationId</span>
                             <span className="large-column">Times</span>
+                            <span className="medium-column">Price</span>
                             <span className="edit"></span>
                         </div>
                     </div>
-                    {rows}
+                    {classes}
                 </section>
 
                 <section id="footer">

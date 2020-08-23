@@ -10,6 +10,7 @@ import { InputText, emptyValidator } from "../utils/inputText.js";
 export class ProgramEditPage extends React.Component {
     state = {
         isEdit: false,
+        oldProgramId: "",
         programId: "",
         name: "",
         grade1: 0,
@@ -23,6 +24,7 @@ export class ProgramEditPage extends React.Component {
             API.get("api/programs/program/" + programId).then((res) => {
                 const program = res.data;
                 this.setState({
+                    oldProgramId: program.programId,
                     programId: program.programId,
                     name: program.name,
                     grade1: program.grade1,
@@ -59,7 +61,7 @@ export class ProgramEditPage extends React.Component {
         let failCallback = (err) =>
             alert("Could not save program: " + err.response.data);
         if (this.state.isEdit) {
-            API.post("api/programs/program/" + this.state.programId, program)
+            API.post("api/programs/program/" + this.state.oldProgramId, program)
                 .then(() => successCallback())
                 .catch((err) => failCallback(err));
         } else {
