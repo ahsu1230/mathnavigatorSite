@@ -4,29 +4,26 @@
     span
         display: inline-block
 
-    // TODO: Change to using flexbox
-    .small
-        width: 80px
-
-    .medium
-        width: 160px
-
-    .large
-        width: 240px
-
-    #header
-        display: flex
-        align-items: center
-        height: 55px
+    .header
         border-bottom: 2px solid $colorGrayDark
 
-    #rows
-        list-style: none
-        padding: 0
-        margin: 0
+    .row
+        display: flex
+        align-items: center
+        min-height: $spacing8x
+        border-bottom: 1px solid $colorGrayDark
 
-        div
-            display: flex
-            align-items: center
-            height: 60px
-            border-bottom: 1px solid $colorGrayLight
+    .small-column
+        flex: 1 1 0
+
+    .medium-column
+        flex: 2 1 0
+
+    .large-column
+        flex: 8 1 0
+
+    .edit
+        flex: 0 0 $spacing6x
+
+    span
+        padding: $spacing2x $spacing2x $spacing2x 0

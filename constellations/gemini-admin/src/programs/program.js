@@ -24,27 +24,23 @@ export class ProgramPage extends React.Component {
     };
 
     render = () => {
-        const rows = this.state.programs.map((row, index) => {
-            return (
-                <li key={index}>
-                    <ProgramRow row={row} />
-                </li>
-            );
-        });
-
-        const count = rows.length;
+        const programs = this.state.programs.map((program, index) => (
+            <ProgramRow key={index} program={program} />
+        ));
 
         return (
             <div id="view-program">
-                <h1>All Programs ({count}) </h1>
+                <h1>All Programs ({programs.length}) </h1>
 
-                <div id="header">
-                    <span className="medium">ProgramId</span>
-                    <span className="medium">Name</span>
-                    <span className="small">Grade1</span>
-                    <span className="small">Grade2</span>
+                <div className="header row">
+                    <span className="medium-column">ProgramId</span>
+                    <span className="medium-column">Name</span>
+                    <span className="small-column">Grade1</span>
+                    <span className="small-column">Grade2</span>
+                    <span className="large-column">Description</span>
+                    <span className="edit"></span>
                 </div>
-                <ul id="rows">{rows}</ul>
+                {programs}
 
                 <button>
                     <Link id="add-program" to={"/programs/add"}>
