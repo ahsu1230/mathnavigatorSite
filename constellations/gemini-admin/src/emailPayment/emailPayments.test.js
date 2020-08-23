@@ -10,6 +10,5 @@ describe("Email Payment Page", () => {
         expect(component.find("h1").text()).toContain(
             "Generate Payment Reminder Email"
         );
-        expect(component.find("button").text()).toContain("Search");
     });
 });

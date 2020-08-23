@@ -10,6 +10,5 @@ describe("Email Programs Page", () => {
         expect(component.find("h1").text()).toContain(
             "Generate Email to Program"
         );
-        expect(component.find("h2").text()).toContain("Select A Program");
     });
 });
