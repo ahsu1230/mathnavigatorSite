@@ -203,6 +203,22 @@ func TestDeleteProgramFailure(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
+func TestGetAllProgramStates(t *testing.T) {
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/states", nil)
+
+	//Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	var programStates []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &programStates); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "normal", programStates[0])
+	assert.EqualValues(t, "popular", programStates[1])
+	assert.EqualValues(t, "new", programStates[2])
+}
+
 //
 // Helper Methods
 //
