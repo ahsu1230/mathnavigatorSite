@@ -19,8 +19,8 @@ var ALL_TRANSACTION_TYPES = []string{PAY_PAYPAL, PAY_CASH, PAY_CHECK, CHARGE, RE
 
 type Transaction struct {
 	Id           uint       `json:"id"`
-	CreatedAt    time.Time  `json:"-" db:"created_at"`
-	UpdatedAt    time.Time  `json:"-" db:"updated_at"`
+	CreatedAt    time.Time  `json:"createdAt" db:"created_at"`
+	UpdatedAt    time.Time  `json:"updatedAt" db:"updated_at"`
 	DeletedAt    NullTime   `json:"-" db:"deleted_at"`
 	Amount       int        `json:"amount"`
 	PaymentType  string     `json:"paymentType" db:"payment_type"`

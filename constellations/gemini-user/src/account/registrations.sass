@@ -1,0 +1,100 @@
+@import "../utils/_constants.sass"
+
+#view-account
+    .tab-content#reg-tab-main
+        @media screen and (min-width: $mediaWidth3)
+            ul
+                li
+                    .classlist-item
+                        margin: $spacing2x 0
+                    .classlist-item:first-child
+                        margin-top: 0
+                    .classlist-item:last-child
+                        margin-bottom: 0
+
+        @media screen and (max-width: $mediaWidth1)
+            ul
+                text-align: center
+
+                li
+                    width: 100%
+
+                    .classlist-item
+                        display: flex
+                        flex-direction: column
+                        margin: $spacing2x 0
+
+                        span:last-child
+                            color: $colorGrayMed
+
+                    .classlist-item:first-child
+                        margin-top: 0
+                    .classlist-item:last-child
+                        margin-bottom: 0
+
+                li:first-child
+                    font-weight: bold
+
+        @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+            ul
+                li
+                    width: 50%
+
+                    .classlist-item
+                        display: flex
+                        flex-direction: column
+                        align-items: baseline
+                        margin: $spacing2x 0
+
+                        span:last-child
+                            color: $colorGrayMed
+
+                    .classlist-item:first-child
+                        margin-top: 0
+                    .classlist-item:last-child
+                        margin-bottom: 0
+
+            ul.afh-table
+                .li-large
+                    flex: 1
+                    padding-left: 50%
+
+
+    .tab-content#reg-tab-all
+        @media screen and (max-width: $mediaWidth1)
+            div.space-between
+                flex-direction: column
+                align-content: center
+
+            ul
+                padding: $spacing1x 0
+
+                li:first-child
+                    width: 100%
+
+                .li-large
+                    flex: 1
+
+                li:last-child
+                    max-width: 40%
+                    text-align: right
+
+        @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+            div.space-between
+                align-items: center
+
+                h2
+                    margin: 0
+
+            ul
+                padding: $spacing1x 0
+
+                li:first-child
+                    width: 100%
+
+                .li-large
+                    flex: 1
+
+                li:last-child
+                    max-width: 40%
+                    text-align: right
