@@ -154,6 +154,11 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 		return appErrors.WrapDbExec(err, statement, account)
 	}
 
+	lastId, err := result1.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, account)
+	}
 	statement2 := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
@@ -184,7 +189,7 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		user.AccountId,
+		lastId,
 		user.Notes,
 		user.School,
 		user.GraduationYear,

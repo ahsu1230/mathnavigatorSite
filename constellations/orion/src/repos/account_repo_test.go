@@ -204,7 +204,7 @@ func TestInsertAccountAndUser(t *testing.T) {
 			"john_smith@example.com",
 			"555-555-0100",
 			false,
-			2,
+			1,
 			domains.NewNullString(""),
 			domains.NewNullString("schoolone"),
 			domains.NewNullUint(2004),
