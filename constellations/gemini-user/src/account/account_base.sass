@@ -1,0 +1,131 @@
+@import "../utils/_constants.sass"
+
+#view-account
+    width: 80%
+    margin: 0 auto $spacing16x
+
+    #tab-container
+        display: flex
+        flex-direction: row
+        align-items: center
+        border-bottom: 1px solid $colorGrayLight
+
+        & div
+            padding: $spacing2x 0
+            flex-grow: 1
+            border-bottom: 2px solid transparent
+            text-align: center
+            transition: 0.3s
+
+        & div:hover
+            background-color: $colorWhiteLight
+            cursor: pointer
+
+        & div.selected
+            border-bottom: 2px solid $colorTurquoise
+
+    .tab-content
+        > div
+            margin: $spacing6x 0 $spacing10x
+
+
+    @media screen and (min-width: $mediaWidth3)
+        .tab-content
+            ul
+                display: flex
+                flex-direction: row
+                border-bottom: 1px solid $colorWhiteLight
+
+                li
+                    padding: $spacing3x 0
+
+                .li-med
+                    width: $spacing32x
+                .li-large
+                    flex-grow: 1
+
+            ul.three-columns
+                li
+                    width: calc(100% / 3)
+
+            ul.vertical-centered
+                align-items: center
+
+
+    @media screen and (max-width: $mediaWidth1)
+        h2
+            margin-bottom: $spacing2x
+
+        .tab-content
+            text-align: center
+
+            ul
+                display: flex
+                flex-direction: row
+                flex-wrap: wrap
+                border-bottom: 1px solid $colorWhiteLight
+                text-align: left
+
+                li
+                    padding: $spacing1x 0
+
+        ul.hide-mobile
+            display: none
+
+        .vertical-mobile
+            display: flex
+            flex-direction: column
+
+
+    @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+        h2
+            margin-bottom: $spacing2x
+
+        .tab-content
+            ul
+                display: flex
+                flex-direction: row
+                flex-wrap: wrap
+                border-bottom: 1px solid $colorWhiteLight
+                text-align: left
+
+                li
+                    padding: $spacing1x 0
+
+        ul.hide-mobile
+            display: none
+
+        .vertical-mobile
+            display: flex
+            flex-direction: column
+
+
+    .space-between
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+    ul.header
+        border-bottom: 1px solid $colorGrayLight
+
+    ul
+        line-height: $lineHeight1
+
+    ul.no-border
+        border: none
+
+    a:hover
+        cursor: pointer
+
+    .red
+        color: $colorRed
+
+    .orange
+        color: $colorOrange
+
+    h1,h2
+        color: $colorTurquoise
+
+    h1
+        margin: $spacing12x 0 $spacing8x
+        text-align: center

@@ -14,8 +14,9 @@ func (h *Handler) SetupApiEndpoints() {
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
-		apiPrograms.POST("/create", controllers.CreateProgram)
+		apiPrograms.GET("/states", controllers.GetAllProgramStates)
 		apiPrograms.GET("/program/:programId", controllers.GetProgramById)
+		apiPrograms.POST("/create", controllers.CreateProgram)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/program/:programId", controllers.DeleteProgram)
 	}
@@ -96,8 +97,9 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAFH := h.Engine.Group("api/askforhelp")
 	{
 		apiAFH.GET("/all", controllers.GetAllAFH)
-		apiAFH.POST("/create", controllers.CreateAFH)
+		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 		apiAFH.GET("/afh/:id", controllers.GetAFHById)
+		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
 	}

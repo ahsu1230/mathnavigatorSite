@@ -26,6 +26,7 @@ import { HomePage } from "../home/home.js";
 import { ProgramsPage } from "../programs/programs.js";
 // import { StudentProjectsPage } from '../student/studentProjects.js';
 // import { StudentWebDevPage } from '../student/studentWebDev.js';
+import { AccountPage } from "../account/account.js";
 
 const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
@@ -41,6 +42,7 @@ const Programs = () => <ProgramsPage />;
 // const StudentProjects = () => <StudentProjectsPage/>;
 // const AFH = () => <AFHPage/>;
 // const Error = () => <ErrorPage/>;
+const Account = () => <AccountPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -86,6 +88,8 @@ class App extends React.Component {
                     {/* <Route path="/student-webdev" component={StudentWebDev}/>
           <Route path="/student-projects" component={StudentProjects}/>
           <Route path="/" component={Error}/> */}
+
+                    <Route path="/account" component={Account} />
                 </Switch>
                 <Footer />
             </div>

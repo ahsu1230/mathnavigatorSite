@@ -40,6 +40,14 @@ exports[`test snapshot 1`] = `
           Contact
         </a>
       </li>
+      <li>
+        <a
+          href="#/account"
+          onClick={[Function]}
+        >
+          Account
+        </a>
+      </li>
     </ul>
     <div
       className="logo-container"
