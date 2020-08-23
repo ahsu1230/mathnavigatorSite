@@ -1,9 +1,9 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
-import { EmailPayments } from "./emailPayments.js";
+import { EmailPaymentsPage } from "./emailPayments.js";
 
 describe("Email Payment Page", () => {
-    const component = shallow(<EmailPayments />);
+    const component = shallow(<EmailPaymentsPage />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
