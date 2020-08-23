@@ -7,7 +7,9 @@ describe("Email Programs Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("Generate Email to Program");
+        expect(component.find("h1").text()).toContain(
+            "Generate Email to Program"
+        );
         expect(component.find("h2").text()).toContain("Select A Program");
     });
 });

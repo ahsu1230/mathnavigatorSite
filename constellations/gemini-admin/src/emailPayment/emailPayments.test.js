@@ -7,7 +7,9 @@ describe("Email Payment Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("Generate Payment Reminder Email");
+        expect(component.find("h1").text()).toContain(
+            "Generate Payment Reminder Email"
+        );
         expect(component.find("button").text()).toContain("Search");
     });
 });

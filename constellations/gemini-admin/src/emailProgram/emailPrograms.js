@@ -5,7 +5,7 @@ import React from "react";
 import API, { executeApiCalls } from "../api.js";
 import { getFullName } from "../utils/userUtils.js";
 
-export class EmailPrograms extends React.Component {
+export class EmailProgramsPage extends React.Component {
     state = {
         selectProgramId: "",
         selectedProgramName: "",
@@ -51,9 +51,11 @@ export class EmailPrograms extends React.Component {
             (program) => program.programId === event.target.value
         );
         selectedProgram = selectedProgram.name;
-        let classesForProgram = this.state.classes.filter(classes => classes.programId == event.target.value);
+        let classesForProgram = this.state.classes.filter(
+            (classes) => classes.programId == event.target.value
+        );
         const classes = classesForProgram.map((classes) => classes.classId);
-        
+
         this.setState({
             [value]: event.target.value,
             classesForProgram: classes,
@@ -65,27 +67,30 @@ export class EmailPrograms extends React.Component {
 
     onCheckClass = (e, classId) => {
         if (e.target.checked) {
-            const apiCalls = [API.get("api/user-classes/class/" + classId)];
-            axios.all(apiCalls).then(
-                axios.spread((...responses) => {
-                    const users = responses[0].data;
+            API.get("api/user-classes/class/" + classId)
+                .then((response) => {
+                    const users = response.data;
                     const userIds = users.map((user) => user.userId);
-
                     userIds.map((userId) => {
-                        const apiCalls = [API.get("api/users/user/" + userId)];
-                        axios.all(apiCalls).then(
-                            axios.spread((...responses) => {
-                                const user = responses[0].data;
+                        API.get("api/users/user/" + userId)
+                            .then((response) => {
+                                const user = response.data;
                                 var users = this.state.usersInClass;
                                 users.push(user);
                                 this.setState({
                                     usersInClass: users,
                                 });
                             })
-                        );
+                            .catch((err) => {
+                                console.log(
+                                    "Error: api call failed. " + err.message
+                                );
+                            });
                     });
                 })
-            );
+                .catch((err) => {
+                    console.log("Error: api call failed. " + err.message);
+                });
         } else {
             this.setState({
                 usersInClass: [],
@@ -137,7 +142,9 @@ export class EmailPrograms extends React.Component {
 
     render = () => {
         const programOptions = this.state.programs.map((program, index) => (
-            <option key={index} value={program.programId}>{program.name}</option>
+            <option key={index} value={program.programId}>
+                {program.name}
+            </option>
         ));
 
         const classOptions = this.state.classesForProgram.map(

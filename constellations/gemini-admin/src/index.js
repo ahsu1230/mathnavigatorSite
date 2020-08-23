@@ -33,8 +33,8 @@ import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./ask_for_help/afh.js";
 import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
 
-import { EmailPayments } from "./emailPayment/emailPayments.js";
-import { EmailPrograms } from "./emailProgram/emailPrograms.js";
+import { EmailPaymentsPage } from "./emailPayment/emailPayments.js";
+import { EmailProgramsPage } from "./emailProgram/emailPrograms.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -95,8 +95,8 @@ const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
-const Payments = () => <EmailPayments />;
-const ProgramEmails = () => <EmailPrograms />;
+const EmailPayments = () => <EmailPaymentsPage />;
+const EmailPrograms = () => <EmailProgramsPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -187,8 +187,8 @@ class App extends React.Component {
                     <Route path="/afh/add" component={AFHEdit} />
                     <Route path="/afh" component={AFH} />
 
-                    <Route path="/emailPayments" component={Payments} />
-                    <Route path="/emailPrograms" component={ProgramEmails} />
+                    <Route path="/emailPayments" component={EmailPayments} />
+                    <Route path="/emailPrograms" component={EmailPrograms} />
                 </Switch>
             </div>
         );
