@@ -254,17 +254,17 @@ func TestDeleteAccount(t *testing.T) {
 	now := time.Now().UTC()
 	mock.ExpectBegin()
 	//Accounts
-	mock.ExpectPrepare("^UPDATE accounts SET deleted_at=. WHERE id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE accounts SET deleted_at=(.+) WHERE id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
 	//Transactions
-	mock.ExpectPrepare("^UPDATE transactions SET deleted_at=. WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE transactions SET deleted_at=(.+) WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
 	//Retrieve linked users
 	mock.ExpectPrepare("^SELECT id FROM users WHERE account_id=?").ExpectQuery().WithArgs(1).WillReturnRows(rows)
 	//Users
-	mock.ExpectPrepare("^UPDATE users SET deleted_at=. WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE users SET deleted_at=(.+) WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
 	//User Classes
-	mock.ExpectPrepare("^UPDATE user_classes SET deleted_at=. WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE user_classes SET deleted_at=(.+) WHERE account_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
 	//User AFH's
-	mock.ExpectPrepare("^UPDATE user_afh SET deleted_at=. WHERE user_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
+	mock.ExpectPrepare("^UPDATE user_afh SET deleted_at=(.+) WHERE user_id=?").ExpectExec().WithArgs(now, 1).WillReturnResult(result)
 
 	err := repo.Delete(1)
 	if err != nil {
