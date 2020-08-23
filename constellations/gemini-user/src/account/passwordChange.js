@@ -29,21 +29,20 @@ export class PasswordChange extends React.Component {
                 primaryEmail: this.props.primaryEmail,
                 password: this.state.newPassword,
             };
-            API.post(
-                "api/accounts/account/" + this.props.accountId,
-                account
-            ).then((res) => {
-                this.props.passwordChangeCallback(this.state.newPassword);
-                this.setState({
-                    tabOpen: false,
-                    message: "",
-                    validated: false,
-                    successMessage: " New password saved!",
-                    oldPassword: "",
-                    newPassword: "",
-                    confirmPassword: "",
-                });
-            });
+            API.post("api/accounts/account/" + this.props.accountId, account)
+                .then((res) => {
+                    this.props.passwordChangeCallback(this.state.newPassword);
+                    this.setState({
+                        tabOpen: false,
+                        message: "",
+                        validated: false,
+                        successMessage: " New password saved!",
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmPassword: "",
+                    });
+                })
+                .catch((err) => alert("Could not save password: " + err));
         }
     };
 

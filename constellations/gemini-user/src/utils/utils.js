@@ -27,9 +27,6 @@ export function renderMultiline(lines) {
         );
     });
 }
-export function fetchError(err) {
-    alert("Could not fetch data: " + err);
-}
 
 export const subjectDisplayNames = {
     math: "Math",

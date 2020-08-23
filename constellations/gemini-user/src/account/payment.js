@@ -5,11 +5,7 @@ import { Link } from "react-router-dom";
 import API from "../utils/api.js";
 import moment from "moment";
 
-import {
-    chargeDisplayNames,
-    formatCurrency,
-    fetchError,
-} from "../utils/utils.js";
+import { chargeDisplayNames, formatCurrency } from "../utils/utils.js";
 
 export class PaymentTab extends React.Component {
     state = {
@@ -18,9 +14,9 @@ export class PaymentTab extends React.Component {
 
     componentDidMount = () => {
         if (this.props.accountId) {
-            API.get(
-                "api/transactions/account/" + this.props.accountId
-            ).then((res) => this.setState({ transactions: res.data }));
+            API.get("api/transactions/account/" + this.props.accountId)
+                .then((res) => this.setState({ transactions: res.data }))
+                .catch((err) => alert("Could not fetch data: " + err));
         }
     };
 

@@ -8,7 +8,6 @@ import moment from "moment";
 import {
     subjectDisplayNames,
     renderMultiline,
-    fetchError,
     sortBySemester,
 } from "../utils/utils.js";
 
@@ -41,14 +40,14 @@ export class RegistrationsTab extends React.Component {
 
                 const allLocations = res[4].data;
                 const locationsById = {};
-                allLocations.map((loc, index) => {
+                allLocations.forEach((loc, index) => {
                     locationsById[loc.locationId] = loc;
                 });
                 this.setState({ locationsById: locationsById });
 
                 let userClasses = [];
                 let upcomingAFHs = [];
-                users.map((user, index) => {
+                users.forEach((user, index) => {
                     API.get("api/user-classes/user/" + user.id).then((res) => {
                         let classes = res.data.map((c, index) => {
                             let matchedClass = allClasses.find(
@@ -77,7 +76,7 @@ export class RegistrationsTab extends React.Component {
                         this.setState({ userClasses: userClasses });
                     });
                     API.get("api/userafhs/users/" + user.id).then((res) => {
-                        let afhs = res.data.map((afh, index) => {
+                        res.data.forEach((afh, index) => {
                             let matchedAFH = allAFHs.find(
                                 (element) => element.id == afh.afhId
                             );
@@ -121,7 +120,7 @@ class RegistrationsTabMain extends React.Component {
         }
         return classes.map((c, index) => {
             return (
-                <div key={index} className="classList-item space-between">
+                <div key={index} className="classlist-item space-between">
                     <span>
                         {c.program.name + " (" + c.semester.title + ")"}
                     </span>
@@ -214,8 +213,8 @@ class RegistrationsTabMain extends React.Component {
 class RegistrationsTabAllClasses extends React.Component {
     render = () => {
         const allClasses = [];
-        this.props.userClasses.map((user, index) => {
-            user.classes.map((c, index) => {
+        this.props.userClasses.forEach((user, index) => {
+            user.classes.forEach((c, index) => {
                 allClasses.push({
                     user: user.name,
                     classInfo: c,

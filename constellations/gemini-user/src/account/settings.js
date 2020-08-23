@@ -3,7 +3,7 @@ require("./settings.sass");
 import React from "react";
 import API from "../utils/api.js";
 
-import { renderMultiline, fetchError } from "../utils/utils.js";
+import { renderMultiline } from "../utils/utils.js";
 import { PasswordChange } from "./passwordChange.js";
 
 export class SettingsTab extends React.Component {
@@ -25,7 +25,7 @@ export class SettingsTab extends React.Component {
                         password: res.data.password,
                     });
                 })
-                .catch((err) => fetchError(err));
+                .catch((err) => alert("Could not fetch data: " + err));
         }
     };
 
