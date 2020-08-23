@@ -99,3 +99,8 @@ func DeleteProgram(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func GetAllProgramStates(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.GetAllProgramStates")
+	c.JSON(http.StatusOK, domains.ALL_PROGRAM_STATES)
+}

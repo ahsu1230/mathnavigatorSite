@@ -14,7 +14,7 @@ describe("test", () => {
     test("shows links", () => {
         var ul = component.find("ul");
         expect(ul.exists()).toBe(true);
-        expect(ul.children().length).toBe(4);
+        expect(ul.children().length).toBe(5);
     });
 
     test("snapshot", () => {

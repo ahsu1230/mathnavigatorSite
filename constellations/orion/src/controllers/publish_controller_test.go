@@ -20,6 +20,8 @@ func setupMock() {
 				"classA",
 				"churchill",
 				"3 pm - 5 pm",
+				50,
+				0,
 			),
 			testUtils.CreateMockClass(
 				"prog1",
@@ -27,6 +29,8 @@ func setupMock() {
 				"classB",
 				"churchill",
 				"3 pm - 5 pm",
+				50,
+				0,
 			),
 		}, nil
 	}

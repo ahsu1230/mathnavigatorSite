@@ -171,8 +171,21 @@ func TestSelectByNew(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "UserId", "AfhId"}).
-		AddRow(1, 2, 3)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"UserId",
+		"AfhId",
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+	)
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -184,9 +197,12 @@ func TestSelectByNew(t *testing.T) {
 	// Validate results
 	want := []domains.UserAfh{
 		{
-			Id:     1,
-			UserId: 2,
-			AfhId:  3,
+			Id:        1,
+			CreatedAt: testUtils.TimeNow,
+			UpdatedAt: testUtils.TimeNow,
+			DeletedAt: sql.NullTime{},
+			UserId:    2,
+			AfhId:     3,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {

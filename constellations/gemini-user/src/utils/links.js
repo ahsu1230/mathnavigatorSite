@@ -53,6 +53,11 @@ const mainLinks = [
         name: "Contact",
         url: "/contact",
     },
+    {
+        id: "account",
+        name: "Account",
+        url: "/account",
+    },
 ];
 const allLinks = concat(mainLinks, subLinksPrograms, subLinksAchieve);
 
