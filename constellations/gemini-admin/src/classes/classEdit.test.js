@@ -57,4 +57,48 @@ describe("Class Edit Page", () => {
         expect(inputText.at(4).prop("value")).toBe("");
         expect(inputText.length).toBe(5);
     });
+
+    test("renders deleteModal", () => {
+        // Initial state
+        component.setState({
+            showDeleteModal: false,
+            showSaveModal: false,
+        });
+        expect(component.find("Modal").exists()).toBe(false);
+
+        // Turn Modal on
+        component.setState({
+            showDeleteModal: true,
+        });
+
+        // After state
+        let modal = component.find("Modal");
+        expect(modal.prop("show")).toBe(true);
+        expect(modal.prop("onDismiss")).toBeDefined();
+        // TODO: Test if prop "content" is a YesNoModal
+        expect(modal.prop("content")).toBeDefined();
+        // expect(modal.prop("content")).toContain(<YesNoModal/>);
+    });
+
+    test("renders saveModal", () => {
+        // Initial state
+        component.setState({
+            showDeleteModal: false,
+            showSaveModal: false,
+        });
+        expect(component.find("Modal").exists()).toBe(false);
+
+        // Turn Modal on
+        component.setState({
+            showSaveModal: true,
+        });
+
+        // After state
+        let modal = component.find("Modal");
+        expect(modal.prop("show")).toBe(true);
+        expect(modal.prop("onDismiss")).toBeDefined();
+        // TODO: Test if prop "content" is an OkayModal
+        expect(modal.prop("content")).toBeDefined();
+        // expect(modal.prop("content")).toContain(<OkayModal/>);
+    });
 });
