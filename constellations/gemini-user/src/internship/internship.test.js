@@ -7,11 +7,14 @@ describe("Internship Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("Software Development Internship");
+        expect(component.find("h1").text()).toContain(
+            "Software Development Internship"
+        );
         expect(component.find("h1").text()).toContain("Technology Stack");
         expect(component.find("h1").text()).toContain("Internship Structure");
         expect(component.find("h4").text()).toContain("Past Interns:");
-        expect(component.find("h1").text()).toContain("Math Navigator Products");
-
+        expect(component.find("h1").text()).toContain(
+            "Math Navigator Products"
+        );
     });
 });
