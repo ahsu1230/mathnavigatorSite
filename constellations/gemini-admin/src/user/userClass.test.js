@@ -68,9 +68,15 @@ describe("User Class Page", () => {
         let row0 = component.find("UserClassRow").at(0);
         expect(row0.prop("userClass")).toStrictEqual(userClasses[0]);
 
-        expect(component.find("InputSelect").prop("options")[0]).toHaveProperty("displayName", "ap_calculus_2020_fall");
-        expect(component.find("InputSelect").prop("options")[0]).toHaveProperty("value", "ap_calculus_2020_fall");
-        
+        expect(component.find("InputSelect").prop("options")[0]).toHaveProperty(
+            "displayName",
+            "ap_calculus_2020_fall"
+        );
+        expect(component.find("InputSelect").prop("options")[0]).toHaveProperty(
+            "value",
+            "ap_calculus_2020_fall"
+        );
+
         expect(component.find("button")).toHaveLength(1);
     });
 });

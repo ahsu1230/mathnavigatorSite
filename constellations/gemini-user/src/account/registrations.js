@@ -113,7 +113,7 @@ export class RegistrationsTab extends React.Component {
     };
 }
 
-class RegistrationsTabMain extends React.Component {
+export class RegistrationsTabMain extends React.Component {
     renderClassList = (classes) => {
         if (!classes.length) {
             return <span>(No classes registered)</span>;
@@ -210,7 +210,7 @@ class RegistrationsTabMain extends React.Component {
     };
 }
 
-class RegistrationsTabAllClasses extends React.Component {
+export class RegistrationsTabAllClasses extends React.Component {
     render = () => {
         const allClasses = [];
         this.props.userClasses.forEach((user, index) => {

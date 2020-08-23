@@ -7,9 +7,8 @@ describe("Account Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("Search Accounts");
-        expect(component.find("AccountSearch")).toHaveLength(2);
-        expect(component.find("Link").text()).toContain("Create New Account");
-        expect(component.find("AccountInfo")).toHaveLength(1);
+        expect(component.find("h1").text()).toContain("Your Account");
+        expect(component.find("div#tab-container")).toHaveLength(1);
+        expect(component.find("SettingsTab")).toHaveLength(1);
     });
 });
