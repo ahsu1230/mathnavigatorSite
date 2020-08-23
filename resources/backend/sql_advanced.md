@@ -1,6 +1,10 @@
 # SQL Advanced topics
 
 ## What is a GROUP BY?
+A [SQL GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) is a statement used to group rows with the same values together.
+In this codebase, GROUP BY is used to select accounts, where the user can group the results by the account ID. 
+
+
 ## What is HAVING?
 
 ## What is an Index?
