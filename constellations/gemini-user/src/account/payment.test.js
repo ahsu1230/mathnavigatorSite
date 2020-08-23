@@ -40,13 +40,13 @@ describe("Payment Tab", () => {
         component.setState({ transactions: transactions });
 
         let row0 = component.find("ul").at(1);
-        expect(row0.text()).toContain("12/31/2019");
+        expect(row0.text()).toContain("1/1/2020");
         expect(row0.text()).toContain("Paid (Paypal)");
         expect(row0.text()).toContain("$1,000.00");
         expect(row0.text()).toContain("$0.00");
 
         let row1 = component.find("ul").at(2);
-        expect(row1.text()).toContain("12/31/2019");
+        expect(row1.text()).toContain("1/1/2020");
         expect(row1.text()).toContain("Charge");
         expect(row1.text()).toContain("-$1,000.00");
         expect(row1.text()).toContain("-$1,000.00");

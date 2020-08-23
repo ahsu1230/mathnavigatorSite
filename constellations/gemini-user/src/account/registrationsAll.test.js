@@ -43,6 +43,6 @@ describe("Main Registrations Tab", () => {
         let row0 = component.find("ul").at(0);
         expect(row0.text()).toContain("John Doe");
         expect(row0.text()).toContain("AP Calculus (Fall 2020)");
-        expect(row0.text()).toContain("Enrolled on: 12/31/2019");
+        expect(row0.text()).toContain("Enrolled on: 1/1/2020");
     });
 });

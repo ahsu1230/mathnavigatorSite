@@ -59,13 +59,13 @@ describe("User AFH Page", () => {
 
         expect(component.find("#user-afh div.row")).toHaveLength(2);
         let row0 = component.find("#user-afh div.row").at(1);
-        expect(row0.text()).toContain("12/31/2019");
+        expect(row0.text()).toContain("1/1/2020");
         expect(row0.text()).toContain("AP Calculus Practice Exam");
         expect(row0.text()).toContain("math");
 
         expect(component.find("InputSelect").prop("options")).toStrictEqual([
             {
-                displayName: "12/31/2019 math 3:00pm - 4:00pm",
+                displayName: "1/1/2020 math 3:00pm - 4:00pm",
                 value: 1,
             },
         ]);

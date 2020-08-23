@@ -50,7 +50,7 @@ describe("Main Registrations Tab", () => {
         let row0 = component.find("ul").at(0);
         expect(row0.text()).toContain("John Doe");
         expect(row0.text()).toContain("AP Calculus (Fall 2020)");
-        expect(row0.text()).toContain("Enrolled on: 12/31/2019");
+        expect(row0.text()).toContain("Enrolled on: 1/1/2020");
 
         let row1 = component.find("ul").at(1);
         expect(row1.text()).toContain("Jane Doe");
@@ -82,7 +82,7 @@ describe("Main Registrations Tab", () => {
         expect(component.find("ul")).toHaveLength(4);
         let row0 = component.find("ul").at(3);
         expect(row0.text()).toContain("AP Calculus Practice Exam");
-        expect(row0.text()).toContain("December 31st, 2019");
+        expect(row0.text()).toContain("January 1st, 2020");
         expect(row0.text()).toContain("3:00pm - 4:00pm");
         expect(row0.text()).toContain("1234 Gains Rd");
         expect(row0.text()).toContain("Potomac, MD");
