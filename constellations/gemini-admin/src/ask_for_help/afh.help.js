@@ -7,7 +7,9 @@ describe("Ask For Help Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("All Ask For Help Sessions");
+        expect(component.find("h1").text()).toContain(
+            "All Ask For Help Sessions"
+        );
         expect(component.find("li").at(0).text()).toContain("Date");
         expect(component.find("li").at(1).text()).toContain("Time");
         expect(component.find("li").at(2).text()).toContain("Subject");
