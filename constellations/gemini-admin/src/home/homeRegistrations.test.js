@@ -10,7 +10,7 @@ describe("Home Registrations", () => {
         expect(component.find("h3").text()).toContain(
             "Pending Registrations For Classes"
         );
-        expect(component.find("Link").text()).toContain("View All Classes");
+        expect(component.find("Link").text()).toContain("View By Class");
         expect(component.find("h3").text()).toContain(
             "New Registrations For AFH"
         );
