@@ -8,6 +8,14 @@ import (
 
 var TABLE_PROGRAMS = "programs"
 
+const (
+	NORMAL  = "normal"
+	POPULAR = "popular"
+	NEW     = "new"
+)
+
+var ALL_PROGRAM_STATES = []string{NORMAL, POPULAR, NEW}
+
 type Program struct {
 	Id          uint      `json:"id"`
 	CreatedAt   time.Time `json:"-" db:"created_at"`

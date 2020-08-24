@@ -24,19 +24,21 @@ func CreateMockAnnounce(id uint, postedAt time.Time, author string, message stri
 	}
 }
 
-func CreateMockClass(programId, semesterId, classKey, locationId, times string) domains.Class {
+func CreateMockClass(programId, semesterId, classKey, locationId, times string, pricePerSession, priceLump uint) domains.Class {
 	classId := programId + "_" + semesterId
 	if classKey != "" {
 		classId += "_" + classKey
 	}
 
 	return domains.Class{
-		ProgramId:  programId,
-		SemesterId: semesterId,
-		ClassKey:   domains.NewNullString(classKey),
-		ClassId:    classId,
-		LocationId: locationId,
-		Times:      times,
+		ProgramId:       programId,
+		SemesterId:      semesterId,
+		ClassKey:        domains.NewNullString(classKey),
+		ClassId:         classId,
+		LocationId:      locationId,
+		Times:           times,
+		PricePerSession: domains.NewNullUint(pricePerSession),
+		PriceLump:       domains.NewNullUint(priceLump),
 	}
 }
 

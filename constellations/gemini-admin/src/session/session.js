@@ -32,13 +32,11 @@ export class SessionPage extends React.Component {
     };
 
     fetchSessionData = (classId) => {
-        API.get("api/sessions/class/" + classId).then((res) => {
-            var newSessions = res.data;
-            newSessions = _.sortBy(newSessions, ["startsAt"]);
+        API.get("api/sessions/class/" + classId).then((res) =>
             this.setState({
-                sessions: newSessions,
-            });
-        });
+                sessions: res.data,
+            })
+        );
     };
 
     onChangeSelect = (e) => {

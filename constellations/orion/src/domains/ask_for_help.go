@@ -14,6 +14,8 @@ const (
 	SUBJECT_PROGRAMMING = "programming"
 )
 
+var ALL_AFH_SUBJECTS = []string{SUBJECT_MATH, SUBJECT_ENGLISH, SUBJECT_PROGRAMMING}
+
 type AskForHelp struct {
 	Id         uint       `json:"id"`
 	CreatedAt  time.Time  `json:"-" db:"created_at"`

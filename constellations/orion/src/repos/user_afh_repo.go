@@ -175,6 +175,9 @@ func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
 		var userAfh domains.UserAfh
 		if errScan := rows.Scan(
 			&userAfh.Id,
+			&userAfh.CreatedAt,
+			&userAfh.UpdatedAt,
+			&userAfh.DeletedAt,
 			&userAfh.UserId,
 			&userAfh.AfhId); errScan != nil {
 			return results, errScan
