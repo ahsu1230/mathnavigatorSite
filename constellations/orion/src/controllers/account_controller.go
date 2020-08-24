@@ -64,23 +64,30 @@ func GetNegativeBalanceAccounts(c *gin.Context) {
 	}
 }
 
-func CreateAccount(c *gin.Context) {
+func CreateAccountAndUser(c *gin.Context) {
 	utils.LogControllerMethod(c, "accountController.CreateAccount")
 
-	var accountJson domains.Account
-	if err := c.ShouldBindJSON(&accountJson); err != nil {
+	// Incoming JSON
+	var accountUser domains.AccountUser
+	if err := c.ShouldBindJSON(&accountUser); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
 		return
 	}
+	account := accountUser.Account
+	user := accountUser.User
 
-	if err := accountJson.Validate(); err != nil {
+	if err := account.Validate(); err != nil {
 		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
 		return
 	}
-
-	if err := repos.AccountRepo.Insert(accountJson); err != nil {
+	if err := user.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+	if err := repos.AccountRepo.InsertWithUser(account, user); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

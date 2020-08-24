@@ -36,48 +36,31 @@ export class AccountEditPage extends React.Component {
     };
 
     onClickSave = () => {
-        let account = {
-            primaryEmail: this.state.email,
-            password: generatePassword(),
+        const accountUser = {
+            account: {
+                primaryEmail: this.state.email,
+                password: generatePassword(),
+            },
+            user: {
+                firstName: this.state.firstName,
+                middleName: this.state.middleName,
+                lastName: this.state.lastName,
+                email: this.state.email,
+                phone: this.state.phone,
+                isGuardian: this.state.isGuardian,
+                notes: this.state.notes,
+            },
         };
 
-        // TODO: replace these calls with one endpoint
-        API.post("api/accounts/create", account)
+        console.log(accountUser);
+
+        API.post("api/accounts/create", accountUser)
             .then(() => {
-                API.post("api/accounts/search", {
-                    primaryEmail: this.state.email,
-                })
-                    .then((res) => {
-                        const id = res.data.id;
-
-                        let user = {
-                            firstName: this.state.firstName,
-                            middleName: this.state.middleName,
-                            lastName: this.state.lastName,
-                            email: this.state.email,
-                            phone: this.state.phone,
-                            isGuardian: true,
-                            accountId: id,
-                            notes: this.state.notes,
-                        };
-
-                        API.post("api/users/create", user)
-                            .then(() => {
-                                this.setState({ showSaveModal: true });
-                                setCurrentAccountId(id);
-                            })
-                            .catch((err) =>
-                                alert(
-                                    "Could not save user: " + err.response.data
-                                )
-                            );
-                    })
-                    .catch((err) =>
-                        alert("Could not fetch account: " + err.response.data)
-                    );
+                this.setState({ showSaveModal: true });
+                setCurrentAccountId(id);
             })
             .catch((err) =>
-                alert("Could not create account: " + err.response.data)
+                alert("Could not create account or user: " + err.response.data)
             );
     };
 
