@@ -8,7 +8,6 @@ SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=tr
 ```
 As seen above, GROUP BY is commonly used with aggregate functions (e.g. SUM, MAX, MIN).
 
-
 ## What is HAVING?
 [SQL HAVING](https://www.w3schools.com/sql/sql_having.asp) is a statement used where the WHERE keyword cannot be used with aggregate functions (e.g. SUM, MAX, MIN). For example, in this codebase, HAVING is used to select accounts with negative balances:
 ```mysql
