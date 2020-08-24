@@ -16,6 +16,8 @@ SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=tr
 ```
 
 ## What is an Index?
+Indexes help to retrieve data from a database more quickly by acting as pointers to the data in a table. Indexes can also be unique and be used to prevent duplicate entries in a column. To create an index, we can use the [CREATE INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement. Similarly, to drop an index, we can use the [DROP INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement.
+
 ## What is a Constraint?
 [SQL constraints](https://www.w3schools.com/sql/sql_constraints.asp) are essentially rules that limit what data can be inserted into a table. Constraints are used to ensure that the data in a table is valid. This increases the reliability of data and allows people more control over their databases. 
 
