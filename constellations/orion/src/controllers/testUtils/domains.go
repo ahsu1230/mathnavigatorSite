@@ -6,6 +6,14 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
+func CreateMockAccount(id uint, primary_email string, password string) domains.Account {
+	return domains.Account{
+		Id:           id,
+		PrimaryEmail: primary_email,
+		Password:     password,
+	}
+}
+
 func CreateMockAchievement(id uint, year uint, message string) domains.Achieve {
 	return domains.Achieve{
 		Id:      id,

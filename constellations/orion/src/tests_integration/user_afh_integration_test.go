@@ -119,12 +119,12 @@ func createUsersAndAfhs(t *testing.T) {
 	var date1 = now.Add(time.Hour * 24 * 30)
 
 	// Create accounts
-	account := createAccount(1)
+	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	account0 := createAccount(2)
+	account0 := createAccountAndUser(2)
 	body0 := utils.CreateJsonBody(&account0)
 	recorder0 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body0)
 	assert.EqualValues(t, http.StatusOK, recorder0.Code)
@@ -139,9 +139,7 @@ func createUsersAndAfhs(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, locRecorder1.Code)
 	assert.EqualValues(t, http.StatusOK, locRecorder2.Code)
 
-	// Create users and AFHs
-	user1 := createUser(1)
-	user2 := createUser(2)
+	// Create AFHs
 	afh1 := createAFH(
 		1,
 		"AP Calculus Help",
@@ -161,20 +159,14 @@ func createUsersAndAfhs(t *testing.T) {
 		"test note 2",
 	)
 
-	body1 := utils.CreateJsonBody(&user1)
-	body2 := utils.CreateJsonBody(&user2)
-	body3 := utils.CreateJsonBody(&afh1)
-	body4 := utils.CreateJsonBody(&afh2)
+	body1 := utils.CreateJsonBody(&afh1)
+	body2 := utils.CreateJsonBody(&afh2)
 
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body3)
-	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body4)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body2)
 
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
 }
 
 func createUserAfh(userId, afhId uint) domains.UserAfh {

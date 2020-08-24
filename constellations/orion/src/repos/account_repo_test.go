@@ -109,7 +109,7 @@ func TestSelectAccountByPrimaryEmail(t *testing.T) {
 //
 // Get accounts with negative balances
 //
-func Test_SelectAllNegativeBalances(t *testing.T) {
+func TestSelectAllNegativeBalances(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
@@ -176,14 +176,15 @@ func Test_SelectAllNegativeBalances(t *testing.T) {
 }
 
 //
-// Create
+// Create User and Account
 //
-func TestInsertAccount(t *testing.T) {
+func TestInsertAccountAndUser(t *testing.T) {
 	db, mock, repo := initAccountTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^INSERT INTO accounts").
 		ExpectExec().
 		WithArgs(
@@ -192,8 +193,26 @@ func TestInsertAccount(t *testing.T) {
 			"john_smith@example.com",
 			"password",
 		).WillReturnResult(result)
+	mock.ExpectPrepare("^INSERT INTO users").
+		ExpectExec().
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"John",
+			"Smith",
+			domains.NewNullString(""),
+			"john_smith@example.com",
+			"555-555-0100",
+			false,
+			1,
+			domains.NewNullString(""),
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
+		).WillReturnResult(result)
+	mock.ExpectCommit()
 	account := getAccount()
-	err := repo.Insert(account)
+	user := getUser()
+	err := repo.InsertWithUser(account, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
