@@ -6,6 +6,7 @@ In this codebase, GROUP BY can be used to select accounts, where the user can gr
 ```mysql
 SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0
 ```
+
 As seen above, GROUP BY is commonly used with aggregate functions (e.g. SUM, MAX, MIN).
 
 ## What is HAVING?
@@ -13,6 +14,9 @@ As seen above, GROUP BY is commonly used with aggregate functions (e.g. SUM, MAX
 ```mysql
 SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0
 ```
+This statement will then return a group of rows where each account has a negative sum. The first couple columns describe the account, such as the account id, the primary email, and the password, and the last column is the sum. 
+
+<img src="https://i.ibb.co/TPNSwSN/Screen-Shot-2020-08-24-at-5-49-35-PM.png">
 
 ## What is an Index?
 Indexes help to retrieve data from a database more quickly by acting as pointers to the data in a table. Indexes can also be unique and be used to prevent duplicate entries in a column. To create an index, we can use the [CREATE INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement. Similarly, to drop an index, we can use the [DROP INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement.
