@@ -6,7 +6,7 @@ In order to see the console, you first need to inspect the webpage you are on. T
 
 ![alt text][logo]
 
-[logo]: https://thomas.vanhoutte.be/miniblog/wp-content/uploads/chrome-right-click-inspect.png "Logo Title Text 2"
+[logo]: ..\images\chrome-right-click-inspect.png "Logo Title Text 2"
 
 Console will be the second tab from the left.
 
