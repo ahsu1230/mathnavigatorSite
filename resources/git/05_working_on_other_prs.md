@@ -26,3 +26,7 @@ git push origin OTHER_BRANCH
 ```
 
 If you get an error about the current branch being behind, you haven't pulled the latest changes. Run `git pull origin OTHER_BRANCH` again and resolve merge conflicts if any.
+
+## `git pull origin master` vs. `git pull origin OTHER_BRANCH`
+
+These two commands are very similar, and it can sometimes get confusing to figure out which one to use. In short, you just need to figure out which branch you need the latest changes from - if there are changes in `master` that you need, use `git pull origin master`; if the changes are in `OTHER_BRANCH` then use `git pull origin OTHER_BRANCH`.
