@@ -1,4 +1,4 @@
-### Understanding Inspect Network
+## Understanding Inspect Network
 The Network Panel allows you to inspect resources as they are accessed over the network. 
 
 ### Opening Inspect Network
@@ -9,6 +9,7 @@ The Network Panel allows you to inspect resources as they are accessed over the 
 - **Filtering**
     - If you are looking for a specific type of resource, you can filter the data using the tabs under
     filter. (All, XHR, JS, CSS, Img, etc) Most of these of self-explanatory except for XHR. 
+<<<<<<< HEAD
 #### XHR?
 - In this tab, you will be able to check the requested API endpoints. You can select the Name of the resource 
 to see what is included in the API endpoint. This allows you to check if the API is getting the correct information. It makes returning an object and its atrribrutes a lot easier because all the attribrutes and their values are listed out ofr each object. 
@@ -16,6 +17,15 @@ to see what is included in the API endpoint. This allows you to check if the API
 The image below shows how the API endpoint `api/accounts/unpaid` is called in the Admin Home Dashboard for Unpaid Accounts: 
 
 <img src="network.PNG" width="600" alt="Inspect Network">
+=======
+    #### XHR
+    -  In this tab, you will be able to check the requested API endpoints. You can select the Name of the resource 
+    to see what is included in the API endpoint. This allows you to check if the API is getting the correct information. It makes returning an object and its atrribrutes a lot         easier because all the attribrutes and their values are listed out for each object. 
+    For example: 
+    ```
+    classes: [{id: 18, createdAt: "2020-08-16T21:35:38Z", updatedAt: "2020-08-17T15:13:27Z", publishedAt: null,…}]
+    ```
+>>>>>>> 6832c8cdf9f26631041f20cea2ad35d5d7046ace
 
 - **Sorting the Resources**
     - You will see the Network Log with columns labeled: Name, Status, Type, Initiator, Size, Time, Waterfall. 
