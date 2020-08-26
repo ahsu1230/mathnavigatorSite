@@ -11,6 +11,7 @@ permanent changes. **Edits made will be deleted once you exit out.
     - Ctrl + Shift + C to open the Developer Tools in Inspect Element mode 
 
 ### Three Parts of Element
+
 <img src="element.PNG" width="600" alt="Inspect Element">
 
 - **DOM Panel**
