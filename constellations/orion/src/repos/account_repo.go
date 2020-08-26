@@ -24,7 +24,7 @@ type AccountRepoInterface interface {
 	SelectById(uint) (domains.Account, error)
 	SelectByPrimaryEmail(string) (domains.Account, error)
 	SelectAllNegativeBalances() ([]domains.AccountSum, error)
-	Insert(domains.Account) error
+	InsertWithUser(domains.Account, domains.User) error
 	Update(uint, domains.Account) error
 	Delete(uint) error
 }
@@ -86,17 +86,18 @@ func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Accou
 }
 
 func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
+	utils.LogWithContext("accountRepo.SelectAllNegativeBalances", logger.Fields{})
 	results := make([]domains.AccountSum, 0)
 
 	statement := "SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -117,32 +118,97 @@ func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error
 	return results, nil
 }
 
-func (acc *accountRepo) Insert(account domains.Account) error {
+func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.User) error {
 	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
+	tx, err := acc.db.Begin()
+	if err != nil {
+		return appErrors.WrapDbTxBegin(err)
+	}
+
 	statement := "INSERT INTO accounts (" +
 		"created_at, " +
 		"updated_at, " +
 		"primary_email, " +
 		"password" +
 		") VALUES (?, ?, ?, ?)"
-
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
+		tx.Rollback()
 		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
+	result1, err := stmt.Exec(
 		now,
 		now,
 		account.PrimaryEmail,
 		account.Password,
 	)
 	if err != nil {
+		tx.Rollback()
 		return appErrors.WrapDbExec(err, statement, account)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "account was not inserted")
+	if err = appErrors.ValidateDbResult(result1, 1, "account was not inserted"); err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, account)
+	}
+
+	lastAccountId, err := result1.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, account)
+	}
+	statement2 := "INSERT INTO users (" +
+		"created_at, " +
+		"updated_at, " +
+		"first_name, " +
+		"last_name," +
+		"middle_name, " +
+		"email," +
+		"phone, " +
+		"is_guardian," +
+		"account_id," +
+		"notes," +
+		"school," +
+		"graduation_year" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+	stmt2, err := acc.db.Prepare(statement2)
+	if err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbPrepare(err, statement2)
+	}
+	defer stmt2.Close()
+
+	result2, err := stmt2.Exec(
+		now,
+		now,
+		user.FirstName,
+		user.LastName,
+		user.MiddleName,
+		user.Email,
+		user.Phone,
+		user.IsGuardian,
+		lastAccountId,
+		user.Notes,
+		user.School,
+		user.GraduationYear,
+	)
+	if err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, user)
+	}
+	if err = appErrors.ValidateDbResult(result2, 1, "user was not inserted"); err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbExec(err, statement, user)
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return appErrors.WrapDbTxCommit(err)
+	}
+	return nil
 }
 
 func (acc *accountRepo) Update(id uint, account domains.Account) error {

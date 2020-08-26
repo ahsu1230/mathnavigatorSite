@@ -20,7 +20,7 @@ import (
 //
 func TestGetAccountSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
-		account := createMockAccount(
+		account := testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -46,7 +46,7 @@ func TestGetAccountSuccess(t *testing.T) {
 
 func TestSearchAccountSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
-		return createMockAccount(
+		return testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
 			"password",
@@ -108,7 +108,7 @@ func TestGetAccountsFailure(t *testing.T) {
 //
 // Test Get Negative Balances
 //
-func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
+func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
 	testUtils.AccountRepo.MockSelectAllNegativeBalances = func() ([]domains.AccountSum, error) {
 		return []domains.AccountSum{
 			{
@@ -153,36 +153,61 @@ func TestGetNegativeBalanceAccounts_Success(t *testing.T) {
 //
 // Test Create
 //
-func TestCreateAccountSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockInsert = func(account domains.Account) error {
+func TestCreateAccountWithUserSuccess(t *testing.T) {
+	testUtils.AccountRepo.MockInsertWithUser = func(account domains.Account, user domains.User) error {
 		return nil
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
-		1,
-		"john_smith@example.com",
-		"password",
-	)
-	body := createBodyFromAccount(account)
+	accountUser := domains.AccountUser{
+		Account: testUtils.CreateMockAccount(
+			1,
+			"john_smith@example.com",
+			"password",
+		),
+		User: testUtils.CreateMockUser(
+			1,
+			"John",
+			"Smith",
+			"",
+			"john_smith@example.com",
+			"555-555-0199",
+			true,
+			0,
+			"notes1",
+		),
+	}
+	body := createBodyFromAccountUser(accountUser)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateAccountFailure(t *testing.T) {
-	// no mock needed
+func TestCreateAccountWithUserFailure(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
-		1,
-		"",
-		"",
-	)
-	body := createBodyFromAccount(account)
+	accountUser := domains.AccountUser{
+		Account: testUtils.CreateMockAccount(
+			1,
+			"john_smith@example.com",
+			"password",
+		),
+		User: testUtils.CreateMockUser(
+			1,
+			"",
+			"",
+			"",
+			"",
+			"",
+			false,
+			0,
+			"",
+		),
+	}
+	body := createBodyFromAccountUser(accountUser)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
 
 	// Validate results
@@ -199,7 +224,7 @@ func TestUpdateAccountSuccess(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"john_smith@example.com",
 		"password",
@@ -216,7 +241,7 @@ func TestUpdateAccountInvalid(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"",
 		"",
@@ -236,7 +261,7 @@ func TestUpdateAccountFailure(t *testing.T) {
 	repos.AccountRepo = &testUtils.AccountRepo
 
 	// Create new HTTP request to endpoint
-	account := createMockAccount(
+	account := testUtils.CreateMockAccount(
 		1,
 		"john_smith@example.com",
 		"password",
@@ -280,16 +305,16 @@ func TestDeleteAccountFailure(t *testing.T) {
 //
 // Helper Methods
 //
-func createMockAccount(id uint, primary_email string, password string) domains.Account {
-	return domains.Account{
-		Id:           id,
-		PrimaryEmail: primary_email,
-		Password:     password,
-	}
-}
-
 func createBodyFromAccount(account domains.Account) io.Reader {
 	marshal, err := json.Marshal(&account)
+	if err != nil {
+		panic(err)
+	}
+	return bytes.NewBuffer(marshal)
+}
+
+func createBodyFromAccountUser(accountUser domains.AccountUser) io.Reader {
+	marshal, err := json.Marshal(&accountUser)
 	if err != nil {
 		panic(err)
 	}

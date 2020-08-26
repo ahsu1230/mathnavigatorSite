@@ -7,7 +7,7 @@ import API, { executeApiCalls } from "../api.js";
 import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
 import { AccountInfo } from "./accountInfo.js";
 
-export class EmailPayments extends React.Component {
+export class EmailPaymentsPage extends React.Component {
     state = {
         id: getCurrentAccountId() || 0,
         email: "",

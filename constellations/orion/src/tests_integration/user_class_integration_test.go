@@ -2,16 +2,17 @@ package tests_integration
 
 import (
 	"encoding/json"
+	"net/http"
+	"testing"
+
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
-	"net/http"
-	"testing"
 )
 
 // Test: Create UserClasses and Get by GetClassesByUserId()
-func TestCreateUserClasses(t *testing.T) {
-	createAccountUser(t)
+func Test_CreateUserClasses(t *testing.T) {
+	createAllAccountsAndUsers(t)
 	createClasses(t)
 
 	createAllUserClasses(t)
@@ -35,8 +36,8 @@ func TestCreateUserClasses(t *testing.T) {
 }
 
 // Test: Create UserClasses and GetUserByClassId
-func TestGetUsersByClassId(t *testing.T) {
-	createAccountUser(t)
+func Test_GetUsersByClassId(t *testing.T) {
+	createAllAccountsAndUsers(t)
 	createClasses(t)
 	createAllUserClasses(t)
 
@@ -59,8 +60,8 @@ func TestGetUsersByClassId(t *testing.T) {
 }
 
 //Test: Create UserClasses and GetUserByUserAndClass
-func TestGetUserClassByUserAndClass(t *testing.T) {
-	createAccountUser(t)
+func Test_GetUserClassByUserAndClass(t *testing.T) {
+	createAllAccountsAndUsers(t)
 	createClasses(t)
 	createAllUserClasses(t)
 
@@ -80,8 +81,8 @@ func TestGetUserClassByUserAndClass(t *testing.T) {
 }
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
-func TestUpdateUserClass(t *testing.T) {
-	createAccountUser(t)
+func Test_UpdateUserClass(t *testing.T) {
+	createAllAccountsAndUsers(t)
 	createClasses(t)
 
 	userClass := createUserClass(1)
@@ -110,8 +111,8 @@ func TestUpdateUserClass(t *testing.T) {
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
-func TestDeleteUserClass(t *testing.T) {
-	createAccountUser(t)
+func Test_DeleteUserClass(t *testing.T) {
+	createAllAccountsAndUsers(t)
 	createClasses(t)
 
 	userClass := createUserClass(1)

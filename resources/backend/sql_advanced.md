@@ -1,9 +1,26 @@
 # SQL Advanced topics
 
 ## What is a GROUP BY?
+A [SQL GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) is a statement used to group rows with the same values together.
+In this codebase, GROUP BY can be used to select accounts, where the user can group the results by the account ID:
+```mysql
+SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0
+```
+
+As seen above, GROUP BY is commonly used with aggregate functions (e.g. SUM, MAX, MIN).
+
 ## What is HAVING?
+[SQL HAVING](https://www.w3schools.com/sql/sql_having.asp) is a statement used where the WHERE keyword cannot be used with aggregate functions (e.g. SUM, MAX, MIN). For example, in this codebase, HAVING is used to select accounts with negative balances:
+```mysql
+SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0
+```
+This statement will then return a group of rows where each account has a negative sum. The first couple columns describe the account, such as the account id, the primary email, and the password, and the last column is the sum. 
+
+![SQL_HAVING_IMAGE](../images/sql_ss.png)
 
 ## What is an Index?
+Indexes help to retrieve data from a database more quickly by acting as pointers to the data in a table. Indexes can also be unique and be used to prevent duplicate entries in a column. To create an index, we can use the [CREATE INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement. Similarly, to drop an index, we can use the [DROP INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement.
+
 ## What is a Constraint?
 [SQL constraints](https://www.w3schools.com/sql/sql_constraints.asp) are essentially rules that limit what data can be inserted into a table. Constraints are used to ensure that the data in a table is valid. This increases the reliability of data and allows people more control over their databases. 
 
