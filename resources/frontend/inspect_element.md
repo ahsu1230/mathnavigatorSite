@@ -1,6 +1,6 @@
 ## Understanding Inspect Element
 Inspect Element is a browser tool that lets you view and edit the HTML and CSS. However, you cannot make
-permanent changes. **Edits made will be deleted once you exit out. 
+permanent changes. **Edits made will be deleted once you exit out.**
 
 ### How to Open Inspect Element
 
