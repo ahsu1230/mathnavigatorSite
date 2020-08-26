@@ -16,7 +16,7 @@ SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=tr
 ```
 This statement will then return a group of rows where each account has a negative sum. The first couple columns describe the account, such as the account id, the primary email, and the password, and the last column is the sum. 
 
-<img src="../images/sql_ss.png">
+![SQL_HAVING_IMAGE](../images/sql_ss.png)
 
 ## What is an Index?
 Indexes help to retrieve data from a database more quickly by acting as pointers to the data in a table. Indexes can also be unique and be used to prevent duplicate entries in a column. To create an index, we can use the [CREATE INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement. Similarly, to drop an index, we can use the [DROP INDEX](https://www.w3schools.com/sql/sql_create_index.asp) statement.
