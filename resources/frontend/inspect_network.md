@@ -16,7 +16,7 @@ to see what is included in the API endpoint. This allows you to check if the API
 
 The image below shows how the API endpoint `api/accounts/unpaid` is called in the Admin Home Dashboard for Unpaid Accounts: 
 
-<img src="network.PNG" width="600" alt="Inspect Network">
+<img src="./../images/network.PNG" width="60%" alt="Inspect Network">
 
 - **Sorting the Resources**
     - You will see the Network Log with columns labeled: Name, Status, Type, Initiator, Size, Time, Waterfall. 
