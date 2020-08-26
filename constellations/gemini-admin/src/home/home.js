@@ -173,19 +173,6 @@ export class EmptyMessage extends React.Component {
                     publishMessage = <p>All accounts have paid!</p>;
             }
         }
-        /*
-            if (emptySection == "class") {
-                publishMessage = (
-                    <p>All classes have been successfully published!</p>
-                );
-            } else if (emptySection == "user") {
-                publishMessage = <p>There are no new users!</p>;
-            } else if (emptySection == "registration") {
-                publishMessage = <p>There are no registrations!</p>;
-            } else {
-                publishMessage = <p>All accounts have paid!</p>;
-            }
-        } */
 
         return publishMessage;
     }
