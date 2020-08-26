@@ -7,8 +7,8 @@ describe("AFH Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("Ask for Help");
-        expect(component.find("h1").text()).toContain(
+        expect(component.find("h1").at(0).text()).toContain("Ask for Help");
+        expect(component.find("h1").at(1).text()).toContain(
             "Ask for Help Sessions by Subject"
         );
 
