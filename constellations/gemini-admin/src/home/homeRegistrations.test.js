@@ -14,6 +14,8 @@ describe("Home Registrations", () => {
         expect(component.find("h3").at(1).text()).toContain(
             "New Registrations For AFH"
         );
-        expect(component.find("Link").at(1).text()).toContain("View By AFH Session");
+        expect(component.find("Link").at(1).text()).toContain(
+            "View By AFH Session"
+        );
     });
 });
