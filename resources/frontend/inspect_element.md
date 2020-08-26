@@ -12,7 +12,7 @@ permanent changes. **Edits made will be deleted once you exit out.**
 
 ### Three Parts of Element
 
-<img src="element.PNG" width="600" alt="Inspect Element">
+<img src="element.png" width="600" alt="Inspect Element">
 
 - **DOM Panel**
     - DOM panel is a tool used to change the page layout. You’ll have full control of HTML files and can modify them freely. It’s located in the upper part of the box under Elements. When you hover over the tags like <div> in DOM, the corresponding element will be highlighted in the viewport. You can expand or collapse the details for each element by clicking the grey triangle.
