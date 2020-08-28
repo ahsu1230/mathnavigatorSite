@@ -34,7 +34,7 @@ export class ClassSchedule extends React.Component {
     };
 
     render = () => {
-        const sessions = this.props.sessions;
+        const sessions = this.props.sessions || [];
 
         return (
             <div id="class-session">
