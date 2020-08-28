@@ -7,34 +7,30 @@ import API, { executeApiCalls } from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
+import { InputText, emptyValidator } from "../utils/inputText.js";
 import { InputSelect } from "../utils/inputSelect.js";
 import { Link } from "react-router-dom";
-import { emptyValidator } from "../utils/inputText.js";
 
 export class ClassEditPage extends React.Component {
     state = {
         isEdit: false,
 
         // class object
-        oldClassId: "",
-        inputClassKey: "",
-        inputTimeString: "",
-
-        selectProgramId: "",
-        selectSemesterId: "",
-        selectLocationId: "",
-
-        programs: [],
-        semesters: [],
-        locations: [],
-        sessions: [],
-
+        classKey: "",
+        times: "",
+        programId: "",
+        semesterId: "",
+        locationId: "",
         fullState: 0,
         googleClassCode: "",
         priceLump: 0,
         pricePerSession: 0,
         paymentNotes: "",
+
+        programs: [],
+        semesters: [],
+        locations: [],
+        sessions: [],
     };
 
     componentDidMount = () => {
@@ -67,17 +63,17 @@ export class ClassEditPage extends React.Component {
                         }
                     );
 
-                    let selectedProgramId = hasClassId
+                    let programId = hasClassId
                         ? classObj.programId
                         : programs.length
                         ? programs[0].programId
                         : undefined;
-                    let selectedSemesterId = hasClassId
+                    let semesterId = hasClassId
                         ? classObj.semesterId
                         : semesters.length
                         ? semesters[0].semesterId
                         : undefined;
-                    let selectedLocationId = hasClassId
+                    let locationId = hasClassId
                         ? classObj.locationId
                         : programs.length
                         ? locations[0].locationId
@@ -85,24 +81,21 @@ export class ClassEditPage extends React.Component {
 
                     this.setState({
                         isEdit: !!classId,
-                        oldClassId: classObj.classId,
-                        inputClassKey: classObj.classKey || "",
-                        inputTimeString: classObj.times || "",
-
-                        selectProgramId: selectedProgramId,
-                        selectSemesterId: selectedSemesterId,
-                        selectLocationId: selectedLocationId,
-
-                        programs: programs,
-                        semesters: semesters,
-                        locations: locations,
-                        sessions: sessions,
-
+                        classKey: classObj.classKey || "",
+                        times: classObj.times || "",
+                        programId: programId,
+                        semesterId: semesterId,
+                        locationId: locationId,
                         fullState: classObj.fullState,
                         googleClassCode: classObj.googleClassCode || "",
                         priceLump: classObj.priceLump || 0,
                         pricePerSession: classObj.pricePerSession || 0,
                         paymentNotes: classObj.paymentNotes || "",
+
+                        programs: programs,
+                        semesters: semesters,
+                        locations: locations,
+                        sessions: sessions,
                     });
                 })
             )
@@ -112,10 +105,9 @@ export class ClassEditPage extends React.Component {
     };
 
     createClassId = () => {
-        let classId =
-            this.state.selectProgramId + "_" + this.state.selectSemesterId;
-        classId = this.state.inputClassKey
-            ? classId + "_" + this.state.inputClassKey
+        let classId = this.state.programId + "_" + this.state.semesterId;
+        classId = this.state.classKey
+            ? classId + "_" + this.state.classKey
             : classId;
         return classId;
     };
@@ -141,15 +133,14 @@ export class ClassEditPage extends React.Component {
     };
 
     onClickSave = () => {
-        const oldClassId = this.state.oldClassId;
-        const newClassId = this.createClassId();
+        const classId = this.createClassId();
         let classObj = {
-            classId: newClassId,
-            programId: this.state.selectProgramId,
-            semesterId: this.state.selectSemesterId,
-            locationId: this.state.selectLocationId,
-            classKey: this.state.inputClassKey,
-            times: this.state.inputTimeString,
+            classId: classId,
+            programId: this.state.programId,
+            semesterId: this.state.semesterId,
+            locationId: this.state.locationId,
+            classKey: this.state.classKey,
+            times: this.state.times,
             fullState: this.state.fullState,
             googleClassCode: this.state.googleClassCode,
             priceLump: parseInt(this.state.priceLump),
@@ -162,9 +153,7 @@ export class ClassEditPage extends React.Component {
 
         let apiCalls = [];
         if (this.state.isEdit) {
-            apiCalls.push(
-                API.post("api/classes/class/" + oldClassId, classObj)
-            );
+            apiCalls.push(API.post("api/classes/class/" + classId, classObj));
         } else {
             apiCalls.push(API.post("api/classes/create", classObj));
         }
@@ -274,9 +263,9 @@ export class ClassEditPage extends React.Component {
                         label="ProgramId"
                         description="Select a program id"
                         required={true}
-                        value={this.state.selectProgramId}
+                        value={this.state.programId}
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "selectProgramId")
+                            this.handleChange(e, "programId")
                         }
                         options={programOptions}
                         errorMessageIfEmpty={
@@ -291,9 +280,9 @@ export class ClassEditPage extends React.Component {
                         label="SemesterId"
                         description="Select a semester id"
                         required={true}
-                        value={this.state.selectSemesterId}
+                        value={this.state.semesterId}
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "selectSemesterId")
+                            this.handleChange(e, "semesterId")
                         }
                         options={semesterOptions}
                         errorMessageIfEmpty={
@@ -307,9 +296,9 @@ export class ClassEditPage extends React.Component {
                     <InputText
                         label="ClassKey"
                         description="Enter the class key. (Example: class1)"
-                        value={this.state.inputClassKey}
+                        value={this.state.classKey}
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "inputClassKey")
+                            this.handleChange(e, "classKey")
                         }
                     />
 
@@ -364,9 +353,9 @@ export class ClassEditPage extends React.Component {
                         label="LocationId"
                         description="Select a location id"
                         required={true}
-                        value={this.state.selectLocationId}
+                        value={this.state.locationId}
                         onChangeCallback={(e) =>
-                            this.handleChange(e, "selectLocationId")
+                            this.handleChange(e, "locationId")
                         }
                         options={locationOptions}
                         errorMessageIfEmpty={
@@ -383,10 +372,8 @@ export class ClassEditPage extends React.Component {
                                     time every week. Each class session should be separated
                                     by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
                         required={true}
-                        value={this.state.inputTimeString}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "inputTimeString")
-                        }
+                        value={this.state.times}
+                        onChangeCallback={(e) => this.handleChange(e, "times")}
                         validators={[emptyValidator("time")]}
                     />
 

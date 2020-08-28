@@ -8,7 +8,7 @@ export class SessionList extends React.Component {
     render = () => {
         const classId = this.props.classId;
         const sessions = this.props.sessions;
-        const rows = sessions.map((session, index) => {
+        const rows = (sessions || []).map((session, index) => {
             let status;
             if (session.canceled) {
                 status = "Canceled";

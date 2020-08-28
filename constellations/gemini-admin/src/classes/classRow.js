@@ -1,38 +1,37 @@
 "use strict";
 require("./classRow.sass");
 import React from "react";
-import moment from "moment";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../utils/userUtils.js";
 
 export class ClassRow extends React.Component {
     render = () => {
-        const row = this.props.row;
+        const classObj = this.props.classObj;
         const isUnpublished = this.props.isUnpublished;
+        const url = "/classes/" + classObj.classId + "/edit";
+
+        const price = classObj.pricePerSession
+            ? formatCurrency(classObj.pricePerSession) + " per session"
+            : formatCurrency(classObj.priceLump) + " total";
 
         return (
             <div id={isUnpublished ? "unpublished" : ""} className="row">
                 {renderCheckbox(
-                    row.classId,
+                    classObj.classId,
                     this.props.isCollapsed,
                     isUnpublished,
                     this.props.isSelected,
                     this.props.onSelectRow
                 )}
-                <span className="column">
+                <span className="small-column">
                     {isUnpublished ? "Unpublished" : "Published"}
                 </span>
-                <span className="large-column">{row.classId}</span>
-                <span className="column">{row.locationId}</span>
-                <span className="medium-column">
-                    {moment(row.startDate).format("M/D/YYYY")}
-                    {" - "}
-                    {moment(row.endDate).format("M/D/YYYY")}
-                </span>
-                <span className="large-column">{row.times}</span>
+                <span className="large-column">{classObj.classId}</span>
+                <span className="medium-column">{classObj.locationId}</span>
+                <span className="large-column">{classObj.times}</span>
+                <span className="medium-column">{price}</span>
                 <span className="edit">
-                    <Link to={"/classes/" + row.classId + "/edit"}>
-                        {"Edit >"}
-                    </Link>
+                    <Link to={url}>{"Edit >"}</Link>
                 </span>
             </div>
         );

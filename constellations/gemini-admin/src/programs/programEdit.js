@@ -5,19 +5,17 @@ import API from "../api.js";
 import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
+import { InputText, emptyValidator } from "../utils/inputText.js";
 
 export class ProgramEditPage extends React.Component {
     state = {
         isEdit: false,
-        showDeleteModal: false,
-        showSaveModal: false,
         oldProgramId: "",
-        inputProgramId: "",
-        inputProgramName: "",
-        inputGrade1: 0,
-        inputGrade2: 0,
-        inputDescription: "",
+        programId: "",
+        name: "",
+        grade1: 0,
+        grade2: 0,
+        description: "",
     };
 
     componentDidMount = () => {
@@ -27,11 +25,11 @@ export class ProgramEditPage extends React.Component {
                 const program = res.data;
                 this.setState({
                     oldProgramId: program.programId,
-                    inputProgramId: program.programId,
-                    inputProgramName: program.name,
-                    inputGrade1: program.grade1,
-                    inputGrade2: program.grade2,
-                    inputDescription: program.description,
+                    programId: program.programId,
+                    name: program.name,
+                    grade1: program.grade1,
+                    grade2: program.grade2,
+                    description: program.description,
                     isEdit: true,
                 });
             });
@@ -52,11 +50,11 @@ export class ProgramEditPage extends React.Component {
 
     onClickSave = () => {
         let program = {
-            programId: this.state.inputProgramId,
-            name: this.state.inputProgramName,
-            grade1: parseInt(this.state.inputGrade1),
-            grade2: parseInt(this.state.inputGrade2),
-            description: this.state.inputDescription,
+            programId: this.state.programId,
+            name: this.state.name,
+            grade1: parseInt(this.state.grade1),
+            grade2: parseInt(this.state.grade2),
+            description: this.state.description,
         };
 
         let successCallback = () => this.setState({ showSaveModal: true });
@@ -149,50 +147,31 @@ export class ProgramEditPage extends React.Component {
                 <h2>{title}</h2>
 
                 <InputText
-                    label="Program Id"
-                    value={this.state.inputProgramId}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputProgramId")
-                    }
+                    label="Program ID"
+                    value={this.state.programId}
+                    onChangeCallback={(e) => this.handleChange(e, "programId")}
                     required={true}
                     description="Enter the program ID. Examples: ap_calculus, sat1, ap_java"
-                    validators={[
-                        {
-                            validate: (programId) => programId != "",
-                            message: "You must input a programId",
-                        },
-                    ]}
+                    validators={[emptyValidator("program ID")]}
                 />
 
                 <InputText
                     label="Program Name"
-                    value={this.state.inputProgramName}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputProgramName")
-                    }
+                    value={this.state.name}
+                    onChangeCallback={(e) => this.handleChange(e, "name")}
                     required={true}
                     description="Enter the program name. This name will be present to users. Example: AP Calculus, SAT2 Subject Math"
-                    validators={[
-                        {
-                            validate: (name) => name != "",
-                            message: "You must input a name",
-                        },
-                    ]}
+                    validators={[emptyValidator("program name")]}
                 />
 
                 <InputText
                     label="Grade1"
-                    value={this.state.inputGrade1}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputGrade1")
-                    }
+                    value={this.state.grade1}
+                    onChangeCallback={(e) => this.handleChange(e, "grade1")}
                     required={true}
                     description="Enter the lower grade"
                     validators={[
-                        {
-                            validate: (grade1) => grade1 != "",
-                            message: "You must input a grade",
-                        },
+                        emptyValidator("grade"),
                         {
                             validate: (grade1) =>
                                 parseInt(grade1) >= 1 && parseInt(grade1) <= 12,
@@ -200,7 +179,7 @@ export class ProgramEditPage extends React.Component {
                         },
                         {
                             validate: (grade1) =>
-                                this.state.inputGrade2 >= parseInt(grade1),
+                                this.state.grade2 >= parseInt(grade1),
                             message:
                                 "Grade1 must be less than or equal to Grade2",
                         },
@@ -209,17 +188,12 @@ export class ProgramEditPage extends React.Component {
 
                 <InputText
                     label="Grade2"
-                    value={this.state.inputGrade2}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputGrade2")
-                    }
+                    value={this.state.grade2}
+                    onChangeCallback={(e) => this.handleChange(e, "grade2")}
                     required={true}
                     description="Enter the higher grade"
                     validators={[
-                        {
-                            validate: (grade2) => grade2 != "",
-                            message: "You must input a grade",
-                        },
+                        emptyValidator("grade"),
                         {
                             validate: (grade2) =>
                                 parseInt(grade2) >= 1 && parseInt(grade2) <= 12,
@@ -227,7 +201,7 @@ export class ProgramEditPage extends React.Component {
                         },
                         {
                             validate: (grade2) =>
-                                this.state.inputGrade1 <= parseInt(grade2),
+                                this.state.grade1 <= parseInt(grade2),
                             message:
                                 "Grade2 must be greater than or equal to Grade1",
                         },
@@ -237,9 +211,9 @@ export class ProgramEditPage extends React.Component {
                 <InputText
                     label="Description"
                     isTextBox={true}
-                    value={this.state.inputDescription}
+                    value={this.state.description}
                     onChangeCallback={(e) =>
-                        this.handleChange(e, "inputDescription")
+                        this.handleChange(e, "description")
                     }
                     required={true}
                     description="Enter the description"

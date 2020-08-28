@@ -12,7 +12,7 @@ describe("Achievement Page", () => {
         expect(component.find("AchieveRow").length).toBe(0);
     });
 
-    test("renders 2 rows", () => {
+    test("renders 3 rows", () => {
         const achievements = [
             {
                 year: 2020,
