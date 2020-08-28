@@ -271,7 +271,7 @@ func TestDeleteAccount(t *testing.T) {
 	}
 
 	// Validate results
-	if err := mock.ExpectationsWereMet();  err != nil {
+	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
 }
