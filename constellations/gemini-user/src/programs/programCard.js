@@ -43,7 +43,7 @@ export class ProgramCard extends React.Component {
     };
 
     render = () => {
-        const program = this.props.program;
+        const program = this.props.program || {};
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
 
         let star =

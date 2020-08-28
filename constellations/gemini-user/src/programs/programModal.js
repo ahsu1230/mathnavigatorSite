@@ -6,9 +6,9 @@ import { getFullStateName } from "../utils/utils.js";
 
 export class ProgramModal extends React.Component {
     render = () => {
-        const semester = this.props.semester;
-        const program = this.props.program;
-        const classes = this.props.classes;
+        const semester = this.props.semester || {};
+        const program = this.props.program || {};
+        const classes = this.props.classes || [];
 
         const classList = classes.map((c, index) => (
             <ProgramClass key={index} classObj={c} />
