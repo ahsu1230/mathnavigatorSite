@@ -49,28 +49,28 @@ describe("Class Page", () => {
         expect(component.find("h1").text()).toBe(
             "Programs > SAT Math Fall 2020 class1"
         );
+        
         expect(component.find("Link").at(0).text()).toBe("Programs");
+        expect(component.find("Link").at(1).text()).toBe("Register");
+        expect(component.find("Link").at(2).text()).toBe("Contact Us");
+        expect(component.find("Link").at(3).text()).toBe("< More Programs");
+
+        expect(component.find("h3").at(0).text()).toBe("Location");
+        expect(component.find("h3").at(1).text()).toBe("Times");
+        expect(component.find("h3").at(2).text()).toBe("Pricing");
+
         expect(component.find("h4").at(0).text()).toBe("ALMOST FULL");
         expect(component.find("h4").at(1).text()).toBe("Grades: 9 - 12");
-        expect(component.find("p").at(0).text()).toBe("SAT Math Preparation");
 
-        expect(component.find("Link").at(1).text()).toBe("Register");
-        expect(component.find("h3").at(0).text()).toBe("Location");
+        expect(component.find("p").at(0).text()).toBe("SAT Math Preparation");
         expect(component.find("p").at(1).text()).toBe("11300 Gainsborough Rd");
         expect(component.find("p").at(2).text()).toBe("Potomac, MD 20854");
         expect(component.find("p").at(3).text()).toBe("");
-
-        expect(component.find("h3").at(1).text()).toBe("Times");
         expect(component.find("p").at(4).text()).toBe("Tue. 5:00pm - 7:00pm");
         expect(component.find("p").at(5).text()).toBe("Sat. 1:00pm - 3:00pm");
         expect(component.find("p").at(6).text()).toBe("No sessions scheduled");
-
-        expect(component.find("h3").at(2).text()).toBe("Pricing");
         expect(component.find("p").at(7).text()).toBe(
             "Price per session: $50.00"
         );
-
-        expect(component.find("Link").at(2).text()).toBe("Contact Us");
-        expect(component.find("Link").at(3).text()).toBe("< More Programs");
     });
 });

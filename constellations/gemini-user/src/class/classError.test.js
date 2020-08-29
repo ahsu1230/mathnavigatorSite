@@ -11,7 +11,7 @@ describe("Class Error Page", () => {
         expect(component.find("Link").text()).toBe("View our Programs");
     });
 
-    test("renders classId", () => {
+    test("renders invalid classId", () => {
         component.setProps({ classId: "invalid_id" });
         expect(component.find("span").text()).toBe(
             "Class ID 'invalid_id' does not exist."
