@@ -13,7 +13,7 @@ This Account has the following features:
 - studentB enrolled only in ap_java
 - Account is still pending payment
 */
-func Fill(hostAddress string) {
+func Fill() {
 	log.Println("Fill account2")
 
 	// ASSUMPTION! We are assuming this is the second account
@@ -35,7 +35,6 @@ func Fill(hostAddress string) {
 		"Mother of Chang family",
 	)
 	utils.CreateAccount(
-		hostAddress,
 		accountJson,
 		guardianJson,
 	)
@@ -50,7 +49,7 @@ func Fill(hostAddress string) {
 		"301-555-4445",
 		"Father of Chang family",
 	)
-	utils.AddUser(hostAddress, guardianJson)
+	utils.AddUser(guardianJson)
 
 	// Add two students to account
 	studentJson := utils.CreateUserStudentJson(
@@ -64,7 +63,7 @@ func Fill(hostAddress string) {
 		"Thomas Wootton High School",
 		2024,
 	)
-	utils.AddUser(hostAddress, studentJson)
+	utils.AddUser(studentJson)
 	studentJson = utils.CreateUserStudentJson(
 		accountId,
 		"Michael",
@@ -76,32 +75,28 @@ func Fill(hostAddress string) {
 		"Thomas Wootton High School",
 		2022,
 	)
-	utils.AddUser(hostAddress, studentJson)
+	utils.AddUser(studentJson)
 
 	// Add two transactions to account
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		-400,
 		"charge",
 		"Michelle enrolled into AP Calculus",
 	)
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		-400,
 		"charge",
 		"Michelle enrolled into AP Java",
 	)
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		-400,
 		"charge",
 		"Michael enrolled into AP Java",
 	)
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		800,
 		"pay_cash",

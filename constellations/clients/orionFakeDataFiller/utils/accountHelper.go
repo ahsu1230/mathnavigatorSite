@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-func CreateAccount(hostAddress, accountJson, userJson string) error {
+func CreateAccount(accountJson, userJson string) error {
 	body := strings.NewReader(fmt.Sprintf(`{
 		"account": %s,
 		"user": %s
 	}`, accountJson, userJson))
 	log.Println("Creating account and primary user...")
-	SendPostRequest(hostAddress+"/api/accounts/create", body)
+	SendPostRequest("/api/accounts/create", body)
 	return nil
 }
 
@@ -93,14 +93,18 @@ func createUserJson(
 	)
 }
 
-func AddUser(hostAddress string, userJson string) error {
+func AddUser(userJson string) error {
 	log.Println("Creating another user...")
 	body := strings.NewReader(userJson)
-	SendPostRequest(hostAddress+"/api/users/create", body)
+	SendPostRequest("/api/users/create", body)
 	return nil
 }
 
-func CreateTransaction(hostAddress string, accountId int, amount int, paymentType string, paymentNotes string) error {
+func CreateTransaction(
+	accountId int, 
+	amount int, 
+	paymentType string, 
+	paymentNotes string) error {
 	transactionBody := strings.NewReader(fmt.Sprintf(`{
 		"amount": %d,
 		"paymentType": "%s",
@@ -113,6 +117,6 @@ func CreateTransaction(hostAddress string, accountId int, amount int, paymentTyp
 		accountId,
 	))
 	log.Printf("Creating transaction for accountId %d, %s\n", accountId, paymentNotes)
-	SendPostRequest(hostAddress+"/api/transactions/create", transactionBody)
+	SendPostRequest("/api/transactions/create", transactionBody)
 	return nil
 }

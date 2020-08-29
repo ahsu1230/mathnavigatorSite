@@ -12,7 +12,7 @@ This Account has the following features:
 - Student enrolled into ap_calculus
 - Account is fully paid
 */
-func Fill(hostAddress string) {
+func Fill() {
 	log.Println("Fill account1")
 
 	// ASSUMPTION! We are assuming this is the first account
@@ -34,7 +34,6 @@ func Fill(hostAddress string) {
 		"Father of Smith family",
 	)
 	utils.CreateAccount(
-		hostAddress,
 		accountJson,
 		guardianJson,
 	)
@@ -51,18 +50,16 @@ func Fill(hostAddress string) {
 		"Winston Churchill High School",
 		2022,
 	)
-	utils.AddUser(hostAddress, studentJson)
+	utils.AddUser(studentJson)
 
 	// Add two transactions to account
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		-100,
 		"charge",
 		"Enrolled in a short class",
 	)
 	utils.CreateTransaction(
-		hostAddress,
 		accountId,
 		100,
 		"pay_paypal",

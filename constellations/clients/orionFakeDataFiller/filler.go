@@ -33,308 +33,208 @@ func main() {
 	flag.StringVar(&orionHost, "orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
 	flag.Parse()
 
-	runFiller(orionHost)
+	utils.InitHostAddress(orionHost)
+	runFiller()
 
 	log.Println("Done filling orion")
 }
 
-func runFiller(hostAddress string) {
+func runFiller() {
 	// Create programs
-	// createProgram(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"AP Calculus",
-	// 	9,
-	// 	12,
-	// 	"Students should take this course if they aim to take the AP Calculus Exam",
-	// )
+	createProgram(
+		"ap_calculus",
+		"AP Calculus",
+		9,
+		12,
+		"Students should take this course if they aim to take the AP Calculus Exam",
+	)
 
-	// createProgram(
-	// 	hostAddress,
-	// 	"ap_java",
-	// 	"AP Java",
-	// 	10,
-	// 	12,
-	// 	"Students should take this course if they aim to take the AP Java Exam",
-	// )
+	createProgram(
+		"ap_java",
+		"AP Java",
+		10,
+		12,
+		"Students should take this course if they aim to take the AP Java Exam",
+	)
 
-	// createProgram(
-	// 	hostAddress,
-	// 	"sat_math",
-	// 	"SAT Math",
-	// 	8,
-	// 	11,
-	// 	"Students should take the course if they aim to take the SAT Math Exam",
-	// )
+	createProgram(
+		"sat_math",
+		"SAT Math",
+		8,
+		11,
+		"Students should take the course if they aim to take the SAT Math Exam",
+	)
 
-	// createProgram(
-	// 	hostAddress,
-	// 	"amc_prep",
-	// 	"AMC Prep",
-	// 	9,
-	// 	12,
-	// 	"Students should take the course if they aim to take the AMC Test",
-	// )
+	createProgram(
+		"amc_prep",
+		"AMC Prep",
+		9,
+		12,
+		"Students should take the course if they aim to take the AMC Test",
+	)
 
-	// // Create semesters
-	// createSemester(
-	// 	hostAddress,
-	// 	"2020_fall",
-	// 	"Fall 2020",
-	// )
+	// Create semesters
+	createSemester(
+		"2020_fall",
+		"Fall 2020",
+	)
 
-	// createSemester(
-	// 	hostAddress,
-	// 	"2021_summer",
-	// 	"Summer 2021",
-	// )
+	createSemester(
+		"2021_summer",
+		"Summer 2021",
+	)
 
-	// createSemester(
-	// 	hostAddress,
-	// 	"2021_winter",
-	// 	"Winter 2021",
-	// )
+	createSemester(
+		"2021_winter",
+		"Winter 2021",
+	)
 
-	// // Create locations
-	// createLocation(
-	// 	hostAddress,
-	// 	"wchs",
-	// 	"11300 Gainsborough Rd",
-	// 	"Potomac",
-	// 	"MD",
-	// 	"20854",
-	// )
+	// Create locations
+	createLocation(
+		"wchs",
+		"11300 Gainsborough Rd",
+		"Potomac",
+		"MD",
+		"20854",
+	)
 
-	// createLocation(
-	// 	hostAddress,
-	// 	"house1",
-	// 	"123 Sesame St",
-	// 	"Rockville",
-	// 	"MD",
-	// 	"20854",
-	// )
+	createLocation(
+		"house1",
+		"123 Sesame St",
+		"Rockville",
+		"MD",
+		"20854",
+	)
 
-	// // Create achievements
-	// createAchieve(
-	// 	hostAddress,
-	// 	"2020",
-	// 	"100% of students scored above a 1550 on SAT!",
-	// )
+	// Create achievements
+	createAchieve(
+		"2020",
+		"100% of students scored above a 1550 on SAT!",
+	)
 
-	// createAchieve(
-	// 	hostAddress,
-	// 	"2020",
-	// 	"5 students scored an 800 on SAT Math!",
-	// )
+	createAchieve(
+		"2020",
+		"5 students scored an 800 on SAT Math!",
+	)
 
-	// createAchieve(
-	// 	hostAddress,
-	// 	"2019",
-	// 	"10 students scored a 5 on AP Java!",
-	// )
+	createAchieve(
+		"2019",
+		"10 students scored a 5 on AP Java!",
+	)
 
-	// // Create announcements
-	// createAnnounce(
-	// 	hostAddress,
-	// 	"Author Name",
-	// 	"The Summer 2020 session of SAT Math",
-	// 	"true",
-	// )
+	// Create announcements
+	createAnnounce(
+		"Author Name",
+		"The Summer 2020 session of SAT Math",
+		"true",
+	)
 
-	// createAnnounce(
-	// 	hostAddress,
-	// 	"Harry Potter",
-	// 	"The Summer 2021 session of SAT Math",
-	// 	"false",
-	// )
+	createAnnounce(
+		"Harry Potter",
+		"The Summer 2021 session of SAT Math",
+		"false",
+	)
 
-	// // Create classes
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"2020_fall",
-	// 	"class1",
-	// 	"ap_calculus_2020_fall_class1",
-	// 	"wchs",
-	// 	"Tues 1pm - 2pm",
-	// )
+	// Create classes
+	createClass(
+		"ap_calculus",
+		"2020_fall",
+		"class1",
+		"ap_calculus_2020_fall_class1",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_java",
-	// 	"2020_fall",
-	// 	"class1",
-	// 	"ap_java_2020_fall_class1",
-	// 	"house1",
-	// 	"Wed 1pm - 2pm",
-	// )
+	createClass(
+		"ap_java",
+		"2020_fall",
+		"class1",
+		"ap_java_2020_fall_class1",
+		"house1",
+		"Wed 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"amc_prep",
-	// 	"2020_fall",
-	// 	"class1",
-	// 	"amc_prep_2020_fall_class1",
-	// 	"house1",
-	// 	"Thurs 1pm - 2pm",
-	// )
+	createClass(
+		"amc_prep",
+		"2020_fall",
+		"class1",
+		"amc_prep_2020_fall_class1",
+		"house1",
+		"Thurs 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"2021_summer",
-	// 	"class1",
-	// 	"ap_calculus_2021_summer_class1",
-	// 	"wchs",
-	// 	"Tues 5pm - 7pm",
-	// )
+	createClass(
+		"ap_calculus",
+		"2021_summer",
+		"class1",
+		"ap_calculus_2021_summer_class1",
+		"wchs",
+		"Tues 5pm - 7pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"2021_summer",
-	// 	"class2",
-	// 	"ap_calculus_2021_summer_class2",
-	// 	"wchs",
-	// 	"Tues 1pm - 2pm",
-	// )
+	createClass(
+		"ap_calculus",
+		"2021_summer",
+		"class2",
+		"ap_calculus_2021_summer_class2",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"2021_summer",
-	// 	"class3",
-	// 	"ap_calculus_2021_summer_class3",
-	// 	"wchs",
-	// 	"Wed 1pm - 2pm",
-	// )
+	createClass(
+		"ap_calculus",
+		"2021_summer",
+		"class3",
+		"ap_calculus_2021_summer_class3",
+		"wchs",
+		"Wed 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_java",
-	// 	"2021_summer",
-	// 	"class1",
-	// 	"ap_java_2021_summer_class1",
-	// 	"house1",
-	// 	"Tues 5pm - 7pm",
-	// )
+	createClass(
+		"ap_java",
+		"2021_summer",
+		"class1",
+		"ap_java_2021_summer_class1",
+		"house1",
+		"Tues 5pm - 7pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"ap_calculus",
-	// 	"2021_winter",
-	// 	"class1",
-	// 	"ap_calculus_2021_winter_class1",
-	// 	"wchs",
-	// 	"Tues 1pm - 2pm",
-	// )
+	createClass(
+		"ap_calculus",
+		"2021_winter",
+		"class1",
+		"ap_calculus_2021_winter_class1",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
 
-	// createClass(
-	// 	hostAddress,
-	// 	"sat_math",
-	// 	"2021_winter",
-	// 	"class1",
-	// 	"sat_math_2021_winter_class1",
-	// 	"wchs",
-	// 	"Tues 1pm - 2pm",
-	// )
+	createClass(
+		"sat_math",
+		"2021_winter",
+		"class1",
+		"sat_math_2021_winter_class1",
+		"wchs",
+		"Tues 1pm - 2pm",
+	)
 
-	// // Create sessions
-	// createSessions(
-	// 	hostAddress,
-	// 	"ap_java_2020_fall_class1",
-	// 	"false",
-	// 	3,
-	// )
+	// Create sessions
+	createSessions(
+		"ap_java_2020_fall_class1",
+		"false",
+		3,
+	)
 
-	// createSessions(
-	// 	hostAddress,
-	// 	"ap_calculus_2020_fall_class1",
-	// 	"true",
-	// 	2,
-	// )
+	createSessions(
+		"ap_calculus_2020_fall_class1",
+		"true",
+		2,
+	)
 
-	account1.Fill(hostAddress)
-	account2.Fill(hostAddress)
-
-	// Create Accounts
-
-	// createAccount(hostAddress,
-	// 	"billybob@gmail.com",
-	// 	"2redssssa",
-	// )
-
-	// // Create Users
-
-	// createUser(
-	// 	hostAddress,
-	// 	"Joe",
-	// 	"Smith",
-	// 	"Mom",
-	// 	"JoeMom@gmail.com",
-	// 	"301-456-1244",
-	// 	true,
-	// 	1,
-	// 	"notes1",
-	// 	"",
-	// 	0,
-	// )
-
-	// createUser(
-	// 	hostAddress,
-	// 	"Billy",
-	// 	"Bob",
-	// 	"Joe",
-	// 	"billybob@gmail.com",
-	// 	"301-288-8764",
-	// 	false,
-	// 	2,
-	// 	"notes2",
-	// 	"Winston Churchill HS",
-	// 	2002,
-	// )
-
-	// createUser(
-	// 	hostAddress,
-	// 	"Billy",
-	// 	"Bob",
-	// 	"Dad",
-	// 	"billydad@gmail.com",
-	// 	"301-223-2442",
-	// 	true,
-	// 	2,
-	// 	"notes2",
-	// 	"",
-	// 	0,
-	// )
-
-	// // Create transactions
-	// createTransaction(
-	// 	hostAddress,
-	// 	100,
-	// 	"pay_paypal",
-	// 	"notes1",
-	// 	1,
-	// )
-
-	// createTransaction(
-	// 	hostAddress,
-	// 	101,
-	// 	"pay_cash",
-	// 	"notes2",
-	// 	2,
-	// )
-
-	// createTransaction(
-	// 	hostAddress,
-	// 	-300,
-	// 	"charge",
-	// 	"notes2",
-	// 	2,
-	// )
+	account1.Fill()
+	account2.Fill()
 }
 
-func createProgram(hostAddress, programId string, name string, grade1, grade2 int, description string) error {
+func createProgram(programId string, name string, grade1, grade2 int, description string) error {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
@@ -343,21 +243,21 @@ func createProgram(hostAddress, programId string, name string, grade1, grade2 in
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
 	log.Println("Creating program " + programId + "...")
-	utils.SendPostRequest(hostAddress+"/api/programs/create", programBody)
+	utils.SendPostRequest("/api/programs/create", programBody)
 	return nil
 }
 
-func createSemester(hostAddress, semesterId string, title string) error {
+func createSemester(semesterId string, title string) error {
 	semesterBody := strings.NewReader(fmt.Sprintf(`{
 		"semesterId": "%s",
 		"title": "%s"
 	}`, semesterId, title))
 	log.Println("Creating semester " + semesterId + "...")
-	utils.SendPostRequest(hostAddress+"/api/semesters/create", semesterBody)
+	utils.SendPostRequest("/api/semesters/create", semesterBody)
 	return nil
 }
 
-func createLocation(hostAddress, locationId, street, city, state, zipcode string) error {
+func createLocation(locationId, street, city, state, zipcode string) error {
 	locationBody := strings.NewReader(fmt.Sprintf(`{
 		"locationId": "%s",
 		"street": "%s",
@@ -366,21 +266,21 @@ func createLocation(hostAddress, locationId, street, city, state, zipcode string
 		"zipcode": "%s"
 	}`, locationId, street, city, state, zipcode))
 	log.Println("Creating location " + locationId + "...")
-	utils.SendPostRequest(hostAddress+"/api/locations/create", locationBody)
+	utils.SendPostRequest("/api/locations/create", locationBody)
 	return nil
 }
 
-func createAchieve(hostAddress, year, message string) error {
+func createAchieve(year, message string) error {
 	achieveBody := strings.NewReader(fmt.Sprintf(`{
 		"year": %s,
 		"message": "%s"
 	}`, year, message))
 	log.Println("Creating achievement " + message + "...")
-	utils.SendPostRequest(hostAddress+"/api/achievements/create", achieveBody)
+	utils.SendPostRequest("/api/achievements/create", achieveBody)
 	return nil
 }
 
-func createAnnounce(hostAddress, author, message, onHomePage string) error {
+func createAnnounce(author, message, onHomePage string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 
@@ -391,11 +291,11 @@ func createAnnounce(hostAddress, author, message, onHomePage string) error {
 		"onHomePage": %s
 	}`, nowJson, author, message, onHomePage))
 	log.Println("Creating announcement " + message + "...")
-	utils.SendPostRequest(hostAddress+"/api/announcements/create", announceBody)
+	utils.SendPostRequest("/api/announcements/create", announceBody)
 	return nil
 }
 
-func createClass(hostAddress, programId, semesterId, classKey, classId, locationId, times string) error {
+func createClass(programId, semesterId, classKey, classId, locationId, times string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 	var later = now.Add(time.Hour * 24 * 30)
@@ -424,11 +324,11 @@ func createClass(hostAddress, programId, semesterId, classKey, classId, location
 		priceLump,
 	))
 	log.Println("Creating class " + classId + "...")
-	utils.SendPostRequest(hostAddress+"/api/classes/create", classBody)
+	utils.SendPostRequest("/api/classes/create", classBody)
 	return nil
 }
 
-func createSessions(hostAddress, classId, cancelled string, numSessions int) error {
+func createSessions(classId, cancelled string, numSessions int) error {
 	// Create session takes in a list
 	var body = "["
 	now := time.Now().UTC()
@@ -455,7 +355,6 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 	body += "]"
 	sessionBody := strings.NewReader(body)
 	log.Println("Creating session for " + classId + "...")
-	utils.SendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
-
+	utils.SendPostRequest("/api/sessions/create", sessionBody)
 	return nil
 }
