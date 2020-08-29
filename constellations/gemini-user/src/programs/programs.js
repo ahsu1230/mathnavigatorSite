@@ -54,9 +54,9 @@ export class ProgramsPage extends React.Component {
     };
 }
 
-class ProgramSection extends React.Component {
+export class ProgramSection extends React.Component {
     render = () => {
-        const semester = this.props.semester;
+        const semester = this.props.semester || {};
         const programClasses = this.props.programClasses || [];
 
         let programs = [];

@@ -3,6 +3,7 @@ require("./class.sass");
 import React from "react";
 import moment from "moment";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import API from "../utils/api.js";
 import { formatCurrency, getFullStateName } from "../utils/utils.js";
 import { Link } from "react-router-dom";
@@ -133,7 +134,7 @@ export class ClassPage extends React.Component {
         const sessions = this.state.sessions;
         const url = "/contact?interest=" + classObj.classId;
 
-        if (_.isEmpty(classObj))
+        if (isEmpty(classObj))
             return <ClassErrorPage classId={this.props.classId} />;
         else
             return (
