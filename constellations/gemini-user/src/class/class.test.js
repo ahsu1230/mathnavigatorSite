@@ -49,7 +49,7 @@ describe("Class Page", () => {
         expect(component.find("h1").text()).toBe(
             "Programs > SAT Math Fall 2020 class1"
         );
-        
+
         expect(component.find("Link").at(0).text()).toBe("Programs");
         expect(component.find("Link").at(1).text()).toBe("Register");
         expect(component.find("Link").at(2).text()).toBe("Contact Us");
