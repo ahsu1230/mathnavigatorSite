@@ -4,7 +4,7 @@ import React from "react";
 import API from "../utils/api.js";
 import { keys, sortBy, groupBy } from "lodash";
 
-export class YearList extends React.Component {
+class YearList extends React.Component {
     render() {
         let a = this.props.achievements;
         let year = this.props.year;
@@ -46,10 +46,9 @@ export class AchievementPage extends React.Component {
         let sorted = groupBy(achievements, (a) => a.year);
         let years = sortBy(keys(sorted)).reverse();
 
-        let items = [];
-        years.forEach((year) => {
-            items.push(
-                <YearList key={year} year={year} achievements={sorted[year]} />
+        const items = years.map((year, index) => {
+            return (
+                <YearList key={index} year={year} achievements={sorted[year]} />
             );
         });
 
@@ -62,7 +61,6 @@ export class AchievementPage extends React.Component {
                         <h3>Congratulations to our students!</h3>
                         <h3>With their hard work, we all succeed!</h3>
                     </div>
-
                     {items}
                 </div>
             </div>
