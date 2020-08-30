@@ -37,7 +37,12 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	utils.LogWithContext("semesterRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Semester, 0)
 
-	query := "SELECT * FROM semesters ORDER BY ordering ASC"
+	query := "SELECT * FROM semesters ORDER BY YEAR ASC, (" +
+		"CASE WHEN SEASON = 'winter' THEN '0' " +
+		"CASE WHEN SEASON = 'spring' THEN '1' " +
+		"CASE WHEN SEASON = 'summer' THEN '2' " +
+		"CASE WHEN SEASON = 'fall' THEN '3' " +
+		"END) ASC"
 
 	stmt, err := sr.db.Prepare(query)
 	if err != nil {
@@ -58,8 +63,9 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 			&semester.UpdatedAt,
 			&semester.DeletedAt,
 			&semester.SemesterId,
-			&semester.Title,
-			&semester.Ordering); errScan != nil {
+			&semester.Season,
+			&semester.Year,
+			&semester.Title); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, semester)
@@ -84,8 +90,9 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 		&semester.UpdatedAt,
 		&semester.DeletedAt,
 		&semester.SemesterId,
-		&semester.Title,
-		&semester.Ordering); err != nil {
+		&semester.Season,
+		&semester.Year,
+		&semester.Title); err != nil {
 		return domains.Semester{}, appErrors.WrapDbExec(err, statement, semesterId)
 	}
 	return semester, nil
@@ -97,9 +104,10 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		"created_at, " +
 		"updated_at, " +
 		"semester_id, " +
-		"title, " +
-		"ordering" +
-		") VALUES (?, ?, ?, ?, ?)"
+		"season, " +
+		"year, " +
+		"title" +
+		") VALUES (?, ?, ?, ?, ?, ?)"
 
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -112,8 +120,9 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		now,
 		now,
 		semester.SemesterId,
-		semester.Title,
-		semester.Ordering)
+		semester.Season,
+		semester.Year,
+		semester.Title)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, semester)
 	}
@@ -125,8 +134,9 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
-		"title=?, " +
-		"ordering=? " +
+		"season=?, " +
+		"year=?, " +
+		"title=? " +
 		"WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -138,8 +148,9 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	execResult, err := stmt.Exec(
 		now,
 		semester.SemesterId,
+		semester.Season,
+		semester.Year,
 		semester.Title,
-		semester.Ordering,
 		semesterId)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, semester, semesterId)

@@ -201,15 +201,13 @@ func createMockSemesters(ids ...int) []domains.Semester {
 		switch id {
 		case 1:
 			semesters[i] = testUtils.CreateMockSemester(
-				"2020_spring",
-				"Spring 2020",
-				1,
+				domains.SPRING,
+				2020,
 			)
 		case 2:
 			semesters[i] = testUtils.CreateMockSemester(
-				"2020_summer",
-				"Summer 2020",
-				2,
+				domains.SUMMER,
+				2020,
 			)
 		default:
 			semesters[i] = domains.Semester{}

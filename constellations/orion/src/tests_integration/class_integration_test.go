@@ -315,8 +315,8 @@ func createAllClasses(t *testing.T) {
 func createAllProgramsSemestersLocations(t *testing.T) {
 	program1 := createProgram("program1", "Program1", 1, 3, "description1", 0)
 	program2 := createProgram("program2", "Program2", 6, 8, "description2", 1)
-	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	semester2 := createSemester("2020_summer", "Summer 2020", 2)
+	semester1 := createSemester(domains.SPRING, 2020)
+	semester2 := createSemester(domains.SUMMER, 2020)
 	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
 
 	body1 := utils.CreateJsonBody(&program1)

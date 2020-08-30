@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -13,9 +14,9 @@ import (
 
 // Test: Create 3 Semesters and GetAll(false)
 func TestCreateSemesters(t *testing.T) {
-	semester1 := createSemester("2020_fall", "Fall 2020", 1)
-	semester2 := createSemester("2020_winter", "Winter 2020", 2)
-	semester3 := createSemester("2020_spring", "Spring 2020", 3)
+	semester1 := createSemester(domains.FALL, 2019)
+	semester2 := createSemester(domains.WINTER, 2020)
+	semester3 := createSemester(domains.SPRING, 2020)
 	body1 := utils.CreateJsonBody(&semester1)
 	body2 := utils.CreateJsonBody(&semester2)
 	body3 := utils.CreateJsonBody(&semester3)
@@ -36,17 +37,14 @@ func TestCreateSemesters(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
-	assert.EqualValues(t, "2020_fall", semesters[0].SemesterId)
-	assert.EqualValues(t, "Fall 2020", semesters[0].Title)
-	assert.EqualValues(t, 1, semesters[0].Ordering)
+	assert.EqualValues(t, "2019_fall", semesters[0].SemesterId)
+	assert.EqualValues(t, "Fall 2019", semesters[0].Title)
 
 	assert.EqualValues(t, "2020_winter", semesters[1].SemesterId)
 	assert.EqualValues(t, "Winter 2020", semesters[1].Title)
-	assert.EqualValues(t, 2, semesters[1].Ordering)
 
 	assert.EqualValues(t, "2020_spring", semesters[2].SemesterId)
 	assert.EqualValues(t, "Spring 2020", semesters[2].Title)
-	assert.EqualValues(t, 3, semesters[2].Ordering)
 
 	assert.EqualValues(t, 3, len(semesters))
 
@@ -55,8 +53,8 @@ func TestCreateSemesters(t *testing.T) {
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
 func TestUniqueSemesterId(t *testing.T) {
-	semester1 := createSemester("2020_spring", "Spring 2020", 1)
-	semester2 := createSemester("2020_spring", "Fall 2020", 2) // Same semesterId
+	semester1 := createSemester(domains.SPRING, 2020)
+	semester2 := createSemester(domains.SPRING, 2020) // Same semesterId
 	body1 := utils.CreateJsonBody(&semester1)
 	body2 := utils.CreateJsonBody(&semester2)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
@@ -76,7 +74,6 @@ func TestUniqueSemesterId(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_spring", semester.SemesterId)
 	assert.EqualValues(t, "Spring 2020", semester.Title)
-	assert.EqualValues(t, 1, semester.Ordering)
 
 	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
@@ -84,13 +81,13 @@ func TestUniqueSemesterId(t *testing.T) {
 // Test: Create 1 Semester, Update it, GetBySemesterId()
 func TestUpdateSemester(t *testing.T) {
 	// Create 1 Semester
-	semester1 := createSemester("2020_spring", "Spring 2020", 1)
+	semester1 := createSemester(domains.SPRING, 2020)
 	body1 := utils.CreateJsonBody(&semester1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedSemester := createSemester("2020_fall", "Fall 2020", 2)
+	updatedSemester := createSemester(domains.FALL, 2020)
 	updatedBody := utils.CreateJsonBody(&updatedSemester)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/semester/2020_spring", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -108,7 +105,6 @@ func TestUpdateSemester(t *testing.T) {
 	}
 	assert.EqualValues(t, "2020_fall", semester.SemesterId)
 	assert.EqualValues(t, "Fall 2020", semester.Title)
-	assert.EqualValues(t, 2, semester.Ordering)
 
 	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
@@ -116,7 +112,7 @@ func TestUpdateSemester(t *testing.T) {
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
 func TestDeleteSemester(t *testing.T) {
 	// Create
-	semester1 := createSemester("2020_spring", "Spring 2020", 1)
+	semester1 := createSemester(domains.SPRING, 2020)
 	body1 := utils.CreateJsonBody(&semester1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -133,10 +129,13 @@ func TestDeleteSemester(t *testing.T) {
 }
 
 // Helper methods
-func createSemester(semesterId string, title string, ordering uint) domains.Semester {
+func createSemester(season string, year uint) domains.Semester {
+	semesterId := fmt.Sprintf("%d_%s", year, season)
+	title := strings.Title(fmt.Sprintf("%s %d", season, year))
 	return domains.Semester{
 		SemesterId: semesterId,
+		Season:     season,
+		Year:       year,
 		Title:      title,
-		Ordering:   ordering,
 	}
 }

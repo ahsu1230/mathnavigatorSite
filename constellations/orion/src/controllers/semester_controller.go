@@ -10,9 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetAllSeasons(c *gin.Context) {
+	utils.LogControllerMethod(c, "semesterController.GetAllSeasons")
+	c.JSON(http.StatusOK, domains.ALL_SEASONS)
+}
+
 func GetAllSemesters(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.GetAllSemesters")
-	// Incoming optional parameter
 	semesterList, err := repos.SemesterRepo.SelectAll()
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
@@ -24,7 +28,6 @@ func GetAllSemesters(c *gin.Context) {
 
 func GetSemesterById(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.GetSemesterById")
-	// Incoming parameters
 	semesterId := c.Param("semesterId")
 
 	semester, err := repos.SemesterRepo.SelectBySemesterId(semesterId)
