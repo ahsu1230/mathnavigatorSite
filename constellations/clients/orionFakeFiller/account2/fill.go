@@ -129,4 +129,18 @@ func Fill() {
 		"ap_java_2021_summer_class1",
 		0,
 	)
+
+	// Both will attend the first two AP Java AFH sessions
+	for afhId := 1; afhId <= 2; i++  {
+		utils.CreateUserAFH(
+			accountId,
+			5,
+			afhId
+		)
+		utils.CreateUserAFH(
+			accountId,
+			6,
+			afhId
+		)
+	}
 }

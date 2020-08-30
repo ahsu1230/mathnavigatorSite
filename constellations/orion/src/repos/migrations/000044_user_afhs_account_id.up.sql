@@ -1,0 +1,2 @@
+ALTER TABLE user_afh
+    ADD COLUMN account_id INT UNSIGNED NOT NULL;

@@ -41,8 +41,9 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 		"created_at, " +
 		"updated_at, " +
 		"user_id, " +
-		"afh_id " +
-		") VALUES (?, ?, ?, ?)"
+		"afh_id, " +
+		"account_id" + 
+		") VALUES (?, ?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -56,6 +57,7 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 		now,
 		userAfh.UserId,
 		userAfh.AfhId,
+		userAfh.AccountId,
 	)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, userAfh.UserId, userAfh.AfhId)
@@ -87,7 +89,8 @@ func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
 			&userAfh.UserId,
-			&userAfh.AfhId); errScan != nil {
+			&userAfh.AfhId,
+			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, userAfh)
@@ -119,7 +122,8 @@ func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
 			&userAfh.UserId,
-			&userAfh.AfhId); errScan != nil {
+			&userAfh.AfhId,
+			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, userAfh)
@@ -145,7 +149,8 @@ func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, err
 		&userAfh.UpdatedAt,
 		&userAfh.DeletedAt,
 		&userAfh.UserId,
-		&userAfh.AfhId); err != nil {
+		&userAfh.AfhId,
+		&userAfh.AccountId); err != nil {
 		err = appErrors.WrapDbExec(err, statement, userId, afhId)
 		return domains.UserAfh{}, err
 	}
@@ -179,7 +184,8 @@ func (ur *userAfhRepo) SelectByNew() ([]domains.UserAfh, error) {
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
 			&userAfh.UserId,
-			&userAfh.AfhId); errScan != nil {
+			&userAfh.AfhId,
+			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, userAfh)
@@ -192,6 +198,7 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 	statement := "UPDATE user_afh SET " +
 		"user_id=?, " +
 		"afh_id=?, " +
+		"account_id=?, " +
 		"updated_at=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -204,6 +211,7 @@ func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
 	execResult, err := stmt.Exec(
 		userAfh.UserId,
 		userAfh.AfhId,
+		userAfh.AccountId,
 		now,
 		id,
 	)

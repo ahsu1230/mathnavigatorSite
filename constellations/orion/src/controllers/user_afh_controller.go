@@ -12,7 +12,6 @@ import (
 
 func GetUserAfhByUserId(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.GetUserAfhByUserId")
-	// Incoming parameters
 	userId, err := utils.ParseParamId(c, "userId")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("userId")))
@@ -31,7 +30,6 @@ func GetUserAfhByUserId(c *gin.Context) {
 
 func GetUserAfhByAfhId(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.GetUserAfhByAfhId")
-	// Incoming parameters
 	afhId, err := utils.ParseParamId(c, "afhId")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("afhId")))
@@ -50,7 +48,6 @@ func GetUserAfhByAfhId(c *gin.Context) {
 
 func GetUserAfhByBothIds(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.GetUserAfhByBothIds")
-	// Incoming parameters
 	userId, err := utils.ParseParamId(c, "userId")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("userId")))
@@ -87,7 +84,6 @@ func GetUserAfhByNew(c *gin.Context) {
 
 func CreateUserAfh(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.CreateUserAfh")
-	// Incoming JSON
 	var userAfhJson domains.UserAfh
 	if err := c.ShouldBindJSON(&userAfhJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
@@ -106,7 +102,6 @@ func CreateUserAfh(c *gin.Context) {
 
 func UpdateUserAfh(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.UpdateUserAfh")
-	// Incoming JSON & Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("id")))
@@ -131,7 +126,6 @@ func UpdateUserAfh(c *gin.Context) {
 
 func DeleteUserAfh(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.DeleteUserAfh")
-	// Incoming Parameters
 	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
 		c.Error(appErrors.WrapParse(err, c.Param("id")))

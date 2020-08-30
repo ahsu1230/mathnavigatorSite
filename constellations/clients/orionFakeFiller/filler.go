@@ -230,6 +230,35 @@ func runFiller() {
 		2,
 	)
 
+	// Create AFH
+	date := time.NOW().Add(time.Hour * 24 * 3)
+	createAFH(
+		date,
+		"AP Java Office Hours",
+		"3:00pm - 4:00pm",
+		"programming",
+		"wchs",
+		""
+	)
+	date = time.NOW().Add(time.Hour * 24 * 10)
+	createAFH(
+		date,
+		"AP Java Office Hours",
+		"3:00pm - 4:00pm",
+		"programming",
+		"wchs",
+		"Final Project AMA"
+	)
+	date = time.NOW().Add(time.Hour * 24 * 17)
+	createAFH(
+		date,
+		"AP Java Office Hours",
+		"3:00pm - 4:00pm",
+		"programming",
+		"wchs",
+		"Please bring your exam notes to review!"
+	)
+
 	account1.Fill()
 	account2.Fill()
 }
@@ -356,5 +385,20 @@ func createSessions(classId, cancelled string, numSessions int) error {
 	sessionBody := strings.NewReader(body)
 	log.Println("Creating session for " + classId + "...")
 	utils.SendPostRequest("/api/sessions/create", sessionBody)
+	return nil
+}
+
+func createAFH(time time.Time, title, timeString, subject, locationId, notes string) error {
+	timeJson, _ := time.MarshalJSON()
+	body := strings.NewReader(fmt.Sprintf(`{
+		"date": %s,
+		"title": %s,
+		"timeString": "%s",
+		"subject": "%s",
+		"locationId": "%s",
+		"notes": "%s"
+	}`, timeJson, title, timeString, subject, locationId, notes))
+	log.Println("Creating afh " + title + " (" + subject + ") ...")
+	utils.SendPostRequest("/api/askforhelp/create", body)
 	return nil
 }

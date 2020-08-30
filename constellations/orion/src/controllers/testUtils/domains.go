@@ -140,9 +140,10 @@ func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes
 	}
 }
 
-func CreateMockUserAfh(userId, afhId uint) domains.UserAfh {
+func CreateMockUserAfh(userId, afhId, accountId uint) domains.UserAfh {
 	return domains.UserAfh{
 		UserId: userId,
 		AfhId:  afhId,
+		AccountId: accountId,
 	}
 }

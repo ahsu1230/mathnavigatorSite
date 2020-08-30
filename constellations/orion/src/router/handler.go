@@ -10,6 +10,7 @@ type Handler struct {
 }
 
 func (h *Handler) SetupApiEndpoints() {
+	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
@@ -74,15 +75,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSessions.DELETE("/delete", controllers.DeleteSessions)
 		apiSessions.GET("/class/:classId", controllers.GetAllSessionsByClassId)
 	}
-	apiUsers := h.Engine.Group("api/users")
+	apiAFH := h.Engine.Group("api/askforhelp")
 	{
-		apiUsers.POST("/create", controllers.CreateUser)
-		apiUsers.GET("/user/:id", controllers.GetUserById)
-		apiUsers.POST("/user/:id", controllers.UpdateUser)
-		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
-		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
-		apiUsers.POST("/search", controllers.SearchUsers)
-		apiUsers.GET("/new", controllers.GetNewUsers)
+		apiAFH.GET("/all", controllers.GetAllAFH)
+		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
+		apiAFH.GET("/afh/:id", controllers.GetAFHById)
+		apiAFH.POST("/create", controllers.CreateAFH)
+		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
+		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
 	}
 
 	apiAccounts := h.Engine.Group("api/accounts")
@@ -94,17 +94,25 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
 		apiAccounts.POST("/search", controllers.SearchAccount)
 	}
-
-	apiAFH := h.Engine.Group("api/askforhelp")
+	apiTransaction := h.Engine.Group("api/transactions")
 	{
-		apiAFH.GET("/all", controllers.GetAllAFH)
-		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
-		apiAFH.GET("/afh/:id", controllers.GetAFHById)
-		apiAFH.POST("/create", controllers.CreateAFH)
-		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
-		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
+		apiTransaction.GET("/account/:accountId", controllers.GetTransactionsByAccountId)
+		apiTransaction.POST("/create", controllers.CreateTransaction)
+		apiTransaction.GET("/transaction/:id", controllers.GetTransactionById)
+		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)
+		apiTransaction.DELETE("/transaction/:id", controllers.DeleteTransaction)
+		apiTransaction.GET("/types", controllers.GetAllPaymentTypes)
 	}
-
+	apiUsers := h.Engine.Group("api/users")
+	{
+		apiUsers.POST("/create", controllers.CreateUser)
+		apiUsers.GET("/user/:id", controllers.GetUserById)
+		apiUsers.POST("/user/:id", controllers.UpdateUser)
+		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
+		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
+		apiUsers.POST("/search", controllers.SearchUsers)
+		apiUsers.GET("/new", controllers.GetNewUsers)
+	}
 	apiUserClasses := h.Engine.Group("api/user-classes")
 	{
 		apiUserClasses.POST("/create", controllers.CreateUserClass)
@@ -116,26 +124,14 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserClasses.GET("/states", controllers.GetStateValues)
 		apiUserClasses.GET("/new", controllers.GetNewClasses)
 	}
-	apiTransaction := h.Engine.Group("api/transactions")
-	{
-		apiTransaction.GET("/account/:accountId", controllers.GetTransactionsByAccountId)
-		apiTransaction.POST("/create", controllers.CreateTransaction)
-		apiTransaction.GET("/transaction/:id", controllers.GetTransactionById)
-		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)
-		apiTransaction.DELETE("/transaction/:id", controllers.DeleteTransaction)
-		apiTransaction.GET("/types", controllers.GetAllPaymentTypes)
-	}
-
-	apiUserAfh := h.Engine.Group("api/userafhs")
+	apiUserAfh := h.Engine.Group("api/user-afhs")
 	{
 		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)
 		apiUserAfh.GET("afh/:afhId", controllers.GetUserAfhByAfhId)
 		apiUserAfh.GET("/users/:userId/afh/:afhId", controllers.GetUserAfhByBothIds)
 		apiUserAfh.GET("/new", controllers.GetUserAfhByNew)
 		apiUserAfh.POST("/create", controllers.CreateUserAfh)
-		apiUserAfh.POST("/userafh/:id", controllers.UpdateUserAfh)
-		apiUserAfh.DELETE("/userafh/:id", controllers.DeleteUserAfh)
+		apiUserAfh.POST("/user-afh/:id", controllers.UpdateUserAfh)
+		apiUserAfh.DELETE("/user-afh/:id", controllers.DeleteUserAfh)
 	}
-
-	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
 }

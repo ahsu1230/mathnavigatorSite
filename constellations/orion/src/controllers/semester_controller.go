@@ -43,7 +43,6 @@ func GetSemesterById(c *gin.Context) {
 
 func CreateSemester(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.CreateSemester")
-	// Incoming JSON
 	var semesterJson domains.Semester
 	if err := c.ShouldBindJSON(&semesterJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
@@ -71,7 +70,6 @@ func CreateSemester(c *gin.Context) {
 
 func UpdateSemester(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.UpdateSemester")
-	// Incoming JSON & Parameters
 	semesterId := c.Param("semesterId")
 	var semesterJson domains.Semester
 	if err := c.ShouldBindJSON(&semesterJson); err != nil {
@@ -100,7 +98,6 @@ func UpdateSemester(c *gin.Context) {
 
 func DeleteSemester(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.DeleteSemester")
-	// Incoming Parameters
 	semesterId := c.Param("semesterId")
 
 	err := repos.SemesterRepo.Delete(semesterId)
