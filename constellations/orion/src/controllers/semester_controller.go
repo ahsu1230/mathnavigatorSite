@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
@@ -49,6 +51,9 @@ func CreateSemester(c *gin.Context) {
 		return
 	}
 
+	// When creating, only need season & year
+	// All other fields will be determined for you
+	semesterJson = standardizeSemester(semesterJson)
 	if err := semesterJson.Validate(); err != nil {
 		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
@@ -102,4 +107,12 @@ func DeleteSemester(c *gin.Context) {
 		return
 	}
 	c.Status(http.StatusNoContent)
+}
+
+func standardizeSemester(semester domains.Semester) domains.Semester {
+	season := semester.Season
+	year := semester.Year
+	semester.SemesterId = fmt.Sprintf("%d_%s", year, season)
+	semester.Title = strings.Title(fmt.Sprintf("%s %d", season, year))
+	return semester
 }

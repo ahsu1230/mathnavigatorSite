@@ -37,12 +37,12 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	utils.LogWithContext("semesterRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Semester, 0)
 
-	query := "SELECT * FROM semesters ORDER BY YEAR ASC, (" +
-		"CASE WHEN SEASON = 'winter' THEN '0' " +
-		"CASE WHEN SEASON = 'spring' THEN '1' " +
-		"CASE WHEN SEASON = 'summer' THEN '2' " +
-		"CASE WHEN SEASON = 'fall' THEN '3' " +
-		"END) ASC"
+	query := "SELECT * FROM semesters ORDER BY year ASC, " +
+		"CASE WHEN SEASON='winter' THEN '0' " +
+		"WHEN SEASON='spring' THEN '1' " +
+		"WHEN SEASON='summer' THEN '2' " +
+		"WHEN SEASON='fall' THEN '3' " +
+		"END ASC"
 
 	stmt, err := sr.db.Prepare(query)
 	if err != nil {
