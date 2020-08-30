@@ -75,13 +75,11 @@ func CreateMockProgram(programId string, name string, grade1 uint, grade2 uint, 
 }
 
 func CreateMockSemester(season string, year uint) domains.Semester {
-	semesterId := fmt.Sprintf("%d_%s", year, season)
-	title := strings.Title(fmt.Sprintf("%s %d", season, year))
 	return domains.Semester{
-		SemesterId: semesterId,
+		SemesterId: fmt.Sprintf("%d_%s", year, season),
 		Season:     season,
 		Year:       year,
-		Title:      title,
+		Title:      strings.Title(fmt.Sprintf("%s %d", season, year)),
 	}
 }
 

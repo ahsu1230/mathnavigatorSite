@@ -80,6 +80,9 @@ func UpdateSemester(c *gin.Context) {
 		return
 	}
 
+	// When updating, only need season & year
+	// All other fields will be determined for you
+	semesterJson = standardizeSemester(semesterJson)
 	if err := semesterJson.Validate(); err != nil {
 		c.Error(appErrors.WrapInvalidDomain(err.Error()))
 		c.Abort()
