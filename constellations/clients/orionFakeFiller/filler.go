@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ahsu1230/mathnavigatorSite/clients/orionFakeFiller/account1"
-	"github.com/ahsu1230/mathnavigatorSite/clients/orionFakeFiller/account2"
-	"github.com/ahsu1230/mathnavigatorSite/clients/orionFakeFiller/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/account1"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/account2"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/utils"
 )
 
 // This CLI sends http requests to a LOCAL orion webserver.

@@ -1,7 +1,7 @@
 package account1
 
 import (
-	"github.com/ahsu1230/mathnavigatorSite/clients/orionFakeFiller/utils"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/utils"
 	"log"
 )
 
