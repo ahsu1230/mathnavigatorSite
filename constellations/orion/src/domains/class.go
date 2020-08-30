@@ -8,6 +8,12 @@ import (
 
 var TABLE_CLASSES = "classes"
 
+const (
+	NOT_FULL    = 0
+	ALMOST_FULL = 1
+	FULL        = 2
+)
+
 type Class struct {
 	Id              uint       `json:"id"`
 	CreatedAt       time.Time  `json:"createdAt" db:"created_at"`
@@ -53,6 +59,11 @@ func (class *Class) Validate() error {
 	// Price validation
 	if priceLump.Valid == pricePerSession.Valid {
 		return fmt.Errorf(messageFmt, "Only One Price Can Be Defined")
+	}
+
+	// Full state validation
+	if class.FullState >= 3 || class.FullState < 0 {
+		return fmt.Errorf(messageFmt, "Invalid full state")
 	}
 
 	return nil

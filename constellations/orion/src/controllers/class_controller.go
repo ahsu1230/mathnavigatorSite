@@ -81,6 +81,17 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 	c.JSON(http.StatusOK, classes)
 }
 
+func GetUnpublishedClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetUnpublishedClasses")
+	classList, err := repos.ClassRepo.SelectAllUnpublished()
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, classList)
+}
+
 func CreateClass(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.CreateClass")
 	// Incoming JSON

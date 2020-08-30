@@ -244,7 +244,7 @@ func createClasses(t *testing.T) {
 	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 
-	semester := createSemester("2020_spring", "Spring 2020", 1)
+	semester := createSemester(domains.SPRING, 2020)
 	body4 := utils.CreateJsonBody(&semester)
 	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
 	assert.EqualValues(t, http.StatusOK, recorder4.Code)

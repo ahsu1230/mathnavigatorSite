@@ -1,6 +1,8 @@
 package testUtils
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -72,11 +74,12 @@ func CreateMockProgram(programId string, name string, grade1 uint, grade2 uint, 
 	}
 }
 
-func CreateMockSemester(semesterId string, title string, ordering uint) domains.Semester {
+func CreateMockSemester(season string, year uint) domains.Semester {
 	return domains.Semester{
-		SemesterId: semesterId,
-		Title:      title,
-		Ordering:   ordering,
+		SemesterId: fmt.Sprintf("%d_%s", year, season),
+		Season:     season,
+		Year:       year,
+		Title:      strings.Title(fmt.Sprintf("%s %d", season, year)),
 	}
 }
 

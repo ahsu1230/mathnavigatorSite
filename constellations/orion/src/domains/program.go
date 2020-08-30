@@ -9,12 +9,12 @@ import (
 var TABLE_PROGRAMS = "programs"
 
 const (
-	NORMAL  = "normal"
-	POPULAR = "popular"
-	NEW     = "new"
+	FEATURED_NORMAL  = "normal"
+	FEATURED_POPULAR = "popular"
+	FEATURED_NEW     = "new"
 )
 
-var ALL_PROGRAM_STATES = []string{NORMAL, POPULAR, NEW}
+var ALL_PROGRAM_STATES = []string{FEATURED_NORMAL, FEATURED_POPULAR, FEATURED_NEW}
 
 type Program struct {
 	Id          uint      `json:"id"`

@@ -9,7 +9,12 @@ import (
 
 func TestValidSemesterId(t *testing.T) {
 	// Checks for valid semester IDs
-	semester := domains.Semester{SemesterId: "2019_fall", Title: "Fall 2019"}
+	semester := domains.Semester{
+		SemesterId: "2019_fall",
+		Season:     domains.FALL,
+		Year:       2019,
+		Title:      "Fall 2019",
+	}
 	if err := semester.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -33,7 +38,12 @@ func TestValidSemesterId(t *testing.T) {
 
 func TestValidTitle(t *testing.T) {
 	// Checks for valid titles
-	semester := domains.Semester{SemesterId: "2020_spring", Title: "Test title"}
+	semester := domains.Semester{
+		SemesterId: "2020_spring",
+		Season:     domains.SPRING,
+		Year:       2020,
+		Title:      "Test title",
+	}
 	if err := semester.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}

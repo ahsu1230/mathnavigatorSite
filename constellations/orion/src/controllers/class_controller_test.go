@@ -42,30 +42,6 @@ func TestGetAllClassesSuccess(t *testing.T) {
 }
 
 //
-// Test Get Published
-//
-func TestGetPublishedClassesSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
-		return createMockClasses(2, 3), nil
-	}
-	repos.ClassRepo = &testUtils.ClassRepo
-
-	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
-
-	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var classes []domains.Class
-	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-
-	assertMockClasses(t, 2, classes[0])
-	assertMockClasses(t, 3, classes[1])
-	assert.EqualValues(t, 2, len(classes))
-}
-
-//
 // Test Get Class
 //
 func TestGetClassSuccess(t *testing.T) {
@@ -165,6 +141,79 @@ func TestGetClassesByProgramAndSemesterSuccess(t *testing.T) {
 	assertMockClasses(t, 1, classes[0])
 	assertMockClasses(t, 2, classes[1])
 	assert.EqualValues(t, 2, len(classes))
+}
+
+//
+// Test Get Published
+//
+func TestGetPublishedClassesSuccess(t *testing.T) {
+	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+		return createMockClasses(2, 3), nil
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var classes []domains.Class
+	if err := json.Unmarshal(recorder.Body.Bytes(), &classes); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assertMockClasses(t, 2, classes[0])
+	assertMockClasses(t, 3, classes[1])
+	assert.EqualValues(t, 2, len(classes))
+}
+
+//
+// Test Get Unpublished
+//
+func TestGetAllUnpublishedSuccess(t *testing.T) {
+	testUtils.ClassRepo.MockSelectAllUnpublished = func() ([]domains.Class, error) {
+		return []domains.Class{
+			testUtils.CreateMockClass(
+				"prog1",
+				"2020_fall",
+				"classA",
+				"churchill",
+				"3 pm - 5 pm",
+				50,
+				0,
+			),
+			testUtils.CreateMockClass(
+				"prog1",
+				"2020_fall",
+				"classB",
+				"churchill",
+				"3 pm - 5 pm",
+				50,
+				0,
+			),
+		}, nil
+	}
+	repos.ClassRepo = &testUtils.ClassRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/unpublished", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var unpublishedClasses []domains.Class
+	if err := json.Unmarshal(recorder.Body.Bytes(), &unpublishedClasses); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	class0 := unpublishedClasses[0]
+	class1 := unpublishedClasses[1]
+	assert.EqualValues(t, "prog1", class0.ProgramId)
+	assert.EqualValues(t, "2020_fall", class0.SemesterId)
+	assert.EqualValues(t, "prog1_2020_fall_classA", class0.ClassId)
+	assert.EqualValues(t, "prog1", class1.ProgramId)
+	assert.EqualValues(t, "2020_fall", class1.SemesterId)
+	assert.EqualValues(t, "prog1_2020_fall_classB", class1.ClassId)
+	assert.EqualValues(t, 2, len(unpublishedClasses))
 }
 
 //

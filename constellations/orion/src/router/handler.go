@@ -10,7 +10,6 @@ type Handler struct {
 }
 
 func (h *Handler) SetupApiEndpoints() {
-	h.Engine.GET("/api/unpublished", controllers.GetAllUnpublished)
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
@@ -23,14 +22,15 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes")
 	{
 		apiClasses.GET("/all", controllers.GetAllClasses)
-		apiClasses.POST("/create", controllers.CreateClass)
-		apiClasses.POST("/publish", controllers.PublishClasses)
 		apiClasses.GET("/class/:classId", controllers.GetClassById)
-		apiClasses.POST("/class/:classId", controllers.UpdateClass)
-		apiClasses.DELETE("/class/:classId", controllers.DeleteClass)
 		apiClasses.GET("/classes/program/:programId", controllers.GetClassesByProgram)
 		apiClasses.GET("/classes/semester/:semesterId", controllers.GetClassesBySemester)
 		apiClasses.GET("/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
+		apiClasses.GET("/unpublished", controllers.GetUnpublishedClasses)
+		apiClasses.POST("/create", controllers.CreateClass)
+		apiClasses.POST("/publish", controllers.PublishClasses)
+		apiClasses.POST("/class/:classId", controllers.UpdateClass)
+		apiClasses.DELETE("/class/:classId", controllers.DeleteClass)
 	}
 	apiLocations := h.Engine.Group("api/locations")
 	{
@@ -60,6 +60,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiSemesters := h.Engine.Group("api/semesters")
 	{
 		apiSemesters.GET("/all", controllers.GetAllSemesters)
+		apiSemesters.GET("/seasons", controllers.GetAllSeasons)
 		apiSemesters.POST("/create", controllers.CreateSemester)
 		apiSemesters.GET("/semester/:semesterId", controllers.GetSemesterById)
 		apiSemesters.POST("/semester/:semesterId", controllers.UpdateSemester)
