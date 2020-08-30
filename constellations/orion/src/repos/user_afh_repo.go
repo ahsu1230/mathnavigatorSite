@@ -42,7 +42,7 @@ func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
 		"updated_at, " +
 		"user_id, " +
 		"afh_id, " +
-		"account_id" + 
+		"account_id" +
 		") VALUES (?, ?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)

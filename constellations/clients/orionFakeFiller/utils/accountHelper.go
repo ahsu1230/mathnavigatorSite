@@ -157,7 +157,7 @@ func CreateUserAFH(
 		afhId,
 		accountId,
 	))
-	log.Printf("Creating relation for user '%d' and afh '%s'\n", userId, afhId)
+	log.Printf("Creating relation for user '%d' and afh '%d'\n", userId, afhId)
 	SendPostRequest("/api/user-afhs/create", body)
 	return nil
 }

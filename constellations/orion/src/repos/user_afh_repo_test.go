@@ -237,8 +237,8 @@ func TestInsertUserAfh(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2, 3, 1).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
-		UserId: 2,
-		AfhId:  3,
+		UserId:    2,
+		AfhId:     3,
 		AccountId: 1,
 	}
 	err := repo.Insert(userAfh)
@@ -264,9 +264,9 @@ func TestUpdateUserAfh(t *testing.T) {
 		WithArgs(3, 3, 2, sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
-		Id:     1,
-		UserId: 3,
-		AfhId:  3,
+		Id:        1,
+		UserId:    3,
+		AfhId:     3,
 		AccountId: 2,
 	}
 	err := repo.Update(1, userAfh)

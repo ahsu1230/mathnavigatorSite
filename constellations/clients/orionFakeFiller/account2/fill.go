@@ -106,6 +106,7 @@ func Fill() {
 	// Enroll student into classes
 	// ASSUMPTION! We are assuming this is the first account
 	// TODO: When CreateUser returns the userId, use that instead.
+
 	// For Michelle
 	userId := 5
 	utils.CreateUserClass(
@@ -131,16 +132,18 @@ func Fill() {
 	)
 
 	// Both will attend the first two AP Java AFH sessions
-	for afhId := 1; afhId <= 2; i++  {
+	// ASSUMPTION! We are assuming we are linking with the first afhId
+	// TODO: When CreateAFH returns the afhId, use that instead of hardcoding
+	for afhId := 1; afhId <= 2; afhId++ {
 		utils.CreateUserAFH(
 			accountId,
 			5,
-			afhId
+			afhId,
 		)
 		utils.CreateUserAFH(
 			accountId,
 			6,
-			afhId
+			afhId,
 		)
 	}
 }

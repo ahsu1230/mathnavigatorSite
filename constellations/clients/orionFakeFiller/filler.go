@@ -75,18 +75,18 @@ func runFiller() {
 
 	// Create semesters
 	createSemester(
-		"2020_fall",
-		"Fall 2020",
+		"fall",
+		2020,
 	)
 
 	createSemester(
-		"2021_summer",
-		"Summer 2021",
+		"summer",
+		2021,
 	)
 
 	createSemester(
-		"2021_winter",
-		"Winter 2021",
+		"winter",
+		2021,
 	)
 
 	// Create locations
@@ -231,32 +231,32 @@ func runFiller() {
 	)
 
 	// Create AFH
-	date := time.NOW().Add(time.Hour * 24 * 3)
+	date := time.Now().Add(time.Hour * 24 * 3)
 	createAFH(
 		date,
 		"AP Java Office Hours",
 		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
-		""
+		"",
 	)
-	date = time.NOW().Add(time.Hour * 24 * 10)
+	date = time.Now().Add(time.Hour * 24 * 10)
 	createAFH(
 		date,
 		"AP Java Office Hours",
 		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
-		"Final Project AMA"
+		"Final Project AMA",
 	)
-	date = time.NOW().Add(time.Hour * 24 * 17)
+	date = time.Now().Add(time.Hour * 24 * 17)
 	createAFH(
 		date,
 		"AP Java Office Hours",
 		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
-		"Please bring your exam notes to review!"
+		"Please bring your exam notes to review!",
 	)
 
 	account1.Fill()
@@ -276,12 +276,12 @@ func createProgram(programId string, name string, grade1, grade2 int, descriptio
 	return nil
 }
 
-func createSemester(semesterId string, title string) error {
+func createSemester(season string, year int) error {
 	semesterBody := strings.NewReader(fmt.Sprintf(`{
-		"semesterId": "%s",
-		"title": "%s"
-	}`, semesterId, title))
-	log.Println("Creating semester " + semesterId + "...")
+		"season": "%s",
+		"year": %d
+	}`, season, year))
+	log.Println(fmt.Sprintf("Creating semester %d_%s...", year, season))
 	utils.SendPostRequest("/api/semesters/create", semesterBody)
 	return nil
 }
@@ -392,7 +392,7 @@ func createAFH(time time.Time, title, timeString, subject, locationId, notes str
 	timeJson, _ := time.MarshalJSON()
 	body := strings.NewReader(fmt.Sprintf(`{
 		"date": %s,
-		"title": %s,
+		"title": "%s",
 		"timeString": "%s",
 		"subject": "%s",
 		"locationId": "%s",
