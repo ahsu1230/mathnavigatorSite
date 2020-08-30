@@ -66,10 +66,10 @@ func Fill() {
 	utils.AddUser(studentJson)
 	studentJson = utils.CreateUserStudentJson(
 		accountId,
-		"Michael",
+		"Marcus",
 		"",
 		"Chang",
-		"michaelchangstudent@gmail.com",
+		"marcuschangstudent@gmail.com",
 		"301-555-4447",
 		"Son of Chang family",
 		"Thomas Wootton High School",
