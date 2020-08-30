@@ -129,7 +129,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserAfh.GET("/new", controllers.GetUserAfhByNew)
 		apiUserAfh.GET("afh/:afhId", controllers.GetUserAfhByAfhId)
 		apiUserAfh.GET("/users/:userId/afh/:afhId", controllers.GetUserAfhByBothIds)
-		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)	
+		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)
 		apiUserAfh.POST("/create", controllers.CreateUserAfh)
 		apiUserAfh.POST("/user-afh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/user-afh/:id", controllers.DeleteUserAfh)
