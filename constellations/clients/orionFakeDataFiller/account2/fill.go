@@ -82,24 +82,51 @@ func Fill() {
 		accountId,
 		-400,
 		"charge",
-		"Michelle enrolled into AP Calculus",
+		"Michelle Chang enrolled into AP Calculus",
 	)
 	utils.CreateTransaction(
 		accountId,
 		-400,
 		"charge",
-		"Michelle enrolled into AP Java",
+		"Michelle Chang enrolled into AP Java",
 	)
 	utils.CreateTransaction(
 		accountId,
 		-400,
 		"charge",
-		"Michael enrolled into AP Java",
+		"Michael Chang enrolled into AP Java",
 	)
 	utils.CreateTransaction(
 		accountId,
 		800,
 		"pay_cash",
-		"Cash payment for Michelle",
+		"Cash payment for Michelle Chang",
+	)
+
+	// Enroll student into classes
+	// ASSUMPTION! We are assuming this is the first account
+	// TODO: When CreateUser returns the userId, use that instead.
+	// For Michelle
+	userId := 5
+	utils.CreateUserClass(
+		accountId,
+		userId,
+		"ap_calculus_2021_summer_class1",
+		0,
+	)
+	utils.CreateUserClass(
+		accountId,
+		userId,
+		"ap_java_2021_summer_class1",
+		0,
+	)
+
+	// For Michael
+	userId = 6
+	utils.CreateUserClass(
+		accountId,
+		userId,
+		"ap_java_2021_summer_class1",
+		0,
 	)
 }

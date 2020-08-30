@@ -124,14 +124,14 @@ func runFiller() {
 
 	// Create announcements
 	createAnnounce(
-		"Author Name",
-		"The Summer 2020 session of SAT Math",
+		"Albus Dumbledore",
+		"The Summer 2020 session of SAT Math will begin soon. Enrollments are now open!",
 		"true",
 	)
 
 	createAnnounce(
 		"Harry Potter",
-		"The Summer 2021 session of SAT Math",
+		"The Summer 2021 SAT1 Math will temporarily moved to another room. Please check the class page for more information.",
 		"false",
 	)
 

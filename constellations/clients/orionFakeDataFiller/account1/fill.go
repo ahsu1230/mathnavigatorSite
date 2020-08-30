@@ -57,12 +57,23 @@ func Fill() {
 		accountId,
 		-100,
 		"charge",
-		"Enrolled in a short class",
+		"Enrolled into ap_calculus",
 	)
 	utils.CreateTransaction(
 		accountId,
 		100,
 		"pay_paypal",
-		"Paid for short class",
+		"Paid for Jake's ap_calculus",
+	)
+
+	// Enroll student into classes
+	// ASSUMPTION! We are assuming this is the first account
+	// TODO: When CreateUser returns the userId, use that instead.
+	userId := 2
+	utils.CreateUserClass(
+		accountId,
+		userId,
+		"ap_calculus_2021_summer_class1",
+		0,
 	)
 }

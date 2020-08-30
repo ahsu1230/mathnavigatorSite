@@ -101,9 +101,9 @@ func AddUser(userJson string) error {
 }
 
 func CreateTransaction(
-	accountId int, 
-	amount int, 
-	paymentType string, 
+	accountId int,
+	amount int,
+	paymentType string,
 	paymentNotes string) error {
 	transactionBody := strings.NewReader(fmt.Sprintf(`{
 		"amount": %d,
@@ -118,5 +118,27 @@ func CreateTransaction(
 	))
 	log.Printf("Creating transaction for accountId %d, %s\n", accountId, paymentNotes)
 	SendPostRequest("/api/transactions/create", transactionBody)
+	return nil
+}
+
+func CreateUserClass(
+	accountId int,
+	userId int,
+	classId string,
+	userClassState int,
+) error {
+	body := strings.NewReader(fmt.Sprintf(`{
+		"userId": %d,
+		"classId": "%s",
+		"accountId": %d,
+		"state": %d
+	}`,
+		userId,
+		classId,
+		accountId,
+		userClassState,
+	))
+	log.Printf("Creating relation for user '%d' and class '%s'\n", userId, classId)
+	SendPostRequest("/api/user-classes/create", body)
 	return nil
 }
