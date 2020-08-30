@@ -19,15 +19,9 @@ The function inside the method is called:
 
 ```javascript
 new Promise(someFunc)
-    .then((res) => {
-        console.log("Success: " + res);
-    })
-    .catch((err) => {
-        console.log("Error: " + err);
-    })
-    .finally((err) => {
-        console.log("Runs at the end");
-    });
+    .then((res) => console.log("Success: " + res));
+    .catch((err) => console.log("Error: " + err));
+    .finally(() => console.log("Runs at the end"));
 ```
 
 These 3 methods also return a promise object, which can be used for chaining promises.
@@ -79,6 +73,14 @@ import API, { executeApiCalls } from "../api.js";
 
 `executeApiCalls()` executes the API calls in order. If they all succeed, the success callback is executed. Otherwise, the fail callback is executed.
 
+```javascript
+const apiCalls = [ ... ];
+let successCallback = () => console.log("Success!");
+let failCallback = () => console.log("Error: " + err);
+
+executeApiCalls(apiCalls, successCallback, failCallback);
+```
+
 This is typically used when there are a series of POST or DELETE API calls that need to be made. The function does not give output, so for GET requests, read the below section.
 
 # Many API calls with Axios
@@ -91,6 +93,8 @@ import axios from "axios";
 
 The `.all()` method takes in a list of API calls and returns a promise. We can then use `.then()`, `.catch()`, and `.finally()` as usual.
 
+`.spread()` gets all the responses and executes the function that is passed.
+
 ```javascript
 const apiCalls = [ ... ];
 axios
@@ -99,6 +103,8 @@ axios
         axios.spread((...responses) => {
             const firstResponse = responses[0].data;
             const secondResponse = responses[1].data;
+            console.log(firstResponse);
+            console.log(secondResponse);
         })
     )
     .catch((err) => console.log("Error: " + err));
