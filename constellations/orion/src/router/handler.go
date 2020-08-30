@@ -36,16 +36,16 @@ func (h *Handler) SetupApiEndpoints() {
 	apiLocations := h.Engine.Group("api/locations")
 	{
 		apiLocations.GET("/all", controllers.GetAllLocations)
-		apiLocations.POST("/create", controllers.CreateLocation)
 		apiLocations.GET("/location/:locationId", controllers.GetLocationById)
+		apiLocations.POST("/create", controllers.CreateLocation)
 		apiLocations.POST("/location/:locationId", controllers.UpdateLocation)
 		apiLocations.DELETE("/location/:locationId", controllers.DeleteLocation)
 	}
 	apiAnnounces := h.Engine.Group("api/announcements")
 	{
 		apiAnnounces.GET("/all", controllers.GetAllAnnouncements)
-		apiAnnounces.POST("/create", controllers.CreateAnnouncement)
 		apiAnnounces.GET("/announcement/:id", controllers.GetAnnouncementById)
+		apiAnnounces.POST("/create", controllers.CreateAnnouncement)
 		apiAnnounces.POST("/announcement/:id", controllers.UpdateAnnouncement)
 		apiAnnounces.DELETE("/announcement/:id", controllers.DeleteAnnouncement)
 	}
@@ -53,8 +53,8 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiAchieves.GET("/all", controllers.GetAllAchievements)
 		apiAchieves.GET("/years", controllers.GetAllAchievementsGroupedByYear)
-		apiAchieves.POST("/create", controllers.CreateAchievement)
 		apiAchieves.GET("/achievement/:id", controllers.GetAchievementById)
+		apiAchieves.POST("/create", controllers.CreateAchievement)
 		apiAchieves.POST("/achievement/:id", controllers.UpdateAchievement)
 		apiAchieves.DELETE("/achievement/:id", controllers.DeleteAchievement)
 	}
@@ -62,18 +62,18 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiSemesters.GET("/all", controllers.GetAllSemesters)
 		apiSemesters.GET("/seasons", controllers.GetAllSeasons)
-		apiSemesters.POST("/create", controllers.CreateSemester)
 		apiSemesters.GET("/semester/:semesterId", controllers.GetSemesterById)
+		apiSemesters.POST("/create", controllers.CreateSemester)
 		apiSemesters.POST("/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/semester/:semesterId", controllers.DeleteSemester)
 	}
 	apiSessions := h.Engine.Group("api/sessions")
 	{
-		apiSessions.POST("/create", controllers.CreateSessions)
+		apiSessions.GET("/class/:classId", controllers.GetAllSessionsByClassId)
 		apiSessions.GET("/session/:id", controllers.GetSessionById)
+		apiSessions.POST("/create", controllers.CreateSessions)
 		apiSessions.POST("/session/:id", controllers.UpdateSession)
 		apiSessions.DELETE("/delete", controllers.DeleteSessions)
-		apiSessions.GET("/class/:classId", controllers.GetAllSessionsByClassId)
 	}
 	apiAFH := h.Engine.Group("api/askforhelp")
 	{
@@ -87,9 +87,9 @@ func (h *Handler) SetupApiEndpoints() {
 
 	apiAccounts := h.Engine.Group("api/accounts")
 	{
-		apiAccounts.POST("/create", controllers.CreateAccountAndUser)
 		apiAccounts.GET("/account/:id", controllers.GetAccountById)
 		apiAccounts.GET("/unpaid", controllers.GetNegativeBalanceAccounts)
+		apiAccounts.POST("/create", controllers.CreateAccountAndUser)
 		apiAccounts.POST("/account/:id", controllers.UpdateAccount)
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
 		apiAccounts.POST("/search", controllers.SearchAccount)
@@ -97,39 +97,39 @@ func (h *Handler) SetupApiEndpoints() {
 	apiTransaction := h.Engine.Group("api/transactions")
 	{
 		apiTransaction.GET("/account/:accountId", controllers.GetTransactionsByAccountId)
-		apiTransaction.POST("/create", controllers.CreateTransaction)
 		apiTransaction.GET("/transaction/:id", controllers.GetTransactionById)
+		apiTransaction.GET("/types", controllers.GetAllPaymentTypes)
+		apiTransaction.POST("/create", controllers.CreateTransaction)
 		apiTransaction.POST("/transaction/:id", controllers.UpdateTransaction)
 		apiTransaction.DELETE("/transaction/:id", controllers.DeleteTransaction)
-		apiTransaction.GET("/types", controllers.GetAllPaymentTypes)
 	}
 	apiUsers := h.Engine.Group("api/users")
 	{
-		apiUsers.POST("/create", controllers.CreateUser)
+		apiUsers.GET("/new", controllers.GetNewUsers)
+		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
 		apiUsers.GET("/user/:id", controllers.GetUserById)
+		apiUsers.POST("/search", controllers.SearchUsers)
+		apiUsers.POST("/create", controllers.CreateUser)
 		apiUsers.POST("/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
-		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
-		apiUsers.POST("/search", controllers.SearchUsers)
-		apiUsers.GET("/new", controllers.GetNewUsers)
 	}
 	apiUserClasses := h.Engine.Group("api/user-classes")
 	{
-		apiUserClasses.POST("/create", controllers.CreateUserClass)
 		apiUserClasses.GET("/class/:classId", controllers.GetUsersByClassId)
-		apiUserClasses.GET("/user/:userId", controllers.GetClassesByUserId)
 		apiUserClasses.GET("/class/:classId/user/:userId", controllers.GetUserClassByUserAndClass)
+		apiUserClasses.GET("/user/:userId", controllers.GetClassesByUserId)
+		apiUserClasses.GET("/new", controllers.GetNewClasses)
+		apiUserClasses.GET("/states", controllers.GetStateValues)
+		apiUserClasses.POST("/create", controllers.CreateUserClass)
 		apiUserClasses.POST("/user-class/:id", controllers.UpdateUserClass)
 		apiUserClasses.DELETE("/user-class/:id", controllers.DeleteUserClass)
-		apiUserClasses.GET("/states", controllers.GetStateValues)
-		apiUserClasses.GET("/new", controllers.GetNewClasses)
 	}
 	apiUserAfh := h.Engine.Group("api/user-afhs")
 	{
-		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)
+		apiUserAfh.GET("/new", controllers.GetUserAfhByNew)
 		apiUserAfh.GET("afh/:afhId", controllers.GetUserAfhByAfhId)
 		apiUserAfh.GET("/users/:userId/afh/:afhId", controllers.GetUserAfhByBothIds)
-		apiUserAfh.GET("/new", controllers.GetUserAfhByNew)
+		apiUserAfh.GET("/users/:userId", controllers.GetUserAfhByUserId)	
 		apiUserAfh.POST("/create", controllers.CreateUserAfh)
 		apiUserAfh.POST("/user-afh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/user-afh/:id", controllers.DeleteUserAfh)
