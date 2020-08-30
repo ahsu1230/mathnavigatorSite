@@ -6,7 +6,6 @@ import { Modal } from "../modals/modal.js";
 import { OkayModal } from "../modals/okayModal.js";
 import { InputText } from "../utils/inputText.js";
 import { generatePassword } from "../utils/userUtils.js";
-import { setCurrentAccountId } from "../localStorage.js";
 import { UserInput } from "../user/userInput.js";
 
 export class AccountEditPage extends React.Component {
@@ -52,16 +51,9 @@ export class AccountEditPage extends React.Component {
             },
         };
 
-        console.log(accountUser);
-
         API.post("api/accounts/create", accountUser)
-            .then(() => {
-                this.setState({ showSaveModal: true });
-                setCurrentAccountId(id);
-            })
-            .catch((err) =>
-                alert("Could not create account or user: " + err.response.data)
-            );
+            .then(() => this.setState({ showSaveModal: true }))
+            .catch((err) => alert("Could not create account or user: " + err));
     };
 
     onModalOkSaved = () => {

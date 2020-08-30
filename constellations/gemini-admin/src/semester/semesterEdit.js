@@ -39,15 +39,18 @@ export class SemesterEditPage extends React.Component {
     };
 
     handleIdChange = (event) => {
-        const newValue = event.target.value;
+        const semesterId = event.target.value;
 
         // If the id is 2020_fall, this will become Fall 2020
         var possibleTitle =
-            newValue.substring(5, 6).toUpperCase() +
-            newValue.substring(6) +
+            semesterId.substring(5, 6).toUpperCase() +
+            semesterId.substring(6) +
             " " +
-            newValue.substring(0, 4);
-        this.setState({ inputTitle: possibleTitle });
+            semesterId.substring(0, 4);
+        this.setState({
+            inputSemesterId: semesterId,
+            inputTitle: possibleTitle,
+        });
     };
 
     onClickSave = () => {
