@@ -3,11 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"strings"
 	"time"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/account1"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/account2"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/clients/orionFakeFiller/utils"
 )
 
 // This CLI sends http requests to a LOCAL orion webserver.
@@ -31,15 +33,15 @@ func main() {
 	flag.StringVar(&orionHost, "orionHost", DEFAULT_LOCAL_ORION_HOST, "Host address of an Orion webserver")
 	flag.Parse()
 
-	runFiller(orionHost)
+	utils.InitHostAddress(orionHost)
+	runFiller()
 
 	log.Println("Done filling orion")
 }
 
-func runFiller(hostAddress string) {
+func runFiller() {
 	// Create programs
 	createProgram(
-		hostAddress,
 		"ap_calculus",
 		"AP Calculus",
 		9,
@@ -48,7 +50,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createProgram(
-		hostAddress,
 		"ap_java",
 		"AP Java",
 		10,
@@ -57,7 +58,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createProgram(
-		hostAddress,
 		"sat_math",
 		"SAT Math",
 		8,
@@ -66,7 +66,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createProgram(
-		hostAddress,
 		"amc_prep",
 		"AMC Prep",
 		9,
@@ -76,26 +75,22 @@ func runFiller(hostAddress string) {
 
 	// Create semesters
 	createSemester(
-		hostAddress,
 		"2020_fall",
 		"Fall 2020",
 	)
 
 	createSemester(
-		hostAddress,
 		"2021_summer",
 		"Summer 2021",
 	)
 
 	createSemester(
-		hostAddress,
 		"2021_winter",
 		"Winter 2021",
 	)
 
 	// Create locations
 	createLocation(
-		hostAddress,
 		"wchs",
 		"11300 Gainsborough Rd",
 		"Potomac",
@@ -104,7 +99,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createLocation(
-		hostAddress,
 		"house1",
 		"123 Sesame St",
 		"Rockville",
@@ -114,41 +108,35 @@ func runFiller(hostAddress string) {
 
 	// Create achievements
 	createAchieve(
-		hostAddress,
 		"2020",
 		"100% of students scored above a 1550 on SAT!",
 	)
 
 	createAchieve(
-		hostAddress,
 		"2020",
 		"5 students scored an 800 on SAT Math!",
 	)
 
 	createAchieve(
-		hostAddress,
 		"2019",
 		"10 students scored a 5 on AP Java!",
 	)
 
 	// Create announcements
 	createAnnounce(
-		hostAddress,
-		"Author Name",
-		"The Summer 2020 session of SAT Math",
+		"Albus Dumbledore",
+		"The Summer 2020 session of SAT Math will begin soon. Enrollments are now open!",
 		"true",
 	)
 
 	createAnnounce(
-		hostAddress,
 		"Harry Potter",
-		"The Summer 2021 session of SAT Math",
+		"The Summer 2021 SAT1 Math will temporarily moved to another room. Please check the class page for more information.",
 		"false",
 	)
 
 	// Create classes
 	createClass(
-		hostAddress,
 		"ap_calculus",
 		"2020_fall",
 		"class1",
@@ -158,7 +146,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_java",
 		"2020_fall",
 		"class1",
@@ -168,7 +155,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"amc_prep",
 		"2020_fall",
 		"class1",
@@ -178,7 +164,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_calculus",
 		"2021_summer",
 		"class1",
@@ -188,7 +173,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_calculus",
 		"2021_summer",
 		"class2",
@@ -198,7 +182,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_calculus",
 		"2021_summer",
 		"class3",
@@ -208,7 +191,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_java",
 		"2021_summer",
 		"class1",
@@ -218,7 +200,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"ap_calculus",
 		"2021_winter",
 		"class1",
@@ -228,7 +209,6 @@ func runFiller(hostAddress string) {
 	)
 
 	createClass(
-		hostAddress,
 		"sat_math",
 		"2021_winter",
 		"class1",
@@ -239,114 +219,22 @@ func runFiller(hostAddress string) {
 
 	// Create sessions
 	createSessions(
-		hostAddress,
 		"ap_java_2020_fall_class1",
 		"false",
 		3,
 	)
 
 	createSessions(
-		hostAddress,
 		"ap_calculus_2020_fall_class1",
 		"true",
 		2,
 	)
 
-	// Create Accounts
-	createAccount(
-		hostAddress,
-		"JoeSmith@gmail.com",
-		"jhdgjhddjhdjuj",
-	)
-	createAccount(hostAddress,
-		"billybob@gmail.com",
-		"2redssssa",
-	)
-
-	// Create Users
-	createUser(
-		hostAddress,
-		"Joe",
-		"Smith",
-		"",
-		"JoeSmith@gmail.com",
-		"301-543-2412",
-		false,
-		1,
-		"notes1",
-		"Montgomery Blair HS",
-		2001,
-	)
-
-	createUser(
-		hostAddress,
-		"Joe",
-		"Smith",
-		"Mom",
-		"JoeMom@gmail.com",
-		"301-456-1244",
-		true,
-		1,
-		"notes1",
-		"",
-		0,
-	)
-
-	createUser(
-		hostAddress,
-		"Billy",
-		"Bob",
-		"Joe",
-		"billybob@gmail.com",
-		"301-288-8764",
-		false,
-		2,
-		"notes2",
-		"Winston Churchill HS",
-		2002,
-	)
-
-	createUser(
-		hostAddress,
-		"Billy",
-		"Bob",
-		"Dad",
-		"billydad@gmail.com",
-		"301-223-2442",
-		true,
-		2,
-		"notes2",
-		"",
-		0,
-	)
-
-	// Create transactions
-	createTransaction(
-		hostAddress,
-		100,
-		"pay_paypal",
-		"notes1",
-		1,
-	)
-
-	createTransaction(
-		hostAddress,
-		101,
-		"pay_cash",
-		"notes2",
-		2,
-	)
-
-	createTransaction(
-		hostAddress,
-		-300,
-		"charge",
-		"notes2",
-		2,
-	)
+	account1.Fill()
+	account2.Fill()
 }
 
-func createProgram(hostAddress, programId string, name string, grade1, grade2 int, description string) error {
+func createProgram(programId string, name string, grade1, grade2 int, description string) error {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
@@ -355,21 +243,21 @@ func createProgram(hostAddress, programId string, name string, grade1, grade2 in
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
 	log.Println("Creating program " + programId + "...")
-	sendPostRequest(hostAddress+"/api/programs/create", programBody)
+	utils.SendPostRequest("/api/programs/create", programBody)
 	return nil
 }
 
-func createSemester(hostAddress, semesterId string, title string) error {
+func createSemester(semesterId string, title string) error {
 	semesterBody := strings.NewReader(fmt.Sprintf(`{
 		"semesterId": "%s",
 		"title": "%s"
 	}`, semesterId, title))
 	log.Println("Creating semester " + semesterId + "...")
-	sendPostRequest(hostAddress+"/api/semesters/create", semesterBody)
+	utils.SendPostRequest("/api/semesters/create", semesterBody)
 	return nil
 }
 
-func createLocation(hostAddress, locationId, street, city, state, zipcode string) error {
+func createLocation(locationId, street, city, state, zipcode string) error {
 	locationBody := strings.NewReader(fmt.Sprintf(`{
 		"locationId": "%s",
 		"street": "%s",
@@ -378,21 +266,21 @@ func createLocation(hostAddress, locationId, street, city, state, zipcode string
 		"zipcode": "%s"
 	}`, locationId, street, city, state, zipcode))
 	log.Println("Creating location " + locationId + "...")
-	sendPostRequest(hostAddress+"/api/locations/create", locationBody)
+	utils.SendPostRequest("/api/locations/create", locationBody)
 	return nil
 }
 
-func createAchieve(hostAddress, year, message string) error {
+func createAchieve(year, message string) error {
 	achieveBody := strings.NewReader(fmt.Sprintf(`{
 		"year": %s,
 		"message": "%s"
 	}`, year, message))
 	log.Println("Creating achievement " + message + "...")
-	sendPostRequest(hostAddress+"/api/achievements/create", achieveBody)
+	utils.SendPostRequest("/api/achievements/create", achieveBody)
 	return nil
 }
 
-func createAnnounce(hostAddress, author, message, onHomePage string) error {
+func createAnnounce(author, message, onHomePage string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 
@@ -403,15 +291,16 @@ func createAnnounce(hostAddress, author, message, onHomePage string) error {
 		"onHomePage": %s
 	}`, nowJson, author, message, onHomePage))
 	log.Println("Creating announcement " + message + "...")
-	sendPostRequest(hostAddress+"/api/announcements/create", announceBody)
+	utils.SendPostRequest("/api/announcements/create", announceBody)
 	return nil
 }
 
-func createClass(hostAddress, programId, semesterId, classKey, classId, locationId, times string) error {
+func createClass(programId, semesterId, classKey, classId, locationId, times string) error {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 	var later = now.Add(time.Hour * 24 * 30)
 	laterJson, _ := later.MarshalJSON()
+	priceLump := 800
 
 	classBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
@@ -421,14 +310,25 @@ func createClass(hostAddress, programId, semesterId, classKey, classId, location
 		"locationId": "%s",
 		"times": "%s",
 		"startDate": %s,
-		"endDate": %s
-	}`, programId, semesterId, classKey, classId, locationId, times, nowJson, laterJson))
+		"endDate": %s,
+		"priceLump": %d
+	}`,
+		programId,
+		semesterId,
+		classKey,
+		classId,
+		locationId,
+		times,
+		nowJson,
+		laterJson,
+		priceLump,
+	))
 	log.Println("Creating class " + classId + "...")
-	sendPostRequest(hostAddress+"/api/classes/create", classBody)
+	utils.SendPostRequest("/api/classes/create", classBody)
 	return nil
 }
 
-func createSessions(hostAddress, classId, cancelled string, numSessions int) error {
+func createSessions(classId, cancelled string, numSessions int) error {
 	// Create session takes in a list
 	var body = "["
 	now := time.Now().UTC()
@@ -455,57 +355,6 @@ func createSessions(hostAddress, classId, cancelled string, numSessions int) err
 	body += "]"
 	sessionBody := strings.NewReader(body)
 	log.Println("Creating session for " + classId + "...")
-	sendPostRequest(hostAddress+"/api/sessions/create", sessionBody)
-
+	utils.SendPostRequest("/api/sessions/create", sessionBody)
 	return nil
-}
-
-func createUser(hostAddress, first_name, last_name, middle_name, email, phone string, is_guardian bool, account_id int, notes, school string, graduation_year int) error {
-	userBody := strings.NewReader(fmt.Sprintf(`{
-		"firstName": "%s",
-		"lastName": "%s",
-		"middleName": "%s",
-		"email": "%s",
-		"phone": "%s",
-		"isGuardian": %t,
-		"accountId": %d,
-		"notes": "%s",
-		"school": "%s",
-		"graduationYear": %d
-	}`, first_name, last_name, middle_name, email, phone, is_guardian, account_id, notes, school, graduation_year))
-	log.Println("Creating user " + first_name + "...")
-	sendPostRequest(hostAddress+"/api/users/create", userBody)
-	return nil
-}
-
-func createAccount(hostAddress, primary_email, password string) error {
-	accountBody := strings.NewReader(fmt.Sprintf(`{
-		"primaryEmail": "%s",
-		"password": "%s"
-	}`, primary_email, password))
-	log.Println("Creating account " + primary_email + "...")
-	sendPostRequest(hostAddress+"/api/accounts/create", accountBody)
-	return nil
-}
-
-func createTransaction(hostAddress string, amount int, paymentType string, paymentNotes string, accountId int) error {
-	transactionBody := strings.NewReader(fmt.Sprintf(`{
-		"amount": %d,
-		"paymentType": "%s",
-		"paymentNotes": "%s",
-		"accountId": %d
-		}`, amount, paymentType, paymentNotes, accountId))
-	log.Println("Creating transaction " + paymentNotes + "...")
-	sendPostRequest(hostAddress+"/api/transactions/create", transactionBody)
-	return nil
-}
-
-func sendPostRequest(url string, body io.Reader) {
-	resp, err := http.Post(url, "application/json; charset=UTF-8", body)
-	if err != nil {
-		log.Println("Post request was not fulfilled.", err)
-	}
-	if resp.StatusCode != 200 && resp.StatusCode != 204 {
-		log.Println("Response status was not successful.", resp)
-	}
 }
