@@ -14,4 +14,5 @@ type UserAfh struct {
 	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
 	UserId    uint         `json:"userId" db:"user_id"`
 	AfhId     uint         `json:"afhId" db:"afh_id"`
+	AccountId uint         `json:"accountId" db:"account_id"`
 }

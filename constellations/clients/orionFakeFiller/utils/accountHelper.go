@@ -142,3 +142,22 @@ func CreateUserClass(
 	SendPostRequest("/api/user-classes/create", body)
 	return nil
 }
+
+func CreateUserAFH(
+	accountId int,
+	userId int,
+	afhId int,
+) error {
+	body := strings.NewReader(fmt.Sprintf(`{
+		"userId": %d,
+		"afhId": %d,
+		"accountId": %d
+	}`,
+		userId,
+		afhId,
+		accountId,
+	))
+	log.Printf("Creating relation for user '%d' and afh '%d'\n", userId, afhId)
+	SendPostRequest("/api/user-afhs/create", body)
+	return nil
+}

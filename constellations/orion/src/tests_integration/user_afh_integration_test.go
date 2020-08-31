@@ -16,7 +16,7 @@ func TestGetUserAfhsByUserId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call GetUserAfhsByUserId()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -38,11 +38,11 @@ func TestGetUserAfhsByAfhId(t *testing.T) {
 	// Update
 	updatedUserAfh := createUserAfh(2, 1)
 	updatedBod := utils.CreateJsonBody(&updatedUserAfh)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/userafh/1", updatedBod)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/user-afh/1", updatedBod)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
 	// Call GetUserAfhsByAfhId()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/afh/2", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/afh/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -64,11 +64,11 @@ func TestDeleteUserAfh(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Delete
-	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/userafhs/userafh/3", nil)
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/user-afhs/user-afh/3", nil)
 	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get by both ids
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2/afh/2", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/2/afh/2", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 
 	resetUserAfhTables(t)
@@ -79,7 +79,7 @@ func TestGetUserAfhsByBothIds(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call get userAfh by both ids
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2/afh/2", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/2/afh/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -106,9 +106,9 @@ func createAllUserAfhs(t *testing.T) {
 	body2 := utils.CreateJsonBody(&userAfh2)
 	body3 := utils.CreateJsonBody(&userAfh3)
 
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/create", body3)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body2)
+	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body3)
 
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
