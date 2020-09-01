@@ -12,6 +12,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/middlewares"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 )
@@ -51,6 +52,13 @@ func main() {
 	repos.SetupRepos(db)
 	defer repoUtils.Close(db)
 	logger.Message("Database started!")
+
+	logger.Message("Setting up Server-side caching...")
+	cacheHost := os.Getenv("REDIS_HOST")
+	cachePort, _ := strconv.Atoi(os.Getenv("REDIS_PORT"))
+	cachePassword := os.Getenv("REDIS_PASSWORD")
+	cache.Init(cacheHost, cachePort, cachePassword)
+	defer cache.Close()
 
 	// App Router
 	logger.Message("Setting up Router...")

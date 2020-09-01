@@ -34,6 +34,11 @@ var ERR_REPO_BAD_RESULTS = errors.New("REPO_BAD_RESULTS_ERROR")
 var ERR_REPO_EXEC_MISMATCH = errors.New("REPO_EXEC_MISMATCH_ERROR")
 var ERR_REPO = errors.New("REPO_ERROR") // Generic Repo error
 
+// Redis errors
+var ERR_REDIS_GET = errors.New("REDIS_GET_ERROR")
+var ERR_REDIS_SET = errors.New("REDIS_SET_ERROR")
+var ERR_REDIS_SCAN = errors.New("REDIS_SCAN_ERROR")
+
 // SQL errors
 // These errors originate from the "database/sql" package
 var ERR_SQL_CONN_DONE = errors.New("SQL_CONN_DONE_ERROR")
@@ -68,6 +73,18 @@ func WrapBindJSON(e error, request *http.Request) error {
 		return errors.Wrapf(ERR_JSON_READ_BODY, "Error (%v) binding and reading request JSON", err)
 	}
 	return errors.Wrapf(ERR_JSON_BIND_BODY, "Error (%v) binding request JSON (%v)", e, body)
+}
+
+func WrapRedisGet(e error, v interface{}) error {
+	return errors.Wrapf(ERR_REDIS_GET, "Error (%v) getting key from redis (%v)", e, v)
+}
+
+func WrapRedisSet(e error, key interface{}, value interface{}) error {
+	return errors.Wrapf(ERR_REDIS_SET, "Error (%v) setting key into redis (%v)->(%v)", e, key, value)
+}
+
+func WrapRedisScan(e error, key interface{}, value interface{}) error {
+	return errors.Wrapf(ERR_REDIS_SCAN, "Error (%v) scanning struct from redis (%v)->(%v)", e, key, value)
 }
 
 func WrapParse(e error, v interface{}) error {

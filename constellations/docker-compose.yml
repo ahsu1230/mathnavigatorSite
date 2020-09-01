@@ -4,7 +4,7 @@ services:
     image: mysql
     container_name: db-mysql
     ports:
-    - "3308:3306" # host port 3308 links to container port 3306
+      - "3308:3306" # host port 3308 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: user
@@ -15,12 +15,24 @@ services:
     image: mysql
     container_name: db-mysql-test
     ports:
-    - "3306:3306" # host port 3306 links to container port 3306
+      - "3306:3306" # host port 3306 links to container port 3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: user1
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mathnavdb
+
+  cache-redis:
+    image: "redis:alpine"
+    container_name: cache-redis
+    command: redis-server --requirepass redis_password
+    ports: 
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
 
   orion:
     build: 
@@ -34,8 +46,11 @@ services:
       - "db-mysql"
     links:
       - "db-mysql"
-    environment:
+      - "cache-redis"
+    environment: 
+      # REDIS_URL=redis://redis-memcache
       WAIT_HOSTS: db-mysql:3306
+        
 
   aquila:
     build: 
@@ -52,6 +67,9 @@ services:
       - "db-mysql"
     environment:
       WAIT_HOSTS: db-mysql:3306
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.4
   
   # gemini-user:
   #   build: 
@@ -67,3 +85,10 @@ services:
   #     - "orion"
   #   stdin_open: true
   
+# networking for the Redis container
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
