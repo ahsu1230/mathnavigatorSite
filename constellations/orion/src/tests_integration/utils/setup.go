@@ -27,7 +27,12 @@ func SetupTestEnvironment(m *testing.M) {
 	logger.Message("Connecting to database...")
 	configDb := config.Database
 	SetupTestDatabase(configDb.Host, configDb.Port, configDb.Username, configDb.Password, configDb.DbName)
-	defer db.Close()
+	defer CloseDb()
+
+	logger.Message("Setting up caching...")
+	configCache := config.Cache
+	SetupTestCache(configCache.Host, configCache.Port, configCache.Password)
+	defer CloseCache()
 
 	logger.Message("Setting up router...")
 	SetupTestRouter()

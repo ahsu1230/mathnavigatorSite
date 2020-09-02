@@ -2,56 +2,84 @@ package cache
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/gomodule/redigo/redis"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/gomodule/redigo/redis"
+	"github.com/rafaeljusto/redigomock"
+	"time"
 )
 
 var (
-	// Pool *redis.Pool
-	Conn *redis.Conn
+	Pool *redis.Pool
 )
 
 func Init(host string, port int, password string) {
 	logger.Message("Initializing Redis...")
 
 	connection := fmt.Sprintf("%s:%d", host, port)
-	conn, err := redis.Dial("tcp", connection)
-	if err != nil {
-		logger.Error("Failed to connect to Redis", err, logger.Fields{
-			"connection": connection,
-		})
-		return
-	}
-	Conn = &conn
+	Pool = &redis.Pool{
+		MaxIdle:         1,
+		IdleTimeout:     1 * time.Minute, // time to close an idle connection
+		MaxConnLifetime: 1 * time.Hour,   // max time to keep connection
+		Dial: func() (redis.Conn, error) {
+			conn, err := redis.Dial("tcp", connection)
+			if err != nil {
+				return nil, err
+			}
 
-	if err = GetConn().Err(); err != nil {
-		logger.Error("Error connecting to Redis", err, logger.Fields{})
-		return
-	}
+			if _, err := conn.Do("AUTH", password); err != nil {
+				logger.Error("Error authenticating to Redis", err, logger.Fields{})
+				conn.Close()
+				return nil, err
+			}
 
-	GetConn().Do("FlushAll")
-	logger.Message("Connected to Redis!")
+			logger.Message("Initialized & authenticated Redis!")
+			conn.Do("FLUSHALL")
+			return conn, err
+		},
+		TestOnBorrow: func(c redis.Conn, t time.Time) error {
+			_, err := c.Do("PING")
+			return err
+		},
+	}
 }
 
-func InitForTest() {
-	// Conn = redigomock.NewConn()
+func InitForMockTest() {
+	conn := redigomock.NewConn()
+	Pool = &redis.Pool{
+		MaxIdle: 10,
+		Dial: func() (redis.Conn, error) {
+			return conn, nil
+		},
+	}
 }
 
 func Close() {
 	logger.Message("Closing Redis...")
-	if Conn != nil {
-		if err := GetConn().Close(); err != nil {
-			logger.Error("Error closing Redis", err, logger.Fields{})
-			return
-		}
-		Conn = nil
+	if Pool != nil {
+		Pool.Close()
+		Pool = nil
 	}
-	logger.Message("Closed")
+	logger.Message("Redis Closed")
 }
 
-func GetConn() redis.Conn {
-	return *Conn
+func getConn() (redis.Conn, error) {
+	if Pool == nil {
+		logger.Debug("Redis Cache is not currently available", logger.Fields{})
+		return nil, appErrors.ERR_REDIS_UNAVAILABLE
+	}
+	return Pool.Get(), nil
+}
+
+func FlushAll() {
+	logger.Debug("Flush all keys", logger.Fields{})
+	conn, err := getConn()
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+
+	conn.Do("FLUSHALL")
 }
 
 // Invalidate method (by key)
@@ -59,28 +87,17 @@ func Delete(key string) error {
 	logger.Debug("Invalidating cacheKey", logger.Fields{
 		"key": key,
 	})
-	_, err := GetConn().Do("DELETE", redis.Args{key})
-	return err
-}
 
-func LogCacheHit(key string) {
-	logger.Debug("Cache Hit", logger.Fields{
-		"key": key,
-	})
-}
-
-func LogCacheMiss(key string, err error) {
-	if errors.Is(err, redis.ErrNil) {
-		logger.Debug("Cache Miss", logger.Fields{
-			"key": key,
-		})
-	} else { // Actual error from operation!
-		LogError(key, err)
+	conn, err := getConn()
+	if err != nil {
+		return err
 	}
-}
+	defer conn.Close()
 
-func LogError(key string, err error) {
-	logger.Error("Error from Cache operation", err, logger.Fields{
-		"key": key,
-	})
+	_, err = conn.Do("DELETE", redis.Args{key})
+	if err != nil {
+		return appErrors.WrapRedisDelete(err, key)
+	}
+
+	return nil
 }

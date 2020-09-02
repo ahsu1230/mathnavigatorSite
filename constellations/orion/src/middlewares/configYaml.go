@@ -18,6 +18,11 @@ type Config struct {
 		Password string `yaml:"pass"`
 		DbName   string `yaml:"dbName"`
 	} `yaml:"database"`
+	Cache struct {
+		Host     string `yaml:"host"`
+		Port     int    `yaml:"port"`
+		Password string `yaml:"pass"`
+	} `yaml:"cache"`
 }
 
 func RetrieveConfigurations(fileName string) Config {
