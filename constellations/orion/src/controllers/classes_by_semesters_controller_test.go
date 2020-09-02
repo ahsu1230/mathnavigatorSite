@@ -10,25 +10,9 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
-	// "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
+	
 	"github.com/stretchr/testify/assert"
 )
-
-// func TestCacheHit(t *testing.T) {
-// 	testUtils.Cache.Command("HGETALL", cache.KEY_PROGRAM_CLASSES_BY_SEMESTER).
-// 		ExpectError(nil)
-// 	// Create new HTTP request to endpoint
-// 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
-// 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-// }
-
-// func TestCacheMiss(t *testing.T) {
-// 	testUtils.Cache.Command("HGETALL", cache.KEY_PROGRAM_CLASSES_BY_SEMESTER).
-// 		ExpectError(nil)
-// 	// Create new HTTP request to endpoint
-// 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
-// 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-// }
 
 func TestOneSemesterOneProgramOneClassSuccess(t *testing.T) {
 	// Mock 1 program, 1 semester, 1 class

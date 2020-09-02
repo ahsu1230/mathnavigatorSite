@@ -9,10 +9,12 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 	"github.com/gin-gonic/gin"
+	"github.com/gomodule/redigo/redis"
 )
 
 // Global test variables
 var Handler router.Handler
+var CacheConn redis.Conn
 
 // Utility methods
 func init() {
@@ -23,7 +25,7 @@ func init() {
 	Handler = router.Handler{Engine: engine}
 	Handler.SetupApiEndpoints()
 
-	cache.InitForMockTest()
+	CacheConn = cache.InitForMockTest()
 }
 
 func SendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {

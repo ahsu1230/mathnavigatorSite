@@ -44,7 +44,7 @@ func Init(host string, port int, password string) {
 	}
 }
 
-func InitForMockTest() {
+func InitForMockTest() redis.Conn {
 	conn := redigomock.NewConn()
 	Pool = &redis.Pool{
 		MaxIdle: 10,
@@ -52,6 +52,7 @@ func InitForMockTest() {
 			return conn, nil
 		},
 	}
+	return conn
 }
 
 func Close() {
@@ -69,17 +70,6 @@ func getConn() (redis.Conn, error) {
 		return nil, appErrors.ERR_REDIS_UNAVAILABLE
 	}
 	return Pool.Get(), nil
-}
-
-func FlushAll() {
-	logger.Debug("Flush all keys", logger.Fields{})
-	conn, err := getConn()
-	if err != nil {
-		return
-	}
-	defer conn.Close()
-
-	conn.Do("FLUSHALL")
 }
 
 // Invalidate method (by key)
