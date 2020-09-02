@@ -18,6 +18,7 @@ func GetAllProgramClassesBySemester() ([]domains.ProgramClassesBySemester, error
 
 	conn, err := getConn()
 	if err != nil {
+		err = appErrors.WrapRedisUnavailable(err, "Redis unavailable before GET")
 		return []domains.ProgramClassesBySemester{}, err
 	}
 	defer conn.Close()
@@ -48,7 +49,7 @@ func SetAllProgramClassesBySemester(list []domains.ProgramClassesBySemester) err
 
 	conn, err := getConn()
 	if err != nil {
-		return err
+		return appErrors.WrapRedisUnavailable(err, "Redis unavailable before SET")
 	}
 	defer conn.Close()
 

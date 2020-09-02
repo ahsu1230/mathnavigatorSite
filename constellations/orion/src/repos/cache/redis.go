@@ -80,7 +80,7 @@ func Delete(key string) error {
 
 	conn, err := getConn()
 	if err != nil {
-		return err
+		return appErrors.WrapRedisUnavailable(err, "Redis unavailable before DELETE")
 	}
 	defer conn.Close()
 
@@ -88,6 +88,5 @@ func Delete(key string) error {
 	if err != nil {
 		return appErrors.WrapRedisDelete(err, key)
 	}
-
 	return nil
 }

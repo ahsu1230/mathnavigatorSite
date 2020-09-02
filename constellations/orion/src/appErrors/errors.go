@@ -86,11 +86,9 @@ func WrapUnmarshalJSON(message string, v ...interface{}) error {
 	return errors.Wrapf(ERR_JSON_UNMARSHAL, message, v...)
 }
 
-// func WrapRedisUnavailable(e error) error {
-// 	// return errors.Wrapf(ERR_REDIS_UNAVAILABLE, "Error reaching redis (%v)", err)
-// 	// Do nothing? Already ERR_REDIS_UNAVAILABLE as base error
-// 	return e
-// }
+func WrapRedisUnavailable(e error, message string) error {
+	return errors.Wrap(e, message)
+}
 
 func WrapRedisGet(e error, key string) error {
 	return errors.Wrapf(ERR_REDIS_GET, "Error (%v) getting key from redis (%v)", e, key)

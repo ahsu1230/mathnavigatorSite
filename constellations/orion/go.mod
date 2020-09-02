@@ -10,10 +10,8 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/gin-contrib/cors v1.3.0
-	github.com/gin-gonic/contrib v0.0.0-20190923054218-35076c1b2bea
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/gomodule/redigo v2.0.0+incompatible
@@ -21,7 +19,6 @@ require (
 	github.com/json-iterator/go v1.1.8 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.10 // indirect
-	github.com/nitishm/go-rejson v2.0.0+incompatible
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/rafaeljusto/redigomock v2.4.0+incompatible

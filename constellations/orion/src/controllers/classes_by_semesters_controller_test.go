@@ -10,7 +10,6 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
-
 	"github.com/stretchr/testify/assert"
 )
 

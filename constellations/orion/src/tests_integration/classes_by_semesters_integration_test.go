@@ -3,6 +3,7 @@ package tests_integration
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -36,6 +37,10 @@ func TestTwoSemestersTwoProgramsFourClasses(t *testing.T) {
 // This test should work without a database call!
 // Previous results from above test should've been saved in cache
 func TestGetSemestersProgramsClassesCacheHit(t *testing.T) {
+	if os.Getenv(utils.ENV_VAR_TEST) == utils.ENV_VAR_CIRCLE_CI {
+		t.Skip("Skipping test because redis not created during CI tests")
+	}
+
 	// Call sorting endpoint
 	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classesbysemesters", nil)
 
