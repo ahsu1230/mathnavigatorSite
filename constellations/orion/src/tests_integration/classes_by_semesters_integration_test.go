@@ -36,6 +36,7 @@ func TestTwoSemestersTwoProgramsFourClasses(t *testing.T) {
 
 // This test should work without a database call!
 // Previous results from above test should've been saved in cache
+// Make sure redis is running for this to work!
 func TestGetSemestersProgramsClassesCacheHit(t *testing.T) {
 	if os.Getenv(utils.ENV_VAR_TEST) == utils.ENV_VAR_CIRCLE_CI {
 		t.Skip("Skipping test because redis not created during CI tests")

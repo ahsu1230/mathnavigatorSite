@@ -18,14 +18,13 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 	// Fetch programs, semesters, classes from repo functions
 	publishedOnly := utils.ParseParamPublishedOnly(c)
 
-	// Fetch from cache first
+	// Fetch from cache first to save on computation work
 	cachedList, err := cache.GetAllProgramClassesBySemester()
 	if err == nil {
-		cache.LogCacheHit(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER)
 		c.JSON(http.StatusOK, &cachedList)
 		return
 	}
-	cache.LogCacheMiss(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER, err)
+	// Ignore err. Cache miss means we compute normally
 
 	programs, err := repos.ProgramRepo.SelectAll()
 	if err != nil {
@@ -71,13 +70,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 
 		listResults = append(listResults, programClassesBySemester)
 	}
-
-	err = cache.SetAllProgramClassesBySemester(listResults)
-	if err != nil {
-		cache.LogError(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER, err)
-		// Do not abort, just a cache failure
-	}
-
+	cache.SetAllProgramClassesBySemester(listResults)
 	c.JSON(http.StatusOK, &listResults)
 }
 

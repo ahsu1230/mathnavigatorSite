@@ -5,10 +5,11 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
-	"github.com/gomodule/redigo/redis"
+	"time"
 )
 
 var KEY_PROGRAM_CLASSES_BY_SEMESTER = "all_programs_semesters_classes"
+var DURATION_KEY_PROGRAM_CLASSES_BY_SEMESTER = time.Minute * 10
 
 func GetAllProgramClassesBySemester() ([]domains.ProgramClassesBySemester, error) {
 	key := KEY_PROGRAM_CLASSES_BY_SEMESTER
@@ -16,17 +17,17 @@ func GetAllProgramClassesBySemester() ([]domains.ProgramClassesBySemester, error
 		"key": key,
 	})
 
-	conn, err := getConn()
-	if err != nil {
-		err = appErrors.WrapRedisUnavailable(err, "Redis unavailable before GET")
+	if CacheDb == nil {
+		err := appErrors.ERR_REDIS_UNAVAILABLE
 		return []domains.ProgramClassesBySemester{}, err
 	}
-	defer conn.Close()
 
-	listStr, err := redis.String(conn.Do("GET", key))
+	listStr, err := CacheDb.Get(ctx, key).Result()
 	if err != nil {
-		err = appErrors.WrapRedisGet(err, key)
+		logCacheMiss(key, err)
 		return []domains.ProgramClassesBySemester{}, err
+	} else {
+		logCacheHit(key)
 	}
 
 	b := []byte(listStr)
@@ -47,20 +48,26 @@ func SetAllProgramClassesBySemester(list []domains.ProgramClassesBySemester) err
 		"list": list,
 	})
 
-	conn, err := getConn()
-	if err != nil {
-		return appErrors.WrapRedisUnavailable(err, "Redis unavailable before SET")
+	if CacheDb == nil {
+		return appErrors.ERR_REDIS_UNAVAILABLE
 	}
-	defer conn.Close()
 
+	// Marshal list into JSON
 	b, err := json.Marshal(&list)
 	if err != nil {
 		return appErrors.WrapMarshalJSON("Error (%v) marshaling JSON to redis", err)
 	}
 
-	_, err = conn.Do("SET", key, string(b))
+	// Store into cache as string value
+	err = CacheDb.Set(
+		ctx,
+		key,
+		string(b),
+		DURATION_KEY_PROGRAM_CLASSES_BY_SEMESTER,
+	).Err()
 	if err != nil {
 		return appErrors.WrapRedisSet(err, key, list)
 	}
+
 	return nil
 }

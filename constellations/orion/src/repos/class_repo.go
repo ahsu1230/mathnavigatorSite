@@ -447,11 +447,7 @@ func generateClassId(class domains.Class) string {
 
 // Call this function whenever classes have changed, cache must be invalidated!
 func invalidateClassesCache() {
-	key := cache.KEY_PROGRAM_CLASSES_BY_SEMESTER
-	err := cache.Delete(key)
-	if err != nil {
-		cache.LogError(key, err)
-	}
+	cache.Delete(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER)
 }
 
 // For Tests Only
