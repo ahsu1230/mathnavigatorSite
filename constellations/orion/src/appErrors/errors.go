@@ -40,7 +40,7 @@ var ERR_REPO = errors.New("REPO_ERROR") // Generic Repo error
 var ERR_REDIS_UNAVAILABLE = errors.New("REDIS_UNAVAILABLE_ERROR")
 var ERR_REDIS_GET = errors.New("REDIS_GET_ERROR")
 var ERR_REDIS_SET = errors.New("REDIS_SET_ERROR")
-var ERR_REDIS_DELETE = errors.New("REDIS_DELETE_ERROR")
+var ERR_REDIS_DEL = errors.New("REDIS_DEL_ERROR")
 
 // SQL errors
 // These errors originate from the "database/sql" package
@@ -99,7 +99,7 @@ func WrapRedisSet(e error, key string, value interface{}) error {
 }
 
 func WrapRedisDelete(e error, key string) error {
-	return errors.Wrapf(ERR_REDIS_DELETE, "Error (%v) deleting key from redis (%v)", e, key)
+	return errors.Wrapf(ERR_REDIS_DEL, "Error (%v) deleting key from redis (%v)", e, key)
 }
 
 func WrapParse(e error, v interface{}) error {
