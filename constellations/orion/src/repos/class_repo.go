@@ -7,6 +7,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -331,6 +332,8 @@ func (cr *classRepo) Insert(class domains.Class) error {
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, class)
 	}
+
+	invalidateClassesCache()
 	return appErrors.ValidateDbResult(execResult, 1, "class was not inserted")
 }
 
@@ -374,6 +377,8 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, class, classId)
 	}
+
+	invalidateClassesCache()
 	return appErrors.ValidateDbResult(execResult, 1, "class was not updated")
 }
 
@@ -408,6 +413,8 @@ func (cr *classRepo) Publish(classIds []string) []error {
 		// TODO: Commit failed, need to rollback?
 		return append(errorList, appErrors.WrapDbTxCommit(err))
 	}
+
+	invalidateClassesCache()
 	return errorList
 }
 
@@ -424,7 +431,23 @@ func (cr *classRepo) Delete(classId string) error {
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, classId)
 	}
+
+	invalidateClassesCache()
 	return appErrors.ValidateDbResult(execResult, 1, "class was not deleted")
+}
+
+// Helper functions
+func generateClassId(class domains.Class) string {
+	classId := class.ProgramId + "_" + class.SemesterId
+	if class.ClassKey.Valid {
+		return classId + "_" + class.ClassKey.String
+	}
+	return classId
+}
+
+// Call this function whenever classes have changed, cache must be invalidated!
+func invalidateClassesCache() {
+	cache.Delete(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER)
 }
 
 // For Tests Only
@@ -432,12 +455,4 @@ func CreateTestClassRepo(db *sql.DB) ClassRepoInterface {
 	cr := &classRepo{}
 	cr.Initialize(db)
 	return cr
-}
-
-func generateClassId(class domains.Class) string {
-	classId := class.ProgramId + "_" + class.SemesterId
-	if class.ClassKey.Valid {
-		return classId + "_" + class.ClassKey.String
-	}
-	return classId
 }

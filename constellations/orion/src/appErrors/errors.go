@@ -20,6 +20,8 @@ type ResponseError struct {
 var ERR_JSON_NULL_BODY = errors.New("JSON_NULL_BODY_ERROR")
 var ERR_JSON_READ_BODY = errors.New("JSON_READ_BODY_ERROR")
 var ERR_JSON_BIND_BODY = errors.New("JSON_BIND_BODY_ERROR")
+var ERR_JSON_MARSHAL = errors.New("JSON_MARSHAL_BODY_ERROR")
+var ERR_JSON_UNMARSHAL = errors.New("JSON_UNMARSHAL_BODY_ERROR")
 
 // Repo errors
 // These errors indicate that there could be a problem with the Go code in Repo
@@ -33,6 +35,12 @@ var ERR_REPO_EXEC = errors.New("REPO_EXEC_ERROR")
 var ERR_REPO_BAD_RESULTS = errors.New("REPO_BAD_RESULTS_ERROR")
 var ERR_REPO_EXEC_MISMATCH = errors.New("REPO_EXEC_MISMATCH_ERROR")
 var ERR_REPO = errors.New("REPO_ERROR") // Generic Repo error
+
+// Redis errors
+var ERR_REDIS_UNAVAILABLE = errors.New("REDIS_UNAVAILABLE_ERROR")
+var ERR_REDIS_GET = errors.New("REDIS_GET_ERROR")
+var ERR_REDIS_SET = errors.New("REDIS_SET_ERROR")
+var ERR_REDIS_DEL = errors.New("REDIS_DEL_ERROR")
 
 // SQL errors
 // These errors originate from the "database/sql" package
@@ -68,6 +76,30 @@ func WrapBindJSON(e error, request *http.Request) error {
 		return errors.Wrapf(ERR_JSON_READ_BODY, "Error (%v) binding and reading request JSON", err)
 	}
 	return errors.Wrapf(ERR_JSON_BIND_BODY, "Error (%v) binding request JSON (%v)", e, body)
+}
+
+func WrapMarshalJSON(message string, v ...interface{}) error {
+	return errors.Wrapf(ERR_JSON_MARSHAL, message, v...)
+}
+
+func WrapUnmarshalJSON(message string, v ...interface{}) error {
+	return errors.Wrapf(ERR_JSON_UNMARSHAL, message, v...)
+}
+
+func WrapRedisUnavailable(e error, message string) error {
+	return errors.Wrap(e, message)
+}
+
+func WrapRedisGet(e error, key string) error {
+	return errors.Wrapf(ERR_REDIS_GET, "Error (%v) getting key from redis (%v)", e, key)
+}
+
+func WrapRedisSet(e error, key string, value interface{}) error {
+	return errors.Wrapf(ERR_REDIS_SET, "Error (%v) setting key into redis (%v)->(%v)", e, key, value)
+}
+
+func WrapRedisDelete(e error, key string) error {
+	return errors.Wrapf(ERR_REDIS_DEL, "Error (%v) deleting key from redis (%v)", e, key)
 }
 
 func WrapParse(e error, v interface{}) error {

@@ -10,6 +10,9 @@ ENV DB_USER "user"
 ENV DB_PASSWORD "password"
 ENV DB_DEFAULT "mathnavdb"
 ENV CORS_ORIGIN "*"
+ENV REDIS_HOST "cache-redis"
+ENV REDIS_PORT "6379"
+ENV REDIS_PASSWORD "redis_password"
 
 # Copy the local package files to the container's workspace.
 ADD . /go/src/github.com/ahsu1230/mathnavigatorSite/constellations/orion

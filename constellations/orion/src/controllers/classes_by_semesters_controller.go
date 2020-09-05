@@ -7,6 +7,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +17,14 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 
 	// Fetch programs, semesters, classes from repo functions
 	publishedOnly := utils.ParseParamPublishedOnly(c)
+
+	// Fetch from cache first to save on computation work
+	cachedList, err := cache.GetAllProgramClassesBySemester()
+	if err == nil {
+		c.JSON(http.StatusOK, &cachedList)
+		return
+	}
+	// Ignore err. Cache miss means we compute normally
 
 	programs, err := repos.ProgramRepo.SelectAll()
 	if err != nil {
@@ -61,7 +70,7 @@ func GetAllProgramsSemestersClasses(c *gin.Context) {
 
 		listResults = append(listResults, programClassesBySemester)
 	}
-
+	cache.SetAllProgramClassesBySemester(listResults)
 	c.JSON(http.StatusOK, &listResults)
 }
 
