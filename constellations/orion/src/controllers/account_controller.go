@@ -91,12 +91,13 @@ func CreateAccountAndUser(c *gin.Context) {
 		return
 	}
 	ctx := utils.RetrieveContext(c)
-	if err := repos.AccountRepo.InsertWithUser(ctx, account, user); err != nil {
+	accountId, err := repos.AccountRepo.InsertWithUser(ctx, account, user)
+	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"accountId": accountId})
 }
 
 func UpdateAccount(c *gin.Context) {

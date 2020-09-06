@@ -25,7 +25,7 @@ type UserClassesRepoInterface interface {
 	SelectByUserId(context.Context, uint) ([]domains.UserClasses, error)
 	SelectByUserAndClass(context.Context, uint, string) (domains.UserClasses, error)
 	SelectByNew(context.Context) ([]domains.UserClasses, error)
-	Insert(context.Context, domains.UserClasses) error
+	Insert(context.Context, domains.UserClasses) (uint, error)
 	Update(context.Context, uint, domains.UserClasses) error
 	Delete(context.Context, uint) error
 }
@@ -169,7 +169,7 @@ func (ur *userClassesRepo) SelectByNew(ctx context.Context) ([]domains.UserClass
 	return results, nil
 }
 
-func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserClasses) error {
+func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserClasses) (uint, error) {
 	utils.LogWithContext(ctx, "userClassRepo.Insert", logger.Fields{"userClass": userClasses})
 	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
@@ -182,7 +182,7 @@ func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserC
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -196,9 +196,14 @@ func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserC
 		userClasses.State,
 	)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, userClasses)
+		return 0, appErrors.WrapDbExec(err, statement, userClasses)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
 }
 
 func (ur *userClassesRepo) Update(ctx context.Context, id uint, userClasses domains.UserClasses) error {

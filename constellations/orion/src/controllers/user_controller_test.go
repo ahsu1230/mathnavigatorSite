@@ -202,8 +202,8 @@ func TestGetNewUsers(t *testing.T) {
 // Test Create
 //
 func TestCreateUserSuccess(t *testing.T) {
-	testUtils.UserRepo.MockInsert = func(context.Context, domains.User) error {
-		return nil
+	testUtils.UserRepo.MockInsert = func(context.Context, domains.User) (uint, error) {
+		return 42, nil
 	}
 	repos.UserRepo = &testUtils.UserRepo
 

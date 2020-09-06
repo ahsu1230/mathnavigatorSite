@@ -241,7 +241,7 @@ func TestInsertUserAfh(t *testing.T) {
 		AfhId:     3,
 		AccountId: 1,
 	}
-	err := repo.Insert(testUtils.Context, userAfh)
+	_, err := repo.Insert(testUtils.Context, userAfh)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

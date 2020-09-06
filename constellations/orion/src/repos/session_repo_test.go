@@ -157,7 +157,7 @@ func TestInsertSession(t *testing.T) {
 		},
 	}
 
-	err := repo.Insert(testUtils.Context, sessions)
+	_, err := repo.Insert(testUtils.Context, sessions)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

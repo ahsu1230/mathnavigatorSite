@@ -54,13 +54,13 @@ func CreateAFH(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.AskForHelpRepo.Insert(ctx, afhJson)
+	id, err := repos.AskForHelpRepo.Insert(ctx, afhJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAFH(c *gin.Context) {

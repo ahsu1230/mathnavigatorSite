@@ -22,7 +22,7 @@ type LocationRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAll(context.Context) ([]domains.Location, error)
 	SelectByLocationId(context.Context, string) (domains.Location, error)
-	Insert(context.Context, domains.Location) error
+	Insert(context.Context, domains.Location) (uint, error)
 	Update(context.Context, string, domains.Location) error
 	Delete(context.Context, string) error
 }
@@ -98,7 +98,7 @@ func (lr *locationRepo) SelectByLocationId(ctx context.Context, locationId strin
 	return location, nil
 }
 
-func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) error {
+func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (uint, error) {
 	utils.LogWithContext(ctx, "locationRepo.Insert", logger.Fields{"location": location})
 	statement := "INSERT INTO locations (" +
 		"created_at, " +
@@ -112,7 +112,7 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) e
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -127,10 +127,14 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) e
 		location.Zipcode,
 		location.Room)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, location)
+		return 0, appErrors.WrapDbExec(err, statement, location)
 	}
 
-	return appErrors.ValidateDbResult(result, 1, "location was not inserted")
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "location was not inserted")
 }
 
 func (lr *locationRepo) Update(ctx context.Context, locationId string, location domains.Location) error {

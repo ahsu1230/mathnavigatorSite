@@ -119,6 +119,10 @@ func WrapDbTxRollback(e error) error {
 	return errors.Wrapf(ERR_REPO_TX_ROLLBACK, "Error (%v) rolling back a transaction", e)
 }
 
+func WrapSQLBadInsertResult(e error) error {
+	return errors.Wrapf(ERR_REPO_BAD_RESULTS, "Error (%v) extracting rowId after insert", e)
+}
+
 func WrapDbPrepare(e error, statement string) error {
 	return errors.Wrapf(
 		ERR_REPO_PREPARE,

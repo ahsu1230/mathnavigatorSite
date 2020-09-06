@@ -142,8 +142,8 @@ func TestGetUserAfhByNew(t *testing.T) {
 
 // Test Create
 func TestCreateUserAfhSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockInsert = func(context.Context, domains.UserAfh) error {
-		return nil
+	testUtils.UserAfhRepo.MockInsert = func(context.Context, domains.UserAfh) (uint, error) {
+		return 42, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 

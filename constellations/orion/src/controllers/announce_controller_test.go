@@ -101,8 +101,8 @@ func TestGetAnnounceFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateAnnounceSuccess(t *testing.T) {
-	testUtils.AnnounceRepo.MockInsert = func(context.Context, domains.Announce) error {
-		return nil
+	testUtils.AnnounceRepo.MockInsert = func(context.Context, domains.Announce) (uint, error) {
+		return 42, nil
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
 

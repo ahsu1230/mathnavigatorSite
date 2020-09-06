@@ -213,7 +213,7 @@ func TestInsertAccountAndUser(t *testing.T) {
 	mock.ExpectCommit()
 	account := getAccount()
 	user := getUser()
-	err := repo.InsertWithUser(testUtils.Context, account, user)
+	_, err := repo.InsertWithUser(testUtils.Context, account, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

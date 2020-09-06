@@ -22,7 +22,7 @@ type AnnounceRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAll(context.Context) ([]domains.Announce, error)
 	SelectByAnnounceId(context.Context, uint) (domains.Announce, error)
-	Insert(context.Context, domains.Announce) error
+	Insert(context.Context, domains.Announce) (uint, error)
 	Update(context.Context, uint, domains.Announce) error
 	Delete(context.Context, uint) error
 }
@@ -93,7 +93,7 @@ func (ar *announceRepo) SelectByAnnounceId(ctx context.Context, id uint) (domain
 	return announce, nil
 }
 
-func (ar *announceRepo) Insert(ctx context.Context, announce domains.Announce) error {
+func (ar *announceRepo) Insert(ctx context.Context, announce domains.Announce) (uint, error) {
 	utils.LogWithContext(ctx, "announceRepo.Insert", logger.Fields{"announce": announce})
 	statement := "INSERT INTO announcements (" +
 		"created_at, " +
@@ -105,7 +105,7 @@ func (ar *announceRepo) Insert(ctx context.Context, announce domains.Announce) e
 		") VALUES (?, ?, ?, ?, ?, ?)"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -118,9 +118,14 @@ func (ar *announceRepo) Insert(ctx context.Context, announce domains.Announce) e
 		announce.Message,
 		announce.OnHomePage)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, announce)
+		return 0, appErrors.WrapDbExec(err, statement, announce)
 	}
-	return appErrors.ValidateDbResult(result, 1, "announcement was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "announcement was not inserted")
 }
 
 func (ar *announceRepo) Update(ctx context.Context, id uint, announce domains.Announce) error {

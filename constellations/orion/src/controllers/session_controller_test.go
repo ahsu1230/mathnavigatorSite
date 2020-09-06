@@ -100,8 +100,8 @@ func TestGetSessionFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateSessionsSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) []error {
-		return nil
+	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) ([]uint, []error) {
+		return []uint{42}, nil
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -117,8 +117,8 @@ func TestCreateSessionsSuccess(t *testing.T) {
 }
 
 func TestCreateSessionsFailure(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) []error {
-		return []error{appErrors.MockInvalidDomainError("invalid notes")}
+	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) ([]uint, []error) {
+		return []uint{}, []error{appErrors.MockInvalidDomainError("invalid notes")}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 

@@ -66,13 +66,13 @@ func CreateAchievement(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.AchieveRepo.Insert(ctx, achieveJson)
+	id, err := repos.AchieveRepo.Insert(ctx, achieveJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAchievement(c *gin.Context) {

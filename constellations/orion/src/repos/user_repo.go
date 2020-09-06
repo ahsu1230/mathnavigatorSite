@@ -29,7 +29,7 @@ type UserRepoInterface interface {
 	SelectById(context.Context, uint) (domains.User, error)
 	SelectByAccountId(context.Context, uint) ([]domains.User, error)
 	SelectByNew(context.Context) ([]domains.User, error)
-	Insert(context.Context, domains.User) error
+	Insert(context.Context, domains.User) (uint, error)
 	Update(context.Context, uint, domains.User) error
 	Delete(context.Context, uint) error
 }
@@ -258,7 +258,7 @@ func (ur *userRepo) SelectByNew(ctx context.Context) ([]domains.User, error) {
 	return results, nil
 }
 
-func (ur *userRepo) Insert(ctx context.Context, user domains.User) error {
+func (ur *userRepo) Insert(ctx context.Context, user domains.User) (uint, error) {
 	utils.LogWithContext(ctx, "userRepo.Insert", logger.Fields{"user": user})
 	statement := "INSERT INTO users (" +
 		"created_at, " +
@@ -277,7 +277,7 @@ func (ur *userRepo) Insert(ctx context.Context, user domains.User) error {
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -297,9 +297,14 @@ func (ur *userRepo) Insert(ctx context.Context, user domains.User) error {
 		user.GraduationYear,
 	)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, user)
+		return 0, appErrors.WrapDbExec(err, statement, user)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "user was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "user was not inserted")
 }
 
 func (ur *userRepo) Update(ctx context.Context, id uint, user domains.User) error {

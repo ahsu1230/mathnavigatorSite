@@ -24,7 +24,7 @@ type ProgramRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAll(context.Context) ([]domains.Program, error)
 	SelectByProgramId(context.Context, string) (domains.Program, error)
-	Insert(context.Context, domains.Program) error
+	Insert(context.Context, domains.Program) (uint, error)
 	Update(context.Context, string, domains.Program) error
 	Delete(context.Context, string) error
 }
@@ -97,7 +97,7 @@ func (pr *programRepo) SelectByProgramId(ctx context.Context, programId string) 
 	return program, nil
 }
 
-func (pr *programRepo) Insert(ctx context.Context, program domains.Program) error {
+func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uint, error) {
 	utils.LogWithContext(ctx, "programRepo.Insert", logger.Fields{"program": program})
 	statement := "INSERT INTO programs (" +
 		"created_at, " +
@@ -111,7 +111,7 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) erro
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -126,9 +126,15 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) erro
 		program.Description,
 		program.Featured)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, program)
+		return 0, appErrors.WrapDbExec(err, statement, program)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
 }
 
 func (pr *programRepo) Update(ctx context.Context, programId string, program domains.Program) error {

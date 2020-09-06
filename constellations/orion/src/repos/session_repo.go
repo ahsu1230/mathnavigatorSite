@@ -22,7 +22,7 @@ type SessionRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAllByClassId(context.Context, string) ([]domains.Session, error)
 	SelectBySessionId(context.Context, uint) (domains.Session, error)
-	Insert(context.Context, []domains.Session) []error
+	Insert(context.Context, []domains.Session) ([]uint, []error)
 	Update(context.Context, uint, domains.Session) error
 	Delete(context.Context, []uint) []error
 }
@@ -96,11 +96,11 @@ func (sr *sessionRepo) SelectBySessionId(ctx context.Context, id uint) (domains.
 	return session, nil
 }
 
-func (sr *sessionRepo) Insert(ctx context.Context, sessions []domains.Session) []error {
+func (sr *sessionRepo) Insert(ctx context.Context, sessions []domains.Session) ([]uint, []error) {
 	utils.LogWithContext(ctx, "sessionRepo.Insert", logger.Fields{"sessions": sessions})
 	tx, err := sr.db.Begin()
 	if err != nil {
-		return []error{appErrors.WrapDbTxBegin(err)}
+		return []uint{}, []error{appErrors.WrapDbTxBegin(err)}
 	}
 	statement := "INSERT INTO sessions (" +
 		"created_at, " +
@@ -113,10 +113,11 @@ func (sr *sessionRepo) Insert(ctx context.Context, sessions []domains.Session) [
 		") VALUES (?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := tx.Prepare(statement)
 	if err != nil {
-		return []error{appErrors.WrapDbPrepare(err, statement)}
+		return []uint{}, []error{appErrors.WrapDbPrepare(err, statement)}
 	}
 	defer stmt.Close()
 
+	var ids []uint
 	var errorList []error
 	now := time.Now().UTC()
 	for _, session := range sessions {
@@ -131,16 +132,21 @@ func (sr *sessionRepo) Insert(ctx context.Context, sessions []domains.Session) [
 		if err != nil {
 			errorList = append(errorList, appErrors.WrapDbExec(err, statement, session))
 			continue
-		}
-		if err = appErrors.ValidateDbResult(result, 1, "session was not inserted"); err != nil {
+		} else if err = appErrors.ValidateDbResult(result, 1, "session was not inserted"); err != nil {
 			errorList = append(errorList, err)
+		}
+		rowId, err := result.LastInsertId()
+		if err != nil {
+			errorList = append(errorList, appErrors.WrapSQLBadInsertResult(err))
+		} else {
+			ids = append(ids, uint(rowId))
 		}
 	}
 	if err = tx.Commit(); err != nil {
 		// TODO: Commit failed, need to rollback?
-		return append(errorList, appErrors.WrapDbTxCommit(err))
+		return []uint{}, append(errorList, appErrors.WrapDbTxCommit(err))
 	}
-	return errorList
+	return ids, errorList
 }
 
 func (sr *sessionRepo) Update(ctx context.Context, id uint, session domains.Session) error {

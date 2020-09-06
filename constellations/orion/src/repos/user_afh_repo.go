@@ -22,11 +22,11 @@ type userAfhRepo struct {
 // Interface to implement
 type UserAfhRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
-	Insert(context.Context, domains.UserAfh) error
 	SelectByUserId(context.Context, uint) ([]domains.UserAfh, error)
 	SelectByAfhId(context.Context, uint) ([]domains.UserAfh, error)
 	SelectByBothIds(context.Context, uint, uint) (domains.UserAfh, error)
 	SelectByNew(context.Context) ([]domains.UserAfh, error)
+	Insert(context.Context, domains.UserAfh) (uint, error)
 	Update(context.Context, uint, domains.UserAfh) error
 	Delete(context.Context, uint) error
 }
@@ -34,36 +34,6 @@ type UserAfhRepoInterface interface {
 func (ur *userAfhRepo) Initialize(ctx context.Context, db *sql.DB) {
 	utils.LogWithContext(ctx, "userAfhRepo.Initialize", logger.Fields{})
 	ur.db = db
-}
-
-func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) error {
-	utils.LogWithContext(ctx, "userAfhRepo.Insert", logger.Fields{"userAfh": userAfh})
-	statement := "INSERT INTO user_afh (" +
-		"created_at, " +
-		"updated_at, " +
-		"user_id, " +
-		"afh_id, " +
-		"account_id" +
-		") VALUES (?, ?, ?, ?, ?)"
-
-	stmt, err := ur.db.Prepare(statement)
-	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
-	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		now,
-		userAfh.UserId,
-		userAfh.AfhId,
-		userAfh.AccountId,
-	)
-	if err != nil {
-		return appErrors.WrapDbExec(err, statement, userAfh.UserId, userAfh.AfhId)
-	}
-	return appErrors.ValidateDbResult(execResult, 1, "userAfh was not inserted")
 }
 
 func (ur *userAfhRepo) SelectByUserId(ctx context.Context, userId uint) ([]domains.UserAfh, error) {
@@ -192,6 +162,41 @@ func (ur *userAfhRepo) SelectByNew(ctx context.Context) ([]domains.UserAfh, erro
 		results = append(results, userAfh)
 	}
 	return results, nil
+}
+
+func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uint, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.Insert", logger.Fields{"userAfh": userAfh})
+	statement := "INSERT INTO user_afh (" +
+		"created_at, " +
+		"updated_at, " +
+		"user_id, " +
+		"afh_id, " +
+		"account_id" +
+		") VALUES (?, ?, ?, ?, ?)"
+
+	stmt, err := ur.db.Prepare(statement)
+	if err != nil {
+		return 0, appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(
+		now,
+		now,
+		userAfh.UserId,
+		userAfh.AfhId,
+		userAfh.AccountId,
+	)
+	if err != nil {
+		return 0, appErrors.WrapDbExec(err, statement, userAfh.UserId, userAfh.AfhId)
+	}
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "userAfh was not inserted")
 }
 
 func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.UserAfh) error {

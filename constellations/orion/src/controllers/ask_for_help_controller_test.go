@@ -121,8 +121,8 @@ func TestGetAFHFailure(t *testing.T) {
 
 // Test Create
 func TestCreateAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockInsert = func(context.Context, domains.AskForHelp) error {
-		return nil
+	testUtils.AskForHelpRepo.MockInsert = func(context.Context, domains.AskForHelp) (uint, error) {
+		return 42, nil
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 

@@ -96,13 +96,13 @@ func CreateUserAfh(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.UserAfhRepo.Insert(ctx, userAfhJson)
+	id, err := repos.UserAfhRepo.Insert(ctx, userAfhJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateUserAfh(c *gin.Context) {

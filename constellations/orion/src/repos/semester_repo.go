@@ -24,7 +24,7 @@ type SemesterRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAll(context.Context) ([]domains.Semester, error)
 	SelectBySemesterId(context.Context, string) (domains.Semester, error)
-	Insert(context.Context, domains.Semester) error
+	Insert(context.Context, domains.Semester) (uint, error)
 	Update(context.Context, string, domains.Semester) error
 	Delete(context.Context, string) error
 }
@@ -99,7 +99,7 @@ func (sr *semesterRepo) SelectBySemesterId(ctx context.Context, semesterId strin
 	return semester, nil
 }
 
-func (sr *semesterRepo) Insert(ctx context.Context, semester domains.Semester) error {
+func (sr *semesterRepo) Insert(ctx context.Context, semester domains.Semester) (uint, error) {
 	utils.LogWithContext(ctx, "semesterRepo.Insert", logger.Fields{"semester": semester})
 	statement := "INSERT INTO semesters (" +
 		"created_at, " +
@@ -112,7 +112,7 @@ func (sr *semesterRepo) Insert(ctx context.Context, semester domains.Semester) e
 
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -125,9 +125,14 @@ func (sr *semesterRepo) Insert(ctx context.Context, semester domains.Semester) e
 		semester.Year,
 		semester.Title)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, semester)
+		return 0, appErrors.WrapDbExec(err, statement, semester)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "semester was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "semester was not inserted")
 }
 
 func (sr *semesterRepo) Update(ctx context.Context, semesterId string, semester domains.Semester) error {

@@ -95,7 +95,7 @@ func TestInsertTransaction(t *testing.T) {
 		PaymentNotes: domains.NewNullString("note1"),
 		AccountId:    1,
 	}
-	err := repo.Insert(testUtils.Context, transaction)
+	_, err := repo.Insert(testUtils.Context, transaction)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

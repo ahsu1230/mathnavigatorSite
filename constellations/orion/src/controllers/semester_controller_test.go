@@ -111,8 +111,8 @@ func TestGetSemesterFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateSemesterSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockInsert = func(context.Context, domains.Semester) error {
-		return nil
+	testUtils.SemesterRepo.MockInsert = func(context.Context, domains.Semester) (uint, error) {
+		return 42, nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 

@@ -99,8 +99,8 @@ func TestGetLocationFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateLocationSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockInsert = func(context.Context, domains.Location) error {
-		return nil
+	testUtils.LocationRepo.MockInsert = func(context.Context, domains.Location) (uint, error) {
+		return 42, nil
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
 

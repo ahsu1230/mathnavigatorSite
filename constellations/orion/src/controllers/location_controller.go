@@ -54,13 +54,13 @@ func CreateLocation(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.LocationRepo.Insert(ctx, locationJson)
+	id, err := repos.LocationRepo.Insert(ctx, locationJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateLocation(c *gin.Context) {

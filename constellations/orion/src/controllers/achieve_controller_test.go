@@ -126,8 +126,8 @@ func TestGetAchievementFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateAchievementSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockInsert = func(context.Context, domains.Achieve) error {
-		return nil
+	testUtils.AchieveRepo.MockInsert = func(context.Context, domains.Achieve) (uint, error) {
+		return 42, nil
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
 

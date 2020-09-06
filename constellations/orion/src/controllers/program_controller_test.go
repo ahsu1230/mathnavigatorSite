@@ -99,8 +99,8 @@ func TestGetProgramFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateProgramSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockInsert = func(context.Context, domains.Program) error {
-		return nil
+	testUtils.ProgramRepo.MockInsert = func(context.Context, domains.Program) (uint, error) {
+		return 42, nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 

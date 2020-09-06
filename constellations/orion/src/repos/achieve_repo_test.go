@@ -176,7 +176,7 @@ func TestInsertAchieve(t *testing.T) {
 		Message:  "message1",
 		Position: 1,
 	}
-	err := repo.Insert(testUtils.Context, achieve)
+	_, err := repo.Insert(testUtils.Context, achieve)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

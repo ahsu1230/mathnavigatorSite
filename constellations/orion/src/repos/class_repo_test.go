@@ -238,7 +238,7 @@ func TestInsertClass(t *testing.T) {
 			domains.NewNullString("notes1"),
 		).WillReturnResult(result)
 	class := getClass()
-	err := repo.Insert(testUtils.Context, class)
+	_, err := repo.Insert(testUtils.Context, class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

@@ -29,7 +29,7 @@ type ClassRepoInterface interface {
 	SelectByProgramId(context.Context, string) ([]domains.Class, error)
 	SelectBySemesterId(context.Context, string) ([]domains.Class, error)
 	SelectByProgramAndSemesterId(context.Context, string, string) ([]domains.Class, error)
-	Insert(context.Context, domains.Class) error
+	Insert(context.Context, domains.Class) (uint, error)
 	Update(context.Context, string, domains.Class) error
 	Publish(context.Context, []string) []error
 	Delete(context.Context, string) error
@@ -291,7 +291,7 @@ func (cr *classRepo) SelectByProgramAndSemesterId(ctx context.Context, programId
 	return results, nil
 }
 
-func (cr *classRepo) Insert(ctx context.Context, class domains.Class) error {
+func (cr *classRepo) Insert(ctx context.Context, class domains.Class) (uint, error) {
 	utils.LogWithContext(ctx, "classRepo.Insert", logger.Fields{"class": class})
 	statement := "INSERT INTO classes (" +
 		"created_at, " +
@@ -310,7 +310,7 @@ func (cr *classRepo) Insert(ctx context.Context, class domains.Class) error {
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -331,11 +331,16 @@ func (cr *classRepo) Insert(ctx context.Context, class domains.Class) error {
 		class.PaymentNotes,
 	)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, class)
+		return 0, appErrors.WrapDbExec(err, statement, class)
 	}
 
 	invalidateClassesCache(ctx)
-	return appErrors.ValidateDbResult(execResult, 1, "class was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "class was not inserted")
 }
 
 func (cr *classRepo) Update(ctx context.Context, classId string, class domains.Class) error {

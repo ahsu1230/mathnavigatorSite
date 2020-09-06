@@ -145,7 +145,7 @@ func TestInsertLocation(t *testing.T) {
 		Zipcode:    "20854",
 		Room:       domains.NewNullString("Room 2"),
 	}
-	err := repo.Insert(testUtils.Context, location)
+	_, err := repo.Insert(testUtils.Context, location)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

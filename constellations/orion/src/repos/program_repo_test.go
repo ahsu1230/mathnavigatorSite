@@ -125,7 +125,7 @@ func TestInsertProgram(t *testing.T) {
 		Description: "Descript1",
 		Featured:    0,
 	}
-	err := repo.Insert(testUtils.Context, program)
+	_, err := repo.Insert(testUtils.Context, program)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

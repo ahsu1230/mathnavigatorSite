@@ -155,7 +155,7 @@ func TestInsertUserClass(t *testing.T) {
 			domains.USER_CLASS_ACCEPTED,
 		).WillReturnResult(result)
 	userClasses := getUserClasses()
-	err := repo.Insert(testUtils.Context, userClasses)
+	_, err := repo.Insert(testUtils.Context, userClasses)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

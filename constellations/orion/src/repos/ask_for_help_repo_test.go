@@ -98,7 +98,7 @@ func TestInsertAFH(t *testing.T) {
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}
-	err := repo.Insert(testUtils.Context, askForHelp)
+	_, err := repo.Insert(testUtils.Context, askForHelp)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

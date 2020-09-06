@@ -24,7 +24,7 @@ type TransactionRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectByAccountId(context.Context, uint) ([]domains.Transaction, error)
 	SelectById(context.Context, uint) (domains.Transaction, error)
-	Insert(context.Context, domains.Transaction) error
+	Insert(context.Context, domains.Transaction) (uint, error)
 	Update(context.Context, uint, domains.Transaction) error
 	Delete(context.Context, uint) error
 }
@@ -94,7 +94,7 @@ func (tr *transactionRepo) SelectById(ctx context.Context, id uint) (domains.Tra
 	return transaction, nil
 }
 
-func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Transaction) error {
+func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Transaction) (uint, error) {
 	utils.LogWithContext(ctx, "transactionRepo.Insert", logger.Fields{"transaction": transaction})
 	statement := "INSERT INTO transactions (" +
 		"created_at, " +
@@ -106,7 +106,7 @@ func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Trans
 		") VALUES (?, ?, ?, ?, ?, ?)"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -119,9 +119,14 @@ func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Trans
 		transaction.PaymentNotes,
 		transaction.AccountId)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, transaction)
+		return 0, appErrors.WrapDbExec(err, statement, transaction)
 	}
-	return appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
 }
 
 func (tr *transactionRepo) Update(ctx context.Context, id uint, transaction domains.Transaction) error {

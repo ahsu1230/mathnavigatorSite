@@ -187,8 +187,8 @@ func TestGetUsersByNew(t *testing.T) {
 // Test Create
 //
 func TestCreateUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) error {
-		return nil
+	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+		return 42, nil
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -208,8 +208,8 @@ func TestCreateUserClassSuccess(t *testing.T) {
 }
 
 func TestCreateUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) error {
-		return appErrors.MockMySQLDuplicateEntryError()
+	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+		return 0, appErrors.MockMySQLDuplicateEntryError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 

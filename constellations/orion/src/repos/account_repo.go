@@ -25,7 +25,7 @@ type AccountRepoInterface interface {
 	SelectById(context.Context, uint) (domains.Account, error)
 	SelectByPrimaryEmail(context.Context, string) (domains.Account, error)
 	SelectAllNegativeBalances(context.Context) ([]domains.AccountSum, error)
-	InsertWithUser(context.Context, domains.Account, domains.User) error
+	InsertWithUser(context.Context, domains.Account, domains.User) (uint, error)
 	Update(context.Context, uint, domains.Account) error
 	Delete(context.Context, uint) error
 }
@@ -119,11 +119,14 @@ func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domain
 	return results, nil
 }
 
-func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Account, user domains.User) error {
-	utils.LogWithContext(ctx, "accountRepo.Insert", logger.Fields{"account": account})
+func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Account, user domains.User) (uint, error) {
+	utils.LogWithContext(ctx, "accountRepo.Insert", logger.Fields{
+		"account": account,
+		"user":    user,
+	})
 	tx, err := acc.db.Begin()
 	if err != nil {
-		return appErrors.WrapDbTxBegin(err)
+		return 0, appErrors.WrapDbTxBegin(err)
 	}
 
 	statement := "INSERT INTO accounts (" +
@@ -135,7 +138,7 @@ func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Acco
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -148,18 +151,19 @@ func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Acco
 	)
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbExec(err, statement, account)
+		return 0, appErrors.WrapDbExec(err, statement, account)
 	}
 	if err = appErrors.ValidateDbResult(result1, 1, "account was not inserted"); err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbExec(err, statement, account)
+		return 0, appErrors.WrapDbExec(err, statement, account)
 	}
 
-	lastAccountId, err := result1.LastInsertId()
+	accountId, err := result1.LastInsertId()
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbExec(err, statement, account)
+		return 0, appErrors.WrapDbExec(err, statement, account)
 	}
+
 	statement2 := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
@@ -177,7 +181,7 @@ func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Acco
 	stmt2, err := acc.db.Prepare(statement2)
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbPrepare(err, statement2)
+		return 0, appErrors.WrapDbPrepare(err, statement2)
 	}
 	defer stmt2.Close()
 
@@ -190,26 +194,26 @@ func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Acco
 		user.Email,
 		user.Phone,
 		user.IsGuardian,
-		lastAccountId,
+		accountId,
 		user.Notes,
 		user.School,
 		user.GraduationYear,
 	)
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbExec(err, statement, user)
+		return 0, appErrors.WrapDbExec(err, statement, user)
 	}
 	if err = appErrors.ValidateDbResult(result2, 1, "user was not inserted"); err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbExec(err, statement, user)
+		return 0, appErrors.WrapDbExec(err, statement, user)
 	}
 
 	err = tx.Commit()
 	if err != nil {
 		tx.Rollback()
-		return appErrors.WrapDbTxCommit(err)
+		return 0, appErrors.WrapDbTxCommit(err)
 	}
-	return nil
+	return uint(accountId), nil
 }
 
 func (acc *accountRepo) Update(ctx context.Context, id uint, account domains.Account) error {

@@ -183,7 +183,7 @@ func TestInsertUser(t *testing.T) {
 			domains.NewNullUint(2004),
 		).WillReturnResult(result)
 	user := getUser()
-	err := repo.Insert(testUtils.Context, user)
+	_, err := repo.Insert(testUtils.Context, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

@@ -92,7 +92,7 @@ func TestInsertSemester(t *testing.T) {
 		Year:       2020,
 		Title:      "Fall 2020",
 	}
-	err := repo.Insert(testUtils.Context, semester)
+	_, err := repo.Insert(testUtils.Context, semester)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

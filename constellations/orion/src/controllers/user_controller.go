@@ -108,12 +108,13 @@ func CreateUser(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	if err := repos.UserRepo.Insert(ctx, userJson); err != nil {
+	id, err := repos.UserRepo.Insert(ctx, userJson)
+	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateUser(c *gin.Context) {

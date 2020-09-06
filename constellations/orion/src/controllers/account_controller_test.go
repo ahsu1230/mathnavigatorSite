@@ -155,8 +155,8 @@ func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
 // Test Create
 //
 func TestCreateAccountWithUserSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockInsertWithUser = func(context.Context, domains.Account, domains.User) error {
-		return nil
+	testUtils.AccountRepo.MockInsertWithUser = func(context.Context, domains.Account, domains.User) (uint, error) {
+		return 42, nil
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 

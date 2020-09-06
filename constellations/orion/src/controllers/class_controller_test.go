@@ -221,8 +221,8 @@ func TestGetAllUnpublishedSuccess(t *testing.T) {
 // Test Create
 //
 func TestCreateClassSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockInsert = func(context.Context, domains.Class) error {
-		return nil
+	testUtils.ClassRepo.MockInsert = func(context.Context, domains.Class) (uint, error) {
+		return 42, nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 

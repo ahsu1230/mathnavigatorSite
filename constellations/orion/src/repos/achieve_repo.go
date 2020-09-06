@@ -25,7 +25,7 @@ type AchieveRepoInterface interface {
 	SelectAll(context.Context) ([]domains.Achieve, error)
 	SelectAllGroupedByYear(context.Context) ([]domains.AchieveYearGroup, error)
 	SelectById(context.Context, uint) (domains.Achieve, error)
-	Insert(context.Context, domains.Achieve) error
+	Insert(context.Context, domains.Achieve) (uint, error)
 	Update(context.Context, uint, domains.Achieve) error
 	Delete(context.Context, uint) error
 }
@@ -137,7 +137,7 @@ func (ar *achieveRepo) SelectById(ctx context.Context, id uint) (domains.Achieve
 	return achieve, nil
 }
 
-func (ar *achieveRepo) Insert(ctx context.Context, achieve domains.Achieve) error {
+func (ar *achieveRepo) Insert(ctx context.Context, achieve domains.Achieve) (uint, error) {
 	utils.LogWithContext(ctx, "achieveRepo.Insert", logger.Fields{"achieve": achieve})
 	statement := "INSERT INTO achievements (" +
 		"created_at, " +
@@ -149,7 +149,7 @@ func (ar *achieveRepo) Insert(ctx context.Context, achieve domains.Achieve) erro
 
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -161,9 +161,14 @@ func (ar *achieveRepo) Insert(ctx context.Context, achieve domains.Achieve) erro
 		achieve.Message,
 		achieve.Position)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, achieve)
+		return 0, appErrors.WrapDbExec(err, statement, achieve)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "achievement was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "achievement was not inserted")
 }
 
 func (ar *achieveRepo) Update(ctx context.Context, id uint, achieve domains.Achieve) error {

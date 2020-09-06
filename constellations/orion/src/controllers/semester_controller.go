@@ -62,13 +62,13 @@ func CreateSemester(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.SemesterRepo.Insert(ctx, semesterJson)
+	id, err := repos.SemesterRepo.Insert(ctx, semesterJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateSemester(c *gin.Context) {

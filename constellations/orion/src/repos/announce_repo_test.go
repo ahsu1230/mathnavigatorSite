@@ -148,7 +148,7 @@ func TestInsertAnnouncement(t *testing.T) {
 		Message:    "Valid Message",
 		OnHomePage: false,
 	}
-	err := repo.Insert(testUtils.Context, announce)
+	_, err := repo.Insert(testUtils.Context, announce)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

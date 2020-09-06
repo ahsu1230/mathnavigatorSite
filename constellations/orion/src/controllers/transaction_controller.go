@@ -66,13 +66,13 @@ func CreateTransaction(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.TransactionRepo.Insert(ctx, transactionJson)
+	id, err := repos.TransactionRepo.Insert(ctx, transactionJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateTransaction(c *gin.Context) {

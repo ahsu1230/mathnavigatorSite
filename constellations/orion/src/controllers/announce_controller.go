@@ -54,13 +54,13 @@ func CreateAnnouncement(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	err := repos.AnnounceRepo.Insert(ctx, announceJson)
+	id, err := repos.AnnounceRepo.Insert(ctx, announceJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAnnouncement(c *gin.Context) {

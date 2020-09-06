@@ -55,7 +55,7 @@ func CreateSessions(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	errs := repos.SessionRepo.Insert(ctx, sessionsJson)
+	ids, errs := repos.SessionRepo.Insert(ctx, sessionsJson)
 	if len(errs) > 0 {
 		for _, err := range errs {
 			c.Error(err)
@@ -63,7 +63,7 @@ func CreateSessions(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"ids": ids})
 }
 
 func UpdateSession(c *gin.Context) {

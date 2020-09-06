@@ -24,7 +24,7 @@ type AskForHelpRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectAll(context.Context) ([]domains.AskForHelp, error)
 	SelectById(context.Context, uint) (domains.AskForHelp, error)
-	Insert(context.Context, domains.AskForHelp) error
+	Insert(context.Context, domains.AskForHelp) (uint, error)
 	Update(context.Context, uint, domains.AskForHelp) error
 	Delete(context.Context, uint) error
 }
@@ -99,7 +99,7 @@ func (ar *askForHelpRepo) SelectById(ctx context.Context, id uint) (domains.AskF
 	return askForHelp, nil
 }
 
-func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForHelp) error {
+func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForHelp) (uint, error) {
 	utils.LogWithContext(ctx, "afhRepo.Insert", logger.Fields{"afh": askForHelp})
 	statement := "INSERT INTO ask_for_help (" +
 		"created_at, " +
@@ -113,7 +113,7 @@ func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForH
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -128,9 +128,14 @@ func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForH
 		askForHelp.LocationId,
 		askForHelp.Notes)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, askForHelp)
+		return 0, appErrors.WrapDbExec(err, statement, askForHelp)
 	}
-	return appErrors.ValidateDbResult(result, 1, "ask for help was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "ask for help was not inserted")
 }
 
 func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domains.AskForHelp) error {
