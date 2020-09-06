@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -51,7 +52,8 @@ func SetupTestDatabase(host string, port int, username string, password string, 
 	repoUtils.Migrate(dbConn, "file://../repos/migrations")
 
 	logger.Message("Initializing repoUtils...")
-	repos.SetupRepos(dbConn)
+	ctx := context.Background()
+	repos.SetupRepos(ctx, dbConn)
 
 	db = dbConn
 }

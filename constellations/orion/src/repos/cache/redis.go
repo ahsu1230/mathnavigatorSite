@@ -11,14 +11,12 @@ import (
 )
 
 var (
-	ctx     context.Context
 	CacheDb *redis.Client
 )
 
 func Init(host string, port int, password string) {
 	logger.Message("Initializing Redis...")
 
-	ctx = context.Background()
 	connection := fmt.Sprintf("%s:%d", host, port)
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     connection,
@@ -27,6 +25,7 @@ func Init(host string, port int, password string) {
 	})
 
 	logger.Message("Pinging Redis...")
+	ctx := context.Background()
 	_, err := rdb.Ping(ctx).Result()
 	if err != nil {
 		logger.Error("Error pinging Redis", err, logger.Fields{})
@@ -62,11 +61,8 @@ func Close() {
 }
 
 // Invalidate method (by key)
-func Delete(key string) error {
-	logger.Debug(
-		"Invalidating cacheKey",
-		logger.Fields{"key": key},
-	)
+func Delete(ctx context.Context, key string) error {
+	logWithContext(ctx, "Invalidating cacheKey", key)
 
 	if CacheDb == nil {
 		return appErrors.ERR_REDIS_UNAVAILABLE
@@ -82,9 +78,6 @@ func Delete(key string) error {
 		return appErrors.WrapRedisDelete(err, key)
 	}
 
-	logger.Debug(
-		"Deleted key",
-		logger.Fields{"key": key},
-	)
+	logWithContext(ctx, "Deleted cacheKey", key)
 	return nil
 }

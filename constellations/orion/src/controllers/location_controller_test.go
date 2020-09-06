@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -19,7 +19,7 @@ import (
 // Test Get All
 //
 func TestGetAllLocationsSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockSelectAll = func() ([]domains.Location, error) {
+	testUtils.LocationRepo.MockSelectAll = func(context.Context) ([]domains.Location, error) {
 		return []domains.Location{
 			{
 				Id:         1,
@@ -63,7 +63,7 @@ func TestGetAllLocationsSuccess(t *testing.T) {
 // Test Get Location
 //
 func TestGetLocationSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockSelectByLocationId = func(LocationId string) (domains.Location, error) {
+	testUtils.LocationRepo.MockSelectByLocationId = func(context.Context, string) (domains.Location, error) {
 		location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 		return location, nil
 	}
@@ -83,7 +83,7 @@ func TestGetLocationSuccess(t *testing.T) {
 }
 
 func TestGetLocationFailure(t *testing.T) {
-	testUtils.LocationRepo.MockSelectByLocationId = func(LocationId string) (domains.Location, error) {
+	testUtils.LocationRepo.MockSelectByLocationId = func(context.Context, string) (domains.Location, error) {
 		return domains.Location{}, appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -99,7 +99,7 @@ func TestGetLocationFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateLocationSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockInsert = func(location domains.Location) error {
+	testUtils.LocationRepo.MockInsert = func(context.Context, domains.Location) error {
 		return nil
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -132,7 +132,7 @@ func TestCreateLocationFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateLocationSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockUpdate = func(LocationId string, location domains.Location) error {
+	testUtils.LocationRepo.MockUpdate = func(context.Context, string, domains.Location) error {
 		return nil // Successful update
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -160,7 +160,7 @@ func TestUpdateLocationInvalid(t *testing.T) {
 }
 
 func TestUpdateLocationFailure(t *testing.T) {
-	testUtils.LocationRepo.MockUpdate = func(LocationId string, location domains.Location) error {
+	testUtils.LocationRepo.MockUpdate = func(context.Context, string, domains.Location) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -178,7 +178,7 @@ func TestUpdateLocationFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteLocationSuccess(t *testing.T) {
-	testUtils.LocationRepo.MockDelete = func(LocationId string) error {
+	testUtils.LocationRepo.MockDelete = func(context.Context, string) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -191,7 +191,7 @@ func TestDeleteLocationSuccess(t *testing.T) {
 }
 
 func TestDeleteLocationFailure(t *testing.T) {
-	testUtils.LocationRepo.MockDelete = func(LocationId string) error {
+	testUtils.LocationRepo.MockDelete = func(context.Context, string) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.LocationRepo = &testUtils.LocationRepo

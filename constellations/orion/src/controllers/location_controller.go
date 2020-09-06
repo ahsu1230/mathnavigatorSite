@@ -12,7 +12,8 @@ import (
 
 func GetAllLocations(c *gin.Context) {
 	utils.LogControllerMethod(c, "locationController.GetAllLocations")
-	locationList, err := repos.LocationRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	locationList, err := repos.LocationRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -26,7 +27,8 @@ func GetLocationById(c *gin.Context) {
 	// Incoming parameters
 	locationId := c.Param("locationId")
 
-	location, err := repos.LocationRepo.SelectByLocationId(locationId)
+	ctx := utils.RetrieveContext(c)
+	location, err := repos.LocationRepo.SelectByLocationId(ctx, locationId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -51,7 +53,8 @@ func CreateLocation(c *gin.Context) {
 		return
 	}
 
-	err := repos.LocationRepo.Insert(locationJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.LocationRepo.Insert(ctx, locationJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -77,7 +80,8 @@ func UpdateLocation(c *gin.Context) {
 		return
 	}
 
-	err := repos.LocationRepo.Update(locationId, locationJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.LocationRepo.Update(ctx, locationId, locationJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -91,7 +95,8 @@ func DeleteLocation(c *gin.Context) {
 	// Incoming Parameters
 	locationId := c.Param("locationId")
 
-	err := repos.LocationRepo.Delete(locationId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.LocationRepo.Delete(ctx, locationId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

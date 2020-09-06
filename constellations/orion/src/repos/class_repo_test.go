@@ -16,7 +16,7 @@ func initClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ClassRepoInter
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestClassRepo(db)
+	repo := repos.CreateTestClassRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -30,7 +30,7 @@ func TestSelectAllClasses(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll(false)
+	got, err := repo.SelectAll(testUtils.Context, false)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -57,7 +57,7 @@ func TestSelectPublishedClasses(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NOT NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll(true)
+	got, err := repo.SelectAll(testUtils.Context, true)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -84,7 +84,7 @@ func TestSelectAllUnpublishedClasses(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
+	got, err := repo.SelectAllUnpublished(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -112,7 +112,7 @@ func TestSelectClass(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1_2020_spring_final_review").
 		WillReturnRows(rows)
-	got, err := repo.SelectByClassId("program1_2020_spring_final_review") // Correct classId
+	got, err := repo.SelectByClassId(testUtils.Context, "program1_2020_spring_final_review") // Correct classId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -140,7 +140,7 @@ func TestSelectClassesByProgramId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1").
 		WillReturnRows(rows)
-	got, err := repo.SelectByProgramId("program1") // Correct programId
+	got, err := repo.SelectByProgramId(testUtils.Context, "program1") // Correct programId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -168,7 +168,7 @@ func TestSelectClassesBySemesterId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("2020_spring").
 		WillReturnRows(rows)
-	got, err := repo.SelectBySemesterId("2020_spring") // Correct semesterId
+	got, err := repo.SelectBySemesterId(testUtils.Context, "2020_spring") // Correct semesterId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -196,7 +196,7 @@ func TestSelectClassesByProgramIdAndSemesterId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1", "2020_spring").
 		WillReturnRows(rows)
-	got, err := repo.SelectByProgramAndSemesterId("program1", "2020_spring") // Correct programId and semesterId
+	got, err := repo.SelectByProgramAndSemesterId(testUtils.Context, "program1", "2020_spring") // Correct programId and semesterId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -238,7 +238,7 @@ func TestInsertClass(t *testing.T) {
 			domains.NewNullString("notes1"),
 		).WillReturnResult(result)
 	class := getClass()
-	err := repo.Insert(class)
+	err := repo.Insert(testUtils.Context, class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -288,7 +288,7 @@ func TestUpdateClass(t *testing.T) {
 		PriceLump:       domains.NewNullUint(100),
 		PaymentNotes:    domains.NewNullString("notes1"),
 	}
-	err := repo.Update("program1_2020_spring_final_review", class)
+	err := repo.Update(testUtils.Context, "program1_2020_spring_final_review", class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -314,7 +314,7 @@ func TestPublishClasses(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
 		WillReturnResult(result)
 	mock.ExpectCommit()
-	err := repo.Publish([]string{"program1_2020_spring_final_review"})
+	err := repo.Publish(testUtils.Context, []string{"program1_2020_spring_final_review"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -338,7 +338,7 @@ func TestDeleteClass(t *testing.T) {
 		ExpectExec().
 		WithArgs("program1_2020_spring_final_review").
 		WillReturnResult(result)
-	err := repo.Delete("program1_2020_spring_final_review")
+	err := repo.Delete(testUtils.Context, "program1_2020_spring_final_review")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

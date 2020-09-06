@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -20,22 +21,22 @@ type achieveRepo struct {
 
 // Interface to implement
 type AchieveRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Achieve, error)
-	SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error)
-	SelectById(uint) (domains.Achieve, error)
-	Insert(domains.Achieve) error
-	Update(uint, domains.Achieve) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.Achieve, error)
+	SelectAllGroupedByYear(context.Context) ([]domains.AchieveYearGroup, error)
+	SelectById(context.Context, uint) (domains.Achieve, error)
+	Insert(context.Context, domains.Achieve) error
+	Update(context.Context, uint, domains.Achieve) error
+	Delete(context.Context, uint) error
 }
 
-func (ar *achieveRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("achieveRepo.Initialize", logger.Fields{})
+func (ar *achieveRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "achieveRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
-func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
-	utils.LogWithContext("achieveRepo.SelectAll", logger.Fields{})
+func (ar *achieveRepo) SelectAll(ctx context.Context) ([]domains.Achieve, error) {
+	utils.LogWithContext(ctx, "achieveRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Achieve, 0)
 
 	query := "SELECT * FROM achievements"
@@ -68,8 +69,8 @@ func (ar *achieveRepo) SelectAll() ([]domains.Achieve, error) {
 	return results, nil
 }
 
-func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, error) {
-	utils.LogWithContext("achieveRepo.SelectAllGroupedByYear", logger.Fields{})
+func (ar *achieveRepo) SelectAllGroupedByYear(ctx context.Context) ([]domains.AchieveYearGroup, error) {
+	utils.LogWithContext(ctx, "achieveRepo.SelectAllGroupedByYear", logger.Fields{})
 	results := make([]domains.AchieveYearGroup, 0)
 
 	statement := "SELECT * FROM achievements ORDER BY year DESC, position ASC"
@@ -112,8 +113,8 @@ func (ar *achieveRepo) SelectAllGroupedByYear() ([]domains.AchieveYearGroup, err
 	return results, nil
 }
 
-func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
-	utils.LogWithContext("achieveRepo.SelectById", logger.Fields{"id": id})
+func (ar *achieveRepo) SelectById(ctx context.Context, id uint) (domains.Achieve, error) {
+	utils.LogWithContext(ctx, "achieveRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -136,8 +137,8 @@ func (ar *achieveRepo) SelectById(id uint) (domains.Achieve, error) {
 	return achieve, nil
 }
 
-func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
-	utils.LogWithContext("achieveRepo.Insert", logger.Fields{"achieve": achieve})
+func (ar *achieveRepo) Insert(ctx context.Context, achieve domains.Achieve) error {
+	utils.LogWithContext(ctx, "achieveRepo.Insert", logger.Fields{"achieve": achieve})
 	statement := "INSERT INTO achievements (" +
 		"created_at, " +
 		"updated_at, " +
@@ -165,8 +166,8 @@ func (ar *achieveRepo) Insert(achieve domains.Achieve) error {
 	return appErrors.ValidateDbResult(execResult, 1, "achievement was not inserted")
 }
 
-func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
-	utils.LogWithContext("achieveRepo.Update", logger.Fields{"achieve": achieve})
+func (ar *achieveRepo) Update(ctx context.Context, id uint, achieve domains.Achieve) error {
+	utils.LogWithContext(ctx, "achieveRepo.Update", logger.Fields{"achieve": achieve})
 	statement := "UPDATE achievements SET " +
 		"updated_at=?, " +
 		"year=?, " +
@@ -192,8 +193,8 @@ func (ar *achieveRepo) Update(id uint, achieve domains.Achieve) error {
 	return appErrors.ValidateDbResult(execResult, 1, "achievement was not updated")
 }
 
-func (ar *achieveRepo) Delete(id uint) error {
-	utils.LogWithContext("achieveRepo.Delete", logger.Fields{"id": id})
+func (ar *achieveRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "achieveRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM achievements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -209,8 +210,8 @@ func (ar *achieveRepo) Delete(id uint) error {
 }
 
 // For Tests Only
-func CreateTestAchieveRepo(db *sql.DB) AchieveRepoInterface {
+func CreateTestAchieveRepo(ctx context.Context, db *sql.DB) AchieveRepoInterface {
 	ar := &achieveRepo{}
-	ar.Initialize(db)
+	ar.Initialize(ctx, db)
 	return ar
 }

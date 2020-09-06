@@ -17,7 +17,7 @@ func initAFHTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AskForHelpRepoIn
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAFHRepo(db)
+	repo := repos.CreateTestAFHRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -29,7 +29,7 @@ func TestSelectAllAFH(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getAFHRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM ask_for_help").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -55,7 +55,7 @@ func TestSelectAFH(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -98,7 +98,7 @@ func TestInsertAFH(t *testing.T) {
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}
-	err := repo.Insert(askForHelp)
+	err := repo.Insert(testUtils.Context, askForHelp)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -139,7 +139,7 @@ func TestUpdateAFH(t *testing.T) {
 		LocationId: "room12",
 		Notes:      domains.NewNullString("test note"),
 	}
-	err := repo.Update(1, askForHelp)
+	err := repo.Update(testUtils.Context, 1, askForHelp)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -160,7 +160,7 @@ func TestDeleteAFH(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

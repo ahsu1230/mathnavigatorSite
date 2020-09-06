@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -19,7 +20,7 @@ import (
 // Test Get Account
 //
 func TestGetAccountSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
+	testUtils.AccountRepo.MockSelectById = func(context.Context, uint) (domains.Account, error) {
 		account := testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
@@ -45,7 +46,7 @@ func TestGetAccountSuccess(t *testing.T) {
 }
 
 func TestSearchAccountSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
+	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(context.Context, string) (domains.Account, error) {
 		return testUtils.CreateMockAccount(
 			1,
 			"john_smith@example.com",
@@ -80,7 +81,7 @@ func TestSearchAccountSuccess(t *testing.T) {
 }
 
 func TestSearchAccountFailure(t *testing.T) {
-	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(primaryEmail string) (domains.Account, error) {
+	testUtils.AccountRepo.MockSelectByPrimaryEmail = func(context.Context, string) (domains.Account, error) {
 		return domains.Account{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -93,7 +94,7 @@ func TestSearchAccountFailure(t *testing.T) {
 }
 
 func TestGetAccountsFailure(t *testing.T) {
-	testUtils.AccountRepo.MockSelectById = func(id uint) (domains.Account, error) {
+	testUtils.AccountRepo.MockSelectById = func(context.Context, uint) (domains.Account, error) {
 		return domains.Account{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -109,7 +110,7 @@ func TestGetAccountsFailure(t *testing.T) {
 // Test Get Negative Balances
 //
 func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockSelectAllNegativeBalances = func() ([]domains.AccountSum, error) {
+	testUtils.AccountRepo.MockSelectAllNegativeBalances = func(context.Context) ([]domains.AccountSum, error) {
 		return []domains.AccountSum{
 			{
 				Account: domains.Account{
@@ -154,7 +155,7 @@ func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
 // Test Create
 //
 func TestCreateAccountWithUserSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockInsertWithUser = func(account domains.Account, user domains.User) error {
+	testUtils.AccountRepo.MockInsertWithUser = func(context.Context, domains.Account, domains.User) error {
 		return nil
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -218,7 +219,7 @@ func TestCreateAccountWithUserFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateAccountSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockUpdate = func(id uint, account domains.Account) error {
+	testUtils.AccountRepo.MockUpdate = func(context.Context, uint, domains.Account) error {
 		return nil // Successful update
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -255,7 +256,7 @@ func TestUpdateAccountInvalid(t *testing.T) {
 
 func TestUpdateAccountFailure(t *testing.T) {
 	t.Log("Testing failure case, expected error...")
-	testUtils.AccountRepo.MockUpdate = func(id uint, account domains.Account) error {
+	testUtils.AccountRepo.MockUpdate = func(context.Context, uint, domains.Account) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -277,7 +278,7 @@ func TestUpdateAccountFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteAccountSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockDelete = func(id uint) error {
+	testUtils.AccountRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
@@ -290,7 +291,7 @@ func TestDeleteAccountSuccess(t *testing.T) {
 }
 
 func TestDeleteAccountFailure(t *testing.T) {
-	testUtils.AccountRepo.MockDelete = func(id uint) error {
+	testUtils.AccountRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AccountRepo = &testUtils.AccountRepo

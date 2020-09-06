@@ -9,6 +9,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initLocationTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.LocationRepoInterface) {
@@ -16,7 +17,7 @@ func initLocationTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.LocationRep
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestLocationRepo(db)
+	repo := repos.CreateTestLocationRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -44,7 +45,7 @@ func TestSelectAllLocations(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM locations").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -97,7 +98,7 @@ func TestSelectLocation(t *testing.T) {
 		ExpectQuery().
 		WithArgs("xkcd").
 		WillReturnRows(rows)
-	got, err := repo.SelectByLocationId("xkcd")
+	got, err := repo.SelectByLocationId(testUtils.Context, "xkcd")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -144,7 +145,7 @@ func TestInsertLocation(t *testing.T) {
 		Zipcode:    "20854",
 		Room:       domains.NewNullString("Room 2"),
 	}
-	err := repo.Insert(location)
+	err := repo.Insert(testUtils.Context, location)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -176,7 +177,7 @@ func TestUpdateLocation(t *testing.T) {
 		Zipcode:    "94016",
 		Room:       domains.NewNullString("Room 41"),
 	}
-	err := repo.Update("xkcd", location)
+	err := repo.Update(testUtils.Context, "xkcd", location)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -200,7 +201,7 @@ func TestDeleteLocation(t *testing.T) {
 		ExpectExec().
 		WithArgs("xkcd").
 		WillReturnResult(result)
-	err := repo.Delete("xkcd")
+	err := repo.Delete(testUtils.Context, "xkcd")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

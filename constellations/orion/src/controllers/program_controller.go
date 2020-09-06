@@ -12,7 +12,8 @@ import (
 
 func GetAllPrograms(c *gin.Context) {
 	utils.LogControllerMethod(c, "programController.GetAllPrograms")
-	programList, err := repos.ProgramRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	programList, err := repos.ProgramRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -26,7 +27,8 @@ func GetProgramById(c *gin.Context) {
 	// Incoming parameters
 	programId := c.Param("programId")
 
-	program, err := repos.ProgramRepo.SelectByProgramId(programId)
+	ctx := utils.RetrieveContext(c)
+	program, err := repos.ProgramRepo.SelectByProgramId(ctx, programId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -51,7 +53,8 @@ func CreateProgram(c *gin.Context) {
 		return
 	}
 
-	err := repos.ProgramRepo.Insert(programJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Insert(ctx, programJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -77,7 +80,8 @@ func UpdateProgram(c *gin.Context) {
 		return
 	}
 
-	err := repos.ProgramRepo.Update(programId, programJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Update(ctx, programId, programJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -91,7 +95,8 @@ func DeleteProgram(c *gin.Context) {
 	// Incoming Parameters
 	programId := c.Param("programId")
 
-	err := repos.ProgramRepo.Delete(programId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Delete(ctx, programId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

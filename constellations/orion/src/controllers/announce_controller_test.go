@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -21,7 +21,7 @@ import (
 //
 func TestGetAllAnnouncementsSuccess(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.AnnounceRepo.MockSelectAll = func() ([]domains.Announce, error) {
+	testUtils.AnnounceRepo.MockSelectAll = func(context.Context) ([]domains.Announce, error) {
 		return []domains.Announce{
 			{
 				Id:         1,
@@ -64,7 +64,7 @@ func TestGetAllAnnouncementsSuccess(t *testing.T) {
 //
 func TestGetAnnouncementSuccess(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(id uint) (domains.Announce, error) {
+	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(context.Context, uint) (domains.Announce, error) {
 		announce := testUtils.CreateMockAnnounce(1, now, "Author Name", "Valid Message", false)
 		return announce, nil
 	}
@@ -85,7 +85,7 @@ func TestGetAnnouncementSuccess(t *testing.T) {
 }
 
 func TestGetAnnounceFailure(t *testing.T) {
-	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(id uint) (domains.Announce, error) {
+	testUtils.AnnounceRepo.MockSelectByAnnounceId = func(context.Context, uint) (domains.Announce, error) {
 		return domains.Announce{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -101,7 +101,7 @@ func TestGetAnnounceFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateAnnounceSuccess(t *testing.T) {
-	testUtils.AnnounceRepo.MockInsert = func(announce domains.Announce) error {
+	testUtils.AnnounceRepo.MockInsert = func(context.Context, domains.Announce) error {
 		return nil
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -136,7 +136,7 @@ func TestCreateAnnounceFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateAnnounceSuccess(t *testing.T) {
-	testUtils.AnnounceRepo.MockUpdate = func(id uint, announce domains.Announce) error {
+	testUtils.AnnounceRepo.MockUpdate = func(context.Context, uint, domains.Announce) error {
 		return nil // Successful update
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -166,7 +166,7 @@ func TestUpdateAnnounceInvalid(t *testing.T) {
 }
 
 func TestUpdateAnnounceFailure(t *testing.T) {
-	testUtils.AnnounceRepo.MockUpdate = func(id uint, announce domains.Announce) error {
+	testUtils.AnnounceRepo.MockUpdate = func(context.Context, uint, domains.Announce) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -185,7 +185,7 @@ func TestUpdateAnnounceFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteAnnounceSuccess(t *testing.T) {
-	testUtils.AnnounceRepo.MockDelete = func(id uint) error {
+	testUtils.AnnounceRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo
@@ -198,7 +198,7 @@ func TestDeleteAnnounceSuccess(t *testing.T) {
 }
 
 func TestDeleteAnnounceFailure(t *testing.T) {
-	testUtils.AnnounceRepo.MockDelete = func(id uint) error {
+	testUtils.AnnounceRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AnnounceRepo = &testUtils.AnnounceRepo

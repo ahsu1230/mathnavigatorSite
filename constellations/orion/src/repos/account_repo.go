@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -20,22 +21,22 @@ type accountRepo struct {
 
 // Interface to implement
 type AccountRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectById(uint) (domains.Account, error)
-	SelectByPrimaryEmail(string) (domains.Account, error)
-	SelectAllNegativeBalances() ([]domains.AccountSum, error)
-	InsertWithUser(domains.Account, domains.User) error
-	Update(uint, domains.Account) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectById(context.Context, uint) (domains.Account, error)
+	SelectByPrimaryEmail(context.Context, string) (domains.Account, error)
+	SelectAllNegativeBalances(context.Context) ([]domains.AccountSum, error)
+	InsertWithUser(context.Context, domains.Account, domains.User) error
+	Update(context.Context, uint, domains.Account) error
+	Delete(context.Context, uint) error
 }
 
-func (acc *accountRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("accountRepo.Initialize", logger.Fields{})
+func (acc *accountRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "accountRepo.Initialize", logger.Fields{})
 	acc.db = db
 }
 
-func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
-	utils.LogWithContext("accountRepo.SelectById", logger.Fields{"id": id})
+func (acc *accountRepo) SelectById(ctx context.Context, id uint) (domains.Account, error) {
+	utils.LogWithContext(ctx, "accountRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	defer stmt.Close()
@@ -58,8 +59,8 @@ func (acc *accountRepo) SelectById(id uint) (domains.Account, error) {
 	return account, nil
 }
 
-func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Account, error) {
-	utils.LogWithContext("accountRepo.SelectByPrimaryEmail",
+func (acc *accountRepo) SelectByPrimaryEmail(ctx context.Context, primaryEmail string) (domains.Account, error) {
+	utils.LogWithContext(ctx, "accountRepo.SelectByPrimaryEmail",
 		logger.Fields{"primaryEmail": primaryEmail},
 	)
 	statement := "SELECT * FROM accounts WHERE primary_email=?"
@@ -85,8 +86,8 @@ func (acc *accountRepo) SelectByPrimaryEmail(primaryEmail string) (domains.Accou
 	return account, nil
 }
 
-func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error) {
-	utils.LogWithContext("accountRepo.SelectAllNegativeBalances", logger.Fields{})
+func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountSum, error) {
+	utils.LogWithContext(ctx, "accountRepo.SelectAllNegativeBalances", logger.Fields{})
 	results := make([]domains.AccountSum, 0)
 
 	statement := "SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
@@ -118,8 +119,8 @@ func (acc *accountRepo) SelectAllNegativeBalances() ([]domains.AccountSum, error
 	return results, nil
 }
 
-func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.User) error {
-	utils.LogWithContext("accountRepo.Insert", logger.Fields{"account": account})
+func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Account, user domains.User) error {
+	utils.LogWithContext(ctx, "accountRepo.Insert", logger.Fields{"account": account})
 	tx, err := acc.db.Begin()
 	if err != nil {
 		return appErrors.WrapDbTxBegin(err)
@@ -211,8 +212,8 @@ func (acc *accountRepo) InsertWithUser(account domains.Account, user domains.Use
 	return nil
 }
 
-func (acc *accountRepo) Update(id uint, account domains.Account) error {
-	utils.LogWithContext("accountRepo.Update", logger.Fields{
+func (acc *accountRepo) Update(ctx context.Context, id uint, account domains.Account) error {
+	utils.LogWithContext(ctx, "accountRepo.Update", logger.Fields{
 		"id":      id,
 		"account": account,
 	})
@@ -241,8 +242,8 @@ func (acc *accountRepo) Update(id uint, account domains.Account) error {
 	return appErrors.ValidateDbResult(execResult, 1, "account was not updated")
 }
 
-func (acc *accountRepo) Delete(id uint) error {
-	utils.LogWithContext("accountRepo.Delete", logger.Fields{"id": id})
+func (acc *accountRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "accountRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM accounts WHERE id=?"
 	stmt, err := acc.db.Prepare(statement)
 	if err != nil {
@@ -260,8 +261,8 @@ func (acc *accountRepo) Delete(id uint) error {
 }
 
 // For Tests Only
-func CreateTestAccountRepo(db *sql.DB) AccountRepoInterface {
+func CreateTestAccountRepo(ctx context.Context, db *sql.DB) AccountRepoInterface {
 	acc := &accountRepo{}
-	acc.Initialize(db)
+	acc.Initialize(ctx, db)
 	return acc
 }

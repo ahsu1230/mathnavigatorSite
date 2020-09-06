@@ -12,7 +12,8 @@ import (
 
 func GetAllAchievements(c *gin.Context) {
 	utils.LogControllerMethod(c, "achieveController.GetAllAchievements")
-	achieveList, err := repos.AchieveRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	achieveList, err := repos.AchieveRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -26,7 +27,8 @@ func GetAchievementById(c *gin.Context) {
 	// Incoming parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	achieve, err := repos.AchieveRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	achieve, err := repos.AchieveRepo.SelectById(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -37,7 +39,8 @@ func GetAchievementById(c *gin.Context) {
 
 func GetAllAchievementsGroupedByYear(c *gin.Context) {
 	utils.LogControllerMethod(c, "achieveController.GetAllAchievementsGroupedByYear")
-	achieveYearGroup, err := repos.AchieveRepo.SelectAllGroupedByYear()
+	ctx := utils.RetrieveContext(c)
+	achieveYearGroup, err := repos.AchieveRepo.SelectAllGroupedByYear(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -62,7 +65,8 @@ func CreateAchievement(c *gin.Context) {
 		return
 	}
 
-	err := repos.AchieveRepo.Insert(achieveJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AchieveRepo.Insert(ctx, achieveJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -88,7 +92,8 @@ func UpdateAchievement(c *gin.Context) {
 		return
 	}
 
-	err := repos.AchieveRepo.Update(id, achieveJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AchieveRepo.Update(ctx, id, achieveJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -102,7 +107,8 @@ func DeleteAchievement(c *gin.Context) {
 	// Incoming Parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	err := repos.AchieveRepo.Delete(id)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AchieveRepo.Delete(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

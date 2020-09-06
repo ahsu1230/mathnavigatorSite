@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
@@ -31,7 +32,7 @@ func AppRequestHandler() gin.HandlerFunc {
 			"requestURL":    c.Request.URL,
 			"requestHost":   c.Request.Host,
 		})
-		c.Set("requestUuid", requestUuid)
+		c.Set(domains.REQUEST_UUID, requestUuid)
 		c.Writer.Header().Set("X-Request-Id", requestUuid.String())
 
 		c.Next()

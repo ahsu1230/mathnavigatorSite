@@ -4,22 +4,19 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-var now time.Time
-
 func initAchieveTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AchieveRepoInterface) {
-	now = time.Now().UTC()
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAchieveRepo(db)
+	repo := repos.CreateTestAchieveRepo(testUtils.Context, db)
 
 	return db, mock, repo
 }
@@ -34,7 +31,7 @@ func TestSelectAllAchieves(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getAchieveRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM achievements").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -57,6 +54,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := testUtils.TimeNow
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message", "Position"}).
 		AddRow(
 			3,
@@ -89,7 +87,7 @@ func TestSelectAllGroupedByYear(t *testing.T) {
 		ExpectQuery().
 		WillReturnRows(rows)
 
-	got, err := repo.SelectAllGroupedByYear()
+	got, err := repo.SelectAllGroupedByYear(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -145,7 +143,7 @@ func TestSelectAchieve(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -178,7 +176,7 @@ func TestInsertAchieve(t *testing.T) {
 		Message:  "message1",
 		Position: 1,
 	}
-	err := repo.Insert(achieve)
+	err := repo.Insert(testUtils.Context, achieve)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -207,7 +205,7 @@ func TestUpdateAchieve(t *testing.T) {
 		Message:  "message2",
 		Position: 1,
 	}
-	err := repo.Update(1, achieve)
+	err := repo.Update(testUtils.Context, 1, achieve)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -231,7 +229,7 @@ func TestDeleteAchieve(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -246,6 +244,7 @@ func TestDeleteAchieve(t *testing.T) {
 // Helper Methods
 //
 func getAchieveRows() *sqlmock.Rows {
+	now := testUtils.TimeNow
 	return sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "Year", "Message", "Position"}).
 		AddRow(
 			1,
@@ -259,6 +258,7 @@ func getAchieveRows() *sqlmock.Rows {
 }
 
 func getAchieve() domains.Achieve {
+	now := testUtils.TimeNow
 	return domains.Achieve{
 		Id:        1,
 		CreatedAt: now,

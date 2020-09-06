@@ -19,7 +19,8 @@ func GetUserAfhByUserId(c *gin.Context) {
 		return
 	}
 
-	userAfh, err := repos.UserAfhRepo.SelectByUserId(userId)
+	ctx := utils.RetrieveContext(c)
+	userAfh, err := repos.UserAfhRepo.SelectByUserId(ctx, userId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -37,7 +38,8 @@ func GetUserAfhByAfhId(c *gin.Context) {
 		return
 	}
 
-	userAfh, err := repos.UserAfhRepo.SelectByAfhId(afhId)
+	ctx := utils.RetrieveContext(c)
+	userAfh, err := repos.UserAfhRepo.SelectByAfhId(ctx, afhId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -62,7 +64,8 @@ func GetUserAfhByBothIds(c *gin.Context) {
 		return
 	}
 
-	userAfh, err := repos.UserAfhRepo.SelectByBothIds(userId, afhId)
+	ctx := utils.RetrieveContext(c)
+	userAfh, err := repos.UserAfhRepo.SelectByBothIds(ctx, userId, afhId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -73,7 +76,8 @@ func GetUserAfhByBothIds(c *gin.Context) {
 
 func GetUserAfhByNew(c *gin.Context) {
 	utils.LogControllerMethod(c, "userAfhController.GetUserAfhByNew")
-	userAfh, err := repos.UserAfhRepo.SelectByNew()
+	ctx := utils.RetrieveContext(c)
+	userAfh, err := repos.UserAfhRepo.SelectByNew(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusNotFound, err.Error())
@@ -91,7 +95,8 @@ func CreateUserAfh(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserAfhRepo.Insert(userAfhJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.UserAfhRepo.Insert(ctx, userAfhJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -116,7 +121,8 @@ func UpdateUserAfh(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserAfhRepo.Update(id, userAfhJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserAfhRepo.Update(ctx, id, userAfhJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -133,7 +139,8 @@ func DeleteUserAfh(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserAfhRepo.Delete(id); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserAfhRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

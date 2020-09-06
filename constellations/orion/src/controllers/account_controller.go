@@ -25,7 +25,8 @@ func GetAccountById(c *gin.Context) {
 		return
 	}
 
-	account, err := repos.AccountRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	account, err := repos.AccountRepo.SelectById(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -45,7 +46,8 @@ func SearchAccount(c *gin.Context) {
 	}
 	primaryEmail := body.PrimaryEmail
 
-	account, err := repos.AccountRepo.SelectByPrimaryEmail(primaryEmail)
+	ctx := utils.RetrieveContext(c)
+	account, err := repos.AccountRepo.SelectByPrimaryEmail(ctx, primaryEmail)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -55,7 +57,8 @@ func SearchAccount(c *gin.Context) {
 }
 
 func GetNegativeBalanceAccounts(c *gin.Context) {
-	accountSum, err := repos.AccountRepo.SelectAllNegativeBalances()
+	ctx := utils.RetrieveContext(c)
+	accountSum, err := repos.AccountRepo.SelectAllNegativeBalances(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
@@ -87,7 +90,8 @@ func CreateAccountAndUser(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	if err := repos.AccountRepo.InsertWithUser(account, user); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.AccountRepo.InsertWithUser(ctx, account, user); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -118,7 +122,8 @@ func UpdateAccount(c *gin.Context) {
 		return
 	}
 
-	if err = repos.AccountRepo.Update(id, accountJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err = repos.AccountRepo.Update(ctx, id, accountJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -136,7 +141,8 @@ func DeleteAccount(c *gin.Context) {
 		return
 	}
 
-	if err := repos.AccountRepo.Delete(id); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.AccountRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

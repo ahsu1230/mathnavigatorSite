@@ -19,7 +19,8 @@ func GetAllSeasons(c *gin.Context) {
 
 func GetAllSemesters(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.GetAllSemesters")
-	semesterList, err := repos.SemesterRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	semesterList, err := repos.SemesterRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -32,7 +33,8 @@ func GetSemesterById(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.GetSemesterById")
 	semesterId := c.Param("semesterId")
 
-	semester, err := repos.SemesterRepo.SelectBySemesterId(semesterId)
+	ctx := utils.RetrieveContext(c)
+	semester, err := repos.SemesterRepo.SelectBySemesterId(ctx, semesterId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -59,7 +61,8 @@ func CreateSemester(c *gin.Context) {
 		return
 	}
 
-	err := repos.SemesterRepo.Insert(semesterJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Insert(ctx, semesterJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -87,7 +90,8 @@ func UpdateSemester(c *gin.Context) {
 		return
 	}
 
-	err := repos.SemesterRepo.Update(semesterId, semesterJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Update(ctx, semesterId, semesterJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -100,7 +104,8 @@ func DeleteSemester(c *gin.Context) {
 	utils.LogControllerMethod(c, "semesterController.DeleteSemester")
 	semesterId := c.Param("semesterId")
 
-	err := repos.SemesterRepo.Delete(semesterId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Delete(ctx, semesterId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

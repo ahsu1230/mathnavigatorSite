@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -21,26 +22,26 @@ type classRepo struct {
 
 // Interface to implement
 type ClassRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll(bool) ([]domains.Class, error)
-	SelectAllUnpublished() ([]domains.Class, error)
-	SelectByClassId(string) (domains.Class, error)
-	SelectByProgramId(string) ([]domains.Class, error)
-	SelectBySemesterId(string) ([]domains.Class, error)
-	SelectByProgramAndSemesterId(string, string) ([]domains.Class, error)
-	Insert(domains.Class) error
-	Update(string, domains.Class) error
-	Publish([]string) []error
-	Delete(string) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context, bool) ([]domains.Class, error)
+	SelectAllUnpublished(context.Context) ([]domains.Class, error)
+	SelectByClassId(context.Context, string) (domains.Class, error)
+	SelectByProgramId(context.Context, string) ([]domains.Class, error)
+	SelectBySemesterId(context.Context, string) ([]domains.Class, error)
+	SelectByProgramAndSemesterId(context.Context, string, string) ([]domains.Class, error)
+	Insert(context.Context, domains.Class) error
+	Update(context.Context, string, domains.Class) error
+	Publish(context.Context, []string) []error
+	Delete(context.Context, string) error
 }
 
-func (cr *classRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("classRepo.Initialize", logger.Fields{})
+func (cr *classRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "classRepo.Initialize", logger.Fields{})
 	cr.db = db
 }
 
-func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectAll", logger.Fields{
+func (cr *classRepo) SelectAll(ctx context.Context, publishedOnly bool) ([]domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectAll", logger.Fields{
 		"publishedOnly": publishedOnly})
 	results := make([]domains.Class, 0)
 
@@ -87,8 +88,8 @@ func (cr *classRepo) SelectAll(publishedOnly bool) ([]domains.Class, error) {
 	return results, nil
 }
 
-func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectAllUnpublished", logger.Fields{})
+func (cr *classRepo) SelectAllUnpublished(ctx context.Context) ([]domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectAllUnpublished", logger.Fields{})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE published_at IS NULL"
@@ -129,8 +130,8 @@ func (cr *classRepo) SelectAllUnpublished() ([]domains.Class, error) {
 	return results, nil
 }
 
-func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectByClassId", logger.Fields{"classId": classId})
+func (cr *classRepo) SelectByClassId(ctx context.Context, classId string) (domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectByClassId", logger.Fields{"classId": classId})
 	statement := "SELECT * FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -162,8 +163,8 @@ func (cr *classRepo) SelectByClassId(classId string) (domains.Class, error) {
 	return class, nil
 }
 
-func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectByProgramId", logger.Fields{"programId": programId})
+func (cr *classRepo) SelectByProgramId(ctx context.Context, programId string) ([]domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE program_id=?"
@@ -204,8 +205,8 @@ func (cr *classRepo) SelectByProgramId(programId string) ([]domains.Class, error
 	return results, nil
 }
 
-func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
+func (cr *classRepo) SelectBySemesterId(ctx context.Context, semesterId string) ([]domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
 	results := make([]domains.Class, 0)
 
 	statement := "SELECT * FROM classes WHERE semester_id=?"
@@ -246,8 +247,8 @@ func (cr *classRepo) SelectBySemesterId(semesterId string) ([]domains.Class, err
 	return results, nil
 }
 
-func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) ([]domains.Class, error) {
-	utils.LogWithContext("classRepo.SelectByProgramAndSemesterId", logger.Fields{
+func (cr *classRepo) SelectByProgramAndSemesterId(ctx context.Context, programId, semesterId string) ([]domains.Class, error) {
+	utils.LogWithContext(ctx, "classRepo.SelectByProgramAndSemesterId", logger.Fields{
 		"programId":  programId,
 		"semesterId": semesterId})
 	results := make([]domains.Class, 0)
@@ -290,8 +291,8 @@ func (cr *classRepo) SelectByProgramAndSemesterId(programId, semesterId string) 
 	return results, nil
 }
 
-func (cr *classRepo) Insert(class domains.Class) error {
-	utils.LogWithContext("classRepo.Insert", logger.Fields{"class": class})
+func (cr *classRepo) Insert(ctx context.Context, class domains.Class) error {
+	utils.LogWithContext(ctx, "classRepo.Insert", logger.Fields{"class": class})
 	statement := "INSERT INTO classes (" +
 		"created_at, " +
 		"updated_at, " +
@@ -333,12 +334,12 @@ func (cr *classRepo) Insert(class domains.Class) error {
 		return appErrors.WrapDbExec(err, statement, class)
 	}
 
-	invalidateClassesCache()
+	invalidateClassesCache(ctx)
 	return appErrors.ValidateDbResult(execResult, 1, "class was not inserted")
 }
 
-func (cr *classRepo) Update(classId string, class domains.Class) error {
-	utils.LogWithContext("classRepo.Update", logger.Fields{"classId": classId})
+func (cr *classRepo) Update(ctx context.Context, classId string, class domains.Class) error {
+	utils.LogWithContext(ctx, "classRepo.Update", logger.Fields{"classId": classId})
 	statement := "UPDATE classes SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
@@ -378,12 +379,12 @@ func (cr *classRepo) Update(classId string, class domains.Class) error {
 		return appErrors.WrapDbExec(err, statement, class, classId)
 	}
 
-	invalidateClassesCache()
+	invalidateClassesCache(ctx)
 	return appErrors.ValidateDbResult(execResult, 1, "class was not updated")
 }
 
-func (cr *classRepo) Publish(classIds []string) []error {
-	utils.LogWithContext("classRepo.Publish", logger.Fields{"classIds": classIds})
+func (cr *classRepo) Publish(ctx context.Context, classIds []string) []error {
+	utils.LogWithContext(ctx, "classRepo.Publish", logger.Fields{"classIds": classIds})
 	tx, err := cr.db.Begin()
 	if err != nil {
 		return []error{appErrors.WrapDbTxBegin(err)}
@@ -414,12 +415,12 @@ func (cr *classRepo) Publish(classIds []string) []error {
 		return append(errorList, appErrors.WrapDbTxCommit(err))
 	}
 
-	invalidateClassesCache()
+	invalidateClassesCache(ctx)
 	return errorList
 }
 
-func (cr *classRepo) Delete(classId string) error {
-	utils.LogWithContext("classRepo.Delete", logger.Fields{"classId": classId})
+func (cr *classRepo) Delete(ctx context.Context, classId string) error {
+	utils.LogWithContext(ctx, "classRepo.Delete", logger.Fields{"classId": classId})
 	statement := "DELETE FROM classes WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
@@ -432,7 +433,7 @@ func (cr *classRepo) Delete(classId string) error {
 		return appErrors.WrapDbExec(err, statement, classId)
 	}
 
-	invalidateClassesCache()
+	invalidateClassesCache(ctx)
 	return appErrors.ValidateDbResult(execResult, 1, "class was not deleted")
 }
 
@@ -446,13 +447,13 @@ func generateClassId(class domains.Class) string {
 }
 
 // Call this function whenever classes have changed, cache must be invalidated!
-func invalidateClassesCache() {
-	cache.Delete(cache.KEY_PROGRAM_CLASSES_BY_SEMESTER)
+func invalidateClassesCache(ctx context.Context) {
+	cache.Delete(ctx, cache.KEY_PROGRAM_CLASSES_BY_SEMESTER)
 }
 
 // For Tests Only
-func CreateTestClassRepo(db *sql.DB) ClassRepoInterface {
+func CreateTestClassRepo(ctx context.Context, db *sql.DB) ClassRepoInterface {
 	cr := &classRepo{}
-	cr.Initialize(db)
+	cr.Initialize(ctx, db)
 	return cr
 }

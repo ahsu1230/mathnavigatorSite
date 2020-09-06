@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -18,21 +19,21 @@ type locationRepo struct {
 }
 
 type LocationRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Location, error)
-	SelectByLocationId(string) (domains.Location, error)
-	Insert(domains.Location) error
-	Update(string, domains.Location) error
-	Delete(string) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.Location, error)
+	SelectByLocationId(context.Context, string) (domains.Location, error)
+	Insert(context.Context, domains.Location) error
+	Update(context.Context, string, domains.Location) error
+	Delete(context.Context, string) error
 }
 
-func (lr *locationRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("locationRepo.Initialize", logger.Fields{})
+func (lr *locationRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "locationRepo.Initialize", logger.Fields{})
 	lr.db = db
 }
 
-func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
-	utils.LogWithContext("locationRepo.SelectAll", logger.Fields{})
+func (lr *locationRepo) SelectAll(ctx context.Context) ([]domains.Location, error) {
+	utils.LogWithContext(ctx, "locationRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Location, 0)
 
 	statement := "SELECT * FROM locations"
@@ -69,8 +70,8 @@ func (lr *locationRepo) SelectAll() ([]domains.Location, error) {
 	return results, nil
 }
 
-func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location, error) {
-	utils.LogWithContext("locationRepo.SelectByLocationId", logger.Fields{"locationId": locationId})
+func (lr *locationRepo) SelectByLocationId(ctx context.Context, locationId string) (domains.Location, error) {
+	utils.LogWithContext(ctx, "locationRepo.SelectByLocationId", logger.Fields{"locationId": locationId})
 	statement := "SELECT * FROM locations WHERE location_id=?"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
@@ -97,8 +98,8 @@ func (lr *locationRepo) SelectByLocationId(locationId string) (domains.Location,
 	return location, nil
 }
 
-func (lr *locationRepo) Insert(location domains.Location) error {
-	utils.LogWithContext("locationRepo.Insert", logger.Fields{"location": location})
+func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) error {
+	utils.LogWithContext(ctx, "locationRepo.Insert", logger.Fields{"location": location})
 	statement := "INSERT INTO locations (" +
 		"created_at, " +
 		"updated_at, " +
@@ -132,8 +133,8 @@ func (lr *locationRepo) Insert(location domains.Location) error {
 	return appErrors.ValidateDbResult(result, 1, "location was not inserted")
 }
 
-func (lr *locationRepo) Update(locationId string, location domains.Location) error {
-	utils.LogWithContext("locationRepo.Update", logger.Fields{
+func (lr *locationRepo) Update(ctx context.Context, locationId string, location domains.Location) error {
+	utils.LogWithContext(ctx, "locationRepo.Update", logger.Fields{
 		"locationId": locationId,
 		"location":   location})
 	statement := "UPDATE locations SET " +
@@ -168,8 +169,8 @@ func (lr *locationRepo) Update(locationId string, location domains.Location) err
 	return appErrors.ValidateDbResult(result, 1, "location was not updated")
 }
 
-func (lr *locationRepo) Delete(locationId string) error {
-	utils.LogWithContext("locationRepo.Delete", logger.Fields{"locationId": locationId})
+func (lr *locationRepo) Delete(ctx context.Context, locationId string) error {
+	utils.LogWithContext(ctx, "locationRepo.Delete", logger.Fields{"locationId": locationId})
 	statement := "DELETE FROM locations WHERE location_id=?"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
@@ -185,8 +186,8 @@ func (lr *locationRepo) Delete(locationId string) error {
 	return appErrors.ValidateDbResult(result, 1, "location was not deleted")
 }
 
-func CreateTestLocationRepo(db *sql.DB) LocationRepoInterface {
+func CreateTestLocationRepo(ctx context.Context, db *sql.DB) LocationRepoInterface {
 	lr := &locationRepo{}
-	lr.Initialize(db)
+	lr.Initialize(ctx, db)
 	return lr
 }

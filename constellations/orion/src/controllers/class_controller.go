@@ -14,7 +14,8 @@ func GetAllClasses(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.GetAllClasses")
 	publishedOnly := utils.ParseParamPublishedOnly(c)
 
-	classList, err := repos.ClassRepo.SelectAll(publishedOnly)
+	ctx := utils.RetrieveContext(c)
+	classList, err := repos.ClassRepo.SelectAll(ctx, publishedOnly)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -27,7 +28,8 @@ func GetClassById(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.GetClassById")
 	classId := c.Param("classId")
 
-	class, err := repos.ClassRepo.SelectByClassId(classId)
+	ctx := utils.RetrieveContext(c)
+	class, err := repos.ClassRepo.SelectByClassId(ctx, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -40,7 +42,8 @@ func GetClassesByProgram(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.GetClassesByProgram")
 	programId := c.Param("programId")
 
-	classes, err := repos.ClassRepo.SelectByProgramId(programId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectByProgramId(ctx, programId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -53,7 +56,8 @@ func GetClassesBySemester(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.GetClassesBySemester")
 	semesterId := c.Param("semesterId")
 
-	classes, err := repos.ClassRepo.SelectBySemesterId(semesterId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectBySemesterId(ctx, semesterId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -67,7 +71,8 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 	programId := c.Param("programId")
 	semesterId := c.Param("semesterId")
 
-	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(programId, semesterId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(ctx, programId, semesterId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -78,7 +83,8 @@ func GetClassesByProgramAndSemester(c *gin.Context) {
 
 func GetUnpublishedClasses(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.GetUnpublishedClasses")
-	classList, err := repos.ClassRepo.SelectAllUnpublished()
+	ctx := utils.RetrieveContext(c)
+	classList, err := repos.ClassRepo.SelectAllUnpublished(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -102,7 +108,8 @@ func CreateClass(c *gin.Context) {
 		return
 	}
 
-	err := repos.ClassRepo.Insert(classJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Insert(ctx, classJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -127,7 +134,8 @@ func UpdateClass(c *gin.Context) {
 		return
 	}
 
-	err := repos.ClassRepo.Update(classId, classJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Update(ctx, classId, classJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -145,7 +153,8 @@ func PublishClasses(c *gin.Context) {
 		return
 	}
 
-	errs := repos.ClassRepo.Publish(classIds)
+	ctx := utils.RetrieveContext(c)
+	errs := repos.ClassRepo.Publish(ctx, classIds)
 	if len(errs) > 0 {
 		for _, err := range errs {
 			c.Error(err)
@@ -160,7 +169,8 @@ func DeleteClass(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.DeleteClass")
 	classId := c.Param("classId")
 
-	err := repos.ClassRepo.Delete(classId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Delete(ctx, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

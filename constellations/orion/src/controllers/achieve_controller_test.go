@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -19,7 +19,7 @@ import (
 // Test Get All
 //
 func TestGetAllAchievementsSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockSelectAll = func() ([]domains.Achieve, error) {
+	testUtils.AchieveRepo.MockSelectAll = func(context.Context) ([]domains.Achieve, error) {
 		return []domains.Achieve{
 			testUtils.CreateMockAchievement(1, 2020, "message1"),
 			testUtils.CreateMockAchievement(2, 2021, "message2"),
@@ -49,7 +49,7 @@ func TestGetAllAchievementsSuccess(t *testing.T) {
 // Test Get All Grouped By Year
 //
 func TestGetAllAchievementsGroupedByYearSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockSelectAllGroupedByYear = func() ([]domains.AchieveYearGroup, error) {
+	testUtils.AchieveRepo.MockSelectAllGroupedByYear = func(context.Context) ([]domains.AchieveYearGroup, error) {
 		return []domains.AchieveYearGroup{
 			{
 				Year: 2021,
@@ -89,7 +89,7 @@ func TestGetAllAchievementsGroupedByYearSuccess(t *testing.T) {
 // Test Get Achievement
 //
 func TestGetAchievementSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
+	testUtils.AchieveRepo.MockSelectById = func(context.Context, uint) (domains.Achieve, error) {
 		achieve := testUtils.CreateMockAchievement(1, 2020, "message1")
 		return achieve, nil
 	}
@@ -110,7 +110,7 @@ func TestGetAchievementSuccess(t *testing.T) {
 }
 
 func TestGetAchievementFailure(t *testing.T) {
-	testUtils.AchieveRepo.MockSelectById = func(id uint) (domains.Achieve, error) {
+	testUtils.AchieveRepo.MockSelectById = func(context.Context, uint) (domains.Achieve, error) {
 		return domains.Achieve{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -126,7 +126,7 @@ func TestGetAchievementFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateAchievementSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockInsert = func(achieve domains.Achieve) error {
+	testUtils.AchieveRepo.MockInsert = func(context.Context, domains.Achieve) error {
 		return nil
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -157,7 +157,7 @@ func TestCreateAchievementFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateAchievementSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockUpdate = func(id uint, achieve domains.Achieve) error {
+	testUtils.AchieveRepo.MockUpdate = func(context.Context, uint, domains.Achieve) error {
 		return nil // Successful update
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -185,7 +185,7 @@ func TestUpdateAchievementInvalid(t *testing.T) {
 }
 
 func TestUpdateAchievementFailure(t *testing.T) {
-	testUtils.AchieveRepo.MockUpdate = func(id uint, achieve domains.Achieve) error {
+	testUtils.AchieveRepo.MockUpdate = func(context.Context, uint, domains.Achieve) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -203,7 +203,7 @@ func TestUpdateAchievementFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteAchievementSuccess(t *testing.T) {
-	testUtils.AchieveRepo.MockDelete = func(id uint) error {
+	testUtils.AchieveRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
@@ -216,7 +216,7 @@ func TestDeleteAchievementSuccess(t *testing.T) {
 }
 
 func TestDeleteAchievementFailure(t *testing.T) {
-	testUtils.AchieveRepo.MockDelete = func(id uint) error {
+	testUtils.AchieveRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AchieveRepo = &testUtils.AchieveRepo
