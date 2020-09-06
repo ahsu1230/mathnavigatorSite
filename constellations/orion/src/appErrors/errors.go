@@ -52,6 +52,7 @@ var ERR_SQL_NO_ROWS = errors.New("SQL_NO_ROWS_ERROR")
 // These errors indicate that there was a conflict in the MySQL database state
 // These errors originate from the "mysql" package
 var ERR_MYSQL_DUPLICATE_ENTRY = errors.New("MYSQL_DUP_ENTRY_ERROR")
+var ERR_MYSQL_FOREIGN_KEY_CONSTRAINT_FAILURE = errors.New("MYSQL_FOREIGN_KEY_CONSTRAINT_ERROR")
 var ERR_MYSQL_UNKNOWN = errors.New("MYSQL_UNKNOWN_ERROR")
 
 // Other errors
@@ -189,6 +190,14 @@ func checkSqlError(e error, statement string, v ...interface{}) (error, bool) {
 			return errors.Wrapf(
 				ERR_MYSQL_DUPLICATE_ENTRY,
 				"Duplicate entry (%v) when executing SQL statement (%s) with args (%v)",
+				me,
+				statement,
+				v,
+			), true
+		} else if me.Number == 1452 {
+			return errors.Wrapf(
+				ERR_MYSQL_FOREIGN_KEY_CONSTRAINT_FAILURE,
+				"Foreign key constraint failure (%v) when executing SQL statement (%s) with args (%v)",
 				me,
 				statement,
 				v,
