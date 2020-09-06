@@ -77,6 +77,10 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 		message = "Must provide a JSON body for this request"
 		code = http.StatusBadRequest
 
+	} else if errors.Is(wrappedErr, appErrors.ERR_JSON_BIND_BODY) {
+		message = "Could not bind JSON body for this request. Please provide a valid JSON or domain."
+		code = http.StatusBadRequest
+
 	} else if errors.Is(wrappedErr, appErrors.ERR_REPO_EXEC_MISMATCH) {
 		message = "Database update was not saved due to result mismatch."
 		code = http.StatusInternalServerError
