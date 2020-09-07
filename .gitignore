@@ -11,5 +11,8 @@
 **/*.project
 **/*.DS_Store
 
+constellations/redis.conf/**/*
+constellations/redis-data/**/*
+
 constellations/orion/**/*.log
 constellations/clients/golangTestRenderer/index.html
