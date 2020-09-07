@@ -26,7 +26,7 @@ func AppRequestHandler() gin.HandlerFunc {
 
 		// Log with Request UUID
 		requestUuid := uuid.New()
-		logger.Info("Received Request", logger.Fields{
+		logger.Info("Handler received request", logger.Fields{
 			"requestUuid":   requestUuid,
 			"requestMethod": c.Request.Method,
 			"requestURL":    c.Request.URL,
@@ -49,7 +49,7 @@ func AppRequestHandler() gin.HandlerFunc {
 		}
 
 		if !c.IsAborted() {
-			logger.Info("Succesfully completed request!", logger.Fields{
+			logger.Info("Handler completed request!", logger.Fields{
 				"requestUuid": requestUuid,
 				"fullPath":    c.FullPath(),
 				"status":      c.Writer.Status(),
