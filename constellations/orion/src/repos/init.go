@@ -1,21 +1,22 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 )
 
-func SetupRepos(db *sql.DB) {
-	ProgramRepo.Initialize(db)
-	ClassRepo.Initialize(db)
-	LocationRepo.Initialize(db)
-	AnnounceRepo.Initialize(db)
-	AchieveRepo.Initialize(db)
-	SemesterRepo.Initialize(db)
-	SessionRepo.Initialize(db)
-	UserRepo.Initialize(db)
-	UserClassesRepo.Initialize(db)
-	AccountRepo.Initialize(db)
-	AskForHelpRepo.Initialize(db)
-	UserAfhRepo.Initialize(db)
-	TransactionRepo.Initialize(db)
+func SetupRepos(ctx context.Context, db *sql.DB) {
+	ProgramRepo.Initialize(ctx, db)
+	ClassRepo.Initialize(ctx, db)
+	LocationRepo.Initialize(ctx, db)
+	AnnounceRepo.Initialize(ctx, db)
+	AchieveRepo.Initialize(ctx, db)
+	SemesterRepo.Initialize(ctx, db)
+	SessionRepo.Initialize(ctx, db)
+	UserRepo.Initialize(ctx, db)
+	UserClassesRepo.Initialize(ctx, db)
+	AccountRepo.Initialize(ctx, db)
+	AskForHelpRepo.Initialize(ctx, db)
+	UserAfhRepo.Initialize(ctx, db)
+	TransactionRepo.Initialize(ctx, db)
 }

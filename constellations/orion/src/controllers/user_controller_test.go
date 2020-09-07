@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -20,7 +20,7 @@ import (
 // Test Get User
 //
 func TestGetUserSuccess(t *testing.T) {
-	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
+	testUtils.UserRepo.MockSelectById = func(context.Context, uint) (domains.User, error) {
 		user := testUtils.CreateMockUser(
 			1,
 			"John",
@@ -59,7 +59,7 @@ func TestGetUserSuccess(t *testing.T) {
 }
 
 func TestGetUsersByAccountSuccess(t *testing.T) {
-	testUtils.UserRepo.MockSelectByAccountId = func(accountId uint) ([]domains.User, error) {
+	testUtils.UserRepo.MockSelectByAccountId = func(context.Context, uint) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -121,7 +121,7 @@ func TestGetUsersByAccountSuccess(t *testing.T) {
 }
 
 func TestGetUserFailure(t *testing.T) {
-	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
+	testUtils.UserRepo.MockSelectById = func(context.Context, uint) (domains.User, error) {
 		return domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -137,7 +137,7 @@ func TestGetUserFailure(t *testing.T) {
 // Test Get New
 //
 func TestGetNewUsers(t *testing.T) {
-	testUtils.UserRepo.MockSelectByNew = func() ([]domains.User, error) {
+	testUtils.UserRepo.MockSelectByNew = func(context.Context) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -202,8 +202,8 @@ func TestGetNewUsers(t *testing.T) {
 // Test Create
 //
 func TestCreateUserSuccess(t *testing.T) {
-	testUtils.UserRepo.MockInsert = func(user domains.User) error {
-		return nil
+	testUtils.UserRepo.MockInsert = func(context.Context, domains.User) (uint, error) {
+		return 42, nil
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -250,7 +250,7 @@ func TestCreateUserFailure(t *testing.T) {
 }
 
 func TestSearchUsersSuccess(t *testing.T) {
-	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
+	testUtils.UserRepo.MockSearchUsers = func(context.Context, string) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -347,7 +347,7 @@ func TestSearchUsersSuccess(t *testing.T) {
 }
 
 func TestSearchUsersFailure(t *testing.T) {
-	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
+	testUtils.UserRepo.MockSearchUsers = func(context.Context, string) ([]domains.User, error) {
 		return []domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -363,7 +363,7 @@ func TestSearchUsersFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateUserSuccess(t *testing.T) {
-	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
+	testUtils.UserRepo.MockUpdate = func(context.Context, uint, domains.User) error {
 		return nil // Successful update
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -411,7 +411,7 @@ func TestUpdateUserInvalid(t *testing.T) {
 }
 
 func TestUpdateUserFailure(t *testing.T) {
-	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
+	testUtils.UserRepo.MockUpdate = func(context.Context, uint, domains.User) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -439,7 +439,7 @@ func TestUpdateUserFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteUserSuccess(t *testing.T) {
-	testUtils.UserRepo.MockDelete = func(id uint) error {
+	testUtils.UserRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -452,7 +452,7 @@ func TestDeleteUserSuccess(t *testing.T) {
 }
 
 func TestDeleteUserFailure(t *testing.T) {
-	testUtils.UserRepo.MockDelete = func(id uint) error {
+	testUtils.UserRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo

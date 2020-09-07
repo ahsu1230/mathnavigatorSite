@@ -16,7 +16,7 @@ func initUserClassesTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClas
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserClassesRepo(db)
+	repo := repos.CreateTestUserClassesRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -33,7 +33,7 @@ func TestSelectUsersByClassId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("abcd").
 		WillReturnRows(rows)
-	got, err := repo.SelectByClassId("abcd")
+	got, err := repo.SelectByClassId(testUtils.Context, "abcd")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -62,7 +62,7 @@ func TestSelectClassesByUserId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByUserId(1)
+	got, err := repo.SelectByUserId(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -91,7 +91,7 @@ func TestSelectByUserAndClass(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1, "abcd").
 		WillReturnRows(rows)
-	got, err := repo.SelectByUserAndClass(1, "abcd")
+	got, err := repo.SelectByUserAndClass(testUtils.Context, 1, "abcd")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -119,7 +119,7 @@ func TestSelectByNow(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectByNew()
+	got, err := repo.SelectByNew(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -155,7 +155,7 @@ func TestInsertUserClass(t *testing.T) {
 			domains.USER_CLASS_ACCEPTED,
 		).WillReturnResult(result)
 	userClasses := getUserClasses()
-	err := repo.Insert(userClasses)
+	_, err := repo.Insert(testUtils.Context, userClasses)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -195,7 +195,7 @@ func TestUpdateUserClass(t *testing.T) {
 		AccountId: 1,
 		State:     domains.USER_CLASS_ACCEPTED,
 	}
-	err := repo.Update(1, userClasses)
+	err := repo.Update(testUtils.Context, 1, userClasses)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -219,7 +219,7 @@ func TestDeleteUserClass(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

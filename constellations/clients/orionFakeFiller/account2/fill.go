@@ -13,12 +13,8 @@ This Account has the following features:
 - studentB enrolled only in ap_java
 - Account is still pending payment
 */
-func Fill() {
+func Fill(afhId1, afhId2 uint) {
 	log.Println("Fill account2")
-
-	// ASSUMPTION! We are assuming this is the second account
-	// TODO: When CreateAccount returns the accountId, use that instead.
-	accountId := 2
 
 	// Create Account with primary user
 	accountJson := utils.CreateAccountJson(
@@ -26,7 +22,7 @@ func Fill() {
 		"asdf1234",
 	)
 	guardianJson := utils.CreateUserGuardianJson(
-		accountId,
+		0, // will be filled automatically by endpoint
 		"Mary",
 		"Mei-Li",
 		"Chang",
@@ -34,7 +30,7 @@ func Fill() {
 		"301-555-4444",
 		"Mother of Chang family",
 	)
-	utils.CreateAccount(
+	accountId, _ := utils.CreateAccount(
 		accountJson,
 		guardianJson,
 	)
@@ -63,7 +59,8 @@ func Fill() {
 		"Thomas Wootton High School",
 		2024,
 	)
-	utils.AddUser(studentJson)
+	userId2, _ := utils.AddUser(studentJson)
+
 	studentJson = utils.CreateUserStudentJson(
 		accountId,
 		"Marcus",
@@ -75,7 +72,7 @@ func Fill() {
 		"Thomas Wootton High School",
 		2022,
 	)
-	utils.AddUser(studentJson)
+	userId3, _ := utils.AddUser(studentJson)
 
 	// Add two transactions to account
 	utils.CreateTransaction(
@@ -104,46 +101,47 @@ func Fill() {
 	)
 
 	// Enroll student into classes
-	// ASSUMPTION! We are assuming this is the first account
-	// TODO: When CreateUser returns the userId, use that instead.
-
 	// For Michelle
-	userId := 5
 	utils.CreateUserClass(
 		accountId,
-		userId,
+		userId2,
 		"ap_calculus_2021_summer_class1",
 		0,
 	)
 	utils.CreateUserClass(
 		accountId,
-		userId,
+		userId2,
 		"ap_java_2021_summer_class1",
 		0,
 	)
 
 	// For Michael
-	userId = 6
 	utils.CreateUserClass(
 		accountId,
-		userId,
+		userId3,
 		"ap_java_2021_summer_class1",
 		0,
 	)
 
 	// Both will attend the first two AP Java AFH sessions
-	// ASSUMPTION! We are assuming we are linking with the first afhId
-	// TODO: When CreateAFH returns the afhId, use that instead of hardcoding
-	for afhId := 1; afhId <= 2; afhId++ {
-		utils.CreateUserAFH(
-			accountId,
-			5,
-			afhId,
-		)
-		utils.CreateUserAFH(
-			accountId,
-			6,
-			afhId,
-		)
-	}
+	utils.CreateUserAFH(
+		accountId,
+		userId2,
+		afhId1,
+	)
+	utils.CreateUserAFH(
+		accountId,
+		userId2,
+		afhId2,
+	)
+	utils.CreateUserAFH(
+		accountId,
+		userId3,
+		afhId1,
+	)
+	utils.CreateUserAFH(
+		accountId,
+		userId3,
+		afhId2,
+	)
 }

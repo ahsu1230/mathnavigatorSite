@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
@@ -46,10 +47,11 @@ func main() {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbDefault := os.Getenv("DB_DEFAULT")
+	context := context.Background()
 
 	db := repoUtils.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
 	repoUtils.Migrate(db, "file://src/repos/migrations")
-	repos.SetupRepos(db)
+	repos.SetupRepos(context, db)
 	defer repoUtils.Close(db)
 	logger.Message("Database started!")
 

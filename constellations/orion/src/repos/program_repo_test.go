@@ -9,6 +9,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initProgramTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoInterface) {
@@ -16,7 +17,7 @@ func initProgramTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ProgramRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestProgramRepo(db)
+	repo := repos.CreateTestProgramRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -34,7 +35,7 @@ func TestSelectAllPrograms(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM programs").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -77,7 +78,7 @@ func TestSelectProgram(t *testing.T) {
 		ExpectQuery().
 		WithArgs("prog1").
 		WillReturnRows(rows)
-	got, err := repo.SelectByProgramId("prog1") // Correct programId
+	got, err := repo.SelectByProgramId(testUtils.Context, "prog1") // Correct programId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -124,7 +125,7 @@ func TestInsertProgram(t *testing.T) {
 		Description: "Descript1",
 		Featured:    0,
 	}
-	err := repo.Insert(program)
+	_, err := repo.Insert(testUtils.Context, program)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -156,7 +157,7 @@ func TestUpdateProgram(t *testing.T) {
 		Description: "Descript2",
 		Featured:    0,
 	}
-	err := repo.Update("prog1", program)
+	err := repo.Update(testUtils.Context, "prog1", program)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -180,7 +181,7 @@ func TestDeleteProgram(t *testing.T) {
 		ExpectExec().
 		WithArgs("prog1").
 		WillReturnResult(result)
-	err := repo.Delete("prog1")
+	err := repo.Delete(testUtils.Context, "prog1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

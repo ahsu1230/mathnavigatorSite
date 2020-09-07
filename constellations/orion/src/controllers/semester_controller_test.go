@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -19,7 +19,7 @@ import (
 // Test Get All
 //
 func TestGetAllSemestersSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func(context.Context) ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester(domains.FALL, 2020),
 			testUtils.CreateMockSemester(domains.WINTER, 2020),
@@ -47,7 +47,7 @@ func TestGetAllSemestersSuccess(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedSemestersSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectAll = func() ([]domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectAll = func(context.Context) ([]domains.Semester, error) {
 		return []domains.Semester{
 			testUtils.CreateMockSemester(domains.FALL, 2020),
 			testUtils.CreateMockSemester(domains.WINTER, 2020),
@@ -75,7 +75,7 @@ func TestGetPublishedSemestersSuccess(t *testing.T) {
 // Test Get Semester
 //
 func TestGetSemesterSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectBySemesterId = func(semesterId string) (domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectBySemesterId = func(context.Context, string) (domains.Semester, error) {
 		semester := testUtils.CreateMockSemester(domains.FALL, 2020)
 		return semester, nil
 	}
@@ -95,7 +95,7 @@ func TestGetSemesterSuccess(t *testing.T) {
 }
 
 func TestGetSemesterFailure(t *testing.T) {
-	testUtils.SemesterRepo.MockSelectBySemesterId = func(semesterId string) (domains.Semester, error) {
+	testUtils.SemesterRepo.MockSelectBySemesterId = func(context.Context, string) (domains.Semester, error) {
 		return domains.Semester{}, appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -111,8 +111,8 @@ func TestGetSemesterFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateSemesterSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockInsert = func(semester domains.Semester) error {
-		return nil
+	testUtils.SemesterRepo.MockInsert = func(context.Context, domains.Semester) (uint, error) {
+		return 42, nil
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
 
@@ -142,7 +142,7 @@ func TestCreateSemesterFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateSemesterSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockUpdate = func(semesterId string, semester domains.Semester) error {
+	testUtils.SemesterRepo.MockUpdate = func(context.Context, string, domains.Semester) error {
 		return nil // Successful update
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -170,7 +170,7 @@ func TestUpdateSemesterInvalid(t *testing.T) {
 }
 
 func TestUpdateSemesterFailure(t *testing.T) {
-	testUtils.SemesterRepo.MockUpdate = func(semesterId string, semester domains.Semester) error {
+	testUtils.SemesterRepo.MockUpdate = func(context.Context, string, domains.Semester) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -188,7 +188,7 @@ func TestUpdateSemesterFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteSemesterSuccess(t *testing.T) {
-	testUtils.SemesterRepo.MockDelete = func(semesterId string) error {
+	testUtils.SemesterRepo.MockDelete = func(context.Context, string) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo
@@ -201,7 +201,7 @@ func TestDeleteSemesterSuccess(t *testing.T) {
 }
 
 func TestDeleteSemesterFailure(t *testing.T) {
-	testUtils.SemesterRepo.MockDelete = func(semesterId string) error {
+	testUtils.SemesterRepo.MockDelete = func(context.Context, string) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.SemesterRepo = &testUtils.SemesterRepo

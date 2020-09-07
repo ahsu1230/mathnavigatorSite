@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
@@ -16,7 +17,7 @@ import (
 
 // Test Get All
 func TestGetTransactionsByAccountIdSuccess(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectByAccountId = func(accountId uint) ([]domains.Transaction, error) {
+	testUtils.TransactionRepo.MockSelectByAccountId = func(context.Context, uint) ([]domains.Transaction, error) {
 		return []domains.Transaction{
 			testUtils.CreateMockTransaction(
 				1,
@@ -62,7 +63,7 @@ func TestGetTransactionsByAccountIdSuccess(t *testing.T) {
 
 // Test Get Transaction
 func TestGetTransactionSuccess(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
+	testUtils.TransactionRepo.MockSelectById = func(context.Context, uint) (domains.Transaction, error) {
 		transaction := testUtils.CreateMockTransaction(
 			1,
 			100,
@@ -90,7 +91,7 @@ func TestGetTransactionSuccess(t *testing.T) {
 }
 
 func TestGetTransactionFailure(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
+	testUtils.TransactionRepo.MockSelectById = func(context.Context, uint) (domains.Transaction, error) {
 		return domains.Transaction{}, appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -104,7 +105,7 @@ func TestGetTransactionFailure(t *testing.T) {
 
 // Test Create
 func TestCreateTransactionSuccess(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
 		return nil
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -143,7 +144,7 @@ func TestCreateTransactionFailure(t *testing.T) {
 
 // Test Update
 func TestUpdateTransactionSuccess(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
 		return nil // Successful update
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -181,7 +182,7 @@ func TestUpdateTransactionInvalid(t *testing.T) {
 }
 
 func TestUpdateTransactionFailure(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -202,7 +203,7 @@ func TestUpdateTransactionFailure(t *testing.T) {
 
 // Test Delete
 func TestDeleteTransactionSuccess(t *testing.T) {
-	testUtils.TransactionRepo.MockDelete = func(id uint) error {
+	testUtils.TransactionRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -215,7 +216,7 @@ func TestDeleteTransactionSuccess(t *testing.T) {
 }
 
 func TestDeleteTransactionFailure(t *testing.T) {
-	testUtils.TransactionRepo.MockDelete = func(id uint) error {
+	testUtils.TransactionRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo

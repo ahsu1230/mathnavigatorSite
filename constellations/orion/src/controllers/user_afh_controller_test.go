@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -17,7 +17,7 @@ import (
 
 // Test Get UserAfh By UserId
 func TestGetUserAfhByUserIdSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
 			testUtils.CreateMockUserAfh(2, 3, 1),
 			testUtils.CreateMockUserAfh(2, 4, 1),
@@ -43,7 +43,7 @@ func TestGetUserAfhByUserIdSuccess(t *testing.T) {
 }
 
 func TestGetUserAfhByUserIdFailure(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
@@ -57,7 +57,7 @@ func TestGetUserAfhByUserIdFailure(t *testing.T) {
 
 // Test Get UserAfh By AfhId
 func TestGetUserAfhByAfhIdSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByAfhId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
 			testUtils.CreateMockUserAfh(2, 4, 1),
 			testUtils.CreateMockUserAfh(3, 4, 1),
@@ -83,7 +83,7 @@ func TestGetUserAfhByAfhIdSuccess(t *testing.T) {
 }
 
 func TestGetUserAfhByAfhIdFailure(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByAfhId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
@@ -97,7 +97,7 @@ func TestGetUserAfhByAfhIdFailure(t *testing.T) {
 
 // Test Get UserAfh by UserId and AfhId
 func TestGetUserAfhByBothIdsSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByBothIds = func(userId, afhId uint) (domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByBothIds = func(context.Context, uint, uint) (domains.UserAfh, error) {
 		userAfh := testUtils.CreateMockUserAfh(2, 3, 1)
 		return userAfh, nil
 	}
@@ -115,7 +115,7 @@ func TestGetUserAfhByBothIdsSuccess(t *testing.T) {
 }
 
 func TestGetUserAfhByNew(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByNew = func() ([]domains.UserAfh, error) {
+	testUtils.UserAfhRepo.MockSelectByNew = func(context.Context) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
 			testUtils.CreateMockUserAfh(2, 3, 1),
 			testUtils.CreateMockUserAfh(2, 4, 1),
@@ -142,8 +142,8 @@ func TestGetUserAfhByNew(t *testing.T) {
 
 // Test Create
 func TestCreateUserAfhSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockInsert = func(userAfh domains.UserAfh) error {
-		return nil
+	testUtils.UserAfhRepo.MockInsert = func(context.Context, domains.UserAfh) (uint, error) {
+		return 42, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
@@ -166,7 +166,7 @@ func createBodyFromUserAfh(userAfh domains.UserAfh) io.Reader {
 
 // Test Update
 func TestUpdateUserAfhSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
+	testUtils.UserAfhRepo.MockUpdate = func(context.Context, uint, domains.UserAfh) error {
 		return nil // Successful update
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
@@ -181,7 +181,7 @@ func TestUpdateUserAfhSuccess(t *testing.T) {
 }
 
 func TestUpdateUserAfhFailure(t *testing.T) {
-	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
+	testUtils.UserAfhRepo.MockUpdate = func(context.Context, uint, domains.UserAfh) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
@@ -197,7 +197,7 @@ func TestUpdateUserAfhFailure(t *testing.T) {
 
 // Test Delete
 func TestDeleteUserAfhSuccess(t *testing.T) {
-	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
+	testUtils.UserAfhRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
@@ -210,7 +210,7 @@ func TestDeleteUserAfhSuccess(t *testing.T) {
 }
 
 func TestDeleteUserAfhFailure(t *testing.T) {
-	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
+	testUtils.UserAfhRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo

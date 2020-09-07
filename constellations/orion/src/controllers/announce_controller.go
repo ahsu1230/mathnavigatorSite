@@ -12,7 +12,8 @@ import (
 
 func GetAllAnnouncements(c *gin.Context) {
 	utils.LogControllerMethod(c, "announceController.GetAllAnnouncements")
-	announceList, err := repos.AnnounceRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	announceList, err := repos.AnnounceRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -26,7 +27,8 @@ func GetAnnouncementById(c *gin.Context) {
 	// Incoming parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	announce, err := repos.AnnounceRepo.SelectByAnnounceId(id)
+	ctx := utils.RetrieveContext(c)
+	announce, err := repos.AnnounceRepo.SelectByAnnounceId(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -51,13 +53,14 @@ func CreateAnnouncement(c *gin.Context) {
 		return
 	}
 
-	err := repos.AnnounceRepo.Insert(announceJson)
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.AnnounceRepo.Insert(ctx, announceJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAnnouncement(c *gin.Context) {
@@ -78,7 +81,8 @@ func UpdateAnnouncement(c *gin.Context) {
 		return
 	}
 
-	err := repos.AnnounceRepo.Update(id, announceJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AnnounceRepo.Update(ctx, id, announceJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -92,7 +96,8 @@ func DeleteAnnouncement(c *gin.Context) {
 	// Incoming Parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	err := repos.AnnounceRepo.Delete(id)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AnnounceRepo.Delete(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

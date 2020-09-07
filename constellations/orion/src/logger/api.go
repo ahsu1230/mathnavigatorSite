@@ -81,3 +81,10 @@ func Error(message string, err error, fields Fields) {
 	// Error(fmt.Spritnf("%s (%+v)", message, err)) // <- use if want to see stacktrace
 	// Error(fmt.Sprintf("%s (%w)", message, err)) // <- displays object memory address
 }
+
+func CombineFields(fieldsA, fieldsB Fields) Fields {
+	for k, v := range fieldsB {
+		fieldsA[k] = v
+	}
+	return fieldsA
+}

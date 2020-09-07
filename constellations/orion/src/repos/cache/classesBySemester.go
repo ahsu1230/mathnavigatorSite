@@ -1,21 +1,19 @@
 package cache
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"time"
 )
 
 var KEY_PROGRAM_CLASSES_BY_SEMESTER = "all_programs_semesters_classes"
 var DURATION_KEY_PROGRAM_CLASSES_BY_SEMESTER = time.Minute * 10
 
-func GetAllProgramClassesBySemester() ([]domains.ProgramClassesBySemester, error) {
+func GetAllProgramClassesBySemester(ctx context.Context) ([]domains.ProgramClassesBySemester, error) {
 	key := KEY_PROGRAM_CLASSES_BY_SEMESTER
-	logger.Debug("Retrieving cache.ProgramClassesBySemester", logger.Fields{
-		"key": key,
-	})
+	logWithContext(ctx, "Retrieving cache.ProgramClassesBySemester", key)
 
 	if CacheDb == nil {
 		err := appErrors.ERR_REDIS_UNAVAILABLE
@@ -41,12 +39,9 @@ func GetAllProgramClassesBySemester() ([]domains.ProgramClassesBySemester, error
 	return list, nil
 }
 
-func SetAllProgramClassesBySemester(list []domains.ProgramClassesBySemester) error {
+func SetAllProgramClassesBySemester(ctx context.Context, list []domains.ProgramClassesBySemester) error {
 	key := KEY_PROGRAM_CLASSES_BY_SEMESTER
-	logger.Debug("Setting cache.ProgramClassesBySemester", logger.Fields{
-		"key":  key,
-		"list": list,
-	})
+	logWithContext(ctx, "Setting cache.ProgramClassesBySemester", key)
 
 	if CacheDb == nil {
 		return appErrors.ERR_REDIS_UNAVAILABLE

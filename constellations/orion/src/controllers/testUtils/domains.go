@@ -8,10 +8,10 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 )
 
-func CreateMockAccount(id uint, primary_email string, password string) domains.Account {
+func CreateMockAccount(id uint, primaryEmail string, password string) domains.Account {
 	return domains.Account{
 		Id:           id,
-		PrimaryEmail: primary_email,
+		PrimaryEmail: primaryEmail,
 		Password:     password,
 	}
 }

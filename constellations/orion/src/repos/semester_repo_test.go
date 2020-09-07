@@ -16,7 +16,7 @@ func initSemesterTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SemesterRep
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestSemesterRepo(db)
+	repo := repos.CreateTestSemesterRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -30,7 +30,7 @@ func TestSelectAllSemesters(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getSemesterRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM semesters").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -58,7 +58,7 @@ func TestSelectSemester(t *testing.T) {
 		ExpectQuery().
 		WithArgs("2020_fall").
 		WillReturnRows(rows)
-	got, err := repo.SelectBySemesterId("2020_fall") // Correct semesterId
+	got, err := repo.SelectBySemesterId(testUtils.Context, "2020_fall") // Correct semesterId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -92,7 +92,7 @@ func TestInsertSemester(t *testing.T) {
 		Year:       2020,
 		Title:      "Fall 2020",
 	}
-	err := repo.Insert(semester)
+	_, err := repo.Insert(testUtils.Context, semester)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -122,7 +122,7 @@ func TestUpdateSemester(t *testing.T) {
 		Year:       2021,
 		Title:      "Spring 2021",
 	}
-	err := repo.Update("2020_fall", semester)
+	err := repo.Update(testUtils.Context, "2020_fall", semester)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -146,7 +146,7 @@ func TestDeleteSemester(t *testing.T) {
 		ExpectExec().
 		WithArgs("2020_fall").
 		WillReturnResult(result)
-	err := repo.Delete("2020_fall")
+	err := repo.Delete(testUtils.Context, "2020_fall")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

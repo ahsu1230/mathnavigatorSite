@@ -12,7 +12,8 @@ import (
 
 func GetAllAFH(c *gin.Context) {
 	utils.LogControllerMethod(c, "askForHelpController.GetAllAFH")
-	afhList, err := repos.AskForHelpRepo.SelectAll()
+	ctx := utils.RetrieveContext(c)
+	afhList, err := repos.AskForHelpRepo.SelectAll(ctx)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -26,7 +27,8 @@ func GetAFHById(c *gin.Context) {
 	// Incoming parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	askForHelp, err := repos.AskForHelpRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	askForHelp, err := repos.AskForHelpRepo.SelectById(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -51,13 +53,14 @@ func CreateAFH(c *gin.Context) {
 		return
 	}
 
-	err := repos.AskForHelpRepo.Insert(afhJson)
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.AskForHelpRepo.Insert(ctx, afhJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAFH(c *gin.Context) {
@@ -77,7 +80,8 @@ func UpdateAFH(c *gin.Context) {
 		return
 	}
 
-	err := repos.AskForHelpRepo.Update(id, afhJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AskForHelpRepo.Update(ctx, id, afhJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -91,7 +95,8 @@ func DeleteAFH(c *gin.Context) {
 	// Incoming Parameters
 	id, _ := utils.ParseParamId(c, "id")
 
-	err := repos.AskForHelpRepo.Delete(id)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AskForHelpRepo.Delete(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()

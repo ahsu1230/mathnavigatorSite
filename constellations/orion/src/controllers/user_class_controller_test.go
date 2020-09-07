@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -16,7 +16,7 @@ import (
 )
 
 func TestGetUsersByClassIdSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByClassId = func(classId string) ([]domains.UserClasses, error) {
+	testUtils.UserClassesRepo.MockSelectByClassId = func(context.Context, string) ([]domains.UserClasses, error) {
 		return []domains.UserClasses{
 			testUtils.CreateMockUserClasses(
 				1,
@@ -62,7 +62,7 @@ func TestGetUsersByClassIdSuccess(t *testing.T) {
 }
 
 func TestGetClassesByUserIdSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByUserId = func(id uint) ([]domains.UserClasses, error) {
+	testUtils.UserClassesRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserClasses, error) {
 		return []domains.UserClasses{
 			testUtils.CreateMockUserClasses(
 				1,
@@ -108,7 +108,7 @@ func TestGetClassesByUserIdSuccess(t *testing.T) {
 }
 
 func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByUserAndClass = func(id uint, classId string) (domains.UserClasses, error) {
+	testUtils.UserClassesRepo.MockSelectByUserAndClass = func(context.Context, uint, string) (domains.UserClasses, error) {
 		userClass := testUtils.CreateMockUserClasses(
 			1,
 			1,
@@ -138,7 +138,7 @@ func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 }
 
 func TestGetUsersByNew(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByNew = func() ([]domains.UserClasses, error) {
+	testUtils.UserClassesRepo.MockSelectByNew = func(context.Context) ([]domains.UserClasses, error) {
 		return []domains.UserClasses{
 			testUtils.CreateMockUserClasses(
 				1,
@@ -187,8 +187,8 @@ func TestGetUsersByNew(t *testing.T) {
 // Test Create
 //
 func TestCreateUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
-		return nil
+	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+		return 42, nil
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -208,8 +208,8 @@ func TestCreateUserClassSuccess(t *testing.T) {
 }
 
 func TestCreateUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(userClass domains.UserClasses) error {
-		return appErrors.MockMySQLDuplicateEntryError()
+	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+		return 0, appErrors.MockMySQLDuplicateEntryError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
 
@@ -232,7 +232,7 @@ func TestCreateUserClassFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
+	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
 		return nil // Successful update
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
@@ -253,7 +253,7 @@ func TestUpdateUserClassSuccess(t *testing.T) {
 }
 
 func TestUpdateUserClassInvalid(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
+	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	// no mock needed
@@ -275,7 +275,7 @@ func TestUpdateUserClassInvalid(t *testing.T) {
 }
 
 func TestUpdateUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(id uint, userClass domains.UserClasses) error {
+	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
@@ -299,7 +299,7 @@ func TestUpdateUserClassFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
+	testUtils.UserClassesRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo
@@ -312,7 +312,7 @@ func TestDeleteUserClassSuccess(t *testing.T) {
 }
 
 func TestDeleteUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockDelete = func(id uint) error {
+	testUtils.UserClassesRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserClassesRepo = &testUtils.UserClassesRepo

@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -20,21 +21,21 @@ type transactionRepo struct {
 
 //Interface to implement
 type TransactionRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectByAccountId(uint) ([]domains.Transaction, error)
-	SelectById(uint) (domains.Transaction, error)
-	Insert(domains.Transaction) error
-	Update(uint, domains.Transaction) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectByAccountId(context.Context, uint) ([]domains.Transaction, error)
+	SelectById(context.Context, uint) (domains.Transaction, error)
+	Insert(context.Context, domains.Transaction) (uint, error)
+	Update(context.Context, uint, domains.Transaction) error
+	Delete(context.Context, uint) error
 }
 
-func (tr *transactionRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("transactionRepo.Initialize", logger.Fields{})
+func (tr *transactionRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "transactionRepo.Initialize", logger.Fields{})
 	tr.db = db
 }
 
-func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transaction, error) {
-	utils.LogWithContext("transactionRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
+func (tr *transactionRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]domains.Transaction, error) {
+	utils.LogWithContext(ctx, "transactionRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
 	results := make([]domains.Transaction, 0)
 
 	statement := "SELECT * FROM transactions WHERE account_id=?"
@@ -68,8 +69,8 @@ func (tr *transactionRepo) SelectByAccountId(accountId uint) ([]domains.Transact
 	return results, nil
 }
 
-func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
-	utils.LogWithContext("transactionRepo.SelectById", logger.Fields{"id": id})
+func (tr *transactionRepo) SelectById(ctx context.Context, id uint) (domains.Transaction, error) {
+	utils.LogWithContext(ctx, "transactionRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
@@ -93,8 +94,8 @@ func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
 	return transaction, nil
 }
 
-func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
-	utils.LogWithContext("transactionRepo.Insert", logger.Fields{"transaction": transaction})
+func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Transaction) (uint, error) {
+	utils.LogWithContext(ctx, "transactionRepo.Insert", logger.Fields{"transaction": transaction})
 	statement := "INSERT INTO transactions (" +
 		"created_at, " +
 		"updated_at, " +
@@ -105,7 +106,7 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 		") VALUES (?, ?, ?, ?, ?, ?)"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -118,13 +119,18 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 		transaction.PaymentNotes,
 		transaction.AccountId)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, transaction)
+		return 0, appErrors.WrapDbExec(err, statement, transaction)
 	}
-	return appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
 }
 
-func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) error {
-	utils.LogWithContext("transactionRepo.Update", logger.Fields{"transaction": transaction})
+func (tr *transactionRepo) Update(ctx context.Context, id uint, transaction domains.Transaction) error {
+	utils.LogWithContext(ctx, "transactionRepo.Update", logger.Fields{"transaction": transaction})
 	statement := "UPDATE transactions SET " +
 		"updated_at=?, " +
 		"amount=?, " +
@@ -152,8 +158,8 @@ func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) erro
 	return appErrors.ValidateDbResult(result, 1, "transaction was not updated")
 }
 
-func (tr *transactionRepo) Delete(id uint) error {
-	utils.LogWithContext("transactionRepo.Delete", logger.Fields{"id": id})
+func (tr *transactionRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "transactionRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
@@ -168,8 +174,8 @@ func (tr *transactionRepo) Delete(id uint) error {
 	return appErrors.ValidateDbResult(execResult, 1, "transaction was not deleted")
 }
 
-func CreateTestTransactionRepo(db *sql.DB) TransactionRepoInterface {
+func CreateTestTransactionRepo(ctx context.Context, db *sql.DB) TransactionRepoInterface {
 	tr := &transactionRepo{}
-	tr.Initialize(db)
+	tr.Initialize(ctx, db)
 	return tr
 }

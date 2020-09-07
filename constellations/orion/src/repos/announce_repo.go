@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -18,21 +19,21 @@ type announceRepo struct {
 }
 
 type AnnounceRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Announce, error)
-	SelectByAnnounceId(uint) (domains.Announce, error)
-	Insert(domains.Announce) error
-	Update(uint, domains.Announce) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.Announce, error)
+	SelectByAnnounceId(context.Context, uint) (domains.Announce, error)
+	Insert(context.Context, domains.Announce) (uint, error)
+	Update(context.Context, uint, domains.Announce) error
+	Delete(context.Context, uint) error
 }
 
-func (ar *announceRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("announceRepo.Initialize", logger.Fields{})
+func (ar *announceRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "announceRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
-func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
-	utils.LogWithContext("announceRepo.SelectAll", logger.Fields{})
+func (ar *announceRepo) SelectAll(ctx context.Context) ([]domains.Announce, error) {
+	utils.LogWithContext(ctx, "announceRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Announce, 0)
 
 	statement := "SELECT * FROM announcements ORDER BY posted_at DESC"
@@ -66,8 +67,8 @@ func (ar *announceRepo) SelectAll() ([]domains.Announce, error) {
 	return results, nil
 }
 
-func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
-	utils.LogWithContext("announceRepo.SelectByAnnounceId", logger.Fields{"id": id})
+func (ar *announceRepo) SelectByAnnounceId(ctx context.Context, id uint) (domains.Announce, error) {
+	utils.LogWithContext(ctx, "announceRepo.SelectByAnnounceId", logger.Fields{"id": id})
 	statement := "SELECT * FROM announcements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -92,8 +93,8 @@ func (ar *announceRepo) SelectByAnnounceId(id uint) (domains.Announce, error) {
 	return announce, nil
 }
 
-func (ar *announceRepo) Insert(announce domains.Announce) error {
-	utils.LogWithContext("announceRepo.Insert", logger.Fields{"announce": announce})
+func (ar *announceRepo) Insert(ctx context.Context, announce domains.Announce) (uint, error) {
+	utils.LogWithContext(ctx, "announceRepo.Insert", logger.Fields{"announce": announce})
 	statement := "INSERT INTO announcements (" +
 		"created_at, " +
 		"updated_at, " +
@@ -104,7 +105,7 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		") VALUES (?, ?, ?, ?, ?, ?)"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -117,13 +118,18 @@ func (ar *announceRepo) Insert(announce domains.Announce) error {
 		announce.Message,
 		announce.OnHomePage)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, announce)
+		return 0, appErrors.WrapDbExec(err, statement, announce)
 	}
-	return appErrors.ValidateDbResult(result, 1, "announcement was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "announcement was not inserted")
 }
 
-func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
-	utils.LogWithContext("announceRepo.Update", logger.Fields{"announce": announce})
+func (ar *announceRepo) Update(ctx context.Context, id uint, announce domains.Announce) error {
+	utils.LogWithContext(ctx, "announceRepo.Update", logger.Fields{"announce": announce})
 	statement := "UPDATE announcements SET " +
 		"updated_at=?, " +
 		"posted_at=?, " +
@@ -151,8 +157,8 @@ func (ar *announceRepo) Update(id uint, announce domains.Announce) error {
 	return appErrors.ValidateDbResult(result, 1, "announcement was not updated")
 }
 
-func (ar *announceRepo) Delete(id uint) error {
-	utils.LogWithContext("Repo.Delete", logger.Fields{"id": id})
+func (ar *announceRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "Repo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM announcements WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
@@ -168,8 +174,8 @@ func (ar *announceRepo) Delete(id uint) error {
 	return appErrors.ValidateDbResult(result, 1, "announcement was not deleted")
 }
 
-func CreateTestAnnounceRepo(db *sql.DB) AnnounceRepoInterface {
+func CreateTestAnnounceRepo(ctx context.Context, db *sql.DB) AnnounceRepoInterface {
 	ar := &announceRepo{}
-	ar.Initialize(db)
+	ar.Initialize(ctx, db)
 	return ar
 }

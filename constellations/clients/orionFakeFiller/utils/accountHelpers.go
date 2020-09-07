@@ -1,19 +1,35 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
 )
 
-func CreateAccount(accountJson, userJson string) error {
+type AccountIdResp struct {
+	AccountId uint `json:"accountId"`
+}
+
+func GetAccountIdFromBody(bytes []byte) (uint, error) {
+	log.Printf("*** %s\n", string(bytes))
+	var resp AccountIdResp
+	if err := json.Unmarshal(bytes, &resp); err != nil {
+		log.Printf("unexpected error: %v\n", err)
+		return 0, err
+	}
+	return resp.AccountId, nil
+}
+
+func CreateAccount(accountJson, userJson string) (uint, error) {
 	body := strings.NewReader(fmt.Sprintf(`{
 		"account": %s,
 		"user": %s
 	}`, accountJson, userJson))
 	log.Println("Creating account and primary user...")
-	SendPostRequest("/api/accounts/create", body)
-	return nil
+	respBody := SendPostRequest("/api/accounts/create", body)
+	id, _ := GetAccountIdFromBody(respBody)
+	return id, nil
 }
 
 func CreateAccountJson(primaryEmail, password string) string {
@@ -24,7 +40,7 @@ func CreateAccountJson(primaryEmail, password string) string {
 }
 
 func CreateUserStudentJson(
-	accountId int,
+	accountId uint,
 	firstName, middleName, lastName, email, phone string,
 	notes string,
 	school string,
@@ -44,7 +60,7 @@ func CreateUserStudentJson(
 }
 
 func CreateUserGuardianJson(
-	accountId int,
+	accountId uint,
 	firstName, middleName, lastName, email, phone string,
 	notes string) string {
 	return createUserJson(
@@ -62,7 +78,7 @@ func CreateUserGuardianJson(
 }
 
 func createUserJson(
-	accountId int,
+	accountId uint,
 	firstName, middleName, lastName, email, phone string,
 	isGuardian bool,
 	school string,
@@ -93,18 +109,19 @@ func createUserJson(
 	)
 }
 
-func AddUser(userJson string) error {
+func AddUser(userJson string) (uint, error) {
 	log.Println("Creating another user...")
 	body := strings.NewReader(userJson)
-	SendPostRequest("/api/users/create", body)
-	return nil
+	respBody := SendPostRequest("/api/users/create", body)
+	id, _ := GetIdFromBody(respBody)
+	return id, nil
 }
 
 func CreateTransaction(
-	accountId int,
+	accountId uint,
 	amount int,
 	paymentType string,
-	paymentNotes string) error {
+	paymentNotes string) (uint, error) {
 	transactionBody := strings.NewReader(fmt.Sprintf(`{
 		"amount": %d,
 		"paymentType": "%s",
@@ -117,16 +134,17 @@ func CreateTransaction(
 		accountId,
 	))
 	log.Printf("Creating transaction for accountId %d, %s\n", accountId, paymentNotes)
-	SendPostRequest("/api/transactions/create", transactionBody)
-	return nil
+	respBody := SendPostRequest("/api/transactions/create", transactionBody)
+	id, _ := GetIdFromBody(respBody)
+	return id, nil
 }
 
 func CreateUserClass(
-	accountId int,
-	userId int,
+	accountId uint,
+	userId uint,
 	classId string,
 	userClassState int,
-) error {
+) (uint, error) {
 	body := strings.NewReader(fmt.Sprintf(`{
 		"userId": %d,
 		"classId": "%s",
@@ -139,15 +157,16 @@ func CreateUserClass(
 		userClassState,
 	))
 	log.Printf("Creating relation for user '%d' and class '%s'\n", userId, classId)
-	SendPostRequest("/api/user-classes/create", body)
-	return nil
+	respBody := SendPostRequest("/api/user-classes/create", body)
+	id, _ := GetIdFromBody(respBody)
+	return id, nil
 }
 
 func CreateUserAFH(
-	accountId int,
-	userId int,
-	afhId int,
-) error {
+	accountId uint,
+	userId uint,
+	afhId uint,
+) (uint, error) {
 	body := strings.NewReader(fmt.Sprintf(`{
 		"userId": %d,
 		"afhId": %d,
@@ -158,6 +177,7 @@ func CreateUserAFH(
 		accountId,
 	))
 	log.Printf("Creating relation for user '%d' and afh '%d'\n", userId, afhId)
-	SendPostRequest("/api/user-afhs/create", body)
-	return nil
+	respBody := SendPostRequest("/api/user-afhs/create", body)
+	id, _ := GetIdFromBody(respBody)
+	return id, nil
 }

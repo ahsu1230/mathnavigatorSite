@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 )
 
@@ -25,13 +26,13 @@ func AppRequestHandler() gin.HandlerFunc {
 
 		// Log with Request UUID
 		requestUuid := uuid.New()
-		logger.Info("Received Request", logger.Fields{
+		logger.Info("Handler received request", logger.Fields{
 			"requestUuid":   requestUuid,
 			"requestMethod": c.Request.Method,
 			"requestURL":    c.Request.URL,
 			"requestHost":   c.Request.Host,
 		})
-		c.Set("requestUuid", requestUuid)
+		c.Set(domains.REQUEST_UUID, requestUuid)
 		c.Writer.Header().Set("X-Request-Id", requestUuid.String())
 
 		c.Next()
@@ -48,7 +49,7 @@ func AppRequestHandler() gin.HandlerFunc {
 		}
 
 		if !c.IsAborted() {
-			logger.Info("Succesfully completed request!", logger.Fields{
+			logger.Info("Handler completed request!", logger.Fields{
 				"requestUuid": requestUuid,
 				"fullPath":    c.FullPath(),
 				"status":      c.Writer.Status(),
@@ -74,6 +75,10 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 
 	} else if errors.Is(wrappedErr, appErrors.ERR_JSON_NULL_BODY) {
 		message = "Must provide a JSON body for this request"
+		code = http.StatusBadRequest
+
+	} else if errors.Is(wrappedErr, appErrors.ERR_JSON_BIND_BODY) {
+		message = "Could not bind JSON body for this request. Please provide a valid JSON or domain."
 		code = http.StatusBadRequest
 
 	} else if errors.Is(wrappedErr, appErrors.ERR_REPO_EXEC_MISMATCH) {

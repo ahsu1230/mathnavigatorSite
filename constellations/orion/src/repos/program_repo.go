@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -20,21 +21,21 @@ type programRepo struct {
 
 // Interface to implement
 type ProgramRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Program, error)
-	SelectByProgramId(string) (domains.Program, error)
-	Insert(domains.Program) error
-	Update(string, domains.Program) error
-	Delete(string) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.Program, error)
+	SelectByProgramId(context.Context, string) (domains.Program, error)
+	Insert(context.Context, domains.Program) (uint, error)
+	Update(context.Context, string, domains.Program) error
+	Delete(context.Context, string) error
 }
 
-func (pr *programRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("programRepo.Initialize", logger.Fields{})
+func (pr *programRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "programRepo.Initialize", logger.Fields{})
 	pr.db = db
 }
 
-func (pr *programRepo) SelectAll() ([]domains.Program, error) {
-	utils.LogWithContext("programRepo.SelectAll", logger.Fields{})
+func (pr *programRepo) SelectAll(ctx context.Context) ([]domains.Program, error) {
+	utils.LogWithContext(ctx, "programRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Program, 0)
 
 	statement := "SELECT * FROM programs"
@@ -69,8 +70,8 @@ func (pr *programRepo) SelectAll() ([]domains.Program, error) {
 	return results, nil
 }
 
-func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, error) {
-	utils.LogWithContext("programRepo.SelectByProgramId", logger.Fields{"programId": programId})
+func (pr *programRepo) SelectByProgramId(ctx context.Context, programId string) (domains.Program, error) {
+	utils.LogWithContext(ctx, "programRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	statement := "SELECT * FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -96,8 +97,8 @@ func (pr *programRepo) SelectByProgramId(programId string) (domains.Program, err
 	return program, nil
 }
 
-func (pr *programRepo) Insert(program domains.Program) error {
-	utils.LogWithContext("programRepo.Insert", logger.Fields{"program": program})
+func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uint, error) {
+	utils.LogWithContext(ctx, "programRepo.Insert", logger.Fields{"program": program})
 	statement := "INSERT INTO programs (" +
 		"created_at, " +
 		"updated_at, " +
@@ -110,7 +111,7 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -125,13 +126,19 @@ func (pr *programRepo) Insert(program domains.Program) error {
 		program.Description,
 		program.Featured)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, program)
+		return 0, appErrors.WrapDbExec(err, statement, program)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "program was not inserted")
 }
 
-func (pr *programRepo) Update(programId string, program domains.Program) error {
-	utils.LogWithContext("programRepo.Update", logger.Fields{"programId": programId, "program": program})
+func (pr *programRepo) Update(ctx context.Context, programId string, program domains.Program) error {
+	utils.LogWithContext(ctx, "programRepo.Update", logger.Fields{"programId": programId, "program": program})
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
@@ -163,8 +170,8 @@ func (pr *programRepo) Update(programId string, program domains.Program) error {
 	return appErrors.ValidateDbResult(execResult, 1, "program was not updated")
 }
 
-func (pr *programRepo) Delete(programId string) error {
-	utils.LogWithContext("programRepo.Delete", logger.Fields{"programId": programId})
+func (pr *programRepo) Delete(ctx context.Context, programId string) error {
+	utils.LogWithContext(ctx, "programRepo.Delete", logger.Fields{"programId": programId})
 	statement := "DELETE FROM programs WHERE program_id=?"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
@@ -180,8 +187,8 @@ func (pr *programRepo) Delete(programId string) error {
 }
 
 // For Tests Only
-func CreateTestProgramRepo(db *sql.DB) ProgramRepoInterface {
+func CreateTestProgramRepo(ctx context.Context, db *sql.DB) ProgramRepoInterface {
 	pr := &programRepo{}
-	pr.Initialize(db)
+	pr.Initialize(ctx, db)
 	return pr
 }

@@ -241,7 +241,7 @@ func runFiller() {
 		"",
 	)
 	date = time.Now().Add(time.Hour * 24 * 10)
-	createAFH(
+	afhId1, _ := createAFH(
 		date,
 		"AP Java Office Hours",
 		"3:00pm - 4:00pm",
@@ -250,7 +250,7 @@ func runFiller() {
 		"Final Project AMA",
 	)
 	date = time.Now().Add(time.Hour * 24 * 17)
-	createAFH(
+	afhId2, _ := createAFH(
 		date,
 		"AP Java Office Hours",
 		"3:00pm - 4:00pm",
@@ -260,10 +260,10 @@ func runFiller() {
 	)
 
 	account1.Fill()
-	account2.Fill()
+	account2.Fill(afhId1, afhId2)
 }
 
-func createProgram(programId string, name string, grade1, grade2 int, description string) error {
+func createProgram(programId string, name string, grade1, grade2 int, description string) (uint, error) {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"name": "%s",
@@ -272,21 +272,23 @@ func createProgram(programId string, name string, grade1, grade2 int, descriptio
 		"description": "%s"
 	}`, programId, name, grade1, grade2, description))
 	log.Println("Creating program " + programId + "...")
-	utils.SendPostRequest("/api/programs/create", programBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/programs/create", programBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createSemester(season string, year int) error {
+func createSemester(season string, year int) (uint, error) {
 	semesterBody := strings.NewReader(fmt.Sprintf(`{
 		"season": "%s",
 		"year": %d
 	}`, season, year))
 	log.Println(fmt.Sprintf("Creating semester %d_%s...", year, season))
-	utils.SendPostRequest("/api/semesters/create", semesterBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/semesters/create", semesterBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createLocation(locationId, street, city, state, zipcode string) error {
+func createLocation(locationId, street, city, state, zipcode string) (uint, error) {
 	locationBody := strings.NewReader(fmt.Sprintf(`{
 		"locationId": "%s",
 		"street": "%s",
@@ -295,21 +297,23 @@ func createLocation(locationId, street, city, state, zipcode string) error {
 		"zipcode": "%s"
 	}`, locationId, street, city, state, zipcode))
 	log.Println("Creating location " + locationId + "...")
-	utils.SendPostRequest("/api/locations/create", locationBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/locations/create", locationBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createAchieve(year, message string) error {
+func createAchieve(year, message string) (uint, error) {
 	achieveBody := strings.NewReader(fmt.Sprintf(`{
 		"year": %s,
 		"message": "%s"
 	}`, year, message))
 	log.Println("Creating achievement " + message + "...")
-	utils.SendPostRequest("/api/achievements/create", achieveBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/achievements/create", achieveBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createAnnounce(author, message, onHomePage string) error {
+func createAnnounce(author, message, onHomePage string) (uint, error) {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 
@@ -320,11 +324,12 @@ func createAnnounce(author, message, onHomePage string) error {
 		"onHomePage": %s
 	}`, nowJson, author, message, onHomePage))
 	log.Println("Creating announcement " + message + "...")
-	utils.SendPostRequest("/api/announcements/create", announceBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/announcements/create", announceBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createClass(programId, semesterId, classKey, classId, locationId, times string) error {
+func createClass(programId, semesterId, classKey, classId, locationId, times string) (uint, error) {
 	now := time.Now().UTC()
 	nowJson, _ := now.MarshalJSON()
 	var later = now.Add(time.Hour * 24 * 30)
@@ -353,11 +358,12 @@ func createClass(programId, semesterId, classKey, classId, locationId, times str
 		priceLump,
 	))
 	log.Println("Creating class " + classId + "...")
-	utils.SendPostRequest("/api/classes/create", classBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/classes/create", classBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }
 
-func createSessions(classId, cancelled string, numSessions int) error {
+func createSessions(classId, cancelled string, numSessions int) ([]uint, error) {
 	// Create session takes in a list
 	var body = "["
 	now := time.Now().UTC()
@@ -384,11 +390,13 @@ func createSessions(classId, cancelled string, numSessions int) error {
 	body += "]"
 	sessionBody := strings.NewReader(body)
 	log.Println("Creating session for " + classId + "...")
-	utils.SendPostRequest("/api/sessions/create", sessionBody)
-	return nil
+	respBody := utils.SendPostRequest("/api/sessions/create", sessionBody)
+
+	ids, _ := utils.GetIdsFromBody(respBody)
+	return ids, nil
 }
 
-func createAFH(time time.Time, title, timeString, subject, locationId, notes string) error {
+func createAFH(time time.Time, title, timeString, subject, locationId, notes string) (uint, error) {
 	timeJson, _ := time.MarshalJSON()
 	body := strings.NewReader(fmt.Sprintf(`{
 		"date": %s,
@@ -399,6 +407,7 @@ func createAFH(time time.Time, title, timeString, subject, locationId, notes str
 		"notes": "%s"
 	}`, timeJson, title, timeString, subject, locationId, notes))
 	log.Println("Creating afh " + title + " (" + subject + ") ...")
-	utils.SendPostRequest("/api/askforhelp/create", body)
-	return nil
+	respBody := utils.SendPostRequest("/api/askforhelp/create", body)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
 }

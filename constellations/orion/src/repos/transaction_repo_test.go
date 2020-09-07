@@ -16,7 +16,7 @@ func initTransactionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.Transact
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestTransactionRepo(db)
+	repo := repos.CreateTestTransactionRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -31,7 +31,7 @@ func TestSelectByAccountId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAccountId(1)
+	got, err := repo.SelectByAccountId(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -57,7 +57,7 @@ func TestSelectTransaction(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -95,7 +95,7 @@ func TestInsertTransaction(t *testing.T) {
 		PaymentNotes: domains.NewNullString("note1"),
 		AccountId:    1,
 	}
-	err := repo.Insert(transaction)
+	_, err := repo.Insert(testUtils.Context, transaction)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -129,7 +129,7 @@ func TestUpdateTransaction(t *testing.T) {
 		PaymentNotes: domains.NewNullString("note2"),
 		AccountId:    2,
 	}
-	err := repo.Update(1, transaction)
+	err := repo.Update(testUtils.Context, 1, transaction)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -152,7 +152,7 @@ func TestDeleteTransaction(t *testing.T) {
 		WithArgs(1).
 		WillReturnResult(result)
 
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

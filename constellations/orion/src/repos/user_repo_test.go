@@ -15,7 +15,7 @@ func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterfa
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserRepo(db)
+	repo := repos.CreateTestUserRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -29,7 +29,7 @@ func TestSelectAllUsers(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getUserRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll("", 100, 0)
+	got, err := repo.SelectAll(testUtils.Context, "", 100, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -56,7 +56,7 @@ func TestSearchUsers(t *testing.T) {
 	mock.ExpectPrepare(`^SELECT (.+) FROM users WHERE (.+) LIMIT (.+) OFFSET (.+)`).
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll("Smith", 2, 0)
+	got, err := repo.SelectAll(testUtils.Context, "Smith", 2, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -84,7 +84,7 @@ func TestSelectUser(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -113,7 +113,7 @@ func TestSelectUsersByAccountId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAccountId(2)
+	got, err := repo.SelectByAccountId(testUtils.Context, 2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -141,7 +141,7 @@ func TestSelectNewUsers(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectByNew()
+	got, err := repo.SelectByNew(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -183,7 +183,7 @@ func TestInsertUser(t *testing.T) {
 			domains.NewNullUint(2004),
 		).WillReturnResult(result)
 	user := getUser()
-	err := repo.Insert(user)
+	_, err := repo.Insert(testUtils.Context, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -235,7 +235,7 @@ func TestUpdateUser(t *testing.T) {
 		School:         domains.NewNullString("schoolone"),
 		GraduationYear: domains.NewNullUint(2004),
 	}
-	err := repo.Update(1, user)
+	err := repo.Update(testUtils.Context, 1, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -259,7 +259,7 @@ func TestDeleteUser(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

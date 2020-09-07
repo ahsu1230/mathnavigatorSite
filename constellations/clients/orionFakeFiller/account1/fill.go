@@ -15,17 +15,13 @@ This Account has the following features:
 func Fill() {
 	log.Println("Fill account1")
 
-	// ASSUMPTION! We are assuming this is the first account
-	// TODO: When CreateAccount returns the accountId, use that instead.
-	accountId := 1
-
 	// Create Account with primary user
 	accountJson := utils.CreateAccountJson(
 		"joesmithdad@gmail.com",
 		"asdf1234",
 	)
 	guardianJson := utils.CreateUserGuardianJson(
-		accountId,
+		0, // will be filled automatically by endpoint
 		"Joe",
 		"",
 		"Smith",
@@ -33,7 +29,7 @@ func Fill() {
 		"301-543-2412",
 		"Father of Smith family",
 	)
-	utils.CreateAccount(
+	accountId, _ := utils.CreateAccount(
 		accountJson,
 		guardianJson,
 	)
@@ -50,7 +46,7 @@ func Fill() {
 		"Winston Churchill High School",
 		2022,
 	)
-	utils.AddUser(studentJson)
+	userId, _ := utils.AddUser(studentJson)
 
 	// Add two transactions to account
 	utils.CreateTransaction(
@@ -67,9 +63,6 @@ func Fill() {
 	)
 
 	// Enroll student into classes
-	// ASSUMPTION! We are assuming this is the first account
-	// TODO: When CreateUser returns the userId, use that instead.
-	userId := 2
 	utils.CreateUserClass(
 		accountId,
 		userId,

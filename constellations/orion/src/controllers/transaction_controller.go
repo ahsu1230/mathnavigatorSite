@@ -19,7 +19,8 @@ func GetTransactionsByAccountId(c *gin.Context) {
 		return
 	}
 
-	transactionList, err := repos.TransactionRepo.SelectByAccountId(accountId)
+	ctx := utils.RetrieveContext(c)
+	transactionList, err := repos.TransactionRepo.SelectByAccountId(ctx, accountId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -38,7 +39,8 @@ func GetTransactionById(c *gin.Context) {
 		return
 	}
 
-	transaction, err := repos.TransactionRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	transaction, err := repos.TransactionRepo.SelectById(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -63,13 +65,14 @@ func CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	err := repos.TransactionRepo.Insert(transactionJson)
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.TransactionRepo.Insert(ctx, transactionJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateTransaction(c *gin.Context) {
@@ -95,7 +98,8 @@ func UpdateTransaction(c *gin.Context) {
 		return
 	}
 
-	if err := repos.TransactionRepo.Update(id, transactionJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.TransactionRepo.Update(ctx, id, transactionJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -113,7 +117,8 @@ func DeleteTransaction(c *gin.Context) {
 		return
 	}
 
-	if err := repos.TransactionRepo.Delete(id); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.TransactionRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

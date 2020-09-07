@@ -16,7 +16,7 @@ func initAccountTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AccountRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAccountRepo(db)
+	repo := repos.CreateTestAccountRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -33,7 +33,7 @@ func TestSearchAccount(t *testing.T) {
 		ExpectQuery().
 		WillReturnRows(rows)
 
-	got, err := repo.SelectById(2)
+	got, err := repo.SelectById(testUtils.Context, 2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -61,7 +61,7 @@ func TestSelectAccount(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -90,7 +90,7 @@ func TestSelectAccountByPrimaryEmail(t *testing.T) {
 		ExpectQuery().
 		WithArgs("john_smith@example.com").
 		WillReturnRows(rows)
-	got, err := repo.SelectByPrimaryEmail("john_smith@example.com")
+	got, err := repo.SelectByPrimaryEmail(testUtils.Context, "john_smith@example.com")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -114,6 +114,7 @@ func TestSelectAllNegativeBalances(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
+	now := testUtils.TimeNow
 	rows := sqlmock.NewRows([]string{"Id", "CreatedAt", "UpdatedAt", "DeletedAt", "PrimaryEmail", "Password", "Balance"}).
 		AddRow(
 			1,
@@ -137,7 +138,7 @@ func TestSelectAllNegativeBalances(t *testing.T) {
 		ExpectQuery().
 		WillReturnRows(rows)
 
-	got, err := repo.SelectAllNegativeBalances()
+	got, err := repo.SelectAllNegativeBalances(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -212,7 +213,7 @@ func TestInsertAccountAndUser(t *testing.T) {
 	mock.ExpectCommit()
 	account := getAccount()
 	user := getUser()
-	err := repo.InsertWithUser(account, user)
+	_, err := repo.InsertWithUser(testUtils.Context, account, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -248,7 +249,7 @@ func TestUpdateAccount(t *testing.T) {
 		PrimaryEmail: "bob_joe@example.com",
 		Password:     "password2",
 	}
-	err := repo.Update(1, account)
+	err := repo.Update(testUtils.Context, 1, account)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -272,7 +273,7 @@ func TestDeleteAccount(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initSessionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SessionRepoInterface) {
@@ -16,7 +17,7 @@ func initSessionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.SessionRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestSessionRepo(db)
+	repo := repos.CreateTestSessionRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -44,7 +45,7 @@ func TestSelectAllSessionsByClassId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("id_1").
 		WillReturnRows(rows)
-	got, err := repo.SelectAllByClassId("id_1")
+	got, err := repo.SelectAllByClassId(testUtils.Context, "id_1")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -95,7 +96,7 @@ func TestSelectSession(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectBySessionId(1)
+	got, err := repo.SelectBySessionId(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -156,7 +157,7 @@ func TestInsertSession(t *testing.T) {
 		},
 	}
 
-	err := repo.Insert(sessions)
+	_, err := repo.Insert(testUtils.Context, sessions)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -188,7 +189,7 @@ func TestUpdateSession(t *testing.T) {
 		Canceled: false,
 		Notes:    domains.NewNullString("special lecture from guest"),
 	}
-	err := repo.Update(1, session)
+	err := repo.Update(testUtils.Context, 1, session)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -217,7 +218,7 @@ func TestDeleteSession(t *testing.T) {
 		WithArgs(2).
 		WillReturnResult(result)
 	mock.ExpectCommit()
-	err := repo.Delete([]uint{1, 2})
+	err := repo.Delete(testUtils.Context, []uint{1, 2})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

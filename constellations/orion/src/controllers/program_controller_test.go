@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -19,7 +19,7 @@ import (
 // Test Get All
 //
 func TestGetAllProgramsSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockSelectAll = func() ([]domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectAll = func(context.Context) ([]domains.Program, error) {
 		return []domains.Program{
 			{
 				Id:          1,
@@ -63,7 +63,7 @@ func TestGetAllProgramsSuccess(t *testing.T) {
 // Test Get Program
 //
 func TestGetProgramSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockSelectByProgramId = func(programId string) (domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectByProgramId = func(context.Context, string) (domains.Program, error) {
 		program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
 		return program, nil
 	}
@@ -83,7 +83,7 @@ func TestGetProgramSuccess(t *testing.T) {
 }
 
 func TestGetProgramFailure(t *testing.T) {
-	testUtils.ProgramRepo.MockSelectByProgramId = func(programId string) (domains.Program, error) {
+	testUtils.ProgramRepo.MockSelectByProgramId = func(context.Context, string) (domains.Program, error) {
 		return domains.Program{}, appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -99,8 +99,8 @@ func TestGetProgramFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateProgramSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockInsert = func(program domains.Program) error {
-		return nil
+	testUtils.ProgramRepo.MockInsert = func(context.Context, domains.Program) (uint, error) {
+		return 42, nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
@@ -132,7 +132,7 @@ func TestCreateProgramFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateProgramSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockUpdate = func(programId string, program domains.Program) error {
+	testUtils.ProgramRepo.MockUpdate = func(context.Context, string, domains.Program) error {
 		return nil // Successful update
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -160,7 +160,7 @@ func TestUpdateProgramInvalid(t *testing.T) {
 }
 
 func TestUpdateProgramFailure(t *testing.T) {
-	testUtils.ProgramRepo.MockUpdate = func(programId string, program domains.Program) error {
+	testUtils.ProgramRepo.MockUpdate = func(context.Context, string, domains.Program) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -178,7 +178,7 @@ func TestUpdateProgramFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteProgramSuccess(t *testing.T) {
-	testUtils.ProgramRepo.MockDelete = func(programId string) error {
+	testUtils.ProgramRepo.MockDelete = func(context.Context, string) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -191,7 +191,7 @@ func TestDeleteProgramSuccess(t *testing.T) {
 }
 
 func TestDeleteProgramFailure(t *testing.T) {
-	testUtils.ProgramRepo.MockDelete = func(programId string) error {
+	testUtils.ProgramRepo.MockDelete = func(context.Context, string) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo

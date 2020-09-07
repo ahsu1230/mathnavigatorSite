@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
@@ -20,21 +21,21 @@ type semesterRepo struct {
 
 // Interface to implement
 type SemesterRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Semester, error)
-	SelectBySemesterId(string) (domains.Semester, error)
-	Insert(domains.Semester) error
-	Update(string, domains.Semester) error
-	Delete(string) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.Semester, error)
+	SelectBySemesterId(context.Context, string) (domains.Semester, error)
+	Insert(context.Context, domains.Semester) (uint, error)
+	Update(context.Context, string, domains.Semester) error
+	Delete(context.Context, string) error
 }
 
-func (sr *semesterRepo) Initialize(db *sql.DB) {
-	utils.LogWithContext("semesterRepo.Initialize", logger.Fields{})
+func (sr *semesterRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "semesterRepo.Initialize", logger.Fields{})
 	sr.db = db
 }
 
-func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
-	utils.LogWithContext("semesterRepo.SelectAll", logger.Fields{})
+func (sr *semesterRepo) SelectAll(ctx context.Context) ([]domains.Semester, error) {
+	utils.LogWithContext(ctx, "semesterRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Semester, 0)
 
 	query := "SELECT * FROM semesters ORDER BY year ASC, " +
@@ -73,8 +74,8 @@ func (sr *semesterRepo) SelectAll() ([]domains.Semester, error) {
 	return results, nil
 }
 
-func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester, error) {
-	utils.LogWithContext("semesterRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
+func (sr *semesterRepo) SelectBySemesterId(ctx context.Context, semesterId string) (domains.Semester, error) {
+	utils.LogWithContext(ctx, "semesterRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
 	statement := "SELECT * FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -98,8 +99,8 @@ func (sr *semesterRepo) SelectBySemesterId(semesterId string) (domains.Semester,
 	return semester, nil
 }
 
-func (sr *semesterRepo) Insert(semester domains.Semester) error {
-	utils.LogWithContext("semesterRepo.Insert", logger.Fields{"semester": semester})
+func (sr *semesterRepo) Insert(ctx context.Context, semester domains.Semester) (uint, error) {
+	utils.LogWithContext(ctx, "semesterRepo.Insert", logger.Fields{"semester": semester})
 	statement := "INSERT INTO semesters (" +
 		"created_at, " +
 		"updated_at, " +
@@ -111,7 +112,7 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -124,13 +125,18 @@ func (sr *semesterRepo) Insert(semester domains.Semester) error {
 		semester.Year,
 		semester.Title)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, semester)
+		return 0, appErrors.WrapDbExec(err, statement, semester)
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "semester was not inserted")
+
+	rowId, err := execResult.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "semester was not inserted")
 }
 
-func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) error {
-	utils.LogWithContext("semesterRepo.Update", logger.Fields{"semester": semester})
+func (sr *semesterRepo) Update(ctx context.Context, semesterId string, semester domains.Semester) error {
+	utils.LogWithContext(ctx, "semesterRepo.Update", logger.Fields{"semester": semester})
 	statement := "UPDATE semesters SET " +
 		"updated_at=?, " +
 		"semester_id=?, " +
@@ -158,8 +164,8 @@ func (sr *semesterRepo) Update(semesterId string, semester domains.Semester) err
 	return appErrors.ValidateDbResult(execResult, 1, "semester was not updated")
 }
 
-func (sr *semesterRepo) Delete(semesterId string) error {
-	utils.LogWithContext("semesterRepo.Delete", logger.Fields{"semesterId": semesterId})
+func (sr *semesterRepo) Delete(ctx context.Context, semesterId string) error {
+	utils.LogWithContext(ctx, "semesterRepo.Delete", logger.Fields{"semesterId": semesterId})
 	statement := "DELETE FROM semesters WHERE semester_id=?"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
@@ -175,8 +181,8 @@ func (sr *semesterRepo) Delete(semesterId string) error {
 }
 
 // For Tests Only
-func CreateTestSemesterRepo(db *sql.DB) SemesterRepoInterface {
+func CreateTestSemesterRepo(ctx context.Context, db *sql.DB) SemesterRepoInterface {
 	sr := &semesterRepo{}
-	sr.Initialize(db)
+	sr.Initialize(ctx, db)
 	return sr
 }

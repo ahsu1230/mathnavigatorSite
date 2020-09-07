@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 
 	"io"
@@ -19,7 +20,7 @@ import (
 // Test Get All
 //
 func TestGetAllClassesSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectAll = func(context.Context, bool) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3, 4), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -45,7 +46,7 @@ func TestGetAllClassesSuccess(t *testing.T) {
 // Test Get Class
 //
 func TestGetClassSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectByClassId = func(classId string) (domains.Class, error) {
+	testUtils.ClassRepo.MockSelectByClassId = func(context.Context, string) (domains.Class, error) {
 		return createMockClasses(1)[0], nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -64,7 +65,7 @@ func TestGetClassSuccess(t *testing.T) {
 }
 
 func TestGetClassFailure(t *testing.T) {
-	testUtils.ClassRepo.MockSelectByClassId = func(classId string) (domains.Class, error) {
+	testUtils.ClassRepo.MockSelectByClassId = func(context.Context, string) (domains.Class, error) {
 		return domains.Class{}, appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -80,7 +81,7 @@ func TestGetClassFailure(t *testing.T) {
 // Test Get Classes by other properties
 //
 func TestGetClassesByProgramSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectByProgramId = func(programId string) ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectByProgramId = func(context.Context, string) ([]domains.Class, error) {
 		return createMockClasses(1, 2, 3), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -102,7 +103,7 @@ func TestGetClassesByProgramSuccess(t *testing.T) {
 }
 
 func TestGetClassesBySemesterSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectBySemesterId = func(semesterId string) ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectBySemesterId = func(context.Context, string) ([]domains.Class, error) {
 		return createMockClasses(3, 4), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -123,7 +124,7 @@ func TestGetClassesBySemesterSuccess(t *testing.T) {
 }
 
 func TestGetClassesByProgramAndSemesterSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectByProgramAndSemesterId = func(programId, semesterId string) ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectByProgramAndSemesterId = func(context.Context, string, string) ([]domains.Class, error) {
 		return createMockClasses(1, 2), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -147,7 +148,7 @@ func TestGetClassesByProgramAndSemesterSuccess(t *testing.T) {
 // Test Get Published
 //
 func TestGetPublishedClassesSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectAll = func(publishedOnly bool) ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectAll = func(context.Context, bool) ([]domains.Class, error) {
 		return createMockClasses(2, 3), nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -171,7 +172,7 @@ func TestGetPublishedClassesSuccess(t *testing.T) {
 // Test Get Unpublished
 //
 func TestGetAllUnpublishedSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockSelectAllUnpublished = func() ([]domains.Class, error) {
+	testUtils.ClassRepo.MockSelectAllUnpublished = func(context.Context) ([]domains.Class, error) {
 		return []domains.Class{
 			testUtils.CreateMockClass(
 				"prog1",
@@ -220,8 +221,8 @@ func TestGetAllUnpublishedSuccess(t *testing.T) {
 // Test Create
 //
 func TestCreateClassSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockInsert = func(class domains.Class) error {
-		return nil
+	testUtils.ClassRepo.MockInsert = func(context.Context, domains.Class) (uint, error) {
+		return 42, nil
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
 
@@ -251,7 +252,7 @@ func TestCreateClassFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateClassSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockUpdate = func(classId string, class domains.Class) error {
+	testUtils.ClassRepo.MockUpdate = func(context.Context, string, domains.Class) error {
 		return nil // Successful update
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -279,7 +280,7 @@ func TestUpdateClassInvalid(t *testing.T) {
 }
 
 func TestUpdateClassFailure(t *testing.T) {
-	testUtils.ClassRepo.MockUpdate = func(classId string, class domains.Class) error {
+	testUtils.ClassRepo.MockUpdate = func(context.Context, string, domains.Class) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -297,7 +298,7 @@ func TestUpdateClassFailure(t *testing.T) {
 // Test Publish
 //
 func TestPublishClassesSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockPublish = func(classIds []string) []error {
+	testUtils.ClassRepo.MockPublish = func(context.Context, []string) []error {
 		return nil // Return no error, successful publish!
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -315,7 +316,7 @@ func TestPublishClassesSuccess(t *testing.T) {
 }
 
 func TestPublishClassesFailure(t *testing.T) {
-	testUtils.ClassRepo.MockPublish = func(classIds []string) []error {
+	testUtils.ClassRepo.MockPublish = func(context.Context, []string) []error {
 		return []error{appErrors.MockDbNoRowsError()}
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -336,7 +337,7 @@ func TestPublishClassesFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteClassSuccess(t *testing.T) {
-	testUtils.ClassRepo.MockDelete = func(classId string) error {
+	testUtils.ClassRepo.MockDelete = func(context.Context, string) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.ClassRepo = &testUtils.ClassRepo
@@ -349,7 +350,7 @@ func TestDeleteClassSuccess(t *testing.T) {
 }
 
 func TestDeleteClassFailure(t *testing.T) {
-	testUtils.ClassRepo.MockDelete = func(classId string) error {
+	testUtils.ClassRepo.MockDelete = func(context.Context, string) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.ClassRepo = &testUtils.ClassRepo

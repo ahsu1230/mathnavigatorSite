@@ -16,7 +16,7 @@ func initUserAfhTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserAfhRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserAfhRepo(db)
+	repo := repos.CreateTestUserAfhRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -47,7 +47,7 @@ func TestSelectByUserId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByUserId(2)
+	got, err := repo.SelectByUserId(testUtils.Context, 2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -99,7 +99,7 @@ func TestSelectByAfhId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(3).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAfhId(3)
+	got, err := repo.SelectByAfhId(testUtils.Context, 3)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -151,7 +151,7 @@ func TestSelectByBothIds(t *testing.T) {
 		ExpectQuery().
 		WithArgs(2, 3).
 		WillReturnRows(rows)
-	got, err := repo.SelectByBothIds(2, 3)
+	got, err := repo.SelectByBothIds(testUtils.Context, 2, 3)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -200,7 +200,7 @@ func TestSelectByNew(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectByNew()
+	got, err := repo.SelectByNew(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -241,7 +241,7 @@ func TestInsertUserAfh(t *testing.T) {
 		AfhId:     3,
 		AccountId: 1,
 	}
-	err := repo.Insert(userAfh)
+	_, err := repo.Insert(testUtils.Context, userAfh)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -269,7 +269,7 @@ func TestUpdateUserAfh(t *testing.T) {
 		AfhId:     3,
 		AccountId: 2,
 	}
-	err := repo.Update(1, userAfh)
+	err := repo.Update(testUtils.Context, 1, userAfh)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -291,7 +291,7 @@ func TestDeleteUserAfh(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

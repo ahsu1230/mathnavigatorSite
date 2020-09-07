@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -22,7 +22,7 @@ var date2 = now.Add(time.Hour * 24 * 31)
 
 // Test Get All
 func TestGetAllAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockSelectAll = func() ([]domains.AskForHelp, error) {
+	testUtils.AskForHelpRepo.MockSelectAll = func(context.Context) ([]domains.AskForHelp, error) {
 		return []domains.AskForHelp{
 			testUtils.CreateMockAFH(
 				1,
@@ -75,7 +75,7 @@ func TestGetAllAFHSuccess(t *testing.T) {
 
 // Test Get Ask For Help
 func TestGetAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
+	testUtils.AskForHelpRepo.MockSelectById = func(context.Context, uint) (domains.AskForHelp, error) {
 		askForHelp := testUtils.CreateMockAFH(
 			1,
 			"AP Calculus Help",
@@ -107,7 +107,7 @@ func TestGetAFHSuccess(t *testing.T) {
 }
 
 func TestGetAFHFailure(t *testing.T) {
-	testUtils.AskForHelpRepo.MockSelectById = func(id uint) (domains.AskForHelp, error) {
+	testUtils.AskForHelpRepo.MockSelectById = func(context.Context, uint) (domains.AskForHelp, error) {
 		return domains.AskForHelp{}, appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -121,8 +121,8 @@ func TestGetAFHFailure(t *testing.T) {
 
 // Test Create
 func TestCreateAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockInsert = func(askForHelp domains.AskForHelp) error {
-		return nil
+	testUtils.AskForHelpRepo.MockInsert = func(context.Context, domains.AskForHelp) (uint, error) {
+		return 42, nil
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
 
@@ -164,7 +164,7 @@ func TestCreateAFHFailure(t *testing.T) {
 
 // Test Update
 func TestUpdateAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockUpdate = func(id uint, askForHelp domains.AskForHelp) error {
+	testUtils.AskForHelpRepo.MockUpdate = func(context.Context, uint, domains.AskForHelp) error {
 		return nil // Successful update
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -206,7 +206,7 @@ func TestUpdateAFHInvalid(t *testing.T) {
 }
 
 func TestUpdateAFHFailure(t *testing.T) {
-	testUtils.AskForHelpRepo.MockUpdate = func(id uint, askForHelp domains.AskForHelp) error {
+	testUtils.AskForHelpRepo.MockUpdate = func(context.Context, uint, domains.AskForHelp) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -229,7 +229,7 @@ func TestUpdateAFHFailure(t *testing.T) {
 
 // Test Delete
 func TestDeleteAFHSuccess(t *testing.T) {
-	testUtils.AskForHelpRepo.MockDelete = func(id uint) error {
+	testUtils.AskForHelpRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo
@@ -242,7 +242,7 @@ func TestDeleteAFHSuccess(t *testing.T) {
 }
 
 func TestDeleteAFHFailure(t *testing.T) {
-	testUtils.AskForHelpRepo.MockDelete = func(id uint) error {
+	testUtils.AskForHelpRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.AskForHelpRepo = &testUtils.AskForHelpRepo

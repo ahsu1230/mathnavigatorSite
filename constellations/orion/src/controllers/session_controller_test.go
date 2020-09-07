@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-
 	"io"
 	"net/http"
 	"testing"
@@ -21,7 +21,7 @@ import (
 //
 func TestGetAllSessionsByClassIdSuccess(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.SessionRepo.MockSelectAllByClassId = func(classId string) ([]domains.Session, error) {
+	testUtils.SessionRepo.MockSelectAllByClassId = func(context.Context, string) ([]domains.Session, error) {
 		return []domains.Session{
 			{
 				Id:       1,
@@ -64,7 +64,7 @@ func TestGetAllSessionsByClassIdSuccess(t *testing.T) {
 //
 func TestGetSessionSuccess(t *testing.T) {
 	now := time.Now().UTC()
-	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
+	testUtils.SessionRepo.MockSelectBySessionId = func(context.Context, uint) (domains.Session, error) {
 		session := testUtils.CreateMockSession(1, "id_1", now, now, true, "special lecture from guest")
 		return session, nil
 	}
@@ -84,7 +84,7 @@ func TestGetSessionSuccess(t *testing.T) {
 }
 
 func TestGetSessionFailure(t *testing.T) {
-	testUtils.SessionRepo.MockSelectBySessionId = func(id uint) (domains.Session, error) {
+	testUtils.SessionRepo.MockSelectBySessionId = func(context.Context, uint) (domains.Session, error) {
 		return domains.Session{}, appErrors.MockDbNoRowsError()
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -100,8 +100,8 @@ func TestGetSessionFailure(t *testing.T) {
 // Test Create
 //
 func TestCreateSessionsSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(session []domains.Session) []error {
-		return nil
+	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) ([]uint, []error) {
+		return []uint{42}, nil
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -117,8 +117,8 @@ func TestCreateSessionsSuccess(t *testing.T) {
 }
 
 func TestCreateSessionsFailure(t *testing.T) {
-	testUtils.SessionRepo.MockInsert = func(session []domains.Session) []error {
-		return []error{appErrors.MockInvalidDomainError("invalid notes")}
+	testUtils.SessionRepo.MockInsert = func(context.Context, []domains.Session) ([]uint, []error) {
+		return []uint{}, []error{appErrors.MockInvalidDomainError("invalid notes")}
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
 
@@ -137,7 +137,7 @@ func TestCreateSessionsFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateSessionSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
+	testUtils.SessionRepo.MockUpdate = func(context.Context, uint, domains.Session) error {
 		return nil // Successful update
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -167,7 +167,7 @@ func TestUpdateSessionInvalid(t *testing.T) {
 }
 
 func TestUpdateSessionFailure(t *testing.T) {
-	testUtils.SessionRepo.MockUpdate = func(id uint, session domains.Session) error {
+	testUtils.SessionRepo.MockUpdate = func(context.Context, uint, domains.Session) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	repos.SessionRepo = &testUtils.SessionRepo
@@ -186,7 +186,7 @@ func TestUpdateSessionFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteSessionsSuccess(t *testing.T) {
-	testUtils.SessionRepo.MockDelete = func(ids []uint) []error {
+	testUtils.SessionRepo.MockDelete = func(context.Context, []uint) []error {
 		return nil // Return no error, successful delete!
 	}
 	repos.SessionRepo = &testUtils.SessionRepo

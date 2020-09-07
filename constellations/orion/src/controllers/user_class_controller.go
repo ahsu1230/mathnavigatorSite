@@ -19,7 +19,8 @@ func GetUsersByClassId(c *gin.Context) {
 	// Incoming parameters
 	classId := c.Param("classId")
 
-	userClasses, err := repos.UserClassesRepo.SelectByClassId(classId)
+	ctx := utils.RetrieveContext(c)
+	userClasses, err := repos.UserClassesRepo.SelectByClassId(ctx, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -38,7 +39,8 @@ func GetClassesByUserId(c *gin.Context) {
 		return
 	}
 
-	userClasses, err := repos.UserClassesRepo.SelectByUserId(id)
+	ctx := utils.RetrieveContext(c)
+	userClasses, err := repos.UserClassesRepo.SelectByUserId(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -57,9 +59,9 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 		return
 	}
 
+	ctx := utils.RetrieveContext(c)
 	classId := c.Param("classId")
-
-	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(id, classId)
+	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(ctx, id, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -70,7 +72,8 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 
 func GetNewClasses(c *gin.Context) {
 	utils.LogControllerMethod(c, "userClassController.GetNewClasses")
-	userClasses, err := repos.UserClassesRepo.SelectByNew()
+	ctx := utils.RetrieveContext(c)
+	userClasses, err := repos.UserClassesRepo.SelectByNew(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
@@ -95,13 +98,14 @@ func CreateUserClass(c *gin.Context) {
 		return
 	}
 
-	err := repos.UserClassesRepo.Insert(userClassesJson)
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.UserClassesRepo.Insert(ctx, userClassesJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateUserClass(c *gin.Context) {
@@ -127,7 +131,8 @@ func UpdateUserClass(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserClassesRepo.Update(id, userClassesJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserClassesRepo.Update(ctx, id, userClassesJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -145,7 +150,8 @@ func DeleteUserClass(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserClassesRepo.Delete(id); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserClassesRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return

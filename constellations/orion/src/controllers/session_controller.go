@@ -14,7 +14,8 @@ func GetAllSessionsByClassId(c *gin.Context) {
 	utils.LogControllerMethod(c, "sessionController.GetAllSessionsByClassId")
 	classId := c.Param("classId")
 
-	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId)
+	ctx := utils.RetrieveContext(c)
+	sessionList, err := repos.SessionRepo.SelectAllByClassId(ctx, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -33,7 +34,8 @@ func GetSessionById(c *gin.Context) {
 		return
 	}
 
-	session, err := repos.SessionRepo.SelectBySessionId(id)
+	ctx := utils.RetrieveContext(c)
+	session, err := repos.SessionRepo.SelectBySessionId(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -52,7 +54,8 @@ func CreateSessions(c *gin.Context) {
 		return
 	}
 
-	errs := repos.SessionRepo.Insert(sessionsJson)
+	ctx := utils.RetrieveContext(c)
+	ids, errs := repos.SessionRepo.Insert(ctx, sessionsJson)
 	if len(errs) > 0 {
 		for _, err := range errs {
 			c.Error(err)
@@ -60,7 +63,7 @@ func CreateSessions(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"ids": ids})
 }
 
 func UpdateSession(c *gin.Context) {
@@ -86,7 +89,8 @@ func UpdateSession(c *gin.Context) {
 		return
 	}
 
-	if err := repos.SessionRepo.Update(id, sessionJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.SessionRepo.Update(ctx, id, sessionJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -104,7 +108,8 @@ func DeleteSessions(c *gin.Context) {
 		return
 	}
 
-	errs := repos.SessionRepo.Delete(idsJson)
+	ctx := utils.RetrieveContext(c)
+	errs := repos.SessionRepo.Delete(ctx, idsJson)
 	if len(errs) > 0 {
 		for _, err := range errs {
 			c.Error(err)

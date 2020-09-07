@@ -25,9 +25,9 @@ func SearchUsers(c *gin.Context) {
 		return
 	}
 
+	ctx := utils.RetrieveContext(c)
 	query := body.Query
-
-	user, err := repos.UserRepo.SearchUsers(query)
+	user, err := repos.UserRepo.SearchUsers(ctx, query)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -47,7 +47,8 @@ func GetUserById(c *gin.Context) {
 		return
 	}
 
-	user, err := repos.UserRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	user, err := repos.UserRepo.SelectById(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -67,7 +68,8 @@ func GetUsersByAccountId(c *gin.Context) {
 		return
 	}
 
-	user, err := repos.UserRepo.SelectByAccountId(accountId)
+	ctx := utils.RetrieveContext(c)
+	user, err := repos.UserRepo.SelectByAccountId(ctx, accountId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -78,7 +80,8 @@ func GetUsersByAccountId(c *gin.Context) {
 
 func GetNewUsers(c *gin.Context) {
 	utils.LogControllerMethod(c, "userController.GetNewUsers")
-	users, err := repos.UserRepo.SelectByNew()
+	ctx := utils.RetrieveContext(c)
+	users, err := repos.UserRepo.SelectByNew(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
@@ -104,12 +107,14 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserRepo.Insert(userJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.UserRepo.Insert(ctx, userJson)
+	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateUser(c *gin.Context) {
@@ -136,7 +141,8 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserRepo.Update(id, userJson); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserRepo.Update(ctx, id, userJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -155,7 +161,8 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := repos.UserRepo.Delete(id); err != nil {
+	ctx := utils.RetrieveContext(c)
+	if err := repos.UserRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
