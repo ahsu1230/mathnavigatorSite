@@ -1,70 +1,172 @@
-version: '3'
+version: '3.7'
 services:
-  db-mysql:
-    image: mysql
-    container_name: db-mysql
-    ports:
-      - "3308:3306" # host port 3308 links to container port 3306
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: mathnavdb
+  # db-mysql:
+  #   image: mysql
+  #   container_name: db-mysql
+  #   ports:
+  #     - "3308:3306" # host port 3308 links to container port 3306
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_USER: user
+  #     MYSQL_PASSWORD: password
+  #     MYSQL_DATABASE: mathnavdb
 
-  db-mysql-test:  # another mysql instance only for integration tests
-    image: mysql
-    container_name: db-mysql-test
-    ports:
-      - "3306:3306" # host port 3306 links to container port 3306
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: user1
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: mathnavdb
+  # db-mysql-test:  # another mysql instance only for integration tests
+  #   image: mysql
+  #   container_name: db-mysql-test
+  #   ports:
+  #     - "3306:3306" # host port 3306 links to container port 3306
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_USER: user1
+  #     MYSQL_PASSWORD: password
+  #     MYSQL_DATABASE: mathnavdb
 
-  cache-redis:
-    image: "redis:alpine"
-    container_name: cache-redis
-    command: redis-server --requirepass redis_password
-    ports: 
-      - "6379:6379"
+  # cache-redis:
+  #   image: "redis:alpine"
+  #   container_name: cache-redis
+  #   command: redis-server --requirepass redis_password
+  #   ports: 
+  #     - "6379:6379"
+  #   volumes:
+  #     - $PWD/redis-data:/var/lib/redis
+  #     - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
+
+  # orion:
+  #   build: 
+  #     context: ./orion
+  #     args:
+  #       app_env: "develop"
+  #   container_name: orion
+  #   ports:
+  #     - "8001:8001" # host port 8001 links to container port 8080
+  #   depends_on:
+  #     - "db-mysql"
+  #   links:
+  #     - "db-mysql"
+  #     - "cache-redis"
+  #   environment:
+  #     WAIT_HOSTS: db-mysql:3306
+
+  # aquila:
+  #   build: 
+  #     context: ./aquila
+  #     args:
+  #       app_env: "develop"
+  #   container_name: aquila
+  #   ports:
+  #     - "8002:8080" # host port 8002 links to container port 8080
+  #   depends_on:
+  #     - "db-mysql"
+  #     - "orion"
+  #   links:
+  #     - "db-mysql"
+  #   environment:
+  #     WAIT_HOSTS: db-mysql:3306
+  
+# Elasticsearch Docker Images: https://www.docker.elastic.co/
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
     volumes:
-      - $PWD/redis-data:/var/lib/redis
-      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
-    environment:
-      - REDIS_REPLICATION_MODE=master
-
-  orion:
-    build: 
-      context: ./orion
-      args:
-        app_env: "develop"
-    container_name: orion
+      - elasticsearch-data:/usr/share/elasticsearch/data
     ports:
-      - "8001:8001" # host port 8001 links to container port 8080
-    depends_on:
-      - "db-mysql"
-    links:
-      - "db-mysql"
-      - "cache-redis"
-    environment:
-      WAIT_HOSTS: db-mysql:3306
+      - 9200:9200
+      - 9300:9300
 
-  aquila:
-    build: 
-      context: ./aquila
-      args:
-        app_env: "develop"
-    container_name: aquila
-    ports:
-      - "8002:8080" # host port 8002 links to container port 8080
-    depends_on:
-      - "db-mysql"
-      - "orion"
-    links:
-      - "db-mysql"
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.9.1
     environment:
-      WAIT_HOSTS: db-mysql:3306
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.9.1
+    ports:
+      - "9500:9500"
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    volumes:
+      - ./logstash.conf:/etc/logstash/conf.d
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+     - elasticsearch
+
+volumes:
+  elasticsearch-data:
+    driver: local
+
+
+
+
+
+
+
+
+
+
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+  #   container_name: elasticsearch
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - esdata:/usr/share/elasticsearch/data
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - esnet
+  # logstash:
+  #   image: docker.elastic.co/logstash/logstash:7.9.1
+  #   ports:
+  #     - "9200:9200"
+  #   command: logstash -f /etc/logstash/conf.d/logstash.conf
+  #   volumes:
+  #     - ./logstash/logstash.conf:/etc/logstash/conf.d
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.9.1
+  #   container_name: kibana
+  #   environment:
+  #     SERVER_NAME: kibana.example.org
+  #     ELASTICSEARCH_HOSTS: http://elasticsearch.example.org
+  #     # - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+  #   ports:
+  #     - "5601:5601"
+  #   networks:
+  #     - esnet
+
+  # volumes:
+  #   esdata:
+  #     driver: local
+  # networks:
+  #   esnet:
 
   # kibana:
   #   image: docker.elastic.co/kibana/kibana:8.0.0
