@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 
 	"github.com/gin-contrib/cors"
@@ -15,6 +16,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	_ "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/migrations1"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 )
 
@@ -51,6 +53,18 @@ func main() {
 
 	db := repoUtils.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
 	repoUtils.Migrate(db, "file://src/repos/migrations")
+	// repoUtils.Migrate1(db, "src/repos/migrations1")
+
+	cmd := &exec.Cmd {
+		Path: "goose",
+		Args: []string{"goose", "mysql", `"user:password@(db-mysql:3306)/mathnavdb?parseTime=true"`, "up"},
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+	}
+	cmd.Start()
+	cmd.Wait()
+
+
 	repos.SetupRepos(context, db)
 	defer repoUtils.Close(db)
 	logger.Message("Database started!")
