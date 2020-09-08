@@ -55,15 +55,19 @@ func main() {
 	repoUtils.Migrate(db, "file://src/repos/migrations")
 	// repoUtils.Migrate1(db, "src/repos/migrations1")
 
-	cmd := &exec.Cmd {
-		Path: "goose",
-		Args: []string{"goose", "mysql", `"user:password@(db-mysql:3306)/mathnavdb?parseTime=true"`, "up"},
-		Stdout: os.Stdout,
-		Stderr: os.Stdout,
-	}
-	cmd.Start()
-	cmd.Wait()
 
+	logger.Message("Invoking Migration command....")
+	cmd := exec.Command("goose", "mysql", `"user:password@(db-mysql:3306)/mathnavdb?parseTime=true"`, "up")
+	logger.Message(fmt.Sprintf("Command %s", cmd.String()))
+	if err := cmd.Run(); err != nil {
+		panic(err)
+	}
+	out, err := cmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	logger.Message(fmt.Sprintf("Command finished. Exit Status %s", string(out)))
+	
 
 	repos.SetupRepos(context, db)
 	defer repoUtils.Close(db)
