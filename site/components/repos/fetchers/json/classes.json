@@ -27,7 +27,8 @@
     "allYear": "",
     "pricePerSession": "",
     "priceLump": 780,
-    "paymentNotes": "By First Session"
+    "paymentNotes": "By First Session",
+    "fullState": "TRUE"
   },
   {
     "programId": "ap_calc",
