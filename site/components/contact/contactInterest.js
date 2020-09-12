@@ -222,10 +222,18 @@ class InterestItem extends React.Component {
     const classObj = this.props.classObj;
     const className = createFullClassName(classObj.programObj, classObj);
     const startingDate = classObj.startDate;
+    const isFull = !!classObj.fullState;
+    const handleCheck = isFull ? function() {} : this.handleSelected;
 
     const liClassNames = classnames("", {
       "highlight": this.state.highlighted
     });
+
+    const isFullMessage = isFull ? (
+      <div className="warning">
+        This class is full. You cannot select this class.
+      </div>
+    ) : (<div></div>);
 
     const times = classObj.times.map((time, index) =>
       <div key={index}>{time}</div>
@@ -234,12 +242,13 @@ class InterestItem extends React.Component {
     return (
       <li className={liClassNames}>
         <input type="checkbox" name="interest" value="program"
-              onChange={this.handleSelected}
+              onChange={handleCheck}
               checked={this.props.selected}/>
         <div className="class-info">
           <div className="class-name">{className}</div>
           <div className="times">{times}</div>
           <span>Starts on:</span><div className="start-date">{startingDate}</div>
+          {isFullMessage}
         </div>
       </li>
     );
