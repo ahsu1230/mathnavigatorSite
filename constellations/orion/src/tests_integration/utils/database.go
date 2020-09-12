@@ -82,7 +82,7 @@ func ResetAllTables(t *testing.T) {
 	ResetTable(t, domains.TABLE_ACCOUNTS)
 	ResetTable(t, domains.TABLE_ASKFORHELP)
 	ResetTable(t, domains.TABLE_USER_CLASSES)
-	ResetTable(t, domains.TABLE_USER_AFH)
+	ResetTable(t, domains.TABLE_USER_AFHS)
 	ResetTable(t, domains.TABLE_TRANSACTIONS)
 }
 

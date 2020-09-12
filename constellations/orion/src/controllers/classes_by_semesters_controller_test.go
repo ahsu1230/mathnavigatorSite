@@ -176,7 +176,7 @@ func createMockPrograms(ids ...int) []domains.Program {
 				9,
 				12,
 				"Description 1",
-				0,
+				domains.FEATURED_NONE,
 			)
 		case 2:
 			programs[i] = testUtils.CreateMockProgram(
@@ -185,7 +185,7 @@ func createMockPrograms(ids ...int) []domains.Program {
 				10,
 				11,
 				"Description 2",
-				1,
+				domains.FEATURED_POPULAR,
 			)
 		default:
 			programs[i] = domains.Program{}

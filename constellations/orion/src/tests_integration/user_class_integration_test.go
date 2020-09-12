@@ -234,12 +234,12 @@ func createAccountUser(t *testing.T) {
 }
 
 func createClasses(t *testing.T) {
-	program := createProgram("program1", "Program1", 1, 3, "description1", 0)
+	program := createProgram("program1", "Program1", 1, 3, "description1", domains.FEATURED_NONE)
 	body2 := utils.CreateJsonBody(&program)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 
-	location := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
+	location := createLocation("churchill", "Winston Churchill High School", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
 	body3 := utils.CreateJsonBody(&location)
 	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)

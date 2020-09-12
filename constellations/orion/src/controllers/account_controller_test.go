@@ -110,8 +110,8 @@ func TestGetAccountsFailure(t *testing.T) {
 // Test Get Negative Balances
 //
 func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
-	testUtils.AccountRepo.MockSelectAllNegativeBalances = func(context.Context) ([]domains.AccountSum, error) {
-		return []domains.AccountSum{
+	testUtils.AccountRepo.MockSelectAllNegativeBalances = func(context.Context) ([]domains.AccountBalance, error) {
+		return []domains.AccountBalance{
 			{
 				Account: domains.Account{
 					Id:           1,
@@ -137,7 +137,7 @@ func TestGetNegativeBalanceAccountsSuccess(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var accountSums []domains.AccountSum
+	var accountSums []domains.AccountBalance
 	if err := json.Unmarshal(recorder.Body.Bytes(), &accountSums); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}

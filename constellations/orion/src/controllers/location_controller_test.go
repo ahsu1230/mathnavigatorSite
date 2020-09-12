@@ -24,19 +24,21 @@ func TestGetAllLocationsSuccess(t *testing.T) {
 			{
 				Id:         1,
 				LocationId: "loc1",
-				Street:     "4040 Location Rd",
-				City:       "City",
-				State:      "MA",
-				Zipcode:    "77294",
+				Title:      "School1",
+				Street:     domains.NewNullString("4040 Location Rd"),
+				City:       domains.NewNullString("City"),
+				State:      domains.NewNullString("MA"),
+				Zipcode:    domains.NewNullString("77294"),
 				Room:       domains.NewNullString("Room 1"),
 			},
 			{
 				Id:         2,
 				LocationId: "loc2",
-				Street:     "4040 Location Ave",
-				City:       "Dity",
-				State:      "MD",
-				Zipcode:    "12353",
+				Title:      "School2",
+				Street:     domains.NewNullString("4040 Location Ave"),
+				City:       domains.NewNullString("Dity"),
+				State:      domains.NewNullString("MD"),
+				Zipcode:    domains.NewNullString("12353"),
 				Room:       domains.NewNullString("Room 2"),
 			},
 		}, nil
@@ -53,9 +55,11 @@ func TestGetAllLocationsSuccess(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "loc1", locations[0].LocationId)
-	assert.EqualValues(t, "4040 Location Rd", locations[0].Street)
+	assert.EqualValues(t, "School1", locations[0].Title)
+	assert.EqualValues(t, "4040 Location Rd", locations[0].Street.String)
 	assert.EqualValues(t, "loc2", locations[1].LocationId)
-	assert.EqualValues(t, "4040 Location Ave", locations[1].Street)
+	assert.EqualValues(t, "School2", locations[1].Title)
+	assert.EqualValues(t, "4040 Location Ave", locations[1].Street.String)
 	assert.EqualValues(t, 2, len(locations))
 }
 
@@ -64,7 +68,7 @@ func TestGetAllLocationsSuccess(t *testing.T) {
 //
 func TestGetLocationSuccess(t *testing.T) {
 	testUtils.LocationRepo.MockSelectByLocationId = func(context.Context, string) (domains.Location, error) {
-		location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+		location := testUtils.CreateMockLocation("loc1", "School1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 		return location, nil
 	}
 	repos.LocationRepo = &testUtils.LocationRepo
@@ -79,7 +83,7 @@ func TestGetLocationSuccess(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "loc1", location.LocationId)
-	assert.EqualValues(t, "4040 Location Rd", location.Street)
+	assert.EqualValues(t, "4040 Location Rd", location.Street.String)
 }
 
 func TestGetLocationFailure(t *testing.T) {
@@ -105,7 +109,7 @@ func TestCreateLocationSuccess(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "School1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body)
@@ -119,7 +123,7 @@ func TestCreateLocationFailure(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := testUtils.CreateMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
+	location := testUtils.CreateMockLocation("loc1", "School1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
 	marshal, _ := json.Marshal(&location)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body)
@@ -138,7 +142,7 @@ func TestUpdateLocationSuccess(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "School1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc1", body)
 
@@ -151,7 +155,7 @@ func TestUpdateLocationInvalid(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := testUtils.CreateMockLocation("loc1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
+	location := testUtils.CreateMockLocation("loc1", "School1", "Location Rd", "City", "MA", "77294", "Room 1") // Invalid street
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc1", body)
 
@@ -166,7 +170,7 @@ func TestUpdateLocationFailure(t *testing.T) {
 	repos.LocationRepo = &testUtils.LocationRepo
 
 	// Create new HTTP request to endpoint
-	location := testUtils.CreateMockLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location := testUtils.CreateMockLocation("loc1", "School1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body := createBodyFromLocation(location)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc2", body)
 

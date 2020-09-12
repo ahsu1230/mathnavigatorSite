@@ -16,7 +16,7 @@ type Announce struct {
 	PostedAt   time.Time `json:"postedAt" db:"posted_at"`
 	Author     string    `json:"author"`
 	Message    string    `json:"message"`
-	OnHomePage bool      `json:"onHomePage"`
+	OnHomePage bool      `json:"onHomePage" db:"on_home_page"`
 }
 
 func (announce *Announce) Validate() error {

@@ -43,7 +43,7 @@ func TestSelectByUserId(t *testing.T) {
 		3,
 		1,
 	)
-	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE user_id=?").
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE user_id=?").
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
@@ -95,7 +95,7 @@ func TestSelectByAfhId(t *testing.T) {
 		3,
 		1,
 	)
-	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE afh_id=?").
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE afh_id=?").
 		ExpectQuery().
 		WithArgs(3).
 		WillReturnRows(rows)
@@ -147,7 +147,7 @@ func TestSelectByBothIds(t *testing.T) {
 		3,
 		1,
 	)
-	mock.ExpectPrepare(`^SELECT (.+) FROM user_afh WHERE user_id=\? AND afh_id=?`).
+	mock.ExpectPrepare(`^SELECT (.+) FROM user_afhs WHERE user_id=\? AND afh_id=?`).
 		ExpectQuery().
 		WithArgs(2, 3).
 		WillReturnRows(rows)
@@ -197,7 +197,7 @@ func TestSelectByNew(t *testing.T) {
 		3,
 		1,
 	)
-	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE created_at>=*").
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
 	got, err := repo.SelectByNew(testUtils.Context)
@@ -232,7 +232,7 @@ func TestInsertUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO user_afh").
+	mock.ExpectPrepare("^INSERT INTO user_afhs").
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2, 3, 1).
 		WillReturnResult(result)
@@ -259,7 +259,7 @@ func TestUpdateUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE user_afh SET (.*) WHERE id=?").
+	mock.ExpectPrepare("^UPDATE user_afhs SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(3, 3, 2, sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
@@ -287,7 +287,7 @@ func TestDeleteUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM user_afh WHERE id=?").
+	mock.ExpectPrepare("^DELETE FROM user_afhs WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)

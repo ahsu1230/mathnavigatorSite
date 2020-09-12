@@ -281,11 +281,11 @@ func TestUpdateClass(t *testing.T) {
 		ClassKey:        domains.NewNullString(""),
 		ClassId:         "program2_2020_summer",
 		LocationId:      "churchill",
-		Times:           "5 pm - 7 pm",
+		TimesStr:        "5 pm - 7 pm",
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
 		FullState:       0,
 		PricePerSession: domains.NewNullUint(50),
-		PriceLump:       domains.NewNullUint(100),
+		PriceLumpSum:    domains.NewNullUint(100),
 		PaymentNotes:    domains.NewNullString("notes1"),
 	}
 	err := repo.Update(testUtils.Context, "program1_2020_spring_final_review", class)
@@ -364,11 +364,11 @@ func getClassRows() *sqlmock.Rows {
 		"ClassKey",
 		"ClassId",
 		"locationId",
-		"Times",
+		"TimesStr",
 		"GoogleClassCode",
 		"FullState",
 		"PricePerSession",
-		"PriceLump",
+		"PriceLumpSum",
 		"PaymentNotes",
 	}).AddRow(
 		1,
@@ -402,11 +402,11 @@ func getClass() domains.Class {
 		ClassKey:        domains.NewNullString("final_review"),
 		ClassId:         "program1_2020_spring_final_review",
 		LocationId:      "churchill",
-		Times:           "3 pm - 5 pm",
+		TimesStr:        "3 pm - 5 pm",
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
 		FullState:       0,
 		PricePerSession: domains.NewNullUint(50),
-		PriceLump:       domains.NewNullUint(100),
+		PriceLumpSum:    domains.NewNullUint(100),
 		PaymentNotes:    domains.NewNullString("notes1"),
 	}
 }

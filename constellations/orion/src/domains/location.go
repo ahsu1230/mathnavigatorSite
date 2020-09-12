@@ -14,11 +14,13 @@ type Location struct {
 	UpdatedAt  time.Time  `json:"-" db:"update_at"`
 	DeletedAt  NullTime   `json:"-" db:"deleted_at"`
 	LocationId string     `json:"locationId" db:"location_id"`
-	Street     string     `json:"street"`
-	City       string     `json:"city"`
-	State      string     `json:"state"`
-	Zipcode    string     `json:"zipcode"`
+	Title      string     `json:"title"`
+	Street     NullString `json:"street"`
+	City       NullString `json:"city"`
+	State      NullString `json:"state"`
+	Zipcode    NullString `json:"zipcode"`
 	Room       NullString `json:"room"`
+	IsOnline   bool       `json:"isOnline" db:"is_online"`
 }
 
 func (location *Location) Validate() error {
@@ -26,6 +28,7 @@ func (location *Location) Validate() error {
 
 	// Retrieves the inputted values
 	locationId := location.LocationId
+	title := location.Title
 	street := location.Street
 	city := location.City
 	state := location.State
@@ -37,24 +40,37 @@ func (location *Location) Validate() error {
 		return fmt.Errorf(messageFmt, "Invalid ID")
 	}
 
+	// Title validation
+	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
+		return fmt.Errorf(messageFmt, "Invalid Title")
+	}
+
 	// Street validation
-	if matches, _ := regexp.MatchString(REGEX_STREET, street); !matches {
-		return fmt.Errorf(messageFmt, "Invalid Street format")
+	if street.Valid {
+		if matches, _ := regexp.MatchString(REGEX_STREET, street.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid Street format")
+		}
 	}
 
 	// City validation
-	if matches, _ := regexp.MatchString(REGEX_CITY, city); !matches {
-		return fmt.Errorf(messageFmt, "Invalid City name")
+	if city.Valid {
+		if matches, _ := regexp.MatchString(REGEX_CITY, city.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid City name")
+		}
 	}
 
 	// State validation
-	if matches, _ := regexp.MatchString(REGEX_STATE, state); !matches {
-		return fmt.Errorf(messageFmt, "Invalid State - must be two capitalized letters")
+	if state.Valid {
+		if matches, _ := regexp.MatchString(REGEX_STATE, state.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid State - must be two capitalized letters")
+		}
 	}
 
 	// Zipcode validation
-	if matches, _ := regexp.MatchString(REGEX_ZIPCODE, zipcode); !matches {
-		return fmt.Errorf(messageFmt, "Invalid Zipcode format")
+	if zipcode.Valid {
+		if matches, _ := regexp.MatchString(REGEX_ZIPCODE, zipcode.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid Zipcode format")
+		}
 	}
 
 	// Room validation

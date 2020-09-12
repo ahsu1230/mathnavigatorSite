@@ -84,16 +84,16 @@ func TestInsertTransaction(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
-			100,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note1"),
 			1,
+			domains.PAY_PAYPAL,
+			100,
+			domains.NewNullString("note1"),
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
-		Amount:       100,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note1"),
-		AccountId:    1,
+		AccountId: 1,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    100,
+		Notes:     domains.NewNullString("note1"),
 	}
 	_, err := repo.Insert(testUtils.Context, transaction)
 	if err != nil {
@@ -117,17 +117,17 @@ func TestUpdateTransaction(t *testing.T) {
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			101,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note2"),
 			2,
+			domains.PAY_PAYPAL,
+			101,
+			domains.NewNullString("note2"),
 			1,
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
-		Amount:       101,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note2"),
-		AccountId:    2,
+		AccountId: 2,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    101,
+		Notes:     domains.NewNullString("note2"),
 	}
 	err := repo.Update(testUtils.Context, 1, transaction)
 	if err != nil {
@@ -168,32 +168,32 @@ func getTransactionRows() *sqlmock.Rows {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"Amount",
-		"PaymentType",
-		"PaymentNotes",
 		"AccountId",
+		"Type",
+		"Amount",
+		"Notes",
 	}).
 		AddRow(
 			1,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			domains.NullTime{},
-			100,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note1"),
 			1,
+			domains.PAY_PAYPAL,
+			100,
+			domains.NewNullString("note1"),
 		)
 }
 
 func getTransaction() domains.Transaction {
 	return domains.Transaction{
-		Id:           1,
-		CreatedAt:    testUtils.TimeNow,
-		UpdatedAt:    testUtils.TimeNow,
-		DeletedAt:    domains.NullTime{},
-		Amount:       100,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note1"),
-		AccountId:    1,
+		Id:        1,
+		CreatedAt: testUtils.TimeNow,
+		UpdatedAt: testUtils.TimeNow,
+		DeletedAt: domains.NullTime{},
+		AccountId: 1,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    100,
+		Notes:     domains.NewNullString("note1"),
 	}
 }

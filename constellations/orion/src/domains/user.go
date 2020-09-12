@@ -14,16 +14,17 @@ type User struct {
 	CreatedAt      time.Time    `json:"createdAt" db:"created_at"`
 	UpdatedAt      time.Time    `json:"updatedAt" db:"updated_at"`
 	DeletedAt      sql.NullTime `json:"-" db:"deleted_at"`
+	AccountId      uint         `json:"accountId" db:"account_id"`
 	FirstName      string       `json:"firstName" db:"first_name"`
-	LastName       string       `json:"lastName" db:"last_name"`
 	MiddleName     NullString   `json:"middleName" db:"middle_name"`
+	LastName       string       `json:"lastName" db:"last_name"`
 	Email          string       `json:"email"`
 	Phone          string       `json:"phone"`
+	IsAdminCreated bool         `json:"isAdminCreated" db:"is_admin_created"`
 	IsGuardian     bool         `json:"isGuardian" db:"is_guardian"`
-	AccountId      uint         `json:"accountId" db:"account_id"`
-	Notes          NullString   `json:"notes"`
 	School         NullString   `json:"school" db:"school"`
 	GraduationYear NullUint     `json:"graduationYear" db:"graduation_year"`
+	Notes          NullString   `json:"notes"`
 }
 
 // Class Methods

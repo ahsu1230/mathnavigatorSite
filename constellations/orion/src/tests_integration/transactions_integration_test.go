@@ -45,14 +45,14 @@ func TestCreateTransactions(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transactions[0].Id)
 	assert.EqualValues(t, 100, transactions[0].Amount)
-	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
-	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].Type)
+	assert.EqualValues(t, "notes1", transactions[0].Notes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
 
 	assert.EqualValues(t, 4, transactions[1].Id)
 	assert.EqualValues(t, 400, transactions[1].Amount)
-	assert.EqualValues(t, domains.PAY_CHECK, transactions[1].PaymentType)
-	assert.EqualValues(t, "notes4", transactions[1].PaymentNotes.String)
+	assert.EqualValues(t, domains.PAY_CHECK, transactions[1].Type)
+	assert.EqualValues(t, "notes4", transactions[1].Notes.String)
 	assert.EqualValues(t, 1, transactions[1].AccountId)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
@@ -88,8 +88,8 @@ func TestUpdateTransaction(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transaction.Id)
 	assert.EqualValues(t, 100, transaction.Amount)
-	assert.EqualValues(t, domains.PAY_CASH, transaction.PaymentType)
-	assert.EqualValues(t, "notes1", transaction.PaymentNotes.String)
+	assert.EqualValues(t, domains.PAY_CASH, transaction.Type)
+	assert.EqualValues(t, "notes1", transaction.Notes.String)
 	assert.EqualValues(t, 1, transaction.AccountId)
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
@@ -138,12 +138,12 @@ func createAccounts(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
 }
-func createTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
+func createTransaction(id uint, amount int, paymentType string, notes string, accountId uint) domains.Transaction {
 	return domains.Transaction{
-		Id:           id,
-		Amount:       amount,
-		PaymentType:  paymentType,
-		PaymentNotes: domains.NewNullString(paymentNotes),
-		AccountId:    accountId,
+		Id:        id,
+		Type:      paymentType,
+		Amount:    amount,
+		Notes:     domains.NewNullString(notes),
+		AccountId: accountId,
 	}
 }

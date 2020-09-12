@@ -25,11 +25,11 @@ type Class struct {
 	ClassKey        NullString `json:"classKey" db:"class_key"`
 	ClassId         string     `json:"classId" db:"class_id"`
 	LocationId      string     `json:"locationId" db:"location_id"`
-	Times           string     `json:"times"`
+	TimesStr        string     `json:"timesStr" db:"times_str"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
-	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
+	PriceLumpSum    NullUint   `json:"priceLump" db:"price_lump_sum"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 
@@ -40,9 +40,9 @@ func (class *Class) Validate() error {
 
 	// Retrieves the inputted values
 	classKey := class.ClassKey
-	times := class.Times
+	times := class.TimesStr
 	pricePerSession := class.PricePerSession
-	priceLump := class.PriceLump
+	priceLump := class.PriceLumpSum
 
 	// Class Key validation
 	if classKey.Valid {

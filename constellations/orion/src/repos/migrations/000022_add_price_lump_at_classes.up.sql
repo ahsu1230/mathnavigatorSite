@@ -1,2 +1,0 @@
-ALTER TABLE classes
-    ADD COLUMN price_lump INT UNSIGNED;

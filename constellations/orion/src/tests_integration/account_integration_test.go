@@ -124,19 +124,19 @@ func TestGetNegativeBalanceAccounts(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Validate results
-	var accountSums []domains.AccountSum
-	if err := json.Unmarshal(recorder.Body.Bytes(), &accountSums); err != nil {
+	var accountBalances []domains.AccountBalance
+	if err := json.Unmarshal(recorder.Body.Bytes(), &accountBalances); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, 1, accountSums[0].Account.Id)
-	assert.EqualValues(t, "john_smith@example.com", accountSums[0].Account.PrimaryEmail)
-	assert.EqualValues(t, "password1", accountSums[0].Account.Password)
-	assert.EqualValues(t, -300, accountSums[0].Balance)
-	assert.EqualValues(t, 2, accountSums[1].Account.Id)
-	assert.EqualValues(t, "bob_smith@example.com", accountSums[1].Account.PrimaryEmail)
-	assert.EqualValues(t, "password2", accountSums[1].Account.Password)
-	assert.EqualValues(t, -100, accountSums[1].Balance)
-	assert.EqualValues(t, 2, len(accountSums))
+	assert.EqualValues(t, 1, accountBalances[0].Account.Id)
+	assert.EqualValues(t, "john_smith@example.com", accountBalances[0].Account.PrimaryEmail)
+	assert.EqualValues(t, "password1", accountBalances[0].Account.Password)
+	assert.EqualValues(t, -300, accountBalances[0].Balance)
+	assert.EqualValues(t, 2, accountBalances[1].Account.Id)
+	assert.EqualValues(t, "bob_smith@example.com", accountBalances[1].Account.PrimaryEmail)
+	assert.EqualValues(t, "password2", accountBalances[1].Account.Password)
+	assert.EqualValues(t, -100, accountBalances[1].Balance)
+	assert.EqualValues(t, 2, len(accountBalances))
 
 	utils.ResetTable(t, domains.TABLE_TRANSACTIONS)
 	utils.ResetTable(t, domains.TABLE_USERS)

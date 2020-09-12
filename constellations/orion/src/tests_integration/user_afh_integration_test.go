@@ -27,6 +27,7 @@ func TestGetUserAfhsByUserId(t *testing.T) {
 
 	assert.EqualValues(t, 2, userAfhs[0].UserId)
 	assert.EqualValues(t, 2, userAfhs[0].AfhId)
+	assert.EqualValues(t, 1, userAfhs[0].AccountId)
 
 	resetUserAfhTables(t)
 }
@@ -36,7 +37,7 @@ func TestGetUserAfhsByAfhId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Update
-	updatedUserAfh := createUserAfh(2, 1)
+	updatedUserAfh := createUserAfh(2, 1, 1)
 	updatedBod := utils.CreateJsonBody(&updatedUserAfh)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/user-afh/1", updatedBod)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -53,8 +54,11 @@ func TestGetUserAfhsByAfhId(t *testing.T) {
 
 	assert.EqualValues(t, 1, userAfhs[0].UserId)
 	assert.EqualValues(t, 2, userAfhs[0].AfhId)
+	assert.EqualValues(t, 1, userAfhs[0].AccountId)
+
 	assert.EqualValues(t, 2, userAfhs[1].UserId)
 	assert.EqualValues(t, 2, userAfhs[1].AfhId)
+	assert.EqualValues(t, 1, userAfhs[1].AccountId)
 
 	resetUserAfhTables(t)
 }
@@ -90,6 +94,7 @@ func TestGetUserAfhsByBothIds(t *testing.T) {
 
 	assert.EqualValues(t, 2, userAfh.UserId)
 	assert.EqualValues(t, 2, userAfh.AfhId)
+	assert.EqualValues(t, 1, userAfh.AccountId)
 
 	resetUserAfhTables(t)
 }
@@ -98,9 +103,9 @@ func TestGetUserAfhsByBothIds(t *testing.T) {
 func createAllUserAfhs(t *testing.T) {
 	createUsersAndAfhs(t)
 
-	userAfh1 := createUserAfh(1, 1)
-	userAfh2 := createUserAfh(1, 2)
-	userAfh3 := createUserAfh(2, 2)
+	userAfh1 := createUserAfh(1, 1, 1)
+	userAfh2 := createUserAfh(1, 2, 1)
+	userAfh3 := createUserAfh(2, 2, 1)
 
 	body1 := utils.CreateJsonBody(&userAfh1)
 	body2 := utils.CreateJsonBody(&userAfh2)
@@ -116,8 +121,6 @@ func createAllUserAfhs(t *testing.T) {
 }
 
 func createUsersAndAfhs(t *testing.T) {
-	var date1 = now.Add(time.Hour * 24 * 30)
-
 	// Create accounts
 	account := createAccountAndUser(1)
 	body := utils.CreateJsonBody(&account)
@@ -130,8 +133,8 @@ func createUsersAndAfhs(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder0.Code)
 
 	// Create locations
-	location1 := createLocation("wchs", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
-	location2 := createLocation("room12", "123 Sesame St", "Rockville", "MD", "20814", "Room 8")
+	location1 := createLocation("wchs", "Winston Churchill High School", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
+	location2 := createLocation("room12", "Sesame High School", "123 Sesame St", "Rockville", "MD", "20814", "Room 8")
 	locBody1 := utils.CreateJsonBody(&location1)
 	locBody2 := utils.CreateJsonBody(&location2)
 	locRecorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", locBody1)
@@ -140,20 +143,24 @@ func createUsersAndAfhs(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, locRecorder2.Code)
 
 	// Create AFHs
+	start1 := time.Now().UTC()
+	end1 := start1.Add(time.Hour * 1)
+	start2 := start1.Add(time.Hour * 7)
+	end2 := start2.Add(time.Hour * 1)
 	afh1 := createAFH(
 		1,
+		start1,
+		end1,
 		"AP Calculus Help",
-		date1,
-		"2:00-4:00PM",
 		domains.SUBJECT_MATH,
 		"wchs",
 		"test note",
 	)
 	afh2 := createAFH(
 		2,
+		start2,
+		end2,
 		"AP Statistics Help",
-		date1,
-		"3:00-5:00PM",
 		domains.SUBJECT_MATH,
 		"room12",
 		"test note 2",
@@ -169,15 +176,16 @@ func createUsersAndAfhs(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
 }
 
-func createUserAfh(userId, afhId uint) domains.UserAfh {
+func createUserAfh(userId, afhId, accountId uint) domains.UserAfh {
 	return domains.UserAfh{
-		UserId: userId,
-		AfhId:  afhId,
+		UserId:    userId,
+		AfhId:     afhId,
+		AccountId: accountId,
 	}
 }
 
 func resetUserAfhTables(t *testing.T) {
-	utils.ResetTable(t, domains.TABLE_USER_AFH)
+	utils.ResetTable(t, domains.TABLE_USER_AFHS)
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)

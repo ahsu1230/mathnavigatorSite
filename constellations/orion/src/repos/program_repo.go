@@ -58,7 +58,7 @@ func (pr *programRepo) SelectAll(ctx context.Context) ([]domains.Program, error)
 			&program.UpdatedAt,
 			&program.DeletedAt,
 			&program.ProgramId,
-			&program.Name,
+			&program.Title,
 			&program.Grade1,
 			&program.Grade2,
 			&program.Description,
@@ -87,7 +87,7 @@ func (pr *programRepo) SelectByProgramId(ctx context.Context, programId string) 
 		&program.UpdatedAt,
 		&program.DeletedAt,
 		&program.ProgramId,
-		&program.Name,
+		&program.Title,
 		&program.Grade1,
 		&program.Grade2,
 		&program.Description,
@@ -103,7 +103,7 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uin
 		"created_at, " +
 		"updated_at, " +
 		"program_id, " +
-		"name, " +
+		"title, " +
 		"grade1, " +
 		"grade2, " +
 		"description, " +
@@ -120,7 +120,7 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uin
 		now,
 		now,
 		program.ProgramId,
-		program.Name,
+		program.Title,
 		program.Grade1,
 		program.Grade2,
 		program.Description,
@@ -142,7 +142,7 @@ func (pr *programRepo) Update(ctx context.Context, programId string, program dom
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
-		"name=?, " +
+		"title=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
 		"description=?, " +
@@ -158,7 +158,7 @@ func (pr *programRepo) Update(ctx context.Context, programId string, program dom
 	execResult, err := stmt.Exec(
 		now,
 		program.ProgramId,
-		program.Name,
+		program.Title,
 		program.Grade1,
 		program.Grade2,
 		program.Description,

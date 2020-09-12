@@ -17,9 +17,9 @@ func TestCreateSessions(t *testing.T) {
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
-	prog2 := createProgram("slow_track", "Slow Track", 1, 12, "descript1", 1)
-	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
+	prog2 := createProgram("slow_track", "Slow Track", 1, 12, "descript1", domains.FEATURED_POPULAR)
+	loc1 := createLocation("loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester(domains.SPRING, 2020)
 	semester2 := createSemester(domains.FALL, 2020)
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
@@ -75,8 +75,8 @@ func TestUpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
-	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
+	loc1 := createLocation("loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester(domains.SPRING, 2020)
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
@@ -123,8 +123,8 @@ func TestDeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", 0)
-	loc1 := createLocation("loc_1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	prog1 := createProgram("fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
+	loc1 := createLocation("loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	semester1 := createSemester(domains.SPRING, 2020)
 	class1 := createClassUtil("fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
 	session1 := createSession("fast_track_2020_spring_class_A", start, end, false, "special lecture from guest")
@@ -176,9 +176,9 @@ func createClassUtil(programId, semesterId, classKey, locationId, times string, 
 		SemesterId:      semesterId,
 		ClassKey:        domains.NewNullString(classKey),
 		LocationId:      locationId,
-		Times:           times,
+		TimesStr:        times,
 		PricePerSession: domains.NewNullUint(pricePerSession),
-		PriceLump:       domains.NewNullUint(priceLump),
+		PriceLumpSum:    domains.NewNullUint(priceLump),
 	}
 }
 

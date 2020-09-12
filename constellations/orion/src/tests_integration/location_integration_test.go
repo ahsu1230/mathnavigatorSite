@@ -13,9 +13,9 @@ import (
 
 // Test: Create 3 Locations and GetAll()
 func TestCreateLocations(t *testing.T) {
-	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	location2 := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
-	location3 := createLocation("loc3", "4040 Location Blvd", "Eity", "ND", "08430-0302", "Room 3")
+	location1 := createLocation("loc1", "High School C", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location2 := createLocation("loc2", "High School D", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
+	location3 := createLocation("loc3", "High School E", "4040 Location Blvd", "Eity", "ND", "08430-0302", "Room 3")
 	body1 := utils.CreateJsonBody(&location1)
 	body2 := utils.CreateJsonBody(&location2)
 	body3 := utils.CreateJsonBody(&location3)
@@ -36,11 +36,14 @@ func TestCreateLocations(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "loc1", locations[0].LocationId)
-	assert.EqualValues(t, "4040 Location Rd", locations[0].Street)
+	assert.EqualValues(t, "High School C", locations[0].Title)
+	assert.EqualValues(t, "4040 Location Rd", locations[0].Street.String)
 	assert.EqualValues(t, "loc2", locations[1].LocationId)
-	assert.EqualValues(t, "4040 Location Ave", locations[1].Street)
+	assert.EqualValues(t, "High School D", locations[1].Title)
+	assert.EqualValues(t, "4040 Location Ave", locations[1].Street.String)
 	assert.EqualValues(t, "loc3", locations[2].LocationId)
-	assert.EqualValues(t, "4040 Location Blvd", locations[2].Street)
+	assert.EqualValues(t, "High School E", locations[2].Title)
+	assert.EqualValues(t, "4040 Location Blvd", locations[2].Street.String)
 	assert.EqualValues(t, 3, len(locations))
 
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)
@@ -48,8 +51,8 @@ func TestCreateLocations(t *testing.T) {
 
 // Test: Create 2 Locations with same locationId. Then GetByLocationId()
 func TestUniqueLocationId(t *testing.T) {
-	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
-	location2 := createLocation("loc1", "89 South Glen Rd", "City", "MD", "77294", "Room 43") // Same locationId
+	location1 := createLocation("loc1", "Potomac School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location2 := createLocation("loc1", "Glen School", "89 South Glen Rd", "City", "MD", "77294", "Room 43") // Same locationId
 	body1 := utils.CreateJsonBody(&location1)
 	body2 := utils.CreateJsonBody(&location2)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
@@ -68,7 +71,8 @@ func TestUniqueLocationId(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "loc1", location.LocationId)
-	assert.EqualValues(t, "4040 Location Rd", location.Street)
+	assert.EqualValues(t, "Potomac School", location.Title)
+	assert.EqualValues(t, "4040 Location Rd", location.Street.String)
 
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
@@ -76,13 +80,13 @@ func TestUniqueLocationId(t *testing.T) {
 // Test: Create 1 Location, Update it, GetByLocationId()
 func TestUpdateLocation(t *testing.T) {
 	// Create 1 Location
-	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location1 := createLocation("loc1", "Potomac School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body1 := utils.CreateJsonBody(&location1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 
 	// Update
-	updatedLocation := createLocation("loc2", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
+	updatedLocation := createLocation("loc2", "Potomac School", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2")
 	updatedBody := utils.CreateJsonBody(&updatedLocation)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/location/loc1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -99,7 +103,7 @@ func TestUpdateLocation(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "loc2", location.LocationId)
-	assert.EqualValues(t, "4040 Location Ave", location.Street)
+	assert.EqualValues(t, "4040 Location Ave", location.Street.String)
 
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
@@ -107,7 +111,7 @@ func TestUpdateLocation(t *testing.T) {
 // Test: Create 1 Location, Delete it, GetByLocationId()
 func TestDeleteLocation(t *testing.T) {
 	// Create
-	location1 := createLocation("loc1", "4040 Location Rd", "City", "MA", "77294", "Room 1")
+	location1 := createLocation("loc1", "Potomac School", "4040 Location Rd", "City", "MA", "77294", "Room 1")
 	body1 := utils.CreateJsonBody(&location1)
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
@@ -124,13 +128,22 @@ func TestDeleteLocation(t *testing.T) {
 }
 
 // Helper methods
-func createLocation(locationId string, street string, city string, state string, zipcode string, room string) domains.Location {
+func createLocation(
+	locationId string,
+	title string,
+	street string,
+	city string,
+	state string,
+	zipcode string,
+	room string,
+) domains.Location {
 	return domains.Location{
 		LocationId: locationId,
-		Street:     street,
-		City:       city,
-		State:      state,
-		Zipcode:    zipcode,
+		Title:      title,
+		Street:     domains.NewNullString(street),
+		City:       domains.NewNullString(city),
+		State:      domains.NewNullString(state),
+		Zipcode:    domains.NewNullString(zipcode),
 		Room:       domains.NewNullString(room),
 	}
 }

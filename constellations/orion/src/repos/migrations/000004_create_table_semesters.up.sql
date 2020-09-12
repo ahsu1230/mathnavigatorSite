@@ -5,6 +5,8 @@ CREATE TABLE semesters
     updated_at  datetime     NOT NULL,
     deleted_at  datetime,
     semester_id varchar(64)  NOT NULL UNIQUE,
+    season      varchar(16)  NOT NULL,
+    year        int unsigned NOT NULL,
     title       varchar(64)  NOT NULL,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT = 1

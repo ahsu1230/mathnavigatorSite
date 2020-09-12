@@ -57,11 +57,13 @@ func (lr *locationRepo) SelectAll(ctx context.Context) ([]domains.Location, erro
 			&location.UpdatedAt,
 			&location.DeletedAt,
 			&location.LocationId,
+			&location.Title,
 			&location.Street,
 			&location.City,
 			&location.State,
 			&location.Zipcode,
-			&location.Room); errScan != nil {
+			&location.Room,
+			&location.IsOnline); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, location)
@@ -87,11 +89,13 @@ func (lr *locationRepo) SelectByLocationId(ctx context.Context, locationId strin
 		&location.UpdatedAt,
 		&location.DeletedAt,
 		&location.LocationId,
+		&location.Title,
 		&location.Street,
 		&location.City,
 		&location.State,
 		&location.Zipcode,
-		&location.Room); err != nil {
+		&location.Room,
+		&location.IsOnline); err != nil {
 		return domains.Location{}, appErrors.WrapDbExec(err, statement, locationId)
 	}
 
@@ -104,12 +108,13 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (
 		"created_at, " +
 		"updated_at, " +
 		"location_id, " +
+		"title, " +
 		"street, " +
 		"city, " +
 		"state, " +
 		"zipcode, " +
 		"room" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
 		return 0, appErrors.WrapDbPrepare(err, statement)
@@ -121,6 +126,7 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (
 		now,
 		now,
 		location.LocationId,
+		location.Title,
 		location.Street,
 		location.City,
 		location.State,
@@ -140,10 +146,12 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (
 func (lr *locationRepo) Update(ctx context.Context, locationId string, location domains.Location) error {
 	utils.LogWithContext(ctx, "locationRepo.Update", logger.Fields{
 		"locationId": locationId,
-		"location":   location})
+		"location":   location,
+	})
 	statement := "UPDATE locations SET " +
 		"updated_at=?, " +
 		"location_id=?, " +
+		"title=?, " +
 		"street=?, " +
 		"city=?, " +
 		"state=?, " +
@@ -160,6 +168,7 @@ func (lr *locationRepo) Update(ctx context.Context, locationId string, location 
 	result, err := stmt.Exec(
 		now,
 		location.LocationId,
+		location.Title,
 		location.Street,
 		location.City,
 		location.State,

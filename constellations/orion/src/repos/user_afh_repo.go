@@ -40,7 +40,7 @@ func (ur *userAfhRepo) SelectByUserId(ctx context.Context, userId uint) ([]domai
 	utils.LogWithContext(ctx, "userAfhRepo.SelectByUserId", logger.Fields{"userId": userId})
 	results := make([]domains.UserAfh, 0)
 
-	statement := "SELECT * FROM user_afh WHERE user_id=?"
+	statement := "SELECT * FROM user_afhs WHERE user_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -73,7 +73,7 @@ func (ur *userAfhRepo) SelectByAfhId(ctx context.Context, afhId uint) ([]domains
 	utils.LogWithContext(ctx, "userAfhRepo.SelectByAfhId", logger.Fields{"afhId": afhId})
 	results := make([]domains.UserAfh, 0)
 
-	statement := "SELECT * FROM user_afh WHERE afh_id=?"
+	statement := "SELECT * FROM user_afhs WHERE afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -104,7 +104,7 @@ func (ur *userAfhRepo) SelectByAfhId(ctx context.Context, afhId uint) ([]domains
 
 func (ur *userAfhRepo) SelectByBothIds(ctx context.Context, userId, afhId uint) (domains.UserAfh, error) {
 	utils.LogWithContext(ctx, "userAfhRepo.SelectByBothIds", logger.Fields{"userId": userId, "afhId": afhId})
-	statement := "SELECT * FROM user_afh WHERE user_id=? AND afh_id=?"
+	statement := "SELECT * FROM user_afhs WHERE user_id=? AND afh_id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		err = appErrors.WrapDbPrepare(err, statement)
@@ -134,7 +134,7 @@ func (ur *userAfhRepo) SelectByNew(ctx context.Context) ([]domains.UserAfh, erro
 	now := time.Now().UTC()
 	week := time.Hour * 24 * 7
 	lastWeek := now.Add(-week)
-	statement := "SELECT * FROM user_afh WHERE created_at>=?"
+	statement := "SELECT * FROM user_afhs WHERE created_at>=?"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -166,7 +166,7 @@ func (ur *userAfhRepo) SelectByNew(ctx context.Context) ([]domains.UserAfh, erro
 
 func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uint, error) {
 	utils.LogWithContext(ctx, "userAfhRepo.Insert", logger.Fields{"userAfh": userAfh})
-	statement := "INSERT INTO user_afh (" +
+	statement := "INSERT INTO user_afhs (" +
 		"created_at, " +
 		"updated_at, " +
 		"user_id, " +
@@ -201,7 +201,7 @@ func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uin
 
 func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.UserAfh) error {
 	utils.LogWithContext(ctx, "userAfhRepo.Update", logger.Fields{"userAfh": userAfh})
-	statement := "UPDATE user_afh SET " +
+	statement := "UPDATE user_afhs SET " +
 		"user_id=?, " +
 		"afh_id=?, " +
 		"account_id=?, " +
@@ -229,7 +229,7 @@ func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.User
 
 func (ur *userAfhRepo) Delete(ctx context.Context, id uint) error {
 	utils.LogWithContext(ctx, "userAfhRepo.Delete", logger.Fields{"id": id})
-	statement := "DELETE FROM user_afh WHERE id=?"
+	statement := "DELETE FROM user_afhs WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		return appErrors.WrapDbPrepare(err, statement)
