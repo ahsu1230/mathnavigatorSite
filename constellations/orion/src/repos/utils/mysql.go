@@ -13,7 +13,7 @@ import (
 
 func createConnectionInfo(host string, port int, user string, pass string, dbName string) string {
 	info := fmt.Sprintf("%s:%s@(%s:%d)/%s", user, pass, host, port, dbName)
-	info += "?charset=utf8&parseTime=True&loc=UTC&multiStatements=true"
+	info += "?charset=utf8&parseTime=True&loc=UTC"
 	return info
 }
 
