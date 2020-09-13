@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 
 	"github.com/gin-contrib/cors"
@@ -15,6 +16,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	repoUtils "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+	_ "github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/migrations1"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 )
 
@@ -51,6 +53,22 @@ func main() {
 
 	db := repoUtils.Open(dbHost, dbPort, dbUser, dbPassword, dbDefault)
 	repoUtils.Migrate(db, "file://src/repos/migrations")
+	// repoUtils.Migrate1(db, "src/repos/migrations1")
+
+
+	logger.Message("Invoking Migration command....")
+	cmd := exec.Command("goose", "mysql", `"user:password@(db-mysql:3306)/mathnavdb?parseTime=true"`, "up")
+	logger.Message(fmt.Sprintf("Command %s", cmd.String()))
+	if err := cmd.Run(); err != nil {
+		panic(err)
+	}
+	out, err := cmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	logger.Message(fmt.Sprintf("Command finished. Exit Status %s", string(out)))
+	
+
 	repos.SetupRepos(context, db)
 	defer repoUtils.Close(db)
 	logger.Message("Database started!")

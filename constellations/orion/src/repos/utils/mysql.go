@@ -53,6 +53,12 @@ func Migrate(db *sql.DB, migrationsPath string) {
 	logger.Info("Current migration version: ", logger.Fields{"version": version})
 }
 
+func Migrate1(db *sql.DB, migrationsPath string) {
+	logger.Info("Performing Goose Migrations...", logger.Fields{
+		"migrationsPath": migrationsPath,
+	})
+}
+
 func Close(db *sql.DB) error {
 	err := db.Close()
 	db = nil
