@@ -15,21 +15,16 @@ import (
 func TestCreateAskForHelps(t *testing.T) {
 	createLocations(t)
 
-	var date1 = now.Add(time.Hour * 24 * 30)
-	var date2 = now.Add(time.Hour * 24 * 31)
-	var date3 = now.Add(time.Hour * 24 * 60)
-	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", domains.SUBJECT_MATH, "wchs", "test note")
-	afh2 := createAFH(2, "AP Statistics Help", date2, "2:00-4:00PM", domains.SUBJECT_MATH, "room12", "test note 2")
-	afh3 := createAFH(3, "AP CS Help", date3, "3:00-5:00PM", domains.SUBJECT_PROGRAMMING, "room101", "test note 3")
-	body1 := utils.CreateJsonBody(&afh1)
-	body2 := utils.CreateJsonBody(&afh2)
-	body3 := utils.CreateJsonBody(&afh3)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	start1 := time.Now().UTC()
+	end1 := start1.Add(time.Hour * 1)
+	start2 := start1.Add(time.Hour * 24 * 7)
+	end2 := start2.Add(time.Hour * 1)
+	start3 := start2.Add(time.Hour * 24 * 7)
+	end3 := start3.Add(time.Hour * 1)
+
+	utils.SendCreateAskForHelp(t, true, start1, end1, "AP Calculus Help", domains.SUBJECT_MATH, "wchs", "test note")
+	utils.SendCreateAskForHelp(t, true, start2, end2, "AP Statistics Help", domains.SUBJECT_MATH, "room12", "test note 2")
+	utils.SendCreateAskForHelp(t, true, start3, end3, "AP CS Help", domains.SUBJECT_PROGRAMMING, "room101", "test note 3")
 
 	// Call Get All
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/askforhelp/all", nil)
@@ -42,22 +37,16 @@ func TestCreateAskForHelps(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, askForHelps[0].Id)
 	assert.EqualValues(t, "AP Calculus Help", askForHelps[0].Title)
-	assert.EqualValues(t, date1, askForHelps[0].Date)
-	assert.EqualValues(t, "1:00-3:00PM", askForHelps[0].TimeString)
 	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelps[0].Subject)
 	assert.EqualValues(t, "wchs", askForHelps[0].LocationId)
 	assert.EqualValues(t, "test note", askForHelps[0].Notes.String)
 	assert.EqualValues(t, 2, askForHelps[1].Id)
 	assert.EqualValues(t, "AP Statistics Help", askForHelps[1].Title)
-	assert.EqualValues(t, date2, askForHelps[1].Date)
-	assert.EqualValues(t, "2:00-4:00PM", askForHelps[1].TimeString)
 	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelps[1].Subject)
 	assert.EqualValues(t, "room12", askForHelps[1].LocationId)
 	assert.EqualValues(t, "test note 2", askForHelps[1].Notes.String)
 	assert.EqualValues(t, 3, askForHelps[2].Id)
 	assert.EqualValues(t, "AP CS Help", askForHelps[2].Title)
-	assert.EqualValues(t, date3, askForHelps[2].Date)
-	assert.EqualValues(t, "3:00-5:00PM", askForHelps[2].TimeString)
 	assert.EqualValues(t, domains.SUBJECT_PROGRAMMING, askForHelps[2].Subject)
 	assert.EqualValues(t, "room101", askForHelps[2].LocationId)
 	assert.EqualValues(t, "test note 3", askForHelps[2].Notes.String)
@@ -68,18 +57,25 @@ func TestCreateAskForHelps(t *testing.T) {
 
 // Test: Create 1 Ask For Help, Update, Get By ID
 func TestUpdateAFH(t *testing.T) {
+	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 	createLocations(t)
 
+	start1 := time.Now().UTC()
+	end1 := start1.Add(time.Hour * 1)
+
 	// Create 1 AFH
-	var date1 = now.Add(time.Hour * 24 * 30)
-	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", domains.SUBJECT_MATH, "wchs", "test note")
-	body1 := utils.CreateJsonBody(&afh1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAskForHelp(t, true, start1, end1, "AP Calculus Help", domains.SUBJECT_MATH, "wchs", "test note")
 
 	// Update
-	var date2 = now.Add(time.Hour * 24 * 31)
-	updatedAFH := createAFH(1, "AP Statistics Help", date2, "2:00-4:00PM", domains.SUBJECT_MATH, "room12", "test note 2")
+	updatedAFH := domains.AskForHelp{
+		StartsAt:   start1,
+		EndsAt:     end1,
+		Title:      "AP Statistics Help",
+		Subject:    domains.SUBJECT_MATH,
+		LocationId: "room12",
+		Notes:      domains.NewNullString("test note 2"),
+	}
 	updatedBody := utils.CreateJsonBody(&updatedAFH)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/afh/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -95,8 +91,6 @@ func TestUpdateAFH(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, askForHelp.Id)
 	assert.EqualValues(t, "AP Statistics Help", askForHelp.Title)
-	assert.EqualValues(t, date2, askForHelp.Date)
-	assert.EqualValues(t, "2:00-4:00PM", askForHelp.TimeString)
 	assert.EqualValues(t, domains.SUBJECT_MATH, askForHelp.Subject)
 	assert.EqualValues(t, "room12", askForHelp.LocationId)
 	assert.EqualValues(t, "test note 2", askForHelp.Notes.String)
@@ -109,12 +103,11 @@ func TestUpdateAFH(t *testing.T) {
 func TestDeleteAFH(t *testing.T) {
 	createLocations(t)
 
+	start1 := time.Now().UTC()
+	end1 := start1.Add(time.Hour * 1)
+
 	// Create
-	var date1 = now.Add(time.Hour * 24 * 30)
-	afh1 := createAFH(1, "AP Calculus Help", date1, "1:00-3:00PM", domains.SUBJECT_MATH, "wchs", "test note")
-	body1 := utils.CreateJsonBody(&afh1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAskForHelp(t, true, start1, end1, "AP Calculus Help", domains.SUBJECT_MATH, "wchs", "test note")
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/askforhelp/afh/1", nil)
@@ -130,31 +123,7 @@ func TestDeleteAFH(t *testing.T) {
 
 // Helper methods
 func createLocations(t *testing.T) {
-	location1 := createLocation("wchs", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
-	location2 := createLocation("room12", "123 Sesame St", "Rockville", "MD", "20814", "Room 8")
-	location3 := createLocation("room101", "101 Rainbow Avenue", "Gaithersburg", "MD", "23456", "Room 101")
-
-	body1 := utils.CreateJsonBody(&location1)
-	body2 := utils.CreateJsonBody(&location2)
-	body3 := utils.CreateJsonBody(&location3)
-
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body3)
-
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-}
-
-func createAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
-	return domains.AskForHelp{
-		Id:         id,
-		Title:      title,
-		Date:       date,
-		TimeString: timeString,
-		Subject:    subject,
-		LocationId: locationId,
-		Notes:      domains.NewNullString(notes),
-	}
+	utils.SendCreateLocationWCHS(t)
+	utils.SendCreateLocation(t, true, "room12", "Sesame School", "123 Sesame St", "Rockville", "MD", "20814", "Room 8", false)
+	utils.SendCreateLocation(t, true, "room101", "Rainbow Academy", "101 Rainbow Avenue", "Gaithersburg", "MD", "23456", "Room 101", false)
 }

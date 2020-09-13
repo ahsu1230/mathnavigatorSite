@@ -9,12 +9,12 @@ import (
 var TABLE_PROGRAMS = "programs"
 
 const (
-	FEATURED_NORMAL  = "normal"
+	FEATURED_NONE    = "none"
 	FEATURED_POPULAR = "popular"
 	FEATURED_NEW     = "new"
 )
 
-var ALL_PROGRAM_STATES = []string{FEATURED_NORMAL, FEATURED_POPULAR, FEATURED_NEW}
+var ALL_PROGRAM_STATES = []string{FEATURED_NONE, FEATURED_POPULAR, FEATURED_NEW}
 
 type Program struct {
 	Id          uint      `json:"id"`
@@ -22,11 +22,11 @@ type Program struct {
 	UpdatedAt   time.Time `json:"-" db:"updated_at"`
 	DeletedAt   NullTime  `json:"-" db:"deleted_at"`
 	ProgramId   string    `json:"programId" db:"program_id"`
-	Name        string    `json:"name"`
+	Title       string    `json:"title"`
 	Grade1      uint      `json:"grade1"`
 	Grade2      uint      `json:"grade2"`
 	Description string    `json:"description"`
-	Featured    uint      `json:"featured"`
+	Featured    string    `json:"featured"`
 }
 
 // Class Methods
@@ -36,7 +36,7 @@ func (program *Program) Validate() error {
 
 	// Retrieves the inputted values
 	programId := program.ProgramId
-	name := program.Name
+	title := program.Title
 	grade1 := program.Grade1
 	grade2 := program.Grade2
 	description := program.Description
@@ -47,8 +47,8 @@ func (program *Program) Validate() error {
 	}
 
 	// Name validation
-	if matches, _ := regexp.MatchString(REGEX_TITLE, name); !matches {
-		return fmt.Errorf(messageFmt, "Invalid program name")
+	if matches, _ := regexp.MatchString(REGEX_TITLE, title); !matches {
+		return fmt.Errorf(messageFmt, "Invalid program title")
 	}
 
 	// Grade validation

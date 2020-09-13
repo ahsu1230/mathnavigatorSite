@@ -17,7 +17,7 @@ var SemesterRepo mockSemesterRepo
 var SessionRepo mockSessionRepo
 var AccountRepo mockAccountRepo
 var UserRepo mockUserRepo
-var UserClassesRepo mockUserClassesRepo
+var UserClassRepo mockUserClassRepo
 var AskForHelpRepo mockAskForHelpRepo
 var TransactionRepo mockTransactionRepo
 var UserAfhRepo mockUserAfhRepo
@@ -285,39 +285,39 @@ func (userRepo *mockUserRepo) Delete(ctx context.Context, id uint) error {
 }
 
 // Fake userRepo that implements UserRepo interface
-type mockUserClassesRepo struct {
+type mockUserClassRepo struct {
 	MockInitialize           func(context.Context, *sql.DB)
-	MockSelectByClassId      func(context.Context, string) ([]domains.UserClasses, error)
-	MockSelectByUserId       func(context.Context, uint) ([]domains.UserClasses, error)
-	MockSelectByUserAndClass func(context.Context, uint, string) (domains.UserClasses, error)
-	MockSelectByNew          func(context.Context) ([]domains.UserClasses, error)
-	MockInsert               func(context.Context, domains.UserClasses) (uint, error)
-	MockUpdate               func(context.Context, uint, domains.UserClasses) error
+	MockSelectByClassId      func(context.Context, string) ([]domains.UserClass, error)
+	MockSelectByUserId       func(context.Context, uint) ([]domains.UserClass, error)
+	MockSelectByUserAndClass func(context.Context, uint, string) (domains.UserClass, error)
+	MockSelectByNew          func(context.Context) ([]domains.UserClass, error)
+	MockInsert               func(context.Context, domains.UserClass) (uint, error)
+	MockUpdate               func(context.Context, uint, domains.UserClass) error
 	MockDelete               func(context.Context, uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
-func (userClassesRepo *mockUserClassesRepo) Initialize(ctx context.Context, db *sql.DB) {}
+func (userClassesRepo *mockUserClassRepo) Initialize(ctx context.Context, db *sql.DB) {}
 
-func (userClassesRepo *mockUserClassesRepo) SelectByClassId(ctx context.Context, classId string) ([]domains.UserClasses, error) {
+func (userClassesRepo *mockUserClassRepo) SelectByClassId(ctx context.Context, classId string) ([]domains.UserClass, error) {
 	return userClassesRepo.MockSelectByClassId(ctx, classId)
 }
-func (userClassesRepo *mockUserClassesRepo) SelectByUserId(ctx context.Context, id uint) ([]domains.UserClasses, error) {
+func (userClassesRepo *mockUserClassRepo) SelectByUserId(ctx context.Context, id uint) ([]domains.UserClass, error) {
 	return userClassesRepo.MockSelectByUserId(ctx, id)
 }
-func (userClassesRepo *mockUserClassesRepo) SelectByUserAndClass(ctx context.Context, id uint, classId string) (domains.UserClasses, error) {
+func (userClassesRepo *mockUserClassRepo) SelectByUserAndClass(ctx context.Context, id uint, classId string) (domains.UserClass, error) {
 	return userClassesRepo.MockSelectByUserAndClass(ctx, id, classId)
 }
-func (userClassesRepo *mockUserClassesRepo) SelectByNew(ctx context.Context) ([]domains.UserClasses, error) {
+func (userClassesRepo *mockUserClassRepo) SelectByNew(ctx context.Context) ([]domains.UserClass, error) {
 	return userClassesRepo.MockSelectByNew(ctx)
 }
-func (userClassesRepo *mockUserClassesRepo) Insert(ctx context.Context, userClasses domains.UserClasses) (uint, error) {
+func (userClassesRepo *mockUserClassRepo) Insert(ctx context.Context, userClasses domains.UserClass) (uint, error) {
 	return userClassesRepo.MockInsert(ctx, userClasses)
 }
-func (userClassesRepo *mockUserClassesRepo) Update(ctx context.Context, id uint, userClasses domains.UserClasses) error {
+func (userClassesRepo *mockUserClassRepo) Update(ctx context.Context, id uint, userClasses domains.UserClass) error {
 	return userClassesRepo.MockUpdate(ctx, id, userClasses)
 }
-func (userClassesRepo *mockUserClassesRepo) Delete(ctx context.Context, id uint) error {
+func (userClassesRepo *mockUserClassRepo) Delete(ctx context.Context, id uint) error {
 	return userClassesRepo.MockDelete(ctx, id)
 }
 
@@ -325,7 +325,7 @@ type mockAccountRepo struct {
 	MockInitialize                func(context.Context, *sql.DB)
 	MockSelectById                func(context.Context, uint) (domains.Account, error)
 	MockSelectByPrimaryEmail      func(context.Context, string) (domains.Account, error)
-	MockSelectAllNegativeBalances func(context.Context) ([]domains.AccountSum, error)
+	MockSelectAllNegativeBalances func(context.Context) ([]domains.AccountBalance, error)
 	MockInsertWithUser            func(context.Context, domains.Account, domains.User) (uint, error)
 	MockUpdate                    func(context.Context, uint, domains.Account) error
 	MockDelete                    func(context.Context, uint) error
@@ -340,7 +340,7 @@ func (accountRepo *mockAccountRepo) SelectById(ctx context.Context, id uint) (do
 func (accountRepo *mockAccountRepo) SelectByPrimaryEmail(ctx context.Context, primaryEmail string) (domains.Account, error) {
 	return accountRepo.MockSelectByPrimaryEmail(ctx, primaryEmail)
 }
-func (accountRepo *mockAccountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountSum, error) {
+func (accountRepo *mockAccountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountBalance, error) {
 	return accountRepo.MockSelectAllNegativeBalances(ctx)
 }
 func (accountRepo *mockAccountRepo) InsertWithUser(ctx context.Context, account domains.Account, user domains.User) (uint, error) {

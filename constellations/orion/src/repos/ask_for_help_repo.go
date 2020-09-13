@@ -57,9 +57,9 @@ func (ar *askForHelpRepo) SelectAll(ctx context.Context) ([]domains.AskForHelp, 
 			&askForHelp.CreatedAt,
 			&askForHelp.UpdatedAt,
 			&askForHelp.DeletedAt,
+			&askForHelp.StartsAt,
+			&askForHelp.EndsAt,
 			&askForHelp.Title,
-			&askForHelp.Date,
-			&askForHelp.TimeString,
 			&askForHelp.Subject,
 			&askForHelp.LocationId,
 			&askForHelp.Notes); errScan != nil {
@@ -67,7 +67,6 @@ func (ar *askForHelpRepo) SelectAll(ctx context.Context) ([]domains.AskForHelp, 
 		}
 		results = append(results, askForHelp)
 	}
-
 	return results, nil
 }
 
@@ -88,9 +87,9 @@ func (ar *askForHelpRepo) SelectById(ctx context.Context, id uint) (domains.AskF
 		&askForHelp.CreatedAt,
 		&askForHelp.UpdatedAt,
 		&askForHelp.DeletedAt,
+		&askForHelp.StartsAt,
+		&askForHelp.EndsAt,
 		&askForHelp.Title,
-		&askForHelp.Date,
-		&askForHelp.TimeString,
 		&askForHelp.Subject,
 		&askForHelp.LocationId,
 		&askForHelp.Notes); err != nil {
@@ -104,9 +103,9 @@ func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForH
 	statement := "INSERT INTO ask_for_help (" +
 		"created_at, " +
 		"updated_at, " +
+		"starts_at, " +
+		"ends_at, " +
 		"title, " +
-		"date, " +
-		"time_string, " +
 		"subject, " +
 		"location_id, " +
 		"notes" +
@@ -121,9 +120,9 @@ func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForH
 	result, err := stmt.Exec(
 		now,
 		now,
+		askForHelp.StartsAt,
+		askForHelp.EndsAt,
 		askForHelp.Title,
-		askForHelp.Date,
-		askForHelp.TimeString,
 		askForHelp.Subject,
 		askForHelp.LocationId,
 		askForHelp.Notes)
@@ -142,10 +141,9 @@ func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domain
 	utils.LogWithContext(ctx, "afhRepo.Update", logger.Fields{"afh": askForHelp})
 	statement := "UPDATE ask_for_help SET " +
 		"updated_at=?, " +
-		"id=?, " +
+		"starts_at=?, " +
+		"ends_at=?, " +
 		"title=?, " +
-		"date=?, " +
-		"time_string=?, " +
 		"subject=?, " +
 		"location_id=?, " +
 		"notes=? " +
@@ -159,11 +157,10 @@ func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domain
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		askForHelp.Id,
-		askForHelp.Title,
-		askForHelp.Date,
-		askForHelp.TimeString,
-		askForHelp.Subject,
+		&askForHelp.StartsAt,
+		&askForHelp.EndsAt,
+		&askForHelp.Title,
+		&askForHelp.Subject,
 		askForHelp.LocationId,
 		askForHelp.Notes,
 		id)

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var TABLE_USER_AFH = "user_afh"
+var TABLE_USER_AFHS = "user_afhs"
 
 type UserAfh struct {
 	Id        uint         `json:"id"`

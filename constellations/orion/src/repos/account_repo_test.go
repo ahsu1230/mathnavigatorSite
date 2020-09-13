@@ -144,7 +144,7 @@ func TestSelectAllNegativeBalances(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.AccountSum{
+	want := []domains.AccountBalance{
 		{
 			Account: domains.Account{
 				Id:           1,

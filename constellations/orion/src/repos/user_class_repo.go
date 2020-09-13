@@ -11,33 +11,33 @@ import (
 )
 
 // Global variable
-var UserClassesRepo UserClassesRepoInterface = &userClassesRepo{}
+var UserClassRepo UserClassRepoInterface = &userClassRepo{}
 
 // Implements interface userRepoInterface
-type userClassesRepo struct {
+type userClassRepo struct {
 	db *sql.DB // golang native db connection
 }
 
 // Interface to implement
-type UserClassesRepoInterface interface {
+type UserClassRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
-	SelectByClassId(context.Context, string) ([]domains.UserClasses, error)
-	SelectByUserId(context.Context, uint) ([]domains.UserClasses, error)
-	SelectByUserAndClass(context.Context, uint, string) (domains.UserClasses, error)
-	SelectByNew(context.Context) ([]domains.UserClasses, error)
-	Insert(context.Context, domains.UserClasses) (uint, error)
-	Update(context.Context, uint, domains.UserClasses) error
+	SelectByClassId(context.Context, string) ([]domains.UserClass, error)
+	SelectByUserId(context.Context, uint) ([]domains.UserClass, error)
+	SelectByUserAndClass(context.Context, uint, string) (domains.UserClass, error)
+	SelectByNew(context.Context) ([]domains.UserClass, error)
+	Insert(context.Context, domains.UserClass) (uint, error)
+	Update(context.Context, uint, domains.UserClass) error
 	Delete(context.Context, uint) error
 }
 
-func (ur *userClassesRepo) Initialize(ctx context.Context, db *sql.DB) {
+func (ur *userClassRepo) Initialize(ctx context.Context, db *sql.DB) {
 	utils.LogWithContext(ctx, "userClassRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
-func (ur *userClassesRepo) SelectByClassId(ctx context.Context, classId string) ([]domains.UserClasses, error) {
+func (ur *userClassRepo) SelectByClassId(ctx context.Context, classId string) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userRepo.SelectByClassId", logger.Fields{"classId": classId})
-	results := make([]domains.UserClasses, 0)
+	results := make([]domains.UserClass, 0)
 
 	statement := "SELECT * FROM user_classes WHERE class_id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -52,14 +52,14 @@ func (ur *userClassesRepo) SelectByClassId(ctx context.Context, classId string) 
 	defer rows.Close()
 
 	for rows.Next() {
-		var userClasses domains.UserClasses
+		var userClasses domains.UserClass
 		if errScan := rows.Scan(
 			&userClasses.Id,
 			&userClasses.CreatedAt,
 			&userClasses.UpdatedAt,
 			&userClasses.DeletedAt,
-			&userClasses.UserId,
 			&userClasses.ClassId,
+			&userClasses.UserId,
 			&userClasses.AccountId,
 			&userClasses.State); errScan != nil {
 			return results, errScan
@@ -69,9 +69,9 @@ func (ur *userClassesRepo) SelectByClassId(ctx context.Context, classId string) 
 	return results, nil
 }
 
-func (ur *userClassesRepo) SelectByUserId(ctx context.Context, userId uint) ([]domains.UserClasses, error) {
+func (ur *userClassRepo) SelectByUserId(ctx context.Context, userId uint) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByUserId", logger.Fields{"userId": userId})
-	results := make([]domains.UserClasses, 0)
+	results := make([]domains.UserClass, 0)
 
 	statement := "SELECT * FROM user_classes WHERE user_id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -86,14 +86,14 @@ func (ur *userClassesRepo) SelectByUserId(ctx context.Context, userId uint) ([]d
 	defer rows.Close()
 
 	for rows.Next() {
-		var userClasses domains.UserClasses
+		var userClasses domains.UserClass
 		if errScan := rows.Scan(
 			&userClasses.Id,
 			&userClasses.CreatedAt,
 			&userClasses.UpdatedAt,
 			&userClasses.DeletedAt,
-			&userClasses.UserId,
 			&userClasses.ClassId,
+			&userClasses.UserId,
 			&userClasses.AccountId,
 			&userClasses.State); errScan != nil {
 			return results, errScan
@@ -103,7 +103,7 @@ func (ur *userClassesRepo) SelectByUserId(ctx context.Context, userId uint) ([]d
 	return results, nil
 }
 
-func (ur *userClassesRepo) SelectByUserAndClass(ctx context.Context, userId uint, classId string) (domains.UserClasses, error) {
+func (ur *userClassRepo) SelectByUserAndClass(ctx context.Context, userId uint, classId string) (domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByUserAndClass", logger.Fields{
 		"userId":  userId,
 		"classId": classId})
@@ -111,30 +111,30 @@ func (ur *userClassesRepo) SelectByUserAndClass(ctx context.Context, userId uint
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
 		err = appErrors.WrapDbPrepare(err, statement)
-		return domains.UserClasses{}, err
+		return domains.UserClass{}, err
 	}
 	defer stmt.Close()
 
-	var userClasses domains.UserClasses
+	var userClasses domains.UserClass
 	row := stmt.QueryRow(userId, classId)
 	if err = row.Scan(
 		&userClasses.Id,
 		&userClasses.CreatedAt,
 		&userClasses.UpdatedAt,
 		&userClasses.DeletedAt,
-		&userClasses.UserId,
 		&userClasses.ClassId,
+		&userClasses.UserId,
 		&userClasses.AccountId,
 		&userClasses.State); err != nil {
 		err = appErrors.WrapDbExec(err, statement, userId, classId)
-		return domains.UserClasses{}, err
+		return domains.UserClass{}, err
 	}
 	return userClasses, nil
 }
 
-func (ur *userClassesRepo) SelectByNew(ctx context.Context) ([]domains.UserClasses, error) {
+func (ur *userClassRepo) SelectByNew(ctx context.Context) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByNew", logger.Fields{})
-	results := make([]domains.UserClasses, 0)
+	results := make([]domains.UserClass, 0)
 
 	now := time.Now().UTC()
 	week := time.Hour * 24 * 7
@@ -152,14 +152,14 @@ func (ur *userClassesRepo) SelectByNew(ctx context.Context) ([]domains.UserClass
 	defer rows.Close()
 
 	for rows.Next() {
-		var userClasses domains.UserClasses
+		var userClasses domains.UserClass
 		if errScan := rows.Scan(
 			&userClasses.Id,
 			&userClasses.CreatedAt,
 			&userClasses.UpdatedAt,
 			&userClasses.DeletedAt,
-			&userClasses.UserId,
 			&userClasses.ClassId,
+			&userClasses.UserId,
 			&userClasses.AccountId,
 			&userClasses.State); errScan != nil {
 			return results, errScan
@@ -169,13 +169,13 @@ func (ur *userClassesRepo) SelectByNew(ctx context.Context) ([]domains.UserClass
 	return results, nil
 }
 
-func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserClasses) (uint, error) {
+func (ur *userClassRepo) Insert(ctx context.Context, userClasses domains.UserClass) (uint, error) {
 	utils.LogWithContext(ctx, "userClassRepo.Insert", logger.Fields{"userClass": userClasses})
 	statement := "INSERT INTO user_classes (" +
 		"created_at, " +
 		"updated_at, " +
-		"user_id," +
 		"class_id," +
+		"user_id," +
 		"account_id," +
 		"state" +
 		") VALUES (?, ?, ?, ?, ?, ?)"
@@ -190,8 +190,8 @@ func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserC
 	execResult, err := stmt.Exec(
 		now,
 		now,
-		userClasses.UserId,
 		userClasses.ClassId,
+		userClasses.UserId,
 		userClasses.AccountId,
 		userClasses.State,
 	)
@@ -206,12 +206,12 @@ func (ur *userClassesRepo) Insert(ctx context.Context, userClasses domains.UserC
 	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
 }
 
-func (ur *userClassesRepo) Update(ctx context.Context, id uint, userClasses domains.UserClasses) error {
+func (ur *userClassRepo) Update(ctx context.Context, id uint, userClasses domains.UserClass) error {
 	utils.LogWithContext(ctx, "userClassRepo.Update", logger.Fields{"userClass": userClasses})
 	statement := "UPDATE user_classes SET " +
 		"updated_at=?, " +
-		"user_id=?, " +
 		"class_id=?, " +
+		"user_id=?, " +
 		"account_id=?, " +
 		"state=? " +
 		"WHERE id=?"
@@ -224,8 +224,8 @@ func (ur *userClassesRepo) Update(ctx context.Context, id uint, userClasses doma
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
-		userClasses.UserId,
 		userClasses.ClassId,
+		userClasses.UserId,
 		userClasses.AccountId,
 		userClasses.State,
 		id)
@@ -235,7 +235,7 @@ func (ur *userClassesRepo) Update(ctx context.Context, id uint, userClasses doma
 	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not updated")
 }
 
-func (ur *userClassesRepo) Delete(ctx context.Context, id uint) error {
+func (ur *userClassRepo) Delete(ctx context.Context, id uint) error {
 	utils.LogWithContext(ctx, "userClassRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM user_classes WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
@@ -252,8 +252,8 @@ func (ur *userClassesRepo) Delete(ctx context.Context, id uint) error {
 }
 
 // For Tests Only
-func CreateTestUserClassesRepo(ctx context.Context, db *sql.DB) UserClassesRepoInterface {
-	ur := &userClassesRepo{}
+func CreateTestUserClassRepo(ctx context.Context, db *sql.DB) UserClassRepoInterface {
+	ur := &userClassRepo{}
 	ur.Initialize(ctx, db)
 	return ur
 }

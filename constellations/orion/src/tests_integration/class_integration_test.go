@@ -5,17 +5,11 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
-
-var now = time.Date(2020, 3, 1, 0, 0, 0, 0, time.UTC)
-var later1 = now.Add(time.Hour * 24 * 30)
-var later2 = now.Add(time.Hour * 24 * 31)
-var later3 = now.Add(time.Hour * 24 * 60)
 
 // Test: Create 4 Classes and GetAll(false)
 func TestCreateClasses(t *testing.T) {
@@ -248,12 +242,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_spring",
 			ClassKey:        domains.NewNullString("class1"),
 			ClassId:         "program1_2020_spring_class1",
-			LocationId:      "churchill",
-			Times:           "3 pm - 5 pm",
+			LocationId:      "wchs",
+			TimesStr:        "3 pm - 5 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd34"),
 			FullState:       0,
 			PricePerSession: domains.NewNullUint(0),
-			PriceLump:       domains.NewNullUint(10),
+			PriceLumpSum:    domains.NewNullUint(10),
 			PaymentNotes:    domains.NewNullString(""),
 		}
 	case 2:
@@ -262,12 +256,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_spring",
 			ClassKey:        domains.NewNullString("class2"),
 			ClassId:         "program1_2020_spring_class2",
-			LocationId:      "churchill",
-			Times:           "5 pm - 7 pm",
+			LocationId:      "wchs",
+			TimesStr:        "5 pm - 7 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd35"),
 			FullState:       1,
 			PricePerSession: domains.NewNullUint(10),
-			PriceLump:       domains.NewNullUint(0),
+			PriceLumpSum:    domains.NewNullUint(0),
 			PaymentNotes:    domains.NewNullString("notes2"),
 		}
 	case 3:
@@ -276,12 +270,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_summer",
 			ClassKey:        domains.NewNullString("final_review"),
 			ClassId:         "program1_2020_summer_final_review",
-			LocationId:      "churchill",
-			Times:           "5 pm - 8 pm",
+			LocationId:      "wchs",
+			TimesStr:        "5 pm - 8 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd36"),
 			FullState:       2,
 			PricePerSession: domains.NewNullUint(0),
-			PriceLump:       domains.NewNullUint(20),
+			PriceLumpSum:    domains.NewNullUint(20),
 			PaymentNotes:    domains.NewNullString("notes3"),
 		}
 	case 4:
@@ -290,12 +284,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_summer",
 			ClassKey:        domains.NewNullString(""),
 			ClassId:         "program2_2020_summer",
-			LocationId:      "churchill",
-			Times:           "4 pm - 6 pm",
+			LocationId:      "wchs",
+			TimesStr:        "4 pm - 6 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd37"),
 			FullState:       0,
 			PricePerSession: domains.NewNullUint(20),
-			PriceLump:       domains.NewNullUint(0),
+			PriceLumpSum:    domains.NewNullUint(0),
 			PaymentNotes:    domains.NewNullString("notes4"),
 		}
 	default:
@@ -313,29 +307,11 @@ func createAllClasses(t *testing.T) {
 }
 
 func createAllProgramsSemestersLocations(t *testing.T) {
-	program1 := createProgram("program1", "Program1", 1, 3, "description1", 0)
-	program2 := createProgram("program2", "Program2", 6, 8, "description2", 1)
-	semester1 := createSemester(domains.SPRING, 2020)
-	semester2 := createSemester(domains.SUMMER, 2020)
-	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
-
-	body1 := utils.CreateJsonBody(&program1)
-	body2 := utils.CreateJsonBody(&program2)
-	body3 := utils.CreateJsonBody(&semester1)
-	body4 := utils.CreateJsonBody(&semester2)
-	body5 := utils.CreateJsonBody(&location1)
-
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
-	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
-	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body5)
-
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+	utils.SendCreateProgram(t, true, "program1", "Program1", 1, 3, "description1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "program2", "Program2", 6, 8, "description2", domains.FEATURED_POPULAR)
+	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
+	utils.SendCreateSemester(t, true, domains.SUMMER, 2020)
+	utils.SendCreateLocationWCHS(t)
 }
 
 func assertClass(t *testing.T, id int, class domains.Class) {
@@ -345,48 +321,48 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "3 pm - 5 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
-		assert.EqualValues(t, 10, class.PriceLump.Uint)
+		assert.EqualValues(t, 10, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "", class.PaymentNotes.String)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "5 pm - 7 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode.String)
 		assert.EqualValues(t, 1, class.FullState)
 		assert.EqualValues(t, 10, class.PricePerSession.Uint)
-		assert.EqualValues(t, 0, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes2", class.PaymentNotes.String)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "5 pm - 8 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode.String)
 		assert.EqualValues(t, 2, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
-		assert.EqualValues(t, 20, class.PriceLump.Uint)
+		assert.EqualValues(t, 20, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes3", class.PaymentNotes.String)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "4 pm - 6 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 20, class.PricePerSession.Uint)
-		assert.EqualValues(t, 0, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes4", class.PaymentNotes.String)
 	}
 }

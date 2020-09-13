@@ -18,21 +18,21 @@ const (
 var ALL_TRANSACTION_TYPES = []string{PAY_PAYPAL, PAY_CASH, PAY_CHECK, CHARGE, REFUND}
 
 type Transaction struct {
-	Id           uint       `json:"id"`
-	CreatedAt    time.Time  `json:"createdAt" db:"created_at"`
-	UpdatedAt    time.Time  `json:"updatedAt" db:"updated_at"`
-	DeletedAt    NullTime   `json:"-" db:"deleted_at"`
-	Amount       int        `json:"amount"`
-	PaymentType  string     `json:"paymentType" db:"payment_type"`
-	PaymentNotes NullString `json:"paymentNotes" db:"payment_notes"`
-	AccountId    uint       `json:"accountId" db:"account_id"`
+	Id        uint       `json:"id"`
+	CreatedAt time.Time  `json:"createdAt" db:"created_at"`
+	UpdatedAt time.Time  `json:"updatedAt" db:"updated_at"`
+	DeletedAt NullTime   `json:"-" db:"deleted_at"`
+	AccountId uint       `json:"accountId" db:"account_id"`
+	Amount    int        `json:"amount"`
+	Type      string     `json:"type" db:"type"`
+	Notes     NullString `json:"notes" db:"notes"`
 }
 
 func (transaction *Transaction) Validate() error {
 	messageFmt := "Invalid Transaction: %s"
 
 	amount := transaction.Amount
-	paymentType := transaction.PaymentType
+	paymentType := transaction.Type
 
 	if paymentType != PAY_PAYPAL &&
 		paymentType != PAY_CHECK &&

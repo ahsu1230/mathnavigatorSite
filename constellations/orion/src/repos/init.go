@@ -14,7 +14,7 @@ func SetupRepos(ctx context.Context, db *sql.DB) {
 	SemesterRepo.Initialize(ctx, db)
 	SessionRepo.Initialize(ctx, db)
 	UserRepo.Initialize(ctx, db)
-	UserClassesRepo.Initialize(ctx, db)
+	UserClassRepo.Initialize(ctx, db)
 	AccountRepo.Initialize(ctx, db)
 	AskForHelpRepo.Initialize(ctx, db)
 	UserAfhRepo.Initialize(ctx, db)

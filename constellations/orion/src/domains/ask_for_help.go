@@ -21,9 +21,9 @@ type AskForHelp struct {
 	CreatedAt  time.Time  `json:"-" db:"created_at"`
 	UpdatedAt  time.Time  `json:"-" db:"updated_at"`
 	DeletedAt  NullTime   `json:"-" db:"deleted_at"`
+	StartsAt   time.Time  `json:"startsAt" db:"starts_at"`
+	EndsAt     time.Time  `json:"endsAt" db:"ends_at"`
 	Title      string     `json:"title"`
-	Date       time.Time  `json:"date"`
-	TimeString string     `json:"timeString" db:"time_string"`
 	Subject    string     `json:"subject"`
 	LocationId string     `json:"locationId" db:"location_id"`
 	Notes      NullString `json:"notes"`
@@ -43,5 +43,11 @@ func (askForHelp *AskForHelp) Validate() error {
 	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
 		return fmt.Errorf(messageFmt, "Unrecognized subject")
 	}
+
+	// Time validation
+	if askForHelp.StartsAt.After(askForHelp.EndsAt) {
+		return fmt.Errorf(messageFmt, "Start time must be before end time")
+	}
+
 	return nil
 }

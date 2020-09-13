@@ -20,7 +20,7 @@ func GetUsersByClassId(c *gin.Context) {
 	classId := c.Param("classId")
 
 	ctx := utils.RetrieveContext(c)
-	userClasses, err := repos.UserClassesRepo.SelectByClassId(ctx, classId)
+	userClasses, err := repos.UserClassRepo.SelectByClassId(ctx, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -40,7 +40,7 @@ func GetClassesByUserId(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	userClasses, err := repos.UserClassesRepo.SelectByUserId(ctx, id)
+	userClasses, err := repos.UserClassRepo.SelectByUserId(ctx, id)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -61,7 +61,7 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 
 	ctx := utils.RetrieveContext(c)
 	classId := c.Param("classId")
-	userClasses, err := repos.UserClassesRepo.SelectByUserAndClass(ctx, id, classId)
+	userClasses, err := repos.UserClassRepo.SelectByUserAndClass(ctx, id, classId)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -73,7 +73,7 @@ func GetUserClassByUserAndClass(c *gin.Context) {
 func GetNewClasses(c *gin.Context) {
 	utils.LogControllerMethod(c, "userClassController.GetNewClasses")
 	ctx := utils.RetrieveContext(c)
-	userClasses, err := repos.UserClassesRepo.SelectByNew(ctx)
+	userClasses, err := repos.UserClassRepo.SelectByNew(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusBadRequest, err.Error())
@@ -85,7 +85,7 @@ func GetNewClasses(c *gin.Context) {
 func CreateUserClass(c *gin.Context) {
 	utils.LogControllerMethod(c, "userClassController.CreateUserClass")
 	// Incoming JSON
-	var userClassesJson domains.UserClasses
+	var userClassesJson domains.UserClass
 	if err := c.ShouldBindJSON(&userClassesJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
@@ -99,7 +99,7 @@ func CreateUserClass(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	id, err := repos.UserClassesRepo.Insert(ctx, userClassesJson)
+	id, err := repos.UserClassRepo.Insert(ctx, userClassesJson)
 	if err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
@@ -118,7 +118,7 @@ func UpdateUserClass(c *gin.Context) {
 		return
 	}
 
-	var userClassesJson domains.UserClasses
+	var userClassesJson domains.UserClass
 	if err := c.ShouldBindJSON(&userClassesJson); err != nil {
 		c.Error(appErrors.WrapBindJSON(err, c.Request))
 		c.Abort()
@@ -132,7 +132,7 @@ func UpdateUserClass(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	if err := repos.UserClassesRepo.Update(ctx, id, userClassesJson); err != nil {
+	if err := repos.UserClassRepo.Update(ctx, id, userClassesJson); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
@@ -151,7 +151,7 @@ func DeleteUserClass(c *gin.Context) {
 	}
 
 	ctx := utils.RetrieveContext(c)
-	if err := repos.UserClassesRepo.Delete(ctx, id); err != nil {
+	if err := repos.UserClassRepo.Delete(ctx, id); err != nil {
 		c.Error(appErrors.WrapRepo(err))
 		c.Abort()
 		return
