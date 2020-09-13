@@ -21,10 +21,12 @@ The `+` after the `]` means repetitive (one or more).
 Putting this part together `^[^ ]+` we have something that says, from the beginning of the string, one or more characters in a row that are not spaces.
 
 The second part of the regex is `@[^ ]+$`
-The `@` is a simple `@` symbol. Be careful when using symbols and backslashes -- if you don't have all of them memorized, you may wind up accidentally using an escape sequence or something else.
+The `@` is a simple `@` symbol. Be careful when using symbols and backslashes -- if you don't have all of them memorized, you may wind up accidentally using an escape sequence (i.e `\`) or something else.
 We've already done the `[^ ]+`, but as a refresher, it means a sequence of one or more non-space characters.
 The `$` means end of string.
 
 Putting the second part together, we have something that says, starting with an `@` sign, we have one or more non-space characters until the end of the string.
 
 Putting both parts together, we have, from the beginning of the string, a sequence of non-space characters until a `@` sign, and then more non-space characters until the end of the string.
+
+## What is Regex Escaping?
