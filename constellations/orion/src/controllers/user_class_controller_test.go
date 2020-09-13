@@ -16,16 +16,16 @@ import (
 )
 
 func TestGetUsersByClassIdSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByClassId = func(context.Context, string) ([]domains.UserClasses, error) {
-		return []domains.UserClasses{
-			testUtils.CreateMockUserClasses(
+	testUtils.UserClassRepo.MockSelectByClassId = func(context.Context, string) ([]domains.UserClass, error) {
+		return []domains.UserClass{
+			testUtils.CreateMockUserClass(
 				1,
 				1,
 				"abcd",
 				1,
 				domains.USER_CLASS_ACCEPTED,
 			),
-			testUtils.CreateMockUserClasses(
+			testUtils.CreateMockUserClass(
 				2,
 				2,
 				"abcd",
@@ -34,14 +34,14 @@ func TestGetUsersByClassIdSuccess(t *testing.T) {
 			),
 		}, nil
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/class/abcd", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass []domains.UserClasses
+	var userClass []domains.UserClass
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -62,16 +62,16 @@ func TestGetUsersByClassIdSuccess(t *testing.T) {
 }
 
 func TestGetClassesByUserIdSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserClasses, error) {
-		return []domains.UserClasses{
-			testUtils.CreateMockUserClasses(
+	testUtils.UserClassRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserClass, error) {
+		return []domains.UserClass{
+			testUtils.CreateMockUserClass(
 				1,
 				1,
 				"abcd",
 				1,
 				domains.USER_CLASS_ACCEPTED,
 			),
-			testUtils.CreateMockUserClasses(
+			testUtils.CreateMockUserClass(
 				2,
 				1,
 				"abce",
@@ -80,14 +80,14 @@ func TestGetClassesByUserIdSuccess(t *testing.T) {
 			),
 		}, nil
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass []domains.UserClasses
+	var userClass []domains.UserClass
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -108,8 +108,8 @@ func TestGetClassesByUserIdSuccess(t *testing.T) {
 }
 
 func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByUserAndClass = func(context.Context, uint, string) (domains.UserClasses, error) {
-		userClass := testUtils.CreateMockUserClasses(
+	testUtils.UserClassRepo.MockSelectByUserAndClass = func(context.Context, uint, string) (domains.UserClass, error) {
+		userClass := testUtils.CreateMockUserClass(
 			1,
 			1,
 			"abcd",
@@ -124,7 +124,7 @@ func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass domains.UserClasses
+	var userClass domains.UserClass
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -138,16 +138,16 @@ func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 }
 
 func TestGetUsersByNew(t *testing.T) {
-	testUtils.UserClassesRepo.MockSelectByNew = func(context.Context) ([]domains.UserClasses, error) {
-		return []domains.UserClasses{
-			testUtils.CreateMockUserClasses(
+	testUtils.UserClassRepo.MockSelectByNew = func(context.Context) ([]domains.UserClass, error) {
+		return []domains.UserClass{
+			testUtils.CreateMockUserClass(
 				1,
 				1,
 				"abcd",
 				1,
 				domains.USER_CLASS_ACCEPTED,
 			),
-			testUtils.CreateMockUserClasses(
+			testUtils.CreateMockUserClass(
 				2,
 				2,
 				"abcd",
@@ -156,14 +156,14 @@ func TestGetUsersByNew(t *testing.T) {
 			),
 		}, nil
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/new", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var userClass []domains.UserClasses
+	var userClass []domains.UserClass
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClass); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
@@ -187,13 +187,13 @@ func TestGetUsersByNew(t *testing.T) {
 // Test Create
 //
 func TestCreateUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+	testUtils.UserClassRepo.MockInsert = func(context.Context, domains.UserClass) (uint, error) {
 		return 42, nil
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClasses(
+	userClass := testUtils.CreateMockUserClass(
 		1,
 		1,
 		"abcd",
@@ -208,13 +208,13 @@ func TestCreateUserClassSuccess(t *testing.T) {
 }
 
 func TestCreateUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockInsert = func(context.Context, domains.UserClasses) (uint, error) {
+	testUtils.UserClassRepo.MockInsert = func(context.Context, domains.UserClass) (uint, error) {
 		return 0, appErrors.MockMySQLDuplicateEntryError()
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClasses(
+	userClass := testUtils.CreateMockUserClass(
 		1,
 		0,
 		"",
@@ -232,13 +232,13 @@ func TestCreateUserClassFailure(t *testing.T) {
 // Test Update
 //
 func TestUpdateUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
+	testUtils.UserClassRepo.MockUpdate = func(context.Context, uint, domains.UserClass) error {
 		return nil // Successful update
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClasses(
+	userClass := testUtils.CreateMockUserClass(
 		1,
 		1,
 		"abcd",
@@ -253,14 +253,14 @@ func TestUpdateUserClassSuccess(t *testing.T) {
 }
 
 func TestUpdateUserClassInvalid(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
+	testUtils.UserClassRepo.MockUpdate = func(context.Context, uint, domains.UserClass) error {
 		return appErrors.MockDbNoRowsError()
 	}
 	// no mock needed
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClasses(
+	userClass := testUtils.CreateMockUserClass(
 		1,
 		0,
 		"",
@@ -275,13 +275,13 @@ func TestUpdateUserClassInvalid(t *testing.T) {
 }
 
 func TestUpdateUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockUpdate = func(context.Context, uint, domains.UserClasses) error {
+	testUtils.UserClassRepo.MockUpdate = func(context.Context, uint, domains.UserClass) error {
 		return appErrors.MockDbNoRowsError()
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
-	userClass := testUtils.CreateMockUserClasses(
+	userClass := testUtils.CreateMockUserClass(
 		1,
 		1,
 		"abcd",
@@ -299,10 +299,10 @@ func TestUpdateUserClassFailure(t *testing.T) {
 // Test Delete
 //
 func TestDeleteUserClassSuccess(t *testing.T) {
-	testUtils.UserClassesRepo.MockDelete = func(context.Context, uint) error {
+	testUtils.UserClassRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
@@ -312,10 +312,10 @@ func TestDeleteUserClassSuccess(t *testing.T) {
 }
 
 func TestDeleteUserClassFailure(t *testing.T) {
-	testUtils.UserClassesRepo.MockDelete = func(context.Context, uint) error {
+	testUtils.UserClassRepo.MockDelete = func(context.Context, uint) error {
 		return appErrors.MockDbNoRowsError()
 	}
-	repos.UserClassesRepo = &testUtils.UserClassesRepo
+	repos.UserClassRepo = &testUtils.UserClassRepo
 
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-classes/user-class/1", nil)
@@ -333,8 +333,8 @@ func TestStateValuesSuccess(t *testing.T) {
 // Helper Methods
 //
 
-func createMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClasses {
-	return domains.UserClasses{
+func createMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClass {
+	return domains.UserClass{
 		Id:        id,
 		UserId:    userId,
 		ClassId:   classId,
@@ -343,7 +343,7 @@ func createMockUserClass(id uint, userId uint, classId string, accountId uint, s
 	}
 }
 
-func createBodyFromUserClass(userClass domains.UserClasses) io.Reader {
+func createBodyFromUserClass(userClass domains.UserClass) io.Reader {
 	marshal, err := json.Marshal(&userClass)
 	if err != nil {
 		panic(err)

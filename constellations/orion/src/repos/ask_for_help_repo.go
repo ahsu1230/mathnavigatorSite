@@ -141,7 +141,6 @@ func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domain
 	utils.LogWithContext(ctx, "afhRepo.Update", logger.Fields{"afh": askForHelp})
 	statement := "UPDATE ask_for_help SET " +
 		"updated_at=?, " +
-		"id=?, " +
 		"starts_at=?, " +
 		"ends_at=?, " +
 		"title=?, " +
@@ -158,7 +157,6 @@ func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domain
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		askForHelp.Id,
 		&askForHelp.StartsAt,
 		&askForHelp.EndsAt,
 		&askForHelp.Title,

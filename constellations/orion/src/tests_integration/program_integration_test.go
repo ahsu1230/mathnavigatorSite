@@ -13,18 +13,9 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func TestCreatePrograms(t *testing.T) {
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
-	program2 := createProgram("prog2", "Program2", 2, 3, "descript2", domains.FEATURED_POPULAR)
-	program3 := createProgram("prog3", "Program3", 2, 3, "descript3", domains.FEATURED_NONE)
-	body1 := utils.CreateJsonBody(&program1)
-	body2 := utils.CreateJsonBody(&program2)
-	body3 := utils.CreateJsonBody(&program3)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "prog2", "Program2", 2, 3, "descript2", domains.FEATURED_POPULAR)
+	utils.SendCreateProgram(t, true, "prog3", "Program3", 2, 3, "descript3", domains.FEATURED_NONE)
 
 	// Call Get All!
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/all", nil)
@@ -48,13 +39,26 @@ func TestCreatePrograms(t *testing.T) {
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
 func TestUniqueProgramId(t *testing.T) {
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
-	program2 := createProgram("prog1", "Program2", 2, 3, "descript2", domains.FEATURED_POPULAR) // Same programId
-	body1 := utils.CreateJsonBody(&program1)
-	body2 := utils.CreateJsonBody(&program2)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateProgram(
+		t,
+		true,
+		"prog1",
+		"Program1",
+		2,
+		3,
+		"descript1",
+		domains.FEATURED_NONE,
+	)
+	_, recorder2 := utils.SendCreateProgram(
+		t,
+		false,
+		"prog1", // Same programId
+		"Program2",
+		2,
+		3,
+		"descript2",
+		domains.FEATURED_POPULAR,
+	)
 	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 	errBody := recorder2.Body.String()
 	assert.Contains(t, errBody, "duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
@@ -76,13 +80,17 @@ func TestUniqueProgramId(t *testing.T) {
 // Test: Create 1 Program, Update it, GetByProgramId()
 func TestUpdateProgram(t *testing.T) {
 	// Create 1 Program
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
-	body1 := utils.CreateJsonBody(&program1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
 
 	// Update
-	updatedProgram := createProgram("prog2", "Program2a", 2, 3, "Description123", domains.FEATURED_POPULAR)
+	updatedProgram := domains.Program{
+		ProgramId:   "prog2",
+		Title:       "Program2a",
+		Grade1:      2,
+		Grade2:      3,
+		Description: "Description123",
+		Featured:    domains.FEATURED_POPULAR,
+	}
 	updatedBody := utils.CreateJsonBody(&updatedProgram)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -107,10 +115,7 @@ func TestUpdateProgram(t *testing.T) {
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func TestDeleteProgram(t *testing.T) {
 	// Create
-	program1 := createProgram("prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
-	body1 := utils.CreateJsonBody(&program1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/programs/program/prog1", nil)
@@ -121,23 +126,4 @@ func TestDeleteProgram(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
-}
-
-// Helper methods
-func createProgram(
-	programId string,
-	name string,
-	grade1 uint,
-	grade2 uint,
-	description string,
-	featured string,
-) domains.Program {
-	return domains.Program{
-		ProgramId:   programId,
-		Title:       name,
-		Grade1:      grade1,
-		Grade2:      grade2,
-		Description: description,
-		Featured:    featured,
-	}
 }

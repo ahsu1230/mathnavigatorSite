@@ -13,17 +13,17 @@ const (
 	USER_CLASS_TRIAL    uint = 2
 )
 
-type UserClasses struct {
+type UserClass struct {
 	Id        uint         `json:"id"`
 	CreatedAt time.Time    `json:"createdAt" db:"created_at"`
 	UpdatedAt time.Time    `json:"updatedAt" db:"updated_at"`
 	DeletedAt sql.NullTime `json:"-" db:"deleted_at"`
-	UserId    uint         `json:"userId" db:"user_id"`
 	ClassId   string       `json:"classId" db:"class_id"`
+	UserId    uint         `json:"userId" db:"user_id"`
 	AccountId uint         `json:"accountId" db:"account_id"`
 	State     uint         `json:"state" db:"state"`
 }
 
-func (userClasses *UserClasses) Validate() error {
+func (userClass *UserClass) Validate() error {
 	return nil
 }

@@ -59,8 +59,8 @@ func (ur *userAfhRepo) SelectByUserId(ctx context.Context, userId uint) ([]domai
 			&userAfh.CreatedAt,
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
-			&userAfh.UserId,
 			&userAfh.AfhId,
+			&userAfh.UserId,
 			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
@@ -92,8 +92,8 @@ func (ur *userAfhRepo) SelectByAfhId(ctx context.Context, afhId uint) ([]domains
 			&userAfh.CreatedAt,
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
-			&userAfh.UserId,
 			&userAfh.AfhId,
+			&userAfh.UserId,
 			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
@@ -119,8 +119,8 @@ func (ur *userAfhRepo) SelectByBothIds(ctx context.Context, userId, afhId uint) 
 		&userAfh.CreatedAt,
 		&userAfh.UpdatedAt,
 		&userAfh.DeletedAt,
-		&userAfh.UserId,
 		&userAfh.AfhId,
+		&userAfh.UserId,
 		&userAfh.AccountId); err != nil {
 		err = appErrors.WrapDbExec(err, statement, userId, afhId)
 		return domains.UserAfh{}, err
@@ -154,8 +154,8 @@ func (ur *userAfhRepo) SelectByNew(ctx context.Context) ([]domains.UserAfh, erro
 			&userAfh.CreatedAt,
 			&userAfh.UpdatedAt,
 			&userAfh.DeletedAt,
-			&userAfh.UserId,
 			&userAfh.AfhId,
+			&userAfh.UserId,
 			&userAfh.AccountId); errScan != nil {
 			return results, errScan
 		}
@@ -169,8 +169,8 @@ func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uin
 	statement := "INSERT INTO user_afhs (" +
 		"created_at, " +
 		"updated_at, " +
-		"user_id, " +
 		"afh_id, " +
+		"user_id, " +
 		"account_id" +
 		") VALUES (?, ?, ?, ?, ?)"
 
@@ -184,8 +184,8 @@ func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uin
 	execResult, err := stmt.Exec(
 		now,
 		now,
-		userAfh.UserId,
 		userAfh.AfhId,
+		userAfh.UserId,
 		userAfh.AccountId,
 	)
 	if err != nil {
@@ -202,8 +202,8 @@ func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uin
 func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.UserAfh) error {
 	utils.LogWithContext(ctx, "userAfhRepo.Update", logger.Fields{"userAfh": userAfh})
 	statement := "UPDATE user_afhs SET " +
-		"user_id=?, " +
 		"afh_id=?, " +
+		"user_id=?, " +
 		"account_id=?, " +
 		"updated_at=? " +
 		"WHERE id=?"
@@ -215,8 +215,8 @@ func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.User
 
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
-		userAfh.UserId,
 		userAfh.AfhId,
+		userAfh.UserId,
 		userAfh.AccountId,
 		now,
 		id,

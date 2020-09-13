@@ -11,45 +11,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test: Create 3 Users and GetAll()
+// Test: Create 3 Users and GetAll (new)
 func TestCreateUsers(t *testing.T) {
-	account1 := createAccountAndUser(1)
-	body1 := utils.CreateJsonBody(&account1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
-	account2 := createAccountAndUser(2)
-	body2 := utils.CreateJsonBody(&account2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-
-	user := createUser(3)
-	body := utils.CreateJsonBody(&user)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-
-	// Call Get All!
-	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
-	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
+	// Call Get All (new)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/new", nil)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
-
 	var users []domains.User
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &users); err != nil {
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, 1, users[0])
-	assert.EqualValues(t, 1, len(users))
-
-	if err := json.Unmarshal(recorder5.Body.Bytes(), &users); err != nil {
-		t.Errorf("unexpected error: %v\n", err)
-	}
-
-	assertUser(t, 2, users[0])
-	assertUser(t, 3, users[1])
-	assert.EqualValues(t, 2, len(users))
+	assertUser(t, utils.UserTonyStark, users[0])
+	assertUser(t, utils.UserMorganStark, users[1])
+	assertUser(t, utils.UserPeterParker, users[2])
+	assertUser(t, utils.UserNatasha, users[3])
+	assertUser(t, utils.UserPotter, users[4])
+	assert.EqualValues(t, 5, len(users))
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -58,23 +38,10 @@ func TestCreateUsers(t *testing.T) {
 
 // Test: Create 3 Users and search by pagination
 func TestSearchUsers(t *testing.T) {
-	account1 := createAccountAndUser(1)
-	body1 := utils.CreateJsonBody(&account1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-
-	account2 := createAccountAndUser(2)
-	body2 := utils.CreateJsonBody(&account2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-
-	user3 := createUser(3)
-	body3 := utils.CreateJsonBody(&user3)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
 	body := strings.NewReader(`{
-		"query": "smith"	
+		"query": "stark"	
 	}`)
 
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/search", body)
@@ -85,8 +52,8 @@ func TestSearchUsers(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 
-	assertUser(t, 1, users[0])
-	assertUser(t, 2, users[1])
+	assertUser(t, utils.UserTonyStark, users[0])
+	assertUser(t, utils.UserMorganStark, users[1])
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -94,60 +61,42 @@ func TestSearchUsers(t *testing.T) {
 
 // Test: Create 3 Users and GetUserByAccountId
 func TestGetUsersByAccountId(t *testing.T) {
-	account1 := createAccountAndUser(1)
-	body1 := utils.CreateJsonBody(&account1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
-	account2 := createAccountAndUser(2)
-	body2 := utils.CreateJsonBody(&account2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-
-	user3 := createUser(3)
-	body3 := utils.CreateJsonBody(&user3)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-
+	// Validate results (first call)
 	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
-	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
-
-	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-
 	var users []domains.User
 	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, 1, users[0])
-	assert.EqualValues(t, 1, len(users))
+	assertUser(t, utils.UserTonyStark, users[0])
+	assertUser(t, utils.UserMorganStark, users[1])
+	assertUser(t, utils.UserPeterParker, users[2])
+	assert.EqualValues(t, 3, len(users))
 
-	if err := json.Unmarshal(recorder4.Body.Bytes(), &users); err != nil {
+	// Validate results (second call)
+	recorder = utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-
-	assertUser(t, 2, users[0])
-	assertUser(t, 3, users[1])
-	assert.EqualValues(t, 2, len(users))
+	assertUser(t, utils.UserNatasha, users[0])
+	assert.EqualValues(t, 1, len(users))
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
-
 }
 
 // Test: Create 2 Users with the same email
 func TestCreateSameEmailUsersFailure(t *testing.T) {
-	account1 := createAccountAndUser(1)
-	body1 := utils.CreateJsonBody(&account1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Create account and user with same email
-	account2 := createAccountAndUser(2)
-	body2 := utils.CreateJsonBody(&account2)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body2)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	account1 := utils.AccountTonyStark
+	user1 := utils.UserTonyStark
+	_, recorder := utils.SendCreateAccountUser(t, false, account1, user1)
+	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -155,13 +104,21 @@ func TestCreateSameEmailUsersFailure(t *testing.T) {
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
 func TestUpdateUser(t *testing.T) {
-	account := createAccountAndUser(1)
-	body := utils.CreateJsonBody(&account)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Update
-	updatedUser := createUser(4)
+	updatedUser := domains.User{
+		AccountId:      1,
+		FirstName:      "Tony",
+		LastName:       "Stank",                         // changed
+		MiddleName:     domains.NewNullString("Edward"), // changed
+		Email:          "ironman@stark.com",             // changed
+		Phone:          "555-555-0101",
+		IsGuardian:     true,
+		Notes:          domains.NewNullString("Avengers CEO"),
+		School:         domains.NewNullString("MIT"), // changed
+		GraduationYear: domains.NewNullUint(0),
+	}
 	updatedBody := utils.CreateJsonBody(&updatedUser)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -175,7 +132,7 @@ func TestUpdateUser(t *testing.T) {
 	if err := json.Unmarshal(recorder3.Body.Bytes(), &user); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, 4, user)
+	assertUser(t, updatedUser, user)
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -183,10 +140,7 @@ func TestUpdateUser(t *testing.T) {
 
 // Test: Create 1 User, Delete it, GetByUserId()
 func TestDeleteUser(t *testing.T) {
-	account := createAccountAndUser(1)
-	body := utils.CreateJsonBody(&account)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
@@ -202,123 +156,15 @@ func TestDeleteUser(t *testing.T) {
 }
 
 // Helper methods
-func createUser(id int) domains.User {
-	switch id {
-	case 1:
-		return domains.User{
-			AccountId:      1,
-			FirstName:      "John",
-			LastName:       "Smith",
-			MiddleName:     domains.NewNullString("Middle"),
-			Email:          "john_smith@example.com",
-			Phone:          "555-555-0100",
-			IsGuardian:     true,
-			Notes:          domains.NewNullString("notes1"),
-			School:         domains.NewNullString("schoolone"),
-			GraduationYear: domains.NewNullUint(2001),
-		}
-	case 2:
-		return domains.User{
-			AccountId:      2,
-			FirstName:      "Bob",
-			LastName:       "Smith",
-			MiddleName:     domains.NewNullString("Middle"),
-			Email:          "bob_smith@example.com",
-			Phone:          "555-555-0101",
-			IsGuardian:     false,
-			Notes:          domains.NewNullString("notes2"),
-			School:         domains.NewNullString("schooltwo"),
-			GraduationYear: domains.NewNullUint(2002),
-		}
-	case 3:
-		return domains.User{
-			AccountId:      2,
-			FirstName:      "Foo",
-			LastName:       "Bar",
-			MiddleName:     domains.NewNullString("Smith"),
-			Email:          "foobar@example.com",
-			Phone:          "555-555-0102",
-			IsGuardian:     false,
-			Notes:          domains.NewNullString("notes3"),
-			School:         domains.NewNullString(""),
-			GraduationYear: domains.NewNullUint(0),
-		}
-	case 4:
-		return domains.User{
-			AccountId:      1,
-			FirstName:      "Austin",
-			LastName:       "Hsu",
-			MiddleName:     domains.NewNullString(""),
-			Email:          "austinhsu@example.com",
-			Phone:          "555-555-0103",
-			IsGuardian:     false,
-			Notes:          domains.NewNullString("notes4"),
-			School:         domains.NewNullString("schoolfour"),
-			GraduationYear: domains.NewNullUint(2004),
-		}
-	case 5:
-		return domains.User{
-			AccountId:      1,
-			FirstName:      "Jonathan",
-			LastName:       "Smith",
-			MiddleName:     domains.NewNullString(""),
-			Email:          "john_smith@example.com",
-			Phone:          "555-555-0103",
-			IsGuardian:     false,
-			Notes:          domains.NewNullString("notes5"),
-			School:         domains.NewNullString("schoolfive"),
-			GraduationYear: domains.NewNullUint(2004),
-		}
-	default:
-		return domains.User{}
-	}
-}
-
-func createAllUsers(t *testing.T) {
-	for i := 1; i < 4; i++ {
-		user := createUser(i)
-		body := utils.CreateJsonBody(&user)
-		recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/create", body)
-		assert.EqualValues(t, http.StatusOK, recorder.Code)
-	}
-}
-
-func assertUser(t *testing.T, id int, user domains.User) {
-	switch id {
-	case 1:
-		assert.EqualValues(t, 1, user.AccountId)
-		assert.EqualValues(t, "John", user.FirstName)
-		assert.EqualValues(t, "Smith", user.LastName)
-		assert.EqualValues(t, "Middle", user.MiddleName.String)
-		assert.EqualValues(t, "john_smith@example.com", user.Email)
-		assert.EqualValues(t, "555-555-0100", user.Phone)
-		assert.EqualValues(t, true, user.IsGuardian)
-		assert.EqualValues(t, "notes1", user.Notes.String)
-		assert.EqualValues(t, "schoolone", user.School.String)
-		assert.EqualValues(t, 2001, user.GraduationYear.Uint)
-	case 2:
-		assert.EqualValues(t, 2, user.AccountId)
-		assert.EqualValues(t, "Bob", user.FirstName)
-		assert.EqualValues(t, "Smith", user.LastName)
-		assert.EqualValues(t, "Middle", user.MiddleName.String)
-		assert.EqualValues(t, "bob_smith@example.com", user.Email)
-		assert.EqualValues(t, "555-555-0101", user.Phone)
-		assert.EqualValues(t, false, user.IsGuardian)
-		assert.EqualValues(t, "notes2", user.Notes.String)
-		assert.EqualValues(t, "schooltwo", user.School.String)
-		assert.EqualValues(t, 2002, user.GraduationYear.Uint)
-	case 3:
-		assert.EqualValues(t, 2, user.AccountId)
-		assert.EqualValues(t, "Foo", user.FirstName)
-		assert.EqualValues(t, "Bar", user.LastName)
-		assert.EqualValues(t, "Smith", user.MiddleName.String)
-		assert.EqualValues(t, "foobar@example.com", user.Email)
-		assert.EqualValues(t, "555-555-0102", user.Phone)
-		assert.EqualValues(t, false, user.IsGuardian)
-		assert.EqualValues(t, "notes3", user.Notes.String)
-		assert.EqualValues(t, "", user.School.String)
-		assert.EqualValues(t, 0, user.GraduationYear.Uint)
-
-	}
-
+func assertUser(t *testing.T, expectedUser domains.User, user domains.User) {
+	assert.EqualValues(t, expectedUser.AccountId, user.AccountId)
+	assert.EqualValues(t, expectedUser.FirstName, user.FirstName)
+	assert.EqualValues(t, expectedUser.LastName, user.LastName)
+	assert.EqualValues(t, expectedUser.MiddleName.String, user.MiddleName.String)
+	assert.EqualValues(t, expectedUser.Email, user.Email)
+	assert.EqualValues(t, expectedUser.Phone, user.Phone)
+	assert.EqualValues(t, expectedUser.IsGuardian, user.IsGuardian)
+	assert.EqualValues(t, expectedUser.Notes.String, user.Notes.String)
+	assert.EqualValues(t, expectedUser.School.String, user.School.String)
+	assert.EqualValues(t, expectedUser.GraduationYear.Uint, user.GraduationYear.Uint)
 }

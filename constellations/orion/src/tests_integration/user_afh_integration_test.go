@@ -37,7 +37,11 @@ func TestGetUserAfhsByAfhId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Update
-	updatedUserAfh := createUserAfh(2, 1, 1)
+	updatedUserAfh := domains.UserAfh{
+		AfhId:     1,
+		UserId:    2,
+		AccountId: 1,
+	}
 	updatedBod := utils.CreateJsonBody(&updatedUserAfh)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/user-afh/1", updatedBod)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -103,52 +107,44 @@ func TestGetUserAfhsByBothIds(t *testing.T) {
 func createAllUserAfhs(t *testing.T) {
 	createUsersAndAfhs(t)
 
-	userAfh1 := createUserAfh(1, 1, 1)
-	userAfh2 := createUserAfh(1, 2, 1)
-	userAfh3 := createUserAfh(2, 2, 1)
+	// AfhId(1) attended by User(1) from Account(1)
+	utils.SendCreateUserAfh(t, true, 1, 1, 1)
 
-	body1 := utils.CreateJsonBody(&userAfh1)
-	body2 := utils.CreateJsonBody(&userAfh2)
-	body3 := utils.CreateJsonBody(&userAfh3)
+	// AfhId(2) attended by User(1) from Account(1)
+	utils.SendCreateUserAfh(t, true, 2, 1, 1)
 
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body3)
-
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	// AfhId(2) attended by User(2) from Account(1)
+	utils.SendCreateUserAfh(t, true, 2, 2, 1)
 }
 
 func createUsersAndAfhs(t *testing.T) {
-	// Create accounts
-	account := createAccountAndUser(1)
-	body := utils.CreateJsonBody(&account)
-	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body)
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
-
-	account0 := createAccountAndUser(2)
-	body0 := utils.CreateJsonBody(&account0)
-	recorder0 := utils.SendHttpRequest(t, http.MethodPost, "/api/accounts/create", body0)
-	assert.EqualValues(t, http.StatusOK, recorder0.Code)
+	// Create 2 Accounts
+	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
+	utils.SendCreateAccountUser(t, true, utils.AccountNatasha, utils.UserNatasha)
 
 	// Create locations
-	location1 := createLocation("wchs", "Winston Churchill High School", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
-	location2 := createLocation("room12", "Sesame High School", "123 Sesame St", "Rockville", "MD", "20814", "Room 8")
-	locBody1 := utils.CreateJsonBody(&location1)
-	locBody2 := utils.CreateJsonBody(&location2)
-	locRecorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", locBody1)
-	locRecorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", locBody2)
-	assert.EqualValues(t, http.StatusOK, locRecorder1.Code)
-	assert.EqualValues(t, http.StatusOK, locRecorder2.Code)
+	utils.SendCreateLocationWCHS(t)
+	utils.SendCreateLocation(
+		t,
+		true,
+		"room12",
+		"Sesame High School",
+		"123 Sesame St",
+		"Rockville",
+		"MD",
+		"20814",
+		"Room 8",
+		false,
+	)
 
 	// Create AFHs
 	start1 := time.Now().UTC()
 	end1 := start1.Add(time.Hour * 1)
 	start2 := start1.Add(time.Hour * 7)
 	end2 := start2.Add(time.Hour * 1)
-	afh1 := createAFH(
-		1,
+	utils.SendCreateAskForHelp(
+		t,
+		true,
 		start1,
 		end1,
 		"AP Calculus Help",
@@ -156,8 +152,9 @@ func createUsersAndAfhs(t *testing.T) {
 		"wchs",
 		"test note",
 	)
-	afh2 := createAFH(
-		2,
+	utils.SendCreateAskForHelp(
+		t,
+		true,
 		start2,
 		end2,
 		"AP Statistics Help",
@@ -165,23 +162,6 @@ func createUsersAndAfhs(t *testing.T) {
 		"room12",
 		"test note 2",
 	)
-
-	body1 := utils.CreateJsonBody(&afh1)
-	body2 := utils.CreateJsonBody(&afh2)
-
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/askforhelp/create", body2)
-
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-}
-
-func createUserAfh(userId, afhId, accountId uint) domains.UserAfh {
-	return domains.UserAfh{
-		UserId:    userId,
-		AfhId:     afhId,
-		AccountId: accountId,
-	}
 }
 
 func resetUserAfhTables(t *testing.T) {

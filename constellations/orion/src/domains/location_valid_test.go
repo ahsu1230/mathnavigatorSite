@@ -108,6 +108,7 @@ func TestValidLocationStreet(t *testing.T) {
 	}
 
 	location.Street = domains.NewNullString("")
+	location.IsOnline = true
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -159,6 +160,7 @@ func TestValidLocationCity(t *testing.T) {
 	}
 
 	location.City = domains.NewNullString("")
+	location.IsOnline = true
 	if err := location.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -280,5 +282,49 @@ func TestValidLocationRoom(t *testing.T) {
 	location.Room = domains.NewNullString("#@!*")
 	if err := location.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid room")
+	}
+}
+
+func TestValidLocationIsOnline(t *testing.T) {
+	// Checks for valid online location
+	location := domains.Location{
+		LocationId: "xkcd",
+		Title:      "Online Zoom",
+		Street:     domains.NewNullString(""),
+		City:       domains.NewNullString(""),
+		State:      domains.NewNullString(""),
+		Zipcode:    domains.NewNullString(""),
+		IsOnline:   true,
+	}
+	if err := location.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	// Checks for valid physical location
+	location = domains.Location{
+		LocationId: "xkcd",
+		Title:      "School1",
+		Street:     domains.NewNullString("4040 Cherry Rd"),
+		City:       domains.NewNullString("Potomac"),
+		State:      domains.NewNullString("MD"),
+		Zipcode:    domains.NewNullString("20854"),
+		IsOnline:   false,
+	}
+	if err := location.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	// Check for invalid location (marked not-online, but no physical address)
+	location = domains.Location{
+		LocationId: "xkcd",
+		Title:      "School1",
+		Street:     domains.NewNullString(""),
+		City:       domains.NewNullString(""),
+		State:      domains.NewNullString(""),
+		Zipcode:    domains.NewNullString(""),
+		IsOnline:   false,
+	}
+	if err := location.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid title")
 	}
 }

@@ -12,18 +12,9 @@ import (
 
 // Test: Create 3 Achievements and GetAll(false)
 func TestCreateAchievements(t *testing.T) {
-	achieve1 := createAchievement(2020, "message1", 1)
-	achieve2 := createAchievement(2021, "message2", 2)
-	achieve3 := createAchievement(2022, "message3", 3)
-	body1 := utils.CreateJsonBody(&achieve1)
-	body2 := utils.CreateJsonBody(&achieve2)
-	body3 := utils.CreateJsonBody(&achieve3)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
+	utils.SendCreateAchievement(t, true, 2021, "message2", 2)
+	utils.SendCreateAchievement(t, true, 2022, "message3", 3)
 
 	// Call Get All!
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/achievements/all", nil)
@@ -53,22 +44,10 @@ func TestCreateAchievements(t *testing.T) {
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
 func TestGetAllAchievementsGroupedByYear(t *testing.T) {
-	achieve1 := createAchievement(2020, "message1", 1)
-	achieve2 := createAchievement(2021, "message2", 2)
-	achieve3 := createAchievement(2022, "message3", 3)
-	achieve4 := createAchievement(2021, "message4", 4)
-	body1 := utils.CreateJsonBody(&achieve1)
-	body2 := utils.CreateJsonBody(&achieve2)
-	body3 := utils.CreateJsonBody(&achieve3)
-	body4 := utils.CreateJsonBody(&achieve4)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body3)
-	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body4)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
+	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
+	utils.SendCreateAchievement(t, true, 2021, "message2", 2)
+	utils.SendCreateAchievement(t, true, 2022, "message3", 3)
+	utils.SendCreateAchievement(t, true, 2021, "message4", 4)
 
 	// Call Get All!
 	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/achievements/years", nil)
@@ -99,13 +78,14 @@ func TestGetAllAchievementsGroupedByYear(t *testing.T) {
 // Test: Create 1 Achievement, Update it, GetById()
 func TestUpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
-	achieve1 := createAchievement(2020, "message1", 1)
-	body1 := utils.CreateJsonBody(&achieve1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 
 	// Update
-	updatedAchieve := createAchievement(2021, "message2", 2)
+	updatedAchieve := domains.Achieve{
+		Year:     2021,
+		Message:  "message2",
+		Position: 2,
+	}
 	updatedBody := utils.CreateJsonBody(&updatedAchieve)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/achievement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -122,6 +102,7 @@ func TestUpdateAchievement(t *testing.T) {
 	assert.EqualValues(t, 1, achieve.Id)
 	assert.EqualValues(t, 2021, achieve.Year)
 	assert.EqualValues(t, "message2", achieve.Message)
+	assert.EqualValues(t, 2, achieve.Position)
 
 	utils.ResetTable(t, domains.TABLE_ACHIEVEMENTS)
 }
@@ -129,10 +110,7 @@ func TestUpdateAchievement(t *testing.T) {
 // Test: Create 1 Achievement, Delete it, GetById()
 func TestDeleteAchievement(t *testing.T) {
 	// Create
-	achieve1 := createAchievement(2020, "message1", 1)
-	body1 := utils.CreateJsonBody(&achieve1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/achievements/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/achievements/achievement/1", nil)
@@ -143,13 +121,4 @@ func TestDeleteAchievement(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_ACHIEVEMENTS)
-}
-
-// Helper methods
-func createAchievement(year uint, message string, position uint) domains.Achieve {
-	return domains.Achieve{
-		Year:     year,
-		Message:  message,
-		Position: position,
-	}
 }

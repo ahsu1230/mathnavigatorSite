@@ -45,6 +45,12 @@ func (location *Location) Validate() error {
 		return fmt.Errorf(messageFmt, "Invalid Title")
 	}
 
+	// IsOnline validation
+	// If class is NOT online, street, city, etc. must all be filled.
+	if !location.IsOnline && (!street.Valid || !city.Valid || !state.Valid || !zipcode.Valid) {
+		return fmt.Errorf(messageFmt, "Non-online class MUST have a physical address")
+	}
+
 	// Street validation
 	if street.Valid {
 		if matches, _ := regexp.MatchString(REGEX_STREET, street.String); !matches {

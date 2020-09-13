@@ -31,8 +31,8 @@ func TestSelectByUserId(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"UserId",
 		"AfhId",
+		"UserId",
 		"AccountId",
 	}).AddRow(
 		1,
@@ -59,8 +59,8 @@ func TestSelectByUserId(t *testing.T) {
 			CreatedAt: testUtils.TimeNow,
 			UpdatedAt: testUtils.TimeNow,
 			DeletedAt: sql.NullTime{},
-			UserId:    2,
-			AfhId:     3,
+			AfhId:     2,
+			UserId:    3,
 			AccountId: 1,
 		},
 	}
@@ -83,8 +83,8 @@ func TestSelectByAfhId(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"UserId",
 		"AfhId",
+		"UserId",
 		"AccountId",
 	}).AddRow(
 		1,
@@ -111,8 +111,8 @@ func TestSelectByAfhId(t *testing.T) {
 			CreatedAt: testUtils.TimeNow,
 			UpdatedAt: testUtils.TimeNow,
 			DeletedAt: sql.NullTime{},
-			UserId:    2,
-			AfhId:     3,
+			AfhId:     2,
+			UserId:    3,
 			AccountId: 1,
 		},
 	}
@@ -135,8 +135,8 @@ func TestSelectByBothIds(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"UserId",
 		"AfhId",
+		"UserId",
 		"AccountId",
 	}).AddRow(
 		1,
@@ -162,8 +162,8 @@ func TestSelectByBothIds(t *testing.T) {
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
 		DeletedAt: sql.NullTime{},
-		UserId:    2,
-		AfhId:     3,
+		AfhId:     2,
+		UserId:    3,
 		AccountId: 1,
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -185,8 +185,8 @@ func TestSelectByNew(t *testing.T) {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"UserId",
 		"AfhId",
+		"UserId",
 		"AccountId",
 	}).AddRow(
 		1,
@@ -212,8 +212,8 @@ func TestSelectByNew(t *testing.T) {
 			CreatedAt: testUtils.TimeNow,
 			UpdatedAt: testUtils.TimeNow,
 			DeletedAt: sql.NullTime{},
-			UserId:    2,
-			AfhId:     3,
+			AfhId:     2,
+			UserId:    3,
 			AccountId: 1,
 		},
 	}
@@ -234,11 +234,11 @@ func TestInsertUserAfh(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO user_afhs").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 2, 3, 1).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 3, 2, 1).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
-		UserId:    2,
 		AfhId:     3,
+		UserId:    2,
 		AccountId: 1,
 	}
 	_, err := repo.Insert(testUtils.Context, userAfh)
@@ -261,12 +261,12 @@ func TestUpdateUserAfh(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE user_afhs SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(3, 3, 2, sqlmock.AnyArg(), 1).
+		WithArgs(4, 3, 2, sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
 	userAfh := domains.UserAfh{
 		Id:        1,
+		AfhId:     4,
 		UserId:    3,
-		AfhId:     3,
 		AccountId: 2,
 	}
 	err := repo.Update(testUtils.Context, 1, userAfh)

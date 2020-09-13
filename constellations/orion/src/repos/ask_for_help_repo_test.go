@@ -123,7 +123,6 @@ func TestUpdateAFH(t *testing.T) {
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			2,
 			start,
 			end,
 			"AP Stat Help",
@@ -133,7 +132,6 @@ func TestUpdateAFH(t *testing.T) {
 			1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
-		Id:         2,
 		StartsAt:   start,
 		EndsAt:     end,
 		Title:      "AP Stat Help",
