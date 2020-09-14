@@ -94,7 +94,8 @@ func createUserJson(
 		"notes": "%s",
 		"isGuardian": %t,
 		"school": "%s",
-		"graduationYear": %d
+		"graduationYear": %d,
+		"isAdminCreated": true
 	}`,
 		accountId,
 		firstName,
@@ -124,8 +125,8 @@ func CreateTransaction(
 	paymentNotes string) (uint, error) {
 	transactionBody := strings.NewReader(fmt.Sprintf(`{
 		"amount": %d,
-		"paymentType": "%s",
-		"paymentNotes": "%s",
+		"type": "%s",
+		"notes": "%s",
 		"accountId": %d
 		}`,
 		amount,

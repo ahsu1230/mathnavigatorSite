@@ -92,18 +92,22 @@ func runFiller() {
 	// Create locations
 	createLocation(
 		"wchs",
+		"Winston Churchill High School",
 		"11300 Gainsborough Rd",
 		"Potomac",
 		"MD",
 		"20854",
+		"Room 110",
 	)
 
 	createLocation(
 		"house1",
+		"Sesame House",
 		"123 Sesame St",
 		"Rockville",
 		"MD",
 		"20854",
+		"",
 	)
 
 	// Create achievements
@@ -235,7 +239,6 @@ func runFiller() {
 	createAFH(
 		date,
 		"AP Java Office Hours",
-		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
 		"",
@@ -244,7 +247,6 @@ func runFiller() {
 	afhId1, _ := createAFH(
 		date,
 		"AP Java Office Hours",
-		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
 		"Final Project AMA",
@@ -253,7 +255,6 @@ func runFiller() {
 	afhId2, _ := createAFH(
 		date,
 		"AP Java Office Hours",
-		"3:00pm - 4:00pm",
 		"programming",
 		"wchs",
 		"Please bring your exam notes to review!",
@@ -263,14 +264,15 @@ func runFiller() {
 	account2.Fill(afhId1, afhId2)
 }
 
-func createProgram(programId string, name string, grade1, grade2 int, description string) (uint, error) {
+func createProgram(programId string, title string, grade1, grade2 int, description string) (uint, error) {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
-		"name": "%s",
+		"title": "%s",
 		"grade1": %d,
 		"grade2": %d,
-		"description": "%s"
-	}`, programId, name, grade1, grade2, description))
+		"description": "%s",
+		"featured": "none"
+	}`, programId, title, grade1, grade2, description))
 	log.Println("Creating program " + programId + "...")
 	respBody := utils.SendPostRequest("/api/programs/create", programBody)
 	id, _ := utils.GetIdFromBody(respBody)
@@ -288,14 +290,16 @@ func createSemester(season string, year int) (uint, error) {
 	return id, nil
 }
 
-func createLocation(locationId, street, city, state, zipcode string) (uint, error) {
+func createLocation(locationId, title, street, city, state, zipcode, room string) (uint, error) {
 	locationBody := strings.NewReader(fmt.Sprintf(`{
 		"locationId": "%s",
+		"title": "%s",
 		"street": "%s",
 		"city": "%s",
 		"state": "%s",
-		"zipcode": "%s"
-	}`, locationId, street, city, state, zipcode))
+		"zipcode": "%s",
+		"room": "%s"
+	}`, locationId, title, street, city, state, zipcode, room))
 	log.Println("Creating location " + locationId + "...")
 	respBody := utils.SendPostRequest("/api/locations/create", locationBody)
 	id, _ := utils.GetIdFromBody(respBody)
@@ -330,11 +334,7 @@ func createAnnounce(author, message, onHomePage string) (uint, error) {
 }
 
 func createClass(programId, semesterId, classKey, classId, locationId, times string) (uint, error) {
-	now := time.Now().UTC()
-	nowJson, _ := now.MarshalJSON()
-	var later = now.Add(time.Hour * 24 * 30)
-	laterJson, _ := later.MarshalJSON()
-	priceLump := 800
+	priceLumpSum := 800
 
 	classBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
@@ -342,10 +342,8 @@ func createClass(programId, semesterId, classKey, classId, locationId, times str
 		"classKey": "%s",
 		"classId": "%s",
 		"locationId": "%s",
-		"times": "%s",
-		"startDate": %s,
-		"endDate": %s,
-		"priceLump": %d
+		"timesStr": "%s",
+		"priceLumpSum": %d
 	}`,
 		programId,
 		semesterId,
@@ -353,9 +351,7 @@ func createClass(programId, semesterId, classKey, classId, locationId, times str
 		classId,
 		locationId,
 		times,
-		nowJson,
-		laterJson,
-		priceLump,
+		priceLumpSum,
 	))
 	log.Println("Creating class " + classId + "...")
 	respBody := utils.SendPostRequest("/api/classes/create", classBody)
@@ -396,16 +392,18 @@ func createSessions(classId, cancelled string, numSessions int) ([]uint, error) 
 	return ids, nil
 }
 
-func createAFH(time time.Time, title, timeString, subject, locationId, notes string) (uint, error) {
-	timeJson, _ := time.MarshalJSON()
+func createAFH(startsAt time.Time, title, subject, locationId, notes string) (uint, error) {
+	startJson, _ := startsAt .MarshalJSON()
+	endsAt := startsAt.Add(time.Hour * 1)
+	endJson, _ := endsAt.MarshalJSON()
 	body := strings.NewReader(fmt.Sprintf(`{
-		"date": %s,
+		"startsAt": %s,
+		"endsAt": %s,
 		"title": "%s",
-		"timeString": "%s",
 		"subject": "%s",
 		"locationId": "%s",
 		"notes": "%s"
-	}`, timeJson, title, timeString, subject, locationId, notes))
+	}`, startJson, endJson, title, subject, locationId, notes))
 	log.Println("Creating afh " + title + " (" + subject + ") ...")
 	respBody := utils.SendPostRequest("/api/askforhelp/create", body)
 	id, _ := utils.GetIdFromBody(respBody)

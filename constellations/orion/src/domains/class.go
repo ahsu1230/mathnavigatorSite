@@ -29,7 +29,7 @@ type Class struct {
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
-	PriceLumpSum    NullUint   `json:"priceLump" db:"price_lump_sum"`
+	PriceLumpSum    NullUint   `json:"priceLumpSum" db:"price_lump_sum"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 
