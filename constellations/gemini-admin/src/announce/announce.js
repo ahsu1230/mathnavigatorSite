@@ -3,7 +3,8 @@ require("./announce.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import AllPageHeader from "../utils/allPageHeader.js";
+import RowCardBasic from "../utils/rowCardBasic.js";
 
 export class AnnouncePage extends React.Component {
     constructor(props) {
@@ -59,81 +60,111 @@ export class AnnouncePage extends React.Component {
     };
 
     render() {
-        const rows = this.state.list.map((row, index) => {
+        const cards = this.state.list.map((announce, index) => {
+            const postedAt = moment(announce.postedAt);
+            const fields = generateFields(announce);
+            const texts = generateTexts(announce);
             return (
-                <li key={index}>
-                    <AnnounceRow
+                <div className="card-wrapper" key={index}>
+                    <RowCardBasic
                         key={index}
-                        row={row}
-                        onChangeCheckbox={this.onChangeCheckbox}
+                        title={"Announcement on " + postedAt.format("M/D/YYYY")}
+                        subtitle={postedAt.format("hh:mm a")}
+                        editUrl={"/announcements/" + announce.id + "/edit"}
+                        fields={fields}
+                        texts={texts}
                     />
-                </li>
+                </div>
             );
         });
-        const numRows = rows.length;
+
         return (
             <div id="view-announce">
-                <h1>All Announcements ({numRows}) </h1>
-
-                <ul className="announce-list-row subheader">
-                    <li className="li-small">OnHomePage</li>
-                    <li className="li-small">State</li>
-                    <li className="li-small">Date</li>
-                    <li className="li-small">Author</li>
-                    <li className="li-large">Message</li>
-                </ul>
-
-                <ul id="announce-list">{rows}</ul>
-                <Link to={"/announcements/add"}>
-                    <button className="announcement-button">
-                        Add Announcement
-                    </button>
-                </Link>
+                <AllPageHeader
+                    title={"All Announcements (" + this.state.list.length + ")"}
+                    addUrl={"/announcements/add"}
+                    addButtonTitle={"Add Announcement"}
+                    description={
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                    }
+                />
+                <div className="cards">{cards}</div>
             </div>
         );
     }
 }
 
-class AnnounceRow extends React.Component {
-    render() {
-        const announceId = this.props.row.id;
-        const postedAt = moment(this.props.row.postedAt);
-
-        const checked = this.props.row.onHomePage || false;
-
-        const now = moment();
-        const isScheduled = postedAt.isAfter(now);
-
-        const author = this.props.row.author;
-        const message = this.props.row.message;
-
-        const url = "/announcements/" + announceId + "/edit";
-        return (
-            <ul className="announce-list-row">
-                <li className="li-small">
-                    <input
-                        type="checkbox"
-                        onChange={this.props.onChangeCheckbox}
-                        id={announceId}
-                        checked={checked}
-                    />
-                </li>
-                <li
-                    className={
-                        "li-small " +
-                        (isScheduled ? " scheduled" : " published")
-                    }>
-                    <div>{isScheduled ? "Scheduled" : "Published"}</div>
-                    <div>{postedAt.fromNow()}</div>
-                </li>
-                <li className="li-small">
-                    <div>{postedAt.format("M/D/YYYY")}</div>
-                    <div>{postedAt.format("hh:mm a")}</div>
-                </li>
-                <li className="li-small"> {author} </li>
-                <li className="li-large"> {message} </li>
-                <Link to={url}>Edit</Link>
-            </ul>
-        );
-    }
+function generateFields(announce) {
+    const now = moment();
+    const postedAt = moment(announce.postedAt);
+    const isPublic = postedAt.isAfter(now);
+    return [
+        {
+            label: "Author",
+            value: announce.author,
+        },
+        {
+            label: "OnHomePage",
+            value: announce.onHomePage ? "true" : "false",
+            highlightFn: () => announce.onHomePage,
+        },
+        {
+            label: "Posted",
+            value: isPublic ? "Published" : "Scheduled",
+            highlightFn: () => !isPublic,
+        },
+    ];
 }
+
+function generateTexts(announce) {
+    return [
+        {
+            label: "Message",
+            value: announce.message,
+        },
+    ];
+}
+
+// class AnnounceRow extends React.Component {
+//     render() {
+//         const announceId = this.props.row.id;
+//         const postedAt = moment(this.props.row.postedAt);
+
+//         const checked = this.props.row.onHomePage || false;
+
+//         const now = moment();
+//         const isScheduled = postedAt.isAfter(now);
+
+//         const author = this.props.row.author;
+//         const message = this.props.row.message;
+
+//         const url = "/announcements/" + announceId + "/edit";
+//         return (
+//             <ul className="announce-list-row">
+//                 <li className="li-small">
+//                     <input
+//                         type="checkbox"
+//                         onChange={this.props.onChangeCheckbox}
+//                         id={announceId}
+//                         checked={checked}
+//                     />
+//                 </li>
+//                 <li
+//                     className={
+//                         "li-small " +
+//                         (isScheduled ? " scheduled" : " published")
+//                     }>
+//                     <div>{isScheduled ? "Scheduled" : "Published"}</div>
+//                     <div>{postedAt.fromNow()}</div>
+//                 </li>
+//                 <li className="li-small">
+//                     <div>{postedAt.format("M/D/YYYY")}</div>
+//                     <div>{postedAt.format("hh:mm a")}</div>
+//                 </li>
+//                 <li className="li-small"> {author} </li>
+//                 <li className="li-large"> {message} </li>
+//                 <Link to={url}>Edit</Link>
+//             </ul>
+//         );
+//     }
+// }
