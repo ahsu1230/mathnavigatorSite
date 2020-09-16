@@ -56,8 +56,8 @@ export class AskForHelpPage extends React.Component {
 
 function generateFields(afh) {
     const date = moment(afh.startsAt).format("dddd, MMMM Do YYYY");
-    const startTime = moment(afh.startsAt).format("h:mm:ss a");
-    const endTime = moment(afh.endsAt).format("h:mm:ss a");
+    const startTime = moment(afh.startsAt).format("h:mm a");
+    const endTime = moment(afh.endsAt).format("h:mm a");
 
     return [
         {

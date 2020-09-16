@@ -20,7 +20,7 @@ export default class RowCardGroup extends RowCardBasic {
             return (
                 <div className="group" key={index}>
                     <Link className="edit-url" to={obj.editUrl}>
-                        Edit
+                        Edit >
                     </Link>
                     {rowFields}
                     {rowTexts}

@@ -1,10 +1,11 @@
 "use strict";
 require("./session.sass");
 import React from "react";
+import moment from "moment";
 import API from "../api.js";
 import { getCurrentClassId, setCurrentClassId } from "./../localStorage.js";
 import { SessionAdd } from "./sessionAdd.js";
-import { SessionList } from "./sessionList.js";
+import RowCardBasic from "../utils/rowCardBasic.js";
 
 export class SessionPage extends React.Component {
     state = {
@@ -84,18 +85,35 @@ export class SessionPage extends React.Component {
 
         let sessionsList = <div></div>;
         if (this.state.sessions.length != 0) {
-            sessionsList = (
-                <SessionList
-                    classId={this.state.classId}
-                    sessions={this.state.sessions}
-                />
-            );
+            sessionsList = this.state.sessions.map((session, index) => {
+                const startsAt = moment(session.startsAt);
+                const fields = generateFields(session);
+                const texts = generateTexts(session);
+                return (
+                    <RowCardBasic
+                        key={index}
+                        title={startsAt.format("l")}
+                        editUrl={"/sessions/" + session.id + "/edit"}
+                        fields={fields}
+                        texts={texts}
+                    />
+                );
+            });
+        } else {
+            sessionsList = <div>No sessions for this class</div>;
         }
 
         return (
             <div id="view-session">
+                <section className="header-section">
+                    <h1>Sessions per class</h1>
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem I
+                    </p>
+                </section>
                 <section id="select-class">
-                    <h1>Select Class</h1>
+                    <h2>Select Class</h2>
                     <select
                         id="dropdown"
                         value={this.state.classId}
@@ -107,8 +125,47 @@ export class SessionPage extends React.Component {
                     classId={this.state.classId}
                     addSessions={this.addSessions}
                 />
-                {sessionsList}
+                <div id="sessions-list">
+                    <h3>Sessions for '{this.state.classId}'</h3>
+                    {sessionsList}
+                </div>
             </div>
         );
     };
+}
+
+function generateFields(session) {
+    const startTime = moment(session.startsAt).format("h:mm a");
+    const endTime = moment(session.endsAt).format("h:mm a");
+    let status;
+    if (session.canceled) {
+        status = "Canceled";
+    } else if (moment().isBefore(session.startsAt)) {
+        status = "Scheduled";
+    } else if (moment().isBetween(session.startsAt, session.endsAt)) {
+        status = "In progress";
+    } else {
+        status = "Done";
+    }
+
+    return [
+        {
+            label: "Times",
+            value: startTime + " - " + endTime,
+        },
+        {
+            label: "Status",
+            value: status,
+            highlightFn: () => session.canceled,
+        },
+    ];
+}
+
+function generateTexts(session) {
+    return [
+        {
+            label: "Notes",
+            value: session.notes,
+        },
+    ];
 }

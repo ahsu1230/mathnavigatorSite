@@ -93,7 +93,7 @@ export class SessionAdd extends React.Component {
     render = () => {
         return (
             <section id="add-sessions">
-                <h3>Add Sessions</h3>
+                <h3>Add Sessions to selected class</h3>
 
                 <div className="container">
                     <div id="date-inputs">

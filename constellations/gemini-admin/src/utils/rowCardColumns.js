@@ -28,7 +28,7 @@ export default class RowCardColumns extends RowCardBasic {
         return (
             <div className="row-card">
                 <Link className="edit-url" to={this.props.editUrl}>
-                    Edit
+                    Edit >
                 </Link>
                 {title}
                 <div className="column-wrapper">{rowColumns}</div>
