@@ -178,3 +178,13 @@ func DeleteClass(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func GetFullStates(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.getFullStates")
+	states := []string{
+		domains.NOT_FULL_DISPLAY_NAME,
+		domains.ALMOST_FULL_DISPLAY_NAME,
+		domains.FULL_DISPLAY_NAME,
+	}
+	c.JSON(http.StatusOK, states)
+}

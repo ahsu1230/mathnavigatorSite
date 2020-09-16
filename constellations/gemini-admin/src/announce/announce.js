@@ -76,10 +76,10 @@ export class AnnouncePage extends React.Component {
                 <h1>All Announcements ({numRows}) </h1>
 
                 <ul className="announce-list-row subheader">
-                    <li className="li-small">On Home Page</li>
-                    <li className="li-med">State</li>
-                    <li className="li-med">Date</li>
-                    <li className="li-med">Author</li>
+                    <li className="li-small">OnHomePage</li>
+                    <li className="li-small">State</li>
+                    <li className="li-small">Date</li>
+                    <li className="li-small">Author</li>
                     <li className="li-large">Message</li>
                 </ul>
 
@@ -120,16 +120,17 @@ class AnnounceRow extends React.Component {
                 </li>
                 <li
                     className={
-                        "li-med " + (isScheduled ? " scheduled" : " published")
+                        "li-small " +
+                        (isScheduled ? " scheduled" : " published")
                     }>
                     <div>{isScheduled ? "Scheduled" : "Published"}</div>
                     <div>{postedAt.fromNow()}</div>
                 </li>
-                <li className="li-med">
+                <li className="li-small">
                     <div>{postedAt.format("M/D/YYYY")}</div>
                     <div>{postedAt.format("hh:mm a")}</div>
                 </li>
-                <li className="li-med"> {author} </li>
+                <li className="li-small"> {author} </li>
                 <li className="li-large"> {message} </li>
                 <Link to={url}>Edit</Link>
             </ul>

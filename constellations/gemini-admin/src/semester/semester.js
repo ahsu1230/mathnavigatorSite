@@ -1,8 +1,9 @@
 "use strict";
 require("./semester.sass");
 import React from "react";
-import { Link } from "react-router-dom";
 import API from "../api.js";
+import AllPageHeader from "../utils/allPageHeader.js";
+import RowCardBasic from "../utils/rowCardBasic.js";
 
 export class SemesterPage extends React.Component {
     constructor(props) {
@@ -21,36 +22,45 @@ export class SemesterPage extends React.Component {
 
     render() {
         const numSemesters = this.state.list.length;
-        const rows = this.state.list.map((s, i) => (
-            <SemesterRow key={i} semesterObj={s} />
-        ));
+        const rows = this.state.list.map((semester, index) => {
+            const fields = generateFields(semester);
+            return (
+                <RowCardBasic
+                    key={index}
+                    title={semester.title}
+                    subtitle={semester.semesterId}
+                    editUrl={"/semesters/" + semester.semesterId + "/edit"}
+                    fields={fields}
+                />
+            );
+        });
+
         return (
             <div id="view-semester">
-                <h1>All Semesters ({numSemesters})</h1>
-                <ul className="semester-lists">
-                    <li className="li-med">Semester ID</li>
-                    <li className="li-med">Title</li>
-                </ul>
-                <ul>{rows}</ul>
-                <Link to={"/semesters/add"}>
-                    <button className="semester-button">Add Semester</button>
-                </Link>
+                <AllPageHeader
+                    title={"All Semesters (" + numSemesters + ")"}
+                    addUrl={"/semesters/add"}
+                    addButtonTitle={"Add Semester"}
+                    description={
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                    }
+                />
+
+                <div className="cards-wrapper">{rows}</div>
             </div>
         );
     }
 }
 
-class SemesterRow extends React.Component {
-    render() {
-        const semesterId = this.props.semesterObj.semesterId;
-        const title = this.props.semesterObj.title;
-        const url = "/semesters/" + semesterId + "/edit";
-        return (
-            <ul className="semester-lists">
-                <li className="li-med"> {semesterId} </li>
-                <li className="li-med"> {title} </li>
-                <Link to={url}> Edit </Link>
-            </ul>
-        );
-    }
+function generateFields(semester) {
+    return [
+        {
+            label: "Year",
+            value: semester.year,
+        },
+        {
+            label: "Season",
+            value: semester.season,
+        },
+    ];
 }

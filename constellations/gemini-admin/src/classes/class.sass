@@ -5,37 +5,29 @@
     padding: 0 $spacing2x
     box-sizing: border-box
 
-    h1
-        display: inline-block
-        margin: $spacing4x 0
-        line-height: $lineHeight3
-        font-size: $fontSize3
-    
-    #footer
+    .cards
+        padding: $spacing4x 0
+        border-top: 2px solid $colorGrayDark
+
+    .card-wrapper
         display: flex
-        flex-flow: row wrap
+        flex-direction: row
+        justify-content: stretch
+        align-items: baseline
+
+    .select
+        flex: 0 0 $spacing4x
+
+    #select-all
+        padding: 0
+        margin: 0
+        background-color: transparent
+        color: $colorLightBlue
+
+        &:hover
+            text-decoration: underline
+    
+    #publish
+        display: flex
         justify-content: space-between
-        align-items: center
-        margin-top: $spacing4x
-
-        button
-            padding: 0.75em
-            border-radius: 10px
-            color: white
-            background-color: $colorTurquoise
-        
-        #add-class
-            color: white
-            text-decoration: none
-
-        #publish
-            display: flex
-            flex-flow: row wrap
-            justify-content: space-between
-            align-items: center
-            width: $spacing56x
-            padding-right: $spacing4x
-
-            p
-                display: inline-block
-                margin: 0
+        align-items: start

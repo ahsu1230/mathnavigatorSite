@@ -3,7 +3,8 @@ require("./afh.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import AllPageHeader from "../utils/allPageHeader.js";
+import RowCardBasic from "../utils/rowCardBasic.js";
 
 export class AskForHelpPage extends React.Component {
     state = {
@@ -20,47 +21,65 @@ export class AskForHelpPage extends React.Component {
     }
 
     render() {
-        const rows = this.state.list.map((row, index) => {
-            return <AFHRow row={row} key={index} />;
+        const cards = this.state.list.map((afh, index) => {
+            const fields = generateFields(afh);
+            const texts = generateTexts(afh);
+            return (
+                <RowCardBasic
+                    key={index}
+                    title={afh.title}
+                    subtitle={afh.subject}
+                    editUrl={"/afhs/" + afh.afhId + "/edit"}
+                    fields={fields}
+                    texts={texts}
+                />
+            );
         });
+        const numAfhs = cards.length;
 
         return (
             <div id="view-afh">
-                <h1>All Ask For Help Sessions</h1>
+                <AllPageHeader
+                    title={"All AskForHelp sessions (" + numAfhs + ")"}
+                    addUrl={"/afh/add"}
+                    addButtonTitle={"Add AskForHelp"}
+                    description={
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                    }
+                />
 
-                <ul id="header">
-                    <li className="li-small">Date</li>
-                    <li className="li-med">Time</li>
-                    <li className="li-med">Subject</li>
-                    <li className="li-med">Title</li>
-                    <li className="li-med">LocationId</li>
-                    <li className="li-large">Notes</li>
-                    <span className="edit-spacer"></span>
-                </ul>
-                {rows}
-                <Link id="add-class" to={"/afh/add"}>
-                    <button>Add Ask For Help</button>
-                </Link>
+                <div className="cards-wrapper">{cards}</div>
             </div>
         );
     }
 }
 
-class AFHRow extends React.Component {
-    render() {
-        const row = this.props.row;
-        const url = "/afh/" + row.id + "/edit";
-        const date = moment(row.date);
-        return (
-            <ul id="afh-row">
-                <li className="li-small">{date.format("M/D/YYYY")}</li>
-                <li className="li-med">{row.timeString}</li>
-                <li className="li-med">{row.subject}</li>
-                <li className="li-med">{row.title}</li>
-                <li className="li-med">{row.locationId}</li>
-                <li className="li-large">{row.notes}</li>
-                <Link to={url}>Edit</Link>
-            </ul>
-        );
-    }
+function generateFields(afh) {
+    const date = moment(afh.startsAt).format("dddd, MMMM Do YYYY");
+    const startTime = moment(afh.startsAt).format("h:mm:ss a");
+    const endTime = moment(afh.endsAt).format("h:mm:ss a");
+
+    return [
+        {
+            label: "Date",
+            value: date,
+        },
+        {
+            label: "Times",
+            value: startTime + " - " + endTime,
+        },
+        {
+            label: "LocationId",
+            value: afh.locationId,
+        },
+    ];
+}
+
+function generateTexts(afh) {
+    return [
+        {
+            label: "Notes",
+            value: afh.notes,
+        },
+    ];
 }

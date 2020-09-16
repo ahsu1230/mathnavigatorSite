@@ -23,6 +23,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes")
 	{
 		apiClasses.GET("/all", controllers.GetAllClasses)
+		apiClasses.GET("/full-states", controllers.GetFullStates)
 		apiClasses.GET("/class/:classId", controllers.GetClassById)
 		apiClasses.GET("/classes/program/:programId", controllers.GetClassesByProgram)
 		apiClasses.GET("/classes/semester/:semesterId", controllers.GetClassesBySemester)

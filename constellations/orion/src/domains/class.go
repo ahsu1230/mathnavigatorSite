@@ -12,6 +12,10 @@ const (
 	NOT_FULL    = 0
 	ALMOST_FULL = 1
 	FULL        = 2
+
+	NOT_FULL_DISPLAY_NAME = "Not full"
+	ALMOST_FULL_DISPLAY_NAME = "Almost full"
+	FULL_DISPLAY_NAME = "Full"
 )
 
 type Class struct {
