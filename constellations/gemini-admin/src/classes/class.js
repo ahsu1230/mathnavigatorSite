@@ -6,6 +6,15 @@ import { keys, size } from "lodash";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardColumns from "../utils/rowCardColumns.js";
 
+const PAGE_DESCRIPTION = `
+    A Class represents a weekly course that students register for and attend.
+    Every class is always associated with an existing Program, Location and Semester.
+    There are also other metadata that is associated with a class such as its pricing model.
+    If a class is not published, it will not be available to the user until an admin publishes it.
+    This is so you can schedule when students can start registering for a class.
+    A class may also be set to "full", where students will no longer be able to register for that class.
+    Class information is usually presented in the user website's "Class" page or "Programs Catalog" page.`;
+
 export class ClassPage extends React.Component {
     state = {
         classes: [],
@@ -152,9 +161,7 @@ export class ClassPage extends React.Component {
                     title={"All Classes (" + this.state.classes.length + ")"}
                     addUrl={"/classes/add"}
                     addButtonTitle={"Add Class"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
                 {this.renderSelectAllButton()}
                 {this.renderPublishButtonSection()}

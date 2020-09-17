@@ -5,6 +5,16 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Locations are typically physical addresses that are often used to host Math Navigator class sessions.
+    Address1 consists of the Street # and Street name.
+    Address2 consists of the City, State and Zipcode.
+    Address3 is usually for a room number (i.e. Room #110, Basement, Gymnasium).
+    All locations should have a title to display to the user.
+    A location can also be online (i.e. Zoom meeting or Google Meets video conference). If this is the case,
+    the location will not have Addresses 1 & 2.
+    The full location is typically displayed in the user website's Class page.
+`;
 export class LocationPage extends React.Component {
     state = {
         list: [],
@@ -36,9 +46,7 @@ export class LocationPage extends React.Component {
                     title={"All Locations (" + numLocations + ")"}
                     addUrl={"/locations/add"}
                     addButtonTitle={"Add Location"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
 
                 <div className="cards-wrapper">{cards}</div>

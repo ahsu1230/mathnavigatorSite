@@ -5,6 +5,12 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Achievements are student accomplishments that have occured throughout the years of Math Navigator's programs. 
+    They are shown in the "Student Achievements" section of the user website and are grouped by year (starting from the most recent). 
+    Achievements are sorted by year (descending) and then by position (ascending). 
+    Use the 'Position' field value to determine which achievement comes first within each year group.`;
+
 export class AchievePage extends React.Component {
     state = {
         achievements: [],
@@ -43,9 +49,7 @@ export class AchievePage extends React.Component {
                     title={"All Achievements (" + numAchievements + ")"}
                     addUrl={"/achievements/add"}
                     addButtonTitle={"Add Achievement"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
                 <div className="cards">{rows}</div>
             </div>

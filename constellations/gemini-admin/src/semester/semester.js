@@ -5,6 +5,13 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    A Semester consists of a season and a year. The title and semesterId are automatically generated based on these values. 
+    The only available values for season are winter, spring, summer, fall. 
+    When displaying programs in the user website's "Program Catalog" page, all programs will be grouped / sorted by these semesters 
+    in ascending order (most recent year, then winter -> spring -> summer -> fall).
+`;
+
 export class SemesterPage extends React.Component {
     constructor(props) {
         super(props);
@@ -41,9 +48,7 @@ export class SemesterPage extends React.Component {
                     title={"All Semesters (" + numSemesters + ")"}
                     addUrl={"/semesters/add"}
                     addButtonTitle={"Add Semester"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
 
                 <div className="cards-wrapper">{rows}</div>

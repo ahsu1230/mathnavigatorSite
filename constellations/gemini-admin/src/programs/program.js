@@ -5,6 +5,12 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Programs represent a course topic. If a general area of study has subjects like Math, English, or Programming, 
+    programs are a subtopic of that subject (i.e. "SAT 1 Math" or "Grammar" or "AP Java Programming").
+    Each program has recommended grade levels (grade1 to grade2) and are displayed in the user website "Program Catalog" page. 
+    Some programs may have "Featured" labels to differentiate them. For example, some programs may be popular programs which are
+    highly recommended to students. Some programs may be new and should be more visible to users.`;
 export class ProgramPage extends React.Component {
     state = {
         programs: [],
@@ -46,9 +52,7 @@ export class ProgramPage extends React.Component {
                     title={"All Programs (" + numPrograms + ")"}
                     addUrl={"/programs/add"}
                     addButtonTitle={"Add Program"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
 
                 <div className="cards-wrapper">{cards}</div>

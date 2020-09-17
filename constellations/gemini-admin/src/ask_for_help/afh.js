@@ -6,6 +6,12 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    AskForHelp (AFH) sessions can be scheduled and presented in the "Ask For Help" page in the user website. 
+    These AFH sessions are grouped by subject (math, english, programming) and are held over a time interval at a certain location. 
+    You must create a Location before creating an AFH session. 
+    A "notes" field is available per AFH session to give a brief description of what they AFH session is dedicated for 
+    (i.e. "Reviewing Problem Set 4A" or "Final Practice Review" or "Essay Writing AMA").`;
 export class AskForHelpPage extends React.Component {
     state = {
         list: [],
@@ -43,9 +49,7 @@ export class AskForHelpPage extends React.Component {
                     title={"All AskForHelp sessions (" + numAfhs + ")"}
                     addUrl={"/afh/add"}
                     addButtonTitle={"Add AskForHelp"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
 
                 <div className="cards-wrapper">{cards}</div>

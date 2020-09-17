@@ -7,6 +7,12 @@ import { getCurrentClassId, setCurrentClassId } from "./../localStorage.js";
 import { SessionAdd } from "./sessionAdd.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    A session represents a single weekly (or bi-weekly) class session that students attend. 
+    A class is made up of many sessions so make sure to create a class before creating sessions for it.
+    Every session has a date and time and a status.
+    You may add a short note for every session (i.e. room change or a topic-of-the-day).
+    Sessions are displayed in the "Class" page of the user website.`;
 export class SessionPage extends React.Component {
     state = {
         classes: [],
@@ -107,10 +113,7 @@ export class SessionPage extends React.Component {
             <div id="view-session">
                 <section className="header-section">
                     <h1>Sessions per class</h1>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem I
-                    </p>
+                    <p>{PAGE_DESCRIPTION}</p>
                 </section>
                 <section id="select-class">
                     <h2>Select Class</h2>

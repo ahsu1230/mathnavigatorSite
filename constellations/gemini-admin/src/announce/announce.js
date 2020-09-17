@@ -6,6 +6,11 @@ import API from "../api.js";
 import AllPageHeader from "../utils/allPageHeader.js";
 import RowCardBasic from "../utils/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Announcements are broadcast messages we send to notify parents and students about upcoming changes. 
+    They will be shown in the "Announcements" page on the user website grouped by day (You can make multiple announcements per day). 
+    Announcements can be scheduled ahead of time and will automatically be published to users at the "postedAt" time. 
+    Only one announcement can be "pinned" on the home page at a time. Use these pinned announcements for more urgent or important messages.`;
 export class AnnouncePage extends React.Component {
     constructor(props) {
         super(props);
@@ -84,9 +89,7 @@ export class AnnouncePage extends React.Component {
                     title={"All Announcements (" + this.state.list.length + ")"}
                     addUrl={"/announcements/add"}
                     addButtonTitle={"Add Announcement"}
-                    description={
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                    }
+                    description={PAGE_DESCRIPTION}
                 />
                 <div className="cards">{cards}</div>
             </div>
