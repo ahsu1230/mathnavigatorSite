@@ -63,12 +63,28 @@ export default class EditPageWrapper extends React.Component {
         window.location.hash = this.props.prevPageUrl;
     };
 
-    createDeleteModalText = (entityId, entityType) => {
-        return "Are you sure you want to delete?";
+    createDeleteModalText = () => {
+        const entityId = this.props.entityId;
+        const entityType = this.props.entityType;
+        if (entityId) {
+            return `Are you sure you want to delete '${entityId}'?`;
+        } else if (entityType) {
+            return `Are you sure you want to delete this ${entityType}?`
+        } else {
+            return "Are you sure you want to delete?";
+        }
     };
 
-    createSaveModalText = (entityId, entityType) => {
-        return "Successfully saved!";
+    createSaveModalText = () => {
+        const entityId = this.props.entityId;
+        const entityType = this.props.entityType;
+        if (entityId) {
+            return `'${entityId}' was successfully saved!`;
+        } else if (entityType) {
+            return `This ${entityType} was successfully saved!`;
+        } else {
+            return "Successfully saved!";
+        }
     };
 
     renderModal = () => {
@@ -119,9 +135,15 @@ export default class EditPageWrapper extends React.Component {
                         <button className="cancel" onClick={this.onClickCancel}>
                             Cancel
                         </button>
-                        <button className="delete" onClick={this.onClickDelete}>
-                            Delete
-                        </button>
+                        {
+                            isEdit ? (
+                                <button className="delete" onClick={this.onClickDelete}>
+                                    Delete
+                                </button>
+                            ) : (
+                                <div></div>
+                            )
+                        }
                     </div>
                     <div>
                         <button className="save" onClick={this.onClickSave}>

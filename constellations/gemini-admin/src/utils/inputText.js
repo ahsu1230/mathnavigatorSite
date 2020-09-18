@@ -101,10 +101,10 @@ export class InputText extends React.Component {
         var input = this.renderInput(pass, value);
 
         return (
-            <div id="text-input-wrapper">
+            <div className="input-wrapper">
                 <h2 className="input-label">{this.props.label}</h2>
                 {formatDescription}
-                <div id="input-wrapper">
+                <div className="inputs">
                     {input}
                     {pass ? <img src={Checkbox} /> : <img />}
                 </div>

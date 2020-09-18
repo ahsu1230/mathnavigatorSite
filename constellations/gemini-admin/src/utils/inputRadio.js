@@ -4,16 +4,15 @@ import React from "react";
 import Checkbox from "../../assets/checkmark_green.svg";
 
 /*
- * Props for the InputSelect Component:
+ * Props for the InputRadio Component:
+ * Given a list of radio selections, render a single component
+ * that manages this selection of radio input options.
  *
  * value: Current selected option
  *
  * onChangeCallback: Function that is called when the selection changes.
  *
  * required: Whether or not the selection is required (omit if false).
- *
- * hasNoDefault: If true, an extra option -- Select an option -- will be added as the default.
- *                  It cannot be reselected after another option is chosen.
  *
  * label: A large gray label for the select, e.g. "ProgramID".
  *
@@ -26,12 +25,12 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *  becomes
  *      <option value="ap_calc">AP Calculus</option>
  *  value should not be an empty string.
- *
- *  errorMessageIfEmpty: If options is empty, then this message will be displayed instead of the select.
+ * 
+ * errorMessageIfEmpty: If options is empty, then this message will be displayed instead of the radios.
  */
-export class InputSelect extends React.Component {
+export class InputRadio extends React.Component {
     state = {
-        chosen: false,
+        chosen: !!this.props.value,
     };
 
     onChangeSelect = (e) => {
@@ -56,34 +55,23 @@ export class InputSelect extends React.Component {
         return formatDescription;
     };
 
-    renderSelect = (options, value) => {
+    renderRadios = (options, value) => {
         if (options.length) {
-            var optionElements = options.map((option, index) => (
-                <option key={index} value={option.value}>
-                    {option.displayName}
-                </option>
+            return options.map((option, index) => (
+                <div key={index} className="input-radio-wrapper">
+                    <input
+                        className="input-radio"
+                        type="radio" 
+                        value={option.value}
+                        checked={value == option.value}
+                        onChange={(e) => this.onChangeSelect(e)}
+                    />
+                    <span>{option.displayName}</span>
+                </div>
             ));
-
-            var defaultOption = this.props.hasNoDefault ? (
-                <option disabled selected value>
-                    -- Select an option --
-                </option>
-            ) : null;
-
-            value =
-                this.props.hasNoDefault && !this.state.chosen
-                    ? undefined
-                    : value;
-
-            return (
-                <select value={value} onChange={(e) => this.onChangeSelect(e)}>
-                    {defaultOption}
-                    {optionElements}
-                </select>
-            );
         } else {
             return (
-                <h4 className="select-error red">
+                <h4 className="radio-error red">
                     {this.props.errorMessageIfEmpty}
                 </h4>
             );
@@ -93,23 +81,22 @@ export class InputSelect extends React.Component {
     render = () => {
         const required = this.props.required;
         const value = this.props.value;
-        const pass =
-            this.props.options.length &&
-            (this.state.chosen || !this.props.hasNoDefault);
+        const options = this.props.options;
+        const pass = options.length && this.state.chosen;
 
         var formatDescription = this.renderDescription(
             this.props.description,
             required,
             pass
         );
-        var select = this.renderSelect(this.props.options, this.props.value);
+        var radios = this.renderRadios(options, value);
 
         return (
             <div className="input-wrapper">
                 <h2 className="input-label">{this.props.label}</h2>
                 {formatDescription}
-                <div className="inputs">
-                    {select}
+                <div className="inputs radios">
+                    {radios}
                     {pass ? <img src={Checkbox} /> : <img />}
                 </div>
             </div>

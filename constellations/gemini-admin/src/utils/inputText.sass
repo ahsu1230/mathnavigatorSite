@@ -1,23 +1,26 @@
 @import "../_.constants.sass"
 
-#text-input-wrapper
-    margin: $spacing4x 0
+.input-wrapper
+    margin: $spacing4x 0 !important
 
     h2.input-label
-        margin-top: 0
-        margin-bottom: $spacing1x
+        margin-top: 0 !important
+        margin-bottom: $spacing1x !important
         color: $colorGrayMed
         line-height: $lineHeight1
         font-size: $fontSize1
 
     h4
-        margin: 0
+        margin: 0 !important
         line-height: $lineHeight0
         font-size: $fontSize0
 
-    #input-wrapper
+    .inputs
         display: flex
         align-items: center
+
+        &.radios
+            display: block
 
         input, select
             width: 100%
@@ -29,6 +32,13 @@
             border: 1px solid $colorGrayLight
             line-height: $lineHeight0
             font-size: $fontSize0
+
+        .input-radio-wrapper
+            input
+                display: inline-block
+                width: unset !important
+                margin: 0 $spacing1x 0 0 !important
+                vertical-align: middle
 
         textarea
             width: 100%
