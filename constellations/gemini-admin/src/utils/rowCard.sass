@@ -31,8 +31,13 @@
 
         span:first-child
             margin-right: $spacing1x
+
+        span.label
+            color: $colorGrayMedDark
+        span.value
+            color: $colorBlack
         
-        &.highlighted
+        &.highlighted span.value
             color: $colorOrange
     
     .row-text-wrapper

@@ -18,8 +18,8 @@ export default class RowCardBasic extends React.Component {
                             (highlight ? " highlighted" : "")
                         }
                         key={index}>
-                        <span>{obj.label}:</span>
-                        <span>{obj.value}</span>
+                        <span className="label">{obj.label}:</span>
+                        <span className="value">{obj.value}</span>
                     </div>
                 );
             });

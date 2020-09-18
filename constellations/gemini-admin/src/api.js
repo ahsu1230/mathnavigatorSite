@@ -16,6 +16,22 @@ export default axios.create({
 export const executeApiCalls = (apiCalls, successCallback, failCallback) => {
     console.log("Reducing " + apiCalls.length);
 
+    // Reduce and execute list of API calls
+    reduceApiCalls(apiCalls).then((results) => {
+            console.log("All success!");
+            successCallback(results);
+        })
+        .catch((results) => {
+            console.log("One error?");
+            failCallback(results);
+        });
+};
+
+/*
+ * Create a single reduced promise from a list of promises (API calls)
+ */
+export const reduceApiCalls = apiCalls => {
+    console.log("Reducing " + apiCalls.length);
     let fnResolveTask = function (nextApi) {
         return new Promise((resolve, reject) => {
             nextApi
@@ -36,13 +52,5 @@ export const executeApiCalls = (apiCalls, successCallback, failCallback) => {
             return fnResolveTask(nextApi);
         });
     }, Promise.resolve());
-    sequence
-        .then((results) => {
-            console.log("All success!");
-            successCallback(results);
-        })
-        .catch((results) => {
-            console.log("One error?");
-            failCallback(results);
-        });
-};
+    return sequence;
+}

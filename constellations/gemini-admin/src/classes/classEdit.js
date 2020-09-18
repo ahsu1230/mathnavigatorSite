@@ -3,13 +3,11 @@ require("./classEdit.sass");
 import axios from "axios";
 import React from "react";
 import moment from "moment";
-import API, { executeApiCalls } from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import { Link } from "react-router-dom";
+import API, { reduceApiCalls } from "../api.js";
 import { InputText, emptyValidator } from "../utils/inputText.js";
 import { InputSelect } from "../utils/inputSelect.js";
-import { Link } from "react-router-dom";
+import EditPageWrapper from "../utils/editPageWrapper.js";
 
 export class ClassEditPage extends React.Component {
     state = {
@@ -17,13 +15,13 @@ export class ClassEditPage extends React.Component {
 
         // class object
         classKey: "",
-        times: "",
+        timesStr: "",
         programId: "",
         semesterId: "",
         locationId: "",
         fullState: 0,
         googleClassCode: "",
-        priceLump: 0,
+        priceLumpSum: 0,
         pricePerSession: 0,
         paymentNotes: "",
 
@@ -31,6 +29,7 @@ export class ClassEditPage extends React.Component {
         semesters: [],
         locations: [],
         sessions: [],
+        fullStates: []
     };
 
     componentDidMount = () => {
@@ -39,6 +38,7 @@ export class ClassEditPage extends React.Component {
             API.get("api/programs/all"),
             API.get("api/semesters/all"),
             API.get("api/locations/all"),
+            API.get("api/classes/full-states")
         ];
         if (classId) {
             apiCalls.push(API.get("api/classes/class/" + classId));
@@ -52,10 +52,11 @@ export class ClassEditPage extends React.Component {
                     const programs = responses[0].data;
                     const semesters = responses[1].data;
                     const locations = responses[2].data;
+                    const fullStates = responses[3].data;
 
-                    const hasClassId = responses.length > 3;
-                    let classObj = hasClassId ? responses[3].data : {};
-                    const sessions = (hasClassId ? responses[4].data : []).map(
+                    const hasClassId = responses.length > 4;
+                    let classObj = hasClassId ? responses[4].data : {};
+                    const sessions = (hasClassId ? responses[5].data : []).map(
                         (session) => {
                             session.startsAt = moment(session.startsAt);
                             session.endsAt = moment(session.endsAt);
@@ -82,13 +83,13 @@ export class ClassEditPage extends React.Component {
                     this.setState({
                         isEdit: !!classId,
                         classKey: classObj.classKey || "",
-                        times: classObj.times || "",
+                        timesStr: classObj.timesStr || "",
                         programId: programId,
                         semesterId: semesterId,
                         locationId: locationId,
-                        fullState: classObj.fullState,
+                        fullState: classObj.fullState || 0,
                         googleClassCode: classObj.googleClassCode || "",
-                        priceLump: classObj.priceLump || 0,
+                        priceLumpSum: classObj.priceLumpSum || 0,
                         pricePerSession: classObj.pricePerSession || 0,
                         paymentNotes: classObj.paymentNotes || "",
 
@@ -96,6 +97,7 @@ export class ClassEditPage extends React.Component {
                         semesters: semesters,
                         locations: locations,
                         sessions: sessions,
+                        fullStates: fullStates,
                     });
                 })
             )
@@ -124,7 +126,7 @@ export class ClassEditPage extends React.Component {
     };
 
     getPaymentValidator = () => {
-        const values = [this.state.priceLump, this.state.pricePerSession];
+        const values = [this.state.priceLumpSum, this.state.pricePerSession];
         return {
             validate: () => values.filter((x) => x).length == 1,
             message:
@@ -132,7 +134,7 @@ export class ClassEditPage extends React.Component {
         };
     };
 
-    onClickSave = () => {
+    onSave = () => {
         const classId = this.createClassId();
         let classObj = {
             classId: classId,
@@ -140,117 +142,35 @@ export class ClassEditPage extends React.Component {
             semesterId: this.state.semesterId,
             locationId: this.state.locationId,
             classKey: this.state.classKey,
-            times: this.state.times,
+            timesStr: this.state.timesStr,
             fullState: this.state.fullState,
             googleClassCode: this.state.googleClassCode,
-            priceLump: parseInt(this.state.priceLump),
+            priceLumpSum: parseInt(this.state.priceLumpSum),
             pricePerSession: parseInt(this.state.pricePerSession),
             paymentNotes: this.state.paymentNotes,
         };
 
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) => alert("Could not save class: " + err);
-
-        let apiCalls = [];
         if (this.state.isEdit) {
-            apiCalls.push(API.post("api/classes/class/" + classId, classObj));
+            return API.post("api/classes/class/" + classId, classObj);
         } else {
-            apiCalls.push(API.post("api/classes/create", classObj));
+            return API.post("api/classes/create", classObj);
         }
-
-        executeApiCalls(apiCalls, successCallback, failCallback);
     };
 
-    onClickCancel = () => {
-        window.location.hash = "classes";
-    };
-
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
-    };
-
-    onModalDeleteConfirm = () => {
-        const classId = this.props.classId;
-
-        let apiCalls = [];
-        let successCallback = () => (window.location.hash = "classes");
-        let failCallback = (err) =>
-            alert("Could not delete class or sessions: " + err);
-
-        // Must delete sessions before deleting class
-        var sessionIds = [];
-        this.state.sessions.forEach((session) => {
-            sessionIds.push(session.id);
-        });
-
-        apiCalls.push(API.delete("api/sessions/delete", { data: sessionIds }));
-        apiCalls.push(API.delete("api/classes/class/" + classId));
-
-        executeApiCalls(apiCalls, successCallback, failCallback);
-    };
-
-    onModalOkSaved = () => {
-        this.onModalDismiss();
-        window.location.hash = "classes";
-    };
-
-    onModalDismiss = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    };
-
-    renderModal = (
-        showSaveModal,
-        showDeleteModal,
-        onModalOkSaved,
-        onModalDeleteConfirm,
-        onModalDismiss
-    ) => {
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (showDeleteModal) {
-            showModal = showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={onModalDeleteConfirm}
-                    onReject={onModalDismiss}
-                />
-            );
-        }
-        if (showSaveModal) {
-            showModal = showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Class information saved!"}
-                    onOkay={onModalOkSaved}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={onModalDismiss}
-                />
-            );
-        }
-        return modalDiv;
+    onDelete = () => {
+        const classId = this.createClassId();
+        return API.delete("api/classes/class/" + classId);
     };
 
     renderClassInformation = () => {
         const classId = this.createClassId();
 
-        const programOptions = this.state.programs.map((program, index) => ({
+        const programOptions = this.state.programs.map((program) => ({
             value: program.programId,
-            displayName: program.name,
+            displayName: program.title,
         }));
 
-        const semesterOptions = this.state.semesters.map((semester, index) => ({
+        const semesterOptions = this.state.semesters.map((semester) => ({
             value: semester.semesterId,
             displayName: semester.title,
         }));
@@ -295,7 +215,7 @@ export class ClassEditPage extends React.Component {
 
                     <InputText
                         label="ClassKey"
-                        description="Enter the class key. (Example: class1)"
+                        description="Enter the class key. (Example: class1, sectionA)"
                         value={this.state.classKey}
                         onChangeCallback={(e) =>
                             this.handleChange(e, "classKey")
@@ -309,134 +229,123 @@ export class ClassEditPage extends React.Component {
         return classInformation;
     };
 
-    render = () => {
-        const title = this.state.isEdit
-            ? "Edit Class: " + this.createClassId()
-            : "Add Class";
-
-        const locationOptions = this.state.locations.map((location, index) => ({
+    renderEditSection = () => {
+        const locationOptions = this.state.locations.map((location) => ({
             value: location.locationId,
             displayName: location.locationId,
         }));
+        const fullStateOptions = this.state.fullStates.map((item, index) => ({
+            value: index,
+            displayName: item,
+        }));
 
-        const fullStateOptions = ["Normal", "Almost Full", "Full"].map(
-            (item, index) => ({
-                value: index,
-                displayName: item,
-            })
-        );
+        return (
+            <div id="edit-section">
+                <InputSelect
+                    label="LocationId"
+                    description="Select a location id"
+                    required={true}
+                    value={this.state.locationId}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "locationId")
+                    }
+                    options={locationOptions}
+                    errorMessageIfEmpty={
+                        <span>
+                            There are no locations to choose from. Please
+                            add one <Link to="/locations/add">here</Link>
+                        </span>
+                    }
+                />
 
-        let deleteButton = <div></div>;
-        if (this.state.isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
+                <InputText
+                    label="Display Times"
+                    description="A display string to convey to users the class session
+                                time every week. Each class session should be separated
+                                by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
+                    required={true}
+                    value={this.state.timesStr}
+                    onChangeCallback={(e) => this.handleChange(e, "timesStr")}
+                    validators={[emptyValidator("time")]}
+                />
 
-        const modalDiv = this.renderModal(
-            this.state.showSaveModal,
-            this.state.showDeleteModal,
-            this.onModalOkSaved,
-            this.onModalDeleteConfirm,
-            this.onModalDismiss
+                <InputSelect
+                    label="Class Availability (Full State)"
+                    description="Select a level of availability (i.e. full, almost full, or not full)."
+                    required={true}
+                    value={this.state.fullState}
+                    onChangeCallback={(e) => this.onChangeFullState(e)}
+                    options={fullStateOptions}
+                />
+
+                <InputText
+                    label="Google Classroom Code"
+                    description="Enter the google classroom code"
+                    value={this.state.googleClassCode}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "googleClassCode")
+                    }
+                />
+
+                <InputText
+                    label="Price Lump"
+                    description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
+                    required={true}
+                    value={this.state.priceLumpSum}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "priceLumpSum")
+                    }
+                    validators={[this.getPaymentValidator()]}
+                />
+
+                <InputText
+                    label="Price Per Session"
+                    description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
+                    required={true}
+                    value={this.state.pricePerSession}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "pricePerSession")
+                    }
+                    validators={[this.getPaymentValidator()]}
+                />
+
+                <InputText
+                    label="Payment Notes"
+                    description="Enter payment notes"
+                    isTextBox={true}
+                    value={this.state.paymentNotes}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "paymentNotes")
+                    }
+                />
+            </div>);
+    }
+
+    render = () => {
+        const classId = this.createClassId();
+        const title = this.state.isEdit
+            ? "Edit Class: " + classId
+            : "Add Class";
+
+        const content = (
+            <div>
+                {this.renderClassInformation()}
+                {this.renderEditSection()}
+            </div>
         );
 
         return (
             <div id="view-class-edit">
-                {modalDiv}
-                <h2>{title}</h2>
-                {this.renderClassInformation()}
-                <div id="edit-section">
-                    <InputSelect
-                        label="LocationId"
-                        description="Select a location id"
-                        required={true}
-                        value={this.state.locationId}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "locationId")
-                        }
-                        options={locationOptions}
-                        errorMessageIfEmpty={
-                            <span>
-                                There are no locations to choose from. Please
-                                add one <Link to="/locations/add">here</Link>
-                            </span>
-                        }
-                    />
-
-                    <InputText
-                        label="Display Time"
-                        description="A display string to convey to users the class session
-                                    time every week. Each class session should be separated
-                                    by a comma. (Example: Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm)"
-                        required={true}
-                        value={this.state.times}
-                        onChangeCallback={(e) => this.handleChange(e, "times")}
-                        validators={[emptyValidator("time")]}
-                    />
-
-                    <InputSelect
-                        label="Class Availability"
-                        description="Select a level of availability"
-                        required={true}
-                        value={this.state.fullState}
-                        onChangeCallback={(e) => this.onChangeFullState(e)}
-                        options={fullStateOptions}
-                    />
-
-                    <InputText
-                        label="Google Classroom Code"
-                        description="Enter the google classroom code"
-                        value={this.state.googleClassCode}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "googleClassCode")
-                        }
-                    />
-
-                    <InputText
-                        label="Price Lump"
-                        description="Enter price for one time payment (Either enter only in this field or only in the price per session field)"
-                        required={true}
-                        value={this.state.priceLump}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "priceLump")
-                        }
-                        validators={[this.getPaymentValidator()]}
-                    />
-
-                    <InputText
-                        label="Price Per Session"
-                        description="Enter price for one time payment (Either enter only in this field or only in the price lump field)"
-                        required={true}
-                        value={this.state.pricePerSession}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "pricePerSession")
-                        }
-                        validators={[this.getPaymentValidator()]}
-                    />
-
-                    <InputText
-                        label="Payment Notes"
-                        description="Enter payment notes"
-                        isTextBox={true}
-                        value={this.state.paymentNotes}
-                        onChangeCallback={(e) =>
-                            this.handleChange(e, "paymentNotes")
-                        }
-                    />
-                </div>
-
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
+                <EditPageWrapper
+                    isEdit={this.state.isEdit}
+                    title={title}
+                    content={content}
+                    prevPageUrl={"classes"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityId={classId}
+                    entityName={"class"}
+                />
             </div>
         );
     };
