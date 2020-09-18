@@ -30,8 +30,8 @@ import { AccountEditPage } from "./account/accountEdit.js";
 import { TransactionEditPage } from "./account/accountTransactionEdit.js";
 
 import { HelpPage } from "./help/help.js";
-import { AskForHelpPage } from "./ask_for_help/afh.js";
-import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
+import { AskForHelpPage } from "./askForHelp/afh.js";
+import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
 import { EmailPaymentsPage } from "./emailPayment/emailPayments.js";
 import { EmailProgramsPage } from "./emailProgram/emailPrograms.js";

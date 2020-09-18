@@ -1,15 +1,19 @@
 @import "../_.constants.sass"
 
 #text-input-wrapper
-    padding: $spacing1x 0
+    margin: $spacing4x 0
 
-    h2.inputLabel
-        margin: $spacing2x 0 !important
+    h2.input-label
+        margin-top: 0
+        margin-bottom: $spacing1x
         color: $colorGrayMed
-        font-size: $fontSize2
+        line-height: $lineHeight1
+        font-size: $fontSize1
 
     h4
         margin: 0
+        line-height: $lineHeight0
+        font-size: $fontSize0
 
     #input-wrapper
         display: flex
@@ -23,6 +27,7 @@
             outline: none
             border-radius: $spacing1x
             border: 1px solid $colorGrayLight
+            line-height: $lineHeight0
             font-size: $fontSize0
 
         textarea

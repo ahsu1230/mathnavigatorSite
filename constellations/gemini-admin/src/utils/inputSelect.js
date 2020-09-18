@@ -10,7 +10,7 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *
  * onChangeCallback: Function that is called when the selection changes.
  *
- * required: Whether or not the selection  is required (omit if false).
+ * required: Whether or not the selection is required (omit if false).
  *
  * hasNoDefault: If true, an extra option -- Select an option -- will be added as the default.
  *                  It cannot be reselected after another option is chosen.

@@ -2,20 +2,21 @@
 require("./programEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
 import { InputText, emptyValidator } from "../utils/inputText.js";
+import { InputSelect } from "../utils/inputSelect.js";
+import EditPageWrapper from "../utils/editPageWrapper.js";
 
 export class ProgramEditPage extends React.Component {
     state = {
         isEdit: false,
         oldProgramId: "",
         programId: "",
-        name: "",
+        title: "",
         grade1: 0,
         grade2: 0,
         description: "",
+        featured: "",
+        allFeatured: [],
     };
 
     componentDidMount = () => {
@@ -26,142 +27,69 @@ export class ProgramEditPage extends React.Component {
                 this.setState({
                     oldProgramId: program.programId,
                     programId: program.programId,
-                    name: program.name,
+                    title: program.title,
                     grade1: program.grade1,
                     grade2: program.grade2,
                     description: program.description,
                     isEdit: true,
+                    featured: program.featured,
                 });
             });
         }
+
+        API.get("api/programs/featured").then((res) => {
+            this.setState({ allFeatured: res.data });
+        });
     };
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
     };
 
-    onClickCancel = () => {
-        window.location.hash = "programs";
+    onDelete = () => {
+        const programId = this.props.programId;
+        return API.delete("api/programs/program/" + programId);
     };
 
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
-    };
-
-    onClickSave = () => {
+    onSave = () => {
         let program = {
             programId: this.state.programId,
-            name: this.state.name,
+            title: this.state.title,
             grade1: parseInt(this.state.grade1),
             grade2: parseInt(this.state.grade2),
             description: this.state.description,
+            featured: this.state.featured,
         };
 
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save program: " + err.response.data);
         if (this.state.isEdit) {
-            API.post("api/programs/program/" + this.state.oldProgramId, program)
-                .then(() => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post(
+                "api/programs/program/" + this.state.oldProgramId,
+                program
+            );
         } else {
-            API.post("api/programs/create", program)
-                .then(() => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/programs/create", program);
         }
     };
 
-    onDeleted = () => {
-        const programId = this.props.programId;
-        API.delete("api/programs/program/" + programId)
-            .then(() => {
-                window.location.hash = "programs";
-            })
-            .catch((err) => {
-                alert("Could not delete program: " + err.response.data);
-            })
-            .finally(() => this.onDismissModal());
-    };
-
-    onSaved = () => {
-        this.onDismissModal();
-        window.location.hash = "programs";
-    };
-
-    onDismissModal = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    };
-
-    render = () => {
-        const isEdit = this.state.isEdit;
-        const program = this.state.program;
-        const title = isEdit ? "Edit Program" : "Add Program";
-
-        let deleteButton = <div></div>;
-        if (isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
-
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onDeleted}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Program information saved!"}
-                    onOkay={this.onSaved}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
-
+    renderContent = () => {
         return (
-            <div id="view-program-edit">
-                {modalDiv}
-                <h2>{title}</h2>
-
+            <div>
                 <InputText
-                    label="Program ID"
+                    label="Program Id"
                     value={this.state.programId}
                     onChangeCallback={(e) => this.handleChange(e, "programId")}
                     required={true}
-                    description="Enter the program ID. Examples: ap_calculus, sat1, ap_java"
+                    description="Enter the program Id. Examples: ap_calculus, sat1, ap_java"
                     validators={[emptyValidator("program ID")]}
                 />
 
                 <InputText
-                    label="Program Name"
-                    value={this.state.name}
-                    onChangeCallback={(e) => this.handleChange(e, "name")}
+                    label="Program Title"
+                    value={this.state.title}
+                    onChangeCallback={(e) => this.handleChange(e, "title")}
                     required={true}
-                    description="Enter the program name. This name will be present to users. Example: AP Calculus, SAT2 Subject Math"
-                    validators={[emptyValidator("program name")]}
+                    description="Enter the program title. This title will be present to users. Example: AP Calculus, SAT2 Subject Math"
+                    validators={[emptyValidator("program title")]}
                 />
 
                 <InputText
@@ -225,15 +153,39 @@ export class ProgramEditPage extends React.Component {
                     ]}
                 />
 
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
+                <InputSelect
+                    label="Featured"
+                    description="Some programs can have an optional 'feature' flag to differentiate them from other programs."
+                    value={this.state.featured}
+                    onChangeCallback={(e) => this.handleChange(e, "featured")}
+                    options={this.state.allFeatured.map((featured) => {
+                        return {
+                            value: featured,
+                            displayName: featured,
+                        };
+                    })}
+                />
+            </div>
+        );
+    };
+
+    render = () => {
+        const isEdit = this.state.isEdit;
+        const title = isEdit ? "Edit Program" : "Add Program";
+        const content = this.renderContent();
+
+        return (
+            <div id="view-program-edit">
+                <EditPageWrapper
+                    isEdit={isEdit}
+                    title={title}
+                    content={content}
+                    prevPageUrl={"programs"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityId={this.state.programId}
+                    entityName={"program"}
+                />
             </div>
         );
     };

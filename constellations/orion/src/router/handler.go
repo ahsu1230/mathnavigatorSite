@@ -14,7 +14,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
-		apiPrograms.GET("/states", controllers.GetAllProgramStates)
+		apiPrograms.GET("/featured", controllers.GetAllProgramFeatured)
 		apiPrograms.GET("/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/create", controllers.CreateProgram)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
