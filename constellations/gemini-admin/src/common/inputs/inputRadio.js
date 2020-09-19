@@ -1,12 +1,12 @@
 "use strict";
-require("./inputText.sass");
+require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../assets/checkmark_green.svg";
+import Checkbox from "../../../assets/checkmark_green.svg";
 
 /*
- * Props for the InputRadio Component:
  * Given a list of radio selections, render a single component
- * that manages this selection of radio input options.
+ * that manages this selection of radio input options. 
+ * Props for the InputRadio Component:
  *
  * value: Current selected option
  *

@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import API from "../api.js";
 import { AfhEditDateTimes } from "./afhEditDateTime.js";
-import { InputText } from "../utils/inputText.js";
-import { InputSelect } from "../utils/inputSelect.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText } from "../common/inputs/inputText.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 export class AskForHelpEditPage extends React.Component {
     state = {

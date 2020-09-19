@@ -2,8 +2,8 @@
 require("./location.sass");
 import React from "react";
 import API from "../api.js";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     Locations are typically physical addresses that are often used to host Math Navigator class sessions.

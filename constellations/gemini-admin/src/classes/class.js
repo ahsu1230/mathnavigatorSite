@@ -3,8 +3,8 @@ require("./class.sass");
 import React from "react";
 import API from "../api.js";
 import { keys, size } from "lodash";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardColumns from "../utils/rowCardColumns.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardColumns from "../common/rowCards/rowCardColumns.js";
 
 const PAGE_DESCRIPTION = `
     A Class represents a weekly course that students register for and attend.

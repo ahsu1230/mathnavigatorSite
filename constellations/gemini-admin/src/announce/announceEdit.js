@@ -4,8 +4,8 @@ import React from "react";
 import moment from "moment";
 import API from "../api.js";
 import { AnnounceEditDateTime } from "./announceEditDateTime.js";
-import { InputText, emptyValidator } from "../utils/inputText.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 export class AnnounceEditPage extends React.Component {
     state = {

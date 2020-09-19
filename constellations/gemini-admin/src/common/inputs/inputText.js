@@ -1,10 +1,13 @@
 "use strict";
-require("./inputText.sass");
+require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../assets/checkmark_green.svg";
+import Checkbox from "../../../assets/checkmark_green.svg";
 
 /*
- * Props for the InputText Component:
+ * A simple component that manages a header and an input field
+ * with validation capabilities and error messaging.
+ * 
+ * Available props for the InputText Component:
  *
  * label: A large gray label for the input, e.g. "Program ID".
  *

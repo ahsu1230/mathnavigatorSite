@@ -3,7 +3,7 @@ require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
-import { getFullName } from "../utils/userUtils.js";
+import { getFullName } from "../common/userUtils.js";
 import { EmptyMessage } from "./home.js";
 import moment from "moment";
 

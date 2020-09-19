@@ -2,8 +2,8 @@
 require("./program.sass");
 import React from "react";
 import API from "../api.js";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     Programs represent a course topic. If a general area of study has subjects like Math, English, or Programming, 

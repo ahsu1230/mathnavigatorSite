@@ -1,10 +1,12 @@
 "use strict";
-require("./inputText.sass");
+require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../assets/checkmark_green.svg";
+import Checkbox from "../../../assets/checkmark_green.svg";
 
 /*
- * Props for the InputSelect Component:
+ * Given a list of options, create a single component that manages a dropdown menu. 
+ *
+ * Available props for the InputSelect Component:
  *
  * value: Current selected option
  *

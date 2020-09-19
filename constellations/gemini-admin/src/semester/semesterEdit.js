@@ -2,9 +2,9 @@
 require("./semesterEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { InputSelect } from "../utils/inputSelect.js";
-import { InputText, emptyValidator } from "../utils/inputText.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 const ALL_SEASONS = ["winter", "spring", "summer", "fall"];
 

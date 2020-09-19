@@ -2,9 +2,9 @@
 require("./locationEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { InputText } from "../utils/inputText.js";
-import { InputRadio } from "../utils/inputRadio.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText } from "../common/inputs/inputText.js";
+import { InputRadio } from "../common/inputs/inputRadio.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 const ADDRESS_ONLINE = "online";
 const ADDRESS_PHYSICAL = "physical";

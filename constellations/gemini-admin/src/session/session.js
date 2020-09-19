@@ -5,7 +5,7 @@ import moment from "moment";
 import API from "../api.js";
 import { getCurrentClassId, setCurrentClassId } from "./../localStorage.js";
 import { SessionAdd } from "./sessionAdd.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     A session represents a single weekly (or bi-weekly) class session that students attend. 

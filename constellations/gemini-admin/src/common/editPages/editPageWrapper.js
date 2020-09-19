@@ -2,9 +2,25 @@
 require("./editPageWrapper.sass");
 import React from "react";
 import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import OkayModal from "../modals/okayModal.js";
+import YesNoModal from "../modals/yesnoModal.js";
 
+/*
+ * A component that automatically handles the Header and Footer portion of an entity's "Edit-View" page.
+ * This includes a title, and the buttons at the bottom of the page.
+ * This component will handle the saving and deleting modals, but you must pass in the
+ * onSave and onDelete callback functions.
+ * 
+ * Available props for this Component:
+ *
+ * - title - display name of the header of the page (e.g. Edit Program)
+ * - content - the body content HTML / component in between the header and footer
+ * - prevPageUrl - the url to return to if the user "cancels" the edit.
+ * - onSave - the save callback function to call when the user wants to save their updates.
+ * - onDelete - the delete callback function to call when the user confirms deleting the entity.
+ * - entityId - the id of the entity. Will be used in the modal messages (e.g. "Program ap_calc successfully saved!")
+ * - entityName - the name of the entity. Will be used in the modal message (e.g. "Program successfully saved!")
+ */
 export default class EditPageWrapper extends React.Component {
     state = {
         showDeleteModal: false,

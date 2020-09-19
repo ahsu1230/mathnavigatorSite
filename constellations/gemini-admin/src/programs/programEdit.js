@@ -2,9 +2,9 @@
 require("./programEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { InputText, emptyValidator } from "../utils/inputText.js";
-import { InputSelect } from "../utils/inputSelect.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 export class ProgramEditPage extends React.Component {
     state = {

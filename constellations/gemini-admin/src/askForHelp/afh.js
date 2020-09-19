@@ -3,8 +3,8 @@ require("./afh.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     AskForHelp (AFH) sessions can be scheduled and presented in the "Ask For Help" page in the user website. 

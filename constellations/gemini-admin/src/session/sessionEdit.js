@@ -3,8 +3,8 @@ require("./sessionEdit.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { InputText } from "../utils/inputText.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 // React DatePicker
 import "react-dates/initialize";

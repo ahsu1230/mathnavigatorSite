@@ -2,8 +2,8 @@
 require("./achieve.sass");
 import React from "react";
 import API from "../api.js";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     Achievements are student accomplishments that have occured throughout the years of Math Navigator's programs. 

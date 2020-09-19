@@ -5,9 +5,9 @@ import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import API, { reduceApiCalls } from "../api.js";
-import { InputText, emptyValidator } from "../utils/inputText.js";
-import { InputSelect } from "../utils/inputSelect.js";
-import EditPageWrapper from "../utils/editPageWrapper.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 export class ClassEditPage extends React.Component {
     state = {

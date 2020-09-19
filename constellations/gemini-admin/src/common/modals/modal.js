@@ -3,6 +3,11 @@ require("./modal.sass");
 import React from "react";
 const classnames = require("classnames");
 
+/*
+ * The wrapper component around a modalContent.
+ * Pass HTML / Component as "content" props to this component to render a modal,
+ * including the dismissing functionality.
+ */
 export class Modal extends React.Component {
     handleDismiss = () => {
         if (this.props.onDismiss) {

@@ -3,8 +3,8 @@ require("./announce.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import AllPageHeader from "../utils/allPageHeader.js";
-import RowCardBasic from "../utils/rowCardBasic.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const PAGE_DESCRIPTION = `
     Announcements are broadcast messages we send to notify parents and students about upcoming changes. 
