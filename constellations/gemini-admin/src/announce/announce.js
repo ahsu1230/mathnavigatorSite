@@ -108,7 +108,7 @@ export class AnnouncePage extends React.Component {
 function generateFields(announce) {
     const now = moment();
     const postedAt = moment(announce.postedAt);
-    const isPublic = postedAt.isAfter(now);
+    const isPublic = postedAt.isBefore(now);
     return [
         {
             label: "Author",
