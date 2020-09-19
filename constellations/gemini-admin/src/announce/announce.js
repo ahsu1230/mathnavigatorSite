@@ -69,8 +69,16 @@ export class AnnouncePage extends React.Component {
             const postedAt = moment(announce.postedAt);
             const fields = generateFields(announce);
             const texts = generateTexts(announce);
+            const checked = announce.onHomePage || false;
+
             return (
                 <div className="card-wrapper" key={index}>
+                    <input
+                        type="checkbox"
+                        id={announce.id}
+                        onChange={this.onChangeCheckbox}
+                        checked={checked}
+                    />
                     <RowCardBasic
                         key={index}
                         title={"Announcement on " + postedAt.format("M/D/YYYY")}

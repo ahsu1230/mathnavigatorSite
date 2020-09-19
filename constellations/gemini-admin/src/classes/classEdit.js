@@ -29,7 +29,7 @@ export class ClassEditPage extends React.Component {
         semesters: [],
         locations: [],
         sessions: [],
-        fullStates: []
+        fullStates: [],
     };
 
     componentDidMount = () => {
@@ -38,7 +38,7 @@ export class ClassEditPage extends React.Component {
             API.get("api/programs/all"),
             API.get("api/semesters/all"),
             API.get("api/locations/all"),
-            API.get("api/classes/full-states")
+            API.get("api/classes/full-states"),
         ];
         if (classId) {
             apiCalls.push(API.get("api/classes/class/" + classId));
@@ -246,14 +246,12 @@ export class ClassEditPage extends React.Component {
                     description="Select a location id"
                     required={true}
                     value={this.state.locationId}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "locationId")
-                    }
+                    onChangeCallback={(e) => this.handleChange(e, "locationId")}
                     options={locationOptions}
                     errorMessageIfEmpty={
                         <span>
-                            There are no locations to choose from. Please
-                            add one <Link to="/locations/add">here</Link>
+                            There are no locations to choose from. Please add
+                            one <Link to="/locations/add">here</Link>
                         </span>
                     }
                 />
@@ -318,8 +316,9 @@ export class ClassEditPage extends React.Component {
                         this.handleChange(e, "paymentNotes")
                     }
                 />
-            </div>);
-    }
+            </div>
+        );
+    };
 
     render = () => {
         const classId = this.createClassId();

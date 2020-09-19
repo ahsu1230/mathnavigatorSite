@@ -4,199 +4,115 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import API from "../api.js";
-import { AFHEditDateTime } from "./afhEditDateTime.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import { AfhEditDateTimes } from "./afhEditDateTime.js";
 import { InputText } from "../utils/inputText.js";
 import { InputSelect } from "../utils/inputSelect.js";
+import EditPageWrapper from "../utils/editPageWrapper.js";
 
 export class AskForHelpEditPage extends React.Component {
     state = {
         isEdit: false,
-        id: 0,
-        date: null,
-        timeString: "",
+        afhId: 0,
+        startsAt: moment(), // default is now
+        endsAt: moment(), // default is now
         subject: "",
         title: "",
         locationId: "",
         notes: "",
+
+        allSubjects: [],
         locations: [],
     };
 
     componentDidMount() {
         const afhId = this.props.afhId;
-
-        API.get("api/locations/all").then((res) => {
-            let locations = res.data;
+        API.get("api/askforhelp/subjects").then((res) => {
+            const subjects = res.data;
             this.setState({
-                locations: res.data,
+                allSubjects: subjects,
             });
-            if (afhId) {
-                API.get("api/askforhelp/afh/" + afhId).then((res2) => {
-                    const afh = res2.data;
-                    this.setState({
-                        isEdit: true,
-
-                        id: afh.id,
-                        date: moment(afh.date),
-                        timeString: afh.timeString,
-                        subject: afh.subject,
-                        title: afh.title,
-                        locationId: afh.locationId,
-                        notes: afh.notes,
-                    });
-                });
-            } else {
-                this.setState({
-                    locationId: locations[0].locationId,
-                    subject: "Math",
-                    date: moment(),
-                });
-            }
         });
+        API.get("api/locations/all").then((res) => {
+            const locations = res.data;
+            this.setState({
+                locations: locations,
+                locationId: locations[0].locationId,
+            });
+        });
+        if (afhId) {
+            API.get("api/askforhelp/afh/" + afhId).then((res) => {
+                const afh = res.data;
+                this.setState({
+                    isEdit: true,
+                    afhId: afh.id,
+                    startsAt: moment(afh.startsAt),
+                    endsAt: moment(afh.endsAt),
+                    subject: afh.subject,
+                    title: afh.title,
+                    locationId: afh.locationId,
+                    notes: afh.notes || "",
+                });
+            });
+        }
     }
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
     };
 
-    onClickSave = () => {
+    onSave = () => {
         let afh = {
-            id: this.state.id,
-            date: this.state.date.toJSON(),
-            timeString: this.state.timeString,
+            id: this.state.afhId,
+            startsAt: moment(this.state.startsAt),
+            endsAt: moment(this.state.endsAt),
             subject: this.state.subject,
             title: this.state.title,
             locationId: this.state.locationId,
             notes: this.state.notes,
         };
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save Ask For Help session: " + err.response.data);
 
         if (this.state.isEdit) {
-            API.post("api/askforhelp/afh/" + this.state.id, afh)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/askforhelp/afh/" + this.state.afhId, afh);
         } else {
-            API.post("api/askforhelp/create", afh)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/askforhelp/create", afh);
         }
     };
 
-    onClickCancel = () => {
-        window.location.hash = "afh";
+    onDelete = () => {
+        const afhId = this.state.afhId;
+        return API.delete("api/askforhelp/afh/" + afhId);
     };
 
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
+    onStartsAtChange = (moment) => {
+        this.setState({ startsAt: moment });
     };
 
-    onConfirmDelete = () => {
-        const afhId = this.state.id;
-        API.delete("api/askforhelp/afh/" + afhId).then((res) => {
-            window.location.hash = "afh";
-        });
+    onEndsAtChange = (moment) => {
+        this.setState({ endsAt: moment });
     };
 
-    onSavedOk = () => {
-        this.onDismissModal();
-        window.location.hash = "afh";
-    };
-
-    onDismissModal = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    };
-
-    onMomentChange = (newMoment) => {
-        this.setState({ inputPostedAt: newMoment, date: newMoment });
-    };
-
-    render() {
-        const title =
-            (this.state.isEdit ? "Edit" : "Add") + " Ask For Help Session";
-
-        const locationOptions = this.state.locations.map((loc, index) => {
+    renderContent = () => {
+        const locationOptions = this.state.locations.map((loc) => {
             return {
                 value: loc.locationId,
                 displayName: loc.locationId,
             };
         });
 
-        let deleteButton = <div></div>;
-        if (this.state.isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
-
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onConfirmDelete}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Ask for help information saved!"}
-                    onOkay={this.onSavedOk}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
-
-        const subjectOptions = [
-            { value: "math", displayName: "Math" },
-            { value: "english", displayName: "English" },
-            { value: "programming", displayName: "Computer Programming" },
-        ];
+        const subjectOptions = this.state.allSubjects.map((subject) => {
+            return {
+                value: subject,
+                displayName: subject,
+            };
+        });
 
         return (
-            <div id="view-afh-edit">
-                {modalDiv}
-                <h2>{title}</h2>
-
-                <AFHEditDateTime
-                    postedAt={this.state.date}
-                    onMomentChange={this.onMomentChange}
-                />
-
-                <InputText
-                    label="Time"
-                    value={this.state.timeString}
-                    onChangeCallback={(e) => this.handleChange(e, "timeString")}
-                    required={true}
-                    description="Enter a time (e.g. 2:00 - 4:00 PM)"
-                    validators={[
-                        {
-                            validate: (name) => name != "",
-                            message: "You must input a time",
-                        },
-                    ]}
+            <div>
+                <AfhEditDateTimes
+                    startsAt={this.state.startsAt}
+                    endsAt={this.state.endsAt}
+                    onStartsAtChange={this.onStartsAtChange}
+                    onEndsAtChange={this.onEndsAtChange}
                 />
 
                 <InputText
@@ -246,16 +162,26 @@ export class AskForHelpEditPage extends React.Component {
                     onChangeCallback={(e) => this.handleChange(e, "notes")}
                     description="Add any notes"
                 />
+            </div>
+        );
+    };
 
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
+    render() {
+        const title =
+            (this.state.isEdit ? "Edit" : "Add") + " AskForHelp Session";
+        const content = this.renderContent();
+
+        return (
+            <div id="view-afh-edit">
+                <EditPageWrapper
+                    isEdit={this.state.isEdit}
+                    title={title}
+                    content={content}
+                    prevPageUrl={"afh"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityName={"ask-for-help session"}
+                />
             </div>
         );
     }

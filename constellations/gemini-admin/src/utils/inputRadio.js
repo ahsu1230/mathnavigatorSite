@@ -25,7 +25,7 @@ import Checkbox from "../../assets/checkmark_green.svg";
  *  becomes
  *      <option value="ap_calc">AP Calculus</option>
  *  value should not be an empty string.
- * 
+ *
  * errorMessageIfEmpty: If options is empty, then this message will be displayed instead of the radios.
  */
 export class InputRadio extends React.Component {
@@ -61,7 +61,7 @@ export class InputRadio extends React.Component {
                 <div key={index} className="input-radio-wrapper">
                     <input
                         className="input-radio"
-                        type="radio" 
+                        type="radio"
                         value={option.value}
                         checked={value == option.value}
                         onChange={(e) => this.onChangeSelect(e)}

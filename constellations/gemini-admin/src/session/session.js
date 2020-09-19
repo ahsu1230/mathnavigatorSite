@@ -99,7 +99,13 @@ export class SessionPage extends React.Component {
                     <RowCardBasic
                         key={index}
                         title={startsAt.format("l")}
-                        editUrl={"/sessions/" + session.id + "/edit"}
+                        editUrl={
+                            "/sessions/" +
+                            session.classId +
+                            "/" +
+                            session.id +
+                            "/edit"
+                        }
                         fields={fields}
                         texts={texts}
                     />

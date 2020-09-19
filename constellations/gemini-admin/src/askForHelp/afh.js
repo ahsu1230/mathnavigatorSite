@@ -35,7 +35,7 @@ export class AskForHelpPage extends React.Component {
                     key={index}
                     title={afh.title}
                     subtitle={afh.subject}
-                    editUrl={"/afhs/" + afh.afhId + "/edit"}
+                    editUrl={"/afh/" + afh.id + "/edit"}
                     fields={fields}
                     texts={texts}
                 />

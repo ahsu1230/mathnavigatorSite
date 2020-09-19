@@ -17,7 +17,8 @@ export const executeApiCalls = (apiCalls, successCallback, failCallback) => {
     console.log("Reducing " + apiCalls.length);
 
     // Reduce and execute list of API calls
-    reduceApiCalls(apiCalls).then((results) => {
+    reduceApiCalls(apiCalls)
+        .then((results) => {
             console.log("All success!");
             successCallback(results);
         })
@@ -30,7 +31,7 @@ export const executeApiCalls = (apiCalls, successCallback, failCallback) => {
 /*
  * Create a single reduced promise from a list of promises (API calls)
  */
-export const reduceApiCalls = apiCalls => {
+export const reduceApiCalls = (apiCalls) => {
     console.log("Reducing " + apiCalls.length);
     let fnResolveTask = function (nextApi) {
         return new Promise((resolve, reject) => {
@@ -53,4 +54,4 @@ export const reduceApiCalls = apiCalls => {
         });
     }, Promise.resolve());
     return sequence;
-}
+};

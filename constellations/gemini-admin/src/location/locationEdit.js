@@ -39,7 +39,9 @@ export class LocationEditPage extends React.Component {
                     inputState: location.state || "",
                     inputZip: location.zipcode || "",
                     inputRoom: location.room || "",
-                    inputOnline: location.isOnline ? ADDRESS_ONLINE : ADDRESS_PHYSICAL,
+                    inputOnline: location.isOnline
+                        ? ADDRESS_ONLINE
+                        : ADDRESS_PHYSICAL,
                     isEdit: true,
                 });
             });
@@ -48,7 +50,7 @@ export class LocationEditPage extends React.Component {
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
     onSave = () => {
         let location = {
@@ -70,12 +72,12 @@ export class LocationEditPage extends React.Component {
         } else {
             return API.post("api/locations/create", location);
         }
-    }
+    };
 
     onDelete = () => {
         const locationId = this.props.locationId;
         return API.delete("api/locations/location/" + locationId);
-    }
+    };
 
     renderPhysicalForm = () => {
         return (
@@ -143,11 +145,11 @@ export class LocationEditPage extends React.Component {
                 />
             </div>
         );
-    }
+    };
 
     renderContent = () => {
         const isOnline = this.state.inputOnline == ADDRESS_ONLINE;
-        const form = isOnline ? (<div></div>) : (this.renderPhysicalForm());
+        const form = isOnline ? <div></div> : this.renderPhysicalForm();
         return (
             <div>
                 <InputText
@@ -170,9 +172,7 @@ export class LocationEditPage extends React.Component {
                     description="Enter the name of this location"
                     required={true}
                     value={this.state.inputTitle}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputTitle")
-                    }
+                    onChangeCallback={(e) => this.handleChange(e, "inputTitle")}
                     validators={[
                         {
                             validate: (text) => text != "",
@@ -185,16 +185,21 @@ export class LocationEditPage extends React.Component {
                     description="Is this location online or a physical address?"
                     required={true}
                     value={this.state.inputOnline}
-                    onChangeCallback={(e) => this.handleChange(e, "inputOnline")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputOnline")
+                    }
                     options={[
                         { value: ADDRESS_ONLINE, displayName: "Online" },
-                        { value: ADDRESS_PHYSICAL, displayName: "Physical Address" }
+                        {
+                            value: ADDRESS_PHYSICAL,
+                            displayName: "Physical Address",
+                        },
                     ]}
                 />
                 {form}
             </div>
         );
-    }
+    };
 
     render() {
         const title = this.state.isEdit ? "Edit Location" : "Add Location";

@@ -65,11 +65,11 @@ export default class EditPageWrapper extends React.Component {
 
     createDeleteModalText = () => {
         const entityId = this.props.entityId;
-        const entityType = this.props.entityType;
+        const entityName = this.props.entityName;
         if (entityId) {
             return `Are you sure you want to delete '${entityId}'?`;
-        } else if (entityType) {
-            return `Are you sure you want to delete this ${entityType}?`
+        } else if (entityName) {
+            return `Are you sure you want to delete this ${entityName}?`;
         } else {
             return "Are you sure you want to delete?";
         }
@@ -77,11 +77,11 @@ export default class EditPageWrapper extends React.Component {
 
     createSaveModalText = () => {
         const entityId = this.props.entityId;
-        const entityType = this.props.entityType;
+        const entityName = this.props.entityName;
         if (entityId) {
             return `'${entityId}' was successfully saved!`;
-        } else if (entityType) {
-            return `This ${entityType} was successfully saved!`;
+        } else if (entityName) {
+            return `This ${entityName} was successfully saved!`;
         } else {
             return "Successfully saved!";
         }
@@ -135,15 +135,15 @@ export default class EditPageWrapper extends React.Component {
                         <button className="cancel" onClick={this.onClickCancel}>
                             Cancel
                         </button>
-                        {
-                            isEdit ? (
-                                <button className="delete" onClick={this.onClickDelete}>
-                                    Delete
-                                </button>
-                            ) : (
-                                <div></div>
-                            )
-                        }
+                        {isEdit ? (
+                            <button
+                                className="delete"
+                                onClick={this.onClickDelete}>
+                                Delete
+                            </button>
+                        ) : (
+                            <div></div>
+                        )}
                     </div>
                     <div>
                         <button className="save" onClick={this.onClickSave}>

@@ -49,7 +49,7 @@ class AnnounceDateTimePicker extends React.Component {
     }
 
     onClickNow() {
-        const now = moment().add(3, "minutes");
+        const now = moment().add(2, "minutes");
         this.props.onMomentChange(now);
     }
 

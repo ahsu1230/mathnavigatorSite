@@ -16,7 +16,7 @@ export class SemesterEditPage extends React.Component {
         semesterId: "",
         title: "",
         isEdit: false,
-    }
+    };
 
     componentDidMount = () => {
         const semesterId = this.props.semesterId;
@@ -29,15 +29,15 @@ export class SemesterEditPage extends React.Component {
                     oldSemesterId: semester.semesterId,
                     semesterId: semester.semesterId,
                     title: semester.title,
-                    isEdit: true
+                    isEdit: true,
                 });
             });
         }
-    }
+    };
 
     handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
     onSave = () => {
         const semester = {
@@ -55,12 +55,12 @@ export class SemesterEditPage extends React.Component {
         } else {
             return API.post("api/semesters/create", semester);
         }
-    }
+    };
 
     onDelete = () => {
-        const semesterId = this.props.semesterId
+        const semesterId = this.props.semesterId;
         return API.delete("api/semesters/semester/" + semesterId);
-    }
+    };
 
     renderContent = () => {
         const season = this.state.inputSeason;
@@ -75,7 +75,9 @@ export class SemesterEditPage extends React.Component {
                     description="Select which season this semester is in."
                     required={true}
                     value={season}
-                    onChangeCallback={(e) => this.handleChange(e, "inputSeason")}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputSeason")
+                    }
                     options={ALL_SEASONS.map((season) => {
                         return {
                             value: season,
@@ -93,7 +95,8 @@ export class SemesterEditPage extends React.Component {
                     validators={[
                         emptyValidator("year"),
                         {
-                            validate: (year) => parseInt(year) >= 2000 && parseInt(year) < 2100,
+                            validate: (year) =>
+                                parseInt(year) >= 2000 && parseInt(year) < 2100,
                             message: "Must be a valid year!",
                         },
                     ]}
@@ -106,7 +109,7 @@ export class SemesterEditPage extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 
     render = () => {
         const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
@@ -134,5 +137,7 @@ function formSemesterId(season, year) {
 }
 
 function formSemesterTitle(season, year) {
-    return season.substring(0,1).toUpperCase() + season.substring(1) + " " + year;
+    return (
+        season.substring(0, 1).toUpperCase() + season.substring(1) + " " + year
+    );
 }
