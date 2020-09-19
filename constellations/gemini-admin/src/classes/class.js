@@ -89,11 +89,19 @@ export class ClassPage extends React.Component {
 
     renderSelectAllButton = () => {
         if (this.state.numUnpublished > 0) {
-            return (
-                <button id="select-all" onClick={this.onClickSelectAll}>
-                    Select All Unpublished Classes
-                </button>
-            );
+            if (this.state.numUnpublished == size(this.state.selectedIds)) {
+                return (
+                    <button id="select-all" onClick={this.onClickSelectAll}>
+                        Deselect All Unpublished Classes
+                    </button>
+                );
+            } else {
+                return (
+                    <button id="select-all" onClick={this.onClickSelectAll}>
+                        Select All Unpublished Classes
+                    </button>
+                );
+            }
         } else {
             return <div></div>;
         }

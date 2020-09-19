@@ -25,7 +25,7 @@ export class HomeTabSectionRegistrations extends React.Component {
         });
 
         //afh registration
-        API.get("api/userafhs/new").then((res) => {
+        API.get("api/user-afhs/new").then((res) => {
             const userAfh = res.data;
             this.setState({
                 afhReg: userAfh,

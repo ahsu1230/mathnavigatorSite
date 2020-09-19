@@ -36,10 +36,10 @@ export class HomePage extends React.Component {
     };
 
     componentDidMount = () => {
-        API.get("api/unpublished").then((res) => {
-            const unpublishedList = res.data;
+        API.get("api/classes/unpublished").then((res) => {
+            const unpublishedList = res.data || [];
             this.setState({
-                unpublishedClasses: unpublishedList.classes,
+                unpublishedClasses: unpublishedList,
             });
         });
 
@@ -57,7 +57,7 @@ export class HomePage extends React.Component {
             });
         });
 
-        API.get("api/userafhs/new").then((res) => {
+        API.get("api/user-afhs/new").then((res) => {
             const userAfh = res.data;
             this.setState({
                 newUserAfh: userAfh,
