@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 /*
  * A component that automatically handles the Header portion of an entity's "All-View" page.
  * This includes the header, description, and "Add" button.
- * 
+ *
  * Available props for this Component:
  *
  * - title - display name of the header of the page (e.g. All Programs)

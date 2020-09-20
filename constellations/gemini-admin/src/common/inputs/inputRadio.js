@@ -5,7 +5,7 @@ import Checkbox from "../../../assets/checkmark_green.svg";
 
 /*
  * Given a list of radio selections, render a single component
- * that manages this selection of radio input options. 
+ * that manages this selection of radio input options.
  * Props for the InputRadio Component:
  *
  * value: Current selected option

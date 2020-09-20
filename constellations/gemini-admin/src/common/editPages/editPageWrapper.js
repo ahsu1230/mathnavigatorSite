@@ -10,7 +10,7 @@ import YesNoModal from "../modals/yesnoModal.js";
  * This includes a title, and the buttons at the bottom of the page.
  * This component will handle the saving and deleting modals, but you must pass in the
  * onSave and onDelete callback functions.
- * 
+ *
  * Available props for this Component:
  *
  * - title - display name of the header of the page (e.g. Edit Program)

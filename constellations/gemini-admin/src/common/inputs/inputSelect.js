@@ -4,7 +4,7 @@ import React from "react";
 import Checkbox from "../../../assets/checkmark_green.svg";
 
 /*
- * Given a list of options, create a single component that manages a dropdown menu. 
+ * Given a list of options, create a single component that manages a dropdown menu.
  *
  * Available props for the InputSelect Component:
  *

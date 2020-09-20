@@ -6,7 +6,7 @@ import Checkbox from "../../../assets/checkmark_green.svg";
 /*
  * A simple component that manages a header and an input field
  * with validation capabilities and error messaging.
- * 
+ *
  * Available props for the InputText Component:
  *
  * label: A large gray label for the input, e.g. "Program ID".
