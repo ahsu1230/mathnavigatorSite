@@ -81,7 +81,7 @@ export class InputRadio extends React.Component {
     render = () => {
         const required = this.props.required;
         const value = this.props.value;
-        const options = this.props.options;
+        const options = this.props.options || [];
         const pass = options.length && this.state.chosen;
 
         var formatDescription = this.renderDescription(

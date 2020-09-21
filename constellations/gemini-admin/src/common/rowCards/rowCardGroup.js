@@ -2,7 +2,7 @@
 require("./rowCard.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import RowCardBasic from "../common/rowCards/rowCardBasic.js";
+import RowCardBasic from "./rowCardBasic.js";
 
 // Given a title, subtitle, and a list of {fields, text}
 // For example, title = Achievements, subtitle = (2020), list of [{position, message}, {position, message}, ...]

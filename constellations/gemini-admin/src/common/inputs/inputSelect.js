@@ -95,8 +95,8 @@ export class InputSelect extends React.Component {
     render = () => {
         const required = this.props.required;
         const value = this.props.value;
-        const pass =
-            this.props.options.length &&
+        const options = this.props.options || [];
+        const pass = options.length &&
             (this.state.chosen || !this.props.hasNoDefault);
 
         var formatDescription = this.renderDescription(
@@ -104,7 +104,7 @@ export class InputSelect extends React.Component {
             required,
             pass
         );
-        var select = this.renderSelect(this.props.options, this.props.value);
+        var select = this.renderSelect(options, value);
 
         return (
             <div className="input-wrapper">
