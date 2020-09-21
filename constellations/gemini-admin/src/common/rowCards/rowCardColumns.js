@@ -4,10 +4,35 @@ import React from "react";
 import { Link } from "react-router-dom";
 import RowCardBasic from "./rowCardBasic.js";
 
-// Given a title, subtitle, and a list of {fields, text}
-// For example, title = Class, subtitle = (ap_calc_2020),
-// list of list of fields objects. [ [{}, {}, {}], [fields2], [fields3] ] <- will be presented as columns
-// list of texts
+/*
+ * The wrapper component for an all-page row card but with multiple columns in one card.
+ * This component handles formatting a card's title, "Edit" link, a list of columns of fields and a list of long texts.
+ * This component extends from `RowCardBasic`
+ *
+ * Available props for this Component:
+ *
+ * - title - The main title of the card (required)
+ * - subtitle - The subtitle (optional) for the card
+ * - editUrl - The link url when the user clicks on "Edit"
+ * - fieldsList - A list of list of objects. Every inner-list represents a column.
+ * And inside each inner-list is an object that contains a "label" and value (just like RowCardBasic).
+ * Example:
+ * fieldsList =
+ * [ // First column
+ *     { label: "FieldA", value: "asdf"},
+ *     { label: "FieldB", value: "zxcv" }
+ * ],
+ * [ // Second column
+ *     { label: "FieldC", value: "qwer"},
+ * ]
+ * note: in addition, highlightFn() is also valid for each of these objects just like in RowCardBasic.
+ *
+ * - texts - A list of objects. Each object contains a "label" and a "value". Example:
+ * [
+ *     { label: "MessageA", value: "asdf"},
+ *     { label: "MessageB", value: "zxcv" }
+ * ]
+ */
 
 export default class RowCardColumns extends RowCardBasic {
     render() {

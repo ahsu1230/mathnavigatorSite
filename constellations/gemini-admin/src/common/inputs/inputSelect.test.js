@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { InputSelect } from "./inputSelect.js";
 
 describe("InputSelect", () => {
-    const component = shallow(<InputSelect/>);
+    const component = shallow(<InputSelect />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
@@ -17,9 +17,7 @@ describe("InputSelect", () => {
             required: true,
             label: "Some Label",
             description: "Some Description",
-            options: [
-                { value: "option1", displayName: "Option1" }
-            ]
+            options: [{ value: "option1", displayName: "Option1" }],
         });
 
         expect(component.find("h2").text()).toBe("Some Label");
@@ -39,7 +37,7 @@ describe("InputSelect", () => {
             onChangeCallback: onChangeMocked,
             required: false,
             label: "Some Label",
-            description: "Some Description"
+            description: "Some Description",
         });
 
         expect(component.find("h4").text()).toContain("Some Description");
@@ -49,7 +47,7 @@ describe("InputSelect", () => {
     test("render with empty options", () => {
         component.setProps({
             options: [],
-            errorMessageIfEmpty: "No options!"
+            errorMessageIfEmpty: "No options!",
         });
 
         expect(component.find("select option").length).toBe(0);
@@ -64,8 +62,8 @@ describe("InputSelect", () => {
             options: [
                 { value: "option1", displayName: "Option1" },
                 { value: "option2", displayName: "Option2" },
-                { value: "option3", displayName: "Option3" }
-            ]
+                { value: "option3", displayName: "Option3" },
+            ],
         });
 
         let options = component.find("option");
@@ -85,8 +83,8 @@ describe("InputSelect", () => {
             options: [
                 { value: "option1", displayName: "Option1" },
                 { value: "option2", displayName: "Option2" },
-                { value: "option3", displayName: "Option3" }
-            ]
+                { value: "option3", displayName: "Option3" },
+            ],
         });
 
         let options = component.find("option");

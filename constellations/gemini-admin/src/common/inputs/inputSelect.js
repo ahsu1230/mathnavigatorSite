@@ -96,8 +96,8 @@ export class InputSelect extends React.Component {
         const required = this.props.required;
         const value = this.props.value;
         const options = this.props.options || [];
-        const pass = options.length &&
-            (this.state.chosen || !this.props.hasNoDefault);
+        const pass =
+            options.length && (this.state.chosen || !this.props.hasNoDefault);
 
         var formatDescription = this.renderDescription(
             this.props.description,

@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import EditPageWrapper from "./editPageWrapper.js";
 
 describe("EditPageWrapper", () => {
-    const component = shallow(<EditPageWrapper/>);
+    const component = shallow(<EditPageWrapper />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
@@ -15,7 +15,7 @@ describe("EditPageWrapper", () => {
 
         component.setProps({
             title: "Some title",
-            content: (<div></div>),
+            content: <div></div>,
             onSave: onSaveMocked,
             onDelete: onDeleteMocked,
             isEdit: true,

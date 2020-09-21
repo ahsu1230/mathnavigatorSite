@@ -4,9 +4,18 @@ import React from "react";
 const classnames = require("classnames");
 
 /*
- * The wrapper component around a modalContent.
- * Pass HTML / Component as "content" props to this component to render a modal,
- * including the dismissing functionality.
+ * The wrapper component for all modals.
+ * This component handles the pop-up modal as well as the dismissing functionality.
+ * Pass HTML / Component as "body content" props to this component to render a full modal.
+ *
+ * Available props for this Component:
+ *
+ * - show - Can be true or false. Gives control to invoker of when to open/close modal.
+ * - modalContent - HTML/react component of what the modal contains.
+ * - modalClassName - class name for the "modal" wrapper itself to allow CSS customization
+ * - onDismiss - function callback for when the modal is closed.
+ * - withClose - if true, provide an "X" button on the top-right corner of the modal to allow closing the modal.
+ * - persistent - if true, prevent user from dismissing modal by clicking on overlay.
  */
 export class Modal extends React.Component {
     handleDismiss = () => {

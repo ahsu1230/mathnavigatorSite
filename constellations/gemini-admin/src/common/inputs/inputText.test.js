@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { emptyValidator, InputText } from "./inputText.js";
 
 describe("InputText", () => {
-    const component = shallow(<InputText/>);
+    const component = shallow(<InputText />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
@@ -21,7 +21,9 @@ describe("InputText", () => {
         });
 
         expect(component.find("h2").text()).toBe("Some Label");
-        expect(component.find("h4.description").text()).toContain("Some Description");
+        expect(component.find("h4.description").text()).toContain(
+            "Some Description"
+        );
         expect(component.find("h4.description").text()).toContain("(required)");
         expect(component.find("input").exists()).toBe(true);
         expect(component.find("input").prop("value")).toBe("asdf");
@@ -35,10 +37,12 @@ describe("InputText", () => {
             onChangeCallback: onChangeMocked,
             required: false,
             label: "Some Label",
-            description: "Some Description"
+            description: "Some Description",
         });
 
-        expect(component.find("h4.description").text()).toContain("Some Description");
+        expect(component.find("h4.description").text()).toContain(
+            "Some Description"
+        );
         expect(component.find("h4.description").text()).toContain("(optional)");
     });
 
@@ -64,10 +68,12 @@ describe("InputText", () => {
             value: "",
             onChangeCallback: onChangeMocked,
             required: true,
-            validators: [ emptyValidator("some value") ]
+            validators: [emptyValidator("some value")],
         });
 
-        expect(component.find("h4.red").text()).toContain("You must input a some value");
+        expect(component.find("h4.red").text()).toContain(
+            "You must input a some value"
+        );
     });
 
     test("render with custom validator", () => {
@@ -79,15 +85,17 @@ describe("InputText", () => {
             validators: [
                 {
                     validate: (x) => parseInt(x) < 10,
-                    message: "Number must be less than 10"
-                }
-            ]
+                    message: "Number must be less than 10",
+                },
+            ],
         });
-        expect(component.find("h4.red").text()).toContain("Number must be less than 10");
+        expect(component.find("h4.red").text()).toContain(
+            "Number must be less than 10"
+        );
 
         // Change value to a valid one
         component.setProps({
-            value: "5"
+            value: "5",
         });
         expect(component.find("h4.red").exists()).toBe(false);
         expect(component.find("img").exists()).toBe(true); // checkmark

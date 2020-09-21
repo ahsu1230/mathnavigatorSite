@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import AllPageHeader from "./allPageHeader.js";
 
 describe("All Page Header", () => {
-    const component = shallow(<AllPageHeader/>);
+    const component = shallow(<AllPageHeader />);
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
@@ -14,7 +14,7 @@ describe("All Page Header", () => {
             title: "Some title",
             addUrl: "/link/me",
             addButtonTitle: "ClickMe",
-            description: "Some description"
+            description: "Some description",
         });
 
         expect(component.find("h1").text()).toBe("Some title");
