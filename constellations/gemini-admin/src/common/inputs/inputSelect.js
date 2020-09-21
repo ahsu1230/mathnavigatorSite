@@ -1,7 +1,7 @@
 "use strict";
 require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../../assets/checkmark_green.svg";
+import Checkmark from "../../../assets/checkmark_green.svg";
 
 /*
  * Given a list of options, create a single component that manages a dropdown menu.
@@ -112,7 +112,7 @@ export class InputSelect extends React.Component {
                 {formatDescription}
                 <div className="inputs">
                     {select}
-                    {pass ? <img src={Checkbox} /> : <img />}
+                    {pass ? <img src={Checkmark} /> : <span></span>}
                 </div>
             </div>
         );

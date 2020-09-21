@@ -1,7 +1,7 @@
 "use strict";
 require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../../assets/checkmark_green.svg";
+import ImgCheckmark from "../../../assets/checkmark_green.svg";
 
 /*
  * Given a list of radio selections, render a single component
@@ -97,7 +97,7 @@ export class InputRadio extends React.Component {
                 {formatDescription}
                 <div className="inputs radios">
                     {radios}
-                    {pass ? <img src={Checkbox} /> : <img />}
+                    {pass ? <img src={ImgCheckmark} /> : <span></span>}
                 </div>
             </div>
         );

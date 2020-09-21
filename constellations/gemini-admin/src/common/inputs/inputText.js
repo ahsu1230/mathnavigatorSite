@@ -1,7 +1,7 @@
 "use strict";
 require("./inputX.sass");
 import React from "react";
-import Checkbox from "../../../assets/checkmark_green.svg";
+import Checkmark from "../../../assets/checkmark_green.svg";
 
 /*
  * A simple component that manages a header and an input field
@@ -37,10 +37,11 @@ import Checkbox from "../../../assets/checkmark_green.svg";
  */
 export class InputText extends React.Component {
     renderErrorMessage = (required, value) => {
+        var validators = this.props.validators || [];
         var pass = true;
         var errorMessage = <h4 className="hidden"></h4>;
         if (required) {
-            this.props.validators.some((validator) => {
+            validators.some((validator) => {
                 if (!validator.validate(value)) {
                     errorMessage = <h4 className="red">{validator.message}</h4>;
                     pass = false;
@@ -62,7 +63,7 @@ export class InputText extends React.Component {
                 " (optional)"
             );
             formatDescription = (
-                <h4>
+                <h4 className="description">
                     {description} {ending}
                 </h4>
             );
@@ -109,7 +110,7 @@ export class InputText extends React.Component {
                 {formatDescription}
                 <div className="inputs">
                     {input}
-                    {pass ? <img src={Checkbox} /> : <img />}
+                    {pass ? <img src={Checkmark} /> : <span></span>}
                 </div>
                 {errorMessage}
             </div>
