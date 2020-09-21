@@ -7,42 +7,38 @@ describe("Program Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("All Programs");
-        expect(component.find("Link").text()).toContain("Add Program");
-        expect(component.find("ProgramRow").length).toBe(0);
+
+        const header = component.find("AllPageHeader");
+        expect(header.prop("title")).toContain("All Programs");
+        expect(header.prop("addUrl")).toBe("/programs/add");
     });
 
     test("renders 2 rows", () => {
         const programs = [
             {
                 programId: "ap_bc_calculus",
-                name: "AP BC Calculus",
+                title: "AP BC Calculus",
                 grade1: 10,
                 grade2: 12,
             },
             {
                 programId: "sat_math",
-                name: "SAT Math",
+                title: "SAT Math",
                 grade1: 9,
                 grade2: 12,
             },
         ];
         component.setState({ programs: programs });
-        expect(component.find("ProgramRow").length).toBe(2);
 
-        let row0 = component.find("ProgramRow").at(0);
-        expect(row0.prop("program")).toHaveProperty(
-            "programId",
-            "ap_bc_calculus"
-        );
-        expect(row0.prop("program")).toHaveProperty("name", "AP BC Calculus");
-        expect(row0.prop("program")).toHaveProperty("grade1", 10);
-        expect(row0.prop("program")).toHaveProperty("grade2", 12);
+        let rows = component.find("RowCardBasic");
 
-        let row1 = component.find("ProgramRow").at(1);
-        expect(row1.prop("program")).toHaveProperty("programId", "sat_math");
-        expect(row1.prop("program")).toHaveProperty("name", "SAT Math");
-        expect(row1.prop("program")).toHaveProperty("grade1", 9);
-        expect(row1.prop("program")).toHaveProperty("grade2", 12);
+        let row0 = rows.at(0);
+        expect(row0.prop("title")).toBe("AP BC Calculus");
+        expect(row0.prop("subtitle")).toBe("ap_bc_calculus");
+
+        let row1 = rows.at(1);
+        expect(row1.prop("title")).toBe("SAT Math");
+        expect(row1.prop("subtitle")).toBe("sat_math");
+        expect(rows.length).toBe(2);
     });
 });
