@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import YesNoModal from "./YesNoModal.js";
+import YesNoModal from "./yesnoModal.js";
 
 describe("YesNoModal", () => {
     const component = shallow(<YesNoModal />);
