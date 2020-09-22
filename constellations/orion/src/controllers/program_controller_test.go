@@ -203,20 +203,20 @@ func TestDeleteProgramFailure(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestGetAllProgramStates(t *testing.T) {
+func TestGetAllProgramFeatured(t *testing.T) {
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/states", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/featured", nil)
 
 	//Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	var programStates []string
-	if err := json.Unmarshal(recorder.Body.Bytes(), &programStates); err != nil {
+	var programFeatured []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &programFeatured); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "none", programStates[0])
-	assert.EqualValues(t, "popular", programStates[1])
-	assert.EqualValues(t, "new", programStates[2])
+	assert.EqualValues(t, "none", programFeatured[0])
+	assert.EqualValues(t, "popular", programFeatured[1])
+	assert.EqualValues(t, "new", programFeatured[2])
 }
 
 //

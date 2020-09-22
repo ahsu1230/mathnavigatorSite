@@ -5,8 +5,8 @@ import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import API from "../api.js";
-import { getFullName } from "../utils/userUtils.js";
-import { InputSelect } from "../utils/inputSelect.js";
+import { getFullName } from "../common/userUtils.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
 
 export class UserAFHPage extends React.Component {
     state = {

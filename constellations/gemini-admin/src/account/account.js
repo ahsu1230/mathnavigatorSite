@@ -5,8 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import API, { executeApiCalls } from "../api.js";
 import { getCurrentAccountId, setCurrentAccountId } from "../localStorage.js";
-import { Modal } from "../modals/modal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import { Modal } from "../common/modals/modal.js";
+import YesNoModal from "../common/modals/yesnoModal.js";
 import { AccountInfo } from "./accountInfo.js";
 
 export class AccountPage extends React.Component {

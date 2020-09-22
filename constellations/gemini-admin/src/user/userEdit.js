@@ -3,10 +3,10 @@ require("./userEdit.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
+import { Modal } from "../common/modals/modal.js";
+import OkayModal from "../common/modals/okayModal.js";
+import YesNoModal from "../common/modals/yesnoModal.js";
+import { InputText } from "../common/inputs/inputText.js";
 import { setCurrentAccountId } from "../localStorage.js";
 import { UserInput } from "./userInput.js";
 

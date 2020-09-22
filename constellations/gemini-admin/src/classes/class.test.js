@@ -7,61 +7,48 @@ describe("Classes Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("All Classes");
-        expect(component.find("Link").text()).toContain("Add Class");
-        expect(component.find("ClassRow").length).toBe(0);
+
+        const header = component.find("AllPageHeader");
+        expect(header.prop("title")).toContain("All Classes");
+        expect(header.prop("addUrl")).toBe("/classes/add");
     });
 
     test("renders 2 rows", () => {
         const classes = [
             {
+                id: 1,
                 programId: "ap_bc_calculus",
                 semesterId: "2020_fall",
                 classKey: "class1",
                 classId: "ap_bc_calculus_2020_fall_class1",
-                locationId: "Churchill",
-                times: "Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm",
-                fullState: 0,
-                pricePerSession: 50,
+                locationId: "churchill",
             },
             {
-                programId: "ap_bc_calculus",
+                id: 2,
+                programId: "sat_math",
                 semesterId: "2020_fall",
                 classKey: "class2",
-                classId: "ap_bc_calculus_2020_fall_class2",
-                locationId: "Churchill",
-                times: "Thur. 3:30pm - 5:30pm, Sat. 1:00pm - 3:00pm",
-                fullState: 2,
-                priceLump: 1000,
+                classId: "sat_math_2020_fall_class2",
+                locationId: "churchill",
             },
         ];
         component.setState({ classes: classes });
-        expect(component.find("ClassRow").length).toBe(2);
 
-        let row0 = component.find("ClassRow").at(0);
-        expect(row0.prop("classObj")).toHaveProperty(
-            "classId",
-            "ap_bc_calculus_2020_fall_class1"
+        let rows = component.find("RowCardColumns");
+        let row0 = rows.at(0);
+        expect(row0.prop("title")).toBe("ClassId");
+        expect(row0.prop("subtitle")).toBe("ap_bc_calculus_2020_fall_class1");
+        expect(row0.prop("editUrl")).toBe(
+            "/classes/ap_bc_calculus_2020_fall_class1/edit"
         );
-        expect(row0.prop("classObj")).toHaveProperty("locationId", "Churchill");
-        expect(row0.prop("classObj")).toHaveProperty(
-            "times",
-            "Wed. 5:30pm - 7:30pm, Fri. 2:00pm - 4:00pm"
-        );
-        expect(row0.prop("classObj")).toHaveProperty("fullState", 0);
-        expect(row0.prop("classObj")).toHaveProperty("pricePerSession", 50);
 
-        let row1 = component.find("ClassRow").at(1);
-        expect(row1.prop("classObj")).toHaveProperty(
-            "classId",
-            "ap_bc_calculus_2020_fall_class2"
+        let row1 = rows.at(1);
+        expect(row1.prop("title")).toBe("ClassId");
+        expect(row1.prop("subtitle")).toBe("sat_math_2020_fall_class2");
+        expect(row1.prop("editUrl")).toBe(
+            "/classes/sat_math_2020_fall_class2/edit"
         );
-        expect(row1.prop("classObj")).toHaveProperty("locationId", "Churchill");
-        expect(row1.prop("classObj")).toHaveProperty(
-            "times",
-            "Thur. 3:30pm - 5:30pm, Sat. 1:00pm - 3:00pm"
-        );
-        expect(row1.prop("classObj")).toHaveProperty("fullState", 2);
-        expect(row1.prop("classObj")).toHaveProperty("priceLump", 1000);
+
+        expect(rows.length).toBe(2);
     });
 });

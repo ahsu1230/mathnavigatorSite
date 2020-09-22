@@ -3,8 +3,14 @@ require("./announce.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Announcements are broadcast messages we send to notify parents and students about upcoming changes. 
+    They will be shown in the "Announcements" page on the user website grouped by day (You can make multiple announcements per day). 
+    Announcements can be scheduled ahead of time and will automatically be published to users at the "postedAt" time. 
+    Only one announcement can be "pinned" on the home page at a time. Use these pinned announcements for more urgent or important messages.`;
 export class AnnouncePage extends React.Component {
     constructor(props) {
         super(props);
@@ -59,80 +65,73 @@ export class AnnouncePage extends React.Component {
     };
 
     render() {
-        const rows = this.state.list.map((row, index) => {
+        const cards = this.state.list.map((announce, index) => {
+            const postedAt = moment(announce.postedAt);
+            const fields = generateFields(announce);
+            const texts = generateTexts(announce);
+            const checked = announce.onHomePage || false;
+
             return (
-                <li key={index}>
-                    <AnnounceRow
-                        key={index}
-                        row={row}
-                        onChangeCheckbox={this.onChangeCheckbox}
+                <div className="card-wrapper" key={index}>
+                    <input
+                        type="checkbox"
+                        id={announce.id}
+                        onChange={this.onChangeCheckbox}
+                        checked={checked}
                     />
-                </li>
+                    <RowCardBasic
+                        key={index}
+                        title={"Announcement on " + postedAt.format("M/D/YYYY")}
+                        subtitle={postedAt.format("hh:mm a")}
+                        editUrl={"/announcements/" + announce.id + "/edit"}
+                        fields={fields}
+                        texts={texts}
+                    />
+                </div>
             );
         });
-        const numRows = rows.length;
+
         return (
             <div id="view-announce">
-                <h1>All Announcements ({numRows}) </h1>
-
-                <ul className="announce-list-row subheader">
-                    <li className="li-small">On Home Page</li>
-                    <li className="li-med">State</li>
-                    <li className="li-med">Date</li>
-                    <li className="li-med">Author</li>
-                    <li className="li-large">Message</li>
-                </ul>
-
-                <ul id="announce-list">{rows}</ul>
-                <Link to={"/announcements/add"}>
-                    <button className="announcement-button">
-                        Add Announcement
-                    </button>
-                </Link>
+                <AllPageHeader
+                    title={"All Announcements (" + this.state.list.length + ")"}
+                    addUrl={"/announcements/add"}
+                    addButtonTitle={"Add Announcement"}
+                    description={PAGE_DESCRIPTION}
+                />
+                <div className="cards">{cards}</div>
             </div>
         );
     }
 }
 
-class AnnounceRow extends React.Component {
-    render() {
-        const announceId = this.props.row.id;
-        const postedAt = moment(this.props.row.postedAt);
+function generateFields(announce) {
+    const now = moment();
+    const postedAt = moment(announce.postedAt);
+    const isPublic = postedAt.isBefore(now);
+    return [
+        {
+            label: "Author",
+            value: announce.author,
+        },
+        {
+            label: "OnHomePage",
+            value: announce.onHomePage ? "true" : "false",
+            highlightFn: () => announce.onHomePage,
+        },
+        {
+            label: "Posted",
+            value: isPublic ? "Published" : "Scheduled",
+            highlightFn: () => !isPublic,
+        },
+    ];
+}
 
-        const checked = this.props.row.onHomePage || false;
-
-        const now = moment();
-        const isScheduled = postedAt.isAfter(now);
-
-        const author = this.props.row.author;
-        const message = this.props.row.message;
-
-        const url = "/announcements/" + announceId + "/edit";
-        return (
-            <ul className="announce-list-row">
-                <li className="li-small">
-                    <input
-                        type="checkbox"
-                        onChange={this.props.onChangeCheckbox}
-                        id={announceId}
-                        checked={checked}
-                    />
-                </li>
-                <li
-                    className={
-                        "li-med " + (isScheduled ? " scheduled" : " published")
-                    }>
-                    <div>{isScheduled ? "Scheduled" : "Published"}</div>
-                    <div>{postedAt.fromNow()}</div>
-                </li>
-                <li className="li-med">
-                    <div>{postedAt.format("M/D/YYYY")}</div>
-                    <div>{postedAt.format("hh:mm a")}</div>
-                </li>
-                <li className="li-med"> {author} </li>
-                <li className="li-large"> {message} </li>
-                <Link to={url}>Edit</Link>
-            </ul>
-        );
-    }
+function generateTexts(announce) {
+    return [
+        {
+            label: "Message",
+            value: announce.message,
+        },
+    ];
 }

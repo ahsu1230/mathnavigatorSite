@@ -3,7 +3,7 @@ require("./homeSection.sass");
 import React from "react";
 import API from "../api.js";
 import { Link } from "react-router-dom";
-import { getFullName } from "../utils/userUtils.js";
+import { getFullName } from "../common/userUtils.js";
 import { EmptyMessage } from "./home.js";
 import moment from "moment";
 
@@ -25,7 +25,7 @@ export class HomeTabSectionRegistrations extends React.Component {
         });
 
         //afh registration
-        API.get("api/userafhs/new").then((res) => {
+        API.get("api/user-afhs/new").then((res) => {
             const userAfh = res.data;
             this.setState({
                 afhReg: userAfh,

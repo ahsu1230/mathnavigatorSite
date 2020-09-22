@@ -12,6 +12,10 @@ const (
 	NOT_FULL    = 0
 	ALMOST_FULL = 1
 	FULL        = 2
+
+	NOT_FULL_DISPLAY_NAME    = "Not full"
+	ALMOST_FULL_DISPLAY_NAME = "Almost full"
+	FULL_DISPLAY_NAME        = "Full"
 )
 
 type Class struct {
@@ -29,7 +33,7 @@ type Class struct {
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
 	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
-	PriceLumpSum    NullUint   `json:"priceLump" db:"price_lump_sum"`
+	PriceLumpSum    NullUint   `json:"priceLumpSum" db:"price_lump_sum"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 

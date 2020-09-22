@@ -16,6 +16,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestGetFullStates(t *testing.T) {
+	// No mocking required (repo not used)
+
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/full-states", nil)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	// Validate results
+	var states []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &states); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, domains.NOT_FULL_DISPLAY_NAME, states[domains.NOT_FULL])
+	assert.EqualValues(t, domains.ALMOST_FULL_DISPLAY_NAME, states[domains.ALMOST_FULL])
+	assert.EqualValues(t, domains.FULL_DISPLAY_NAME, states[domains.FULL])
+	assert.EqualValues(t, 3, len(states))
+}
+
 //
 // Test Get All
 //

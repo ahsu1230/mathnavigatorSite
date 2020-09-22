@@ -14,7 +14,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
-		apiPrograms.GET("/states", controllers.GetAllProgramStates)
+		apiPrograms.GET("/featured", controllers.GetAllProgramFeatured)
 		apiPrograms.GET("/program/:programId", controllers.GetProgramById)
 		apiPrograms.POST("/create", controllers.CreateProgram)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
@@ -23,6 +23,7 @@ func (h *Handler) SetupApiEndpoints() {
 	apiClasses := h.Engine.Group("api/classes")
 	{
 		apiClasses.GET("/all", controllers.GetAllClasses)
+		apiClasses.GET("/full-states", controllers.GetFullStates)
 		apiClasses.GET("/class/:classId", controllers.GetClassById)
 		apiClasses.GET("/classes/program/:programId", controllers.GetClassesByProgram)
 		apiClasses.GET("/classes/semester/:semesterId", controllers.GetClassesBySemester)

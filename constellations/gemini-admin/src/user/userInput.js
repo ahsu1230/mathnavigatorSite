@@ -1,8 +1,8 @@
 "use strict";
 require("./userInput.sass");
 import React from "react";
-import { InputText, emptyValidator } from "../utils/inputText.js";
-import { validateEmail, validatePhoneNumber } from "../utils/userUtils.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import { validateEmail, validatePhoneNumber } from "../common/userUtils.js";
 
 export class UserInput extends React.Component {
     render = () => {

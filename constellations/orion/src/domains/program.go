@@ -14,7 +14,7 @@ const (
 	FEATURED_NEW     = "new"
 )
 
-var ALL_PROGRAM_STATES = []string{FEATURED_NONE, FEATURED_POPULAR, FEATURED_NEW}
+var ALL_PROGRAM_FEATURED = []string{FEATURED_NONE, FEATURED_POPULAR, FEATURED_NEW}
 
 type Program struct {
 	Id          uint      `json:"id"`

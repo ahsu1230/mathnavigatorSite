@@ -5,7 +5,7 @@ require("./emailPrograms.sass");
 import axios from "axios";
 import React from "react";
 import API, { executeApiCalls } from "../api.js";
-import { getFullName } from "../utils/userUtils.js";
+import { getFullName } from "../common/userUtils.js";
 
 export class EmailProgramsPage extends React.Component {
     state = {

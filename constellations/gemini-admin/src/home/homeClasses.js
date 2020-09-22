@@ -14,10 +14,10 @@ export class HomeTabSectionClasses extends React.Component {
     };
 
     componentDidMount() {
-        API.get("api/unpublished").then((res) => {
-            const unpublishedList = res.data;
+        API.get("api/classes/unpublished").then((res) => {
+            const unpublishedList = res.data || [];
             this.setState({
-                unpubClasses: unpublishedList.classes,
+                unpubClasses: unpublishedList,
             });
         });
     }
