@@ -205,13 +205,13 @@ func TestDeleteProgramFailure(t *testing.T) {
 
 func TestGetAllProgramFeatured(t *testing.T) {
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/states", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/featured", nil)
 
 	//Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	var programFeatured []string
-	if err := json.Unmarshal(recorder.Body.Bytes(), &programStates); err != nil {
+	if err := json.Unmarshal(recorder.Body.Bytes(), &programFeatured); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "none", programFeatured[0])
