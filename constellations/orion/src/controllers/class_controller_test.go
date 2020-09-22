@@ -23,7 +23,7 @@ func TestGetFullStates(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	// Validate results
-	var states []int
+	var states []string
 	if err := json.Unmarshal(recorder.Body.Bytes(), &states); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
