@@ -393,7 +393,7 @@ func createSessions(classId, cancelled string, numSessions int) ([]uint, error) 
 }
 
 func createAFH(startsAt time.Time, title, subject, locationId, notes string) (uint, error) {
-	startJson, _ := startsAt .MarshalJSON()
+	startJson, _ := startsAt.MarshalJSON()
 	endsAt := startsAt.Add(time.Hour * 1)
 	endJson, _ := endsAt.MarshalJSON()
 	body := strings.NewReader(fmt.Sprintf(`{
