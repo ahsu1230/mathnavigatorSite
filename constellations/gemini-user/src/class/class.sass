@@ -1,61 +1,123 @@
 @import "../utils/_constants.sass"
 
 #view-class
-    width: $containerWidthPx3
-    max-width: $containerWidthPct
-    margin: 0 auto $spacing16x
+    width: $containerWidthPct
+    max-width: $containerWidthPx1
+    margin: 0 auto
+    padding: $spacing8x 0
 
-    h1
-        margin: $spacing6x 0
-        color: $colorPrimary
-        line-height: $lineHeight3
-        font-size: $fontSize3
+    #breadcrumbs
+        span
+            margin-left: $spacing1x
+
+        h1
+            margin: $spacing1x 0 $spacing6x
+            line-height: $lineHeight4
+            font-family: $fontFamilyRockwell
+            font-size: $fontSize4
+            color: $colorTurquoise
+
+    #program-info
+        h4.full
+            line-height: $lineHeight1
+            font-family: $fontFamilyRoboto
+            font-size: $fontSize1
+            color: $colorRed
         
-        a
-            color: $colorPrimary
+        p
+            margin: $spacing2x 0
+
+    #register
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        border-bottom: 1px solid $colorGrayLight
 
         @media screen and (max-width: $mediaWidth1)
-            margin: $spacing6x 0
-            line-height: $lineHeight2
-            font-size: $fontSize2
-
-    h3
-        margin-top: $spacing4x
-        padding: $spacing1x 0
-        color: $colorPrimary
-
-    p
-        margin: 0
-
-    #class-description
-        margin-bottom: $spacing4x
-
-        h4
-            margin-top: $spacing1x
+            flex-direction: column
+            justify-content: start
 
         p
-            margin-top: $spacing2x
+            margin-right: $spacing12x
+
+            @media screen and (max-width: $mediaWidth1)
+                margin: $spacing1x 0
+                margin-right: 0
 
         .full
             color: $colorRed
+            pointer-events: none
 
-    #class-info
-        position: relative
-        margin-bottom: $spacing4x
+            button
+                background-color: $colorGrayMed
+                color: $colorBlackDark
+                border: 1px solid $colorGrayMed
 
         button
-            position: absolute
-            top: 0
-            right: 0
+            background-color: $colorOrange
+            color: $colorWhite
+            border: 1px solid $colorOrange
 
             @media screen and (max-width: $mediaWidth1)
-                position: relative
-                display: block
                 width: 100%
-                margin-bottom: $spacing4x
                 border: 1px solid $colorOrange
+                background-color: transparent
                 color: $colorOrange
-                background-color: $colorWhite
-        
-        #class-times
-            margin-top: $spacing2x
+
+                &:hover
+                    background-color: $colorOrange
+                    color: $colorWhite
+
+        a
+            @media screen and (max-width: $mediaWidth1)
+                width: 100%
+                margin: $spacing4x 0
+                
+
+    #class-info
+        display: flex
+        flex-direction: row
+        margin: $spacing4x 0
+
+        @media screen and (max-width: $mediaWidth1)
+            flex-direction: column
+            justify-content: start
+
+        .block
+            flex-grow: 1
+
+            &:last-child
+                padding-left: $spacing8x
+                border-left: 1px solid $colorGrayLight
+
+                @media screen and (max-width: $mediaWidth1)
+                    padding-left: 0
+                    border-left: none
+
+        h3
+            margin: $spacing4x 0
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            margin: $spacing2x 0
+            color: $colorTurquoise
+
+            @media screen and (max-width: $mediaWidth1)
+                margin-top: $spacing4x
+
+            &.location, &.times
+                margin-top: 0
+
+                @media screen and (max-width: $mediaWidth1)
+                    margin-top: $spacing4x
+        p
+            margin: 0
+            line-height: $lineHeight0
+            font-size: $fontSize0
+
+
+    #class-footer
+        margin-top: $spacing16x
+
+        u
+            color: $colorOrange

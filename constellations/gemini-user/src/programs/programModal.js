@@ -37,10 +37,6 @@ class ProgramClass extends React.Component {
             fullStateStr = "(" + this.props.fullStates[fullState] + ")";
         }
 
-        const priceStr = classObj.priceLumpSum
-            ? classObj.priceLumpSum + " total"
-            : classObj.pricePerSession + " per session";
-
         return (
             <li>
                 <div>
@@ -51,7 +47,6 @@ class ProgramClass extends React.Component {
                 </div>
                 <div>
                     <div className="times">{classObj.timesStr}</div>
-                    <div className="price">${priceStr}</div>
                 </div>
 
                 <Link to={url}>{"Details >"}</Link>

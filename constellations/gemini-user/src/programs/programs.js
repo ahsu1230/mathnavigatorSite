@@ -48,7 +48,19 @@ export class ProgramsPage extends React.Component {
             />
         ));
 
-        return <div id="view-programs">{semesterSections}</div>;
+        return (
+            <div id="view-programs">
+                <p>
+                    Math Navigator offers new programs and classes every
+                    semester. Some programs will have multiple classes available
+                    to accomodate different schedules. Programs are recurring
+                    and will usually be offered again in the following semester,
+                    so if you miss the enrollment period for a course, make sure
+                    to enroll next enrollment period!
+                </p>
+                {semesterSections}
+            </div>
+        );
     };
 }
 

@@ -9,9 +9,13 @@ $cardSpacing: $spacing6x
     margin: 0 auto
     padding: $spacing1x 0 $spacing12x
 
-    .section
-        margin-bottom: $cardSpacing
+    p
+        margin: $spacing6x 0 $spacing4x
 
+        @media screen and (max-width: $mediaWidth1)
+            text-align: center
+
+    .section
         .section-title
             margin-bottom: $cardSpacing
             border-bottom: 1px solid $colorGrayLight
