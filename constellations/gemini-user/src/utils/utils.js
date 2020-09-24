@@ -54,3 +54,7 @@ export const getFullStateName = (fullState, append = false) => {
     if (append && state) return " (" + state + ")";
     return state;
 };
+
+export const capitalizeWord = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+};

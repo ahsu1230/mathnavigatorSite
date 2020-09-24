@@ -9,6 +9,7 @@ export class ProgramsPage extends React.Component {
     state = {
         semesters: [],
         programClassesMap: {},
+        fullStates: [],
     };
 
     componentDidMount = () => {
@@ -27,6 +28,12 @@ export class ProgramsPage extends React.Component {
                 programClassesMap: programClassesMap,
             });
         });
+
+        API.get("api/classes/full-states").then((res) => {
+            this.setState({
+                fullStates: res.data,
+            });
+        });
     };
 
     render = () => {
@@ -37,20 +44,11 @@ export class ProgramsPage extends React.Component {
                 programClasses={
                     this.state.programClassesMap[semester.semesterId]
                 }
+                fullStates={this.state.fullStates}
             />
         ));
 
-        return (
-            <div id="view-programs">
-                <div id="star-legend">
-                    <div className="star-container">
-                        <div className="star-img"></div>
-                    </div>
-                    = Featured Programs
-                </div>
-                {semesterSections}
-            </div>
-        );
+        return <div id="view-programs">{semesterSections}</div>;
     };
 }
 
@@ -75,13 +73,14 @@ export class ProgramSection extends React.Component {
                 semester={semester}
                 program={program}
                 classes={programClassesMap[program.programId]}
+                fullStates={this.props.fullStates}
             />
         ));
 
         return (
             <div className="section">
                 <h1 className="section-title">{semester.title}</h1>
-                {cards}
+                {cards.length > 0 ? cards : <p>Coming soon...</p>}
             </div>
         );
     };

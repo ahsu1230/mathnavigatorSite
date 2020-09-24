@@ -3,6 +3,7 @@ require("./programCard.sass");
 import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
+import { capitalizeWord } from "../utils/utils.js";
 
 export class ProgramCard extends React.Component {
     state = {
@@ -28,6 +29,7 @@ export class ProgramCard extends React.Component {
                     semester={this.props.semester}
                     program={this.props.program}
                     classes={classes}
+                    fullStates={this.props.fullStates}
                 />
             );
             modalDiv = (
@@ -44,25 +46,25 @@ export class ProgramCard extends React.Component {
 
     render = () => {
         const program = this.props.program || {};
+        const classes = this.props.classes || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
-
-        let star =
-            program.featured == 1 ? (
-                <div className="star-container">
-                    <div className="star-img"></div>
-                </div>
-            ) : (
-                <div></div>
-            );
+        const classesString =
+            classes.length == 1 ? "1 class" : classes.length + " classes";
+        const buttonString =
+            program.featured != "none"
+                ? capitalizeWord(program.featured)
+                : "View Details";
 
         return (
             <div className="program-card-container">
                 <div className="program-card" onClick={this.handleClick}>
-                    {star}
                     <div className="content">
-                        <h2>{program.name}</h2>
+                        <h2>{program.title}</h2>
                         <h3>{grades}</h3>
-                        <button>View</button>
+                        <div className="classes-avail">
+                            {classesString} available
+                        </div>
+                        <button>{buttonString}</button>
                     </div>
                 </div>
                 {this.renderModal()}

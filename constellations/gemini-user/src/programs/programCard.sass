@@ -5,31 +5,19 @@ $cardSpacing: $spacing6x
 #view-programs .section .program-card-container
     position: relative
     display: inline-block
-    width: 220px
-    height: 200px
+    width: 240px
+    height: 280px
     margin: 0 $cardSpacing $cardSpacing 0
     box-sizing: border-box
 
     @media screen and (max-width: $mediaWidth1)
         display: block
         margin: 0 auto $cardSpacing
-    
-    h2
-        width: $propUnit6x
-        margin: 0
-        color: $colorWhite
-        line-height: $lineHeight1
-        font-size: $fontSize1
-
-    h3
-        margin: $spacing1x 0 $spacing4x
-        color: $colorWhite
-        line-height: $fontSize0
-        font-size: $fontSize0
 
     .program-card
         width: 100%
         height: 100%
+        border-radius: 6px
         background-color: $colorPrimary
         text-align: center
         vertical-align: top
@@ -37,9 +25,41 @@ $cardSpacing: $spacing6x
 
         &:hover
             filter: brightness(110%)
+
+            .classes-avail
+                text-decoration: underline
         
         .content
             position: absolute
             top: 50%
             left: 50%
             transform: translate(-50%, -50%)
+
+            h2
+                width: $propUnit6x
+                margin: 0
+                line-height: $lineHeight1
+                font-size: $fontSize1
+                color: $colorWhite
+
+            h3
+                margin: $spacing1x 0 $spacing4x
+                line-height: $fontSize0
+                font-size: $fontSize0
+                color: $colorWhite
+
+            .classes-avail
+                margin: $spacing1x 0 $spacing4x
+                line-height: $fontSize0
+                font-size: $fontSize0
+                color: $colorOrange
+
+            button
+                border: 1px solid $colorWhite
+                border-radius: 6px
+                line-height: $fontSize0
+                font-size: $fontSize0
+                background-color: transparent
+                color: $colorWhite
+
+                
