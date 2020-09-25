@@ -105,7 +105,7 @@ func TestGetClassesByProgramSuccess(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -127,7 +127,7 @@ func TestGetClassesBySemesterSuccess(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/semester/2020_summer", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -148,7 +148,7 @@ func TestGetClassesByProgramAndSemesterSuccess(t *testing.T) {
 	repos.ClassRepo = &testUtils.ClassRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1/semester/2020_spring", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)

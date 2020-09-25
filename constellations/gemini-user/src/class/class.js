@@ -7,12 +7,13 @@ import { isEmpty } from "lodash";
 import API from "../utils/api.js";
 import {
     formatCurrency,
-    getFullStateName,
     capitalizeWord,
 } from "../utils/utils.js";
 import { Link } from "react-router-dom";
 import { ClassSchedule } from "./classSchedule.js";
 import { ClassErrorPage } from "./classError.js";
+
+const FULL_STATE_VALUE = 2;
 
 export class ClassPage extends React.Component {
     state = {
@@ -21,10 +22,15 @@ export class ClassPage extends React.Component {
         program: {},
         semester: {},
         location: {},
+        otherClasses: [],
+        allSemesters: []
     };
 
     componentDidMount = () => {
-        const classId = this.props.classId;
+        this.fetchData(this.props.classId);
+    };
+
+    fetchData = (classId) => {
         const apiCallsPerClass = [
             API.get("api/classes/class/" + classId),
             API.get("api/sessions/class/" + classId),
@@ -38,28 +44,32 @@ export class ClassPage extends React.Component {
             .catch((err) =>
                 console.log("Error: could not fetch class: " + err)
             );
-    };
+    }
 
     fetchOtherData = (responses) => {
         const classObj = responses[0].data;
         const sessions = responses[1].data;
         const apiCalls = [
             API.get("api/programs/program/" + classObj.programId),
-            API.get("api/semesters/semester/" + classObj.semesterId),
+            API.get("api/semesters/all"),
             API.get("api/locations/location/" + classObj.locationId),
+            API.get("api/classes/program/" + classObj.programId),
         ];
         axios
             .all(apiCalls)
             .then(
-                axios.spread((...responses) =>
+                axios.spread((...responses) => {
+                    const allSemesters = responses[1].data;
                     this.setState({
                         classObj: classObj || {},
                         sessions: sessions || [],
                         program: responses[0].data,
-                        semester: responses[1].data,
+                        allSemesters: allSemesters,
+                        semester: allSemesters.find(semester => semester.semesterId == classObj.semesterId),
                         location: responses[2].data,
+                        otherClasses: responses[3].data,
                     })
-                )
+                })
             )
             .catch((err) =>
                 console.log("Error: could not fetch other data: " + err)
@@ -95,7 +105,7 @@ export class ClassPage extends React.Component {
                     This class is almost full! Enroll now to reserve your spot.
                 </h4>
             );
-        } else if (fullState == 2) {
+        } else if (fullState == FULL_STATE_VALUE) {
             // Full
             fullStateSection = (
                 <h4 className="full">
@@ -117,9 +127,49 @@ export class ClassPage extends React.Component {
         );
     };
 
+    renderOtherClasses = () => {
+        // Unused for now. Looks awkward to be one of the first things you see on page.
+        const thisClass = this.state.classObj;
+        const otherClasses = this.state.otherClasses.filter(classObj => {
+            return classObj.classId != thisClass.classId && classObj.fullState != FULL_STATE_VALUE;
+        });
+        
+        let semesterMap = {};
+        this.state.allSemesters.forEach((semester) => {
+            semesterMap[semester.semesterId] = semester;
+        });
+        const rows = otherClasses.map((classObj, index) => {
+            return (
+                <div key={index}>
+                    <Link 
+                        to={"/class/" + classObj.classId} 
+                        onClick={() => this.fetchData(classObj.classId)}>
+                        {semesterMap[classObj.semesterId].title} {capitalizeWord(classObj.classKey)}
+                    </Link>
+                    <span>{classObj.timesStr}</span>
+                </div>
+                );
+        });
+
+        let message = "You may also be interested in these similar classes.";
+        if (thisClass.fullState == FULL_STATE_VALUE) {
+            message = "Unfortunately this class is full. " + 
+                "Please consider enrolling in one of these available similar classes.";
+        }
+
+        const hide = otherClasses.length == 0 ? "hide" : "";
+
+        return (
+            <section id="other-classes" className={hide}>
+                <p>{message}</p>
+                {rows}
+            </section>
+        );
+    }
+
     renderRegisterBlock = () => {
         const classObj = this.state.classObj;
-        const isFull = classObj.fullState == 2;
+        const isFull = classObj.fullState == FULL_STATE_VALUE;
 
         let url = "";
         let message = "";
@@ -130,7 +180,8 @@ export class ClassPage extends React.Component {
         } else {
             url = "/contact?interest=" + classObj.classId;
             message =
-                'If you are interested in this course, please click on "Enroll". ' +
+                "If you are interested in this course, please click on Enroll. " +
+                "You will be asked to fill out some contact information. " +
                 "For students to keep their enrollment, payment is due by the first class session.";
         }
 
@@ -212,6 +263,7 @@ export class ClassPage extends React.Component {
                 <div id="view-class">
                     {this.renderBreadcrumbs()}
                     {this.renderProgramInfo()}
+                    {/* {this.renderOtherClasses()} */} 
                     {this.renderRegisterBlock()}
                     {this.renderClassInfo()}
                     <ClassSchedule sessions={sessions} />
