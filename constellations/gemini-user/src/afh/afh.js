@@ -1,6 +1,7 @@
 "use strict";
 require("./afh.sass");
 import React from "react";
+import { Link } from "react-router-dom";
 import API from "../utils/api.js";
 import moment from "moment";
 
@@ -39,6 +40,15 @@ export class AFHPage extends React.Component {
         let showSessions = currentTab.map((row, index) => {
             return <AfhSessionRow key={index} row={row} />;
         });
+        if (showSessions.length == 0) {
+            showSessions = (
+                <p>
+                    No Ask-for-Help sessions for this subject at the moment.
+                    <br />
+                    Please check again another time.
+                </p>
+            );
+        }
 
         return (
             <div id="view-afh">
@@ -117,7 +127,7 @@ class LocationAddress extends React.Component {
         const room = this.state.location.room;
 
         return (
-            <div>
+            <div className="location">
                 {address1} <br /> {address2} <br /> {room}
             </div>
         );
@@ -125,38 +135,35 @@ class LocationAddress extends React.Component {
 }
 
 class AfhSessionRow extends React.Component {
-    state = {
-        isActive: false,
-    };
-
-    onSelectSession = () => {
-        this.setState({
-            isActive: !this.state.isActive,
-        });
-    };
-
     render() {
         const row = this.props.row;
-        let sessionDate = moment(row.date).format("M/D/YYYY dddd");
+        const startsAt = moment(row.startsAt);
+        const endsAt = moment(row.endsAt);
 
         return (
-            <div
-                className={
-                    "sessions-list" + (this.state.isActive ? " active" : "")
-                }>
-                <div className="sessions-checkbox">
-                    <input
-                        className="select"
-                        type="checkbox"
-                        onChange={this.onSelectSession}
-                    />
+            <div className="afh-row">
+                <div className="row-header">
+                    <h3>
+                        {startsAt.format("dddd M/D/YYYY") +
+                            "  (" +
+                            startsAt.format("hh:mm a") +
+                            " - " +
+                            endsAt.format("hh:mm a") +
+                            ")"}
+                    </h3>
+                    <Link to="register">Register to attend</Link>
                 </div>
+                <div>{row.title}</div>
+                <LocationAddress locationId={row.locationId} />
 
-                <div className="session-details">
-                    {sessionDate} {row.timeString} <br />
-                    {row.title} {row.notes} <br />
-                    <LocationAddress locationId={row.locationId} />
-                </div>
+                {row.notes ? (
+                    <div className="notes">
+                        <b>Note from teacher:</b>
+                        <p>{row.notes}</p>
+                    </div>
+                ) : (
+                    <div></div>
+                )}
             </div>
         );
     }

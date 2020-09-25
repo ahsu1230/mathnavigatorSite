@@ -8,27 +8,10 @@
     &  h1
         margin: $spacing6x 0
         color: $colorTurquoise
-
-    .sessions-list
-        display: flex
-        flex-direction: row
-        align-items: center
-        margin: $spacing4x auto
-        color: $colorBlack
-
-        &.active
-            color: $colorTurquoiseLight
-
-        .sessions-checkbox
-            width: 20%
         
     .description
         margin: $spacing2x 0
         color: $colorBlack
-
-    .select
-        flex: 0 0 $spacing10x
-        margin-right: $spacing2x
 
     .tabs 
         display: flex
@@ -57,12 +40,40 @@
     .showTab 
         display: inline-block
         width: 100%
-        padding: $spacing1x $spacing2x
+        padding: $spacing4x 0
         border: none
 
     .hide
         display: none
-    
+
+    .afh-row
+        margin-bottom: $spacing4x
+        padding-bottom: $spacing4x
+        border-bottom: 1px solid $colorGrayLight
+
+        .row-header
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: start
+
+        h3
+            margin-bottom: $spacing1x
+            line-height: $lineHeight2
+            font-size: $fontSize1
+            color: $colorTurquoise
+
+        .notes
+            margin-top: $spacing2x
+            color: $colorOrange
+
+        p
+            margin: $spacing1x 0
+
+        .location
+            margin-top: $spacing2x
+            line-height: $lineHeight0
+
 @media only screen and (max-width: 700px)
     #view-afh
         width: 90%
@@ -70,9 +81,24 @@
         & h1, .description
             text-align: center
 
-        .sessions-list
-            width: 90%
-            margin: $spacing3x auto
-
         .tabs button
             font-size: $fontSize0
+
+        .afh-row
+            text-align: center
+
+            .row-header
+                flex-direction: column
+                justify-content: start
+                align-items: center
+
+                a
+                    width: $spacing24x
+                    margin: $spacing2x 0
+                    padding: $spacing1x 0
+                    border: 1px solid $colorBlue
+
+                    &:hover
+                        background-color: $colorBlue
+                        color: $colorWhite
+                    

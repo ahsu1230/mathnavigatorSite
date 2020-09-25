@@ -1,15 +1,12 @@
 "use strict";
 require("./class.sass");
 import React from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import { isEmpty } from "lodash";
 import API from "../utils/api.js";
-import {
-    formatCurrency,
-    capitalizeWord,
-} from "../utils/utils.js";
-import { Link } from "react-router-dom";
+import { formatCurrency, capitalizeWord } from "../utils/utils.js";
 import { ClassSchedule } from "./classSchedule.js";
 import { ClassErrorPage } from "./classError.js";
 
@@ -23,7 +20,7 @@ export class ClassPage extends React.Component {
         semester: {},
         location: {},
         otherClasses: [],
-        allSemesters: []
+        allSemesters: [],
     };
 
     componentDidMount = () => {
@@ -44,7 +41,7 @@ export class ClassPage extends React.Component {
             .catch((err) =>
                 console.log("Error: could not fetch class: " + err)
             );
-    }
+    };
 
     fetchOtherData = (responses) => {
         const classObj = responses[0].data;
@@ -65,10 +62,13 @@ export class ClassPage extends React.Component {
                         sessions: sessions || [],
                         program: responses[0].data,
                         allSemesters: allSemesters,
-                        semester: allSemesters.find(semester => semester.semesterId == classObj.semesterId),
+                        semester: allSemesters.find(
+                            (semester) =>
+                                semester.semesterId == classObj.semesterId
+                        ),
                         location: responses[2].data,
                         otherClasses: responses[3].data,
-                    })
+                    });
                 })
             )
             .catch((err) =>
@@ -130,10 +130,13 @@ export class ClassPage extends React.Component {
     renderOtherClasses = () => {
         // Unused for now. Looks awkward to be one of the first things you see on page.
         const thisClass = this.state.classObj;
-        const otherClasses = this.state.otherClasses.filter(classObj => {
-            return classObj.classId != thisClass.classId && classObj.fullState != FULL_STATE_VALUE;
+        const otherClasses = this.state.otherClasses.filter((classObj) => {
+            return (
+                classObj.classId != thisClass.classId &&
+                classObj.fullState != FULL_STATE_VALUE
+            );
         });
-        
+
         let semesterMap = {};
         this.state.allSemesters.forEach((semester) => {
             semesterMap[semester.semesterId] = semester;
@@ -141,19 +144,21 @@ export class ClassPage extends React.Component {
         const rows = otherClasses.map((classObj, index) => {
             return (
                 <div key={index}>
-                    <Link 
-                        to={"/class/" + classObj.classId} 
+                    <Link
+                        to={"/class/" + classObj.classId}
                         onClick={() => this.fetchData(classObj.classId)}>
-                        {semesterMap[classObj.semesterId].title} {capitalizeWord(classObj.classKey)}
+                        {semesterMap[classObj.semesterId].title}{" "}
+                        {capitalizeWord(classObj.classKey)}
                     </Link>
                     <span>{classObj.timesStr}</span>
                 </div>
-                );
+            );
         });
 
         let message = "You may also be interested in these similar classes.";
         if (thisClass.fullState == FULL_STATE_VALUE) {
-            message = "Unfortunately this class is full. " + 
+            message =
+                "Unfortunately this class is full. " +
                 "Please consider enrolling in one of these available similar classes.";
         }
 
@@ -165,7 +170,7 @@ export class ClassPage extends React.Component {
                 {rows}
             </section>
         );
-    }
+    };
 
     renderRegisterBlock = () => {
         const classObj = this.state.classObj;
@@ -263,7 +268,7 @@ export class ClassPage extends React.Component {
                 <div id="view-class">
                     {this.renderBreadcrumbs()}
                     {this.renderProgramInfo()}
-                    {/* {this.renderOtherClasses()} */} 
+                    {/* {this.renderOtherClasses()} */}
                     {this.renderRegisterBlock()}
                     {this.renderClassInfo()}
                     <ClassSchedule sessions={sessions} />
