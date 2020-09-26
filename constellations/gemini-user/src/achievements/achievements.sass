@@ -1,45 +1,48 @@
-#view-achieve h1
-    color: red
+@import "../utils/_constants.sass"
+
+#view-achieve 
+    padding: 0 0 $spacing24x
+
+    h1
+        color: $colorTurquoise
 
 
 .achieve-card
-    margin-bottom: 96px
+    margin-bottom: $spacing16x
     
     & h2
-        border-bottom: 1px solid #222
-        color: #056571
-        line-height: 30px
-        font-size: 18px
+        padding-bottom: $spacing1x
+        border-bottom: 1px solid $colorGrayMed
+        line-height: $lineHeight2
+        font-size: $fontSize2
+        color: $colorTurquoise
 
     & li
         display: flex
         flex-direction: row
         align-items: center
-        min-height: 96px
-        border-bottom: 1px solid #b8b8b8
-        line-height: 24px
-        font-size: 16px
+        min-height: $spacing12x
+        border-bottom: 1px solid $colorGrayLight
+        line-height: $lineHeight0
+        font-size: $fontSize0
         
         & .bullet
             display: inline
             min-width: 6px
             min-height: 6px
             border-radius: 100%
-            background-color: #b8b8b8
+            background-color: $colorGrayLight
             
         & p
-            margin: 16px 0 16px 32px
+            margin: $spacing2x 0 $spacing2x $spacing4x
             overflow-wrap: anywhere
             word-wrap: break-word
-
-    & li:last-child
-        border: none
     
     & a
         float: right
-        margin-top: 16px
-        line-height: 24px
-        font-size: 16px
+        margin-top: $spacing2x
+        line-height: $lineHeight0
+        font-size: $fontSize0
     
 #view-achievements-container
     width: 80%
@@ -54,6 +57,6 @@
     & .subheaders
         margin: 32px 0 96px
         color: #222
-        line-height: 26px
-        font-size: 18px
+        line-height: $lineHeight1
+        font-size: $fontSize1
         text-align: center

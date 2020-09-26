@@ -60,7 +60,7 @@ export class AFHPage extends React.Component {
                     with one of our programs to attend.
                 </div>
 
-                <h1>Ask for Help Sessions by Subject</h1>
+                <p>Select a subject below to view available ask-for-help sessions.</p>
                 <div className="tabs">
                     <TabButton
                         onChangeTab={this.changeSubject}

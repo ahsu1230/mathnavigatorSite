@@ -18,9 +18,7 @@ class YearList extends React.Component {
         return (
             <div className="achieve-card">
                 <h2>{year}</h2>
-
                 <ul>{achievements}</ul>
-
                 <a href="#/programs">View our Programs &gt;</a>
             </div>
         );

@@ -1,32 +1,45 @@
 @import "../utils/_constants.sass"
+
 $media1: $mediaWidth3
 $media2: $mediaWidth1
 
 #view-announce
-  h1
-    width: 100%
-    margin: $spacing12x 0px $spacing6x
-    text-align: center
-    color: $colorTurquoise
-  
-  h2
-    width: $mediaWidth1
-    margin: 0px auto $spacing4x
-    padding-bottom: $spacing3x
-    border-bottom: 1px solid
-    color: $colorTurquoiseDark
-    font-weight: bold
+    width: $containerWidthPct
+    max-width: $containerWidthPx3
+    margin: 0 auto
+    padding: $spacing12x 0 $spacing24x
+    
+    h1
+        width: 100%
+        margin-bottom: $spacing12x
+        text-align: center
+        color: $colorTurquoise
 
-    @media screen and (max-width: $media1)
-      width: 80%
-    @media screen and (max-width: $media2)
-      width: 90%
+    .announcement-card
+        margin-bottom: $spacing8x
+        
+    h2
+        margin: 0px auto $spacing4x
+        padding-bottom: $spacing3x
+        border-bottom: 1px solid
+        color: $colorTurquoiseDark
+        font-weight: bold
 
-  p
-    width: $mediaWidth1
-    margin: $spacing3x auto $spacing4x
+        @media screen and (max-width: $media1)
+            text-align: center
 
-    @media screen and (max-width: $media1)
-      width: 80%
-    @media screen and (max-width: $media2)
-      width: 90%
+    li
+        margin-bottom: $spacing6x
+
+    h4
+        margin: $spacing2x 0
+        color: $colorGrayMed
+
+        @media screen and (max-width: $media1)
+            text-align: center
+
+    p
+        margin: $spacing2x auto
+
+        @media screen and (max-width: $media1)
+            text-align: center

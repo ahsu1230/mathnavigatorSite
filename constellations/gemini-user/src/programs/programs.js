@@ -50,6 +50,7 @@ export class ProgramsPage extends React.Component {
 
         return (
             <div id="view-programs">
+                <h1>Program Catalog</h1>
                 <p>
                     Math Navigator offers new programs and classes every
                     semester. Some programs will have multiple classes available

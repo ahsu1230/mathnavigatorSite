@@ -11,6 +11,7 @@ export class AnnouncementGroup extends React.Component {
         const announcements = this.props.announcements.map(
             (announcement, index) => (
                 <li key={announcement.id}>
+                    <h4>Posted at {postedAt.format("hh:mm a")} by {announcement.author}</h4>
                     <p>{announcement.message}</p>
                 </li>
             )
