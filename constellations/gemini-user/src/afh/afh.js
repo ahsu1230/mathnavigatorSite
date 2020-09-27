@@ -53,14 +53,17 @@ export class AFHPage extends React.Component {
         return (
             <div id="view-afh">
                 <h1>Ask for Help</h1>
-                <div className="description">
+                <p className="description">
                     We provide free sessions for students to ask for additional
                     assistance on any of our program subjects. Please fill the
                     form to let us know you are coming. You must be registered
                     with one of our programs to attend.
-                </div>
+                </p>
 
-                <p>Select a subject below to view available ask-for-help sessions.</p>
+                <p>
+                    Select a subject below to view available ask-for-help
+                    sessions.
+                </p>
                 <div className="tabs">
                     <TabButton
                         onChangeTab={this.changeSubject}

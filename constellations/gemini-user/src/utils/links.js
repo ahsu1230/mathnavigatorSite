@@ -14,16 +14,6 @@ const subLinksAchieve = [
         url: "/student-achievements",
     },
     {
-        id: "student-webdev",
-        name: "Student Web Development",
-        url: "/student-webdev",
-    },
-    {
-        id: "student-portfolios",
-        name: "Student Websites",
-        url: "/student-projects",
-    },
-    {
         id: "student-internships",
         name: "Internships",
         url: "/internship",
@@ -49,9 +39,9 @@ const mainLinks = [
         subLinks: subLinksAchieve,
     },
     {
-        id: "contact",
-        name: "Contact",
-        url: "/contact",
+        id: "register",
+        name: "Register",
+        url: "/register",
     },
     {
         id: "account",
