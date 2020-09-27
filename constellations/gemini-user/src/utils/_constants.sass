@@ -22,25 +22,6 @@ $colorAlert: $colorYellow
 $colorHighlight: $colorBlue
 $colorBackground: $colorWhite
 
-// Proportion Units
-
-$propUnit1x: 32px
-$propUnit2x: ($propUnit1x * 2)
-$propUnit3x: ($propUnit1x * 3)
-$propUnit4x: ($propUnit1x * 4)
-$propUnit5x: ($propUnit1x * 5)
-$propUnit6x: ($propUnit1x * 6)
-$propUnit7x: ($propUnit1x * 7)
-$propUnit8x: ($propUnit1x * 8)
-$propUnit9x: ($propUnit1x * 9)
-$propUnit10x: ($propUnit1x * 10)
-$propUnit12x: ($propUnit1x * 12)
-$propUnit14x: ($propUnit1x * 14)
-$propUnit16x: ($propUnit1x * 16)
-$propUnit20x: ($propUnit1x * 20)
-$propUnit24x: ($propUnit1x * 24)
-$propUnit40x: ($propUnit1x * 40)
-
 // Spacings
 
 $spacing1x: 8px
@@ -51,10 +32,20 @@ $spacing5x: ($spacing1x * 5)
 $spacing6x: ($spacing1x * 6)
 $spacing8x: ($spacing1x * 8)
 $spacing10x: ($spacing1x * 10)
+$spacing11x: ($spacing1x * 11)
 $spacing12x: ($spacing1x * 12)
 $spacing16x: ($spacing1x * 16)
 $spacing24x: ($spacing1x * 24)
 $spacing32x: ($spacing1x * 32)
+$spacing40x: ($spacing1x * 40)
+$spacing64x: ($spacing1x * 64)
+$spacing72x: ($spacing1x * 72)
+$spacing80x: ($spacing1x * 80)
+$spacing96x: ($spacing1x * 96)
+$spacing100x: ($spacing1x * 100)
+$spacing120x: ($spacing1x * 120)
+$spacing128x: ($spacing1x * 128)
+$spacing160x: ($spacing1x * 160)
 
 // Fonts - Font Families
 @font-face
@@ -82,13 +73,13 @@ $lineHeight3: 30px
 $lineHeight4: 32px
 
 // Misc.
-$containerWidthPx1: $propUnit40x
-$containerWidthPx2: $propUnit16x
-$containerWidthPx3: $propUnit20x
+$containerWidthPx1: $spacing160x
+$containerWidthPx2: $spacing64x
+$containerWidthPx3: $spacing80x
 $containerWidthPct: 80%
 
-$mediaWidth1: 600px
-$mediaWidth2: 800px
-$mediaWidth3: 900px
+$mediaWidth1: $spacing80x
+$mediaWidth2: $spacing100x
+$mediaWidth3: $spacing120x
 
-$headerHeight: 88px
+$headerHeight: $spacing11x
