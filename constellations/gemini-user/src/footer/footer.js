@@ -37,6 +37,9 @@ export default class Footer extends React.Component {
                             <br />
                             Math Navigator is not affiliated with those schools.
                         </p>
+                        <p>
+                            For any questions, please email us at <u>andymathnavigator@gmail.com</u>.
+                        </p>
                     </div>
                 </div>
             </div>

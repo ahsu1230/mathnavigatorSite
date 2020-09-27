@@ -2,7 +2,7 @@
 
 #view-footer
   width: 100%
-  min-height: $spacing24x
+  min-height: $spacing28x
   padding: $spacing12x 0
   background-color: $colorPrimary
 
@@ -34,6 +34,11 @@
   width: 240px
   text-align: right
 
+  @media screen and (max-width: $mediaWidth1)
+    float: none
+    margin: 0 auto
+    text-align: center
+
   & img
     width: 28px
     margin-right: 12px
@@ -60,8 +65,3 @@
   & p
     line-height: 24px
     font-size: 12px
-
-  @media screen and (max-width: $mediaWidth1)
-    float: none
-    margin: 0 auto
-    text-align: center
