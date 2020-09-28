@@ -17,11 +17,11 @@ export default class HomeSectionOnline extends React.Component {
                         <br />
                         <br />
                         Using Google Classroom to manage classwork and Zoom
-                        video conferencing, teachers and students can share
-                        materials and discuss hard problems without
-                        interference. Despite the inconvenience of schools and
-                        community centers closing down, we are still dedicated
-                        to providing superior education.
+                        video conferencing, teachers and students can discuss
+                        and share materials with ease. Despite the inconvenience
+                        of schools and community centers closing down, we are
+                        still dedicated to providing students with superior
+                        education.
                     </p>
                 </div>
             </div>

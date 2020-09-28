@@ -16,14 +16,25 @@ $media2: $mediaWidth1
         color: $colorTurquoise
 
     .announcement-card
-        margin-bottom: $spacing8x
+        margin-bottom: $spacing12x
+
+        &:last-child
+            margin-bottom: 0
+            
+            .bar
+                border-bottom: none
+
+        .bar
+            width: 60%
+            margin: 0 auto
+            padding-bottom: $spacing8x
+            border-bottom: 1px solid $colorGrayLight
         
     h2
         margin: 0px auto $spacing4x
-        padding-bottom: $spacing3x
-        border-bottom: 1px solid
-        color: $colorTurquoiseDark
-        font-weight: bold
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        color: $colorTurquoiseDark        
 
         @media screen and (max-width: $media1)
             text-align: center
@@ -31,15 +42,41 @@ $media2: $mediaWidth1
     li
         margin-bottom: $spacing6x
 
-    h4
-        margin: $spacing2x 0
-        color: $colorGrayMed
-
-        @media screen and (max-width: $media1)
-            text-align: center
+        &:last-child
+            margin-bottom: 0px
 
     p
-        margin: $spacing2x auto
+        margin: 0 auto $spacing2x
 
         @media screen and (max-width: $media1)
             text-align: center
+
+        &.posted-by
+            color: $colorGrayMed
+
+    .announcement-card.pinned
+        margin-bottom: $spacing12x
+        padding: $spacing4x
+        border: 2px solid $colorTurquoise
+        border-radius: 8px
+
+        h2
+            margin-bottom: $spacing2x
+            color: $colorBlack
+
+        .pinned-header
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: center
+            margin-bottom: $spacing4x
+
+            @media screen and (max-width: $media1)
+                justify-content: center
+
+                img
+                    margin-right: $spacing2x
+
+            h2
+                margin: 0
+                color: $colorTurquoise
