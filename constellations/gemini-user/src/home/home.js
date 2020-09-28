@@ -18,8 +18,7 @@ export class HomePage extends React.Component {
                     <HomeSectionStrategy />
                     <HomeSectionOnline />
                     <HomeSectionFooter />
-                    {/* <HomeSectionStories /> */}
-                    {/* <HomeAnnounce /> */}
+                    <HomeAnnounce />
                 </div>
             </div>
         );
