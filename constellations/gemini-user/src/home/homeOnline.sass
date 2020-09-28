@@ -1,0 +1,30 @@
+@import "../utils/_constants.sass"
+
+// Home Section - Online only
+#view-home .section.online
+    color: $colorBlack
+
+    .content
+        display: flex
+        flex-direction: column
+        justify-content: start
+        align-items: center
+
+    h2
+        margin-bottom: $spacing6x
+    
+    p
+        width: $spacing64x
+        padding: 0
+        margin-bottom: $spacing12x
+        text-align: center
+
+        @media screen and (max-width: $mediaWidth3)
+            width: 100%
+            padding: 0 $spacing24x
+            
+
+    img
+        width: $spacing48x
+        border-radius: 8px
+            

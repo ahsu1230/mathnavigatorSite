@@ -1,0 +1,50 @@
+@import "../utils/_constants.sass"
+
+// Home Section - Strategy
+#view-home .section.strategy
+
+    .card-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+
+        @media screen and (max-width: $mediaWidth3)
+            flex-direction: column
+            justify-content: start
+            align-items: center
+
+    .card
+        width: 30%
+        padding: $spacing4x
+        border-radius: 8px
+        box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
+        box-sizing: border-box
+
+        @media screen and (max-width: $mediaWidth3)
+            display: block
+            width: 60%
+            min-width: $spacing40x
+            margin: 0 auto $spacing8x
+            box-sizing: border-box
+            box-shadow: unset
+            padding: 0
+
+    .img-container
+        width: $spacing6x
+        height: $spacing6x
+        background-color: $colorTurquoise
+        border-radius: 8px
+
+    img
+        position: relative
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        width: $spacing3x
+
+    h3
+        padding: $spacing2x 0
+        max-height: $spacing16x
+    
+    p
+        margin: 0 auto

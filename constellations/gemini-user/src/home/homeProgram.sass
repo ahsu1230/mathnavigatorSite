@@ -1,0 +1,79 @@
+@import "../utils/_constants.sass"
+
+// Home Section - Programs
+#view-home .section.programs
+
+    .card-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+
+        @media screen and (max-width: $mediaWidth3)
+            flex-direction: column
+            justify-content: start
+
+    .card
+        padding: $spacing4x
+        border-radius: 8px
+        flex-basis: auto
+        overflow: hidden
+        width: 30%
+        box-sizing: border-box
+        text-align: center
+        box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
+
+        @media screen and (max-width: $mediaWidth3)
+            width: 100%
+            max-width: $spacing64x
+            margin: 0 auto $spacing4x
+            padding: 0 0 $spacing4x
+            box-shadow: unset
+            border-radius: 0
+            border-bottom: 1px solid $colorGrayLight
+
+            &:last-child
+                margin-bottom: 0
+
+        .img-container
+            position: relative
+            height: $spacing16x
+
+            img
+                position: relative
+                top: 50%
+                transform: translateY(-50%)
+                width: 100%
+                max-width: $spacing16x
+
+        h3
+            margin: $spacing2x 0
+            color: $colorBlack
+        p
+            margin: $spacing2x 0
+            min-height: $spacing16x
+            color: $colorBlack
+
+            @media screen and (max-width: $mediaWidth3)
+                min-height: unset
+                max-width: $spacing48x
+                margin: $spacing2x auto
+
+        button
+            display: block
+            margin: 0 auto
+            border-radius: 8px
+    
+    .link-bar
+        display: block
+        padding: $spacing4x
+        border-radius: 8px
+        margin: $spacing8x 0
+        text-align: center
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        color: $colorTurquoise
+        background: #05657122
+
+        &:hover
+            background: #05657133
+            

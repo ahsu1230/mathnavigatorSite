@@ -3,7 +3,7 @@ require("./footer.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { MainLinks } from "../utils/links.js";
-import headerIcon from "../../assets/navigate_white.png";
+import headerIcon from "../../assets/navigate_turquoise.png";
 
 export default class Footer extends React.Component {
     componentDidMount() {
@@ -38,7 +38,8 @@ export default class Footer extends React.Component {
                             Math Navigator is not affiliated with those schools.
                         </p>
                         <p>
-                            For any questions, please email us at <u>andymathnavigator@gmail.com</u>.
+                            For any questions, please email us at{" "}
+                            <u>andymathnavigator@gmail.com</u>.
                         </p>
                     </div>
                 </div>

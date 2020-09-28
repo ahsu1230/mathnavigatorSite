@@ -18,18 +18,18 @@ $rowHeight: $headerHeight / 2
   width: 120px
   height: 32px
   padding: 0
-  border: 1px solid $colorPrimary
+  border: 1px solid $colorBlack
   outline: none
   box-sizing: border-box
   background-color: transparent
-  color: $colorWhite
+  color: $colorBlack
   font-family: $fontFamilyRoboto
   font-size: $fontSize0
   letter-spacing: $letterSpacingRoboto
   cursor: pointer
 
   &:hover
-    border: 1px solid $colorWhite
+    text-decoration: underline
 
 
 .header-slim-overlay-container
@@ -82,17 +82,14 @@ $rowHeight: $headerHeight / 2
     cursor: pointer
 
     & a
-      color: $colorBlackDark
-
+      color: $colorBlack
+      
       &.active
-        color: $colorPrimary
+        color: $colorTurquoise
 
     &:hover
-      color: $colorPrimary
+      color: $colorTurquoise
       background-color: $colorGray1
-
-      & a
-        text-decoration: none
 
   & .submenu
     & .submenu-head
@@ -102,7 +99,7 @@ $rowHeight: $headerHeight / 2
       cursor: pointer
 
       &:hover
-        color: $colorPrimary
+        color: $colorTurquoise
         background-color: $colorGray1
 
       & img
@@ -119,7 +116,7 @@ $rowHeight: $headerHeight / 2
       overflow: hidden
 
       & a:hover
-        color: $colorPrimary
+        color: $colorTurquoise
 
     &.show
       & .submenu-head
