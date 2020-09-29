@@ -1,62 +1,157 @@
 @import "../utils/_constants.sass"
 
 #view-achieve 
-    padding: 0 0 $spacing24x
+    width: $containerWidthPct
+    max-width: $containerWidthPx4
+    margin: 0 auto
+    padding-bottom: $spacing24x
 
     h1
-        color: $colorTurquoise
-
-
-.achieve-card
-    margin-bottom: $spacing16x
+        margin: $spacing12x 0 $spacing6x
+        text-align: center
+        font-family: $fontFamilyRockwell
     
-    & h2
-        padding-bottom: $spacing1x
-        border-bottom: 1px solid $colorGrayMed
-        line-height: $lineHeight2
-        font-size: $fontSize2
-        color: $colorTurquoise
+    h2
+        margin-bottom: $spacing12x
+        text-align: center
+        line-height: $lineHeight1
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize1
+        font-weight: 400
 
-    & li
+    h3
+        line-height: $lineHeight0
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize0
+        font-weight: 500
+
+    section
         display: flex
         flex-direction: row
-        align-items: center
-        min-height: $spacing12x
-        border-bottom: 1px solid $colorGrayLight
+        justify-content: space-between
+        align-items: start
+        margin-bottom: $spacing6x
+
+        @media screen and (max-width: $mediaWidth3)
+            flex-direction: column
+            justify-content: start
+            align-items: center
+            margin-bottom: $spacing4x
+
+        &.first img
+            width: 360px
+            border-radius: 8px
+
+        &.second
+            flex-direction: row-reverse
+
+            @media screen and (max-width: $mediaWidth3)
+                flex-direction: column
+
+            .action-box
+                padding: $spacing4x $spacing6x $spacing8x
+                border-radius: 8px
+                background-color: $colorTurquoiseLight
+                color: $colorWhite
+
+                &:hover
+                    filter: brightness(1.1)
+
+                @media screen and (max-width: $mediaWidth3)
+                    margin-bottom: $spacing4x
+
+                button
+                    display: block
+                    margin: $spacing4x auto 0
+                    border-radius: 8px
+                    box-sizing: border-box
+                    background-color: $colorOrange
+                    color: $colorWhite
+
+                a:hover
+                    text-decoration: none
+
+    .link-bar
+        display: block
+        width: 100%
+        margin: $spacing12x 0
+        padding: $spacing4x
+        border-radius: 8px
+        box-sizing: border-box
+        text-align: center
         line-height: $lineHeight0
-        font-size: $fontSize0
-        
-        & .bullet
-            display: inline
-            min-width: 6px
-            min-height: 6px
+        background: rgba($colorTurquoiseDark, 0.4)
+        color: $colorTurquoiseDark
+
+        &:active, &:visited
+            color: $colorTurquoiseDark
+
+        @media screen and (max-width: $mediaWidth3)
+            margin: $spacing6x 0
+    
+    .achieve-card
+        width: 360px
+
+        @media screen and (max-width: $mediaWidth3)
+            margin: $spacing4x 0
+            text-align: center
+
+        ul
+            margin-top: $spacing2x  
+        li
+            margin-bottom: $spacing2x
+
+            @media screen and (max-width: $mediaWidth3)
+                margin-bottom: $spacing4x
+                padding-bottom: $spacing4x
+                border-bottom: 1px solid $colorGrayLight
+
+                &:first-child
+                    padding-top: $spacing4x
+                    border-top: 1px solid $colorGrayLight
+                
+
+        p
+            display: inline-block
+            margin: 0
+            width: calc(100% - 6px - 16px)
+            vertical-align: top
+
+        .bullet
+            display: inline-block
+            width: 6px
+            height: 6px
+            margin-right: 12px
             border-radius: 100%
             background-color: $colorGrayLight
-            
-        & p
-            margin: $spacing2x 0 $spacing2x $spacing4x
-            overflow-wrap: anywhere
-            word-wrap: break-word
-    
-    & a
-        float: right
-        margin-top: $spacing2x
-        line-height: $lineHeight0
-        font-size: $fontSize0
-    
-#view-achievements-container
-    width: 80%
-    max-width: 512px
-    margin: 0 auto 128px
-    
-    & h1
-        margin-top: 96px
-        line-height: 28px
-        text-align: center
-    
-    & .subheaders
-        margin: 32px 0 96px
-        color: #222
-        line-height: $lineHeight1
-        font-size: $fontSize1
-        text-align: center
+
+            @media screen and (max-width: $mediaWidth3)
+                display: none
+
+    .grouped-cards
+
+        h3
+            margin-bottom: $spacing4x
+
+            @media screen and (max-width: $mediaWidth3)
+                text-align: center
+
+        .item-container
+            display: flex
+            flex-direction: row wrap
+            flex-wrap: wrap
+            justify-content: space-between
+
+            @media screen and (max-width: $mediaWidth3)
+                flex-direction: column
+                flex-wrap: no-wrap
+                justify-content: start
+                align-items: center
+
+        .card
+            width: 280px
+            padding: $spacing2x $spacing4x
+            margin-bottom: $spacing4x
+            border-radius: 8px
+            color: $colorWhite
+            background-color: $colorTurquoiseDark   
