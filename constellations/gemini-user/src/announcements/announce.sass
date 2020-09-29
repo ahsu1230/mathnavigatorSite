@@ -67,15 +67,18 @@ $media2: $containerWidthPxTablet
         .pinned-header
             display: flex
             flex-direction: row
-            justify-content: space-between
+            justify-content: start
             align-items: center
-            margin-bottom: $spacing4x
+            margin-bottom: $spacing2x
+
+            img
+                margin-right: $spacing2x
 
             @media screen and (max-width: $media1)
                 justify-content: center
 
                 img
-                    margin-right: $spacing2x
+                    margin-right: $spacing1x
 
             h2
                 margin: 0
