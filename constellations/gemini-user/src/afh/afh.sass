@@ -9,11 +9,16 @@
 
     &  h1
         margin: $spacing6x 0
-        color: $colorTurquoise
+        text-align: center
         
     p
-        margin: $spacing2x 0
+        margin: $spacing4x 0
+        text-align: center
         color: $colorBlack
+
+        &.directions
+            margin-bottom: $spacing8x
+            color: $colorGrayDark
 
     .tabs 
         display: flex
@@ -30,14 +35,35 @@
         padding: $spacing2x
         background-color: $colorWhite
         border-bottom: 2px solid transparent
+        border-radius: 8px 8px 0 0
         font-size: $fontSize1
         color: $colorBlack
         cursor: pointer
         transition: 0.3s
 
-    .tabs button:hover
-        background-color: $colorGrayLight
-        cursor: pointer
+        &:hover
+            background-color: $colorGrayLighter
+            cursor: pointer
+
+        .icon-wrapper
+            display: inline-block
+            position: relative
+            width: 32px
+            height: 32px
+            margin-right: $spacing2x
+            border-radius: 50%
+            background-color: $colorGrayMed
+            vertical-align: middle
+
+            img
+                position: absolute
+                top: 50%
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 16px
+
+        &.active .icon-wrapper
+            background-color: $colorTurquoise
     
     .showTab 
         display: inline-block
@@ -59,21 +85,52 @@
             justify-content: space-between
             align-items: start
 
+            a
+                color: $colorTurquoise
+
+            img
+                width: 12px
+                margin-left: $spacing1x
+
         h3
-            margin-bottom: $spacing1x
-            line-height: $lineHeight2
-            font-size: $fontSize1
-            color: $colorTurquoise
+            line-height: $lineHeight0
+            font-size: $fontSize0
+            font-weight: 400
+
+        h4
+            font-weight: 400
+            color: $colorGrayMed
 
         .notes
             margin-top: $spacing2x
-            color: $colorOrange
+            color: $colorTurquoiseLight
+
+            b
+                vertical-align: middle
+
+            .icon-wrapper
+                display: inline-block
+                position: relative
+                width: 32px
+                height: 32px
+                margin-right: $spacing1x
+                border-radius: 50%
+                background-color: $colorTurquoiseLight
+                vertical-align: middle
+
+                img
+                    position: absolute
+                    top: 50%
+                    left: 50%
+                    transform: translate(-50%, -50%)
+                    width: 18px
 
         p
             margin: $spacing1x 0
+            text-align: left
+            color: $colorBlack
 
         .location
-            margin-top: $spacing2x
             line-height: $lineHeight0
 
 @media only screen and (max-width: 700px)
@@ -83,8 +140,16 @@
         & h1, p
             text-align: center
 
+        .location
+            margin-top: $spacing2x
+            margin-bottom: $spacing1x
+
         .tabs button
             font-size: $fontSize0
+
+            .icon-wrapper
+                display: block
+                margin: 0 auto $spacing1x
 
         .afh-row
             text-align: center
@@ -94,13 +159,15 @@
                 justify-content: start
                 align-items: center
 
-                a
-                    width: $spacing24x
+                .link-wrapper
                     margin: $spacing2x 0
-                    padding: $spacing1x 0
-                    border: 1px solid $colorBlue
+                    padding: $spacing1x $spacing2x
+                    border: 1px solid $colorTurquoise
+                    border-radius: 8px
 
-                    &:hover
-                        background-color: $colorBlue
-                        color: $colorWhite
+            p
+                text-align: center
+
+            .notes .icon-wrapper
+                display: none
                     

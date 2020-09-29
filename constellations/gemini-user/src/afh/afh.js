@@ -4,6 +4,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import API from "../utils/api.js";
 import moment from "moment";
+import srcPoint from "../../assets/point_right_green.svg";
+import srcNotes from "../../assets/lightbulb_white.svg";
+import srcMath from "../../assets/icon_math.svg";
+import srcWriting from "../../assets/icon_writing.svg";
+import srcCoding from "../../assets/icon_coding.svg";
+
+const subjectIconSrc = {
+    math: srcMath,
+    english: srcWriting,
+    programming: srcCoding,
+};
 
 const subjectDisplayNames = {
     math: "Math",
@@ -60,7 +71,7 @@ export class AFHPage extends React.Component {
                     with one of our programs to attend.
                 </p>
 
-                <p>
+                <p className="directions">
                     Select a subject below to view available ask-for-help
                     sessions.
                 </p>
@@ -93,13 +104,40 @@ class TabButton extends React.Component {
         let highlight = this.props.highlight;
         let subject = this.props.subject;
         let displayName = subjectDisplayNames[subject];
+        let iconSrc = subjectIconSrc[subject];
 
         return (
             <button
-                className={highlight ? "active" : ""}
+                className={subject + " " + (highlight ? "active" : "")}
                 onClick={() => this.props.onChangeTab(subject)}>
+                <div className="icon-wrapper">
+                    <img src={iconSrc} />
+                </div>
                 {displayName}
             </button>
+        );
+    }
+}
+
+class AfhSessionRow extends React.Component {
+    render() {
+        const row = this.props.row;
+        return (
+            <div className="afh-row">
+                <div className="row-header">
+                    <AfhInfo
+                        title={row.title}
+                        startsAt={row.startsAt}
+                        endsAt={row.endsAt}
+                    />
+                    <LocationAddress locationId={row.locationId} />
+                    <Link to="register" className="link-wrapper">
+                        Register to attend
+                        <img src={srcPoint} />
+                    </Link>
+                </div>
+                <AfhNotes notes={row.notes} />
+            </div>
         );
     }
 }
@@ -131,43 +169,48 @@ class LocationAddress extends React.Component {
 
         return (
             <div className="location">
+                <div>{this.state.location.title}</div>
                 {address1} <br /> {address2} <br /> {room}
             </div>
         );
     }
 }
 
-class AfhSessionRow extends React.Component {
+class AfhInfo extends React.Component {
     render() {
-        const row = this.props.row;
-        const startsAt = moment(row.startsAt);
-        const endsAt = moment(row.endsAt);
-
+        const title = this.props.title;
+        const startsAt = moment(this.props.startsAt);
+        const endsAt = moment(this.props.endsAt);
         return (
-            <div className="afh-row">
-                <div className="row-header">
-                    <h3>
-                        {startsAt.format("dddd M/D/YYYY") +
-                            "  (" +
-                            startsAt.format("hh:mm a") +
-                            " - " +
-                            endsAt.format("hh:mm a") +
-                            ")"}
-                    </h3>
-                    <Link to="register">Register to attend</Link>
-                </div>
-                <div>{row.title}</div>
-                <LocationAddress locationId={row.locationId} />
-
-                {row.notes ? (
-                    <div className="notes">
-                        <b>Note from teacher:</b>
-                        <p>{row.notes}</p>
-                    </div>
-                ) : (
-                    <div></div>
-                )}
+            <div className="info">
+                <h4 className="title">{title}</h4>
+                <h3>
+                    <b>{startsAt.format("dddd M/D/YYYY")}</b>
+                    <br />
+                    {startsAt.format("hh:mm a") +
+                        " - " +
+                        endsAt.format("hh:mm a")}
+                </h3>
             </div>
         );
+    }
+}
+
+class AfhNotes extends React.Component {
+    render() {
+        const notes = this.props.notes;
+        if (notes) {
+            return (
+                <div className="notes">
+                    <div className="icon-wrapper">
+                        <img src={srcNotes} />
+                    </div>
+                    <b>Note from teacher:</b>
+                    <p>{notes}</p>
+                </div>
+            );
+        } else {
+            return <div></div>;
+        }
     }
 }
