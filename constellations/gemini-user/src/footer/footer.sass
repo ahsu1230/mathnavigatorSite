@@ -8,7 +8,7 @@
 
   #view-footer-container
     width: $containerWidthPct
-    max-width: $containerWidthPx1
+    max-width: $containerWidthPxFull
     margin: 0 auto
 
     a, p, h2
@@ -27,7 +27,7 @@
     color: $colorTurquoise !important
     text-decoration: none
 
-  @media screen and (max-width: $mediaWidth1)
+  @media screen and (max-width: $containerWidthPxTablet)
     float: none
     margin-bottom: $spacing4x
     text-align: center
@@ -37,7 +37,7 @@
   width: $spacing32x
   text-align: right
 
-  @media screen and (max-width: $mediaWidth1)
+  @media screen and (max-width: $containerWidthPxTablet)
     float: none
     margin: 0 auto
     text-align: center
@@ -46,7 +46,7 @@
     width: 28px
     margin-right: 12px
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
       display: block
       margin: $spacing4x auto $spacing2x
 
@@ -58,7 +58,7 @@
     font-size: $fontSize2
     color: $colorTurquoise
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
       text-align: center
 
   h2

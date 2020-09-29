@@ -2,7 +2,7 @@
 
 #view-achieve 
     width: $containerWidthPct
-    max-width: $containerWidthPx4
+    max-width: $containerWidthPxLaptop
     margin: 0 auto
     padding-bottom: $spacing24x
 
@@ -32,7 +32,7 @@
         align-items: start
         margin-bottom: $spacing6x
 
-        @media screen and (max-width: $mediaWidth3)
+        @media screen and (max-width: $containerWidthPxMonitor)
             flex-direction: column
             justify-content: start
             align-items: center
@@ -45,7 +45,7 @@
         &.second
             flex-direction: row-reverse
 
-            @media screen and (max-width: $mediaWidth3)
+            @media screen and (max-width: $containerWidthPxMonitor)
                 flex-direction: column
 
             .action-box
@@ -57,7 +57,7 @@
                 &:hover
                     filter: brightness(1.1)
 
-                @media screen and (max-width: $mediaWidth3)
+                @media screen and (max-width: $containerWidthPxMonitor)
                     margin-bottom: $spacing4x
 
                 button
@@ -86,13 +86,13 @@
         &:active, &:visited
             color: $colorTurquoiseDark
 
-        @media screen and (max-width: $mediaWidth3)
+        @media screen and (max-width: $containerWidthPxMonitor)
             margin: $spacing6x 0
     
     .achieve-card
         width: 360px
 
-        @media screen and (max-width: $mediaWidth3)
+        @media screen and (max-width: $containerWidthPxMonitor)
             margin: $spacing4x 0
             text-align: center
 
@@ -101,7 +101,7 @@
         li
             margin-bottom: $spacing2x
 
-            @media screen and (max-width: $mediaWidth3)
+            @media screen and (max-width: $containerWidthPxMonitor)
                 margin-bottom: $spacing4x
                 padding-bottom: $spacing4x
                 border-bottom: 1px solid $colorGrayLight
@@ -125,7 +125,7 @@
             border-radius: 100%
             background-color: $colorGrayLight
 
-            @media screen and (max-width: $mediaWidth3)
+            @media screen and (max-width: $containerWidthPxMonitor)
                 display: none
 
     .grouped-cards
@@ -133,7 +133,7 @@
         h3
             margin-bottom: $spacing4x
 
-            @media screen and (max-width: $mediaWidth3)
+            @media screen and (max-width: $containerWidthPxMonitor)
                 text-align: center
 
         .item-container
@@ -142,7 +142,7 @@
             flex-wrap: wrap
             justify-content: space-between
 
-            @media screen and (max-width: $mediaWidth3)
+            @media screen and (max-width: $containerWidthPxMonitor)
                 flex-direction: column
                 flex-wrap: no-wrap
                 justify-content: start
@@ -154,4 +154,4 @@
             margin-bottom: $spacing4x
             border-radius: 8px
             color: $colorWhite
-            background-color: $colorTurquoiseDark   
+            background-color: $colorTurquoise  

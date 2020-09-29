@@ -19,7 +19,7 @@ export class AchievementPage extends React.Component {
             const achieveList = res.data;
             let groupedByYear = groupBy(achieveList, (a) => a.year);
             let years = sortBy(keys(groupedByYear)).reverse();
-            this.setState({ 
+            this.setState({
                 achieveList: achieveList,
                 groupedByYear: groupedByYear,
                 years: years,
@@ -34,15 +34,16 @@ export class AchievementPage extends React.Component {
         if (years.length > 0) {
             section = (
                 <section className="first">
-                    <img src={srcSuccess}/>
+                    <img src={srcSuccess} />
                     <AchieveCard
-                        year={years[0]} 
-                        achievements={groupedByYear[years[0]]}/>
+                        year={years[0]}
+                        achievements={groupedByYear[years[0]]}
+                    />
                 </section>
             );
         }
         return section;
-    }
+    };
 
     renderSecondSection = () => {
         const years = this.state.years;
@@ -53,7 +54,8 @@ export class AchievementPage extends React.Component {
                 <section className="second">
                     <div className="action-box">
                         <p>
-                            Join our community today<br/>
+                            Join our community today
+                            <br />
                             and achieve success!
                         </p>
                         <Link to="/register">
@@ -61,13 +63,14 @@ export class AchievementPage extends React.Component {
                         </Link>
                     </div>
                     <AchieveCard
-                        year={years[1]} 
-                        achievements={groupedByYear[years[1]]}/>
+                        year={years[1]}
+                        achievements={groupedByYear[years[1]]}
+                    />
                 </section>
             );
         }
         return section;
-    }
+    };
 
     renderLastSection = () => {
         const years = this.state.years;
@@ -79,15 +82,16 @@ export class AchievementPage extends React.Component {
                 return (
                     <section key={index} className="last">
                         <GroupedCards
-                            year={lastYears[index]} 
-                            achievements={groupedByYear[lastYears[index]]}/>
+                            year={lastYears[index]}
+                            achievements={groupedByYear[lastYears[index]]}
+                        />
                     </section>
                 );
             });
-            section = (<div>{items}</div>);
+            section = <div>{items}</div>;
         }
         return section;
-    }
+    };
 
     render() {
         const firstSection = this.renderFirstSection();
@@ -100,7 +104,8 @@ export class AchievementPage extends React.Component {
 
                 <div className="subheaders">
                     <h2>
-                        Congratulations to our students!<br/>
+                        Congratulations to our students!
+                        <br />
                         With their hard work, we all succeed!
                     </h2>
                 </div>
@@ -109,7 +114,8 @@ export class AchievementPage extends React.Component {
                 {secondSection}
 
                 <Link to="/programs" className="link-bar">
-                    View our <b>Program Catalog</b> to find the right program for you.
+                    View our <b>Program Catalog</b> to find the right program
+                    for you.
                 </Link>
 
                 {lastSection}
@@ -148,13 +154,11 @@ class GroupedCards extends React.Component {
                     <p>{achieve.message}</p>
                 </div>
             );
-        })
+        });
         return (
             <div className="grouped-cards">
                 <h3>Achievements in {year}</h3>
-                <div className="item-container">
-                    {items}
-                </div>
+                <div className="item-container">{items}</div>
             </div>
         );
     }

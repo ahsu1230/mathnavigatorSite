@@ -1,7 +1,7 @@
 @import "../utils/_constants.sass"
 
 #view-account .tab-content#payment-tab
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
         text-align: left
 
         ul
@@ -12,7 +12,7 @@
                 width: calc(100% / 3)
 
 
-    @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxMonitor) and (min-width: $containerWidthPxTablet)
         ul
             li:first-child
                 width: 100%

@@ -5,7 +5,7 @@ $cardSpacing: $spacing6x
 #view-programs
     position: relative
     width: $containerWidthPct
-    max-width: $containerWidthPx1
+    max-width: $containerWidthPxFull
     margin: 0 auto
     padding: $spacing1x 0 $spacing12x
 
@@ -14,13 +14,13 @@ $cardSpacing: $spacing6x
         font-family: $fontFamilyRockwell
         color: $colorTurquoise
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
 
     p
         margin: $spacing6x 0 0
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
 
     .section
@@ -32,5 +32,5 @@ $cardSpacing: $spacing6x
             line-height: 88px
             font-size: $fontSize2
 
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 text-align: center

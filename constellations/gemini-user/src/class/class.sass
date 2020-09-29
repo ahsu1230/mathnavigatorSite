@@ -2,7 +2,7 @@
 
 #view-class
     width: $containerWidthPct
-    max-width: $containerWidthPx1
+    max-width: $containerWidthPxFull
     margin: 0 auto
     padding: $spacing8x 0
 
@@ -42,14 +42,14 @@
         align-items: center
         border-bottom: 1px solid $colorGrayLight
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             flex-direction: column
             justify-content: start
 
         p
             margin-right: $spacing12x
 
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 margin: $spacing1x 0
                 margin-right: 0
 
@@ -67,7 +67,7 @@
             color: $colorWhite
             border: 1px solid $colorOrange
 
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 width: 100%
                 border: 1px solid $colorOrange
                 background-color: transparent
@@ -78,7 +78,7 @@
                     color: $colorWhite
 
         a
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 width: 100%
                 margin: $spacing4x 0
                 
@@ -88,7 +88,7 @@
         flex-direction: row
         margin: $spacing4x 0
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             flex-direction: column
             justify-content: start
 
@@ -99,7 +99,7 @@
                 padding-left: $spacing8x
                 border-left: 1px solid $colorGrayLight
 
-                @media screen and (max-width: $mediaWidth1)
+                @media screen and (max-width: $containerWidthPxTablet)
                     padding-left: 0
                     border-left: none
 
@@ -110,13 +110,13 @@
             margin: $spacing2x 0
             color: $colorTurquoise
 
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 margin-top: $spacing4x
 
             &.location, &.times
                 margin-top: 0
 
-                @media screen and (max-width: $mediaWidth1)
+                @media screen and (max-width: $containerWidthPxTablet)
                     margin-top: $spacing4x
         p
             margin: 0
