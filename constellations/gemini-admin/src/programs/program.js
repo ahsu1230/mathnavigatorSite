@@ -72,6 +72,10 @@ function generateFields(program) {
             value: program.grade2,
         },
         {
+            label: "Subject",
+            value: program.subject,
+        },
+        {
             label: "Featured",
             value: program.featured,
             highlightFn: () => program.featured != "none",

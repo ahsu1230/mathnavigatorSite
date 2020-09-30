@@ -46,6 +46,7 @@ func runFiller() {
 		"AP Calculus",
 		9,
 		12,
+		"math",
 		"Students should take this course if they aim to take the AP Calculus Exam",
 	)
 
@@ -54,6 +55,7 @@ func runFiller() {
 		"AP Java",
 		10,
 		12,
+		"programming",
 		"Students should take this course if they aim to take the AP Java Exam",
 	)
 
@@ -62,6 +64,7 @@ func runFiller() {
 		"SAT Math",
 		8,
 		11,
+		"math",
 		"Students should take the course if they aim to take the SAT Math Exam",
 	)
 
@@ -70,6 +73,7 @@ func runFiller() {
 		"AMC Prep",
 		9,
 		12,
+		"math",
 		"Students should take the course if they aim to take the AMC Test",
 	)
 
@@ -264,15 +268,16 @@ func runFiller() {
 	account2.Fill(afhId1, afhId2)
 }
 
-func createProgram(programId string, title string, grade1, grade2 int, description string) (uint, error) {
+func createProgram(programId string, title string, grade1, grade2 int, subject, description string) (uint, error) {
 	programBody := strings.NewReader(fmt.Sprintf(`{
 		"programId": "%s",
 		"title": "%s",
 		"grade1": %d,
 		"grade2": %d,
+		"subject": "%s",
 		"description": "%s",
 		"featured": "none"
-	}`, programId, title, grade1, grade2, description))
+	}`, programId, title, grade1, grade2, subject, description))
 	log.Println("Creating program " + programId + "...")
 	respBody := utils.SendPostRequest("/api/programs/create", programBody)
 	id, _ := utils.GetIdFromBody(respBody)

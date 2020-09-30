@@ -14,13 +14,22 @@ export class ProgramEditPage extends React.Component {
         title: "",
         grade1: 0,
         grade2: 0,
+        subject: "",
         description: "",
         featured: "",
         allFeatured: [],
+        allSubjects: [],
     };
 
     componentDidMount = () => {
         const programId = this.props.programId;
+        API.get("api/subjects").then((res) => {
+            const subjects = res.data;
+            this.setState({
+                allSubjects: subjects,
+            });
+        });
+
         if (programId) {
             API.get("api/programs/program/" + programId).then((res) => {
                 const program = res.data;
@@ -30,6 +39,7 @@ export class ProgramEditPage extends React.Component {
                     title: program.title,
                     grade1: program.grade1,
                     grade2: program.grade2,
+                    subject: program.subject,
                     description: program.description,
                     isEdit: true,
                     featured: program.featured,
@@ -57,6 +67,7 @@ export class ProgramEditPage extends React.Component {
             title: this.state.title,
             grade1: parseInt(this.state.grade1),
             grade2: parseInt(this.state.grade2),
+            subject: this.state.subject,
             description: this.state.description,
             featured: this.state.featured,
         };
@@ -72,6 +83,13 @@ export class ProgramEditPage extends React.Component {
     };
 
     renderContent = () => {
+        const subjectOptions = this.state.allSubjects.map((subject) => {
+            return {
+                value: subject,
+                displayName: subject,
+            };
+        });
+
         return (
             <div>
                 <InputText
@@ -151,6 +169,15 @@ export class ProgramEditPage extends React.Component {
                             message: "You must input a description",
                         },
                     ]}
+                />
+
+                <InputSelect
+                    label="Subject"
+                    description="Select a subject"
+                    value={this.state.subject}
+                    onChangeCallback={(e) => this.handleChange(e, "subject")}
+                    required={true}
+                    options={subjectOptions}
                 />
 
                 <InputSelect

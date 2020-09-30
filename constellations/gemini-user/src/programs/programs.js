@@ -6,13 +6,17 @@ import { sortedSemesterInsert } from "../utils/semesterUtils.js";
 import { ProgramCard } from "./programCard.js";
 
 import srcMath1 from "../../assets/banner_math1.jpg";
+import srcMath2 from "../../assets/banner_math2.jpg";
+import srcMath3 from "../../assets/banner_math3.jpg";
 import srcEnglish1 from "../../assets/banner_english1.jpg";
+import srcEnglish2 from "../../assets/banner_english2.jpg";
 import srcProgramming1 from "../../assets/banner_programming1.jpg";
+import srcProgramming2 from "../../assets/banner_programming2.jpg";
 
 const imgSrcMap = {
-    math: [srcMath1],
-    english: [srcEnglish1],
-    programming: [srcProgramming1],
+    math: [srcMath1, srcMath2, srcMath3],
+    english: [srcEnglish1, srcEnglish2],
+    programming: [srcProgramming1, srcProgramming2],
 };
 
 export class ProgramsPage extends React.Component {
@@ -92,6 +96,7 @@ export class ProgramSection extends React.Component {
 
         const cards = programs.map((program, index) => {
             const imgSrcList = imgSrcMap[program.subject] || [];
+            const imgSrcIndex = Math.floor(Math.random() * imgSrcList.length); 
             return (
                 <ProgramCard
                     key={index}
@@ -100,7 +105,7 @@ export class ProgramSection extends React.Component {
                     classes={programClassesMap[program.programId]}
                     fullStates={this.props.fullStates}
                     imgSrcList={imgSrcList}
-                    imgSrcIndex={index % imgSrcList.length || 0}
+                    imgSrcIndex={imgSrcIndex}
                 />
             );
         });

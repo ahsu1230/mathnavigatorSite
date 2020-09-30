@@ -69,7 +69,7 @@ export class ProgramCard extends React.Component {
     render = () => {
         const program = this.props.program || {};
         const classes = this.props.classes || [];
-        const imgSrcList = this.props.imgSrcList || {};
+        const imgSrcList = this.props.imgSrcList || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
         const classesString =
             classes.length == 1 ? "1 class" : classes.length + " classes";
@@ -79,7 +79,7 @@ export class ProgramCard extends React.Component {
             <div className="program-card-container">
                 <div className="program-card" onClick={this.handleClick}>
                     <div className="card-top">
-                        <img src={imgSrcList[0]} />
+                        <img src={imgSrcList[this.props.imgSrcIndex]} />
                     </div>
                     <div className="card-title">
                         <h2>{program.title}</h2>
