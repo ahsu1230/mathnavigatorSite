@@ -64,12 +64,13 @@ func CreateMockLocation(LocationId string, title string, street string, city str
 	}
 }
 
-func CreateMockProgram(programId string, title string, grade1 uint, grade2 uint, description string, featured string) domains.Program {
+func CreateMockProgram(programId string, title string, grade1 uint, grade2 uint, subject string, description string, featured string) domains.Program {
 	return domains.Program{
 		ProgramId:   programId,
 		Title:       title,
 		Grade1:      grade1,
 		Grade2:      grade2,
+		Subject:     subject,
 		Description: description,
 		Featured:    featured,
 	}

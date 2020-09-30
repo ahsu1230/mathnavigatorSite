@@ -11,6 +11,8 @@ type Handler struct {
 
 func (h *Handler) SetupApiEndpoints() {
 	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
+	h.Engine.GET("/api/subjects", controllers.GetAllSubjects)
+
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
@@ -79,7 +81,6 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAFH := h.Engine.Group("api/askforhelp")
 	{
 		apiAFH.GET("/all", controllers.GetAllAFH)
-		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 		apiAFH.GET("/afh/:id", controllers.GetAFHById)
 		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)

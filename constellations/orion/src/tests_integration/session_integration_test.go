@@ -17,8 +17,8 @@ func TestCreateSessions(t *testing.T) {
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
 	end := start.Add(time.Hour)
-	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
-	utils.SendCreateProgram(t, true, "slow_track", "Slow Track", 1, 12, "descript1", domains.FEATURED_POPULAR)
+	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "slow_track", "Slow Track", 1, 12, domains.SUBJECT_MATH, "descript1", domains.FEATURED_POPULAR)
 	utils.SendCreateLocation(t, true, "loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1", false)
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 	utils.SendCreateSemester(t, true, domains.FALL, 2020)
@@ -51,7 +51,7 @@ func TestUpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 	utils.SendCreateLocation(t, true, "loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1", false)
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 	utils.SendCreateClass(t, true, "fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)
@@ -90,7 +90,7 @@ func TestDeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
-	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "fast_track", "Fast Track", 1, 12, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 	utils.SendCreateLocation(t, true, "loc_1", "Potomac High School", "4040 Location Rd", "City", "MA", "77294", "Room 1", false)
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 	utils.SendCreateClass(t, true, "fast_track", "2020_spring", "class_A", "loc_1", "5 pm - 7 pm", 50, 0)

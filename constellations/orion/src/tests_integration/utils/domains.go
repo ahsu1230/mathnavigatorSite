@@ -178,6 +178,7 @@ func SendCreateProgram(
 	name string,
 	grade1 uint,
 	grade2 uint,
+	subject string,
 	description string,
 	featured string,
 ) (uint, *httptest.ResponseRecorder) {
@@ -186,6 +187,7 @@ func SendCreateProgram(
 		Title:       name,
 		Grade1:      grade1,
 		Grade2:      grade2,
+		Subject:     subject,
 		Description: description,
 		Featured:    featured,
 	}

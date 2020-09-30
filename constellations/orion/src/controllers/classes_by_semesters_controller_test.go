@@ -175,6 +175,7 @@ func createMockPrograms(ids ...int) []domains.Program {
 				"Program 1",
 				9,
 				12,
+				domains.SUBJECT_MATH,
 				"Description 1",
 				domains.FEATURED_NONE,
 			)
@@ -184,6 +185,7 @@ func createMockPrograms(ids ...int) []domains.Program {
 				"Program 2",
 				10,
 				11,
+				domains.SUBJECT_MATH,
 				"Description 2",
 				domains.FEATURED_POPULAR,
 			)

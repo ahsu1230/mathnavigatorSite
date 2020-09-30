@@ -25,6 +25,7 @@ type Program struct {
 	Title       string    `json:"title"`
 	Grade1      uint      `json:"grade1"`
 	Grade2      uint      `json:"grade2"`
+	Subject     string    `json:"subject"`
 	Description string    `json:"description"`
 	Featured    string    `json:"featured"`
 }
@@ -39,6 +40,7 @@ func (program *Program) Validate() error {
 	title := program.Title
 	grade1 := program.Grade1
 	grade2 := program.Grade2
+	subject := program.Subject
 	description := program.Description
 
 	// Program ID validation
@@ -54,6 +56,11 @@ func (program *Program) Validate() error {
 	// Grade validation
 	if !(grade1 <= grade2 && grade1 >= 1 && grade2 <= 12) {
 		return fmt.Errorf(messageFmt, "Invalid grades (must be between 1 and 12) and grade1 <= grade2")
+	}
+
+	// Subject validation
+	if !validateSubject(subject) {
+		return fmt.Errorf(messageFmt, "Unrecognized subject")
 	}
 
 	// Description validation
