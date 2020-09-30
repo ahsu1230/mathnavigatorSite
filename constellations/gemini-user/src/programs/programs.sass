@@ -10,7 +10,7 @@ $cardSpacing: $spacing6x
     padding: $spacing1x 0 $spacing12x
 
     h1
-        margin: $spacing6x 0
+        margin: $spacing12x 0 0
         font-family: $fontFamilyRockwell
         color: $colorTurquoise
 
@@ -18,19 +18,21 @@ $cardSpacing: $spacing6x
             text-align: center
 
     p
-        margin: $spacing6x 0 0
+        margin: $spacing4x 0 0
 
         @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
 
     .section
-        .section-title
+
+        h2.section-title
+            margin-top: $spacing4x
             margin-bottom: $cardSpacing
             border-bottom: 1px solid $colorGrayLight
-            color: $colorTurquoise
-            font-family: $fontFamilyRockwell
             line-height: 88px
+            font-family: $fontFamilyRockwell
             font-size: $fontSize2
+            color: $colorBlack
 
             @media screen and (max-width: $containerWidthPxTablet)
                 text-align: center

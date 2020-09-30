@@ -5,6 +5,16 @@ import API from "../utils/api.js";
 import { sortedSemesterInsert } from "../utils/semesterUtils.js";
 import { ProgramCard } from "./programCard.js";
 
+import srcMath1 from "../../assets/banner_math1.jpg";
+import srcEnglish1 from "../../assets/banner_english1.jpg";
+import srcProgramming1 from "../../assets/banner_programming1.jpg";
+
+const imgSrcMap = {
+    math: [srcMath1],
+    english: [srcEnglish1],
+    programming: [srcProgramming1],
+};
+
 export class ProgramsPage extends React.Component {
     state = {
         semesters: [],
@@ -80,19 +90,24 @@ export class ProgramSection extends React.Component {
             }
         });
 
-        const cards = programs.map((program, index) => (
-            <ProgramCard
-                key={index}
-                semester={semester}
-                program={program}
-                classes={programClassesMap[program.programId]}
-                fullStates={this.props.fullStates}
-            />
-        ));
+        const cards = programs.map((program, index) => {
+            const imgSrcList = imgSrcMap[program.subject] || [];
+            return (
+                <ProgramCard
+                    key={index}
+                    semester={semester}
+                    program={program}
+                    classes={programClassesMap[program.programId]}
+                    fullStates={this.props.fullStates}
+                    imgSrcList={imgSrcList}
+                    imgSrcIndex={index % imgSrcList.length || 0}
+                />
+            );
+        });
 
         return (
             <div className="section">
-                <h1 className="section-title">{semester.title}</h1>
+                <h2 className="section-title">{semester.title}</h2>
                 {cards.length > 0 ? cards : <p>Coming soon...</p>}
             </div>
         );

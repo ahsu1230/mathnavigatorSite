@@ -184,13 +184,13 @@ class AfhInfo extends React.Component {
         return (
             <div className="info">
                 <h4 className="title">{title}</h4>
-                <h3>
-                    <b>{startsAt.format("dddd M/D/YYYY")}</b>
+                <h4 className="time">
+                    {startsAt.format("dddd M/D/YYYY")}
                     <br />
                     {startsAt.format("hh:mm a") +
                         " - " +
                         endsAt.format("hh:mm a")}
-                </h3>
+                </h4>
             </div>
         );
     }
