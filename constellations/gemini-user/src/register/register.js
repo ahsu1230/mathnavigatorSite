@@ -4,6 +4,7 @@ import React from "react";
 import axios from "axios";
 import API from "../utils/api.js";
 import { keyBy } from "lodash";
+import { parseQueryParams } from "../utils/utils.js";
 import RegisterSectionSelect from "./registerSelect.js";
 import RegisterSectionFormStudent from "./registerFormStudent.js";
 import RegisterSectionFormGuardian from "./registerFormGuardian.js";
@@ -24,17 +25,17 @@ export default class RegisterPage extends React.Component {
         selectedAfhId: null,
         selectedClassId: null,
         
-        studentFirstName: "Ariel",
-        studentLastName: "Hsu",
-        studentSchool: "Richard Montgomery",
-        studentEmail: "arielhsu@gmail.com",
+        studentFirstName: "",
+        studentLastName: "",
+        studentSchool: "",
+        studentEmail: "",
         studentGraduationYear: 2024,
         studentGrade: 9,
         
-        guardianFirstName: "Amy",
-        guardianLastName: "Lin",
-        guardianEmail: "amylin@gmail.gov",
-        guardianPhone: "(123)-432-1234",
+        guardianFirstName: "",
+        guardianLastName: "",
+        guardianEmail: "",
+        guardianPhone: "",
 
         allAFHs: [],
         afhMap: {},
@@ -47,6 +48,7 @@ export default class RegisterPage extends React.Component {
 
     componentDidMount = () => {
         this.setState({ location: this.props.history.location });
+
         const allApiCalls = [
             API.get("api/classes/all"),
             API.get("api/askforhelp/all"),
@@ -65,7 +67,13 @@ export default class RegisterPage extends React.Component {
                     const allSemesters = responses[3].data;
                     const allLocations = responses[4].data;
 
+                    let queries = parseQueryParams(this.props.history.location.search);
+                    console.log(JSON.stringify(queries));
+                    console.log(JSON.stringify(queries["afhId"]));
+                    console.log(JSON.stringify(queries["classId"]));
                     this.setState({
+                        selectedAfhId: queries["afhId"] || null,
+                        selectedClassId: queries["classId"] || null,
                         allClasses: allClasses,
                         classMap: keyBy(allClasses, 'classId'),
                         allAFHs: allAFHs,
@@ -166,6 +174,7 @@ export default class RegisterPage extends React.Component {
                             onChangeSection={this.changeSection}
                             onChangeStateValue={this.changeStateValue}
                             guardian={guardianInfo}
+                            studentEmail={studentInfo.email}
                         />
                         <RegisterSectionConfirm 
                             onChangeSection={this.changeSection}

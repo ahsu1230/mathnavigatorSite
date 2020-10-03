@@ -8,6 +8,7 @@ import {
     REGISTER_SECTION_CONFIRM,
 } from "./registerBase.js";
 import RegisterInput from "./registerInput.js";
+import { validateEmail } from "../utils/validators.js";
 
 export default class RegisterSectionFormStudent extends React.Component {
     onChangeInput = (e, fieldName) => {
@@ -33,7 +34,8 @@ export default class RegisterSectionFormStudent extends React.Component {
                     We use this information to contact you about important class updates,
                     so please use a valid email you frequently use.
                     School information is used to help us estimate your current level and help us cater to your needs.
-                    This information is for our purposes only and will NOT be shared with anyone.
+                    This information is for our purposes only and will NOT be shared with anyone.<br/>
+                    All fields are required.
                 </p>
                 <div className="names">
                     <RegisterInput
@@ -56,6 +58,12 @@ export default class RegisterSectionFormStudent extends React.Component {
                     value={this.props.student.email}
                     placeholder="i.e. alicekim@gmail.com"
                     onChangeCallback={(e) => this.onChangeInput(e, "studentEmail")}
+                    validators={[
+                        { 
+                            validate: () => { return this.props.student.email != "" && validateEmail(this.props.student.email)},
+                            message: "You must input a valid email." 
+                        }
+                    ]}
                     />
 
                 <RegisterInput
@@ -73,12 +81,30 @@ export default class RegisterSectionFormStudent extends React.Component {
                         value={this.props.student.grade}
                         placeholder="i.e. Alice Kim"
                         onChangeCallback={(e) => this.onChangeInput(e, "studentGrade")}
+                        validators={[
+                            { 
+                                validate: () => { 
+                                    const grade = this.props.student.grade;
+                                    return parseInt(grade) >= 6 && parseInt(grade) <= 12;
+                                },
+                                message: "You must input a valid grade." 
+                            }
+                        ]}
                         />
                     <RegisterInput
                         className="grad-year"
                         title="Graduation Year"
                         value={this.props.student.graduationYear}
                         onChangeCallback={(e) => this.onChangeInput(e, "studentGraduationYear")}
+                        validators={[
+                            { 
+                                validate: () => { 
+                                    const gradYear = this.props.student.graduationYear;
+                                    return parseInt(gradYear) >= 2000 && parseInt(gradYear) <= 2030;
+                                },
+                                message: "You must input a valid graduation year." 
+                            }
+                        ]}
                         />
                 </div>
                 

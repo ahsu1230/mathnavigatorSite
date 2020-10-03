@@ -7,6 +7,7 @@ import {
     REGISTER_SECTION_CONFIRM,
 } from "./registerBase.js";
 import RegisterInput from "./registerInput.js";
+import { validateEmail, validatePhone } from "../utils/validators.js";
 
 export default class RegisterSectionFormGuardian extends React.Component {
     onChangeInput = (e, fieldName) => {
@@ -27,7 +28,8 @@ export default class RegisterSectionFormGuardian extends React.Component {
                     Please fill out your guardian information below.
                     We use this information to contact you about important class updates,
                     so please use a valid email you frequently use.
-                    This information is for our purposes only and will NOT be shared with anyone.
+                    This information is for our purposes only and will NOT be shared with anyone.<br/>
+                    All fields are required.
                 </p>
                 <div className="names">
                     <RegisterInput
@@ -49,6 +51,23 @@ export default class RegisterSectionFormGuardian extends React.Component {
                     value={this.props.guardian.email}
                     placeholder="i.e. alicekim@gmail.com"
                     onChangeCallback={(e) => this.onChangeInput(e, "guardianEmail")}
+                    validators={[
+                        { 
+                            validate: () => { 
+                                const email = this.props.guardian.email;
+                                return email != "" && validateEmail(email);
+                            },
+                            message: "You must input a valid email." 
+                        },
+                        {
+                            validate: () => { 
+                                const studentEmail = this.props.studentEmail;
+                                const email = this.props.guardian.email;
+                                return email != "" && email != studentEmail;
+                            },
+                            message: "You must input an email different from the student email."
+                        }
+                    ]}
                     />
 
                 <RegisterInput
@@ -57,6 +76,15 @@ export default class RegisterSectionFormGuardian extends React.Component {
                     value={this.props.guardian.phone}
                     placeholder="i.e. (XXX) XXX - XXXX"
                     onChangeCallback={(e) => this.onChangeInput(e, "guardianPhone")}
+                    validators={[
+                        { 
+                            validate: () => { 
+                                const phone = this.props.guardian.phone;
+                                return phone != "" && validatePhone(phone);
+                            },
+                            message: "You must input a valid phone number." 
+                        }
+                    ]}
                 />
             </div>
         );

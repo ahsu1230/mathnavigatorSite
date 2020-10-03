@@ -143,7 +143,7 @@ class SectionStudent extends React.Component {
 class SectionGuardian extends React.Component {
     render() {
         const guardian = this.props.guardian;
-        if (isEmpty(guardian)) {
+        if (isEmpty(guardian) || !guardian.email) {
             return (<div></div>);
         } else {
             return(

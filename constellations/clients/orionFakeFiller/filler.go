@@ -114,6 +114,11 @@ func runFiller() {
 		"",
 	)
 
+	createOnlineLocation(
+		"zoom",
+		"Zoom Video Conference"
+	)
+
 	// Create achievements
 	createAchieve(
 		"2020",
@@ -221,7 +226,7 @@ func runFiller() {
 		"2021_winter",
 		"class1",
 		"sat_math_2021_winter_class1",
-		"wchs",
+		"zoom",
 		"Tues 1pm - 2pm",
 	)
 
@@ -305,6 +310,18 @@ func createLocation(locationId, title, street, city, state, zipcode, room string
 		"zipcode": "%s",
 		"room": "%s"
 	}`, locationId, title, street, city, state, zipcode, room))
+	log.Println("Creating location " + locationId + "...")
+	respBody := utils.SendPostRequest("/api/locations/create", locationBody)
+	id, _ := utils.GetIdFromBody(respBody)
+	return id, nil
+}
+
+func createOnlineLocation(locationId, title string) (uint, error) {
+	locationBody := strings.NewReader(fmt.Sprintf(`{
+		"locationId": "%s",
+		"title": "%s",
+		"isOnline": true
+	}`, locationId, title))
 	log.Println("Creating location " + locationId + "...")
 	respBody := utils.SendPostRequest("/api/locations/create", locationBody)
 	id, _ := utils.GetIdFromBody(respBody)

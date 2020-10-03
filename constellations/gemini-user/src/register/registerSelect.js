@@ -2,6 +2,7 @@
 require("./registerSelect.sass");
 import React from "react";
 import moment from "moment";
+import { isFullClass } from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/utils.js";
 import { 
     RegisterSectionBase,
@@ -17,6 +18,7 @@ export default class RegisterSectionSelect extends React.Component {
         let selectSection;
         if (this.state.chosen == "class") {
             selectSection=(<SelectClass 
+                onChangeSection={this.props.onChangeSection}
                 onChangeStateValue={this.props.onChangeStateValue}
                 classId={this.props.classId}
                 classes={this.props.classes}
@@ -26,6 +28,7 @@ export default class RegisterSectionSelect extends React.Component {
                 locationMap={this.props.locationMap}/>);
         } else if (this.state.chosen == "afh") {
             selectSection=(<SelectAfh 
+                onChangeSection={this.props.onChangeSection}
                 onChangeStateValue={this.props.onChangeStateValue}
                 afhId={this.props.afhId}
                 afhs={this.props.afhs}
@@ -62,7 +65,7 @@ export default class RegisterSectionSelect extends React.Component {
                 sectionName="select"
                 title={"Registration"}
                 next={REGISTER_SECTION_FORM_STUDENT}
-                nextAllowed={this.props.afhId || this.props.classId}
+                nextAllowed={this.props.afhId || (this.props.classId && !isFullClass(this.props.classMap[this.props.classId]))}
                 content={this.renderContent()}
                 onChangeSection={this.props.onChangeSection}
             />
@@ -84,20 +87,32 @@ export class SelectClass extends React.Component {
             const location = this.props.locationMap[currentClass.locationId];
 
             const fullTitle = program.title + " " + capitalizeWord(currentClass.classKey);
+            const fullSection = isFullClass(currentClass) ? <p className="error">This class is full. Please select another class to enroll.</p> : <div></div>;
+            let showNextButton = isFullClass(currentClass) ? <div></div> : (
+                <div className="next-section">
+                    <button onClick={() => this.props.onChangeSection(REGISTER_SECTION_FORM_STUDENT)}>
+                        Next
+                    </button>
+                </div>
+            );
             return (
                 <section className="selected">
-                    You have selected to enroll into:
-                    <div className="info">
-                        <h3>{fullTitle}</h3>
-                        <h4>{semester.title}</h4>
-                        <p>Times: {currentClass.timesStr}</p>
-                        <p>
-                            Location: {location.title}<br/>
-                            {location.street}<br/>
-                            {location.city + ", " + location.state + " " + location.zipcode}<br/>
-                            {location.room}
-                        </p>
+                    <div>
+                        You have selected to enroll into:
+                        <div className="info">
+                            {fullSection}
+                            <h3>{fullTitle}</h3>
+                            <h4>{semester.title}</h4>
+                            <p>Times: {currentClass.timesStr}</p>
+                            <p>
+                                Location: {location.title}<br/>
+                                {location.street}<br/>
+                                {location.city + ", " + location.state + " " + location.zipcode}<br/>
+                                {location.room}
+                            </p>
+                        </div>
                     </div>
+                    {showNextButton}
                 </section>
             );
         } else {
@@ -146,19 +161,24 @@ export class SelectAfh extends React.Component {
             const location = this.props.locationMap[currentAfh.locationId];
             return (
                 <section className="selected">
-                    You have selected to attend:
-                    <div className="info">
-                        <h3>{currentAfh.title}</h3>
-                        <h4>{datetime}</h4>
-                        <p>
-                            Location: {location.title}<br/>
-                            {location.street}<br/>
-                            {location.city + ", " + location.state + " " + location.zipcode}<br/>
-                            {location.room}
-                        </p>
+                    <div>
+                        You have selected to attend:
+                        <div className="info">
+                            <h3>{currentAfh.title}</h3>
+                            <h4>{datetime}</h4>
+                            <p>
+                                Location: {location.title}<br/>
+                                {location.street}<br/>
+                                {location.city + ", " + location.state + " " + location.zipcode}<br/>
+                                {location.room}
+                            </p>
+                        </div>
                     </div>
-                    <div className="press-next">
-                        If this is correct, please press "Next".
+                    
+                    <div className="next-section">
+                        <button onClick={() => this.props.onChangeSection(REGISTER_SECTION_FORM_STUDENT)}>
+                            Next
+                        </button>
                     </div>
                 </section>
             );

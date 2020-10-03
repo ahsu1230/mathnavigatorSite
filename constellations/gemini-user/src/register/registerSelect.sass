@@ -2,6 +2,9 @@
 
 #view-register .register-section.select
 
+    .buttons-footer
+        display: none // we are using a custom button footer here
+
     h1
         margin-bottom: $spacing6x
         
@@ -46,11 +49,15 @@
         &:focus
             box-shadow: 0 0 0 2px $colorTurquoiseLight inset
 
-    .selection p:first-child
-        margin: $spacing3x 0 $spacing1x
+    .selection
+        p:first-child
+            margin: $spacing3x 0 $spacing1x
 
     .selected
         margin-top: $spacing6x
+        display: flex
+        flex-direction: row
+        justify-content: space-between
 
         h3
             margin: $spacing2x 0 $spacing1x
@@ -71,11 +78,18 @@
         p
             margin: $spacing1x 0
 
-        .press-next
-            margin-top: $spacing4x
+        .next-section button
+            padding: $spacing1x $spacing4x
+            border-radius: 8px
+    
+    .selection-wrapper
+        display: flex
+        flex-direction: row
+        justify-content: space-between
 
 @media screen and (max-width: $containerWidthPxTablet)
-    #view-register .register-section.select 
+    #view-register .register-section.select
+
         .intro-wrapper
             flex-direction: column
             justify-content: start
@@ -93,3 +107,14 @@
             justify-content: start
             align-items: center
             text-align: center
+
+        .selected
+            flex-direction: column
+            justify-content: start
+            align-items: center
+
+            .next-section
+                margin-top: $spacing4x
+
+                button
+                    padding: $spacing1x $spacing6x
