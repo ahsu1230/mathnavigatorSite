@@ -49,5 +49,6 @@ export const formatCurrency = (amount) => {
 };
 
 export const capitalizeWord = (word) => {
+    word = word || "";
     return word.charAt(0).toUpperCase() + word.slice(1);
 };

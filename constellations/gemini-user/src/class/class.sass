@@ -7,6 +7,9 @@
     padding: $spacing8x 0
 
     #breadcrumbs
+        a
+            color: $colorTurquoiseDark
+
         span
             margin-left: $spacing1x
 
@@ -15,7 +18,7 @@
             line-height: $lineHeight4
             font-family: $fontFamilyRockwell
             font-size: $fontSize4
-            color: $colorTurquoise
+            color: $colorBlack
 
     #program-info
         h4.full
@@ -63,18 +66,19 @@
                 border: 1px solid $colorGrayMed
 
         button
-            background-color: $colorOrange
+            background-color: $colorTurquoise
             color: $colorWhite
-            border: 1px solid $colorOrange
+            border: 1px solid $colorTurquoise
+            border-radius: 8px
 
             @media screen and (max-width: $containerWidthPxTablet)
                 width: 100%
-                border: 1px solid $colorOrange
+                border: 1px solid $colorTurquoise
                 background-color: transparent
-                color: $colorOrange
+                color: $colorTurquoise
 
                 &:hover
-                    background-color: $colorOrange
+                    background-color: $colorTurquoise
                     color: $colorWhite
 
         a
@@ -104,11 +108,11 @@
                     border-left: none
 
         h3
-            margin: $spacing4x 0
+            margin: $spacing3x 0 $spacing1x
             line-height: $lineHeight1
             font-size: $fontSize1
-            margin: $spacing2x 0
-            color: $colorTurquoise
+            font-weight: 400
+            color: $colorGrayMed
 
             @media screen and (max-width: $containerWidthPxTablet)
                 margin-top: $spacing4x
@@ -128,4 +132,4 @@
         margin-top: $spacing16x
 
         u
-            color: $colorOrange
+            color: $colorTurquoiseLight

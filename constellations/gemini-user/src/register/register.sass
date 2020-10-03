@@ -1,0 +1,75 @@
+@import "../utils/_constants.sass"
+
+#view-register
+    width: $containerWidthPct
+    max-width: $containerWidthPxFull
+    margin: $spacing12x auto $spacing24x
+
+    .window
+        overflow: hidden
+
+    .scrollable
+        display: flex
+        flex-direction: row
+        flex-wrap: nowrap
+        position: relative
+        left: 0
+        width: 500%
+        transition: 0.15s linear all
+
+        &.shift1
+            left: -100%
+        &.shift2
+            left: -200%
+        &.shift3
+            left: -300%
+        &.shift4
+            left: -400%
+
+    .register-section
+        display: inline-block
+        min-height: 480px
+        width: 100%
+        opacity: 0.0
+        visibility: hidden
+        transition: 0.05s linear all
+
+        &.active
+            opacity: 1.0
+            visibility: visible
+
+        .buttons-footer
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: center
+            margin-top: $spacing6x
+
+            button
+                padding: 4px 12px
+                border-radius: 8px
+
+                &.next
+                    background-color: $colorGrayLight
+
+                    &.allowed
+                        background-color: $colorTurquoise
+
+                &.back
+                    background-color: $colorGrayDark
+
+                &.confirm
+                    margin: 0
+                    background-color: $colorTurquoiseLight
+
+    .register-footer
+        margin-top: $spacing16x
+
+@media screen and (max-width: $containerWidthPxTablet)
+    #view-register .register-section
+        h1
+            width: $spacing48x
+            text-align: center
+
+        .buttons-footer button
+            padding: 8px 24px

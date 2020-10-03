@@ -21,6 +21,7 @@ export class ClassPage extends React.Component {
         location: {},
         otherClasses: [],
         allSemesters: [],
+        fetchedData: false,
     };
 
     componentDidMount = () => {
@@ -68,6 +69,7 @@ export class ClassPage extends React.Component {
                         ),
                         location: responses[2].data,
                         otherClasses: responses[3].data,
+                        fetchedData: true,
                     });
                 })
             )
@@ -261,7 +263,7 @@ export class ClassPage extends React.Component {
         const classObj = this.state.classObj;
         const sessions = this.state.sessions;
 
-        if (isEmpty(classObj))
+        if (this.state.fetchedData && isEmpty(classObj))
             return <ClassErrorPage classId={this.props.classId} />;
         else
             return (

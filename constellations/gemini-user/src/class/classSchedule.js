@@ -36,10 +36,23 @@ export class ClassSchedule extends React.Component {
     render = () => {
         const sessions = this.props.sessions || [];
 
+        let content;
+        if (sessions.length) {
+            content = (
+                <div>
+                    {this.getSchedules(sessions)}
+                </div>
+            );
+        } else {
+            content = (
+                <p>To be determined. Please check again soon!</p>
+            );
+        }
+
         return (
             <div id="class-session">
                 <h3>Schedule</h3>
-                {this.getSchedules(sessions)}
+                {content}
             </div>
         );
     };
