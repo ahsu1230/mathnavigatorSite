@@ -9,15 +9,24 @@ export default class RegisterSelectClass extends React.Component {
     onChangeClass = (e) => {
         this.props.onChangeStateValue("selectedClassId", e.target.value);
         this.props.onChangeStateValue("selectedAfhId", null);
-    }
+    };
 
     render() {
         const classes = this.props.classes || [];
         const optionsClasses = classes.map((classObj, index) => {
             const program = this.props.programMap[classObj.programId];
             const semester = this.props.semesterMap[classObj.semesterId];
-            const fullTitle = program.title + " " + capitalizeWord(classObj.classKey) + " " + semester.title;
-            return (<option key={index} value={classObj.classId}>{fullTitle}</option>);
+            const fullTitle =
+                program.title +
+                " " +
+                capitalizeWord(classObj.classKey) +
+                " " +
+                semester.title;
+            return (
+                <option key={index} value={classObj.classId}>
+                    {fullTitle}
+                </option>
+            );
         });
 
         let selected = <div></div>;
@@ -27,8 +36,15 @@ export default class RegisterSelectClass extends React.Component {
             const semester = this.props.semesterMap[currentClass.semesterId];
             const location = this.props.locationMap[currentClass.locationId];
 
-            const fullTitle = program.title + " " + capitalizeWord(currentClass.classKey);
-            const fullSection = isFullClass(currentClass) ? <p className="error">This class is full. Please select another class to enroll.</p> : <div></div>;
+            const fullTitle =
+                program.title + " " + capitalizeWord(currentClass.classKey);
+            const fullSection = isFullClass(currentClass) ? (
+                <p className="error">
+                    This class is full. Please select another class to enroll.
+                </p>
+            ) : (
+                <div></div>
+            );
             selected = (
                 <div className="selection">
                     {fullSection}
@@ -36,12 +52,23 @@ export default class RegisterSelectClass extends React.Component {
                     <h3>{fullTitle}</h3>
                     <h4>{semester.title}</h4>
                     <p className="times">Times: {currentClass.timesStr}</p>
-                    <p className="price">Prices: {currentClass.pricePerSession || currentClass.priceLumpSum}</p>
+                    <p className="price">
+                        Prices:{" "}
+                        {currentClass.pricePerSession ||
+                            currentClass.priceLumpSum}
+                    </p>
                     <p className="payment-notes">{currentClass.paymentNotes}</p>
                     <p className="location">
-                        Location: {location.title}<br/>
-                        {location.street}<br/>
-                        {location.city + ", " + location.state + " " + location.zipcode}<br/>
+                        Location: {location.title}
+                        <br />
+                        {location.street}
+                        <br />
+                        {location.city +
+                            ", " +
+                            location.state +
+                            " " +
+                            location.zipcode}
+                        <br />
                         {location.room}
                     </p>
                 </div>
@@ -50,14 +77,21 @@ export default class RegisterSelectClass extends React.Component {
 
         return (
             <section className="select class">
-                <div className={"header-wrapper" + (this.props.classId ? " active" : "")}>
+                <div
+                    className={
+                        "header-wrapper" + (this.props.classId ? " active" : "")
+                    }>
                     <div className="title">
                         <div className="step-wrapper">1</div>
                         <h2>Select a class to enroll into:</h2>
                     </div>
-                    {this.props.classId && <div><img src={srcCheckmark}/></div>}
+                    {this.props.classId && (
+                        <div>
+                            <img src={srcCheckmark} />
+                        </div>
+                    )}
                 </div>
-                <select 
+                <select
                     value={this.props.classId || "none"}
                     onChange={this.onChangeClass}>
                     <option disabled value={"none"}>

@@ -4,7 +4,7 @@ import React from "react";
 import moment from "moment";
 import { isFullClass } from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/utils.js";
-import { 
+import {
     RegisterSectionBase,
     REGISTER_SECTION_FORM_STUDENT,
 } from "./registerBase.js";
@@ -12,44 +12,56 @@ import {
 export default class RegisterSectionSelect extends React.Component {
     state = {
         chosen: "",
-    }
+    };
 
     renderContent = () => {
         let selectSection;
         if (this.state.chosen == "class") {
-            selectSection=(<SelectClass 
-                onChangeSection={this.props.onChangeSection}
-                onChangeStateValue={this.props.onChangeStateValue}
-                classId={this.props.classId}
-                classes={this.props.classes}
-                classMap={this.props.classMap}
-                programMap={this.props.programMap}
-                semesterMap={this.props.semesterMap}
-                locationMap={this.props.locationMap}/>);
+            selectSection = (
+                <SelectClass
+                    onChangeSection={this.props.onChangeSection}
+                    onChangeStateValue={this.props.onChangeStateValue}
+                    classId={this.props.classId}
+                    classes={this.props.classes}
+                    classMap={this.props.classMap}
+                    programMap={this.props.programMap}
+                    semesterMap={this.props.semesterMap}
+                    locationMap={this.props.locationMap}
+                />
+            );
         } else if (this.state.chosen == "afh") {
-            selectSection=(<SelectAfh 
-                onChangeSection={this.props.onChangeSection}
-                onChangeStateValue={this.props.onChangeStateValue}
-                afhId={this.props.afhId}
-                afhs={this.props.afhs}
-                afhMap={this.props.afhMap}
-                locationMap={this.props.locationMap}/>);
+            selectSection = (
+                <SelectAfh
+                    onChangeSection={this.props.onChangeSection}
+                    onChangeStateValue={this.props.onChangeStateValue}
+                    afhId={this.props.afhId}
+                    afhs={this.props.afhs}
+                    afhMap={this.props.afhMap}
+                    locationMap={this.props.locationMap}
+                />
+            );
         } else {
-            selectSection=(<div></div>);
+            selectSection = <div></div>;
         }
 
         return (
             <div className="content">
                 <div className="intro-wrapper">
                     <p>
-                        Choose either to enroll into a Math Navigator class or an ask-for-help session.
-                        Ask For Help sessions are only for students who are already enrolled into one of our classes.
+                        Choose either to enroll into a Math Navigator class or
+                        an ask-for-help session. Ask For Help sessions are only
+                        for students who are already enrolled into one of our
+                        classes.
                     </p>
                     <div className="buttons">
-                        <button className="class-btn" onClick={() => this.setState({chosen: "class"})}>
+                        <button
+                            className="class-btn"
+                            onClick={() => this.setState({ chosen: "class" })}>
                             Enroll into a class
                         </button>
-                        <button className="afh-btn" onClick={() => this.setState({chosen: "afh"})}>
+                        <button
+                            className="afh-btn"
+                            onClick={() => this.setState({ chosen: "afh" })}>
                             Ask For Help
                         </button>
                     </div>
@@ -57,7 +69,7 @@ export default class RegisterSectionSelect extends React.Component {
                 {selectSection}
             </div>
         );
-    }
+    };
 
     render() {
         return (
@@ -75,7 +87,7 @@ export class SelectClass extends React.Component {
     onChangeClass = (e) => {
         this.props.onChangeStateValue("selectedClassId", e.target.value);
         this.props.onChangeStateValue("selectedAfhId", null);
-    }
+    };
 
     renderCurrentClass = () => {
         if (this.props.classId) {
@@ -84,11 +96,25 @@ export class SelectClass extends React.Component {
             const semester = this.props.semesterMap[currentClass.semesterId];
             const location = this.props.locationMap[currentClass.locationId];
 
-            const fullTitle = program.title + " " + capitalizeWord(currentClass.classKey);
-            const fullSection = isFullClass(currentClass) ? <p className="error">This class is full. Please select another class to enroll.</p> : <div></div>;
-            let showNextButton = isFullClass(currentClass) ? <div></div> : (
+            const fullTitle =
+                program.title + " " + capitalizeWord(currentClass.classKey);
+            const fullSection = isFullClass(currentClass) ? (
+                <p className="error">
+                    This class is full. Please select another class to enroll.
+                </p>
+            ) : (
+                <div></div>
+            );
+            let showNextButton = isFullClass(currentClass) ? (
+                <div></div>
+            ) : (
                 <div className="next-section">
-                    <button onClick={() => this.props.onChangeSection(REGISTER_SECTION_FORM_STUDENT)}>
+                    <button
+                        onClick={() =>
+                            this.props.onChangeSection(
+                                REGISTER_SECTION_FORM_STUDENT
+                            )
+                        }>
                         Next
                     </button>
                 </div>
@@ -103,9 +129,16 @@ export class SelectClass extends React.Component {
                             <h4>{semester.title}</h4>
                             <p>Times: {currentClass.timesStr}</p>
                             <p>
-                                Location: {location.title}<br/>
-                                {location.street}<br/>
-                                {location.city + ", " + location.state + " " + location.zipcode}<br/>
+                                Location: {location.title}
+                                <br />
+                                {location.street}
+                                <br />
+                                {location.city +
+                                    ", " +
+                                    location.state +
+                                    " " +
+                                    location.zipcode}
+                                <br />
                                 {location.room}
                             </p>
                         </div>
@@ -114,23 +147,32 @@ export class SelectClass extends React.Component {
                 </section>
             );
         } else {
-            return (<div></div>);
+            return <div></div>;
         }
-    }
+    };
 
     render() {
         const optionsClasses = this.props.classes.map((classObj, index) => {
             const program = this.props.programMap[classObj.programId];
             const semester = this.props.semesterMap[classObj.semesterId];
-            const fullTitle = program.title + " " + capitalizeWord(classObj.classKey) + " " + semester.title;
-            return (<option key={index} value={classObj.classId}>{fullTitle}</option>);
+            const fullTitle =
+                program.title +
+                " " +
+                capitalizeWord(classObj.classKey) +
+                " " +
+                semester.title;
+            return (
+                <option key={index} value={classObj.classId}>
+                    {fullTitle}
+                </option>
+            );
         });
 
         const currentClassSection = this.renderCurrentClass();
         return (
             <div className="selection class">
                 <p>Select the class you would like to enroll into.</p>
-                <select 
+                <select
                     value={this.props.classId || "none"}
                     onChange={this.onChangeClass}>
                     <option disabled value={"none"}>
@@ -148,14 +190,15 @@ export class SelectAfh extends React.Component {
     onChangeAfh = (e) => {
         this.props.onChangeStateValue("selectedClassId", null);
         this.props.onChangeStateValue("selectedAfhId", e.target.value);
-    }
+    };
 
     renderCurrentAfh = () => {
         if (this.props.afhId) {
-            const currentAfh = this.props.afhMap[this.props.afhId]
-            const datetime = moment(currentAfh.startsAt).format("MM/DD/YY h:mm a") + 
-                                " - " + 
-                                moment(currentAfh.endsAt).format("h:mm a");
+            const currentAfh = this.props.afhMap[this.props.afhId];
+            const datetime =
+                moment(currentAfh.startsAt).format("MM/DD/YY h:mm a") +
+                " - " +
+                moment(currentAfh.endsAt).format("h:mm a");
             const location = this.props.locationMap[currentAfh.locationId];
             return (
                 <section className="selected">
@@ -165,31 +208,47 @@ export class SelectAfh extends React.Component {
                             <h3>{currentAfh.title}</h3>
                             <h4>{datetime}</h4>
                             <p>
-                                Location: {location.title}<br/>
-                                {location.street}<br/>
-                                {location.city + ", " + location.state + " " + location.zipcode}<br/>
+                                Location: {location.title}
+                                <br />
+                                {location.street}
+                                <br />
+                                {location.city +
+                                    ", " +
+                                    location.state +
+                                    " " +
+                                    location.zipcode}
+                                <br />
                                 {location.room}
                             </p>
                         </div>
                     </div>
-                    
+
                     <div className="next-section">
-                        <button onClick={() => this.props.onChangeSection(REGISTER_SECTION_FORM_STUDENT)}>
+                        <button
+                            onClick={() =>
+                                this.props.onChangeSection(
+                                    REGISTER_SECTION_FORM_STUDENT
+                                )
+                            }>
                             Next
                         </button>
                     </div>
                 </section>
             );
         } else {
-            return (<div></div>);
+            return <div></div>;
         }
-    }
+    };
 
     render() {
         const optionsAfh = this.props.afhs.map((afh, index) => {
             const afhTime = moment(afh.startsAt).format("MM/DD/YY h:mm a");
             const fullTitle = afh.title + " " + afhTime;
-            return (<option key={index} value={afh.id}>{fullTitle}</option>);
+            return (
+                <option key={index} value={afh.id}>
+                    {fullTitle}
+                </option>
+            );
         });
 
         const currentAfhSection = this.renderCurrentAfh();

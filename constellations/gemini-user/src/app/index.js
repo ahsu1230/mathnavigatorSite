@@ -36,8 +36,8 @@ const Home = () => <HomePage />;
 const Internship = () => <InternshipPage />;
 const Programs = () => <ProgramsPage />;
 const Register = withRouter(RegisterPage);
-const RegisterSuccessAfh = () => <RegisterSuccessPage registered="afh"/>;
-const RegisterSuccessClass = () => <RegisterSuccessPage registered="class"/>;
+const RegisterSuccessAfh = () => <RegisterSuccessPage registered="afh" />;
+const RegisterSuccessClass = () => <RegisterSuccessPage registered="class" />;
 
 class AppContainer extends React.Component {
     render() {
@@ -74,8 +74,14 @@ class App extends React.Component {
                     <Route path="/internship" component={Internship} />
                     <Route path="/programs" component={Programs} />
                     <Route path="/register" component={Register} />
-                    <Route path="/register-success/afh" component={RegisterSuccessAfh}/>
-                    <Route path="/register-success/class" component={RegisterSuccessClass}/>
+                    <Route
+                        path="/register-success/afh"
+                        component={RegisterSuccessAfh}
+                    />
+                    <Route
+                        path="/register-success/class"
+                        component={RegisterSuccessClass}
+                    />
                     <Route
                         path="/student-achievements"
                         component={Achievements}

@@ -4,10 +4,16 @@ const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+")
 
 export const validateEmail = (email) => {
     return regexEmail.test(String(email).toLowerCase());
-}
+};
 
 export const validatePhone = (phone) => {
-    return reduce(phone.split(""), (sum, c) => {
-        return sum + (parseInt(c) >= 0 ? 1 : 0);
-    }, 0) >= 10;
-}
+    return (
+        reduce(
+            phone.split(""),
+            (sum, c) => {
+                return sum + (parseInt(c) >= 0 ? 1 : 0);
+            },
+            0
+        ) >= 10
+    );
+};

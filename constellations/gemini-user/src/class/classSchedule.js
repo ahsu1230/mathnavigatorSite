@@ -38,15 +38,9 @@ export class ClassSchedule extends React.Component {
 
         let content;
         if (sessions.length) {
-            content = (
-                <div>
-                    {this.getSchedules(sessions)}
-                </div>
-            );
+            content = <div>{this.getSchedules(sessions)}</div>;
         } else {
-            content = (
-                <p>To be determined. Please check again soon!</p>
-            );
+            content = <p>To be determined. Please check again soon!</p>;
         }
 
         return (

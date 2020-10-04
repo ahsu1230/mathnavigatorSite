@@ -12,23 +12,27 @@ import { validateEmail, validatePhone } from "../utils/validators.js";
 export default class RegisterSectionFormGuardian extends React.Component {
     onChangeInput = (e, fieldName) => {
         this.props.onChangeStateValue(fieldName, e.target.value);
-    }
+    };
 
     validateAllFields = () => {
-        return this.props.guardian.firstName 
-            && this.props.guardian.lastName
-            && this.props.guardian.email
-            && this.props.guardian.phone;
-    }
+        return (
+            this.props.guardian.firstName &&
+            this.props.guardian.lastName &&
+            this.props.guardian.email &&
+            this.props.guardian.phone
+        );
+    };
 
     renderContent = () => {
         return (
             <div className="content">
-                <p> 
-                    Please fill out your guardian information below.
-                    We use this information to contact you about important class updates,
-                    so please use a valid email you frequently use.
-                    This information is for our purposes only and will NOT be shared with anyone.<br/>
+                <p>
+                    Please fill out your guardian information below. We use this
+                    information to contact you about important class updates, so
+                    please use a valid email you frequently use. This
+                    information is for our purposes only and will NOT be shared
+                    with anyone.
+                    <br />
                     All fields are required.
                 </p>
                 <div className="names">
@@ -36,59 +40,68 @@ export default class RegisterSectionFormGuardian extends React.Component {
                         title="First Name"
                         value={this.props.guardian.firstName}
                         placeholder="i.e. Alice"
-                        onChangeCallback={(e) => this.onChangeInput(e, "guardianFirstName")}
-                        />
+                        onChangeCallback={(e) =>
+                            this.onChangeInput(e, "guardianFirstName")
+                        }
+                    />
                     <RegisterInput
                         title="Last Name"
                         value={this.props.guardian.lastName}
                         placeholder="i.e. Kim"
-                        onChangeCallback={(e) => this.onChangeInput(e, "guardianLastName")}
-                        />
+                        onChangeCallback={(e) =>
+                            this.onChangeInput(e, "guardianLastName")
+                        }
+                    />
                 </div>
                 <RegisterInput
                     className="email"
                     title="Email"
                     value={this.props.guardian.email}
                     placeholder="i.e. alicekim@gmail.com"
-                    onChangeCallback={(e) => this.onChangeInput(e, "guardianEmail")}
+                    onChangeCallback={(e) =>
+                        this.onChangeInput(e, "guardianEmail")
+                    }
                     validators={[
-                        { 
-                            validate: () => { 
+                        {
+                            validate: () => {
                                 const email = this.props.guardian.email;
                                 return email != "" && validateEmail(email);
                             },
-                            message: "You must input a valid email." 
+                            message: "You must input a valid email.",
                         },
                         {
-                            validate: () => { 
+                            validate: () => {
                                 const studentEmail = this.props.studentEmail;
                                 const email = this.props.guardian.email;
                                 return email != "" && email != studentEmail;
                             },
-                            message: "You must input an email different from the student email."
-                        }
+                            message:
+                                "You must input an email different from the student email.",
+                        },
                     ]}
-                    />
+                />
 
                 <RegisterInput
                     className="phone"
                     title="Phone Number"
                     value={this.props.guardian.phone}
                     placeholder="i.e. (XXX) XXX - XXXX"
-                    onChangeCallback={(e) => this.onChangeInput(e, "guardianPhone")}
+                    onChangeCallback={(e) =>
+                        this.onChangeInput(e, "guardianPhone")
+                    }
                     validators={[
-                        { 
-                            validate: () => { 
+                        {
+                            validate: () => {
                                 const phone = this.props.guardian.phone;
                                 return phone != "" && validatePhone(phone);
                             },
-                            message: "You must input a valid phone number." 
-                        }
+                            message: "You must input a valid phone number.",
+                        },
                     ]}
                 />
             </div>
         );
-    }
+    };
 
     render() {
         return (

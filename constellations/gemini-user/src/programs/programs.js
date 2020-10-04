@@ -96,7 +96,7 @@ export class ProgramSection extends React.Component {
 
         const cards = programs.map((program, index) => {
             const imgSrcList = imgSrcMap[program.subject] || [];
-            const imgSrcIndex = Math.floor(Math.random() * imgSrcList.length); 
+            const imgSrcIndex = Math.floor(Math.random() * imgSrcList.length);
             return (
                 <ProgramCard
                     key={index}

@@ -10,12 +10,12 @@ import RegisterSectionFormStudent from "./registerFormStudent.js";
 import RegisterSectionFormGuardian from "./registerFormGuardian.js";
 import RegisterSectionConfirm from "./registerConfirm.js";
 import RegisterSectionSuccess from "./registerSuccess.js";
-import { 
+import {
     REGISTER_SECTION_SELECT,
     REGISTER_SECTION_FORM_STUDENT,
     REGISTER_SECTION_FORM_GUARDIAN,
     REGISTER_SECTION_CONFIRM,
-    REGISTER_SECTION_SUCCESS
+    REGISTER_SECTION_SUCCESS,
 } from "./registerBase.js";
 
 export default class RegisterPage extends React.Component {
@@ -24,14 +24,14 @@ export default class RegisterPage extends React.Component {
         currentSection: REGISTER_SECTION_SELECT,
         selectedAfhId: null,
         selectedClassId: null,
-        
+
         studentFirstName: "",
         studentLastName: "",
         studentSchool: "",
         studentEmail: "",
         studentGraduationYear: 2024,
         studentGrade: 9,
-        
+
         guardianFirstName: "",
         guardianLastName: "",
         guardianEmail: "",
@@ -44,7 +44,7 @@ export default class RegisterPage extends React.Component {
         programMap: {},
         semesterMap: {},
         locationMap: {},
-    }
+    };
 
     componentDidMount = () => {
         this.setState({ location: this.props.history.location });
@@ -67,7 +67,9 @@ export default class RegisterPage extends React.Component {
                     const allSemesters = responses[3].data;
                     const allLocations = responses[4].data;
 
-                    let queries = parseQueryParams(this.props.history.location.search);
+                    let queries = parseQueryParams(
+                        this.props.history.location.search
+                    );
                     console.log(JSON.stringify(queries));
                     console.log(JSON.stringify(queries["afhId"]));
                     console.log(JSON.stringify(queries["classId"]));
@@ -75,31 +77,31 @@ export default class RegisterPage extends React.Component {
                         selectedAfhId: queries["afhId"] || null,
                         selectedClassId: queries["classId"] || null,
                         allClasses: allClasses,
-                        classMap: keyBy(allClasses, 'classId'),
+                        classMap: keyBy(allClasses, "classId"),
                         allAFHs: allAFHs,
                         afhMap: keyBy(allAFHs, "id"),
                         programMap: keyBy(allPrograms, "programId"),
                         semesterMap: keyBy(allSemesters, "semesterId"),
-                        locationMap: keyBy(allLocations, "locationId")
+                        locationMap: keyBy(allLocations, "locationId"),
                     });
-                }
-            )).catch(err =>
+                })
+            )
+            .catch((err) =>
                 console.log("Error: could not fetch class: " + err)
             );
-    }
+    };
 
-    componentWillUnmount() {
-    }
+    componentWillUnmount() {}
 
     changeSection = (section) => {
         this.setState({ currentSection: section });
-    }
+    };
 
     changeStateValue = (stateName, value) => {
         this.setState({
-            [stateName]: value
+            [stateName]: value,
         });
-    }
+    };
 
     getSectionClass = () => {
         let sectionClass = "";
@@ -120,7 +122,7 @@ export default class RegisterPage extends React.Component {
                 sectionClass = "";
         }
         return sectionClass;
-    }
+    };
 
     render() {
         const sectionClass = this.getSectionClass();
@@ -130,14 +132,14 @@ export default class RegisterPage extends React.Component {
             email: this.state.studentEmail,
             school: this.state.studentSchool,
             grade: this.state.studentGrade,
-            graduationYear: this.state.studentGraduationYear
+            graduationYear: this.state.studentGraduationYear,
         };
         const guardianInfo = {
             firstName: this.state.guardianFirstName,
             lastName: this.state.guardianLastName,
             email: this.state.guardianEmail,
-            phone: this.state.guardianPhone
-        }
+            phone: this.state.guardianPhone,
+        };
 
         let selectedClass = {};
         if (this.state.selectedClassId) {
@@ -151,7 +153,7 @@ export default class RegisterPage extends React.Component {
             <div id="view-register">
                 <div className="window">
                     <div className={"scrollable " + sectionClass}>
-                        <RegisterSectionSelect 
+                        <RegisterSectionSelect
                             onChangeSection={this.changeSection}
                             onChangeStateValue={this.changeStateValue}
                             afhId={this.state.selectedAfhId}
@@ -164,19 +166,19 @@ export default class RegisterPage extends React.Component {
                             semesterMap={this.state.semesterMap}
                             locationMap={this.state.locationMap}
                         />
-                        <RegisterSectionFormStudent 
+                        <RegisterSectionFormStudent
                             onChangeSection={this.changeSection}
                             onChangeStateValue={this.changeStateValue}
                             student={studentInfo}
                             isAfh={!!this.state.selectedAfhId}
                         />
-                        <RegisterSectionFormGuardian 
+                        <RegisterSectionFormGuardian
                             onChangeSection={this.changeSection}
                             onChangeStateValue={this.changeStateValue}
                             guardian={guardianInfo}
                             studentEmail={studentInfo.email}
                         />
-                        <RegisterSectionConfirm 
+                        <RegisterSectionConfirm
                             onChangeSection={this.changeSection}
                             student={studentInfo}
                             guardian={guardianInfo}
@@ -190,11 +192,12 @@ export default class RegisterPage extends React.Component {
                             onChangeSection={this.changeSection}
                             selectedAfh={selectedAfh}
                             selectedClass={selectedClass}
-                            />
+                        />
                     </div>
                 </div>
                 <p className="register-footer">
-                    If you have any questions, please email us at<br/>
+                    If you have any questions, please email us at
+                    <br />
                     <b>andymathnavigator@gmail.com</b>.
                 </p>
             </div>

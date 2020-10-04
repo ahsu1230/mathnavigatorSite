@@ -13,7 +13,7 @@ export class RegisterSectionBase extends React.Component {
         if (this.props.nextAllowed) {
             this.props.onChangeSection(this.props.next);
         }
-    }
+    };
 
     renderButton = () => {
         const next = this.props.next;
@@ -21,7 +21,9 @@ export class RegisterSectionBase extends React.Component {
 
         if (this.props.sectionName == "confirm") {
             return (
-                <button className="next confirm" onClick={this.onClickNext}>Confirm</button>
+                <button className="next confirm" onClick={this.onClickNext}>
+                    Confirm
+                </button>
             );
         } else if (next && nextAllowed) {
             return (
@@ -30,25 +32,34 @@ export class RegisterSectionBase extends React.Component {
                 </button>
             );
         } else {
-            return (
-                <div></div>
-            );
+            return <div></div>;
         }
-    }
+    };
 
     render() {
         const sectionName = this.props.sectionName;
         const active = this.props.index == this.props.currentIndex;
         return (
-            <section className={"register-section " + sectionName + (active ? " active" : "")}>
+            <section
+                className={
+                    "register-section " +
+                    sectionName +
+                    (active ? " active" : "")
+                }>
                 <h1>{this.props.title}</h1>
                 <div className="content-wrapper">{this.props.content}</div>
                 <div className="buttons-footer">
-                    { this.props.prev ? (
-                        <button className="back" 
-                            onClick={() => this.props.onChangeSection(this.props.prev)}>
-                                Back
-                        </button>) : <div></div> }
+                    {this.props.prev ? (
+                        <button
+                            className="back"
+                            onClick={() =>
+                                this.props.onChangeSection(this.props.prev)
+                            }>
+                            Back
+                        </button>
+                    ) : (
+                        <div></div>
+                    )}
                     {this.renderButton()}
                 </div>
             </section>

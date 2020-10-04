@@ -9,6 +9,7 @@
     box-sizing: border-box
     border-radius: 8px
     border: 1px solid $colorBlackLight
+    overflow: hidden
 
     &.active
         border: 2px solid $colorTurquoiseLight
@@ -56,6 +57,10 @@
         &.active
             background-color: $colorTurquoiseLight
 
+    p
+        max-width: $spacing48x
+        margin-bottom: 0
+
 @media screen and (max-width: $containerWidthPxMonitor)
     #view-register .sticky
         position: fixed
@@ -69,14 +74,5 @@
         background-color: $colorWhite
         box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.3)
 
-        // background-color: $colorTurquoiseDark
-        // color: $colorWhite
-
         h5
             color: $colorTurquoise
-
-        // .step-container.active 
-        //     color: $colorTurquoiseLight
-            
-        //     .icon-container
-        //         background-color: $colorTurquoiseLight
