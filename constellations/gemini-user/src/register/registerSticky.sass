@@ -1,0 +1,56 @@
+@import "../utils/_constants.sass"
+
+#view-register .sticky
+    position: sticky
+    top: 0
+    min-width: $spacing48x
+    margin-left: $spacing24x
+    padding: $spacing4x
+    box-sizing: border-box
+    border-radius: 8px
+    border: 1px solid $colorBlackLight
+
+    &.active
+        border: 2px solid $colorTurquoiseLight
+
+    h5
+        margin: 0
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        font-weight: 400
+        color: $colorGrayDark
+
+    .step-container
+        display: flex
+        flex-direction: row
+        justify-content: start
+        align-items: center
+        margin: $spacing2x 0
+
+        .icon-container
+            width: 24px
+            height: 24px
+            margin-right: $spacing2x
+            border-radius: 100%
+            background-color: $colorGrayMed
+
+            img
+                position: relative
+                top: calc(50% - 1px)
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 14px
+
+        &.active
+            color: $colorTurquoise
+            .icon-container
+                background-color: $colorTurquoiseLight
+                
+
+    button
+        width: 100%
+        border-radius: 8px
+        background-color: $colorGrayMed
+
+        &.active
+            background-color: $colorTurquoiseLight

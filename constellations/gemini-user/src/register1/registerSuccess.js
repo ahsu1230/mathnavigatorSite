@@ -8,7 +8,6 @@ import { RegisterSectionBase } from "./registerBase.js";
 export default class RegisterSectionSuccess extends React.Component {
     renderContent = () => {
         const wasClass = !isEmpty(this.props.selectedClass);
-        const wasAfh = !isEmpty(this.props.selectedAfh);
 
         let linkRestart = (<div></div>);
         let linkBack = (<div></div>);

@@ -10,7 +10,6 @@ import React from "react";
  * - className - class name of component
  * - value - value of input field
  * - placeholder - placeholder text for input field
- * - isTextArea - will use a textarea element instead of input
  * - onChangeCallback - onChange function for input
  * - validators - an array of objects
  * i.e.
@@ -45,17 +44,12 @@ export default class RegisterInput extends React.Component {
             <div className={"register-input " + this.props.className}>
                 <h3>{this.props.title}</h3>
                 {description}
-                { this.props.isTextArea ? 
-                    (<textarea
-                        value={this.props.value}
-                        placeholder={this.props.placeholder}
-                        onChange={(e) => this.props.onChangeCallback(e)}/>) : 
-                    (<input
-                        type="text"
-                        value={this.props.value}
-                        placeholder={this.props.placeholder}
-                        onChange={(e) => this.props.onChangeCallback(e)}/>)
-                }
+                <input
+                    type="text"
+                    value={this.props.value}
+                    placeholder={this.props.placeholder}
+                    onChange={(e) => this.props.onChangeCallback(e)}
+                />
                 {displayMessage}
             </div>
         );

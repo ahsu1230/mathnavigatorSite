@@ -5,23 +5,21 @@ import axios from "axios";
 import API from "../utils/api.js";
 import { keyBy } from "lodash";
 import { parseQueryParams } from "../utils/utils.js";
-import RegisterSectionSelect from "./registerSelect.js";
-import RegisterSectionFormStudent from "./registerFormStudent.js";
-import RegisterSectionFormGuardian from "./registerFormGuardian.js";
-import RegisterSectionConfirm from "./registerConfirm.js";
-import RegisterSectionSuccess from "./registerSuccess.js";
-import { 
-    REGISTER_SECTION_SELECT,
-    REGISTER_SECTION_FORM_STUDENT,
-    REGISTER_SECTION_FORM_GUARDIAN,
-    REGISTER_SECTION_CONFIRM,
-    REGISTER_SECTION_SUCCESS
-} from "./registerBase.js";
+import RegisterSticky from "./registerSticky.js";
+import RegisterSelectClass from "./registerClass.js";
+import RegisterSelectAfh from "./registerAfh.js";
+import { RegisterFormStudent, RegisterFormGuardian} from "./registerForms.js";
+import { validateEmail, validatePhone } from "../utils/validators.js";
+import { isFullClass } from "../utils/classUtils.js";
+
+const CHOICE_NONE = "";
+const CHOICE_CLASS = "class";
+const CHOICE_AFH = "afh";
 
 export default class RegisterPage extends React.Component {
     state = {
         location: {},
-        currentSection: REGISTER_SECTION_SELECT,
+        choice: CHOICE_CLASS,
         selectedAfhId: null,
         selectedClassId: null,
         
@@ -36,6 +34,7 @@ export default class RegisterPage extends React.Component {
         guardianLastName: "",
         guardianEmail: "",
         guardianPhone: "",
+        guardianAdditionalInfo: "",
 
         allAFHs: [],
         afhMap: {},
@@ -68,9 +67,6 @@ export default class RegisterPage extends React.Component {
                     const allLocations = responses[4].data;
 
                     let queries = parseQueryParams(this.props.history.location.search);
-                    console.log(JSON.stringify(queries));
-                    console.log(JSON.stringify(queries["afhId"]));
-                    console.log(JSON.stringify(queries["classId"]));
                     this.setState({
                         selectedAfhId: queries["afhId"] || null,
                         selectedClassId: queries["classId"] || null,
@@ -91,39 +87,40 @@ export default class RegisterPage extends React.Component {
     componentWillUnmount() {
     }
 
-    changeSection = (section) => {
-        this.setState({ currentSection: section });
-    }
-
     changeStateValue = (stateName, value) => {
         this.setState({
             [stateName]: value
         });
     }
 
-    getSectionClass = () => {
-        let sectionClass = "";
-        switch (this.state.currentSection) {
-            case REGISTER_SECTION_FORM_STUDENT:
-                sectionClass = "shift1";
-                break;
-            case REGISTER_SECTION_FORM_GUARDIAN:
-                sectionClass = "shift2";
-                break;
-            case REGISTER_SECTION_CONFIRM:
-                sectionClass = "shift3";
-                break;
-            case REGISTER_SECTION_SUCCESS:
-                sectionClass = "shift4";
-                break;
-            default:
-                sectionClass = "";
-        }
-        return sectionClass;
+    isClassValid = () => {
+        const classId = this.state.selectedClassId;
+        return classId && !isFullClass(this.state.classMap[classId]);
+    }
+
+    isAfhValid = () => {
+        return !!this.state.selectedAfhId;
+    }
+
+    isStudentInfoValid = () => {
+        return this.state.studentFirstName 
+            && this.state.studentLastName
+            && validateEmail(this.state.studentEmail)
+            && this.state.studentSchool
+            && this.state.studentGraduationYear > 2019
+            && this.state.studentGraduationYear < 2030
+            && this.state.studentGrade > 5
+            && this.state.studentGrade < 13;
+    }
+
+    isGuardianInfoValid = () => {
+        return this.state.guardianFirstName 
+            && this.state.guardianLastName
+            && validateEmail(this.state.guardianEmail)
+            && validatePhone(this.state.guardianPhone);
     }
 
     render() {
-        const sectionClass = this.getSectionClass();
         const studentInfo = {
             firstName: this.state.studentFirstName,
             lastName: this.state.studentLastName,
@@ -136,67 +133,79 @@ export default class RegisterPage extends React.Component {
             firstName: this.state.guardianFirstName,
             lastName: this.state.guardianLastName,
             email: this.state.guardianEmail,
-            phone: this.state.guardianPhone
-        }
-
-        let selectedClass = {};
-        if (this.state.selectedClassId) {
-            selectedClass = this.state.classMap[this.state.selectedClassId];
-        }
-        let selectedAfh = undefined;
-        if (this.state.selectedAfhId) {
-            selectedAfh = this.state.afhMap[this.state.selectedAfhId];
+            phone: this.state.guardianPhone,
+            additionalInfo: this.state.guardianAdditionalInfo
         }
         return (
             <div id="view-register">
-                <div className="window">
-                    <div className={"scrollable " + sectionClass}>
-                        <RegisterSectionSelect 
-                            onChangeSection={this.changeSection}
-                            onChangeStateValue={this.changeStateValue}
-                            afhId={this.state.selectedAfhId}
-                            afhs={this.state.allAFHs}
-                            afhMap={this.state.afhMap}
-                            classId={this.state.selectedClassId}
-                            classes={this.state.allClasses}
-                            classMap={this.state.classMap}
-                            programMap={this.state.programMap}
-                            semesterMap={this.state.semesterMap}
-                            locationMap={this.state.locationMap}
-                        />
-                        <RegisterSectionFormStudent 
-                            onChangeSection={this.changeSection}
-                            onChangeStateValue={this.changeStateValue}
-                            student={studentInfo}
-                            isAfh={!!this.state.selectedAfhId}
-                        />
-                        <RegisterSectionFormGuardian 
-                            onChangeSection={this.changeSection}
-                            onChangeStateValue={this.changeStateValue}
-                            guardian={guardianInfo}
-                            studentEmail={studentInfo.email}
-                        />
-                        <RegisterSectionConfirm 
-                            onChangeSection={this.changeSection}
-                            student={studentInfo}
-                            guardian={guardianInfo}
-                            selectedAfh={selectedAfh}
-                            selectedClass={selectedClass}
-                            programMap={this.state.programMap}
-                            semesterMap={this.state.semesterMap}
-                            locationMap={this.state.locationMap}
-                        />
-                        <RegisterSectionSuccess
-                            onChangeSection={this.changeSection}
-                            selectedAfh={selectedAfh}
-                            selectedClass={selectedClass}
-                            />
+                <h1>Registration</h1>
+                <div className="intro-wrapper">
+                    <div>
+                        <p>
+                            Are you enrolling into a class or attending an ask-for-help session? 
+                            Ask-for-Help sessions are only for students who are already enrolled into 
+                            one of our classes.<br/><br/>
+                            You will be asked to fill out some information about yourself.
+                            We use this information to contact you about important class updates,
+                            so please use a valid email you frequently use.
+                            This information is used for <i>contacting purposes only</i> and will NOT be shared with anyone.
+                        </p>
+                    </div>
+                    <div className="choose-btns">
+                        <button className="class-btn" onClick={() => this.setState({choice: CHOICE_CLASS})}>
+                            Enroll into a class
+                        </button>
+                        <button className="afh-btn" onClick={() => this.setState({choice: CHOICE_AFH})}>
+                            Ask For Help
+                        </button>
                     </div>
                 </div>
-                <p className="register-footer">
-                    If you have any questions, please email us at<br/>
-                    <b>andymathnavigator@gmail.com</b>.
-                </p>
+                {
+                    this.state.choice != CHOICE_NONE && 
+                    <div id="form-container">
+                        <div className="register-form">
+                            
+                            {this.state.choice == CHOICE_CLASS && 
+                                <RegisterSelectClass
+                                    onChangeStateValue={this.changeStateValue}
+                                    classId={this.state.selectedClassId}
+                                    classes={this.state.allClasses}
+                                    classMap={this.state.classMap}
+                                    programMap={this.state.programMap}
+                                    semesterMap={this.state.semesterMap}
+                                    locationMap={this.state.locationMap}/>}
+                            
+                            {this.state.choice == CHOICE_AFH && 
+                                <RegisterSelectAfh
+                                    onChangeStateValue={this.changeStateValue}
+                                    afhId={this.state.selectedAfhId}
+                                    afhs={this.state.allAFHs}
+                                    afhMap={this.state.afhMap}
+                                    locationMap={this.state.locationMap}/>}
+                            
+                            <RegisterFormStudent
+                                onChangeStateValue={this.changeStateValue}
+                                student={studentInfo}
+                                valid={this.isStudentInfoValid()}
+                                />
+                            
+                            {/* No Guardian section if selecting AFH */}
+                            {this.state.choice == CHOICE_CLASS && 
+                                <RegisterFormGuardian
+                                    onChangeStateValue={this.changeStateValue}
+                                    guardian={guardianInfo}
+                                    valid={this.isGuardianInfoValid()}
+                                    />}
+                            
+                        </div>
+                        <RegisterSticky
+                            choice={this.state.choice}
+                            validClass={this.isClassValid()}
+                            validAfh={this.isAfhValid()}
+                            validStudent={this.isStudentInfoValid()}
+                            validGuardian={this.isGuardianInfoValid()}/>
+                    </div>
+                }
             </div>
         );
     }

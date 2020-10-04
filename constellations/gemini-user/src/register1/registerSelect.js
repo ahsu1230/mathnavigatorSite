@@ -64,8 +64,6 @@ export default class RegisterSectionSelect extends React.Component {
             <RegisterSectionBase
                 sectionName="select"
                 title={"Registration"}
-                next={REGISTER_SECTION_FORM_STUDENT}
-                nextAllowed={this.props.afhId || (this.props.classId && !isFullClass(this.props.classMap[this.props.classId]))}
                 content={this.renderContent()}
                 onChangeSection={this.props.onChangeSection}
             />

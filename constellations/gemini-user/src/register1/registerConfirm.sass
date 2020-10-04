@@ -1,8 +1,9 @@
 @import "../utils/_constants.sass"
 
 #view-register .register-section.confirm
-    .buttons,
+    .buttons-footer,
     .content
+        position: relative
         max-width: $containerWidthPxTablet
 
     p.review
@@ -31,4 +32,23 @@
 
     p
         margin: $spacing1x 0
+
+    .loading-bar
+        position: absolute
+        bottom: 0
+        right: 0
+        width: 2px
+        border-bottom: 2px solid $colorTurquoiseLight
+        transition: 0.1s linear all
+
+        &.loading
+            width: 60%
+        &.done
+            width: 100%
+
+        img
+            position: absolute
+            bottom: 4px
+            right: 0
+            width: 20px
             

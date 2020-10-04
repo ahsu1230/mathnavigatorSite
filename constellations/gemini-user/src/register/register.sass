@@ -5,74 +5,158 @@
     max-width: $containerWidthPxFull
     margin: $spacing12x auto $spacing24x
 
-    .window
-        overflow: hidden
+    h1
+        margin-bottom: $spacing4x
 
-    .scrollable
+    .intro-wrapper
         display: flex
-        flex-direction: row
-        flex-wrap: nowrap
-        position: relative
-        left: 0
-        width: 500%
-        transition: 0.15s linear all
+        flex-container: row
+        justify-content: space-between
+        align-items: start
+        margin-bottom: $spacing8x
 
-        &.shift1
-            left: -100%
-        &.shift2
-            left: -200%
-        &.shift3
-            left: -300%
-        &.shift4
-            left: -400%
+        p
+            max-width: $spacing72x
+            margin: 0
 
-    .register-section
-        display: inline-block
-        min-height: 480px
-        width: 100%
-        opacity: 0.0
-        visibility: hidden
-        transition: 0.05s linear all
-
-        &.active
-            opacity: 1.0
-            visibility: visible
-
-        p.error
-            color: $colorRed
-
-        .buttons-footer
+        .choose-btns
             display: flex
-            flex-direction: row
-            justify-content: space-between
-            align-items: center
-            margin-top: $spacing6x
+            flex-direction: column
+            justify-content: start
+            align-items: flex-end
 
             button
-                padding: 4px 12px
+                margin-bottom: $spacing2x
                 border-radius: 8px
 
-                &.next
-                    background-color: $colorGrayLight
+                &.afh-btn
+                    border: 1px solid $colorTurquoise
+                    background-color: $colorWhite
+                    color: $colorTurquoise
 
-                    &.allowed
-                        background-color: $colorTurquoise
+#view-register #form-container
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: start
 
-                &.back
-                    background-color: $colorGrayDark
+    .register-form
+        width: 100%
 
-                &.confirm
-                    margin: 0
-                    background-color: $colorTurquoiseLight
+    section
+        margin-bottom: $spacing4x
+        padding-bottom: $spacing3x
+        border-bottom: 1px solid $colorGrayLight
 
-    .register-footer
-        margin-top: $spacing16x
+    .header-wrapper
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        margin-bottom: $spacing1x
 
-@media screen and (max-width: $containerWidthPxTablet)
-    #view-register .register-section
-        h1
-            width: unset
+        .title
+            display: flex
+            flex-direction: row
+            justify-content: start
+            align-items: center
+
+        &.active
+            .step-wrapper
+                background-color: $colorTurquoiseLight
+            h2
+                color: $colorTurquoiseLight
+
+        .step-wrapper
+            width: 28px
+            height: 28px
+            padding-top: 5px
+            padding-left: 2px
+            margin-right: $spacing1x
+            border-radius: 50%
+            box-sizing: border-box
             text-align: center
+            background-color: $colorGrayMed
+            color: $colorWhite
 
-        .buttons-footer button
-            padding: 8px 24px
+        h2
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            color: $colorGrayMed
+
+        img
+            width: 18px
+
+    p
+        margin: $spacing2x 0
+
+        &.error
+            color: $colorRed
+
+    select
+        margin-top: $spacing1x
+        padding: 4px 8px
+        border: 1px solid $colorTurquoiseLight
+        border-radius: 4px
+
+        &:hover
+        &:active
+        &:focus
+            box-shadow: 0 0 0 2px $colorTurquoiseLight inset
+
+    .selection
+        margin-top: $spacing2x
+
+#view-register #form-container section.class,
+#view-register #form-container section.afh
+    h3
+        margin: $spacing2x 0 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: 500
+        color: $colorTurquoiseDark
+    h4
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        font-weight: 400
+        color: $colorGrayMed
+
+    p
+        margin: $spacing1x 0
+
+#view-register #form-container section.register-form
+    p.instructions
+        line-height: 18px
+        font-size: 14px
+        color: $colorGrayMed
+
+    .names
+        display: flex
+        flex-direction: row
+        justify-content: start
+
+        .register-input:first-child
+            margin-right: $spacing4x
+
+    .grades
+        display: flex
+        flex-direction: row
+        justify-content: start
+
+        .register-input:first-child
+            margin-right: $spacing4x
+
+    .register-input.email input
+        width: $spacing32x
+    
+    .register-input.phone input
+        width: $spacing24x
+    
+    .register-input.school input
+        width: $spacing32x
+
+    .register-input.grade input
+        width: $spacing6x
+    
+    .register-input.grad-year input
+        width: $spacing8x

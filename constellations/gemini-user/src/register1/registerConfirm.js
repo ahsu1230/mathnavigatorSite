@@ -10,6 +10,7 @@ import {
     REGISTER_SECTION_SUCCESS
 } from "./registerBase.js";
 import { capitalizeWord } from "../utils/utils.js";
+import srcCheck from "../../assets/checkmark_light_blue.svg";
 
 export default class RegisterSectionConfirm extends React.Component {
     renderContent = () => {
@@ -36,6 +37,9 @@ export default class RegisterSectionConfirm extends React.Component {
                 <SectionGuardian 
                     onEdit={() => this.props.onChangeSection(REGISTER_SECTION_FORM_GUARDIAN)}
                     guardian={this.props.guardian}/>
+                <div className="loading-bar">
+                    <img src={srcCheck}/>
+                </div>
             </div>
         );
     }
@@ -45,9 +49,7 @@ export default class RegisterSectionConfirm extends React.Component {
             <RegisterSectionBase
                 sectionName="confirm"
                 title={"Confirm Registration"}
-                nextAllowed={true}
-                next={REGISTER_SECTION_SUCCESS}
-                prev={REGISTER_SECTION_FORM_GUARDIAN}
+                prev={this.props.selectedAfh ? REGISTER_SECTION_FORM_STUDENT : REGISTER_SECTION_FORM_GUARDIAN}
                 content={this.renderContent()}
                 onChangeSection={this.props.onChangeSection}
             />
