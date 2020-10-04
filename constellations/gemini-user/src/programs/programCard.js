@@ -4,6 +4,7 @@ import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 import { capitalizeWord } from "../utils/utils.js";
+import { getImageForProgramClass } from "./programImages.js";
 
 import srcPoint from "../../assets/point_right_white.svg";
 import srcStar from "../../assets/star_green.svg";
@@ -69,17 +70,17 @@ export class ProgramCard extends React.Component {
     render = () => {
         const program = this.props.program || {};
         const classes = this.props.classes || [];
-        const imgSrcList = this.props.imgSrcList || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
         const classesString =
             classes.length == 1 ? "1 class" : classes.length + " classes";
         const featured = this.renderFeatured();
+        const cardImgSrc = getImageForProgramClass(program);
 
         return (
             <div className="program-card-container">
                 <div className="program-card" onClick={this.handleClick}>
                     <div className="card-top">
-                        <img src={imgSrcList[this.props.imgSrcIndex]} />
+                        <img src={cardImgSrc} />
                     </div>
                     <div className="card-title">
                         <h2>{program.title}</h2>
