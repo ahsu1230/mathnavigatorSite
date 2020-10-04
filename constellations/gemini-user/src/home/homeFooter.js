@@ -9,7 +9,7 @@ export default class HomeSectionFooter extends React.Component {
             <div className="section home-footer">
                 <div className="content">
                     <h1>Try your first class with Math Navigator today!</h1>
-                    <Link to="/enroll">
+                    <Link to="/register">
                         <button>Get Started</button>
                     </Link>
                 </div>

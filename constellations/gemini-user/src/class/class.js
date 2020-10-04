@@ -185,7 +185,7 @@ export class ClassPage extends React.Component {
                 "Unfortunately, this class is full. You will not be able to enroll into this class. " +
                 "Please consider enrolling into a different class.";
         } else {
-            url = "/contact?interest=" + classObj.classId;
+            url = "/register?classId=" + classObj.classId;
             message =
                 "If you are interested in this course, please click on Enroll. " +
                 "You will be asked to fill out some contact information. " +

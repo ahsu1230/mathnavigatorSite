@@ -131,7 +131,7 @@ class AfhSessionRow extends React.Component {
                         endsAt={row.endsAt}
                     />
                     <LocationAddress locationId={row.locationId} />
-                    <Link to="register" className="link-wrapper">
+                    <Link to={"/register?afhId=" + row.id} className="link-wrapper">
                         Register to attend
                         <img src={srcPoint} />
                     </Link>

@@ -43,11 +43,11 @@ const mainLinks = [
         name: "Register",
         url: "/register",
     },
-    {
-        id: "account",
-        name: "Account",
-        url: "/account",
-    },
+    // {
+    //     id: "account",
+    //     name: "Account",
+    //     url: "/account",
+    // },
 ];
 const allLinks = concat(mainLinks, subLinksPrograms, subLinksAchieve);
 

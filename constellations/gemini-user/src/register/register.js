@@ -22,6 +22,7 @@ export default class RegisterPage extends React.Component {
         choice: CHOICE_NONE,
         selectedAfhId: null,
         selectedClassId: null,
+        selectedFromQuery: false,
         confirmed: false,
 
         studentFirstName: "",
@@ -70,9 +71,27 @@ export default class RegisterPage extends React.Component {
                     let queries = parseQueryParams(
                         this.props.history.location.search
                     );
+
+                    let selectedFromQuery = false;
+                    let selectedAfhId;
+                    let selectedClassId;
+                    let choice = CHOICE_NONE;
+                    if (queries["afhId"]) {
+                        selectedAfhId = queries["afhId"] || null;
+                        choice = CHOICE_AFH;
+                        selectedFromQuery = true;
+                    }
+                    if (queries["classId"]) {
+                        selectedClassId = queries["classId"] || null;
+                        choice = CHOICE_CLASS;
+                        selectedFromQuery = true;
+                    }
+
                     this.setState({
-                        selectedAfhId: queries["afhId"] || null,
-                        selectedClassId: queries["classId"] || null,
+                        choice: choice,
+                        selectedFromQuery: selectedFromQuery,
+                        selectedAfhId: selectedAfhId,
+                        selectedClassId: selectedClassId,
                         allClasses: allClasses,
                         classMap: keyBy(allClasses, "classId"),
                         allAFHs: allAFHs,
@@ -84,7 +103,7 @@ export default class RegisterPage extends React.Component {
                 })
             )
             .catch((err) =>
-                console.log("Error: could not fetch class: " + err)
+                console.log("Error: could not fetch data from server: " + err)
             );
     };
 
@@ -153,14 +172,25 @@ export default class RegisterPage extends React.Component {
                 <h1>Registration</h1>
                 <div className="intro-wrapper">
                     <div>
-                        <p>
-                            Are you enrolling into a class or attending an
-                            ask-for-help session? Ask-for-Help sessions are only
-                            for students who are already enrolled into one of
-                            our classes.
-                            <br />
-                            <br />
-                            You will be asked to fill out some information about
+                        {
+                            this.state.selectedFromQuery && this.state.choice == CHOICE_AFH &&
+                            <p>You have selected to register for an Ask-for-Help session.</p>
+                        }
+                        {
+                            this.state.selectedFromQuery && this.state.choice == CHOICE_CLASS &&
+                            <p>You have selected to enroll into a Math Navigator class.</p>
+                        }
+                        {
+                            !this.state.selectedFromQuery && 
+                            <p>
+                                Are you enrolling into a class or attending an
+                                ask-for-help session? Ask-for-Help sessions are only
+                                for students who are already enrolled into one of
+                                our classes.
+                            </p>
+                        }
+                        <p className="instruction">
+                            Please fill out the following information about
                             yourself. We use this information to contact you
                             about important class updates, so please use a valid
                             email you frequently use. This information is used
@@ -168,32 +198,35 @@ export default class RegisterPage extends React.Component {
                             shared with anyone.
                         </p>
                     </div>
-                    <div className="choose-btns">
-                        <button
-                            className={
-                                "class-btn" +
-                                (this.state.choice == CHOICE_CLASS
-                                    ? " active"
-                                    : "")
-                            }
-                            onClick={() =>
-                                this.setState({ choice: CHOICE_CLASS })
-                            }>
-                            Enroll into a class
-                        </button>
-                        <button
-                            className={
-                                "afh-btn" +
-                                (this.state.choice == CHOICE_AFH
-                                    ? " active"
-                                    : "")
-                            }
-                            onClick={() =>
-                                this.setState({ choice: CHOICE_AFH })
-                            }>
-                            Ask For Help
-                        </button>
-                    </div>
+                    {
+                        !this.state.selectedFromQuery &&
+                        <div className="choose-btns">
+                            <button
+                                className={
+                                    "class-btn" +
+                                    (this.state.choice == CHOICE_CLASS
+                                        ? " active"
+                                        : "")
+                                }
+                                onClick={() =>
+                                    this.setState({ choice: CHOICE_CLASS })
+                                }>
+                                Enroll into a class
+                            </button>
+                            <button
+                                className={
+                                    "afh-btn" +
+                                    (this.state.choice == CHOICE_AFH
+                                        ? " active"
+                                        : "")
+                                }
+                                onClick={() =>
+                                    this.setState({ choice: CHOICE_AFH })
+                                }>
+                                Ask For Help
+                            </button>
+                        </div>
+                    }
                 </div>
                 {this.state.choice != CHOICE_NONE && (
                     <div id="form-container">
