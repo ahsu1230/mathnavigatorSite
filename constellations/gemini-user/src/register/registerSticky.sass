@@ -4,7 +4,7 @@
     position: sticky
     top: 0
     min-width: $spacing48x
-    margin-left: $spacing24x
+    margin-left: $spacing8x
     padding: $spacing4x
     box-sizing: border-box
     border-radius: 8px
@@ -49,8 +49,34 @@
 
     button
         width: 100%
+        max-width: $spacing48x
         border-radius: 8px
         background-color: $colorGrayMed
 
         &.active
             background-color: $colorTurquoiseLight
+
+@media screen and (max-width: $containerWidthPxMonitor)
+    #view-register .sticky
+        position: fixed
+        top: unset
+        left: 0
+        bottom: 0px
+        margin: 0
+        width: 100%
+        border-radius: 0px
+        border: none
+        background-color: $colorWhite
+        box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.3)
+
+        // background-color: $colorTurquoiseDark
+        // color: $colorWhite
+
+        h5
+            color: $colorTurquoise
+
+        // .step-container.active 
+        //     color: $colorTurquoiseLight
+            
+        //     .icon-container
+        //         background-color: $colorTurquoiseLight

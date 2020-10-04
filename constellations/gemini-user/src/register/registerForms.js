@@ -49,7 +49,7 @@ export class RegisterFormStudent extends React.Component {
                     onChangeCallback={(e) => this.props.onChangeStateValue("studentEmail", e.target.value)}
                     validators={[
                         { 
-                            validate: () => { return this.props.student.email != "" && validateEmail(this.props.student.email)},
+                            validate: () => { return validateEmail(this.props.student.email)},
                             message: "You must input a valid email." 
                         }
                     ]}
@@ -123,6 +123,15 @@ export class RegisterFormGuardian extends React.Component {
                         value={this.props.guardian.firstName}
                         placeholder="i.e. Alice"
                         onChangeCallback={(e) => this.props.onChangeStateValue("guardianFirstName", e.target.value)}
+                        validators={[
+                            {
+                                validate: () => { 
+                                    return this.props.student.firstName != this.props.guardian.firstName || 
+                                        this.props.student.lastName != this.props.guardian.lastName;
+                                },
+                                message: "Your name must be different from the student's name."
+                            }
+                        ]}
                         />
                     <RegisterInput
                         title="Last Name"
@@ -141,13 +150,13 @@ export class RegisterFormGuardian extends React.Component {
                         { 
                             validate: () => { 
                                 const email = this.props.guardian.email;
-                                return email != "" && validateEmail(email);
+                                return validateEmail(email);
                             },
                             message: "You must input a valid email." 
                         },
                         {
                             validate: () => { 
-                                const studentEmail = this.props.studentEmail;
+                                const studentEmail = this.props.student.email;
                                 const email = this.props.guardian.email;
                                 return email != "" && email != studentEmail;
                             },

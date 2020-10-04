@@ -23,6 +23,7 @@ import { HomePage } from "../home/home.js";
 import { InternshipPage } from "../internship/internship.js";
 import { ProgramsPage } from "../programs/programs.js";
 import RegisterPage from "../register/register.js";
+import RegisterSuccessPage from "../register/registerSuccess.js";
 import Footer from "../footer/footer.js";
 
 const Account = () => <AccountPage />;
@@ -35,6 +36,8 @@ const Home = () => <HomePage />;
 const Internship = () => <InternshipPage />;
 const Programs = () => <ProgramsPage />;
 const Register = withRouter(RegisterPage);
+const RegisterSuccessAfh = () => <RegisterSuccessPage registered="afh"/>;
+const RegisterSuccessClass = () => <RegisterSuccessPage registered="class"/>;
 
 class AppContainer extends React.Component {
     render() {
@@ -71,6 +74,8 @@ class App extends React.Component {
                     <Route path="/internship" component={Internship} />
                     <Route path="/programs" component={Programs} />
                     <Route path="/register" component={Register} />
+                    <Route path="/register-success/afh" component={RegisterSuccessAfh}/>
+                    <Route path="/register-success/class" component={RegisterSuccessClass}/>
                     <Route
                         path="/student-achievements"
                         component={Achievements}

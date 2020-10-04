@@ -19,7 +19,7 @@ const CHOICE_AFH = "afh";
 export default class RegisterPage extends React.Component {
     state = {
         location: {},
-        choice: CHOICE_CLASS,
+        choice: CHOICE_NONE,
         selectedAfhId: null,
         selectedClassId: null,
         
@@ -116,7 +116,9 @@ export default class RegisterPage extends React.Component {
     isGuardianInfoValid = () => {
         return this.state.guardianFirstName 
             && this.state.guardianLastName
+            && !(this.state.guardianFirstName == this.state.studentFirstName && this.state.guardianLastName == this.state.studentLastName)
             && validateEmail(this.state.guardianEmail)
+            && this.state.studentEmail != this.state.guardianEmail
             && validatePhone(this.state.guardianPhone);
     }
 
@@ -152,10 +154,12 @@ export default class RegisterPage extends React.Component {
                         </p>
                     </div>
                     <div className="choose-btns">
-                        <button className="class-btn" onClick={() => this.setState({choice: CHOICE_CLASS})}>
+                        <button className={"class-btn" + (this.state.choice == CHOICE_CLASS ? " active" : "")} 
+                                onClick={() => this.setState({choice: CHOICE_CLASS})}>
                             Enroll into a class
                         </button>
-                        <button className="afh-btn" onClick={() => this.setState({choice: CHOICE_AFH})}>
+                        <button className={"afh-btn" + (this.state.choice == CHOICE_AFH ? " active" : "")} 
+                                onClick={() => this.setState({choice: CHOICE_AFH})}>
                             Ask For Help
                         </button>
                     </div>
@@ -193,6 +197,7 @@ export default class RegisterPage extends React.Component {
                             {this.state.choice == CHOICE_CLASS && 
                                 <RegisterFormGuardian
                                     onChangeStateValue={this.changeStateValue}
+                                    student={studentInfo}
                                     guardian={guardianInfo}
                                     valid={this.isGuardianInfoValid()}
                                     />}

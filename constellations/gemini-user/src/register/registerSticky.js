@@ -14,8 +14,13 @@ export default class RegisterSticky extends React.Component {
     }
 
     onConfirm = () => {
-        if (this.canConfirm()) {
-            window.location = "/register-success";
+        // const confirmed = this.canConfirm();
+        const confirmed = true;
+        if (confirmed && this.props.choice == "class") {
+            window.location.hash = "/register-success/class";
+            return;
+        } else if (confirmed && this.props.choice == "afh") {
+            window.location.hash = "/register-success/afh";
             return;
         }
     }
@@ -47,6 +52,7 @@ export default class RegisterSticky extends React.Component {
                 
                 <button className={canConfirm ? "active" : ""} 
                         onClick={this.onConfirm}>
+                    <div className="highlight"></div>
                     Confirm Registration
                 </button>
 
@@ -54,7 +60,7 @@ export default class RegisterSticky extends React.Component {
                     canConfirm &&
                     <p>
                         Thank you for correctly filling out your information! 
-                        Press <b>Confirm</b> to submit your request!
+                        Press <b>Confirm</b> to submit your request.
                     </p>
                 }
             </div>

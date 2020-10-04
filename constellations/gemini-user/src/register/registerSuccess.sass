@@ -1,0 +1,86 @@
+@import "../utils/_constants.sass"
+
+#view-register-success
+    width: $containerWidthPct
+    max-width: $containerWidthPxFull
+    margin: $spacing12x auto $spacing24x
+
+    @media screen and (max-width: $containerWidthPxTablet)
+        width: 80%
+        text-align: center
+
+    .header-wrapper
+        display: flex
+        flex-direction: row
+        justify-content: start
+        align-items: center
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            flex-direction: column
+            justify-content: start
+            align-items: center
+
+        .icon-wrapper
+            width: 32px
+            height: 32px
+            margin-right: $spacing2x
+            border-radius: 50%
+            background-color: $colorTurquoiseLight
+
+            @media screen and (max-width: $containerWidthPxTablet)
+                width: 48px
+                height: 48px
+                margin-right: 0
+                margin-bottom: $spacing2x
+
+            img
+                position: relative
+                top: calc(50% - 1px)
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 24px
+
+                @media screen and (max-width: $containerWidthPxTablet)
+                    top: 8px
+                    left: 0
+                    transform: none
+                    width: 32px
+
+    p
+        max-width: $spacing64x
+
+    a
+        display: inline-block
+        padding: $spacing1x $spacing2x
+        margin-top: $spacing4x
+        margin-right: $spacing4x
+        border: 1px solid $colorTurquoise
+        border-radius: 4px
+        background-color: $colorTurquoise
+        color: $colorWhite
+
+        &:hover
+            filter: brightness(1.1)
+
+        &.link-register
+            display: block
+            padding: 0
+            margin-right: 0
+            border: none
+            border-radius: 0px
+            background-color: transparent
+            color: $colorTurquoise
+            cursor: pointer
+
+        &.link-home
+            background-color: $colorWhite
+            color: $colorTurquoise
+
+            &:hover
+                background-color: $colorTurquoise
+                color: $colorWhite
+        
+        @media screen and (max-width: $containerWidthPxTablet)
+            display: block
+            margin: 0 0 $spacing4x 0
+            text-align: center

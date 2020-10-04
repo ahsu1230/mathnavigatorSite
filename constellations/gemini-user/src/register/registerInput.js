@@ -23,6 +23,9 @@ import React from "react";
  */
 export default class RegisterInput extends React.Component {
     validateField = () => {
+        if (this.props.value == "") {
+            return "";
+        }
         const validators = this.props.validators || [];
         // find first validate function that is false
         let firstValidator = validators.find(validator => {

@@ -26,13 +26,18 @@
             align-items: flex-end
 
             button
-                margin-bottom: $spacing2x
+                width: $spacing24x
+                margin-bottom: $spacing4x
                 border-radius: 8px
+                border: 1px solid $colorTurquoise
+                background-color: $colorWhite
+                color: $colorTurquoise
 
-                &.afh-btn
-                    border: 1px solid $colorTurquoise
-                    background-color: $colorWhite
-                    color: $colorTurquoise
+                &.active
+                    background-color: $colorTurquoise
+                    color: $colorWhite
+                
+                    
 
 #view-register #form-container
     display: flex
@@ -42,6 +47,7 @@
 
     .register-form
         width: 100%
+        max-width: $spacing64x
 
     section
         margin-bottom: $spacing4x
@@ -103,9 +109,14 @@
         &:active
         &:focus
             box-shadow: 0 0 0 2px $colorTurquoiseLight inset
+            outline: none
 
     .selection
         margin-top: $spacing2x
+        padding: $spacing2x
+        box-sizing: border-box
+        border-radius: 8px
+        background-color: $colorTurquoiseDarkAlpha
 
 #view-register #form-container section.class,
 #view-register #form-container section.afh
@@ -160,3 +171,15 @@
     
     .register-input.grad-year input
         width: $spacing8x
+
+    .register-input.additional-info
+        margin-top: $spacing4x
+
+@media screen and (max-width: $containerWidthPxMonitor)
+    #view-register
+        .intro-wrapper
+            flex-direction: column
+            justify-content: space-between
+
+            .choose-btns
+                margin-top: $spacing4x
