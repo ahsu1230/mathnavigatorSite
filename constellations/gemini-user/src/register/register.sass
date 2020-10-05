@@ -37,12 +37,16 @@
                     background-color: $colorTurquoise
                     color: $colorWhite
 
-    button.submit
-        border-radius: 8px
+    .submit-bar
+        position: relative
+        height: $spacing10x
 
         @media screen and (max-width: $containerWidthPxMonitor)
             display: none
-                    
+
+        button.submit
+            width: 100%
+            border-radius: 8px    
 
 #view-register #form-container
     display: flex

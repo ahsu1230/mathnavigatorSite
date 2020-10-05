@@ -5,6 +5,12 @@ import axios from "axios";
 import API from "../utils/api.js";
 import { keyBy } from "lodash";
 import { parseQueryParams } from "../utils/urlUtils.js";
+import {
+    generateEmailMessageForClass,
+    generateEmailMessageForAfh,
+    sendEmail,
+} from "./email.js";
+import Loader from "./loader.js";
 import RegisterSticky from "./registerSticky.js";
 import RegisterSelectClass from "./registerClass.js";
 import RegisterSelectAfh from "./registerAfh.js";
@@ -23,7 +29,6 @@ export default class RegisterPage extends React.Component {
         selectedAfhId: null,
         selectedClassId: null,
         selectedFromQuery: false,
-        confirmed: false,
 
         studentFirstName: "",
         studentLastName: "",
@@ -113,6 +118,52 @@ export default class RegisterPage extends React.Component {
         this.setState({
             [stateName]: value,
         });
+    };
+
+    invokeEmail = () => {
+        const studentInfo = {
+            firstName: this.state.studentFirstName,
+            lastName: this.state.studentLastName,
+            email: this.state.studentEmail,
+            school: this.state.studentSchool,
+            grade: this.state.studentGrade,
+            graduationYear: this.state.studentGraduationYear,
+        };
+        const guardianInfo = {
+            firstName: this.state.guardianFirstName,
+            lastName: this.state.guardianLastName,
+            email: this.state.guardianEmail,
+            phone: this.state.guardianPhone,
+            additionalInfo: this.state.guardianAdditionalInfo,
+        };
+
+        let emailMessage = "";
+        if (this.state.choice == CHOICE_CLASS) {
+            emailMessage = generateEmailMessageForClass(
+                this.state.selectedClassId,
+                studentInfo,
+                guardianInfo
+            );
+        } else if (this.state.choice == CHOICE_AFH) {
+            const afhId = this.state.selectedAfhId;
+            emailMessage = generateEmailMessageForAfh(
+                afhId,
+                this.state.afhMap[afhId],
+                studentInfo
+            );
+        } else {
+            return;
+        }
+        console.log("Sending email... " + emailMessage);
+        sendEmail(
+            emailMessage,
+            () => {
+                console.log("EMAIL SUCCESS!");
+            },
+            () => {
+                console.log("EMAIL FAILED!");
+            }
+        );
     };
 
     isClassValid = () => {
@@ -272,23 +323,21 @@ export default class RegisterPage extends React.Component {
                                     valid={this.isGuardianInfoValid()}
                                 />
                             )}
+
                             {((this.isClassValid() &&
                                 this.isStudentInfoValid() &&
                                 this.isGuardianInfoValid()) ||
                                 (this.isAfhValid() &&
                                     this.isStudentInfoValid())) && (
-                                <button
-                                    className="submit"
-                                    onClick={() =>
-                                        this.setState({ confirmed: true })
-                                    }>
-                                    Confirm & Submit Registration
-                                </button>
+                                <SubmitButton
+                                    choice={this.state.choice}
+                                    invokeEmail={this.invokeEmail}
+                                />
                             )}
                         </div>
                         <RegisterSticky
                             choice={this.state.choice}
-                            triggerConfirmed={this.state.confirmed}
+                            invokeEmail={this.invokeEmail}
                             validClass={this.isClassValid()}
                             validAfh={this.isAfhValid()}
                             validStudent={this.isStudentInfoValid()}
@@ -296,6 +345,36 @@ export default class RegisterPage extends React.Component {
                         />
                     </div>
                 )}
+            </div>
+        );
+    }
+}
+
+class SubmitButton extends React.Component {
+    state = {
+        submitted: false,
+    };
+
+    onSubmit = () => {
+        // invoke email
+        this.props.invokeEmail();
+
+        // load animation
+        this.setState({ submitted: true });
+
+        // go to page (after timeout)
+        setTimeout(() => {
+            window.location.hash = "/register-success/" + this.props.choice;
+        }, 1800);
+    };
+
+    render() {
+        return (
+            <div className="submit-bar">
+                <button className="submit" onClick={this.onSubmit}>
+                    Confirm & Submit Registration
+                </button>
+                <Loader in={this.state.submitted} />
             </div>
         );
     }
