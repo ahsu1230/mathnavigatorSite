@@ -2,6 +2,7 @@
 require("./register.sass");
 import React from "react";
 import moment from "moment";
+import { createLocation } from "../utils/locationUtils.js";
 import srcCheckmark from "../../assets/checkmark_light_blue.svg";
 
 export default class RegisterSelectAfh extends React.Component {
@@ -36,19 +37,7 @@ export default class RegisterSelectAfh extends React.Component {
                     <div className="info">
                         <h3>{currentAfh.title}</h3>
                         <h4>{datetime}</h4>
-                        <p>
-                            Location: {location.title}
-                            <br />
-                            {location.street}
-                            <br />
-                            {location.city +
-                                ", " +
-                                location.state +
-                                " " +
-                                location.zipcode}
-                            <br />
-                            {location.room}
-                        </p>
+                        {createLocation(location)}
                     </div>
                 </div>
             );

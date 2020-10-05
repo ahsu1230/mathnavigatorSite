@@ -3,7 +3,6 @@ require("./registerSticky.sass");
 import React from "react";
 import { Transition } from "react-transition-group";
 
-import RegisterSelected from "./registerSelected.js";
 import srcCheckmarkWhite from "../../assets/checkmark_white.svg";
 import srcCheckmarkGreen from "../../assets/checkmark_light_blue.svg";
 export default class RegisterSticky extends React.Component {
@@ -53,7 +52,6 @@ export default class RegisterSticky extends React.Component {
         const canConfirm = this.canConfirm();
         return (
             <div className={"sticky" + (canConfirm ? " active" : "")}>
-                <RegisterSelected />
                 <h5>
                     Complete the form to submit
                     <br />

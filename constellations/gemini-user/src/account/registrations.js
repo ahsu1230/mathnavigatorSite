@@ -4,9 +4,8 @@ import React from "react";
 import API from "../utils/api.js";
 import { union } from "lodash";
 import moment from "moment";
-
+import { subjectDisplayNames } from "../utils/displayUtils.js";
 import {
-    subjectDisplayNames,
     renderMultiline,
     sortBySemester,
 } from "../utils/utils.js";

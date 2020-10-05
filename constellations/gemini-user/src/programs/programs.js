@@ -2,7 +2,6 @@
 require("./programs.sass");
 import React from "react";
 import API from "../utils/api.js";
-import { sortedSemesterInsert } from "../utils/semesterUtils.js";
 import { ProgramCard } from "./programCard.js";
 
 export class ProgramsPage extends React.Component {
@@ -18,10 +17,11 @@ export class ProgramsPage extends React.Component {
             let semesters = [];
             let programClassesMap = {};
             classesbysemesters.forEach((element) => {
-                semesters = sortedSemesterInsert(semesters, element.semester);
+                semesters.push(element.semester);
                 programClassesMap[element.semester.semesterId] =
                     element.programClasses;
             });
+            debugger;
 
             this.setState({
                 semesters: semesters,

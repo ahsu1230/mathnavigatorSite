@@ -3,7 +3,7 @@ require("./programCard.sass");
 import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
-import { capitalizeWord } from "../utils/utils.js";
+import { capitalizeWord } from "../utils/displayUtils.js";
 import { getImageForProgramClass } from "./programImages.js";
 
 import srcPoint from "../../assets/point_right_white.svg";

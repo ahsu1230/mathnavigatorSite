@@ -2,11 +2,13 @@
 require("./class.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import axios from "axios";
+import moment from "moment";
 import { isEmpty } from "lodash";
 import API from "../utils/api.js";
-import { formatCurrency, capitalizeWord } from "../utils/utils.js";
+import { getFullTitle, displayPrice } from "../utils/classUtils.js";
+import { capitalizeWord } from "../utils/displayUtils.js";
+import { createLocation } from "../utils/locationUtils.js";
 import { ClassSchedule } from "./classSchedule.js";
 import { ClassErrorPage } from "./classError.js";
 
@@ -79,10 +81,7 @@ export class ClassPage extends React.Component {
     };
 
     renderBreadcrumbs = () => {
-        const fullTitle =
-            this.state.program.title +
-            " " +
-            capitalizeWord(this.state.classObj.classKey);
+        const fullTitle = getFullTitle(this.state.program, this.state.classObj);
         return (
             <section id="breadcrumbs">
                 <div>
@@ -207,8 +206,6 @@ export class ClassPage extends React.Component {
 
         // Location information
         const location = this.state.location;
-        const address =
-            location.city + ", " + location.state + " " + location.zipcode;
 
         // Timing information
         const sessions = this.state.sessions;
@@ -227,20 +224,14 @@ export class ClassPage extends React.Component {
         }
 
         // Pricing information
-        const isLump = !!classObj.priceLumpSum;
-        const priceLabel = isLump ? "Total Price: " : "Price per session: ";
-        const price = formatCurrency(
-            isLump ? classObj.priceLumpSum : classObj.pricePerSession
-        );
+        const priceString = displayPrice(classObj);
 
         return (
             <section id="class-info">
                 <div className="block">
                     <h3 className="location">Location</h3>
                     <div id="class-location">
-                        <p>{location.title}</p>
-                        <p>{location.street}</p>
-                        <p>{address}</p>
+                        {createLocation(location)}
                     </div>
                 </div>
                 <div className="block">
@@ -251,7 +242,7 @@ export class ClassPage extends React.Component {
 
                     <h3 className="pricing">Pricing</h3>
                     <div id="class-pricing">
-                        <p>{priceLabel + price}</p>
+                        <p>{priceString}</p>
                         <p>{classObj.paymentNotes}</p>
                     </div>
                 </div>

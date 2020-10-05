@@ -2,7 +2,7 @@
 require("./programModal.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { capitalizeWord } from "../utils/utils.js";
+import { capitalizeWord } from "../utils/displayUtils.js";
 
 export class ProgramModal extends React.Component {
     render = () => {

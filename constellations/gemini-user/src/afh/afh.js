@@ -9,6 +9,8 @@ import srcNotes from "../../assets/lightbulb_white.svg";
 import srcMath from "../../assets/icon_math.svg";
 import srcWriting from "../../assets/icon_writing.svg";
 import srcCoding from "../../assets/icon_coding.svg";
+import { keyBy } from "lodash";
+import { createLocation } from "../utils/locationUtils.js";
 
 const subjectIconSrc = {
     math: srcMath,
@@ -26,6 +28,8 @@ export class AFHPage extends React.Component {
     state = {
         currentSubject: "math",
         sessions: [],
+        locations: [],
+        locationMap: {}
     };
 
     componentDidMount() {
@@ -35,6 +39,15 @@ export class AFHPage extends React.Component {
                 sessions: afh,
             });
         });
+        API.get("api/locations/all").then(
+            (res) => {
+                const locations = res.data;
+                this.setState({
+                    locations: locations,
+                    locationMap: keyBy(locations, "locationId")
+                });
+            }
+        );
     }
 
     changeSubject = (subjectName) => {
@@ -49,7 +62,8 @@ export class AFHPage extends React.Component {
         );
 
         let showSessions = currentTab.map((row, index) => {
-            return <AfhSessionRow key={index} row={row} />;
+            const location = this.state.locationMap[row.locationId];
+            return <AfhSessionRow key={index} row={row} location={location}/>;
         });
         if (showSessions.length == 0) {
             showSessions = (
@@ -130,47 +144,13 @@ class AfhSessionRow extends React.Component {
                         startsAt={row.startsAt}
                         endsAt={row.endsAt}
                     />
-                    <LocationAddress locationId={row.locationId} />
+                    {createLocation(this.props.location)}
                     <Link to={"/register?afhId=" + row.id} className="link-wrapper">
                         Register to attend
                         <img src={srcPoint} />
                     </Link>
                 </div>
                 <AfhNotes notes={row.notes} />
-            </div>
-        );
-    }
-}
-
-class LocationAddress extends React.Component {
-    state = {
-        location: {},
-    };
-    componentDidMount() {
-        API.get("api/locations/location/" + this.props.locationId).then(
-            (res) => {
-                const currentLocation = res.data;
-                this.setState({
-                    location: currentLocation,
-                });
-            }
-        );
-    }
-
-    render() {
-        const address1 = this.state.location.street;
-        const address2 =
-            this.state.location.city +
-            ", " +
-            this.state.location.state +
-            " " +
-            this.state.location.zipcode;
-        const room = this.state.location.room;
-
-        return (
-            <div className="location">
-                <div>{this.state.location.title}</div>
-                {address1} <br /> {address2} <br /> {room}
             </div>
         );
     }

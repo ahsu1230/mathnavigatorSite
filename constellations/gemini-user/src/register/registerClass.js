@@ -1,8 +1,9 @@
 "use strict";
 require("./register.sass");
 import React from "react";
-import { isFullClass } from "../utils/classUtils.js";
-import { capitalizeWord } from "../utils/utils.js";
+import { getFullTitle, isFullClass, displayPrice } from "../utils/classUtils.js";
+import { capitalizeWord } from "../utils/displayUtils.js";
+import { createLocation } from "../utils/locationUtils.js";
 import srcCheckmark from "../../assets/checkmark_light_blue.svg";
 
 export default class RegisterSelectClass extends React.Component {
@@ -36,8 +37,7 @@ export default class RegisterSelectClass extends React.Component {
             const semester = this.props.semesterMap[currentClass.semesterId];
             const location = this.props.locationMap[currentClass.locationId];
 
-            const fullTitle =
-                program.title + " " + capitalizeWord(currentClass.classKey);
+            const fullTitle = getFullTitle(program, currentClass);
             const fullSection = isFullClass(currentClass) ? (
                 <p className="error">
                     This class is full. Please select another class to enroll.
@@ -52,25 +52,9 @@ export default class RegisterSelectClass extends React.Component {
                     <h3>{fullTitle}</h3>
                     <h4>{semester.title}</h4>
                     <p className="times">Times: {currentClass.timesStr}</p>
-                    <p className="price">
-                        Prices:{" "}
-                        {currentClass.pricePerSession ||
-                            currentClass.priceLumpSum}
-                    </p>
+                    <p className="price">{displayPrice(currentClass)}</p>
                     <p className="payment-notes">{currentClass.paymentNotes}</p>
-                    <p className="location">
-                        Location: {location.title}
-                        <br />
-                        {location.street}
-                        <br />
-                        {location.city +
-                            ", " +
-                            location.state +
-                            " " +
-                            location.zipcode}
-                        <br />
-                        {location.room}
-                    </p>
+                    {createLocation(location)}
                 </div>
             );
         }

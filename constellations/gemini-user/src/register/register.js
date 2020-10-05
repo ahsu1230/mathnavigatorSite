@@ -4,7 +4,7 @@ import React from "react";
 import axios from "axios";
 import API from "../utils/api.js";
 import { keyBy } from "lodash";
-import { parseQueryParams } from "../utils/utils.js";
+import { parseQueryParams } from "../utils/urlUtils.js";
 import RegisterSticky from "./registerSticky.js";
 import RegisterSelectClass from "./registerClass.js";
 import RegisterSelectAfh from "./registerAfh.js";
