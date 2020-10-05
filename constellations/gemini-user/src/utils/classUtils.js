@@ -35,6 +35,8 @@ export const displayTimeString = (classObj) => {
 export const displayFeaturedString = (program) => {
     if (program.featured == "popular") {
         return "This program is one of our most popular programs.";
+    } else if (program.featured == "new") {
+        return "This is a newly added program. Enroll now before it gets filled!";
     } else {
         return "";
     }
