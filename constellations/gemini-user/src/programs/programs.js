@@ -21,7 +21,6 @@ export class ProgramsPage extends React.Component {
                 programClassesMap[element.semester.semesterId] =
                     element.programClasses;
             });
-            debugger;
 
             this.setState({
                 semesters: semesters,

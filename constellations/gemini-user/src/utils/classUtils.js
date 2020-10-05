@@ -1,4 +1,5 @@
 "use strict";
+import React from "react";
 import { capitalizeWord, formatCurrency } from "./displayUtils";
 
 export const getFullTitle = (programObj, classObj) => {
@@ -16,4 +17,17 @@ export const displayPrice = (classObj) => {
         isLump ? classObj.priceLumpSum : classObj.pricePerSession
     );
     return priceLabel + price;
+}
+
+export const displayTimeString = (classObj) => {
+    const timesStr = classObj.timesStr || "";
+    const times = timesStr.split(",");
+    const timeLines = times.map((time, index) => {
+        return (<div key={index} className="line">{time.trim()}</div>);
+    });
+    return (
+        <div className="class-times">
+            {timeLines}
+        </div>
+    );
 }

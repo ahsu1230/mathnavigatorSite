@@ -3,7 +3,6 @@ import React from "react";
 
 export const createLocation = (location) => {
     if (location.isOnline) {
-        location.title = "Zoom Video Conference";
         return createOnlineLocation(location);
     } else {
         return createPhysicalLocation(location);

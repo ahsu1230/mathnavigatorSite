@@ -1,7 +1,7 @@
 "use strict";
 require("./register.sass");
 import React from "react";
-import { getFullTitle, isFullClass, displayPrice } from "../utils/classUtils.js";
+import { getFullTitle, isFullClass, displayPrice, displayTimeString } from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
 import { createLocation } from "../utils/locationUtils.js";
 import srcCheckmark from "../../assets/checkmark_light_blue.svg";
@@ -51,7 +51,7 @@ export default class RegisterSelectClass extends React.Component {
                     You have selected to enroll into:
                     <h3>{fullTitle}</h3>
                     <h4>{semester.title}</h4>
-                    <p className="times">Times: {currentClass.timesStr}</p>
+                    {displayTimeString(currentClass)}
                     <p className="price">{displayPrice(currentClass)}</p>
                     <p className="payment-notes">{currentClass.paymentNotes}</p>
                     {createLocation(location)}

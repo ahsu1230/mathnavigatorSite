@@ -3,6 +3,7 @@ require("./programModal.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { capitalizeWord } from "../utils/displayUtils.js";
+import { displayTimeString } from "../utils/classUtils.js";
 
 export class ProgramModal extends React.Component {
     render = () => {
@@ -45,10 +46,7 @@ class ProgramClass extends React.Component {
                     </div>
                     <div className="full-state">{fullStateStr}</div>
                 </div>
-                <div>
-                    <div className="times">{classObj.timesStr}</div>
-                </div>
-
+                <div>{displayTimeString(classObj)}</div>
                 <Link to={url}>{"Details >"}</Link>
             </li>
         );

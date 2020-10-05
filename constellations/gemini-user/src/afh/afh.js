@@ -125,7 +125,7 @@ class TabButton extends React.Component {
                 className={subject + " " + (highlight ? "active" : "")}
                 onClick={() => this.props.onChangeTab(subject)}>
                 <div className="icon-wrapper">
-                    <img src={iconSrc} />
+                    <img className={subject} src={iconSrc} />
                 </div>
                 {displayName}
             </button>

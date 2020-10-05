@@ -6,7 +6,7 @@ import axios from "axios";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import API from "../utils/api.js";
-import { getFullTitle, displayPrice } from "../utils/classUtils.js";
+import { getFullTitle, displayPrice, displayTimeString } from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
 import { createLocation } from "../utils/locationUtils.js";
 import { ClassSchedule } from "./classSchedule.js";
@@ -151,7 +151,7 @@ export class ClassPage extends React.Component {
                         {semesterMap[classObj.semesterId].title}{" "}
                         {capitalizeWord(classObj.classKey)}
                     </Link>
-                    <span>{classObj.timesStr}</span>
+                    {displayTimeString(classObj)}
                 </div>
             );
         });
@@ -219,8 +219,8 @@ export class ClassPage extends React.Component {
             firstSession = <p>First session: {firstSessionDate}</p>;
             lastSession = <p>Last session: {lastSessionDate}</p>;
         } else {
-            firstSession = <p>To be determined</p>;
-            lastSession = <p>To be determined</p>;
+            firstSession = <p>First session: To be determined</p>;
+            lastSession = <p>Last session: To be determined</p>;
         }
 
         // Pricing information
@@ -236,7 +236,7 @@ export class ClassPage extends React.Component {
                 </div>
                 <div className="block">
                     <h3 className="times">Times</h3>
-                    <p>{classObj.timesStr}</p>
+                    {displayTimeString(classObj)}
                     {firstSession}
                     {lastSession}
 
