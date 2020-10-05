@@ -6,11 +6,18 @@ import axios from "axios";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import API from "../utils/api.js";
-import { getFullTitle, displayPrice, displayTimeString } from "../utils/classUtils.js";
+import {
+    getFullTitle,
+    displayPrice,
+    displayTimeString,
+    displayFeaturedString,
+} from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
 import { createLocation } from "../utils/locationUtils.js";
 import { ClassSchedule } from "./classSchedule.js";
 import { ClassErrorPage } from "./classError.js";
+
+import srcStar from "../../assets/star_green.svg";
 
 const FULL_STATE_VALUE = 2;
 
@@ -81,15 +88,28 @@ export class ClassPage extends React.Component {
     };
 
     renderBreadcrumbs = () => {
-        const fullTitle = getFullTitle(this.state.program, this.state.classObj);
+        const program = this.state.program;
+        const fullTitle = getFullTitle(program, this.state.classObj);
         return (
             <section id="breadcrumbs">
                 <div>
-                    <Link to="/programs">Program Catalog</Link>
-                    <span>&middot;</span>
-                    <span>{this.state.semester.title}</span>
+                    <div>
+                        <Link to="/programs">Program Catalog</Link>
+                        <span>&middot;</span>
+                        <span>{this.state.semester.title}</span>
+                    </div>
+                    <h1>{fullTitle}</h1>
                 </div>
-                <h1>{fullTitle}</h1>
+
+                {program.featured != "none" && (
+                    <div className="featured">
+                        <div className="header">
+                            <img src={srcStar} />
+                            <span>{capitalizeWord(program.featured)}</span>
+                        </div>
+                        <p>{displayFeaturedString(program)}</p>
+                    </div>
+                )}
             </section>
         );
     };
@@ -230,9 +250,7 @@ export class ClassPage extends React.Component {
             <section id="class-info">
                 <div className="block">
                     <h3 className="location">Location</h3>
-                    <div id="class-location">
-                        {createLocation(location)}
-                    </div>
+                    <div id="class-location">{createLocation(location)}</div>
                 </div>
                 <div className="block">
                     <h3 className="times">Times</h3>

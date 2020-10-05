@@ -172,23 +172,28 @@ export default class RegisterPage extends React.Component {
                 <h1>Registration</h1>
                 <div className="intro-wrapper">
                     <div>
-                        {
-                            this.state.selectedFromQuery && this.state.choice == CHOICE_AFH &&
-                            <p>You have selected to register for an Ask-for-Help session.</p>
-                        }
-                        {
-                            this.state.selectedFromQuery && this.state.choice == CHOICE_CLASS &&
-                            <p>You have selected to enroll into a Math Navigator class.</p>
-                        }
-                        {
-                            !this.state.selectedFromQuery && 
+                        {this.state.selectedFromQuery &&
+                            this.state.choice == CHOICE_AFH && (
+                                <p>
+                                    You have selected to register for an
+                                    Ask-for-Help session.
+                                </p>
+                            )}
+                        {this.state.selectedFromQuery &&
+                            this.state.choice == CHOICE_CLASS && (
+                                <p>
+                                    You have selected to enroll into a Math
+                                    Navigator class.
+                                </p>
+                            )}
+                        {!this.state.selectedFromQuery && (
                             <p>
                                 Are you enrolling into a class or attending an
-                                ask-for-help session? Ask-for-Help sessions are only
-                                for students who are already enrolled into one of
-                                our classes.
+                                ask-for-help session? Ask-for-Help sessions are
+                                only for students who are already enrolled into
+                                one of our classes.
                             </p>
-                        }
+                        )}
                         <p className="instruction">
                             Please fill out the following information about
                             yourself. We use this information to contact you
@@ -198,8 +203,7 @@ export default class RegisterPage extends React.Component {
                             shared with anyone.
                         </p>
                     </div>
-                    {
-                        !this.state.selectedFromQuery &&
+                    {!this.state.selectedFromQuery && (
                         <div className="choose-btns">
                             <button
                                 className={
@@ -226,7 +230,7 @@ export default class RegisterPage extends React.Component {
                                 Ask For Help
                             </button>
                         </div>
-                    }
+                    )}
                 </div>
                 {this.state.choice != CHOICE_NONE && (
                     <div id="form-container">

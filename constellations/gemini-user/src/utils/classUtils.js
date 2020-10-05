@@ -3,8 +3,8 @@ import React from "react";
 import { capitalizeWord, formatCurrency } from "./displayUtils";
 
 export const getFullTitle = (programObj, classObj) => {
-    return programObj.title + capitalizeWord(classObj.classKey);
-}
+    return programObj.title + " " + capitalizeWord(classObj.classKey);
+};
 
 export const isFullClass = (classObj) => {
     return classObj.fullState == 2;
@@ -17,17 +17,25 @@ export const displayPrice = (classObj) => {
         isLump ? classObj.priceLumpSum : classObj.pricePerSession
     );
     return priceLabel + price;
-}
+};
 
 export const displayTimeString = (classObj) => {
     const timesStr = classObj.timesStr || "";
     const times = timesStr.split(",");
     const timeLines = times.map((time, index) => {
-        return (<div key={index} className="line">{time.trim()}</div>);
+        return (
+            <div key={index} className="line">
+                {time.trim()}
+            </div>
+        );
     });
-    return (
-        <div className="class-times">
-            {timeLines}
-        </div>
-    );
-}
+    return <div className="class-times">{timeLines}</div>;
+};
+
+export const displayFeaturedString = (program) => {
+    if (program.featured == "popular") {
+        return "This program is one of our most popular programs.";
+    } else {
+        return "";
+    }
+};

@@ -29,7 +29,7 @@ export class AFHPage extends React.Component {
         currentSubject: "math",
         sessions: [],
         locations: [],
-        locationMap: {}
+        locationMap: {},
     };
 
     componentDidMount() {
@@ -39,15 +39,13 @@ export class AFHPage extends React.Component {
                 sessions: afh,
             });
         });
-        API.get("api/locations/all").then(
-            (res) => {
-                const locations = res.data;
-                this.setState({
-                    locations: locations,
-                    locationMap: keyBy(locations, "locationId")
-                });
-            }
-        );
+        API.get("api/locations/all").then((res) => {
+            const locations = res.data;
+            this.setState({
+                locations: locations,
+                locationMap: keyBy(locations, "locationId"),
+            });
+        });
     }
 
     changeSubject = (subjectName) => {
@@ -63,7 +61,7 @@ export class AFHPage extends React.Component {
 
         let showSessions = currentTab.map((row, index) => {
             const location = this.state.locationMap[row.locationId];
-            return <AfhSessionRow key={index} row={row} location={location}/>;
+            return <AfhSessionRow key={index} row={row} location={location} />;
         });
         if (showSessions.length == 0) {
             showSessions = (
@@ -145,7 +143,9 @@ class AfhSessionRow extends React.Component {
                         endsAt={row.endsAt}
                     />
                     {createLocation(this.props.location)}
-                    <Link to={"/register?afhId=" + row.id} className="link-wrapper">
+                    <Link
+                        to={"/register?afhId=" + row.id}
+                        className="link-wrapper">
                         Register to attend
                         <img src={srcPoint} />
                     </Link>

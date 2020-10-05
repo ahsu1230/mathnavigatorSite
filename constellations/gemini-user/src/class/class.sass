@@ -7,6 +7,11 @@
     padding: $spacing8x 0
 
     #breadcrumbs
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: start
+
         a
             color: $colorTurquoiseDark
 
@@ -19,6 +24,35 @@
             font-family: $fontFamilyRockwell
             font-size: $fontSize4
             color: $colorBlack
+
+            @media screen and (max-width: $containerWidthPxTablet)
+                margin-bottom: $spacing2x
+                line-height: $lineHeight2
+                font-size: $fontSize2
+        
+        .featured
+            width: $spacing24x
+            padding: $spacing2x
+            border: 1px solid $colorTurquoise
+            border-radius: 8px
+
+            @media screen and (max-width: $containerWidthPxTablet)
+                width: unset
+                padding: $spacing1x
+            
+            .header
+                display: flex
+                align-items: center
+                color: $colorTurquoise  
+
+            p
+                margin: $spacing1x 0 0
+                font-size: 12px
+                line-height: 18px
+                color: $colorGrayMed
+
+                @media screen and (max-width: $containerWidthPxTablet)
+                    display: none
 
     #program-info
         h4.full

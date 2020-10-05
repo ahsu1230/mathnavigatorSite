@@ -7,18 +7,20 @@ export const createLocation = (location) => {
     } else {
         return createPhysicalLocation(location);
     }
-}
+};
 
 export const createPhysicalLocation = (location) => {
     return (
         <div className="loc physical">
             <div className="line title">{location.title}</div>
             <div className="line">{location.street}</div>
-            <div className="line">{location.city + ", " + location.state + " " + location.zipcode}</div>
+            <div className="line">
+                {location.city + ", " + location.state + " " + location.zipcode}
+            </div>
             {location.room && <div className="line">{location.room}</div>}
         </div>
     );
-}
+};
 
 export const createOnlineLocation = (location) => {
     return (
@@ -28,4 +30,4 @@ export const createOnlineLocation = (location) => {
             <div className="line">Online only</div>
         </div>
     );
-}
+};

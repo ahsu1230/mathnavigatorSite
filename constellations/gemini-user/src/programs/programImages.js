@@ -39,8 +39,8 @@ export const getImageForProgramClass = (programObj) => {
 const getRandomImageFrom = (imgArray) => {
     const imgSrcIndex = Math.floor(Math.random() * imgArray.length);
     return imgArray[imgSrcIndex];
-}
+};
 
 const foundInString = (string, substring) => {
     return string.toLowerCase().indexOf(substring.toLowerCase()) >= 0;
-}
+};
