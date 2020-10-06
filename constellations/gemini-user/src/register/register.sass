@@ -1,0 +1,199 @@
+@import "../utils/_constants.sass"
+
+#view-register
+    width: $containerWidthPct
+    max-width: $containerWidthPxFull
+    margin: $spacing12x auto $spacing24x
+
+    h1
+        margin-bottom: $spacing4x
+
+    .intro-wrapper
+        display: flex
+        flex-container: row
+        justify-content: space-between
+        align-items: start
+        margin-bottom: $spacing8x
+
+        p
+            max-width: $spacing72x
+            margin: $spacing1x 0
+
+        .choose-btns
+            display: flex
+            flex-direction: column
+            justify-content: start
+            align-items: flex-end
+
+            button
+                width: $spacing24x
+                margin-bottom: $spacing4x
+                border-radius: 8px
+                border: 1px solid $colorTurquoise
+                background-color: $colorWhite
+                color: $colorTurquoise
+
+                &.active
+                    background-color: $colorTurquoise
+                    color: $colorWhite
+
+    .submit-bar
+        position: relative
+        height: $spacing10x
+
+        @media screen and (max-width: $containerWidthPxMonitor)
+            display: none
+
+        button.submit
+            width: 100%
+            border-radius: 8px    
+
+#view-register #form-container
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: start
+
+    .register-form
+        width: 100%
+        max-width: $spacing64x
+
+    section
+        margin-bottom: $spacing4x
+        padding-bottom: $spacing3x
+        border-bottom: 1px solid $colorGrayLight
+
+    .header-wrapper
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        margin-bottom: $spacing1x
+
+        .title
+            display: flex
+            flex-direction: row
+            justify-content: start
+            align-items: center
+
+        &.active
+            .step-wrapper
+                background-color: $colorTurquoiseLight
+            h2
+                color: $colorTurquoiseLight
+
+        .step-wrapper
+            width: 28px
+            height: 28px
+            padding-top: 5px
+            padding-left: 2px
+            margin-right: $spacing1x
+            border-radius: 50%
+            box-sizing: border-box
+            text-align: center
+            background-color: $colorGrayMed
+            color: $colorWhite
+
+        h2
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            color: $colorGrayMed
+
+        img
+            width: 18px
+
+    p
+        margin: $spacing2x 0
+
+        &.error
+            color: $colorRed
+
+    select
+        margin-top: $spacing1x
+        padding: 4px 8px
+        border: 1px solid $colorTurquoiseLight
+        border-radius: 4px
+
+        &:hover
+        &:active
+        &:focus
+            box-shadow: 0 0 0 2px $colorTurquoiseLight inset
+            outline: none
+
+    .selection
+        margin-top: $spacing2x
+        padding: $spacing2x
+        box-sizing: border-box
+        border-radius: 8px
+        background-color: $colorTurquoiseDarkAlpha
+
+#view-register #form-container section.class,
+#view-register #form-container section.afh
+    h3
+        margin: $spacing2x 0 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: 500
+        color: $colorTurquoiseDark
+    h4
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        font-weight: 400
+        color: $colorGrayMed
+
+    p
+        margin: $spacing1x 0
+
+    .loc, .class-times
+        margin-top: $spacing1x
+        line-height: $lineHeight0
+        font-size: $fontSize0
+
+#view-register #form-container section.register-form
+    p.instructions
+        line-height: 18px
+        font-size: 14px
+        color: $colorGrayMed
+
+    .names
+        display: flex
+        flex-direction: row
+        justify-content: start
+
+        .register-input:first-child
+            margin-right: $spacing4x
+
+    .grades
+        display: flex
+        flex-direction: row
+        justify-content: start
+
+        .register-input:first-child
+            margin-right: $spacing4x
+
+    .register-input.email input
+        width: $spacing32x
+    
+    .register-input.phone input
+        width: $spacing24x
+    
+    .register-input.school input
+        width: $spacing32x
+
+    .register-input.grade input
+        width: $spacing6x
+    
+    .register-input.grad-year input
+        width: $spacing8x
+
+    .register-input.additional-info
+        margin-top: $spacing4x
+
+@media screen and (max-width: $containerWidthPxMonitor)
+    #view-register
+        .intro-wrapper
+            flex-direction: column
+            justify-content: space-between
+
+            .choose-btns
+                margin-top: $spacing4x

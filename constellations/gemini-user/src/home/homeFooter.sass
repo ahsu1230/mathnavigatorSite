@@ -1,0 +1,37 @@
+@import "../utils/_constants.sass"
+
+// Home Section - Footer
+#view-home .section.home-footer
+    width: 100%
+    max-width: unset
+    height: $spacing48x
+    margin: 0
+    background-color: $colorTurquoiseLight
+    box-sizing: border-box
+
+    .content
+        position: relative
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+
+    h1
+        margin: 0 auto
+        color: $colorWhite
+        text-align: center
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            max-width: $spacing40x
+
+    button
+        display: block
+        margin: $spacing4x auto
+        padding: $spacing2x $spacing4x
+        border-radius: 8px
+        background-color: $colorOrange
+
+    a
+        color: $colorWhite
+        &:hover
+            color: $colorWhite
+            text-decoration: none

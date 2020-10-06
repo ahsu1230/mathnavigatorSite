@@ -9,7 +9,7 @@ import srcLibrary from "../../assets/library_white.svg";
 
 export const programsText = [
     {
-        title: "SAT",
+        title: "SAT 1 & 2",
         description:
             "Our most popular programs. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).",
         imgSrc: srcSat,
@@ -25,13 +25,13 @@ export const programsText = [
     {
         title: "AMC",
         description:
-            "The American Mathematics Competition administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
+            "Administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
         imgSrc: srcAmc,
         programId: "",
     },
 ];
 
-export const successText = [
+export const strategyText = [
     {
         title: "Dedicated Professionalism",
         description:

@@ -2,7 +2,7 @@
 
 #view-account
     .tab-content#reg-tab-main
-        @media screen and (min-width: $mediaWidth3)
+        @media screen and (min-width: $containerWidthPxMonitor)
             ul
                 li
                     .classlist-item
@@ -12,7 +12,7 @@
                     .classlist-item:last-child
                         margin-bottom: 0
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             ul
                 text-align: center
 
@@ -33,9 +33,9 @@
                         margin-bottom: 0
 
                 li:first-child
-                    font-weight: bold
+                    font-weight: 700
 
-        @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxMonitor) and (min-width: $containerWidthPxTablet)
             ul
                 li
                     width: 50%
@@ -61,7 +61,7 @@
 
 
     .tab-content#reg-tab-all
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             div.space-between
                 flex-direction: column
                 align-content: center
@@ -79,7 +79,7 @@
                     max-width: 40%
                     text-align: right
 
-        @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxMonitor) and (min-width: $containerWidthPxTablet)
             div.space-between
                 align-items: center
 

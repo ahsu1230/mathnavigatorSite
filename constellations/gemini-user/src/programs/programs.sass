@@ -5,77 +5,34 @@ $cardSpacing: $spacing6x
 #view-programs
     position: relative
     width: $containerWidthPct
-    max-width: $containerWidthPx1
+    max-width: $containerWidthPxFull
     margin: 0 auto
     padding: $spacing1x 0 $spacing12x
 
-    .star-container
-        position: absolute
-        top: 0
-        right: 0
-        transform: translate(30%, -30%)
-        width: 36px
-        height: 36px
-        border-radius: 100%
-        background-color: $colorTurquoiseLight
+    h1
+        margin: $spacing12x 0 0
+        font-family: $fontFamilyRockwell
+        color: $colorTurquoise
 
-        .star-img
-            position: absolute
-            top: 50%
-            left: 50%
-            transform: translate(-50%, -50%)
-            width: 24px
-            height: 24px
-            background: url("../../assets/star_white.svg")
-            background-size: cover
-            background-position: center
+        @media screen and (max-width: $containerWidthPxTablet)
+            text-align: center
 
-    #star-legend
-        position: absolute
-        top: $spacing5x
-        right: 0
-        display: inline-block
-        font-size: $fontSize0
+    p
+        margin: $spacing4x 0 0
 
-        @media screen and (max-width: $mediaWidth1)
-            position: relative
-            top: 0
-            left: 50%
-            transform: translateX(-50%)
-            margin: $spacing5x 0 $spacing1x
-            font-size: 14px
-        
-        .star-container
-            position: relative
-            transform: none
-            display: inline-block
-            width: 28px
-            height: 28px
-            margin-right: $spacing1x
-            vertical-align: middle
-        
-            @media screen and (max-width: $mediaWidth1)
-                width: 22px
-                height: 22px
-            
-            .star-img
-                width: 20px
-                height: 20px
-
-                @media screen and (max-width: $mediaWidth1)
-                    width: 16px
-                    height: 16px
+        @media screen and (max-width: $containerWidthPxTablet)
+            text-align: center
 
     .section
-        margin-bottom: $cardSpacing
 
-        .section-title
+        h2.section-title
+            margin-top: $spacing4x
             margin-bottom: $cardSpacing
             border-bottom: 1px solid $colorGrayLight
-            color: $colorPrimary
-            font-family: $fontFamilyRockwell
             line-height: 88px
+            font-family: $fontFamilyRockwell
             font-size: $fontSize2
+            color: $colorBlack
 
-            @media screen and (max-width: $mediaWidth1)
+            @media screen and (max-width: $containerWidthPxTablet)
                 text-align: center

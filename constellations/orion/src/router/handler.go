@@ -11,6 +11,8 @@ type Handler struct {
 
 func (h *Handler) SetupApiEndpoints() {
 	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
+	h.Engine.GET("/api/subjects", controllers.GetAllSubjects)
+
 	apiPrograms := h.Engine.Group("/api/programs")
 	{
 		apiPrograms.GET("/all", controllers.GetAllPrograms)
@@ -25,9 +27,9 @@ func (h *Handler) SetupApiEndpoints() {
 		apiClasses.GET("/all", controllers.GetAllClasses)
 		apiClasses.GET("/full-states", controllers.GetFullStates)
 		apiClasses.GET("/class/:classId", controllers.GetClassById)
-		apiClasses.GET("/classes/program/:programId", controllers.GetClassesByProgram)
-		apiClasses.GET("/classes/semester/:semesterId", controllers.GetClassesBySemester)
-		apiClasses.GET("/classes/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
+		apiClasses.GET("/semester/:semesterId", controllers.GetClassesBySemester)
+		apiClasses.GET("/program/:programId", controllers.GetClassesByProgram)
+		apiClasses.GET("/program/:programId/semester/:semesterId", controllers.GetClassesByProgramAndSemester)
 		apiClasses.GET("/unpublished", controllers.GetUnpublishedClasses)
 		apiClasses.POST("/create", controllers.CreateClass)
 		apiClasses.POST("/publish", controllers.PublishClasses)
@@ -79,7 +81,6 @@ func (h *Handler) SetupApiEndpoints() {
 	apiAFH := h.Engine.Group("api/askforhelp")
 	{
 		apiAFH.GET("/all", controllers.GetAllAFH)
-		apiAFH.GET("/subjects", controllers.GetAllAFHSubjects)
 		apiAFH.GET("/afh/:id", controllers.GetAFHById)
 		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)

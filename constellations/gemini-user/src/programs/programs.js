@@ -2,13 +2,13 @@
 require("./programs.sass");
 import React from "react";
 import API from "../utils/api.js";
-import { sortedSemesterInsert } from "../utils/semesterUtils.js";
 import { ProgramCard } from "./programCard.js";
 
 export class ProgramsPage extends React.Component {
     state = {
         semesters: [],
         programClassesMap: {},
+        fullStates: [],
     };
 
     componentDidMount = () => {
@@ -17,7 +17,7 @@ export class ProgramsPage extends React.Component {
             let semesters = [];
             let programClassesMap = {};
             classesbysemesters.forEach((element) => {
-                semesters = sortedSemesterInsert(semesters, element.semester);
+                semesters.push(element.semester);
                 programClassesMap[element.semester.semesterId] =
                     element.programClasses;
             });
@@ -25,6 +25,12 @@ export class ProgramsPage extends React.Component {
             this.setState({
                 semesters: semesters,
                 programClassesMap: programClassesMap,
+            });
+        });
+
+        API.get("api/classes/full-states").then((res) => {
+            this.setState({
+                fullStates: res.data,
             });
         });
     };
@@ -37,17 +43,21 @@ export class ProgramsPage extends React.Component {
                 programClasses={
                     this.state.programClassesMap[semester.semesterId]
                 }
+                fullStates={this.state.fullStates}
             />
         ));
 
         return (
             <div id="view-programs">
-                <div id="star-legend">
-                    <div className="star-container">
-                        <div className="star-img"></div>
-                    </div>
-                    = Featured Programs
-                </div>
+                <h1>Program Catalog</h1>
+                <p>
+                    Math Navigator offers new programs and classes every
+                    semester. Some programs will have multiple classes available
+                    to accomodate different schedules. Programs are recurring
+                    and will usually be offered again in the following semester,
+                    so if you miss the enrollment period for a course, make sure
+                    to enroll next enrollment period!
+                </p>
                 {semesterSections}
             </div>
         );
@@ -69,19 +79,22 @@ export class ProgramSection extends React.Component {
             }
         });
 
-        const cards = programs.map((program, index) => (
-            <ProgramCard
-                key={index}
-                semester={semester}
-                program={program}
-                classes={programClassesMap[program.programId]}
-            />
-        ));
+        const cards = programs.map((program, index) => {
+            return (
+                <ProgramCard
+                    key={index}
+                    semester={semester}
+                    program={program}
+                    classes={programClassesMap[program.programId]}
+                    fullStates={this.props.fullStates}
+                />
+            );
+        });
 
         return (
             <div className="section">
-                <h1 className="section-title">{semester.title}</h1>
-                {cards}
+                <h2 className="section-title">{semester.title}</h2>
+                {cards.length > 0 ? cards : <p>Coming soon...</p>}
             </div>
         );
     };

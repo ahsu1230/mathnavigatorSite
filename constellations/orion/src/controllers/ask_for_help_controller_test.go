@@ -266,20 +266,20 @@ func TestDeleteAFHFailure(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestGetAllAFHSubjects(t *testing.T) {
+func TestGetAllSubjects(t *testing.T) {
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/askforhelp/subjects", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/subjects", nil)
 
 	//Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	var afhSubjects []string
-	if err := json.Unmarshal(recorder.Body.Bytes(), &afhSubjects); err != nil {
+	var subjects []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &subjects); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "math", afhSubjects[0])
-	assert.EqualValues(t, "english", afhSubjects[1])
-	assert.EqualValues(t, "programming", afhSubjects[2])
+	assert.EqualValues(t, "math", subjects[0])
+	assert.EqualValues(t, "english", subjects[1])
+	assert.EqualValues(t, "programming", subjects[2])
 }
 
 // Helper Methods

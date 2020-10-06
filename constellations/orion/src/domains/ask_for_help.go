@@ -8,14 +8,6 @@ import (
 
 var TABLE_ASKFORHELP = "ask_for_help"
 
-const (
-	SUBJECT_MATH        = "math"
-	SUBJECT_ENGLISH     = "english"
-	SUBJECT_PROGRAMMING = "programming"
-)
-
-var ALL_AFH_SUBJECTS = []string{SUBJECT_MATH, SUBJECT_ENGLISH, SUBJECT_PROGRAMMING}
-
 type AskForHelp struct {
 	Id         uint       `json:"id"`
 	CreatedAt  time.Time  `json:"-" db:"created_at"`
@@ -40,7 +32,7 @@ func (askForHelp *AskForHelp) Validate() error {
 	}
 
 	// Subject validation
-	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
+	if !validateSubject(subject) {
 		return fmt.Errorf(messageFmt, "Unrecognized subject")
 	}
 

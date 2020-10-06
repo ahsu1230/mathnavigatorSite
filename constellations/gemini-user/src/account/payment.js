@@ -4,8 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import API from "../utils/api.js";
 import moment from "moment";
-
-import { chargeDisplayNames, formatCurrency } from "../utils/utils.js";
+import { formatCurrency } from "../utils/displayUtils.js";
+import { chargeDisplayNames } from "../utils/utils.js";
 
 export class PaymentTab extends React.Component {
     state = {

@@ -1,12 +1,12 @@
 @import "../utils/_constants.sass"
 
 #view-account .tab-content#settings-tab
-    @media screen and (min-width: $mediaWidth3)
+    @media screen and (min-width: $containerWidthPxMonitor)
         ul
             padding: $spacing2x 0
 
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
         ul
             padding: $spacing2x 0
             text-align: center
@@ -14,10 +14,10 @@
             li
                 width: 100%
             li:first-child
-                font-weight: bold
+                font-weight: 700
 
 
-    @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxMonitor) and (min-width: $containerWidthPxTablet)
         ul
             padding: $spacing2x 0
             .li-med

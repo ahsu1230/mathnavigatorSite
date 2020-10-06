@@ -3,6 +3,11 @@ require("./programCard.sass");
 import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
+import { capitalizeWord } from "../utils/displayUtils.js";
+import { getImageForProgramClass } from "./programImages.js";
+
+import srcPoint from "../../assets/point_right_white.svg";
+import srcStar from "../../assets/star_green.svg";
 
 export class ProgramCard extends React.Component {
     state = {
@@ -28,6 +33,7 @@ export class ProgramCard extends React.Component {
                     semester={this.props.semester}
                     program={this.props.program}
                     classes={classes}
+                    fullStates={this.props.fullStates}
                 />
             );
             modalDiv = (
@@ -42,28 +48,54 @@ export class ProgramCard extends React.Component {
         return modalDiv;
     };
 
+    renderFeatured = () => {
+        const program = this.props.program || {};
+        const isFeatured = program.featured != "none";
+        const featuredString = isFeatured
+            ? capitalizeWord(program.featured)
+            : "";
+
+        if (isFeatured) {
+            return (
+                <div className="featured">
+                    <img src={srcStar} />
+                    <span>{featuredString}</span>
+                </div>
+            );
+        } else {
+            return <div></div>;
+        }
+    };
+
     render = () => {
         const program = this.props.program || {};
+        const classes = this.props.classes || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
-
-        let star =
-            program.featured == 1 ? (
-                <div className="star-container">
-                    <div className="star-img"></div>
-                </div>
-            ) : (
-                <div></div>
-            );
+        const classesString =
+            classes.length == 1 ? "1 class" : classes.length + " classes";
+        const featured = this.renderFeatured();
+        const cardImgSrc = getImageForProgramClass(program);
 
         return (
             <div className="program-card-container">
                 <div className="program-card" onClick={this.handleClick}>
-                    {star}
-                    <div className="content">
-                        <h2>{program.name}</h2>
-                        <h3>{grades}</h3>
-                        <button>View</button>
+                    <div className="card-top">
+                        <img src={cardImgSrc} />
                     </div>
+                    <div className="card-title">
+                        <h2>{program.title}</h2>
+                    </div>
+                    <div className="card-body">
+                        <h3>{grades}</h3>
+                        <div className="classes-avail">
+                            {classesString} available
+                        </div>
+                        {featured}
+                    </div>
+                    <button className="card-footer">
+                        View Details
+                        <img src={srcPoint} />
+                    </button>
                 </div>
                 {this.renderModal()}
             </div>

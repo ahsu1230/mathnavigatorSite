@@ -13,9 +13,9 @@ import (
 
 // Test: Create 3 Programs and GetAll()
 func TestCreatePrograms(t *testing.T) {
-	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
-	utils.SendCreateProgram(t, true, "prog2", "Program2", 2, 3, "descript2", domains.FEATURED_POPULAR)
-	utils.SendCreateProgram(t, true, "prog3", "Program3", 2, 3, "descript3", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "prog2", "Program2", 2, 3, domains.SUBJECT_MATH, "descript2", domains.FEATURED_POPULAR)
+	utils.SendCreateProgram(t, true, "prog3", "Program3", 2, 3, domains.SUBJECT_MATH, "descript3", domains.FEATURED_NONE)
 
 	// Call Get All!
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/all", nil)
@@ -46,6 +46,7 @@ func TestUniqueProgramId(t *testing.T) {
 		"Program1",
 		2,
 		3,
+		domains.SUBJECT_MATH,
 		"descript1",
 		domains.FEATURED_NONE,
 	)
@@ -56,6 +57,7 @@ func TestUniqueProgramId(t *testing.T) {
 		"Program2",
 		2,
 		3,
+		domains.SUBJECT_MATH,
 		"descript2",
 		domains.FEATURED_POPULAR,
 	)
@@ -80,7 +82,7 @@ func TestUniqueProgramId(t *testing.T) {
 // Test: Create 1 Program, Update it, GetByProgramId()
 func TestUpdateProgram(t *testing.T) {
 	// Create 1 Program
-	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 
 	// Update
 	updatedProgram := domains.Program{
@@ -88,6 +90,7 @@ func TestUpdateProgram(t *testing.T) {
 		Title:       "Program2a",
 		Grade1:      2,
 		Grade2:      3,
+		Subject:     domains.SUBJECT_MATH,
 		Description: "Description123",
 		Featured:    domains.FEATURED_POPULAR,
 	}
@@ -115,7 +118,7 @@ func TestUpdateProgram(t *testing.T) {
 // Test: Create 1 Program, Delete it, GetByProgramId()
 func TestDeleteProgram(t *testing.T) {
 	// Create
-	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, "descript1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/programs/program/prog1", nil)

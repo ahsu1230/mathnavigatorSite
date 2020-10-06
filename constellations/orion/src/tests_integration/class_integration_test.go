@@ -67,7 +67,7 @@ func TestGetClassesByProgram(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesByProgram()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -89,7 +89,7 @@ func TestGetClassesBySemester(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesBySemester()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/semester/2020_summer", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -110,7 +110,7 @@ func TestGetClassesByProgramAndSemester(t *testing.T) {
 	createAllClasses(t)
 
 	// Call GetClassesByProgramAndSemester()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1/semester/2020_spring", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -307,8 +307,8 @@ func createAllClasses(t *testing.T) {
 }
 
 func createAllProgramsSemestersLocations(t *testing.T) {
-	utils.SendCreateProgram(t, true, "program1", "Program1", 1, 3, "description1", domains.FEATURED_NONE)
-	utils.SendCreateProgram(t, true, "program2", "Program2", 6, 8, "description2", domains.FEATURED_POPULAR)
+	utils.SendCreateProgram(t, true, "program1", "Program1", 1, 3, domains.SUBJECT_MATH, "description1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "program2", "Program2", 6, 8, domains.SUBJECT_MATH, "description2", domains.FEATURED_POPULAR)
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 	utils.SendCreateSemester(t, true, domains.SUMMER, 2020)
 	utils.SendCreateLocationWCHS(t)

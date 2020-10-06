@@ -39,6 +39,7 @@ func TestSelectAllPrograms(t *testing.T) {
 		"Title",
 		"Grade1",
 		"Grade2",
+		"Subject",
 		"Description",
 		"Featured",
 	}).
@@ -51,6 +52,7 @@ func TestSelectAllPrograms(t *testing.T) {
 			"Program1",
 			2,
 			3,
+			domains.SUBJECT_MATH,
 			"descript1",
 			domains.FEATURED_NONE,
 		)
@@ -73,6 +75,7 @@ func TestSelectAllPrograms(t *testing.T) {
 			Title:       "Program1",
 			Grade1:      2,
 			Grade2:      3,
+			Subject:     domains.SUBJECT_MATH,
 			Description: "descript1",
 			Featured:    domains.FEATURED_NONE,
 		},
@@ -103,6 +106,7 @@ func TestSelectProgram(t *testing.T) {
 		"Title",
 		"Grade1",
 		"Grade2",
+		"Subject",
 		"Description",
 		"Featured",
 	}).
@@ -115,6 +119,7 @@ func TestSelectProgram(t *testing.T) {
 			"Program1",
 			2,
 			3,
+			domains.SUBJECT_MATH,
 			"descript1",
 			domains.FEATURED_NONE,
 		)
@@ -137,6 +142,7 @@ func TestSelectProgram(t *testing.T) {
 		Title:       "Program1",
 		Grade1:      2,
 		Grade2:      3,
+		Subject:     domains.SUBJECT_MATH,
 		Description: "descript1",
 		Featured:    domains.FEATURED_NONE,
 	}
@@ -159,13 +165,23 @@ func TestInsertProgram(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO programs").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), "prog1", "Program1", 2, 3, "Descript1", domains.FEATURED_NONE).
-		WillReturnResult(result)
+		WithArgs(
+			sqlmock.AnyArg(),
+			sqlmock.AnyArg(),
+			"prog1",
+			"Program1",
+			2,
+			3,
+			domains.SUBJECT_MATH,
+			"Descript1",
+			domains.FEATURED_NONE,
+		).WillReturnResult(result)
 	program := domains.Program{
 		ProgramId:   "prog1",
 		Title:       "Program1",
 		Grade1:      2,
 		Grade2:      3,
+		Subject:     domains.SUBJECT_MATH,
 		Description: "Descript1",
 		Featured:    domains.FEATURED_NONE,
 	}
@@ -191,13 +207,23 @@ func TestUpdateProgram(t *testing.T) {
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE programs SET (.*) WHERE program_id=?").
 		ExpectExec().
-		WithArgs(sqlmock.AnyArg(), "prog2", "Program2", 2, 3, "Descript2", domains.FEATURED_NONE, "prog1").
-		WillReturnResult(result)
+		WithArgs(
+			sqlmock.AnyArg(),
+			"prog2",
+			"Program2",
+			2,
+			3,
+			domains.SUBJECT_MATH,
+			"Descript2",
+			domains.FEATURED_NONE,
+			"prog1",
+		).WillReturnResult(result)
 	program := domains.Program{
 		ProgramId:   "prog2",
 		Title:       "Program2",
 		Grade1:      2,
 		Grade2:      3,
+		Subject:     domains.SUBJECT_MATH,
 		Description: "Descript2",
 		Featured:    domains.FEATURED_NONE,
 	}

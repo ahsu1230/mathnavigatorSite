@@ -1,0 +1,78 @@
+@import "../utils/_constants.sass"
+
+#view-register .sticky
+    position: sticky
+    top: 0
+    min-width: $spacing48x
+    margin-left: $spacing8x
+    padding: $spacing4x
+    box-sizing: border-box
+    border-radius: 8px
+    border: 1px solid $colorBlackLight
+    overflow: hidden
+
+    &.active
+        border: 2px solid $colorTurquoiseLight
+
+    h5
+        margin: 0
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        font-weight: 400
+        color: $colorGrayDark
+
+    .step-container
+        display: flex
+        flex-direction: row
+        justify-content: start
+        align-items: center
+        margin: $spacing2x 0
+
+        .icon-container
+            width: 24px
+            height: 24px
+            margin-right: $spacing2x
+            border-radius: 100%
+            background-color: $colorGrayMed
+
+            img
+                position: relative
+                top: calc(50% - 1px)
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 14px
+
+        &.active
+            color: $colorTurquoise
+            .icon-container
+                background-color: $colorTurquoiseLight
+                
+
+    button
+        width: 100%
+        max-width: $spacing48x
+        border-radius: 8px
+        background-color: $colorGrayMed
+
+        &.active
+            background-color: $colorTurquoiseLight
+
+    p
+        max-width: $spacing48x
+        margin-bottom: 0
+
+@media screen and (max-width: $containerWidthPxMonitor)
+    #view-register .sticky
+        position: fixed
+        top: unset
+        left: 0
+        bottom: 0px
+        margin: 0
+        width: 100%
+        border-radius: 0px
+        border: none
+        background-color: $colorWhite
+        box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.3)
+
+        h5
+            color: $colorTurquoise

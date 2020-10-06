@@ -2,9 +2,8 @@
 require("./settings.sass");
 import React from "react";
 import API from "../utils/api.js";
-
-import { renderMultiline } from "../utils/utils.js";
 import { PasswordChange } from "./passwordChange.js";
+import { renderMultiline } from "../utils/utils.js";
 
 export class SettingsTab extends React.Component {
     state = {

@@ -105,7 +105,7 @@ func DeleteAFH(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
-func GetAllAFHSubjects(c *gin.Context) {
-	utils.LogControllerMethod(c, "askForHelpController.GetAllAFHSubjects")
-	c.JSON(http.StatusOK, domains.ALL_AFH_SUBJECTS)
+func GetAllSubjects(c *gin.Context) {
+	utils.LogControllerMethod(c, "controller.GetAllSubjects")
+	c.JSON(http.StatusOK, domains.ALL_SUBJECTS)
 }

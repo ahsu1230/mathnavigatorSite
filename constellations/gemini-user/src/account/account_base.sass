@@ -29,7 +29,7 @@
             margin: $spacing6x 0 $spacing10x
 
 
-    @media screen and (min-width: $mediaWidth3)
+    @media screen and (min-width: $containerWidthPxMonitor)
         .tab-content
             ul
                 display: flex
@@ -52,7 +52,7 @@
                 align-items: center
 
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
         h2
             margin-bottom: $spacing2x
 
@@ -77,7 +77,7 @@
             flex-direction: column
 
 
-    @media screen and (max-width: $mediaWidth3) and (min-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxMonitor) and (min-width: $containerWidthPxTablet)
         h2
             margin-bottom: $spacing2x
 

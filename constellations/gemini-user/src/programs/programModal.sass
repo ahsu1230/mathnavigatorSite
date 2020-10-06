@@ -1,32 +1,33 @@
 @import "../utils/_constants.sass"
 
-.program-modal
-    width: $propUnit14x
+#view-programs .program-modal
+    width: $spacing64x
     padding: $spacing1x $spacing6x $spacing2x
-    box-shadow: 0px 2px 8px $colorBlackDark
+    box-shadow: 0px 2px 8px $colorBlack
     background-color: $colorWhite
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
         width: 100%
         box-sizing: border-box
     
     h1
+        margin: 0
         padding-top: $spacing3x
-        color: $colorBlackDark
+        color: $colorBlack
         font-family: $fontFamilyRoboto
         font-size: $fontSize1
         font-weight: 400
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
 
     h4
-        margin-bottom: $spacing4x
-        padding: $spacing1x 0
-        border-bottom: 1px solid $colorBlackDark
+        padding: 4px 0 8px
+        border-bottom: 1px solid $colorBlack
         font-weight: 400
+        color: $colorGrayDark
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
 
     ul
@@ -34,47 +35,38 @@
         padding: 0
 
         &.use-scrollbar
-            max-height: $propUnit2x
+            max-height: $spacing8x
             padding-right: $spacing2x
             overflow-y: scroll
 
     li
         display: flex
         justify-content: space-between
-        align-items: center
-        margin-bottom: $spacing2x
+        align-items: start
+        padding: $spacing2x 0
+        border-bottom: 1px solid $colorGrayLight
         list-style: none
-        font-family: $fontFamilyRoboto
         line-height: $lineHeight0
+        font-family: $fontFamilyRoboto
         font-size: $fontSize0
 
-        @media screen and (max-width: $mediaWidth1)
+        @media screen and (max-width: $containerWidthPxTablet)
             flex-flow: column nowrap
+            align-items: center
+            margin-bottom: 0
+            padding: $spacing2x 0
+            line-height: $lineHeight1
+            text-align: center
 
     .name
-        display: inline-block
-        width: $propUnit3x
-        margin-right: $spacing2x
-        color: $colorPrimary
+        font-weight: 500
+        color: $colorBlackLight
 
-        @media screen and (max-width: $mediaWidth1)
-            display: block
-            width: auto
-            margin: 0
-            text-align: center
-    
-    .full
-        color: $colorRed
-
-    .times
-        display: inline-flex
-        flex-flow: column nowrap
-        width: $propUnit7x
-    
-        @media screen and (max-width: $mediaWidth1)
-            display: flex
-            text-align: center
+        @media screen and (max-width: $containerWidthPxTablet)
+            width: 100%
 
     a
-        @media screen and (max-width: $mediaWidth1)
-            margin: $spacing1x 0 $spacing4x
+        color: $colorTurquoise
+    
+    .full, .full-state
+        color: $colorRed

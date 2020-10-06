@@ -1,6 +1,11 @@
 "use strict";
 import React from "react";
 
+/* 
+    THIS FILE IS DEPRECATED.
+    DO NOT ADD additional functions / constants to this file.
+*/
+
 const seasonOrder = ["spring", "summer", "fall", "winter"];
 export function sortBySemester(semA, semB) {
     // Takes two semester IDs, e.g. 2020_fall
@@ -28,29 +33,10 @@ export function renderMultiline(lines) {
     });
 }
 
-export const subjectDisplayNames = {
-    math: "Math",
-    english: "English",
-    programming: "Computer Programming",
-};
-
 export const chargeDisplayNames = {
     charge: "Charge",
     refund: "Refund",
     pay_check: "Paid (Check)",
     pay_cash: "Paid (Cash)",
     pay_paypal: "Paid (Paypal)",
-};
-export const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-    }).format(amount);
-};
-
-export const getFullStateName = (fullState, append = false) => {
-    const state = ["", "ALMOST FULL", "FULL"][fullState];
-
-    if (append && state) return " (" + state + ")";
-    return state;
 };

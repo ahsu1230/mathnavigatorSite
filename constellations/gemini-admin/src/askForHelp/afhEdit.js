@@ -26,7 +26,7 @@ export class AskForHelpEditPage extends React.Component {
 
     componentDidMount() {
         const afhId = this.props.afhId;
-        API.get("api/askforhelp/subjects").then((res) => {
+        API.get("api/subjects").then((res) => {
             const subjects = res.data;
             this.setState({
                 allSubjects: subjects,
