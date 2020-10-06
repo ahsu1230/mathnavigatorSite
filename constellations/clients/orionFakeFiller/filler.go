@@ -47,7 +47,7 @@ func runFiller() {
 		9,
 		12,
 		"math",
-		"Students should take this course if they aim to take the AP Calculus Exam",
+		"Students should take this course if they aim to take the AP Calculus Exam.",
 	)
 
 	createProgram(
@@ -56,7 +56,7 @@ func runFiller() {
 		10,
 		12,
 		"programming",
-		"Students should take this course if they aim to take the AP Java Exam",
+		"Students should take this course if they aim to take the AP Java Exam.",
 	)
 
 	createProgram(
@@ -65,7 +65,7 @@ func runFiller() {
 		8,
 		11,
 		"math",
-		"Students should take the course if they aim to take the SAT Math Exam",
+		"Students should take the course if they aim to take the SAT Math Exam.",
 	)
 
 	createProgram(
@@ -74,7 +74,7 @@ func runFiller() {
 		9,
 		12,
 		"math",
-		"Students should take the course if they aim to take the AMC Test",
+		"Students should take the course if they aim to take the AMC Test.",
 	)
 
 	// Create semesters
@@ -116,7 +116,7 @@ func runFiller() {
 
 	createOnlineLocation(
 		"zoom",
-		"Zoom Video Conference"
+		"Zoom Video Conference",
 	)
 
 	// Create achievements
@@ -127,12 +127,22 @@ func runFiller() {
 
 	createAchieve(
 		"2020",
-		"5 students scored an 800 on SAT Math!",
+		"Five students scored an 800 on SAT Math!",
+	)
+
+	createAchieve(
+		"2020",
+		"80% of our SAT2 Subject Math class scored above 750. 50% scored 800!",
 	)
 
 	createAchieve(
 		"2019",
-		"10 students scored a 5 on AP Java!",
+		"All 12 students scored a 4 or 5 on the AP Java exam.",
+	)
+
+	createAchieve(
+		"2019",
+		"Three students qualified for the National American Mathematics Competition.",
 	)
 
 	// Create announcements

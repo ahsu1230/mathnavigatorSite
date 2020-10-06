@@ -89,6 +89,14 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 		message = "Database duplicate entry conflict. Please change some fields."
 		code = http.StatusBadRequest
 
+	} else if errors.Is(wrappedErr, appErrors.ERR_MYSQL_FOREIGN_KEY_CHILD_CONSTRAINT_FAILURE) {
+		message = "Foreign key child violation. This can mean you are referencing an id that does not exist."
+		code = http.StatusBadRequest
+
+	} else if errors.Is(wrappedErr, appErrors.ERR_MYSQL_FOREIGN_KEY_PARENT_CONSTRAINT_FAILURE) {
+		message = "Foreign key parent violation. This can mean you are deleting an id that is currently being used by another table."
+		code = http.StatusBadRequest
+
 	} else if errors.Is(wrappedErr, appErrors.ERR_SQL_NO_ROWS) {
 		message = "No results from query. Please change your search terms."
 		code = http.StatusNotFound
