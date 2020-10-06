@@ -10,10 +10,8 @@ import {
     Switch,
 } from "react-router-dom";
 import { history } from "./history.js";
-// import { createPageTitle, getNavByUrl } from '../constants.js';
 import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
 
-import { AccountPage } from "../account/account.js";
 import { AchievementPage } from "../achievements/achievements.js";
 import { AFHPage } from "../afh/afh.js";
 import { AnnouncePage } from "../announcements/announce.js";
@@ -26,7 +24,6 @@ import RegisterPage from "../register/register.js";
 import RegisterSuccessPage from "../register/registerSuccess.js";
 import Footer from "../footer/footer.js";
 
-const Account = () => <AccountPage />;
 const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
 const Announce = () => <AnnouncePage />;
@@ -67,7 +64,6 @@ class App extends React.Component {
                 <Header />
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/account" component={Account} />
                     <Route path="/announcements" component={Announce} />
                     <Route path="/ask-for-help" component={AFH} />
                     <Route path="/class/:classId" component={Class} />
