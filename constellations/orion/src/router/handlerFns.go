@@ -14,7 +14,7 @@ import (
 
 func NoRouteHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		logger.Info("API endpoint unrecognized by handler", logger.Fields{})
+		logger.Info("Handler: API endpoint unrecognized", logger.Fields{})
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"message": "Unrecognized path",
 		})
@@ -26,7 +26,7 @@ func AppRequestHandler() gin.HandlerFunc {
 
 		// Log with Request UUID
 		requestUuid := uuid.New()
-		logger.Info("Handler received request", logger.Fields{
+		logger.Info("Handler: Received request", logger.Fields{
 			"requestUuid":   requestUuid,
 			"requestMethod": c.Request.Method,
 			"requestURL":    c.Request.URL,
@@ -49,7 +49,7 @@ func AppRequestHandler() gin.HandlerFunc {
 		}
 
 		if !c.IsAborted() {
-			logger.Info("Handler completed request!", logger.Fields{
+			logger.Info("Handler: Completed request", logger.Fields{
 				"requestUuid": requestUuid,
 				"fullPath":    c.FullPath(),
 				"status":      c.Writer.Status(),
@@ -103,4 +103,9 @@ func createAppErrorFromResponseErrors(c *gin.Context) appErrors.ResponseError {
 		Message: message,
 		Error:   wrappedErr,
 	}
+}
+
+func GetHealth(c *gin.Context) {
+	logger.Message("Handler.GetHealth")
+	c.Status(http.StatusOK)
 }
