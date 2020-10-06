@@ -15,7 +15,7 @@ import (
 func TestCreateLocations(t *testing.T) {
 	utils.SendCreateLocation(t, true, "loc1", "High School C", "4040 Location Rd", "City", "MA", "77294", "Room 1", false)
 	utils.SendCreateLocation(t, true, "loc2", "High School D", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2", false)
-	utils.SendCreateLocation(t, true, "loc3", "High School E", "4040 Location Blvd", "Eity", "ND", "08430-0302", "Room 3", false)
+	utils.SendCreateLocation(t, true, "zoom", "Zoom Conference", "", "", "", "", "", true)
 
 	// Call Get All!
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/locations/all", nil)
@@ -29,12 +29,15 @@ func TestCreateLocations(t *testing.T) {
 	assert.EqualValues(t, "loc1", locations[0].LocationId)
 	assert.EqualValues(t, "High School C", locations[0].Title)
 	assert.EqualValues(t, "4040 Location Rd", locations[0].Street.String)
+	assert.EqualValues(t, false, locations[0].IsOnline)
 	assert.EqualValues(t, "loc2", locations[1].LocationId)
 	assert.EqualValues(t, "High School D", locations[1].Title)
 	assert.EqualValues(t, "4040 Location Ave", locations[1].Street.String)
-	assert.EqualValues(t, "loc3", locations[2].LocationId)
-	assert.EqualValues(t, "High School E", locations[2].Title)
-	assert.EqualValues(t, "4040 Location Blvd", locations[2].Street.String)
+	assert.EqualValues(t, false, locations[1].IsOnline)
+	assert.EqualValues(t, "zoom", locations[2].LocationId)
+	assert.EqualValues(t, "Zoom Conference", locations[2].Title)
+	assert.EqualValues(t, "", locations[2].Street.String)
+	assert.EqualValues(t, true, locations[2].IsOnline)
 	assert.EqualValues(t, 3, len(locations))
 
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)

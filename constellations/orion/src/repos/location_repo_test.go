@@ -55,7 +55,7 @@ func TestSelectAllLocations(t *testing.T) {
 			domains.NewNullString("MD"),
 			domains.NewNullString("20854"),
 			domains.NewNullString("Room 2"),
-			false,
+			true,
 		)
 	mock.ExpectPrepare("^SELECT (.+) FROM locations").
 		ExpectQuery().
@@ -79,7 +79,7 @@ func TestSelectAllLocations(t *testing.T) {
 			State:      domains.NewNullString("MD"),
 			Zipcode:    domains.NewNullString("20854"),
 			Room:       domains.NewNullString("Room 2"),
-			IsOnline:   false,
+			IsOnline:   true,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -179,6 +179,7 @@ func TestInsertLocation(t *testing.T) {
 			domains.NewNullString("MD"),
 			domains.NewNullString("20854"),
 			domains.NewNullString("Room 2"),
+			false,
 		).
 		WillReturnResult(result)
 	location := domains.Location{
@@ -189,6 +190,7 @@ func TestInsertLocation(t *testing.T) {
 		State:      domains.NewNullString("MD"),
 		Zipcode:    domains.NewNullString("20854"),
 		Room:       domains.NewNullString("Room 2"),
+		IsOnline:   false,
 	}
 	_, err := repo.Insert(testUtils.Context, location)
 	if err != nil {
@@ -221,6 +223,7 @@ func TestUpdateLocation(t *testing.T) {
 			domains.NewNullString("CA"),
 			domains.NewNullString("94016"),
 			domains.NewNullString("Room 41"),
+			false,
 			"xkcd",
 		).
 		WillReturnResult(result)
@@ -232,6 +235,7 @@ func TestUpdateLocation(t *testing.T) {
 		State:      domains.NewNullString("CA"),
 		Zipcode:    domains.NewNullString("94016"),
 		Room:       domains.NewNullString("Room 41"),
+		IsOnline:   false,
 	}
 	err := repo.Update(testUtils.Context, "xkcd", location)
 	if err != nil {

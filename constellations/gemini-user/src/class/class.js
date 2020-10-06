@@ -9,7 +9,7 @@ import API from "../utils/api.js";
 import {
     getFullTitle,
     displayPrice,
-    displayTimeString,
+    displayTimeStringOneLine,
     displayFeaturedString,
 } from "../utils/classUtils.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
@@ -171,7 +171,7 @@ export class ClassPage extends React.Component {
                         {semesterMap[classObj.semesterId].title}{" "}
                         {capitalizeWord(classObj.classKey)}
                     </Link>
-                    {displayTimeString(classObj)}
+                    {displayTimeStringOneLine(classObj)}
                 </div>
             );
         });
@@ -255,7 +255,7 @@ export class ClassPage extends React.Component {
                 <div className="block">
                     <div id="class-times">
                         <h3 className="times">Times</h3>
-                        {displayTimeString(classObj)}
+                        {displayTimeStringOneLine(classObj)}
                         {firstSession}
                         {lastSession}
                     </div>

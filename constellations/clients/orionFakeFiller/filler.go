@@ -41,41 +41,55 @@ func main() {
 
 func runFiller() {
 	// Create programs
-	createProgram(
-		"ap_calculus",
-		"AP Calculus",
-		9,
-		12,
-		"math",
-		"Students should take this course if they aim to take the AP Calculus Exam.",
-	)
+	createProgram(`{
+		"programId": "ap_calculus",
+		"title": "AP Calculus",
+		"grade1": 9,
+		"grade2": 12,
+		"subject": "math",
+		"description": "Students should take this course if they aim to take the AP Calculus Exam.",
+		"featured": "popular"
+	}`, "ap_calculus")
 
-	createProgram(
-		"ap_java",
-		"AP Java",
-		10,
-		12,
-		"programming",
-		"Students should take this course if they aim to take the AP Java Exam.",
-	)
+	createProgram(`{
+		"programId": "ap_java",
+		"title": "AP Java",
+		"grade1": 10,
+		"grade2": 12,
+		"subject": "programming",
+		"description": "Students should take this course if they aim to take the AP Java Exam.",
+		"featured": "new"
+	}`, "ap_java")
 
-	createProgram(
-		"sat_math",
-		"SAT Math",
-		8,
-		11,
-		"math",
-		"Students should take the course if they aim to take the SAT Math Exam.",
-	)
+	createProgram(`{
+		"programId": "sat_math",
+		"title": "SAT Math",
+		"grade1": 8,
+		"grade2": 12,
+		"subject": "math",
+		"description": "Students should take the course if they aim to take the SAT Math Exam.",
+		"featured": "popular"
+	}`, "sat_math")
 
-	createProgram(
-		"amc_prep",
-		"AMC Prep",
-		9,
-		12,
-		"math",
-		"Students should take the course if they aim to take the AMC Test.",
-	)
+	createProgram(`{
+		"programId": "amc_prep",
+		"title": "AMC 10 Preparation",
+		"grade1": 9,
+		"grade2": 10,
+		"subject": "math",
+		"description": "Students should take the course if they aim to take the AMC Competition Exam.",
+		"featured": "none"
+	}`, "amc_prep")
+
+	createProgram(`{
+		"programId": "sat_writing",
+		"title": "SAT Essay Writing",
+		"grade1": 9,
+		"grade2": 12,
+		"subject": "english",
+		"description": "Students should take this course to improve fundamental essay writing skills and learn to succeed on the SAT writing section.",
+		"featured": "popular"
+	}`, "sat_writing")
 
 	// Create semesters
 	createSemester(
@@ -159,86 +173,105 @@ func runFiller() {
 	)
 
 	// Create classes
-	createClass(
-		"ap_calculus",
-		"2020_fall",
-		"class1",
-		"ap_calculus_2020_fall_class1",
-		"wchs",
-		"Tues 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "ap_calculus",
+		"semesterId": "2020_fall",
+		"classKey": "class1",
+		"classId": "ap_calculus_2020_fall_class1",
+		"locationId": "wchs",
+		"timesStr": "Tues 1pm - 2pm, Fri 3pm - 5pm",
+		"priceLumpSum": 800
+	}`, "ap_calculus_2020_fall_class1")
 
-	createClass(
-		"ap_java",
-		"2020_fall",
-		"class1",
-		"ap_java_2020_fall_class1",
-		"house1",
-		"Wed 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "ap_java",
+		"semesterId": "2020_fall",
+		"classKey": "class1",
+		"classId": "ap_java_2020_fall_class1",
+		"locationId": "zoom",
+		"timesStr": "Wed 1pm - 2pm",
+		"pricePerSession": 60
+	}`, "ap_java_2020_fall_class1")
 
-	createClass(
-		"amc_prep",
-		"2020_fall",
-		"class1",
-		"amc_prep_2020_fall_class1",
-		"house1",
-		"Thurs 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "amc_prep",
+		"semesterId": "2020_fall",
+		"classKey": "class1",
+		"classId": "amc_prep_2020_fall_class1",
+		"locationId": "house1",
+		"timesStr": "Thurs 1pm - 2pm",
+		"priceLumpSum": 640
+	}`, "amc_prep_2020_fall_class1")
 
-	createClass(
-		"ap_calculus",
-		"2021_summer",
-		"class1",
-		"ap_calculus_2021_summer_class1",
-		"wchs",
-		"Tues 5pm - 7pm",
-	)
+	createClass(`{
+		"programId": "ap_calculus",
+		"semesterId": "2021_summer",
+		"classKey": "class1",
+		"classId": "ap_calculus_2021_summer_class1",
+		"locationId": "wchs",
+		"timesStr": "Tues 5pm - 7pm",
+		"priceLumpSum": 640
+	}`, "ap_calculus_2021_summer_class1")
 
-	createClass(
-		"ap_calculus",
-		"2021_summer",
-		"class2",
-		"ap_calculus_2021_summer_class2",
-		"wchs",
-		"Tues 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "ap_calculus",
+		"semesterId": "2021_summer",
+		"classKey": "class2",
+		"classId": "ap_calculus_2021_summer_class2",
+		"locationId": "wchs",
+		"timesStr": "Tues 1pm - 2pm",
+		"priceLumpSum": 640
+	}`, "ap_calculus_2021_summer_class2")
 
-	createClass(
-		"ap_calculus",
-		"2021_summer",
-		"class3",
-		"ap_calculus_2021_summer_class3",
-		"wchs",
-		"Wed 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "ap_calculus",
+		"semesterId": "2021_summer",
+		"classKey": "class3",
+		"classId": "ap_calculus_2021_summer_class3",
+		"locationId": "wchs",
+		"timesStr": "Wed 1pm - 2pm",
+		"priceLumpSum": 640
+	}`, "ap_calculus_2021_summer_class3")
 
-	createClass(
-		"ap_java",
-		"2021_summer",
-		"class1",
-		"ap_java_2021_summer_class1",
-		"house1",
-		"Tues 5pm - 7pm",
-	)
+	createClass(`{
+		"programId": "ap_java",
+		"semesterId": "2021_summer",
+		"classKey": "class1",
+		"classId": "ap_java_2021_summer_class1",
+		"locationId": "zoom",
+		"timesStr": "Tues 5pm - 7pm",
+		"priceLumpSum": 720
+	}`, "ap_java_2021_summer_class1")
 
-	createClass(
-		"ap_calculus",
-		"2021_winter",
-		"class1",
-		"ap_calculus_2021_winter_class1",
-		"wchs",
-		"Tues 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "ap_calculus",
+		"semesterId": "2021_winter",
+		"classKey": "class1",
+		"classId": "ap_calculus_2021_winter_class1",
+		"locationId": "wchs",
+		"timesStr": "Tues 1pm - 2pm",
+		"priceLumpSum": 640
+	}`, "ap_calculus_2021_winter_class1")
 
-	createClass(
-		"sat_math",
-		"2021_winter",
-		"class1",
-		"sat_math_2021_winter_class1",
-		"zoom",
-		"Tues 1pm - 2pm",
-	)
+	createClass(`{
+		"programId": "sat_math",
+		"semesterId": "2021_winter",
+		"classKey": "class1",
+		"classId": "sat_math_2021_winter_class1",
+		"locationId": "zoom",
+		"timesStr": "Tues 1pm - 2pm",
+		"priceLumpSum": 640
+	}`, "sat_math_2021_winter_class1")
+
+	createClass(`{
+		"programId": "sat_writing",
+		"semesterId": "2021_winter",
+		"classKey": "class1",
+		"classId": "sat_writing_2021_winter_class1",
+		"locationId": "house1",
+		"timesStr": "Thurs 1pm - 2pm, Fri 1pm - 2pm",
+		"pricePerSession": 80
+	}`, "sat_writing_2021_winter_class1")
 
 	// Create sessions
 	createSessions(
@@ -267,7 +300,7 @@ func runFiller() {
 		date,
 		"AP Java Office Hours",
 		"programming",
-		"wchs",
+		"zoom",
 		"Final Project AMA",
 	)
 	date = time.Now().Add(time.Hour * 24 * 17)
@@ -275,24 +308,34 @@ func runFiller() {
 		date,
 		"AP Java Office Hours",
 		"programming",
-		"wchs",
+		"zoom",
 		"Please bring your exam notes to review!",
+	)
+
+	date = time.Now().Add(time.Hour * 24 * 6)
+	createAFH(
+		date,
+		"SAT Math Extra Practice",
+		"math",
+		"wchs",
+		"Please come early to give yourself time to prepare!",
+	)
+
+	date = time.Now().Add(time.Hour * 24 * 7)
+	createAFH(
+		date,
+		"SAT Math Extra Practice Review",
+		"math",
+		"wchs",
+		"Review from extra practice session.",
 	)
 
 	account1.Fill()
 	account2.Fill(afhId1, afhId2)
 }
 
-func createProgram(programId string, title string, grade1, grade2 int, subject, description string) (uint, error) {
-	programBody := strings.NewReader(fmt.Sprintf(`{
-		"programId": "%s",
-		"title": "%s",
-		"grade1": %d,
-		"grade2": %d,
-		"subject": "%s",
-		"description": "%s",
-		"featured": "none"
-	}`, programId, title, grade1, grade2, subject, description))
+func createProgram(body, programId string) (uint, error) {
+	programBody := strings.NewReader(body)
 	log.Println("Creating program " + programId + "...")
 	respBody := utils.SendPostRequest("/api/programs/create", programBody)
 	id, _ := utils.GetIdFromBody(respBody)
@@ -365,26 +408,8 @@ func createAnnounce(author, message, onHomePage string) (uint, error) {
 	return id, nil
 }
 
-func createClass(programId, semesterId, classKey, classId, locationId, times string) (uint, error) {
-	priceLumpSum := 800
-
-	classBody := strings.NewReader(fmt.Sprintf(`{
-		"programId": "%s",
-		"semesterId": "%s",
-		"classKey": "%s",
-		"classId": "%s",
-		"locationId": "%s",
-		"timesStr": "%s",
-		"priceLumpSum": %d
-	}`,
-		programId,
-		semesterId,
-		classKey,
-		classId,
-		locationId,
-		times,
-		priceLumpSum,
-	))
+func createClass(body, classId string) (uint, error) {
+	classBody := strings.NewReader(body)
 	log.Println("Creating class " + classId + "...")
 	respBody := utils.SendPostRequest("/api/classes/create", classBody)
 	id, _ := utils.GetIdFromBody(respBody)
