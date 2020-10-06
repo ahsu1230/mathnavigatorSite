@@ -17,7 +17,7 @@ import RowCardBasic from "./rowCardBasic.js";
  *
  * - title - The main title of the card (required)
  * - subtitle - The subtitle (optional) for the card
- * - editUrl - The link url when the user clicks on "Edit"
+ * - editUrl - The link url when the user clicks on "Edit". Can be omitted.
  * - groupList - A list of objects. Every object basically represents the contents of a RowCardBasic
  *               (with many fields and many texts).
  * Example:
@@ -47,9 +47,11 @@ export default class RowCardGroup extends RowCardBasic {
             const rowTexts = this.renderTexts(texts);
             return (
                 <div className="group" key={index}>
-                    <Link className="edit-url" to={obj.editUrl}>
-                        Edit >
-                    </Link>
+                    {obj.editUrl && (
+                        <Link className="edit-url" to={obj.editUrl}>
+                            Edit >
+                        </Link>
+                    )}
                     {rowFields}
                     {rowTexts}
                 </div>

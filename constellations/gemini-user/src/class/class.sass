@@ -142,9 +142,9 @@
                     border-left: none
 
         h3
-            margin: $spacing3x 0 $spacing1x
-            line-height: $lineHeight1
-            font-size: $fontSize1
+            margin: $spacing3x 0 0
+            line-height: $lineHeight0
+            font-size: $fontSize0
             font-weight: 400
             color: $colorGrayMed
 
@@ -153,14 +153,24 @@
 
             &.location, &.times
                 margin-top: 0
+                margin-bottom: 4px
 
                 @media screen and (max-width: $containerWidthPxTablet)
                     margin-top: $spacing4x
+        
+        #class-location .title,
+        #class-times .class-times
+            font-weight: 500
 
         p, .line
             margin: 0
             line-height: $lineHeight0
             font-size: $fontSize0
+
+        .disclaimer
+            line-height: 20px
+            font-size: 14px
+            color: $colorGrayMed
 
 
     #class-footer

@@ -123,7 +123,7 @@ export class HomePage extends React.Component {
                     />
                 </div>
 
-                <div className="showSection">{sectionComponent}</div>
+                <div className="show-section">{sectionComponent}</div>
             </div>
         );
     }

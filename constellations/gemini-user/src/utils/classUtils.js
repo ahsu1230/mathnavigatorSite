@@ -32,6 +32,15 @@ export const displayTimeString = (classObj) => {
     return <div className="class-times">{timeLines}</div>;
 };
 
+export const displayTimeStringOneLine = (classObj) => {
+    const timesStr = classObj.timesStr || "";
+    const times = timesStr
+        .split(",")
+        .map((str) => str.trim())
+        .join(" & ");
+    return <div className="class-times line">{times}</div>;
+};
+
 export const displayFeaturedString = (program) => {
     if (program.featured == "popular") {
         return "This program is one of our most popular programs.";

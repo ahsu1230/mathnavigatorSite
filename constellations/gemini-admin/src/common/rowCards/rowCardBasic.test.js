@@ -8,13 +8,13 @@ describe("RowCardBasic", () => {
     test("renders", () => {
         expect(component.exists()).toBe(true);
         expect(component.find(".row-card").exists()).toBe(true);
-        expect(component.find("Link").text()).toBe("Edit >");
     });
 
     test("renders with editUrl", () => {
-        expect(component.find("Link").prop("to")).toBeUndefined();
+        expect(component.find("Link").exists()).toBe(false);
         component.setProps({ editUrl: "/edit/program/1" });
         expect(component.find("Link").prop("to")).toBe("/edit/program/1");
+        expect(component.find("Link").text()).toBe("Edit >");
     });
 
     test("renders with title", () => {

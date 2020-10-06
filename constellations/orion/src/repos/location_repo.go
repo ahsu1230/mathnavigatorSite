@@ -113,8 +113,9 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (
 		"city, " +
 		"state, " +
 		"zipcode, " +
-		"room" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"room, " +
+		"is_online" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
 		return 0, appErrors.WrapDbPrepare(err, statement)
@@ -131,7 +132,8 @@ func (lr *locationRepo) Insert(ctx context.Context, location domains.Location) (
 		location.City,
 		location.State,
 		location.Zipcode,
-		location.Room)
+		location.Room,
+		location.IsOnline)
 	if err != nil {
 		return 0, appErrors.WrapDbExec(err, statement, location)
 	}
@@ -156,7 +158,8 @@ func (lr *locationRepo) Update(ctx context.Context, locationId string, location 
 		"city=?, " +
 		"state=?, " +
 		"zipcode=?, " +
-		"room=? " +
+		"room=?, " +
+		"is_online=? " +
 		"WHERE location_id=?"
 	stmt, err := lr.db.Prepare(statement)
 	if err != nil {
@@ -174,6 +177,7 @@ func (lr *locationRepo) Update(ctx context.Context, locationId string, location 
 		location.State,
 		location.Zipcode,
 		location.Room,
+		location.IsOnline,
 		locationId)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, location, locationId)

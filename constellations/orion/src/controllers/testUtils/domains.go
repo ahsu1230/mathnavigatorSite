@@ -103,7 +103,7 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		LastName:   lastName,
 		MiddleName: domains.NewNullString(middleName),
 		Email:      email,
-		Phone:      phone,
+		Phone:      domains.NewNullString(phone),
 		IsGuardian: isGuardian,
 		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),

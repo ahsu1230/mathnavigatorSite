@@ -28,6 +28,11 @@ export const createOnlineLocation = (location) => {
             <div className="line title">{location.title}</div>
             {location.room && <div className="line">{location.room}</div>}
             <div className="line">Online only</div>
+            <div className="line disclaimer">
+                Invitation links will be
+                <br />
+                posted in Google Classroom
+            </div>
         </div>
     );
 };

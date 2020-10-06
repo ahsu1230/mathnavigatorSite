@@ -13,7 +13,7 @@ import RowCardBasic from "./rowCardBasic.js";
  *
  * - title - The main title of the card (required)
  * - subtitle - The subtitle (optional) for the card
- * - editUrl - The link url when the user clicks on "Edit"
+ * - editUrl - The link url when the user clicks on "Edit". Can be omitted.
  * - fieldsList - A list of list of objects. Every inner-list represents a column.
  * And inside each inner-list is an object that contains a "label" and value (just like RowCardBasic).
  * Example:
@@ -52,9 +52,11 @@ export default class RowCardColumns extends RowCardBasic {
 
         return (
             <div className="row-card">
-                <Link className="edit-url" to={this.props.editUrl}>
-                    Edit >
-                </Link>
+                {this.props.editUrl && (
+                    <Link className="edit-url" to={this.props.editUrl}>
+                        Edit >
+                    </Link>
+                )}
                 {title}
                 <div className="column-wrapper">{rowColumns}</div>
                 {rowTexts}

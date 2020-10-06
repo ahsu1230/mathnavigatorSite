@@ -10,6 +10,7 @@ type Handler struct {
 }
 
 func (h *Handler) SetupApiEndpoints() {
+	h.Engine.GET("/api/health", GetHealth)
 	h.Engine.GET("/api/classesbysemesters", controllers.GetAllProgramsSemestersClasses)
 	h.Engine.GET("/api/subjects", controllers.GetAllSubjects)
 

@@ -80,11 +80,8 @@ describe("Class Page", () => {
             "Potomac, MD 20854"
         );
 
-        expect(component.find("#class-times .line").at(0).text()).toBe(
-            "Tue. 5:00pm - 7:00pm"
-        );
-        expect(component.find("#class-times .line").at(1).text()).toBe(
-            "Sat. 1:00pm - 3:00pm"
+        expect(component.find("#class-times .line").text()).toBe(
+            "Tue. 5:00pm - 7:00pm & Sat. 1:00pm - 3:00pm"
         );
         expect(component.find("#class-pricing p").at(0).text()).toBe(
             "Price per session: $50.00"
