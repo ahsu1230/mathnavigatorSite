@@ -69,8 +69,8 @@ describe("Account Info", () => {
                 amount: -1000,
                 createdAt: "2020-01-01T00:00:00Z",
                 id: 1,
-                paymentNotes: null,
-                paymentType: "charge",
+                notes: null,
+                type: "charge",
                 updatedAt: "2020-01-01T00:00:00Z",
             },
             {
@@ -78,8 +78,8 @@ describe("Account Info", () => {
                 amount: 1000,
                 createdAt: "2020-01-01T00:00:00Z",
                 id: 2,
-                paymentNotes: "Payment note",
-                paymentType: "pay_paypal",
+                notes: "Payment note",
+                type: "pay_paypal",
                 updatedAt: "2020-01-01T00:00:00Z",
             },
         ];

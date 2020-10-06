@@ -1,11 +1,12 @@
 "use strict";
 require("./homeSection.sass");
 import React from "react";
-import API from "../api.js";
 import { Link } from "react-router-dom";
-import { getFullName } from "../common/userUtils.js";
-import { EmptyMessage } from "./home.js";
 import moment from "moment";
+import API from "../api.js";
+import { getFullName } from "../common/userUtils.js";
+import RowCardColumns from "../common/rowCards/rowCardColumns.js";
+import { EmptyMessage } from "./home.js";
 
 const TAB_USERS = "users";
 
@@ -26,18 +27,41 @@ export class HomeTabSectionUsers extends React.Component {
     render() {
         let newUsers = this.state.newUsers.map((row, index) => {
             return (
-                <li className="container-flex" key={index}>
-                    <div className="id">{row.id} </div>
-                    <div className="name">{getFullName(row)} </div>
-                    <div className="email">{row.email} </div>
-                    <div className="from-now">
-                        {moment(row.createdAt).fromNow()}{" "}
-                    </div>
-                    <div className="view">
-                        <Link to={"/users/" + row.id + "/edit"}>
-                            {"View >"}
-                        </Link>
-                    </div>
+                <li key={index}>
+                    <RowCardColumns
+                        title={getFullName(row)}
+                        editUrl={"/users/" + row.id + "/edit"}
+                        fieldsList={[
+                            [
+                                {
+                                    label: "Email",
+                                    value: row.email,
+                                },
+                                {
+                                    label: "Phone",
+                                    value: row.phone,
+                                },
+                                {
+                                    label: "Created",
+                                    value: moment(row.createdAt).fromNow(),
+                                },
+                            ],
+                            [
+                                {
+                                    label: "IsGuardian",
+                                    value: row.isGuardian ? "true" : "false",
+                                },
+                                {
+                                    label: "School",
+                                    value: row.school,
+                                },
+                                {
+                                    label: "GraduationYear",
+                                    value: row.graduationYear,
+                                },
+                            ],
+                        ]}
+                    />
                 </li>
             );
         });
@@ -52,13 +76,6 @@ export class HomeTabSectionUsers extends React.Component {
                 </div>
 
                 <div className="class-section">
-                    <div className="container-flex">
-                        <div className={"list-header id"}>User ID</div>
-                        <div className={"list-header name"}>Name</div>
-                        <div className={"list-header email"}>Email</div>
-                        <div className={"list-header from-now"}>Created</div>
-                        <div className={"list-header view"}> </div>
-                    </div>
                     <EmptyMessage
                         section={TAB_USERS}
                         length={this.state.newUsers.length}

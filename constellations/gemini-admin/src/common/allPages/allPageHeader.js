@@ -20,9 +20,11 @@ export default class AllPageHeader extends React.Component {
             <div className="all-page-header">
                 <div className="title-container">
                     <h1>{this.props.title}</h1>
-                    <Link to={this.props.addUrl}>
-                        <button>{this.props.addButtonTitle}</button>
-                    </Link>
+                    {this.props.addUrl && (
+                        <Link to={this.props.addUrl}>
+                            <button>{this.props.addButtonTitle}</button>
+                        </Link>
+                    )}
                 </div>
                 <p className="description">{this.props.description}</p>
             </div>
