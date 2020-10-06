@@ -12,7 +12,7 @@ describe("Program Card", () => {
     test("renders 1 card", () => {
         const program = {
             programId: "ap_bc_calculus",
-            name: "AP BC Calculus",
+            title: "AP BC Calculus",
             grade1: 10,
             grade2: 12,
             description: "Preparation for AP exam",
@@ -21,7 +21,7 @@ describe("Program Card", () => {
 
         expect(component.find("h2").text()).toBe("AP BC Calculus");
         expect(component.find("h3").text()).toBe("Grades 10 - 12");
-        expect(component.find("button").text()).toBe("View");
+        expect(component.find("button").text()).toBe("View Details");
     });
 
     test("renders showModal", () => {

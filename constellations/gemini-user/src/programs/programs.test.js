@@ -7,9 +7,6 @@ describe("Programs Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("#star-legend").text()).toContain(
-            "Featured Programs"
-        );
         expect(component.find("ProgramSection").length).toBe(0);
     });
 

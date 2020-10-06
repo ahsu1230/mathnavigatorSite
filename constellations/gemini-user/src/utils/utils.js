@@ -1,4 +1,6 @@
 "use strict";
+import React from "react";
+
 /* 
     THIS FILE IS DEPRECATED.
     DO NOT ADD additional functions / constants to this file.

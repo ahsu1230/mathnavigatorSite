@@ -16,39 +16,40 @@ describe("Payment Tab", () => {
         );
     });
 
-    test("renders 2 transactions", () => {
-        const transactions = [
-            {
-                accountId: 1,
-                amount: -1000,
-                createdAt: "2020-01-01T00:00:00Z",
-                id: 1,
-                paymentNotes: null,
-                paymentType: "charge",
-                updatedAt: "2020-01-01T00:00:00Z",
-            },
-            {
-                accountId: 1,
-                amount: 1000,
-                createdAt: "2020-01-01T00:00:00Z",
-                id: 2,
-                paymentNotes: "Payment note",
-                paymentType: "pay_paypal",
-                updatedAt: "2020-01-01T00:00:00Z",
-            },
-        ];
-        component.setState({ transactions: transactions });
+    // TODO: enable again when account is used
+    // test("renders 2 transactions", () => {
+    //     const transactions = [
+    //         {
+    //             accountId: 1,
+    //             amount: -1000,
+    //             createdAt: "2020-01-01T00:00:00Z",
+    //             id: 1,
+    //             paymentNotes: null,
+    //             paymentType: "charge",
+    //             updatedAt: "2020-01-01T00:00:00Z",
+    //         },
+    //         {
+    //             accountId: 1,
+    //             amount: 1000,
+    //             createdAt: "2020-01-01T00:00:00Z",
+    //             id: 2,
+    //             paymentNotes: "Payment note",
+    //             paymentType: "pay_paypal",
+    //             updatedAt: "2020-01-01T00:00:00Z",
+    //         },
+    //     ];
+    //     component.setState({ transactions: transactions });
 
-        let row0 = component.find("ul").at(1);
-        expect(row0.text()).toContain("1/1/2020");
-        expect(row0.text()).toContain("Paid (Paypal)");
-        expect(row0.text()).toContain("$1,000.00");
-        expect(row0.text()).toContain("$0.00");
+    //     let row0 = component.find("ul").at(1);
+    //     expect(row0.text()).toContain("1/1/2020");
+    //     expect(row0.text()).toContain("Paid (Paypal)");
+    //     expect(row0.text()).toContain("$1,000.00");
+    //     expect(row0.text()).toContain("$0.00");
 
-        let row1 = component.find("ul").at(2);
-        expect(row1.text()).toContain("1/1/2020");
-        expect(row1.text()).toContain("Charge");
-        expect(row1.text()).toContain("-$1,000.00");
-        expect(row1.text()).toContain("-$1,000.00");
-    });
+    //     let row1 = component.find("ul").at(2);
+    //     expect(row1.text()).toContain("1/1/2020");
+    //     expect(row1.text()).toContain("Charge");
+    //     expect(row1.text()).toContain("-$1,000.00");
+    //     expect(row1.text()).toContain("-$1,000.00");
+    // });
 });

@@ -140,10 +140,10 @@ export class ClassPage extends React.Component {
         return (
             <section id="program-info">
                 {fullStateSection}
-                <p>
+                <p className="grades">
                     Grades: {program.grade1} - {program.grade2}
                 </p>
-                <p>{program.description}</p>
+                <p className="description">{program.description}</p>
             </section>
         );
     };
@@ -253,15 +253,19 @@ export class ClassPage extends React.Component {
                     <div id="class-location">{createLocation(location)}</div>
                 </div>
                 <div className="block">
-                    <h3 className="times">Times</h3>
-                    {displayTimeString(classObj)}
-                    {firstSession}
-                    {lastSession}
+                    <div id="class-times">
+                        <h3 className="times">Times</h3>
+                        {displayTimeString(classObj)}
+                        {firstSession}
+                        {lastSession}
+                    </div>
 
-                    <h3 className="pricing">Pricing</h3>
-                    <div id="class-pricing">
-                        <p>{priceString}</p>
-                        <p>{classObj.paymentNotes}</p>
+                    <div id="class-price">
+                        <h3 className="pricing">Pricing</h3>
+                        <div id="class-pricing">
+                            <p>{priceString}</p>
+                            <p>{classObj.paymentNotes}</p>
+                        </div>
                     </div>
                 </div>
             </section>

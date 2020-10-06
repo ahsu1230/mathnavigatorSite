@@ -9,6 +9,7 @@
         "test": "jest --verbose",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
+        "update-snapshots": "jest --updateSnapshot",
         "prettify": "prettier --write \"**/*.js\""
     },
     "repository": {

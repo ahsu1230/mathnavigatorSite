@@ -36,11 +36,18 @@ export const getImageForProgramClass = (programObj) => {
     return getRandomImageFrom(ImgSrcMap[programObj.subject]);
 };
 
-const getRandomImageFrom = (imgArray) => {
+const getRandomImageFrom = (array) => {
+    let imgArray = array || [];
+    if (imgArray.length == 0) {
+        return null;
+    }
     const imgSrcIndex = Math.floor(Math.random() * imgArray.length);
     return imgArray[imgSrcIndex];
 };
 
 const foundInString = (string, substring) => {
-    return string.toLowerCase().indexOf(substring.toLowerCase()) >= 0;
+    return (
+        (string || "").toLowerCase().indexOf((substring || "").toLowerCase()) >=
+        0
+    );
 };
