@@ -19,7 +19,7 @@ type User struct {
 	MiddleName     NullString   `json:"middleName" db:"middle_name"`
 	LastName       string       `json:"lastName" db:"last_name"`
 	Email          string       `json:"email"`
-	Phone          string       `json:"phone"`
+	Phone          NullString   `json:"phone"`
 	IsAdminCreated bool         `json:"isAdminCreated" db:"is_admin_created"`
 	IsGuardian     bool         `json:"isGuardian" db:"is_guardian"`
 	School         NullString   `json:"school" db:"school"`
@@ -36,7 +36,6 @@ func (user *User) Validate() error {
 	firstName := user.FirstName
 	lastName := user.LastName
 	email := user.Email
-	phone := user.Phone
 	school := user.School.String
 	year := user.GraduationYear.Uint
 
@@ -56,8 +55,10 @@ func (user *User) Validate() error {
 	}
 
 	// Phone validation
-	if matches, _ := regexp.MatchString(REGEX_PHONE, phone); !matches {
-		return fmt.Errorf(messageFmt, "Invalid phone format")
+	if user.Phone.Valid {
+		if matches, _ := regexp.MatchString(REGEX_PHONE, user.Phone.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid phone format")
+		}
 	}
 
 	// School validation

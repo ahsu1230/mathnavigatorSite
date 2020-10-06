@@ -66,23 +66,24 @@ func TestGetUsersByAccountId(t *testing.T) {
 	// Validate results (first call)
 	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	var users []domains.User
-	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+	var usersForAccount1 []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &usersForAccount1); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, utils.UserTonyStark, users[0])
-	assertUser(t, utils.UserMorganStark, users[1])
-	assertUser(t, utils.UserPeterParker, users[2])
-	assert.EqualValues(t, 3, len(users))
+	assertUser(t, utils.UserTonyStark, usersForAccount1[0])
+	assertUser(t, utils.UserMorganStark, usersForAccount1[1])
+	assertUser(t, utils.UserPeterParker, usersForAccount1[2])
+	assert.EqualValues(t, 3, len(usersForAccount1))
 
 	// Validate results (second call)
 	recorder = utils.SendHttpRequest(t, http.MethodGet, "/api/users/account/2", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+	var usersForAccount2 []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &usersForAccount2); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assertUser(t, utils.UserNatasha, users[0])
-	assert.EqualValues(t, 1, len(users))
+	assertUser(t, utils.UserNatasha, usersForAccount2[0])
+	assert.EqualValues(t, 1, len(usersForAccount2))
 
 	utils.ResetTable(t, domains.TABLE_USERS)
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
@@ -113,7 +114,7 @@ func TestUpdateUser(t *testing.T) {
 		LastName:       "Stank",                         // changed
 		MiddleName:     domains.NewNullString("Edward"), // changed
 		Email:          "ironman@stark.com",             // changed
-		Phone:          "555-555-0101",
+		Phone:          domains.NewNullString("555-555-0101"),
 		IsGuardian:     true,
 		Notes:          domains.NewNullString("Avengers CEO"),
 		School:         domains.NewNullString("MIT"), // changed
@@ -162,7 +163,7 @@ func assertUser(t *testing.T, expectedUser domains.User, user domains.User) {
 	assert.EqualValues(t, expectedUser.LastName, user.LastName)
 	assert.EqualValues(t, expectedUser.MiddleName.String, user.MiddleName.String)
 	assert.EqualValues(t, expectedUser.Email, user.Email)
-	assert.EqualValues(t, expectedUser.Phone, user.Phone)
+	assert.EqualValues(t, expectedUser.Phone.String, user.Phone.String)
 	assert.EqualValues(t, expectedUser.IsGuardian, user.IsGuardian)
 	assert.EqualValues(t, expectedUser.Notes.String, user.Notes.String)
 	assert.EqualValues(t, expectedUser.School.String, user.School.String)

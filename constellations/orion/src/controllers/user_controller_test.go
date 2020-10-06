@@ -51,7 +51,7 @@ func TestGetUserSuccess(t *testing.T) {
 	assert.EqualValues(t, "Smith", user.LastName)
 	assert.EqualValues(t, "", user.MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
-	assert.EqualValues(t, "555-555-0199", user.Phone)
+	assert.EqualValues(t, "555-555-0199", user.Phone.String)
 	assert.EqualValues(t, true, user.IsGuardian)
 	assert.EqualValues(t, 0, user.AccountId)
 	assert.EqualValues(t, "notes1", user.Notes.String)
@@ -102,7 +102,7 @@ func TestGetUsersByAccountSuccess(t *testing.T) {
 	assert.EqualValues(t, "Smith", users[0].LastName)
 	assert.EqualValues(t, "", users[0].MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
-	assert.EqualValues(t, "555-555-0199", users[0].Phone)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone.String)
 	assert.EqualValues(t, false, users[0].IsGuardian)
 	assert.EqualValues(t, 2, users[0].AccountId)
 	assert.EqualValues(t, "notes1", users[0].Notes.String)
@@ -112,7 +112,7 @@ func TestGetUsersByAccountSuccess(t *testing.T) {
 	assert.EqualValues(t, "Joe", users[1].LastName)
 	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
-	assert.EqualValues(t, "555-555-0199", users[1].Phone)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone.String)
 	assert.EqualValues(t, false, users[1].IsGuardian)
 	assert.EqualValues(t, 2, users[1].AccountId)
 	assert.EqualValues(t, "notes2", users[1].Notes.String)
@@ -180,7 +180,7 @@ func TestGetNewUsers(t *testing.T) {
 	assert.EqualValues(t, "Smith", users[0].LastName)
 	assert.EqualValues(t, "", users[0].MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
-	assert.EqualValues(t, "555-555-0199", users[0].Phone)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone.String)
 	assert.EqualValues(t, false, users[0].IsGuardian)
 	assert.EqualValues(t, 2, users[0].AccountId)
 	assert.EqualValues(t, "notes1", users[0].Notes.String)
@@ -190,7 +190,7 @@ func TestGetNewUsers(t *testing.T) {
 	assert.EqualValues(t, "Joe", users[1].LastName)
 	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
-	assert.EqualValues(t, "555-555-0199", users[1].Phone)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone.String)
 	assert.EqualValues(t, false, users[1].IsGuardian)
 	assert.EqualValues(t, 2, users[1].AccountId)
 	assert.EqualValues(t, "notes2", users[1].Notes.String)
@@ -475,7 +475,7 @@ func createMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		LastName:   lastName,
 		MiddleName: domains.NewNullString(middleName),
 		Email:      email,
-		Phone:      phone,
+		Phone:      domains.NewNullString(phone),
 		IsGuardian: isGuardian,
 		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),

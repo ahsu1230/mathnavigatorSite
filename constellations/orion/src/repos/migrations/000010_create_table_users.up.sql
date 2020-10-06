@@ -9,7 +9,7 @@ CREATE TABLE users
     middle_name varchar(32),
     last_name   varchar(32)  NOT NULL,
     email       varchar(64)  NOT NULL,
-    phone       varchar(24)  NOT NULL,
+    phone       varchar(24),
     is_admin_created boolean NOT NULL DEFAULT 0,
     is_guardian boolean      NOT NULL DEFAULT 0,
     school      varchar(128),
