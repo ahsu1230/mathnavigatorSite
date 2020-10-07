@@ -53,19 +53,18 @@ const allLinks = concat(mainLinks, subLinksPrograms, subLinksAchieve);
 
 export const MainLinks = mainLinks;
 
-export function getNavById(id) {
+export function getLinkById(id) {
     return find(allLinks, { id: id });
 }
 
-export function getNavByUrl(url) {
+export function getLinkByUrl(url) {
     return find(allLinks, { url: url });
 }
 
-/* not really used */
 export function isPathAt(currentPath, url) {
-    if (url == getNavById("home").url) {
-        // return currentPath == '/'; // Use with BrowserRouter
-        return currentPath == "#/";
+    if (url == getLinkById("home").url) {
+        // return currentPath == '/';   // Use with BrowserRouter
+        return currentPath == "#/"; // Use with HashRouter
     } else {
         return currentPath.indexOf(url) >= 0;
     }

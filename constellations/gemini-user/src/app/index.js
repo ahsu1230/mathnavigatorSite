@@ -9,8 +9,8 @@ import {
     Route,
     Switch,
 } from "react-router-dom";
-import { history } from "./history.js";
 import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
+import { getLinkByUrl } from "../utils/links.js";
 
 import { AchievementPage } from "../achievements/achievements.js";
 import { AFHPage } from "../afh/afh.js";
@@ -48,15 +48,16 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
-    // componentDidMount() {
-    //     this.props.history.listen((location, action) => {
-    //         var nav = getNavByUrl(location.pathname);
-    //         if (nav) {
-    //             document.title = createPageTitle(nav.name);
-    //         }
-    //         // if not in Nav, component must set it's own title!
-    //     });
-    // }
+    componentDidMount() {
+        this.props.history.listen((location, action) => {
+            let nav = getLinkByUrl(location.pathname);
+            if (nav) {
+                document.title = nav.name;
+            } else {
+                document.title = "Math Navigator";
+            }
+        });
+    }
 
     render() {
         return (

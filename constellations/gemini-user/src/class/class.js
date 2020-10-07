@@ -66,20 +66,22 @@ export class ClassPage extends React.Component {
             .all(apiCalls)
             .then(
                 axios.spread((...responses) => {
+                    const program = responses[0].data;
                     const allSemesters = responses[1].data;
+                    const semester = allSemesters.find(
+                        (semester) => semester.semesterId == classObj.semesterId
+                    );
                     this.setState({
                         classObj: classObj || {},
                         sessions: sessions || [],
-                        program: responses[0].data,
+                        program: program,
                         allSemesters: allSemesters,
-                        semester: allSemesters.find(
-                            (semester) =>
-                                semester.semesterId == classObj.semesterId
-                        ),
+                        semester: semester,
                         location: responses[2].data,
                         otherClasses: responses[3].data,
                         fetchedData: true,
                     });
+                    document.title = getFullTitle(program, classObj, semester);
                 })
             )
             .catch((err) =>

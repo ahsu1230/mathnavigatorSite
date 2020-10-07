@@ -142,7 +142,7 @@ class AfhSessionRow extends React.Component {
                         startsAt={row.startsAt}
                         endsAt={row.endsAt}
                     />
-                    {createLocation(this.props.location)}
+                    {createLocation(this.props.location || {})}
                     <Link
                         to={"/register?afhId=" + row.id}
                         className="link-wrapper">

@@ -22,12 +22,7 @@ export default class RegisterSelectClass extends React.Component {
         const optionsClasses = classes.map((classObj, index) => {
             const program = this.props.programMap[classObj.programId];
             const semester = this.props.semesterMap[classObj.semesterId];
-            const fullTitle =
-                program.title +
-                " " +
-                capitalizeWord(classObj.classKey) +
-                " " +
-                semester.title;
+            const fullTitle = getFullTitle(program, classObj, semester);
             return (
                 <option key={index} value={classObj.classId}>
                     {fullTitle}
