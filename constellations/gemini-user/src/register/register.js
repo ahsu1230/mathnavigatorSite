@@ -241,7 +241,7 @@ export default class RegisterPage extends React.Component {
                             <p>
                                 Are you enrolling into a class or attending an
                                 ask-for-help session? Ask-for-Help sessions are
-                                only for students who are already enrolled into
+                                only for students who are already enrolled in
                                 one of our classes.
                             </p>
                         )}
