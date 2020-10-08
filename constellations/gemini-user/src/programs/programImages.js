@@ -37,9 +37,16 @@ export const getImageForProgramClass = (programObj) => {
         return srcCodingJava;
     } else if (foundInString(title, "web")) {
         return srcCodingWeb;
-    } else if (foundInString(title, "writing") || foundInString(title, "grammar") || foundInString(title, "essay")) {
+    } else if (
+        foundInString(title, "writing") ||
+        foundInString(title, "grammar") ||
+        foundInString(title, "essay")
+    ) {
         return getRandomImageFrom(imagesEnglishWriting);
-    } else if (foundInString(title, "reading") || foundInString(title, "comprehension")) {
+    } else if (
+        foundInString(title, "reading") ||
+        foundInString(title, "comprehension")
+    ) {
         return getRandomImageFrom(imagesEnglishReading);
     }
     return getRandomImageFrom(ImgSrcMap[programObj.subject]);
