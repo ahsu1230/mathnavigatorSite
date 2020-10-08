@@ -48,9 +48,10 @@ export class ClassPage extends React.Component {
             .then(
                 axios.spread((...responses) => this.fetchOtherData(responses))
             )
-            .catch((err) =>
-                console.log("Error: could not fetch class: " + err)
-            );
+            .catch((err) => console.log("Error: could not fetch class: " + err))
+            .finally(() => {
+                this.setState({ fetchedData: true });
+            });
     };
 
     fetchOtherData = (responses) => {
