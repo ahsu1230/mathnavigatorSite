@@ -2,8 +2,13 @@
 import React from "react";
 import { capitalizeWord, formatCurrency } from "./displayUtils";
 
-export const getFullTitle = (programObj, classObj) => {
-    return programObj.title + " " + capitalizeWord(classObj.classKey);
+export const getFullTitle = (programObj, classObj, semesterObj) => {
+    const baseTitle =
+        programObj.title + " " + capitalizeWord(classObj.classKey);
+    if (semesterObj) {
+        return baseTitle + " " + semesterObj.title;
+    }
+    return baseTitle;
 };
 
 export const isFullClass = (classObj) => {
