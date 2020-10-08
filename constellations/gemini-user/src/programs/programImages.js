@@ -3,6 +3,8 @@ import srcMathCalculus from "../../assets/card_images/mathCalculus.jpg";
 import srcMath1 from "../../assets/card_images/math1.jpg";
 import srcMath2 from "../../assets/card_images/math2.jpg";
 import srcMath3 from "../../assets/card_images/math3.jpg";
+import srcMath4 from "../../assets/card_images/math4.jpg";
+import srcMath5 from "../../assets/card_images/math5.jpg";
 
 import srcEnglishReading1 from "../../assets/card_images/englishReading1.jpg";
 import srcEnglishReading2 from "../../assets/card_images/englishReading2.jpg";
@@ -20,7 +22,7 @@ const imagesEnglishWriting = [srcEnglishWriting1, srcEnglishWriting2];
 const imagesEnglishAll = imagesEnglishReading.concat(imagesEnglishWriting);
 
 export const ImgSrcMap = {
-    math: [srcMath1, srcMath2, srcMath3],
+    math: [srcMath1, srcMath2, srcMath3, srcMath4, srcMath5],
     english: imagesEnglishAll,
     coding: [srcCoding1, srcCoding2, srcCoding3],
 };
