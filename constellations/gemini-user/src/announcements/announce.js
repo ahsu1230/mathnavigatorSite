@@ -27,7 +27,7 @@ export class AnnouncePage extends React.Component {
         let sorted = groupBy(announcements, (a) =>
             moment(a.postedAt).format("l")
         );
-        const dates = sortBy(keys(sorted)).reverse();
+        const dates = sortBy(keys(sorted));
         const items = dates.map((date, index) => (
             <AnnouncementGroup
                 key={index}
