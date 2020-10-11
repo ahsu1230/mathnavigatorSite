@@ -27,7 +27,9 @@ jobs:
       
       - run: 
           name: Retrieve Go codebase
-          command: go get -v -t -d ./...
+          command: |
+            cd constellations/orion
+            go get -v -t -d ./...
       - run:
           name: Format Go codebase
           command: ./constellations/go_formatter.sh .
