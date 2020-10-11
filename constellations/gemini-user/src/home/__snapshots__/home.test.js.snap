@@ -83,7 +83,7 @@ exports[`test snapshot 1`] = `
             SAT 1 & 2
           </h3>
           <p>
-            Our most popular programs. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).
+            Our most popular programs. We provide dedicated courses for both the SAT1 Math Section and SAT Subject Test (Math Level 2).
           </p>
           <a
             href="#/programs"
@@ -177,10 +177,10 @@ exports[`test snapshot 1`] = `
             />
           </div>
           <h3>
-            Dedicated Professionalism
+            Dedicated Attention
           </h3>
           <p>
-            We dedicate time to each individual student and provide plans to improve topics they may need more help in.
+            We dedicate time to each individual student and provide plans to improve their understanding of topics.
           </p>
         </div>
         <div
@@ -194,7 +194,7 @@ exports[`test snapshot 1`] = `
             />
           </div>
           <h3>
-            Strategical Thinking
+            Strategic Thinking
           </h3>
           <p>
             We want our students to work smart, not just hard. With Andy's problem solving strategies, students will learn how to tackle any problem.
@@ -214,7 +214,7 @@ exports[`test snapshot 1`] = `
             Abundant Resources
           </h3>
           <p>
-            Andy makes all of the teaching material. With our huge collection of resources, students will be over-prepared for their next exams.
+            Andy makes all of the teaching material. With our huge collection of resources, students will go into their exams full of confidence.
           </p>
         </div>
       </div>
