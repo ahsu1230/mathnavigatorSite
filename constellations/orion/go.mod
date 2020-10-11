@@ -1,6 +1,6 @@
 module github.com/ahsu1230/mathnavigatorSite/constellations/orion
 
-go 1.13
+go 1.15
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.4.1
