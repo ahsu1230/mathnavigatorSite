@@ -31,7 +31,7 @@ func main() {
 	if production {
 		err := logger.SetupProd()
 		if err != nil {
-			fmt.Printf("Logger failed to setup! %w", err)
+			fmt.Printf("Logger failed to setup! %v", err)
 			os.Exit(1)
 			return
 		}

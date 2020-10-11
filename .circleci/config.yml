@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.15
       - image: circleci/mysql:8.0
         environment:
           MYSQL_ROOT_USER: root
@@ -27,7 +27,9 @@ jobs:
       
       - run: 
           name: Retrieve Go codebase
-          command: go get -v -t -d ./...
+          command: |
+            cd constellations/orion
+            go get -v -t -d ./...
       - run:
           name: Format Go codebase
           command: ./constellations/go_formatter.sh .
@@ -39,9 +41,10 @@ jobs:
       - run:
           name: Run Orion Go tests
           command: |
-            go vet ./constellations/orion/...
+            cd constellations/orion
+            go vet ./...
             export TEST_ENV=test_ci
-            go test -v ./constellations/orion/...
+            go test -v ./...
       
       - run:
           name: Install npm

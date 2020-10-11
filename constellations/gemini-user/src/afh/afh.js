@@ -33,6 +33,8 @@ export class AFHPage extends React.Component {
     };
 
     componentDidMount() {
+        // TODO: Query for all subjects and initialize currentSubject
+        // to whichever tab/section contains valid AFHs.
         API.get("api/askforhelp/all").then((res) => {
             const afh = res.data;
             this.setState({
