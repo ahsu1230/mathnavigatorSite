@@ -15,7 +15,9 @@ module.exports = (env) => {
         plugins: [
             // Add environment variables
             new webpack.DefinePlugin({
-                "process.env.MATHNAV_ORION_HOST": JSON.stringify(env.MATHNAV_ORION_HOST),
+                "process.env.MATHNAV_ORION_HOST": JSON.stringify(
+                    env.MATHNAV_ORION_HOST
+                ),
             }),
         ],
         module: {
