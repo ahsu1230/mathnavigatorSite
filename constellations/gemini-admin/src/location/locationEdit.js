@@ -85,7 +85,7 @@ export class LocationEditPage extends React.Component {
                 <InputText
                     label="Street"
                     description="Enter a street number and street (e.g. 1234 Gains Rd, 5432 Victory Dr). This is only required for physical locations."
-                    required={false}
+                    required={true}
                     value={this.state.inputStreet}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputStreet")
@@ -100,7 +100,7 @@ export class LocationEditPage extends React.Component {
                 <InputText
                     label="City"
                     description="Enter a city (e.g. Potomac, Rockville). This is only required for physical locations."
-                    required={false}
+                    required={true}
                     value={this.state.inputCity}
                     onChangeCallback={(e) => this.handleChange(e, "inputCity")}
                     validators={[
@@ -113,7 +113,7 @@ export class LocationEditPage extends React.Component {
                 <InputText
                     label="State"
                     description="Enter the 2 letter abbreviation of a state (e.g. MD). This is only required for physical locations."
-                    required={false}
+                    required={true}
                     value={this.state.inputState}
                     onChangeCallback={(e) => this.handleChange(e, "inputState")}
                     validators={[
@@ -126,7 +126,7 @@ export class LocationEditPage extends React.Component {
                 <InputText
                     label="Zipcode"
                     description="Enter a zipcode. This is only required for physical locations."
-                    required={false}
+                    required={true}
                     value={this.state.inputZip}
                     onChangeCallback={(e) => this.handleChange(e, "inputZip")}
                     validators={[
@@ -149,7 +149,6 @@ export class LocationEditPage extends React.Component {
 
     renderContent = () => {
         const isOnline = this.state.inputOnline == ADDRESS_ONLINE;
-        const form = isOnline ? <div></div> : this.renderPhysicalForm();
         return (
             <div>
                 <InputText
@@ -196,7 +195,7 @@ export class LocationEditPage extends React.Component {
                         },
                     ]}
                 />
-                {form}
+                {!isOnline && this.renderPhysicalForm()}
             </div>
         );
     };
