@@ -53,5 +53,6 @@ sudo chkconfig httpd on
 # copy index.html to /var/www/html OR create index.html @ /var/www/html
 # cd to gemini-admin
 sudo cp index.html /var/www/html
+sed -i 's/dist/dist\//g' dist/bundle.js # need this to fix images in admin :(
 sudo cp -r dist /var/www/html
-sudo cp assets/*.svg /var/www/html/dist
+# sudo cp assets/*.svg /var/www/html/dist
