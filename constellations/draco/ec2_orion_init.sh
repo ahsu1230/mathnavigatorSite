@@ -29,4 +29,22 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
 
 # Start services with Docker
+# cd to orion folder
 docker-compose -f docker-compose.production.yml up -d
+
+# Install NVM for npm
+# cd to gemini-admin
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install stable
+npm install --verbose
+npm run build # create production build
+sudo cp index.html /var/www/html
+sudo cp -r dist /var/www/html
+
+# Install apache webserver?
+sudo yum install httpd -y
+sudo service httpd start
+sudo chkconfig httpd on
+
+# copy index.html to /var/www/html OR create index.html @ /var/www/html
