@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"strings"
 	"testing"
 	"time"
 
@@ -30,7 +29,7 @@ func TestValidAFHTitle(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid title")
 	}
 
-	askForHelp.Title = "Too long: " + strings.Repeat("A", 256)
+	askForHelp.Title = "ap calc help"
 	if err := askForHelp.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid title")
 	}

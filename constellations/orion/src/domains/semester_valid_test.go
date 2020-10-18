@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -53,13 +52,8 @@ func TestValidTitle(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	// Checks for invalid titles
-	semester.Title = "This title is too long: " + strings.Repeat("A", 255)
-	if err := semester.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid semester title")
-	}
-
-	semester.Title = "Fall_ _2020"
+	// Checks for invalid titles (does not start with capital letter)
+	semester.Title = "fall 2020"
 	if err := semester.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid semester title")
 	}
