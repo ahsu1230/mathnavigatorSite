@@ -4,8 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build": "webpack --mode production",
+        "build": "webpack --mode production --env.MATHNAV_ORION_HOST=http://ec2-3-80-123-134.compute-1.amazonaws.com:8001",
         "start": "webpack-dev-server --open --mode development",
+        "start:prod": "webpack-dev-server --open --mode development --env.MATHNAV_ORION_HOST=http://ec2-3-80-123-134.compute-1.amazonaws.com:8001",
         "test": "jest --verbose",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",

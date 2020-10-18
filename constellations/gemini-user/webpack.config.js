@@ -12,6 +12,14 @@ module.exports = (env) => {
             host: "localhost",
             port: 9000,
         },
+        plugins: [
+            // Add environment variables
+            new webpack.DefinePlugin({
+                "process.env.MATHNAV_ORION_HOST": JSON.stringify(
+                    env.MATHNAV_ORION_HOST
+                ),
+            }),
+        ],
         module: {
             rules: [
                 {
