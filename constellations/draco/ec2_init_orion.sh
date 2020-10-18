@@ -6,7 +6,7 @@ git version
 git clone https://github.com/ahsu1230/mathnavigatorSite.git
 
 # Install Golang
-sudo yum install golang -y 
+sudo yum install golang -y
 go version
 # Setup: GOROOT, GOPATH and PATH (in .bash_profile) (?)
 
