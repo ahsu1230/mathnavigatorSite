@@ -11,15 +11,18 @@ export class ProgramModal extends React.Component {
         const program = this.props.program || {};
         const classes = this.props.classes || [];
         const fullStates = this.props.fullStates || [];
-
         const classList = classes.map((c, index) => (
             <ProgramClass key={index} classObj={c} fullStates={fullStates} />
         ));
+        const classesString =
+            classes.length == 1 ? "1 class" : classes.length + " classes";
 
         return (
             <div className="program-modal">
                 <h1>{"Classes for " + program.title}</h1>
-                <h4>{semester.title}</h4>
+                <h4>
+                    {semester.title} ({classesString} available)
+                </h4>
                 <ul>{classList}</ul>
             </div>
         );

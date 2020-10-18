@@ -71,10 +71,7 @@ export class ProgramCard extends React.Component {
 
     render = () => {
         const program = this.props.program || {};
-        const classes = this.props.classes || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
-        const classesString =
-            classes.length == 1 ? "1 class" : classes.length + " classes";
         const featured = this.renderFeatured();
         const cardImgSrc = getImageForProgramClass(program);
 
@@ -90,9 +87,6 @@ export class ProgramCard extends React.Component {
                     </div>
                     <div className="card-body">
                         <h3>{grades}</h3>
-                        <div className="classes-avail">
-                            {classesString} available
-                        </div>
                         {featured}
                     </div>
                     <button className="card-footer">
