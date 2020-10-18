@@ -24,7 +24,7 @@ type AccountRepoInterface interface {
 	Initialize(context.Context, *sql.DB)
 	SelectById(context.Context, uint) (domains.Account, error)
 	SelectByPrimaryEmail(context.Context, string) (domains.Account, error)
-	SelectAllNegativeBalances(context.Context) ([]domains.AccountSum, error)
+	SelectAllNegativeBalances(context.Context) ([]domains.AccountBalance, error)
 	InsertWithUser(context.Context, domains.Account, domains.User) (uint, error)
 	Update(context.Context, uint, domains.Account) error
 	Delete(context.Context, uint) error
@@ -86,9 +86,9 @@ func (acc *accountRepo) SelectByPrimaryEmail(ctx context.Context, primaryEmail s
 	return account, nil
 }
 
-func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountSum, error) {
+func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountBalance, error) {
 	utils.LogWithContext(ctx, "accountRepo.SelectAllNegativeBalances", logger.Fields{})
-	results := make([]domains.AccountSum, 0)
+	results := make([]domains.AccountBalance, 0)
 
 	statement := "SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
 	stmt, err := acc.db.Prepare(statement)
@@ -103,7 +103,7 @@ func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domain
 	defer rows.Close()
 
 	for rows.Next() {
-		var accountSum domains.AccountSum
+		var accountSum domains.AccountBalance
 		if errScan := rows.Scan(
 			&accountSum.Account.Id,
 			&accountSum.Account.CreatedAt,

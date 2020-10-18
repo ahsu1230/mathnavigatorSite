@@ -24,20 +24,22 @@ func TestGetAllProgramsSuccess(t *testing.T) {
 			{
 				Id:          1,
 				ProgramId:   "prog1",
-				Name:        "Program1",
+				Title:       "Program1",
 				Grade1:      2,
 				Grade2:      3,
+				Subject:     domains.SUBJECT_MATH,
 				Description: "Description1",
-				Featured:    0,
+				Featured:    domains.FEATURED_NONE,
 			},
 			{
 				Id:          2,
 				ProgramId:   "prog2",
-				Name:        "Program2",
+				Title:       "Program2",
 				Grade1:      2,
 				Grade2:      3,
+				Subject:     domains.SUBJECT_MATH,
 				Description: "Description2",
-				Featured:    1,
+				Featured:    domains.FEATURED_POPULAR,
 			},
 		}, nil
 	}
@@ -52,9 +54,9 @@ func TestGetAllProgramsSuccess(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &programs); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "Program1", programs[0].Name)
+	assert.EqualValues(t, "Program1", programs[0].Title)
 	assert.EqualValues(t, "prog1", programs[0].ProgramId)
-	assert.EqualValues(t, "Program2", programs[1].Name)
+	assert.EqualValues(t, "Program2", programs[1].Title)
 	assert.EqualValues(t, "prog2", programs[1].ProgramId)
 	assert.EqualValues(t, 2, len(programs))
 }
@@ -64,7 +66,7 @@ func TestGetAllProgramsSuccess(t *testing.T) {
 //
 func TestGetProgramSuccess(t *testing.T) {
 	testUtils.ProgramRepo.MockSelectByProgramId = func(context.Context, string) (domains.Program, error) {
-		program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
+		program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 		return program, nil
 	}
 	repos.ProgramRepo = &testUtils.ProgramRepo
@@ -79,7 +81,7 @@ func TestGetProgramSuccess(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "prog1", program.ProgramId)
-	assert.EqualValues(t, "Program1", program.Name)
+	assert.EqualValues(t, "Program1", program.Title)
 }
 
 func TestGetProgramFailure(t *testing.T) {
@@ -105,7 +107,7 @@ func TestCreateProgramSuccess(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, "descript1", 0)
+	program := testUtils.CreateMockProgram("prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
@@ -119,7 +121,7 @@ func TestCreateProgramFailure(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := testUtils.CreateMockProgram("prog1", "", 2, 3, "descript1", 0) // Empty Name!
+	program := testUtils.CreateMockProgram("prog1", "", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE) // Empty Name!
 	marshal, _ := json.Marshal(&program)
 	body := bytes.NewBuffer(marshal)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body)
@@ -138,7 +140,7 @@ func TestUpdateProgramSuccess(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
+	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, domains.SUBJECT_MATH, "descript2", domains.FEATURED_NONE)
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -151,7 +153,7 @@ func TestUpdateProgramInvalid(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := testUtils.CreateMockProgram("prog2", "", 2, 3, "descript2", 0) // Empty Name!
+	program := testUtils.CreateMockProgram("prog2", "", 2, 3, domains.SUBJECT_MATH, "descript2", domains.FEATURED_NONE) // Empty Name!
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -166,7 +168,7 @@ func TestUpdateProgramFailure(t *testing.T) {
 	repos.ProgramRepo = &testUtils.ProgramRepo
 
 	// Create new HTTP request to endpoint
-	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, "descript2", 0)
+	program := testUtils.CreateMockProgram("prog2", "Program2", 2, 3, domains.SUBJECT_ENGLISH, "descript2", domains.FEATURED_NONE)
 	body := createBodyFromProgram(program)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/programs/program/prog1", body)
 
@@ -203,20 +205,20 @@ func TestDeleteProgramFailure(t *testing.T) {
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestGetAllProgramStates(t *testing.T) {
+func TestGetAllProgramFeatured(t *testing.T) {
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/states", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/programs/featured", nil)
 
 	//Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-	var programStates []string
-	if err := json.Unmarshal(recorder.Body.Bytes(), &programStates); err != nil {
+	var programFeatured []string
+	if err := json.Unmarshal(recorder.Body.Bytes(), &programFeatured); err != nil {
 		t.Errorf("unexpected error: %v\n", err)
 	}
-	assert.EqualValues(t, "normal", programStates[0])
-	assert.EqualValues(t, "popular", programStates[1])
-	assert.EqualValues(t, "new", programStates[2])
+	assert.EqualValues(t, "none", programFeatured[0])
+	assert.EqualValues(t, "popular", programFeatured[1])
+	assert.EqualValues(t, "new", programFeatured[2])
 }
 
 //

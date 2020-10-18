@@ -1,14 +1,25 @@
 @import "../_.constants.sass"
 
-#select-class
-    display: flex
-    flex-flow: row wrap
-    align-items: center
+#view-session
     max-width: $spacing96x
     margin: $spacing4x auto 0
 
-    h1
-        padding-left: $spacing2x
+    .header-section p
+        width: $spacing80x
+
+    #sessions-list
+        margin-top: $spacing6x
+
+#select-class
+    margin: $spacing4x 0
+    display: flex
+    flex-flow: row wrap
+    align-items: center
+
+    h2
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        color: $colorTurquoise
 
     #dropdown
         width: $spacing32x

@@ -2,66 +2,70 @@
 
 #view-footer
   width: 100%
-  min-height: $propUnit6x
-  padding: $propUnit3x 0
-  background-color: $colorPrimary
+  min-height: $spacing28x
+  padding: $spacing12x 0 $spacing24x
+  background-color: $colorWhiteLighter
 
   #view-footer-container
     width: $containerWidthPct
-    max-width: $containerWidthPx1
+    max-width: $containerWidthPxFull
     margin: 0 auto
 
-    & a, p, h1, h2
-      color: $colorWhite
+    a, p, h2
+      color: $colorBlack
+
+    u
+      color: $colorTurquoise
 
 #view-footer-container ul
   float: left
 
-  & li
+  li
     margin: $spacing2x 0
 
-  & a:hover
-    color: $colorOrange !important
+  a:hover
+    color: $colorTurquoise !important
     text-decoration: none
 
-  @media screen and (max-width: $mediaWidth1)
+  @media screen and (max-width: $containerWidthPxTablet)
     float: none
     margin-bottom: $spacing4x
     text-align: center
 
 #view-footer-container .logo-container
   float: right
-  width: 240px
+  width: $spacing32x
   text-align: right
 
-  & img
-    width: 28px
-    margin-right: 12px
+  @media screen and (max-width: $containerWidthPxTablet)
+    float: none
+    margin: 0 auto
+    text-align: center
 
-    @media screen and (max-width: $mediaWidth1)
+  img
+    width: 28px
+    margin-right: $spacing1_5x
+
+    @media screen and (max-width: $containerWidthPxTablet)
       display: block
       margin: $spacing4x auto $spacing2x
 
-  & h1
+  h1
     display: inline-block
     vertical-align: top
     line-height: $lineHeight2
     font-family: $fontFamilyRockwell
     font-size: $fontSize2
+    color: $colorTurquoise
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
       text-align: center
 
-  & h2
+  h2
     margin-top: $spacing1x
     line-height: $lineHeight0
     font-size: $fontSize0
 
-  & p
+  p
     line-height: 24px
     font-size: 12px
-
-  @media screen and (max-width: $mediaWidth1)
-    float: none
-    margin: 0 auto
-    text-align: center

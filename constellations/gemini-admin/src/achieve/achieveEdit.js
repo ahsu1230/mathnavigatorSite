@@ -3,15 +3,13 @@ require("./achieveEdit.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
-import { emptyValidator } from "../utils/inputText.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 export class AchieveEditPage extends React.Component {
     state = {
         isEdit: false,
+        achieveId: 0,
         year: moment().year(),
         position: 0,
         message: "",
@@ -36,105 +34,30 @@ export class AchieveEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
-    onClickCancel = () => {
-        window.location.hash = "achievements";
-    };
-
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
-    };
-
-    onClickSave = () => {
+    onSave = () => {
+        const achieveId = this.props.id;
         let achieve = {
             year: parseInt(this.state.year),
             position: parseInt(this.state.position),
             message: this.state.message,
         };
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save achievement: " + err.response.data);
-
         if (this.state.isEdit) {
-            API.post("api/achievements/achievement/" + this.props.id, achieve)
-                .then(() => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post(
+                "api/achievements/achievement/" + achieveId,
+                achieve
+            );
         } else {
-            API.post("api/achievements/create", achieve)
-                .then(() => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/achievements/create", achieve);
         }
     };
 
-    onSaved = () => {
-        this.onDismissModal();
-        window.location.hash = "achievements";
+    onDelete = () => {
+        return API.delete("api/achievements/achievement/" + this.props.id);
     };
 
-    onDeleted = () => {
-        API.delete("api/achievements/achievement/" + this.props.id)
-            .then(() => (window.location.hash = "achievements"))
-            .finally(() => this.onDismissModal());
-    };
-
-    onDismissModal = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    };
-
-    renderModal = () => {
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onDeleted}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Achievement information saved!"}
-                    onOkay={this.onSaved}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
-        return modalDiv;
-    };
-
-    render = () => {
-        const isEdit = this.state.isEdit;
-        const title = isEdit ? "Edit Achievement" : "Add Achievement";
-
-        let deleteButton = isEdit ? (
-            <button className="btn-delete" onClick={this.onClickDelete}>
-                Delete
-            </button>
-        ) : (
-            <div></div>
-        );
-
+    renderContent = () => {
         return (
-            <div id="view-achieve-edit">
-                {this.renderModal()}
-                <h2>{title}</h2>
-
+            <div>
                 <InputText
                     label="Year"
                     description="Enter the achievement year"
@@ -174,16 +97,26 @@ export class AchieveEditPage extends React.Component {
                     onChangeCallback={(e) => this.handleChange(e, "message")}
                     validators={[emptyValidator("message")]}
                 />
+            </div>
+        );
+    };
 
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
+    render = () => {
+        const isEdit = this.state.isEdit;
+        const title = isEdit ? "Edit Achievement" : "Add Achievement";
+
+        return (
+            <div id="view-achieve-edit">
+                <EditPageWrapper
+                    isEdit={isEdit}
+                    title={title}
+                    content={this.renderContent()}
+                    prevPageUrl={"achievements"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityId={this.state.achieveId}
+                    entityName={"achievement"}
+                />
             </div>
         );
     };

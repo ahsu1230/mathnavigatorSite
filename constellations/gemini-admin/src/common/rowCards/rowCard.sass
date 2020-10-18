@@ -1,0 +1,66 @@
+@import "../../_.constants.sass"
+
+.row-card
+    position: relative
+    width: 100%
+    margin-bottom: $spacing4x
+    padding: $spacing2x
+    border-bottom: 1px solid $colorGrayLight
+    box-sizing: border-box
+
+    &:hover
+        background-color: #f8f8f8
+
+    h2
+        margin: 0
+        font-size: $fontSize1
+        font-weight: bold
+        color: $colorTurquoise
+
+    a.edit-url
+        position: absolute
+        top: $spacing2x
+        right: $spacing2x
+        color: $colorLightBlue
+
+        &:hover, &:active, &:visited
+            color: $colorLightBlue
+
+    .row-field-wrapper
+        margin: $spacing1x 0
+
+        span:first-child
+            margin-right: $spacing1x
+
+        span.label
+            color: $colorGrayMedDark
+        span.value
+            color: $colorBlack
+        
+        &.highlighted span.value
+            color: $colorOrange
+    
+    .row-text-wrapper
+        margin: $spacing2x 0 $spacing1x
+
+        p
+            margin: $spacing1x 0
+    
+    .column-wrapper
+        display: flex
+        flex-direction: row
+
+        .column
+            flex-grow: 1
+
+    .group
+        position: relative
+        margin-bottom: $spacing2x
+        border-bottom: 1px solid $colorGrayLight
+
+        &:last-child
+            border-bottom: none
+
+        a.edit-url
+            top: $spacing1x
+            right: $spacing1x

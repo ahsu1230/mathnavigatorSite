@@ -2,20 +2,24 @@
 require("./locationEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
-import { InputText } from "../utils/inputText.js";
+import { InputText } from "../common/inputs/inputText.js";
+import { InputRadio } from "../common/inputs/inputRadio.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
+
+const ADDRESS_ONLINE = "online";
+const ADDRESS_PHYSICAL = "physical";
 
 export class LocationEditPage extends React.Component {
     state = {
-        oldlocationId: "",
-        inputlocationId: "",
+        oldLocationId: "",
+        inputLocationId: "",
+        inputTitle: "",
         inputStreet: "",
         inputCity: "",
         inputState: "",
         inputZip: "",
         inputRoom: "",
+        inputOnline: ADDRESS_PHYSICAL, // options are "physical" or "online"
         isEdit: false,
         showDeleteModal: false,
         showSaveModal: false,
@@ -27,13 +31,17 @@ export class LocationEditPage extends React.Component {
             API.get("api/locations/location/" + locationId).then((res) => {
                 const location = res.data;
                 this.setState({
-                    oldlocationId: location.locationId,
-                    inputlocationId: location.locationId,
-                    inputStreet: location.street,
-                    inputCity: location.city,
-                    inputState: location.state,
-                    inputZip: location.zipcode,
+                    oldLocationId: location.locationId,
+                    inputLocationId: location.locationId,
+                    inputTitle: location.title,
+                    inputStreet: location.street || "",
+                    inputCity: location.city || "",
+                    inputState: location.state || "",
+                    inputZip: location.zipcode || "",
                     inputRoom: location.room || "",
+                    inputOnline: location.isOnline
+                        ? ADDRESS_ONLINE
+                        : ADDRESS_PHYSICAL,
                     isEdit: true,
                 });
             });
@@ -44,98 +52,40 @@ export class LocationEditPage extends React.Component {
         this.setState({ [value]: event.target.value });
     };
 
-    onClickCancel = () => {
-        window.location.hash = "locations";
-    };
-
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
-    };
-
-    onClickSave = () => {
+    onSave = () => {
         let location = {
-            locationId: this.state.inputlocationId,
+            locationId: this.state.inputLocationId,
+            title: this.state.inputTitle,
             street: this.state.inputStreet,
             city: this.state.inputCity,
             state: this.state.inputState,
             zipcode: this.state.inputZip,
             room: this.state.inputRoom,
+            isOnline: this.state.inputOnline == ADDRESS_ONLINE,
         };
 
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save location: " + err.response.data);
         if (this.state.isEdit) {
-            API.post(
-                "api/locations/location/" + this.state.oldlocationId,
+            return API.post(
+                "api/locations/location/" + this.state.oldLocationId,
                 location
-            )
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            );
         } else {
-            API.post("api/locations/create", location)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/locations/create", location);
         }
     };
 
-    onDeleted = () => {
+    onDelete = () => {
         const locationId = this.props.locationId;
-        API.delete("api/locations/location/" + locationId).then((res) => {
-            window.location.hash = "locations";
-        });
+        return API.delete("api/locations/location/" + locationId);
     };
 
-    onSaved = () => {
-        this.onDismissModal();
-        window.location.hash = "locations";
-    };
-
-    onDismissModal = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    };
-
-    render() {
-        const title = this.state.isEdit ? "Edit Location" : "Add Location";
-
-        const deleteButton = renderDeleteButton(
-            this.state.isEdit,
-            this.onClickDelete
-        );
-        const modalDiv = renderModalDiv(
-            this.state.showDeleteModal,
-            this.state.showSaveModal,
-            this.onDismissModal,
-            this.onSaved,
-            this.onDeleted
-        );
-
+    renderPhysicalForm = () => {
         return (
-            <div id="view-location-edit">
-                {modalDiv}
-                <h2>{title}</h2>
-                <InputText
-                    label="Location ID"
-                    description="Enter a location Id (e.g. wchs, home)"
-                    required={true}
-                    value={this.state.inputlocationId}
-                    onChangeCallback={(e) =>
-                        this.handleChange(e, "inputlocationId")
-                    }
-                    validators={[
-                        {
-                            validate: (text) => text != "",
-                            message: "You must input a location ID",
-                        },
-                    ]}
-                />
+            <div>
                 <InputText
                     label="Street"
-                    description="Enter a street number and street (e.g. 1234 Gains Rd, 5432 Victory Dr)"
-                    required={true}
+                    description="Enter a street number and street (e.g. 1234 Gains Rd, 5432 Victory Dr). This is only required for physical locations."
+                    required={false}
                     value={this.state.inputStreet}
                     onChangeCallback={(e) =>
                         this.handleChange(e, "inputStreet")
@@ -149,8 +99,8 @@ export class LocationEditPage extends React.Component {
                 />
                 <InputText
                     label="City"
-                    description="Enter a city (e.g. Potomac, Rockville)"
-                    required={true}
+                    description="Enter a city (e.g. Potomac, Rockville). This is only required for physical locations."
+                    required={false}
                     value={this.state.inputCity}
                     onChangeCallback={(e) => this.handleChange(e, "inputCity")}
                     validators={[
@@ -162,8 +112,8 @@ export class LocationEditPage extends React.Component {
                 />
                 <InputText
                     label="State"
-                    description="Enter the 2 letter abbreviation of a state (e.g. MD)"
-                    required={true}
+                    description="Enter the 2 letter abbreviation of a state (e.g. MD). This is only required for physical locations."
+                    required={false}
                     value={this.state.inputState}
                     onChangeCallback={(e) => this.handleChange(e, "inputState")}
                     validators={[
@@ -175,8 +125,8 @@ export class LocationEditPage extends React.Component {
                 />
                 <InputText
                     label="Zipcode"
-                    description="Enter a zipcode"
-                    required={true}
+                    description="Enter a zipcode. This is only required for physical locations."
+                    required={false}
                     value={this.state.inputZip}
                     onChangeCallback={(e) => this.handleChange(e, "inputZip")}
                     validators={[
@@ -188,71 +138,85 @@ export class LocationEditPage extends React.Component {
                 />
                 <InputText
                     label="Room"
-                    description="Enter a room description (e.g. Room 143, Gymnasium)"
+                    description="Enter a room description (e.g. 'Room 143' or 'Gymnasium')."
                     required={false}
                     value={this.state.inputRoom}
                     onChangeCallback={(e) => this.handleChange(e, "inputRoom")}
                 />
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
-                </div>
+            </div>
+        );
+    };
+
+    renderContent = () => {
+        const isOnline = this.state.inputOnline == ADDRESS_ONLINE;
+        const form = isOnline ? <div></div> : this.renderPhysicalForm();
+        return (
+            <div>
+                <InputText
+                    label="Location ID"
+                    description="Enter a location Id (e.g. wchs, home)"
+                    required={true}
+                    value={this.state.inputLocationId}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputLocationId")
+                    }
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a location ID",
+                        },
+                    ]}
+                />
+                <InputText
+                    label="Title"
+                    description="Enter the name of this location"
+                    required={true}
+                    value={this.state.inputTitle}
+                    onChangeCallback={(e) => this.handleChange(e, "inputTitle")}
+                    validators={[
+                        {
+                            validate: (text) => text != "",
+                            message: "You must input a location name",
+                        },
+                    ]}
+                />
+                <InputRadio
+                    label="Is Online?"
+                    description="Is this location online or a physical address?"
+                    required={true}
+                    value={this.state.inputOnline}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputOnline")
+                    }
+                    options={[
+                        { value: ADDRESS_ONLINE, displayName: "Online" },
+                        {
+                            value: ADDRESS_PHYSICAL,
+                            displayName: "Physical Address",
+                        },
+                    ]}
+                />
+                {form}
+            </div>
+        );
+    };
+
+    render() {
+        const title = this.state.isEdit ? "Edit Location" : "Add Location";
+        const content = this.renderContent();
+        return (
+            <div id="view-location-edit">
+                <EditPageWrapper
+                    isEdit={this.state.isEdit}
+                    title={title}
+                    content={content}
+                    prevPageUrl={"locations"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityId={this.state.inputLocationId}
+                    entityName={"location"}
+                />
             </div>
         );
     }
-}
-
-function renderDeleteButton(isEdit, onClickDelete) {
-    let deleteButton = <div />;
-    if (isEdit) {
-        deleteButton = (
-            <button className="btn-delete" onClick={onClickDelete}>
-                Delete
-            </button>
-        );
-    }
-    return deleteButton;
-}
-
-function renderModalDiv(
-    showDeleteModal,
-    showSaveModal,
-    onDismissModal,
-    onSaved,
-    onDeleted
-) {
-    let modalDiv;
-    let modalContent;
-    let showModal;
-    if (showDeleteModal) {
-        showModal = showDeleteModal;
-        modalContent = (
-            <YesNoModal
-                text={"Are you sure you want to delete?"}
-                onAccept={onDeleted}
-                onReject={onDismissModal}
-            />
-        );
-    }
-    if (showSaveModal) {
-        showModal = showSaveModal;
-        modalContent = (
-            <OkayModal text={"Location information saved!"} onOkay={onSaved} />
-        );
-    }
-    if (modalContent) {
-        modalDiv = (
-            <Modal
-                content={modalContent}
-                show={showModal}
-                onDismiss={onDismissModal}
-            />
-        );
-    }
-    return modalDiv;
 }

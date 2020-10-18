@@ -34,7 +34,7 @@ func CreateMockAnnounce(id uint, postedAt time.Time, author string, message stri
 	}
 }
 
-func CreateMockClass(programId, semesterId, classKey, locationId, times string, pricePerSession, priceLump uint) domains.Class {
+func CreateMockClass(programId, semesterId, classKey, locationId, timesStr string, pricePerSession, priceLump uint) domains.Class {
 	classId := programId + "_" + semesterId
 	if classKey != "" {
 		classId += "_" + classKey
@@ -46,29 +46,31 @@ func CreateMockClass(programId, semesterId, classKey, locationId, times string, 
 		ClassKey:        domains.NewNullString(classKey),
 		ClassId:         classId,
 		LocationId:      locationId,
-		Times:           times,
+		TimesStr:        timesStr,
 		PricePerSession: domains.NewNullUint(pricePerSession),
-		PriceLump:       domains.NewNullUint(priceLump),
+		PriceLumpSum:    domains.NewNullUint(priceLump),
 	}
 }
 
-func CreateMockLocation(LocationId string, street string, city string, state string, zipcode string, room string) domains.Location {
+func CreateMockLocation(LocationId string, title string, street string, city string, state string, zipcode string, room string) domains.Location {
 	return domains.Location{
 		LocationId: LocationId,
-		Street:     street,
-		City:       city,
-		State:      state,
-		Zipcode:    zipcode,
+		Title:      title,
+		Street:     domains.NewNullString(street),
+		City:       domains.NewNullString(city),
+		State:      domains.NewNullString(state),
+		Zipcode:    domains.NewNullString(zipcode),
 		Room:       domains.NewNullString(room),
 	}
 }
 
-func CreateMockProgram(programId string, name string, grade1 uint, grade2 uint, description string, featured uint) domains.Program {
+func CreateMockProgram(programId string, title string, grade1 uint, grade2 uint, subject string, description string, featured string) domains.Program {
 	return domains.Program{
 		ProgramId:   programId,
-		Name:        name,
+		Title:       title,
 		Grade1:      grade1,
 		Grade2:      grade2,
+		Subject:     subject,
 		Description: description,
 		Featured:    featured,
 	}
@@ -101,15 +103,15 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		LastName:   lastName,
 		MiddleName: domains.NewNullString(middleName),
 		Email:      email,
-		Phone:      phone,
+		Phone:      domains.NewNullString(phone),
 		IsGuardian: isGuardian,
 		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),
 	}
 }
 
-func CreateMockUserClasses(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClasses {
-	return domains.UserClasses{
+func CreateMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClass {
+	return domains.UserClass{
 		Id:        id,
 		UserId:    userId,
 		ClassId:   classId,
@@ -118,25 +120,25 @@ func CreateMockUserClasses(id uint, userId uint, classId string, accountId uint,
 	}
 }
 
-func CreateMockAFH(id uint, title string, date time.Time, timeString string, subject string, locationId string, notes string) domains.AskForHelp {
+func CreateMockAFH(id uint, startsAt time.Time, endsAt time.Time, title string, subject string, locationId string, notes string) domains.AskForHelp {
 	return domains.AskForHelp{
 		Id:         id,
+		StartsAt:   startsAt,
+		EndsAt:     endsAt,
 		Title:      title,
-		Date:       date,
-		TimeString: timeString,
 		Subject:    subject,
 		LocationId: locationId,
 		Notes:      domains.NewNullString(notes),
 	}
 }
 
-func CreateMockTransaction(id uint, amount int, paymentType string, paymentNotes string, accountId uint) domains.Transaction {
+func CreateMockTransaction(id uint, amount int, transactionType string, notes string, accountId uint) domains.Transaction {
 	return domains.Transaction{
-		Id:           id,
-		Amount:       amount,
-		PaymentType:  paymentType,
-		PaymentNotes: domains.NewNullString(paymentNotes),
-		AccountId:    accountId,
+		Id:        id,
+		Amount:    amount,
+		Type:      transactionType,
+		Notes:     domains.NewNullString(notes),
+		AccountId: accountId,
 	}
 }
 

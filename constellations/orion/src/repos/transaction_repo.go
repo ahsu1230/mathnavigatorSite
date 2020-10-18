@@ -57,10 +57,11 @@ func (tr *transactionRepo) SelectByAccountId(ctx context.Context, accountId uint
 			&transaction.CreatedAt,
 			&transaction.UpdatedAt,
 			&transaction.DeletedAt,
+			&transaction.AccountId,
+			&transaction.Type,
 			&transaction.Amount,
-			&transaction.PaymentType,
-			&transaction.PaymentNotes,
-			&transaction.AccountId); errScan != nil {
+			&transaction.Notes,
+		); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, transaction)
@@ -85,10 +86,11 @@ func (tr *transactionRepo) SelectById(ctx context.Context, id uint) (domains.Tra
 		&transaction.CreatedAt,
 		&transaction.UpdatedAt,
 		&transaction.DeletedAt,
+		&transaction.AccountId,
+		&transaction.Type,
 		&transaction.Amount,
-		&transaction.PaymentType,
-		&transaction.PaymentNotes,
-		&transaction.AccountId); err != nil {
+		&transaction.Notes,
+	); err != nil {
 		return domains.Transaction{}, appErrors.WrapDbExec(err, statement, id)
 	}
 	return transaction, nil
@@ -99,10 +101,10 @@ func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Trans
 	statement := "INSERT INTO transactions (" +
 		"created_at, " +
 		"updated_at, " +
+		"account_id, " +
+		"type, " +
 		"amount, " +
-		"payment_type, " +
-		"payment_notes, " +
-		"account_id " +
+		"notes" +
 		") VALUES (?, ?, ?, ?, ?, ?)"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
@@ -114,10 +116,11 @@ func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Trans
 	result, err := stmt.Exec(
 		now,
 		now,
+		transaction.AccountId,
+		transaction.Type,
 		transaction.Amount,
-		transaction.PaymentType,
-		transaction.PaymentNotes,
-		transaction.AccountId)
+		transaction.Notes,
+	)
 	if err != nil {
 		return 0, appErrors.WrapDbExec(err, statement, transaction)
 	}
@@ -133,10 +136,10 @@ func (tr *transactionRepo) Update(ctx context.Context, id uint, transaction doma
 	utils.LogWithContext(ctx, "transactionRepo.Update", logger.Fields{"transaction": transaction})
 	statement := "UPDATE transactions SET " +
 		"updated_at=?, " +
+		"account_id=?, " +
+		"type=?, " +
 		"amount=?, " +
-		"payment_type=?, " +
-		"payment_notes=?, " +
-		"account_id=? " +
+		"notes=? " +
 		"WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
@@ -147,10 +150,10 @@ func (tr *transactionRepo) Update(ctx context.Context, id uint, transaction doma
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		transaction.Amount,
-		transaction.PaymentType,
-		transaction.PaymentNotes,
 		transaction.AccountId,
+		transaction.Type,
+		transaction.Amount,
+		transaction.Notes,
 		id)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, transaction, id)

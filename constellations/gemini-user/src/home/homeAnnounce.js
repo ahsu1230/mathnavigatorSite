@@ -1,10 +1,9 @@
 "use strict";
 require("./homeAnnounce.sass");
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { isEmpty, filter } from "lodash";
-import srcClose from "../../assets/close_black.svg";
+import srcClose from "../../assets/close_white.svg";
 import API from "../utils/api.js";
 
 export class HomeAnnounce extends React.Component {
@@ -70,10 +69,14 @@ class Popup extends React.Component {
         const announceClass = show ? "show" : "";
         return (
             <div key="real" id="home-announce" className={announceClass}>
-                <h3>New Announcement!</h3>
-                <button className="close-x" onClick={this.props.dismiss}>
-                    <img src={srcClose} />
-                </button>
+                <div className="header-container">
+                    <h3>New Announcement!</h3>
+                    <button className="close-x" onClick={this.props.dismiss}>
+                        <div className="img-container">
+                            <img src={srcClose} />
+                        </div>
+                    </button>
+                </div>
                 <div className="text-container">
                     <p>{announce.shortMessage}</p>
                 </div>

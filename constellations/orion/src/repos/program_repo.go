@@ -58,9 +58,10 @@ func (pr *programRepo) SelectAll(ctx context.Context) ([]domains.Program, error)
 			&program.UpdatedAt,
 			&program.DeletedAt,
 			&program.ProgramId,
-			&program.Name,
+			&program.Title,
 			&program.Grade1,
 			&program.Grade2,
+			&program.Subject,
 			&program.Description,
 			&program.Featured); errScan != nil {
 			return results, errScan
@@ -87,9 +88,10 @@ func (pr *programRepo) SelectByProgramId(ctx context.Context, programId string) 
 		&program.UpdatedAt,
 		&program.DeletedAt,
 		&program.ProgramId,
-		&program.Name,
+		&program.Title,
 		&program.Grade1,
 		&program.Grade2,
+		&program.Subject,
 		&program.Description,
 		&program.Featured); err != nil {
 		return domains.Program{}, appErrors.WrapDbExec(err, statement, programId)
@@ -103,12 +105,13 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uin
 		"created_at, " +
 		"updated_at, " +
 		"program_id, " +
-		"name, " +
+		"title, " +
 		"grade1, " +
 		"grade2, " +
+		"subject, " +
 		"description, " +
 		"featured" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return 0, appErrors.WrapDbPrepare(err, statement)
@@ -120,9 +123,10 @@ func (pr *programRepo) Insert(ctx context.Context, program domains.Program) (uin
 		now,
 		now,
 		program.ProgramId,
-		program.Name,
+		program.Title,
 		program.Grade1,
 		program.Grade2,
+		program.Subject,
 		program.Description,
 		program.Featured)
 	if err != nil {
@@ -142,9 +146,10 @@ func (pr *programRepo) Update(ctx context.Context, programId string, program dom
 	statement := "UPDATE programs SET " +
 		"updated_at=?, " +
 		"program_id=?, " +
-		"name=?, " +
+		"title=?, " +
 		"grade1=?, " +
 		"grade2=?, " +
+		"subject=?, " +
 		"description=?, " +
 		"featured=? " +
 		"WHERE program_id=?"
@@ -158,9 +163,10 @@ func (pr *programRepo) Update(ctx context.Context, programId string, program dom
 	execResult, err := stmt.Exec(
 		now,
 		program.ProgramId,
-		program.Name,
+		program.Title,
 		program.Grade1,
 		program.Grade2,
+		program.Subject,
 		program.Description,
 		program.Featured,
 		programId)

@@ -9,6 +9,7 @@
         "test": "jest --verbose",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
+        "update-snapshots": "jest --updateSnapshot",
         "prettify": "prettier --write \"**/*.js\""
     },
     "repository": {
@@ -34,7 +35,8 @@
         "react-dom": "^16.12.0",
         "react-router": "^5.1.2",
         "react-router-dom": "^5.1.2",
-        "react-router-scroll-memory": "^2.0.6"
+        "react-router-scroll-memory": "^2.0.6",
+        "react-transition-group": "^4.4.1"
     },
     "devDependencies": {
         "@babel/core": "^7.10.5",

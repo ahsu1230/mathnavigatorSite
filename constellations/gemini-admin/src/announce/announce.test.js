@@ -1,5 +1,5 @@
 import React from "react";
-import Enzyme, { shallow } from "enzyme";
+import { shallow } from "enzyme";
 import { AnnouncePage } from "./announce.js";
 
 describe("test", () => {
@@ -7,36 +7,34 @@ describe("test", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("h1").text()).toContain("All Announcements");
-        expect(component.find("Link").text()).toContain("Add Announcement");
-        expect(component.find("AnnounceRow").length).toBe(0);
+
+        const header = component.find("AllPageHeader");
+        expect(header.prop("title")).toContain("All Announcements");
+        expect(header.prop("addUrl")).toBe("/announcements/add");
     });
 
-    test("renders 2 rows", () => {
+    test("renders cards", () => {
         const announcements = [
             {
-                Id: 1,
+                id: 1,
                 author: "Joe",
                 message: "Awesome",
             },
             {
-                Id: 2,
+                id: 2,
                 author: "Schmoe",
                 message: "Possum",
             },
         ];
         component.setState({ list: announcements });
-        let rows = component.find("AnnounceRow");
+        let cards = component.find("RowCardBasic");
+        let card0 = cards.at(0);
+        // todo: check postedAt
+        expect(card0.prop("editUrl")).toBe("/announcements/1/edit");
 
-        expect(rows.length).toBe(2);
-        let row0 = rows.at(0);
-        expect(row0.prop("row")).toHaveProperty("Id", 1);
-        expect(row0.prop("row")).toHaveProperty("author", "Joe");
-        expect(row0.prop("row")).toHaveProperty("message", "Awesome");
-
-        let row1 = rows.at(1);
-        expect(row1.prop("row")).toHaveProperty("Id", 2);
-        expect(row1.prop("row")).toHaveProperty("author", "Schmoe");
-        expect(row1.prop("row")).toHaveProperty("message", "Possum");
+        let card1 = cards.at(1);
+        // todo: check postedAt
+        expect(card1.prop("editUrl")).toBe("/announcements/2/edit");
+        expect(cards.length).toBe(2);
     });
 });

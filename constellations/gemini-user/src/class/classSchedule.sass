@@ -1,6 +1,14 @@
 @import "../utils/_constants.sass"
 
 #class-session
+    
+    h3
+        font-weight: 400
+        color: $colorGrayMed
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            margin-top: $spacing8x
+
     .row
         display: flex
         align-items: center
@@ -8,7 +16,7 @@
         padding: $spacing3x 0
         border-bottom: 1px solid $colorGrayLight
     
-        @media screen and (max-width: $mediaWidth2)
+        @media screen and (max-width: $containerWidthPxLaptop)
             display: block
             width: 100%
         
@@ -16,13 +24,13 @@
         color: $colorRed
     
     .canceled-past span
-        color: pink
+        color: $colorGrayLight
 
     .past span
         color: $colorGrayLight
     
     span
-        @media screen and (max-width: $mediaWidth2)
+        @media screen and (max-width: $containerWidthPxLaptop)
             display: block
             line-height: $lineHeight2
 

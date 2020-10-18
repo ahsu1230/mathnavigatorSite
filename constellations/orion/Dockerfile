@@ -1,6 +1,6 @@
 # Start from a Debian image with the latest version of Go installed
 # and a workspace (GOPATH) configured at /go.
-FROM golang:1.13
+FROM golang:1.15
 
 ARG app_env
 ENV APP_ENV $app_env

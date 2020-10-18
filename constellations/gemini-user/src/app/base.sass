@@ -2,8 +2,8 @@
 
 body
   margin: 0
-  background-color: $colorBackground
-  color: $colorBlackDark
+  background-color: $colorWhite
+  color: $colorBlack
   font-family: $fontFamilyRoboto
   font-size: $fontSize0
   font-weight: 400
@@ -30,7 +30,7 @@ h3
   line-height: $lineHeight1
   font-family: $fontFamilyRoboto
   font-size: $fontSize1
-  font-weight: bold
+  font-weight: 700
   letter-spacing: $letterSpacingRoboto
 
 h4
@@ -38,7 +38,7 @@ h4
   line-height: $lineHeight0
   font-family: $fontFamilyRoboto
   font-size: $fontSize0
-  font-weight: bold
+  font-weight: 700
   letter-spacing: $letterSpacingRoboto
 
 p
@@ -58,7 +58,7 @@ p
     content: 'Math Navigator'
 
 a
-  color: $colorBlue
+  color: $colorTurquoise
   text-decoration: none
 
   &:hover
@@ -73,29 +73,29 @@ button
   padding: $spacing1x $spacing2x
   outline: none
   border: none
-  background-color: $colorOrange
-  color: $colorWhite
+  line-height: $lineHeight0
   font-family: $fontFamilyRoboto
   font-size: $fontSize0
-  line-height: $lineHeight0
   letter-spacing: $letterSpacingRoboto
+  background-color: $colorTurquoise
+  color: $colorWhite
   cursor: pointer
 
   &:hover
     filter: brightness(110%)
 
   &.inverted
-    color: $colorOrange
+    color: $colorTurquoise
     background-color: $colorWhite
-    border: 1px solid $colorOrange
+    border: 1px solid $colorTurquoise
 
     &:hover
       color: $colorWhite
-      background-color: $colorOrange
+      background-color: $colorTurquoise
 
 .use-scrollbar
   // For Firefox
-  scrollbar-color: $colorPrimary $colorWhiteLight
+  scrollbar-color: $colorTurquoise $colorWhiteLight
   scrollbar-width: thin
 
   // For Chrome & Safari
@@ -104,4 +104,4 @@ button
   &::-webkit-scrollbar-track
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
   &::-webkit-scrollbar-thumb
-    background-color: $colorPrimary
+    background-color: $colorTurquoise

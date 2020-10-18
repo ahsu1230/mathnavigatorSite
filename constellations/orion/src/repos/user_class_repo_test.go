@@ -11,12 +11,12 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
-func initUserClassesTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClassesRepoInterface) {
+func initUserClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClassRepoInterface) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserClassesRepo(testUtils.Context, db)
+	repo := repos.CreateTestUserClassRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -24,11 +24,11 @@ func initUserClassesTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserClas
 // Select Many by Class Id
 //
 func TestSelectUsersByClassId(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassesRows()
+	rows := getUserClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE class_id=?").
 		ExpectQuery().
 		WithArgs("abcd").
@@ -39,7 +39,7 @@ func TestSelectUsersByClassId(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.UserClasses{getUserClasses()}
+	want := []domains.UserClass{getUserClass()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -53,11 +53,11 @@ func TestSelectUsersByClassId(t *testing.T) {
 // Select Many By User ID
 //
 func TestSelectClassesByUserId(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassesRows()
+	rows := getUserClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE user_id=?").
 		ExpectQuery().
 		WithArgs(1).
@@ -68,7 +68,7 @@ func TestSelectClassesByUserId(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.UserClasses{getUserClasses()}
+	want := []domains.UserClass{getUserClass()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -82,11 +82,11 @@ func TestSelectClassesByUserId(t *testing.T) {
 // Select One By User ID and Class ID
 //
 func TestSelectByUserAndClass(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassesRows()
+	rows := getUserClassRows()
 	mock.ExpectPrepare(`^SELECT (.+) FROM user_classes WHERE user_id=\? AND class_id=?`).
 		ExpectQuery().
 		WithArgs(1, "abcd").
@@ -97,7 +97,7 @@ func TestSelectByUserAndClass(t *testing.T) {
 	}
 
 	// Validate results
-	want := getUserClasses()
+	want := getUserClass()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -111,11 +111,11 @@ func TestSelectByUserAndClass(t *testing.T) {
 // Select New Classes
 //
 func TestSelectByNow(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := getUserClassesRows()
+	rows := getUserClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM user_classes WHERE created_at>=*").
 		ExpectQuery().
 		WillReturnRows(rows)
@@ -125,7 +125,7 @@ func TestSelectByNow(t *testing.T) {
 	}
 
 	// Validate results
-	want := []domains.UserClasses{getUserClasses()}
+	want := []domains.UserClass{getUserClass()}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -139,7 +139,7 @@ func TestSelectByNow(t *testing.T) {
 // Create
 //
 func TestInsertUserClass(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -149,13 +149,13 @@ func TestInsertUserClass(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
-			1,
 			"abcd",
+			2,
 			1,
 			domains.USER_CLASS_ACCEPTED,
 		).WillReturnResult(result)
-	userClasses := getUserClasses()
-	_, err := repo.Insert(testUtils.Context, userClasses)
+	userClass := getUserClass()
+	_, err := repo.Insert(testUtils.Context, userClass)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -170,7 +170,7 @@ func TestInsertUserClass(t *testing.T) {
 // Update
 //
 func TestUpdateUserClass(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -179,19 +179,19 @@ func TestUpdateUserClass(t *testing.T) {
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			1,
 			"abcd",
+			2,
 			1,
 			domains.USER_CLASS_ACCEPTED,
 			1,
 		).WillReturnResult(result)
-	userClasses := domains.UserClasses{
+	userClasses := domains.UserClass{
 		Id:        1,
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
 		DeletedAt: sql.NullTime{},
-		UserId:    1,
 		ClassId:   "abcd",
+		UserId:    2,
 		AccountId: 1,
 		State:     domains.USER_CLASS_ACCEPTED,
 	}
@@ -210,7 +210,7 @@ func TestUpdateUserClass(t *testing.T) {
 // Delete
 //
 func TestDeleteUserClass(t *testing.T) {
-	db, mock, repo := initUserClassesTest(t)
+	db, mock, repo := initUserClassTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
@@ -233,14 +233,14 @@ func TestDeleteUserClass(t *testing.T) {
 //
 // Helper Methods
 //
-func getUserClassesRows() *sqlmock.Rows {
+func getUserClassRows() *sqlmock.Rows {
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"UserId",
 		"ClassId",
+		"UserId",
 		"AccountId",
 		"State",
 	}).AddRow(
@@ -248,21 +248,21 @@ func getUserClassesRows() *sqlmock.Rows {
 		testUtils.TimeNow,
 		testUtils.TimeNow,
 		sql.NullTime{},
-		1,
 		"abcd",
+		2,
 		1,
 		domains.USER_CLASS_ACCEPTED,
 	)
 }
 
-func getUserClasses() domains.UserClasses {
-	return domains.UserClasses{
+func getUserClass() domains.UserClass {
+	return domains.UserClass{
 		Id:        1,
 		CreatedAt: testUtils.TimeNow,
 		UpdatedAt: testUtils.TimeNow,
 		DeletedAt: sql.NullTime{},
-		UserId:    1,
 		ClassId:   "abcd",
+		UserId:    2,
 		AccountId: 1,
 		State:     domains.USER_CLASS_ACCEPTED,
 	}

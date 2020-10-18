@@ -24,7 +24,7 @@ type AccountUser struct {
 	User    User    `json:"user"`
 }
 
-type AccountSum struct {
+type AccountBalance struct {
 	Account Account `json:"account"`
 	Balance int     `json:"balance"`
 }

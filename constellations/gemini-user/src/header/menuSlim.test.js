@@ -23,7 +23,7 @@ describe("test", () => {
 
     test("shows links", () => {
         var overlayMenu = shallow(<OverlayMenu />);
-        expect(overlayMenu.find("LinkRow").length).toBe(3);
+        expect(overlayMenu.find("LinkRow").length).toBe(2);
         var submenus = overlayMenu.find("SubMenu");
         expect(submenus.length).toBe(2);
     });

@@ -2,7 +2,14 @@
 require("./achieve.sass");
 import React from "react";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
+
+const PAGE_DESCRIPTION = `
+    Achievements are student accomplishments that have occured throughout the years of Math Navigator's programs. 
+    They are shown in the "Student Achievements" section of the user website and are grouped by year (starting from the most recent). 
+    Achievements are sorted by year (descending) and then by position (ascending). 
+    Use the 'Position' field value to determine which achievement comes first within each year group.`;
 
 export class AchievePage extends React.Component {
     state = {
@@ -17,46 +24,53 @@ export class AchievePage extends React.Component {
 
     render = () => {
         let numAchievements = 0;
-        const rows = this.state.achievements.map((group, index) =>
-            (group.achievements || []).map((achieve, index) => {
+        let rows = [];
+        this.state.achievements.forEach((group, indexI) =>
+            (group.achievements || []).forEach((achieve, indexJ) => {
                 numAchievements++;
-                return <AchieveRow key={index} achieve={achieve} />;
+                const fields = generateFields(achieve);
+                const texts = generateTexts(achieve);
+                rows.push(
+                    <div className="card-wrapper" key={numAchievements}>
+                        <RowCardBasic
+                            title={"Achievement in " + achieve.year}
+                            editUrl={"/achievements/" + achieve.id + "/edit"}
+                            fields={fields}
+                            texts={texts}
+                        />
+                    </div>
+                );
             })
         );
 
         return (
             <div id="view-achieve">
-                <h1>All Achievements ({numAchievements})</h1>
-                <div className="row header">
-                    <span className="medium-column">Year</span>
-                    <span className="medium-column">Position</span>
-                    <span className="large-column"> Message</span>
-                    <span className="edit"></span>
-                </div>
-                {rows}
-                <button>
-                    <Link id="add-achievement" to={"/achievements/add"}>
-                        Add Achievement
-                    </Link>
-                </button>
+                <AllPageHeader
+                    title={"All Achievements (" + numAchievements + ")"}
+                    addUrl={"/achievements/add"}
+                    addButtonTitle={"Add Achievement"}
+                    description={PAGE_DESCRIPTION}
+                />
+                <div className="cards">{rows}</div>
             </div>
         );
     };
 }
 
-class AchieveRow extends React.Component {
-    render = () => {
-        const achieve = this.props.achieve;
-        const url = "/achievements/" + achieve.id + "/edit";
-        return (
-            <div className="row">
-                <span className="medium-column">{achieve.year}</span>
-                <span className="medium-column">{achieve.position}</span>
-                <span className="large-column">{achieve.message}</span>
-                <Link className="edit" to={url}>
-                    {"Edit >"}
-                </Link>
-            </div>
-        );
-    };
+function generateFields(achieve) {
+    return [
+        {
+            label: "Position",
+            value: achieve.position,
+        },
+    ];
+}
+
+function generateTexts(achieve) {
+    return [
+        {
+            label: "Message",
+            value: achieve.message,
+        },
+    ];
 }

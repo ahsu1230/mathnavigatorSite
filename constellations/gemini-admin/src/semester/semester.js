@@ -1,8 +1,16 @@
 "use strict";
 require("./semester.sass");
 import React from "react";
-import { Link } from "react-router-dom";
 import API from "../api.js";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
+
+const PAGE_DESCRIPTION = `
+    A Semester consists of a season and a year. The title and semesterId are automatically generated based on these values. 
+    The only available values for season are winter, spring, summer, fall. 
+    When displaying programs in the user website's "Program Catalog" page, all programs will be grouped / sorted by these semesters 
+    in ascending order (most recent year, then winter -> spring -> summer -> fall).
+`;
 
 export class SemesterPage extends React.Component {
     constructor(props) {
@@ -21,36 +29,43 @@ export class SemesterPage extends React.Component {
 
     render() {
         const numSemesters = this.state.list.length;
-        const rows = this.state.list.map((s, i) => (
-            <SemesterRow key={i} semesterObj={s} />
-        ));
+        const rows = this.state.list.map((semester, index) => {
+            const fields = generateFields(semester);
+            return (
+                <RowCardBasic
+                    key={index}
+                    title={semester.title}
+                    subtitle={semester.semesterId}
+                    editUrl={"/semesters/" + semester.semesterId + "/edit"}
+                    fields={fields}
+                />
+            );
+        });
+
         return (
             <div id="view-semester">
-                <h1>All Semesters ({numSemesters})</h1>
-                <ul className="semester-lists">
-                    <li className="li-med">Semester ID</li>
-                    <li className="li-med">Title</li>
-                </ul>
-                <ul>{rows}</ul>
-                <Link to={"/semesters/add"}>
-                    <button className="semester-button">Add Semester</button>
-                </Link>
+                <AllPageHeader
+                    title={"All Semesters (" + numSemesters + ")"}
+                    addUrl={"/semesters/add"}
+                    addButtonTitle={"Add Semester"}
+                    description={PAGE_DESCRIPTION}
+                />
+
+                <div className="cards-wrapper">{rows}</div>
             </div>
         );
     }
 }
 
-class SemesterRow extends React.Component {
-    render() {
-        const semesterId = this.props.semesterObj.semesterId;
-        const title = this.props.semesterObj.title;
-        const url = "/semesters/" + semesterId + "/edit";
-        return (
-            <ul className="semester-lists">
-                <li className="li-med"> {semesterId} </li>
-                <li className="li-med"> {title} </li>
-                <Link to={url}> Edit </Link>
-            </ul>
-        );
-    }
+function generateFields(semester) {
+    return [
+        {
+            label: "Year",
+            value: semester.year,
+        },
+        {
+            label: "Season",
+            value: semester.season,
+        },
+    ];
 }

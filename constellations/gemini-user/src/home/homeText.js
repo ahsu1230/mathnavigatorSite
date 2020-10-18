@@ -9,9 +9,9 @@ import srcLibrary from "../../assets/library_white.svg";
 
 export const programsText = [
     {
-        title: "SAT",
+        title: "SAT 1 & 2",
         description:
-            "Our most popular programs. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).",
+            "Our most popular programs. We provide dedicated courses for both the SAT1 Math Section and SAT Subject Test (Math Level 2).",
         imgSrc: srcSat,
         programId: "",
     },
@@ -25,21 +25,21 @@ export const programsText = [
     {
         title: "AMC",
         description:
-            "The American Mathematics Competition administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
+            "Administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.",
         imgSrc: srcAmc,
         programId: "",
     },
 ];
 
-export const successText = [
+export const strategyText = [
     {
-        title: "Dedicated Professionalism",
+        title: "Dedicated Attention",
         description:
-            "We dedicate time to each individual student and provide plans to improve topics they may need more help in.",
+            "We dedicate time to each individual student and provide plans to improve their understanding of topics.",
         imgSrc: srcUserCheck,
     },
     {
-        title: "Strategical Thinking",
+        title: "Strategic Thinking",
         description:
             "We want our students to work smart, not just hard. With Andy's problem solving strategies, students will learn how to tackle any problem.",
         imgSrc: srcLightBulb,
@@ -47,7 +47,7 @@ export const successText = [
     {
         title: "Abundant Resources",
         description:
-            "Andy makes all of the teaching material. With our huge collection of resources, students will be over-prepared for their next exams.",
+            "Andy makes all of the teaching material. With our huge collection of resources, students will go into their exams full of confidence.",
         imgSrc: srcLibrary,
     },
 ];

@@ -8,22 +8,14 @@ import (
 
 var TABLE_ASKFORHELP = "ask_for_help"
 
-const (
-	SUBJECT_MATH        = "math"
-	SUBJECT_ENGLISH     = "english"
-	SUBJECT_PROGRAMMING = "programming"
-)
-
-var ALL_AFH_SUBJECTS = []string{SUBJECT_MATH, SUBJECT_ENGLISH, SUBJECT_PROGRAMMING}
-
 type AskForHelp struct {
 	Id         uint       `json:"id"`
 	CreatedAt  time.Time  `json:"-" db:"created_at"`
 	UpdatedAt  time.Time  `json:"-" db:"updated_at"`
 	DeletedAt  NullTime   `json:"-" db:"deleted_at"`
+	StartsAt   time.Time  `json:"startsAt" db:"starts_at"`
+	EndsAt     time.Time  `json:"endsAt" db:"ends_at"`
 	Title      string     `json:"title"`
-	Date       time.Time  `json:"date"`
-	TimeString string     `json:"timeString" db:"time_string"`
 	Subject    string     `json:"subject"`
 	LocationId string     `json:"locationId" db:"location_id"`
 	Notes      NullString `json:"notes"`
@@ -40,8 +32,14 @@ func (askForHelp *AskForHelp) Validate() error {
 	}
 
 	// Subject validation
-	if subject != SUBJECT_MATH && subject != SUBJECT_ENGLISH && subject != SUBJECT_PROGRAMMING {
+	if !validateSubject(subject) {
 		return fmt.Errorf(messageFmt, "Unrecognized subject")
 	}
+
+	// Time validation
+	if askForHelp.StartsAt.After(askForHelp.EndsAt) {
+		return fmt.Errorf(messageFmt, "Start time must be before end time")
+	}
+
 	return nil
 }

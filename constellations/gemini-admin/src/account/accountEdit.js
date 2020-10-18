@@ -2,10 +2,10 @@
 require("./accountEdit.sass");
 import React from "react";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { InputText } from "../utils/inputText.js";
-import { generatePassword } from "../utils/userUtils.js";
+import { Modal } from "../common/modals/modal.js";
+import OkayModal from "../common/modals/okayModal.js";
+import { InputText } from "../common/inputs/inputText.js";
+import { generatePassword } from "../common/userUtils.js";
 import { UserInput } from "../user/userInput.js";
 
 export class AccountEditPage extends React.Component {

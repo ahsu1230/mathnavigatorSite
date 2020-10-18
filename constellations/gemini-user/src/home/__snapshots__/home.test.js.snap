@@ -19,35 +19,58 @@ exports[`test snapshot 1`] = `
       <div
         id="banner-content"
       >
-        <h2>
-          Montgomery County, MD
-        </h2>
-        <h1>
-          Providing affordable, high quality education
-          <br />
-          to thousands of students for 15 years.
-        </h1>
+        <div
+          className="texts"
+        >
+          <h1>
+            Navigate to success with Math Navigator
+          </h1>
+          <p>
+            Providing affordable, high quality education
+            <br />
+            to thousands of students for 15 years.
+          </p>
+          <p>
+            Montgomery County, MD
+          </p>
+        </div>
+        <div
+          className="buttons"
+        >
+          <a
+            href="#/register"
+            onClick={[Function]}
+          >
+            <button
+              className="enroll"
+            >
+              Enroll into a Class
+            </button>
+          </a>
+          <a
+            href="#/programs"
+            onClick={[Function]}
+          >
+            <button
+              className="browse"
+            >
+              Browse Program Catalog
+            </button>
+          </a>
+        </div>
       </div>
-      <a
-        href="#/programs"
-        onClick={[Function]}
-      >
-        <button>
-          Join a Program today
-        </button>
-      </a>
     </div>
     <div
       className="section programs"
     >
       <h2>
-        Programs
+        Our Featured Programs
       </h2>
       <div
         className="card-container"
       >
         <div
-          className="home-tile-card program"
+          className="card"
         >
           <div
             className="img-container"
@@ -57,24 +80,22 @@ exports[`test snapshot 1`] = `
             />
           </div>
           <h3>
-            SAT
+            SAT 1 & 2
           </h3>
           <p>
-            Our most popular programs. We provide dedicated programs for both the SAT1 Math Section and SAT Subject Test (Math Level 2).
+            Our most popular programs. We provide dedicated courses for both the SAT1 Math Section and SAT Subject Test (Math Level 2).
           </p>
           <a
             href="#/programs"
             onClick={[Function]}
           >
-            <button
-              className="inverted"
-            >
-              Sign Up
+            <button>
+              Enroll Now
             </button>
           </a>
         </div>
         <div
-          className="home-tile-card program"
+          className="card"
         >
           <div
             className="img-container"
@@ -93,15 +114,13 @@ exports[`test snapshot 1`] = `
             href="#/programs"
             onClick={[Function]}
           >
-            <button
-              className="inverted"
-            >
-              Sign Up
+            <button>
+              Enroll Now
             </button>
           </a>
         </div>
         <div
-          className="home-tile-card program"
+          className="card"
         >
           <div
             className="img-container"
@@ -114,33 +133,32 @@ exports[`test snapshot 1`] = `
             AMC
           </h3>
           <p>
-            The American Mathematics Competition administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.
+            Administered by the Mathematics Association of America. Represent your school and compete with other mathematics athletes.
           </p>
           <a
             href="#/programs"
             onClick={[Function]}
           >
-            <button
-              className="inverted"
-            >
-              Sign Up
+            <button>
+              Enroll Now
             </button>
           </a>
         </div>
       </div>
-      <div>
-        <a
-          href="#/programs"
-          onClick={[Function]}
-        >
-          <button>
-            View More Programs
-          </button>
-        </a>
-      </div>
+      <a
+        className="link-bar"
+        href="#/programs"
+        onClick={[Function]}
+      >
+        Visit our 
+        <b>
+          Program Catalog
+        </b>
+         to view more programs to enroll into.
+      </a>
     </div>
     <div
-      className="section success"
+      className="section strategy"
     >
       <h2>
         Navigate to Success
@@ -149,7 +167,7 @@ exports[`test snapshot 1`] = `
         className="card-container"
       >
         <div
-          className="home-tile-card success"
+          className="card"
         >
           <div
             className="img-container"
@@ -159,14 +177,14 @@ exports[`test snapshot 1`] = `
             />
           </div>
           <h3>
-            Dedicated Professionalism
+            Dedicated Attention
           </h3>
           <p>
-            We dedicate time to each individual student and provide plans to improve topics they may need more help in.
+            We dedicate time to each individual student and provide plans to improve their understanding of topics.
           </p>
         </div>
         <div
-          className="home-tile-card success"
+          className="card"
         >
           <div
             className="img-container"
@@ -176,14 +194,14 @@ exports[`test snapshot 1`] = `
             />
           </div>
           <h3>
-            Strategical Thinking
+            Strategic Thinking
           </h3>
           <p>
             We want our students to work smart, not just hard. With Andy's problem solving strategies, students will learn how to tackle any problem.
           </p>
         </div>
         <div
-          className="home-tile-card success"
+          className="card"
         >
           <div
             className="img-container"
@@ -196,38 +214,48 @@ exports[`test snapshot 1`] = `
             Abundant Resources
           </h3>
           <p>
-            Andy makes all of the teaching material. With our huge collection of resources, students will be over-prepared for their next exams.
+            Andy makes all of the teaching material. With our huge collection of resources, students will go into their exams full of confidence.
           </p>
         </div>
       </div>
     </div>
     <div
-      className="section stories"
+      className="section online"
+    >
+      <h2>
+        Our Online-only Solution
+      </h2>
+      <div
+        className="content"
+      >
+        <img
+          src="test-file-stub"
+        />
+        <p>
+          With the impact of Covid-19 and the community mandate to practice safe social distancing, all Math Navigator courses have been moved online!
+          <br />
+          <br />
+          Using Google Classroom to manage classwork and Zoom video conferencing, teachers and students can discuss and share materials with ease. Despite the inconvenience of schools and community centers closing down, we are still dedicated to providing students with superior education.
+        </p>
+      </div>
+    </div>
+    <div
+      className="section home-footer"
     >
       <div
-        className="story-banner-container"
+        className="content"
       >
-        <div
-          className="story-banner-overlay"
-        />
-        <div
-          className="story-banner-img"
-        />
-        <div
-          className="text-container"
+        <h1>
+          Try your first class with Math Navigator today!
+        </h1>
+        <a
+          href="#/register"
+          onClick={[Function]}
         >
-          <h2>
-            Succeeding Together
-          </h2>
-          <a
-            href="#/student-achievements"
-            onClick={[Function]}
-          >
-            <button>
-              View our Student Achievements
-            </button>
-          </a>
-        </div>
+          <button>
+            Get Started
+          </button>
+        </a>
       </div>
     </div>
     <div />

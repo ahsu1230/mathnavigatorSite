@@ -12,7 +12,7 @@ func TestValidFirstName(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: true,
 	}
 	if err := user.Validate(); err != nil {
@@ -38,7 +38,7 @@ func TestValidLastName(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: true,
 	}
 	if err := user.Validate(); err != nil {
@@ -64,7 +64,7 @@ func TestValidEmail(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: true,
 	}
 	if err := user.Validate(); err != nil {
@@ -90,20 +90,25 @@ func TestValidPhone(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: true,
 	}
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	user.Phone = "+1 (555) 555 0100"
+	user.Phone = domains.NewNullString("+1 (555) 555 0100")
+	if err := user.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	user.Phone = domains.NewNullString("")
 	if err := user.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
 	// Checks for invalid phone numbers
-	user.Phone = "#$^3rdg4@#4&%$^%8dfg^&*^%^45#$%"
+	user.Phone = domains.NewNullString("#$^3rdg4@#4&%$^%8dfg^&*^%^45#$%")
 	if err := user.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid phone")
 	}
@@ -115,7 +120,7 @@ func TestValidSchool(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: false,
 	}
 	if err := user.Validate(); err != nil {
@@ -146,7 +151,7 @@ func TestValidGradYear(t *testing.T) {
 		FirstName:  "John",
 		LastName:   "Smith",
 		Email:      "gmail@gmail.com",
-		Phone:      "555-555-0100",
+		Phone:      domains.NewNullString("555-555-0100"),
 		IsGuardian: false,
 	}
 	if err := user.Validate(); err != nil {
@@ -170,5 +175,4 @@ func TestValidGradYear(t *testing.T) {
 	if err := user.Validate(); err == nil {
 		t.Errorf("Check was incorrect, got: nil, expected: invalid graduation year")
 	}
-
 }

@@ -52,7 +52,7 @@ func SetupProd() error {
 func ClearLogFile(filePath string) error {
 	err := os.Remove(PROD_LOG_FILE_NAME)
 	if err != nil {
-		log.Printf("Error deleting file %s (%w)", filePath, err)
+		log.Printf("Error deleting file %s (%v)", filePath, err)
 		return err
 	}
 	return nil

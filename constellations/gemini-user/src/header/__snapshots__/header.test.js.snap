@@ -103,24 +103,6 @@ exports[`test snapshot 1`] = `
           <li>
             <a
               className=""
-              href="#/student-webdev"
-              onClick={[Function]}
-            >
-              Student Web Development
-            </a>
-          </li>
-          <li>
-            <a
-              className=""
-              href="#/student-projects"
-              onClick={[Function]}
-            >
-              Student Websites
-            </a>
-          </li>
-          <li>
-            <a
-              className=""
               href="#/internship"
               onClick={[Function]}
             >
@@ -134,21 +116,10 @@ exports[`test snapshot 1`] = `
       >
         <a
           className=""
-          href="#/contact"
+          href="#/register"
           onClick={[Function]}
         >
-          Contact
-        </a>
-      </div>
-      <div
-        className="menu-link-container"
-      >
-        <a
-          className=""
-          href="#/account"
-          onClick={[Function]}
-        >
-          Account
+          Register
         </a>
       </div>
     </ul>
@@ -279,32 +250,6 @@ exports[`test snapshot 1`] = `
                 >
                   <a
                     className=""
-                    href="#/student-webdev"
-                    onClick={[Function]}
-                  >
-                    Student Web Development
-                  </a>
-                </div>
-              </li>
-              <li>
-                <div
-                  className="link-row"
-                >
-                  <a
-                    className=""
-                    href="#/student-projects"
-                    onClick={[Function]}
-                  >
-                    Student Websites
-                  </a>
-                </div>
-              </li>
-              <li>
-                <div
-                  className="link-row"
-                >
-                  <a
-                    className=""
                     href="#/internship"
                     onClick={[Function]}
                   >
@@ -319,21 +264,10 @@ exports[`test snapshot 1`] = `
           >
             <a
               className=""
-              href="#/contact"
+              href="#/register"
               onClick={[Function]}
             >
-              Contact
-            </a>
-          </div>
-          <div
-            className="link-row"
-          >
-            <a
-              className=""
-              href="#/account"
-              onClick={[Function]}
-            >
-              Account
+              Register
             </a>
           </div>
         </div>

@@ -2,33 +2,23 @@
 
 #view-afh
     width: 70%
+    max-width: $spacing96x
     margin: 0 auto $spacing24x
+    padding: $spacing6x 0
     font-family: $fontFamilyRoboto
 
     &  h1
         margin: $spacing6x 0
-        color: $colorTurquoise
-
-    .sessions-list
-        display: flex
-        flex-direction: row
-        align-items: center
-        margin: $spacing4x auto
-        color: $colorBlack
-
-        &.active
-            color: $colorTurquoiseLight
-
-        .sessions-checkbox
-            width: 20%
+        text-align: center
         
-    .description
-        margin: $spacing2x 0
+    p
+        margin: $spacing4x 0
+        text-align: center
         color: $colorBlack
 
-    .select
-        flex: 0 0 $spacing10x
-        margin-right: $spacing2x
+        &.directions
+            margin-bottom: $spacing8x
+            color: $colorGrayDark
 
     .tabs 
         display: flex
@@ -45,34 +35,150 @@
         padding: $spacing2x
         background-color: $colorWhite
         border-bottom: 2px solid transparent
+        border-radius: 8px 8px 0 0
         font-size: $fontSize1
         color: $colorBlack
         cursor: pointer
         transition: 0.3s
 
-    .tabs button:hover
-        background-color: $colorGrayLight
-        cursor: pointer
+        &:hover
+            background-color: $colorGrayLighter
+            cursor: pointer
+
+        .icon-wrapper
+            display: inline-block
+            position: relative
+            width: 32px
+            height: 32px
+            margin-right: $spacing2x
+            border-radius: 50%
+            background-color: $colorGrayMed
+            vertical-align: middle
+
+            img
+                position: absolute
+                top: 50%
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 16px
+
+                &.math
+                    top: calc(50% - 1px)
+                    width: 14px
+
+                &.programming
+                    width: 18px
+
+        &.active .icon-wrapper
+            background-color: $colorTurquoise
     
     .showTab 
         display: inline-block
         width: 100%
-        padding: $spacing1x $spacing2x
+        padding: $spacing4x 0
         border: none
 
     .hide
         display: none
-    
+
+    .afh-row
+        margin-bottom: $spacing4x
+        padding-bottom: $spacing4x
+        border-bottom: 1px solid $colorGrayLight
+
+        .row-header
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: start
+
+            a
+                color: $colorTurquoise
+
+            img
+                width: $spacing1_5x
+                margin-left: $spacing1x
+
+        h4
+            line-height: $lineHeight0
+            font-size: $fontSize0
+            font-weight: 400
+
+            &.title
+                font-weight: 600
+                color: $colorBlackLight
+
+            &.time
+                color: $colorBlack
+
+
+        .notes
+            margin-top: $spacing2x
+            color: $colorTurquoiseLight
+
+            b
+                vertical-align: middle
+
+            .icon-wrapper
+                display: inline-block
+                position: relative
+                width: 36px
+                height: 36px
+                margin-right: $spacing1x
+                border-radius: 50%
+                background-color: $colorTurquoiseLight
+                vertical-align: middle
+
+                img
+                    position: absolute
+                    top: 50%
+                    left: 50%
+                    transform: translate(-50%, -50%)
+                    width: 22px
+
+        p
+            margin: $spacing1x 0
+            text-align: left
+            color: $colorBlack
+
+        .loc
+            line-height: $lineHeight0
+
 @media only screen and (max-width: 700px)
     #view-afh
         width: 90%
 
-        & h1, .description
+        & h1, p
             text-align: center
 
-        .sessions-list
-            width: 90%
-            margin: $spacing3x auto
+        .loc
+            margin-top: $spacing2x
+            margin-bottom: $spacing1x
 
         .tabs button
             font-size: $fontSize0
+
+            .icon-wrapper
+                display: block
+                margin: 0 auto $spacing1x
+
+        .afh-row
+            text-align: center
+
+            .row-header
+                flex-direction: column
+                justify-content: start
+                align-items: center
+
+                .link-wrapper
+                    margin: $spacing2x 0
+                    padding: $spacing1x $spacing2x
+                    border: 1px solid $colorTurquoise
+                    border-radius: 8px
+
+            p
+                text-align: center
+
+            .notes .icon-wrapper
+                display: none
+                    

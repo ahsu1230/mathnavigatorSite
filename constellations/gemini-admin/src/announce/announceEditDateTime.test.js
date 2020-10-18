@@ -1,5 +1,5 @@
 import React from "react";
-import Enzyme, { shallow } from "enzyme";
+import { shallow } from "enzyme";
 import moment from "moment";
 import { AnnounceEditDateTime } from "./announceEditDateTime.js";
 

@@ -8,7 +8,7 @@ describe("Class Error Page", () => {
     test("renders", () => {
         expect(component.exists()).toBe(true);
         expect(component.find("h1").text()).toBe("Page Not Found");
-        expect(component.find("Link").text()).toBe("View our Programs");
+        expect(component.find("Link").text()).toBe("View our Program Catalog");
     });
 
     test("renders invalid classId", () => {

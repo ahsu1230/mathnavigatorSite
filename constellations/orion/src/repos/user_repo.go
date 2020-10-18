@@ -70,16 +70,17 @@ func (ur *userRepo) SearchUsers(ctx context.Context, search string) ([]domains.U
 			&user.CreatedAt,
 			&user.UpdatedAt,
 			&user.DeletedAt,
+			&user.AccountId,
 			&user.FirstName,
-			&user.LastName,
 			&user.MiddleName,
+			&user.LastName,
 			&user.Email,
 			&user.Phone,
+			&user.IsAdminCreated,
 			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes,
 			&user.School,
-			&user.GraduationYear); errScan != nil {
+			&user.GraduationYear,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -128,16 +129,17 @@ func (ur *userRepo) SelectAll(ctx context.Context, search string, pageSize, offs
 			&user.CreatedAt,
 			&user.UpdatedAt,
 			&user.DeletedAt,
+			&user.AccountId,
 			&user.FirstName,
-			&user.LastName,
 			&user.MiddleName,
+			&user.LastName,
 			&user.Email,
 			&user.Phone,
+			&user.IsAdminCreated,
 			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes,
 			&user.School,
-			&user.GraduationYear); errScan != nil {
+			&user.GraduationYear,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -162,16 +164,17 @@ func (ur *userRepo) SelectById(ctx context.Context, id uint) (domains.User, erro
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.DeletedAt,
+		&user.AccountId,
 		&user.FirstName,
-		&user.LastName,
 		&user.MiddleName,
+		&user.LastName,
 		&user.Email,
 		&user.Phone,
+		&user.IsAdminCreated,
 		&user.IsGuardian,
-		&user.AccountId,
-		&user.Notes,
 		&user.School,
-		&user.GraduationYear); errScan != nil {
+		&user.GraduationYear,
+		&user.Notes); errScan != nil {
 		return domains.User{}, appErrors.WrapDbQuery(errScan, statement, id)
 	}
 	return user, nil
@@ -200,16 +203,17 @@ func (ur *userRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]do
 			&user.CreatedAt,
 			&user.UpdatedAt,
 			&user.DeletedAt,
+			&user.AccountId,
 			&user.FirstName,
-			&user.LastName,
 			&user.MiddleName,
+			&user.LastName,
 			&user.Email,
 			&user.Phone,
+			&user.IsAdminCreated,
 			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes,
 			&user.School,
-			&user.GraduationYear); errScan != nil {
+			&user.GraduationYear,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -218,6 +222,7 @@ func (ur *userRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]do
 }
 
 func (ur *userRepo) SelectByNew(ctx context.Context) ([]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectByNew", logger.Fields{})
 	results := make([]domains.User, 0)
 
 	now := time.Now().UTC()
@@ -241,16 +246,17 @@ func (ur *userRepo) SelectByNew(ctx context.Context) ([]domains.User, error) {
 			&user.CreatedAt,
 			&user.UpdatedAt,
 			&user.DeletedAt,
+			&user.AccountId,
 			&user.FirstName,
-			&user.LastName,
 			&user.MiddleName,
+			&user.LastName,
 			&user.Email,
 			&user.Phone,
+			&user.IsAdminCreated,
 			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes,
 			&user.School,
-			&user.GraduationYear); errScan != nil {
+			&user.GraduationYear,
+			&user.Notes); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, user)
@@ -263,17 +269,18 @@ func (ur *userRepo) Insert(ctx context.Context, user domains.User) (uint, error)
 	statement := "INSERT INTO users (" +
 		"created_at, " +
 		"updated_at, " +
+		"account_id, " +
 		"first_name, " +
-		"last_name," +
 		"middle_name, " +
-		"email," +
+		"last_name, " +
+		"email, " +
 		"phone, " +
-		"is_guardian," +
-		"account_id," +
-		"notes," +
-		"school," +
-		"graduation_year" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		"is_admin_created, " +
+		"is_guardian, " +
+		"school, " +
+		"graduation_year, " +
+		"notes" +
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -285,16 +292,17 @@ func (ur *userRepo) Insert(ctx context.Context, user domains.User) (uint, error)
 	execResult, err := stmt.Exec(
 		now,
 		now,
+		user.AccountId,
 		user.FirstName,
-		user.LastName,
 		user.MiddleName,
+		user.LastName,
 		user.Email,
 		user.Phone,
+		user.IsAdminCreated,
 		user.IsGuardian,
-		user.AccountId,
-		user.Notes,
 		user.School,
 		user.GraduationYear,
+		user.Notes,
 	)
 	if err != nil {
 		return 0, appErrors.WrapDbExec(err, statement, user)
@@ -311,16 +319,17 @@ func (ur *userRepo) Update(ctx context.Context, id uint, user domains.User) erro
 	utils.LogWithContext(ctx, "userRepo.Update", logger.Fields{"id": id, "user": user})
 	statement := "UPDATE users SET " +
 		"updated_at=?, " +
+		"account_id=?, " +
 		"first_name=?, " +
-		"last_name=?, " +
 		"middle_name=?, " +
+		"last_name=?, " +
 		"email=?, " +
 		"phone=?, " +
+		"is_admin_created=?, " +
 		"is_guardian=?, " +
-		"account_id=?, " +
-		"notes=?, " +
 		"school=?, " +
-		"graduation_year=? " +
+		"graduation_year=?, " +
+		"notes=? " +
 		"WHERE id=?"
 	stmt, err := ur.db.Prepare(statement)
 	if err != nil {
@@ -331,16 +340,17 @@ func (ur *userRepo) Update(ctx context.Context, id uint, user domains.User) erro
 	now := time.Now().UTC()
 	execResult, err := stmt.Exec(
 		now,
+		user.AccountId,
 		user.FirstName,
-		user.LastName,
 		user.MiddleName,
+		user.LastName,
 		user.Email,
 		user.Phone,
+		user.IsAdminCreated,
 		user.IsGuardian,
-		user.AccountId,
-		user.Notes,
 		user.School,
 		user.GraduationYear,
+		user.Notes,
 		id)
 	if err != nil {
 		return appErrors.WrapDbExec(err, statement, id, user)

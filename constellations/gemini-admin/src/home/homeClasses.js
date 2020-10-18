@@ -5,6 +5,7 @@ import API from "../api.js";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { EmptyMessage } from "./home.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
 const TAB_CLASSES = "classes";
 
@@ -14,10 +15,10 @@ export class HomeTabSectionClasses extends React.Component {
     };
 
     componentDidMount() {
-        API.get("api/unpublished").then((res) => {
-            const unpublishedList = res.data;
+        API.get("api/classes/unpublished").then((res) => {
+            const unpublishedList = res.data || [];
             this.setState({
-                unpubClasses: unpublishedList.classes,
+                unpubClasses: unpublishedList,
             });
         });
     }
@@ -25,12 +26,21 @@ export class HomeTabSectionClasses extends React.Component {
     render() {
         let unpublishedClasses = this.state.unpubClasses.map((row, index) => {
             return (
-                <li className="container-flex" key={index}>
-                    <div className="width50"> {row.classId} </div>
-                    <div className="width50">
-                        {" "}
-                        {moment(row.updatedAt).fromNow()}{" "}
-                    </div>
+                <li key={index}>
+                    <RowCardBasic
+                        title={row.classId}
+                        editUrl={"/classes/" + row.classId + "/edit"}
+                        fields={[
+                            {
+                                label: "Created",
+                                value: moment(row.createdAt).fromNow(),
+                            },
+                            {
+                                label: "Last Updated",
+                                value: moment(row.updatedAt).fromNow(),
+                            },
+                        ]}
+                    />
                 </li>
             );
         });
@@ -47,12 +57,6 @@ export class HomeTabSectionClasses extends React.Component {
                 </div>
 
                 <div className="class-section">
-                    <div className="container-flex">
-                        <div className={"list-header width50"}>Class Id</div>
-                        <div className={"list-header width50"}>
-                            Last Updated
-                        </div>
-                    </div>
                     <EmptyMessage
                         section={TAB_CLASSES}
                         length={this.state.unpubClasses.length}

@@ -23,12 +23,12 @@
     margin-left: $spacing2x
 
   & a
-    color: $colorWhite
+    color: $colorBlack
     text-decoration: none
 
-    &:active
+    &:active,
     &:hover
-      color: $colorOrange
+      color: $colorTurquoise
 
     @media screen and (max-width: $media1)
       font-size: 14px
@@ -50,11 +50,17 @@
     top: 100%
     left: 50%
     transform: translateX(-50%)
-    background-color: $colorTurquoiseDark
+    border-radius: 8px
+    background-color: $colorWhite
+    box-shadow: 4px 4px 16px 4px rgba(0,0,0, 0.2)
+    overflow: hidden
 
     & li
       display: block !important
       margin: 0 !important
+
+      &:hover
+        background-color: $colorWhiteLighter
 
       & a
         display: block
@@ -63,3 +69,6 @@
         box-sizing: border-box
         text-align: center
         font-size: 14px
+
+        &:hover
+          text-decoration: underline

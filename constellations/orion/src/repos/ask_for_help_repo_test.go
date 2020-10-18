@@ -76,24 +76,25 @@ func TestInsertAFH(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO ask_for_help").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
+			start,
+			end,
 			"AP Calculus Help",
-			date1,
-			"2:00-4:00 PM",
 			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
 		).WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Title:      "AP Calculus Help",
-		Date:       date1,
-		TimeString: "2:00-4:00 PM",
+		StartsAt:   start,
+		EndsAt:     end,
 		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
@@ -115,26 +116,25 @@ func TestUpdateAFH(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE ask_for_help SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			2,
+			start,
+			end,
 			"AP Stat Help",
-			date1,
-			"2:00-4:00PM",
 			domains.SUBJECT_MATH,
 			"room12",
 			domains.NewNullString("test note"),
 			1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
-		Id:         2,
+		StartsAt:   start,
+		EndsAt:     end,
 		Title:      "AP Stat Help",
-		Date:       date1,
-		TimeString: "2:00-4:00PM",
 		Subject:    domains.SUBJECT_MATH,
 		LocationId: "room12",
 		Notes:      domains.NewNullString("test note"),
@@ -173,14 +173,16 @@ func TestDeleteAFH(t *testing.T) {
 
 // Helper Methods
 func getAFHRows() *sqlmock.Rows {
+	start := testUtils.TimeNow
+	end := start.Add(time.Hour * 1)
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"StartsAt",
+		"EndsAt",
 		"Title",
-		"Date",
-		"TimeString",
 		"Subject",
 		"LocationId",
 		"Notes",
@@ -190,9 +192,9 @@ func getAFHRows() *sqlmock.Rows {
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			domains.NullTime{},
+			start,
+			end,
 			"AP Calculus Help",
-			testUtils.TimeNow,
-			"3:00-5:00PM",
 			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
@@ -200,14 +202,16 @@ func getAFHRows() *sqlmock.Rows {
 }
 
 func getAskForHelp() domains.AskForHelp {
+	start := testUtils.TimeNow
+	end := start.Add(time.Hour * 1)
 	return domains.AskForHelp{
 		Id:         1,
 		CreatedAt:  testUtils.TimeNow,
 		UpdatedAt:  testUtils.TimeNow,
 		DeletedAt:  domains.NullTime{},
+		StartsAt:   start,
+		EndsAt:     end,
 		Title:      "AP Calculus Help",
-		Date:       testUtils.TimeNow,
-		TimeString: "3:00-5:00PM",
 		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),

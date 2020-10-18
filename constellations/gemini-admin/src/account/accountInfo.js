@@ -2,7 +2,7 @@
 require("./accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
-import { getFullName, formatCurrency } from "../utils/userUtils.js";
+import { getFullName, formatCurrency } from "../common/userUtils.js";
 
 export class AccountInfo extends React.Component {
     render = () => {
@@ -35,13 +35,11 @@ export class AccountInfo extends React.Component {
             balance += parseInt(amount);
             return (
                 <div className="row" key={index}>
-                    <span className="column">{transaction.paymentType}</span>
+                    <span className="column">{transaction.type}</span>
                     <span className="medium-column">
                         {formatCurrency(amount)}
                     </span>
-                    <span className="large-column">
-                        {transaction.paymentNotes}
-                    </span>
+                    <span className="large-column">{transaction.notes}</span>
                     <span className="edit">
                         <Link to={url}>{"Edit >"}</Link>
                     </span>

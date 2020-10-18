@@ -75,11 +75,11 @@ func (cr *classRepo) SelectAll(ctx context.Context, publishedOnly bool) ([]domai
 			&class.ClassKey,
 			&class.ClassId,
 			&class.LocationId,
-			&class.Times,
+			&class.TimesStr,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
-			&class.PriceLump,
+			&class.PriceLumpSum,
 			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
@@ -117,11 +117,11 @@ func (cr *classRepo) SelectAllUnpublished(ctx context.Context) ([]domains.Class,
 			&class.ClassKey,
 			&class.ClassId,
 			&class.LocationId,
-			&class.Times,
+			&class.TimesStr,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
-			&class.PriceLump,
+			&class.PriceLumpSum,
 			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
@@ -152,11 +152,11 @@ func (cr *classRepo) SelectByClassId(ctx context.Context, classId string) (domai
 		&class.ClassKey,
 		&class.ClassId,
 		&class.LocationId,
-		&class.Times,
+		&class.TimesStr,
 		&class.GoogleClassCode,
 		&class.FullState,
 		&class.PricePerSession,
-		&class.PriceLump,
+		&class.PriceLumpSum,
 		&class.PaymentNotes); err != nil {
 		return domains.Class{}, appErrors.WrapDbExec(err, statement, classId)
 	}
@@ -192,11 +192,11 @@ func (cr *classRepo) SelectByProgramId(ctx context.Context, programId string) ([
 			&class.ClassKey,
 			&class.ClassId,
 			&class.LocationId,
-			&class.Times,
+			&class.TimesStr,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
-			&class.PriceLump,
+			&class.PriceLumpSum,
 			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
@@ -234,11 +234,11 @@ func (cr *classRepo) SelectBySemesterId(ctx context.Context, semesterId string) 
 			&class.ClassKey,
 			&class.ClassId,
 			&class.LocationId,
-			&class.Times,
+			&class.TimesStr,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
-			&class.PriceLump,
+			&class.PriceLumpSum,
 			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
@@ -278,11 +278,11 @@ func (cr *classRepo) SelectByProgramAndSemesterId(ctx context.Context, programId
 			&class.ClassKey,
 			&class.ClassId,
 			&class.LocationId,
-			&class.Times,
+			&class.TimesStr,
 			&class.GoogleClassCode,
 			&class.FullState,
 			&class.PricePerSession,
-			&class.PriceLump,
+			&class.PriceLumpSum,
 			&class.PaymentNotes); errScan != nil {
 			return results, errScan
 		}
@@ -301,11 +301,11 @@ func (cr *classRepo) Insert(ctx context.Context, class domains.Class) (uint, err
 		"class_key, " +
 		"class_id, " +
 		"location_id, " +
-		"times, " +
+		"times_str, " +
 		"google_class_code, " +
 		"full_state, " +
 		"price_per_session, " +
-		"price_lump, " +
+		"price_lump_sum, " +
 		"payment_notes " +
 		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	stmt, err := cr.db.Prepare(statement)
@@ -323,11 +323,11 @@ func (cr *classRepo) Insert(ctx context.Context, class domains.Class) (uint, err
 		class.ClassKey,
 		generateClassId(class),
 		class.LocationId,
-		class.Times,
+		class.TimesStr,
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
-		class.PriceLump,
+		class.PriceLumpSum,
 		class.PaymentNotes,
 	)
 	if err != nil {
@@ -352,11 +352,11 @@ func (cr *classRepo) Update(ctx context.Context, classId string, class domains.C
 		"class_key=?, " +
 		"class_id=?, " +
 		"location_id=?, " +
-		"times=?, " +
+		"times_str=?, " +
 		"google_class_code=?, " +
 		"full_state=?, " +
 		"price_per_session=?, " +
-		"price_lump=?, " +
+		"price_lump_sum=?, " +
 		"payment_notes=? " +
 		"WHERE class_id=?"
 	stmt, err := cr.db.Prepare(statement)
@@ -373,11 +373,11 @@ func (cr *classRepo) Update(ctx context.Context, classId string, class domains.C
 		class.ClassKey,
 		generateClassId(class),
 		class.LocationId,
-		class.Times,
+		class.TimesStr,
 		class.GoogleClassCode,
 		class.FullState,
 		class.PricePerSession,
-		class.PriceLump,
+		class.PriceLumpSum,
 		class.PaymentNotes,
 		classId)
 	if err != nil {

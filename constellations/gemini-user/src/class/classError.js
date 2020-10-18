@@ -16,8 +16,8 @@ export class ClassErrorPage extends React.Component {
                 <h1>Page Not Found</h1>
                 <img src={srcBroken} />
                 <div>
-                    <Link to="/programs">View our Programs</Link>
-                    To find what you're looking for
+                    <Link to="/programs">View our Program Catalog</Link>
+                    to find what you're looking for
                 </div>
                 <span>{errorMsg}</span>
             </div>
