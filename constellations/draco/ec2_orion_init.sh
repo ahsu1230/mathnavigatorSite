@@ -54,3 +54,4 @@ sudo chkconfig httpd on
 # cd to gemini-admin
 sudo cp index.html /var/www/html
 sudo cp -r dist /var/www/html
+sudo cp assets/*.svg /var/www/html/dist
