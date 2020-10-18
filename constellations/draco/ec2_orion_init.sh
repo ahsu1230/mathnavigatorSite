@@ -26,4 +26,5 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
 
 # Start services with Docker
+# traverse to constellations folder
 docker-compose -f docker-compose.production.yml up -d

@@ -58,8 +58,10 @@ export class ProgramCard extends React.Component {
         if (isFeatured) {
             return (
                 <div className="featured">
-                    <img src={srcStar} />
-                    <span>{featuredString}</span>
+                    <div className="container">
+                        <img src={srcStar} />
+                        <span>{featuredString}</span>
+                    </div>
                 </div>
             );
         } else {
@@ -80,6 +82,7 @@ export class ProgramCard extends React.Component {
             <div className="program-card-container">
                 <div className="program-card" onClick={this.handleClick}>
                     <div className="card-top">
+                        <div className="overlay" />
                         <img src={cardImgSrc} />
                     </div>
                     <div className="card-title">
