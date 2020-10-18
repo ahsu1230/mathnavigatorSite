@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#chmod 777 ec2_orion_init.sh
+#chmod 777 ec2_orion_update.sh
+
 # Update EC2 instance
 sudo yum update -y
 
