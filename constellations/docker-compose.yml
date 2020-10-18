@@ -23,7 +23,7 @@ services:
       MYSQL_DATABASE: mathnavdb
 
   cache-redis:
-    image: "redis:alpine"
+    image: "redis:6.0-alpine"
     container_name: cache-redis
     command: redis-server --requirepass redis_password
     ports: 
