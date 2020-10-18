@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Update EC2 instance
 sudo yum update -y
 
 # Install Git
@@ -21,3 +24,6 @@ docker version
 sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
+
+# Start services with Docker
+docker-compose -f docker-compose.production.yml up -d
