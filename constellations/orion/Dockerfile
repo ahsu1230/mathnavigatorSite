@@ -3,6 +3,14 @@
 FROM golang:1.15
 
 ARG app_env
+ARG db_host
+ARG db_port
+ARG db_user
+ARG db_password
+ARG redis_host
+ARG redis_port
+ARG redis_password
+
 ENV APP_ENV $app_env
 ENV DB_HOST $db_host
 ENV DB_PORT $db_port
