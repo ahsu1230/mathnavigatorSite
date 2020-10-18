@@ -44,8 +44,6 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | b
 nvm install stable
 npm install --verbose
 npm run build # create production build
-sudo cp index.html /var/www/html
-sudo cp -r dist /var/www/html
 
 # Install apache webserver?
 sudo yum install httpd -y
@@ -53,3 +51,6 @@ sudo service httpd start
 sudo chkconfig httpd on
 
 # copy index.html to /var/www/html OR create index.html @ /var/www/html
+# cd to gemini-admin
+sudo cp index.html /var/www/html
+sudo cp -r dist /var/www/html
