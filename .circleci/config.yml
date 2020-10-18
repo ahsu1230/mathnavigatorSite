@@ -26,7 +26,7 @@ jobs:
             sudo apt-get install default-mysql-client
       
       - run: 
-          name: Retrieve Go codebase
+          name: Retrieve Orion Go codebase
           command: |
             cd constellations/orion
             go get -v -t -d ./...

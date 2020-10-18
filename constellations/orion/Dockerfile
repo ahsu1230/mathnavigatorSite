@@ -4,15 +4,15 @@ FROM golang:1.15
 
 ARG app_env
 ENV APP_ENV $app_env
-ENV DB_HOST "db-mysql"
-ENV DB_PORT "3306"
-ENV DB_USER "user"
-ENV DB_PASSWORD "password"
+ENV DB_HOST $db_host
+ENV DB_PORT $db_port
+ENV DB_USER $db_user
+ENV DB_PASSWORD $db_password
 ENV DB_DEFAULT "mathnavdb"
 ENV CORS_ORIGIN "*"
-ENV REDIS_HOST "cache-redis"
-ENV REDIS_PORT "6379"
-ENV REDIS_PASSWORD "redis_password"
+ENV REDIS_HOST $redis_host
+ENV REDIS_PORT $redis_port
+ENV REDIS_PASSWORD $redis_password
 
 # Copy the local package files to the container's workspace.
 ADD . /go/src/github.com/ahsu1230/mathnavigatorSite/constellations/orion

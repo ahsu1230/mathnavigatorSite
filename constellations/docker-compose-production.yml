@@ -4,28 +4,29 @@ services:
     build: 
       context: ./orion
       args:
-        app_env: "prod"
+        app_env: production
+        db_host: mathnavdb-mysql.cil8rgmlijun.us-east-1.rds.amazonaws.com
+        db_port: 3306
+        db_user: user
+        db_password: password
+        redis_host: cache-redis
+        redis_port: 6379
+        redis_password: redis_password
     container_name: orion
     ports:
       - "8001:8001" # host port 8001 links to container port 8080
-    depends_on:
-      - "db-mysql"
-    links:
-      - "db-mysql"
-    environment:
-      WAIT_HOSTS: db-mysql:3306
-      DB_DEFAULT: mathnavdb
-  
-  # gemini-user:
-  #   build: 
-  #     context: ./gemini/user
-  #     args:
-  #       app_env: "prod"
-  #   container_name: gemini-user
-  #   ports: 
-  #     - 8080:9000 # host port 8080 links to container port 9000
-  #   depends_on:
-  #     - "orion"
   #   links:
-  #     - "orion"
+  #     - "cache-redis"
+  
+  # cache-redis:
+  #   image: "redis:alpine"
+  #   container_name: cache-redis
+  #   command: redis-server --requirepass redis_password
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - $PWD/redis-data:/var/lib/redis
+  #     - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
   

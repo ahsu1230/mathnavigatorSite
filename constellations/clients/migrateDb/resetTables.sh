@@ -2,8 +2,8 @@
 #
 # This script will "reset" the `mathnavdb` database of a specified mysql instance.
 # The database reset will drop all tables and build them up again by following the migration files.
-# 
-# Example Usage: 
+#
+# Example Usage:
 # ./resetTables.sh user password localhost 3308
 # will reset the `mathnavdb` database at mysql://user:password@(localhost:3308)/mathnavdb
 
