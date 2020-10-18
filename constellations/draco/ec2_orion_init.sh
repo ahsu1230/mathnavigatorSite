@@ -30,6 +30,11 @@ docker-compose version
 
 # Start services with Docker
 # cd to orion folder
+# DO I HAVE TO USE REAL ADMIN AND PASSWORD????
+#-        db_user: user
+#-        db_password: password
+#+        db_user: admin
+#+        db_password: "___$$____"
 docker-compose -f docker-compose.production.yml up -d
 
 # Install NVM for npm
