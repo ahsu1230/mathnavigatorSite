@@ -20,16 +20,17 @@
         width: 30%
         box-sizing: border-box
         text-align: center
+        background-color: $colorWhite
         box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
 
         @media screen and (max-width: $containerWidthPxMonitor)
             width: 100%
             max-width: $spacing64x
             margin: 0 auto $spacing4x
-            padding: 0 0 $spacing4x
+            padding: $spacing4x 0 $spacing8x
             box-shadow: unset
             border-radius: 0
-            border-bottom: 1px solid $colorGrayLight
+            // border-bottom: 1px solid $colorGrayLight
 
             &:last-child
                 margin-bottom: 0
@@ -62,6 +63,9 @@
             display: block
             margin: 0 auto
             border-radius: 8px
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                margin-top: $spacing4x
     
     .link-bar
         display: block
