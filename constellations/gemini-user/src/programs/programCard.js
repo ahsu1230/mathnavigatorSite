@@ -4,15 +4,15 @@ import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
-import { getImageForProgramClass } from "./programImages.js";
 
-import srcPoint from "../../assets/point_right_white.svg";
-// import srcStar from "../../assets/star_green.svg";
-import srcStar from "../../assets/star_white.svg";
+import srcPointGreen from "../../assets/point_right_green.svg";
+import srcPointWhite from "../../assets/point_right_white.svg";
+import srcStar from "../../assets/star_green.svg";
 
 export class ProgramCard extends React.Component {
     state = {
         showModal: false,
+        srcPoint: srcPointGreen,
     };
 
     handleClick = () => {
@@ -74,26 +74,28 @@ export class ProgramCard extends React.Component {
         const program = this.props.program || {};
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
         const featured = this.renderFeatured();
-        const cardImgSrc = getImageForProgramClass(program);
 
         return (
             <div className="program-card-container">
-                <div className="program-card" onClick={this.handleClick}>
-                    <div className="card-top">
-                        <div className="overlay" />
-                        <img src={cardImgSrc} />
-                    </div>
-                    <div className="card-title">
-                        <h2>{program.title}</h2>
-                    </div>
-                    <div className="card-body">
+                <div
+                    className="program-card"
+                    onClick={this.handleClick}
+                    onMouseOver={() =>
+                        this.setState({ srcPoint: srcPointWhite })
+                    }
+                    onMouseOut={() =>
+                        this.setState({ srcPoint: srcPointGreen })
+                    }>
+                    {featured}
+
+                    <div className="content">
+                        <h1>{program.title}</h1>
                         <h3>{grades}</h3>
-                        {featured}
+                        <button className="footer">
+                            View Details
+                            <img src={this.state.srcPoint} />
+                        </button>
                     </div>
-                    {/* <button className="card-footer">
-                        View Details
-                        <img src={srcPoint} />
-                    </button> */}
                 </div>
                 {this.renderModal()}
             </div>

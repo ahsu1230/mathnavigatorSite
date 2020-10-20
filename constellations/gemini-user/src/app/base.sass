@@ -2,12 +2,13 @@
 
 body
   margin: 0
-  background-color: $colorWhite
-  color: $colorBlack
+  line-height: $lineHeight0
   font-family: $fontFamilyRoboto
   font-size: $fontSize0
   font-weight: $fontWeightNormal
   letter-spacing: $letterSpacingRoboto
+  color: $colorBlack
+  background-color: $colorWhiteOff
 
 h1
   margin: 0
@@ -102,6 +103,6 @@ button
   &::-webkit-scrollbar
     width: 6px
   &::-webkit-scrollbar-track
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    -webkit-box-shadow: inset 0 0 6px rgba($colorBlack, 0.3)
   &::-webkit-scrollbar-thumb
     background-color: $colorTurquoise

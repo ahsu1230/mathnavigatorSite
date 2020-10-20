@@ -5,8 +5,8 @@ $cardSpacing: $spacing6x
 #view-programs .section .program-card-container
     position: relative
     display: inline-block
-    width: 212px
-    height: 228px
+    width: 240px
+    height: 240px
     margin: 0 $cardSpacing $cardSpacing 0
     box-sizing: border-box
     vertical-align: top
@@ -16,108 +16,71 @@ $cardSpacing: $spacing6x
         margin: 0 auto $cardSpacing
 
     .program-card
-        display: flex
-        flex-direction: column
-        justify-content: space-between
-        align-items: center
         position: relative
-        bottom: 0px
+        bottom: 0
         width: 100%
         height: 100%
-        border-radius: 6px
-        // background-color: $colorWhite
-        background-color: $colorTurquoiseDark
-        box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
-        text-align: center
-        vertical-align: top
-        cursor: pointer
-        overflow: hidden
+        border-radius: 8px
+        box-sizing: border-box
+        background-color: $colorWhite
+        box-shadow: 0px 0px 12px 0px $colorBlackAlphaLight
         transition: all linear 0.1s
 
         &:hover
-            bottom: 4px
-            box-shadow: 0px 2px 12px 4px $colorBlackAlphaMed
-        
-        .card-top
-            position: relative
-            width: 100%
-            height: 120px
-            background-color: $colorTurquoiseDark
-            overflow: hidden
+            bottom: 8px
+            box-shadow: 24px 24px 72px 0px $colorBlackAlphaMed
+            cursor: pointer
 
-            .overlay
-                position: absolute
-                top: 0
-                left: 0
-                width: 100%
-                height: 100%
-                // background: $colorBlackAlphaMed
+            .footer
+                background-color: $colorTurquoise
+                color: $colorWhite
 
-            img
-                width: 100%
-        
-        .card-title
-            display: flex
-            justify-content: center
-            align-items: center
+        .content
             position: absolute
-            top: 54px
-            left: 50%
-            transform: translate(-50%, 0)
-            min-width: 140px
-            min-height: 72px
-            padding: 0 $spacing2x
-            box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
-            box-sizing: border-box
-            border-radius: 8px
-            background-color: $colorWhite
-
-            h2
-                line-height: $lineHeight1
-                font-size: $fontSize1
-                font-weight: $fontWeightNormal
-
-        .card-body
-            height: 88px
+            left: 0
+            bottom: 0
             width: 100%
-            // padding-bottom: $spacing3x
+            padding: $spacing2x
+            box-sizing: border-box
+
+            h1
+                margin: 0
+                line-height: $lineHeight2
+                font-family: $fontFamilyRoboto
+                font-size: $fontSize2
+                font-weight: $fontWeightBold
+                color: $colorBlack
 
             h3
-                margin-bottom: $spacing1x
-                line-height: $lineHeight0
+                margin: $spacing1x 0
+                font-family: $fontFamilyRoboto
                 font-size: $fontSize0
-                font-weight: $fontWeightNormal
-                // color: $colorGrayText
-                color: $colorWhite
+                font-weight: $fontWeightBold
+                color: $colorGrayText
 
-            .featured
-                display: inline-block
-                padding: 4px $spacing2x
-                margin: 0 auto
-                // border: 1px solid $colorTurquoise
-                border-radius: 8px
-                font-size: $fontSize0
-                // color: $colorTurquoise
-                color: $colorWhite
-                background-color: $colorTurquoiseLight
-
-                .container
-                    display: flex
-                    align-items: center
-                img
-                    margin-right: $spacing1x
-        
-        .card-footer
+        .footer
             display: flex
-            flex-direction: row
             justify-content: center
             align-items: center
+            margin: $spacing2x auto 0
             width: 100%
-            padding: $spacing1_5x
-            background-color: $colorTurquoise
+            border: 1px solid $colorTurquoise
+            border-radius: 8px
+            background-color: $colorWhite
+            color: $colorTurquoise
 
             img
-                position: relative
-                top: -1px
                 margin-left: $spacing1x
-                width: $spacing1_5x
+
+        .featured
+            position: relative
+            top: $spacing1x
+            left: $spacing1x
+            font-size: $fontSize0
+            color: $colorTurquoise
+            
+            .container
+                display: flex
+                align-items: center
+            img
+                margin-right: $spacing1x

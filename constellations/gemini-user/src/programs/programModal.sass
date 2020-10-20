@@ -3,7 +3,8 @@
 #view-programs .program-modal
     width: $spacing64x
     padding: $spacing1x $spacing6x $spacing2x
-    box-shadow: 0px 2px 8px $colorBlack
+    border-radius: 8px
+    box-shadow: 8px 16px 32px 0px $colorBlackAlphaMed
     background-color: $colorWhite
 
     @media screen and (max-width: $containerWidthPxTablet)
@@ -12,8 +13,9 @@
     
     h1
         margin: 0
-        padding-top: $spacing3x
+        padding-top: $spacing4x
         color: $colorBlack
+        line-height: $lineHeight2
         font-family: $fontFamilyRoboto
         font-size: $fontSize2
         font-weight: $fontWeightNormal
@@ -22,10 +24,14 @@
             text-align: center
 
     h4
-        padding-bottom: 8px
+        margin: 0
+        margin-top: 4px
+        padding-bottom: $spacing2x
         border-bottom: 1px solid $colorBlack
+        line-height: $lineHeight0
+        font-size: $fontSize0
         font-weight: $fontWeightNormal
-        color: $colorGrayDark
+        color: $colorGrayText
 
         @media screen and (max-width: $containerWidthPxTablet)
             text-align: center
