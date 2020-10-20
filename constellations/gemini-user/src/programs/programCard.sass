@@ -27,7 +27,7 @@ $cardSpacing: $spacing6x
         border-radius: 6px
         // background-color: $colorWhite
         background-color: $colorTurquoiseDark
-        box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
+        box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
         text-align: center
         vertical-align: top
         cursor: pointer
@@ -36,7 +36,7 @@ $cardSpacing: $spacing6x
 
         &:hover
             bottom: 4px
-            box-shadow: 0px 2px 12px 4px rgba(0, 0, 0, 0.4)
+            box-shadow: 0px 2px 12px 4px $colorBlackAlphaMed
         
         .card-top
             position: relative
@@ -51,7 +51,7 @@ $cardSpacing: $spacing6x
                 left: 0
                 width: 100%
                 height: 100%
-                // background: rgba(0, 0, 0, 0.4)
+                // background: $colorBlackAlphaMed
 
             img
                 width: 100%
@@ -67,7 +67,7 @@ $cardSpacing: $spacing6x
             min-width: 140px
             min-height: 72px
             padding: 0 $spacing2x
-            box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
+            box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
             box-sizing: border-box
             border-radius: 8px
             background-color: $colorWhite
@@ -75,7 +75,7 @@ $cardSpacing: $spacing6x
             h2
                 line-height: $lineHeight1
                 font-size: $fontSize1
-                font-weight: 400
+                font-weight: $fontWeightNormal
 
         .card-body
             height: 88px
@@ -86,8 +86,8 @@ $cardSpacing: $spacing6x
                 margin-bottom: $spacing1x
                 line-height: $lineHeight0
                 font-size: $fontSize0
-                font-weight: 400
-                // color: $colorGrayMed
+                font-weight: $fontWeightNormal
+                // color: $colorGrayText
                 color: $colorWhite
 
             .featured
