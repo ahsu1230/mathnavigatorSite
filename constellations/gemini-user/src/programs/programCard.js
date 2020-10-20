@@ -7,7 +7,8 @@ import { capitalizeWord } from "../utils/displayUtils.js";
 import { getImageForProgramClass } from "./programImages.js";
 
 import srcPoint from "../../assets/point_right_white.svg";
-import srcStar from "../../assets/star_green.svg";
+// import srcStar from "../../assets/star_green.svg";
+import srcStar from "../../assets/star_white.svg";
 
 export class ProgramCard extends React.Component {
     state = {
@@ -89,10 +90,10 @@ export class ProgramCard extends React.Component {
                         <h3>{grades}</h3>
                         {featured}
                     </div>
-                    <button className="card-footer">
+                    {/* <button className="card-footer">
                         View Details
                         <img src={srcPoint} />
-                    </button>
+                    </button> */}
                 </div>
                 {this.renderModal()}
             </div>
