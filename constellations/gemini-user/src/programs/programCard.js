@@ -5,14 +5,14 @@ import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
 
-import srcPointGreen from "../../assets/point_right_green.svg";
+import srcPointLightBlue from "../../assets/point_right_light_blue.svg";
 import srcPointWhite from "../../assets/point_right_white.svg";
-import srcStar from "../../assets/star_green.svg";
+import srcStar from "../../assets/star_light_blue.svg";
 
 export class ProgramCard extends React.Component {
     state = {
         showModal: false,
-        srcPoint: srcPointGreen,
+        srcPoint: srcPointLightBlue,
     };
 
     handleClick = () => {
@@ -84,7 +84,7 @@ export class ProgramCard extends React.Component {
                         this.setState({ srcPoint: srcPointWhite })
                     }
                     onMouseOut={() =>
-                        this.setState({ srcPoint: srcPointGreen })
+                        this.setState({ srcPoint: srcPointLightBlue })
                     }>
                     {featured}
 
