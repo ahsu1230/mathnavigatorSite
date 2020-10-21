@@ -89,7 +89,7 @@ export class ProgramCard extends React.Component {
                     {featured}
 
                     <div className="content">
-                        <h1>{program.title}</h1>
+                        <h2>{program.title}</h2>
                         <h3>{grades}</h3>
                         <button className="footer">
                             View Details
