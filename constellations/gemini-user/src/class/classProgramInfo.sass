@@ -1,0 +1,24 @@
+@import "../utils/_constants.sass"
+
+#view-class #program-info
+    width: calc(66% - #{$spacing8x})
+    margin-right: $spacing8x
+    text-align: left
+
+    @media screen and (max-width: $containerWidthPxMonitor)
+        width: 100%
+        margin: 0
+
+    h4.full
+        line-height: $lineHeight2
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize2
+        color: $colorRed
+    
+    p.grades
+        margin: $spacing1x 0
+        font-weight: $fontWeightBold
+        color: $colorGrayText
+
+    p.description
+        margin: 0

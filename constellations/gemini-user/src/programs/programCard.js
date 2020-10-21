@@ -4,14 +4,15 @@ import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
-import { getImageForProgramClass } from "./programImages.js";
 
-import srcPoint from "../../assets/point_right_white.svg";
+import srcPointGreen from "../../assets/point_right_green.svg";
+import srcPointWhite from "../../assets/point_right_white.svg";
 import srcStar from "../../assets/star_green.svg";
 
 export class ProgramCard extends React.Component {
     state = {
         showModal: false,
+        srcPoint: srcPointGreen,
     };
 
     handleClick = () => {
@@ -58,8 +59,10 @@ export class ProgramCard extends React.Component {
         if (isFeatured) {
             return (
                 <div className="featured">
-                    <img src={srcStar} />
-                    <span>{featuredString}</span>
+                    <div className="container">
+                        <img src={srcStar} />
+                        <span>{featuredString}</span>
+                    </div>
                 </div>
             );
         } else {
@@ -69,33 +72,30 @@ export class ProgramCard extends React.Component {
 
     render = () => {
         const program = this.props.program || {};
-        const classes = this.props.classes || [];
         const grades = "Grades " + program.grade1 + " - " + program.grade2;
-        const classesString =
-            classes.length == 1 ? "1 class" : classes.length + " classes";
         const featured = this.renderFeatured();
-        const cardImgSrc = getImageForProgramClass(program);
 
         return (
             <div className="program-card-container">
-                <div className="program-card" onClick={this.handleClick}>
-                    <div className="card-top">
-                        <img src={cardImgSrc} />
-                    </div>
-                    <div className="card-title">
+                <div
+                    className="program-card"
+                    onClick={this.handleClick}
+                    onMouseOver={() =>
+                        this.setState({ srcPoint: srcPointWhite })
+                    }
+                    onMouseOut={() =>
+                        this.setState({ srcPoint: srcPointGreen })
+                    }>
+                    {featured}
+
+                    <div className="content">
                         <h2>{program.title}</h2>
-                    </div>
-                    <div className="card-body">
                         <h3>{grades}</h3>
-                        <div className="classes-avail">
-                            {classesString} available
-                        </div>
-                        {featured}
+                        <button className="footer">
+                            View Details
+                            <img src={this.state.srcPoint} />
+                        </button>
                     </div>
-                    <button className="card-footer">
-                        View Details
-                        <img src={srcPoint} />
-                    </button>
                 </div>
                 {this.renderModal()}
             </div>

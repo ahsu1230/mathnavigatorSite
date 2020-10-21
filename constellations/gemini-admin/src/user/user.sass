@@ -7,8 +7,8 @@
 
     h1
         margin: $spacing4x 0
-        line-height: $lineHeight3
-        font-size: $fontSize4
+        line-height: $lineHeight4
+        font-size: $fontSize5
 
     ul
         margin: 0
@@ -17,7 +17,7 @@
 
     #header 
         display: flex
-        border-bottom: 1px solid $colorGrayMed
+        border-bottom: 1px solid $colorGrayText
 
         li
             display: inline-block
@@ -40,7 +40,7 @@
         width: 40%
         margin: 0 0 $spacing4x
         padding: 6px 12px
-        border: 1px solid $colorGrayDark
+        border: 1px solid $colorGrayText
         border-radius: $spacing1x
 
     #user-row
@@ -53,7 +53,7 @@
         li
             display: inline-block
             height: auto
-            line-height: $lineHeight4
+            line-height: $lineHeight5
 
     .dropdown
         position: relative
@@ -71,11 +71,11 @@
             display: none
     
     .dropdown:hover
-        background-color: $colorWhiteLight
+        background-color: $colorWhiteOff
         cursor: pointer
         
     .dropdown-active
-        background-color: $colorWhiteLight
+        background-color: $colorWhiteOff
         
         .dropdown-content
             position: absolute
@@ -85,7 +85,7 @@
             flex-direction: column
             padding: 0
             margin: 0
-            border: 1px solid $colorGrayMed
+            border: 1px solid $colorGrayText
             border-radius: $spacing1x
             overflow: hidden
             background-color: $colorWhite

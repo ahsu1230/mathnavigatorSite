@@ -8,7 +8,7 @@
     padding: $spacing4x
     box-sizing: border-box
     border-radius: 8px
-    border: 1px solid $colorBlackLight
+    border: 1px solid $colorGrayDark
     overflow: hidden
 
     &.active
@@ -16,9 +16,9 @@
 
     h5
         margin: 0
-        line-height: $lineHeight0
-        font-size: $fontSize0
-        font-weight: 400
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: $fontWeightNormal
         color: $colorGrayDark
 
     .step-container
@@ -33,7 +33,7 @@
             height: 24px
             margin-right: $spacing2x
             border-radius: 100%
-            background-color: $colorGrayMed
+            background-color: $colorGrayText
 
             img
                 position: relative
@@ -52,7 +52,7 @@
         width: 100%
         max-width: $spacing48x
         border-radius: 8px
-        background-color: $colorGrayMed
+        background-color: $colorGrayText
 
         &.active
             background-color: $colorTurquoiseLight
@@ -72,7 +72,7 @@
         border-radius: 0px
         border: none
         background-color: $colorWhite
-        box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.3)
+        box-shadow: 0 0 12px 4px $colorBlackAlphaMed
 
         h5
             color: $colorTurquoise
