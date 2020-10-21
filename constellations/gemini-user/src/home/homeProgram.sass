@@ -30,7 +30,6 @@
             padding: $spacing4x 0 $spacing8x
             box-shadow: unset
             border-radius: 0
-            // border-bottom: 1px solid $colorGrayLight
 
             &:last-child
                 margin-bottom: 0
@@ -63,9 +62,14 @@
             display: block
             margin: 0 auto
             border-radius: 8px
+            background-color: $colorTurquoiseLight
 
             @media screen and (max-width: $containerWidthPxMonitor)
                 margin-top: $spacing4x
+
+        a
+            text-decoration: none
+            
     
     .link-bar
         display: block
@@ -76,7 +80,7 @@
         line-height: $lineHeight1
         font-size: $fontSize1
         color: $colorTurquoise
-        background: #05657122
+        background: rgba($colorTurquoiseDark, 0.3)
 
         &:hover
             background: #05657133
