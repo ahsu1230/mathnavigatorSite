@@ -24,7 +24,7 @@
         display: flex
         flex-direction: row
         align-items: center
-        border-bottom: 1px solid $colorGrayLight
+        border-bottom: 2px solid $colorGrayLight
 
         .active
             border-bottom: 2px solid $colorTurquoise
@@ -33,16 +33,17 @@
         width: 33.333%
         height: 100%
         padding: $spacing2x
-        background-color: $colorWhite
         border-bottom: 2px solid transparent
         border-radius: 8px 8px 0 0
         font-size: $fontSize2
+        background-color: $colorWhiteOff
         color: $colorBlack
         cursor: pointer
         transition: 0.3s
 
         &:hover
-            background-color: $colorGrayLight
+            filter: brightness(1.0)
+            background: rgba($colorTurquoiseDark, 0.1)
             cursor: pointer
 
         .icon-wrapper
@@ -52,7 +53,7 @@
             height: 32px
             margin-right: $spacing2x
             border-radius: 50%
-            background-color: $colorGrayText
+            background-color: $colorGrayLight
             vertical-align: middle
 
             img
