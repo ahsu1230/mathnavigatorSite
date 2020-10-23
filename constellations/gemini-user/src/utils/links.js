@@ -63,9 +63,9 @@ export function getLinkByUrl(url) {
 
 export function isPathAt(currentPath, url) {
     if (url == getLinkById("home").url) {
-        // return currentPath == '/';   // Use with BrowserRouter
-        return currentPath == "#/"; // Use with HashRouter
+        return currentPath == "/"; // Use with BrowserRouter
+        // return currentPath == "#/"; // Use with HashRouter
     } else {
-        return currentPath.indexOf(url) >= 0;
+        return currentPath.startsWith(url);
     }
 }

@@ -1,5 +1,17 @@
 version: '3'
 services:
+  cache-redis:
+    image: "redis:6.0"
+    container_name: cache-redis
+    command: redis-server --requirepass redis_password
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+  
   orion:
     build: 
       context: ./orion
@@ -17,16 +29,10 @@ services:
       - "8001:8001" # host port 8001 links to container port 8080
     links:
       - "cache-redis"
-  
-  cache-redis:
-    image: "redis:6.0"
-    container_name: cache-redis
-    command: redis-server --requirepass redis_password
+
+  gemini-user-prod:
+    build:
+      context: ./gemini-user
+    container_name: gemini-user-prod
     ports:
-      - "6379:6379"
-    volumes:
-      - $PWD/redis-data:/var/lib/redis
-      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
-    environment:
-      - REDIS_REPLICATION_MODE=master
-  
+      - "80:80"
