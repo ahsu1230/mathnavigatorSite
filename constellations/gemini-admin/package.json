@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "build": "webpack --config webpack.prod.js",
-        "build-local": "webpack --config webpack.dev.js",
         "start": "webpack-dev-server --open --config webpack.dev.js",
+        "start:prod": "webpack-dev-server --open --config webpack.prod.js",
         "test": "jest --verbose",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
