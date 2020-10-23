@@ -57,12 +57,13 @@ services:
     environment:
       WAIT_HOSTS: db-mysql:3306
 
-  gemini-user-prod:
-    build:
-      context: ./gemini-user
-    container_name: gemini-user-prod
-    ports:
-      - "80:80"
+  # Can optionally build gemini-user prod site
+  # gemini-user-prod:
+  #   build:
+  #     context: ./gemini-user
+  #   container_name: gemini-user-prod
+  #   ports:
+  #     - "80:80"
 
   aquila:
     build: 
