@@ -2,9 +2,10 @@
 import axios from "axios";
 import moment from "moment";
 
-var BASE_HOST = process.env.NODE_ENV == "production" ? 
-        "http://ec2-3-80-123-134.compute-1.amazonaws.com:8001" : 
-        "http://localhost:8001";
+var BASE_HOST =
+    process.env.NODE_ENV == "production"
+        ? "http://ec2-3-80-123-134.compute-1.amazonaws.com:8001"
+        : "http://localhost:8001";
 
 export default axios.create({
     baseURL: BASE_HOST,
