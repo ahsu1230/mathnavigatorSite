@@ -11,7 +11,8 @@ export const getCurrentPath = () => {
 };
 
 export const changePage = (url) => {
-    // window.location.hash = url;      // Use with HashRouter
+    // Use with HashRouter
+    // window.location.hash = url;
 
     // Use with BrowserRouter
     history.push({ pathname: url });
