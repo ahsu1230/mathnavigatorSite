@@ -4,30 +4,23 @@ FROM node:14-alpine
  
 # A directory within the virtualized Docker environment
 # Becomes more relevant when using Docker Compose later
-WORKDIR /usr/src/app
-ARG app_env
-ENV APP_ENV $app_env
-ENV ORION_HOST="orion:8080"
- 
-# Copies package.json and package-lock.json to Docker environment
-COPY package*.json ./
- 
-# Installs all node packages
-RUN npm install
+# WORKDIR /usr/src/app
  
 # Copies everything over to Docker environment
-COPY . .
- 
-# Finally runs the application
-CMD if [ ${NODE_ENV} = production ]; \
-	then \
-	npm install -g http-server && \
-	npm run build && \
-	cd build && \
-	hs -p 9000; \
-	else \
-	npm run start; \
-	fi
+COPY . /
+
+RUN rm -rf dist
+RUN npm install
+RUN npm run build
+RUN ls -la
+RUN ls -la dist
+
+## Install and launch wait tool and then launch application
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+# Run the command by default when the container starts.
+ENTRYPOINT /wait && node productionServer.js
 
 # Uses port which is used by the actual application
-EXPOSE 9000
+EXPOSE 80

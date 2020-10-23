@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
-const port = 8080;
+const port = 80; // Port for HTTP
+// const port = 443;    // Port for HTTPS
 const app = express();
 
 app.use(express.static(__dirname));
