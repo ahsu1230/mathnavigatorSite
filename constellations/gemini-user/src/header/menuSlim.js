@@ -3,6 +3,7 @@ require("./menuSlim.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { MainLinks, isPathAt } from "../utils/links.js";
+import { getCurrentPath } from "../utils/historyUtils.js";
 import srcArrowDown from "../../assets/arrow_down_black.svg";
 import srcClose from "../../assets/close_black.svg";
 const classnames = require("classnames");
@@ -97,7 +98,7 @@ class LinkRow extends React.Component {
         const link = this.props.link;
         const onClick = this.props.onClick;
         const linkClass = classnames({
-            active: isPathAt(window.location.hash, link.url),
+            active: isPathAt(getCurrentPath(), link.url),
         });
         return (
             <div className="link-row">

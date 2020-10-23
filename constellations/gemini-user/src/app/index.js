@@ -2,10 +2,10 @@
 require("./base.sass");
 import React from "react";
 import ReactDOM from "react-dom";
-import { withRouter, hashHistory } from "react-router";
+import { withRouter } from "react-router";
 import {
-    HashRouter as Router,
-    // By switching back to HashRouter, we lose functionality (scrollMemory)
+    Router,
+    // BrowserRouter as Router, // By switching back to HashRouter, we lose functionality (scrollMemory)
     Route,
     Switch,
 } from "react-router-dom";
@@ -23,11 +23,12 @@ import { ProgramsPage } from "../programs/programs.js";
 import RegisterPage from "../register/register.js";
 import RegisterSuccessPage from "../register/registerSuccess.js";
 import Footer from "../footer/footer.js";
+import { history } from "../utils/historyUtils.js";
 
 const Achievements = () => <AchievementPage />;
 const AFH = () => <AFHPage />;
 const Announce = () => <AnnouncePage />;
-const Class = ({ match }) => <ClassPage classId={match.params.classId} />;
+const Class = (props) => <ClassPage classId={props.match.params.classId} />;
 const Header = withRouter(HeaderComponent);
 const Home = () => <HomePage />;
 const Internship = () => <InternshipPage />;
@@ -39,7 +40,7 @@ const RegisterSuccessClass = () => <RegisterSuccessPage registered="class" />;
 class AppContainer extends React.Component {
     render() {
         return (
-            <Router>
+            <Router history={history}>
                 <ScrollMemory />
                 <AppWithRouter />
             </Router>

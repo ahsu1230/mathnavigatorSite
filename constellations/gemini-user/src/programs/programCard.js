@@ -4,6 +4,7 @@ import React from "react";
 import { Modal } from "../modals/modal.js";
 import { ProgramModal } from "./programModal.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
+import { changePage } from "../utils/historyUtils.js";
 
 import srcPointLightBlue from "../../assets/point_right_light_blue.svg";
 import srcPointWhite from "../../assets/point_right_white.svg";
@@ -18,7 +19,7 @@ export class ProgramCard extends React.Component {
     handleClick = () => {
         const classes = this.props.classes;
         if (classes.length == 1) {
-            window.location.hash = "/class/" + classes[0].classId;
+            changePage("/class/" + classes[0].classId);
         } else if (classes.length > 1) {
             this.setState({ showModal: true });
         }

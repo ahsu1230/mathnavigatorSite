@@ -2,6 +2,7 @@
 require("./registerSticky.sass");
 import React from "react";
 import Loader from "./loader.js";
+import { changePage } from "../utils/historyUtils.js";
 import srcCheckmarkWhite from "../../assets/checkmark_white.svg";
 
 export default class RegisterSticky extends React.Component {
@@ -30,7 +31,7 @@ export default class RegisterSticky extends React.Component {
 
             // go to page (after timeout)
             setTimeout(() => {
-                window.location.hash = "/register-success/" + this.props.choice;
+                changePage("/register-success/" + this.props.choice);
             }, 1800);
             return;
         }

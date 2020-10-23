@@ -8,7 +8,7 @@ import headerIcon from "../../assets/navigate_turquoise.png";
 export default class Footer extends React.Component {
     componentDidMount() {
         if (process.env.NODE_ENV === "production") {
-            mixpanel.track("init");
+            // mixpanel.track("init");
         } else {
             console.log("Website loaded");
         }

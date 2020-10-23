@@ -17,6 +17,7 @@ import RegisterSelectAfh from "./registerAfh.js";
 import { RegisterFormStudent, RegisterFormGuardian } from "./registerForms.js";
 import { validateEmail, validatePhone } from "../utils/validators.js";
 import { isFullClass } from "../utils/classUtils.js";
+import { changePage } from "../utils/historyUtils.js";
 
 const CHOICE_NONE = "";
 const CHOICE_CLASS = "class";
@@ -364,7 +365,7 @@ class SubmitButton extends React.Component {
 
         // go to page (after timeout)
         setTimeout(() => {
-            window.location.hash = "/register-success/" + this.props.choice;
+            changePage("/register-success/" + this.props.choice);
         }, 1800);
     };
 
