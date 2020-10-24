@@ -70,7 +70,7 @@ export class SessionPage extends React.Component {
 
         API.post("api/sessions/create", sessionsJSON)
             .then(() => {
-                console.log("Successfully created sessions!");
+                window.alert("Created " + sessions.length + " sessions!");
             })
             .catch((err) => {
                 window.alert("Could not create sessions: " + err);
@@ -84,7 +84,7 @@ export class SessionPage extends React.Component {
         const sessionIds = this.state.sessions.map((session) => session.id);
         API.delete("api/sessions/delete", { data: sessionIds })
             .then(() => {
-                console.log("Successfully deleted sessions!");
+                window.alert("Deleted " + sessionIds.length + " sessions!");
             })
             .catch((err) => {
                 window.alert("Could not delete sessions: " + err);
