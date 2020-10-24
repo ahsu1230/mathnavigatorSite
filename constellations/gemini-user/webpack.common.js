@@ -1,7 +1,8 @@
 const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: [path.resolve(__dirname, "src/app/index.js")],
     output: {
         publicPath: "/dist",
         filename: "./bundle.js",
@@ -16,16 +17,12 @@ module.exports = {
                 },
             },
             {
-                test: /\.(css)$/,
-                loader: "style-loader!css-loader",
-            },
-            {
-                test: /\.(sass)$/,
+                test: /\.(css|sass)$/,
                 loader: "style-loader!css-loader!sass-loader",
             },
             {
-                test: /\.(png|jp(e*)g|svg|gif)$/,
-                loader: "file-loader",
+                test: /\.(png|jpe?g|gif|svg|ttf)$/i,
+                use: [{ loader: "file-loader" }],
             },
         ],
     },
