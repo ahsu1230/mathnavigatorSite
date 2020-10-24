@@ -30,6 +30,7 @@ export class AskForHelpEditPage extends React.Component {
             const subjects = res.data;
             this.setState({
                 allSubjects: subjects,
+                subject: subjects[0],
             });
         });
         API.get("api/locations/all").then((res) => {

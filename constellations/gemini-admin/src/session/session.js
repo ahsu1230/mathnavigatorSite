@@ -70,7 +70,7 @@ export class SessionPage extends React.Component {
 
         API.post("api/sessions/create", sessionsJSON)
             .then(() => {
-                console.log("Successfully created sessions!");
+                window.alert("Created " + sessions.length + " sessions!");
             })
             .catch((err) => {
                 window.alert("Could not create sessions: " + err);
@@ -80,7 +80,22 @@ export class SessionPage extends React.Component {
             });
     };
 
+    deleteSessions = () => {
+        const sessionIds = this.state.sessions.map((session) => session.id);
+        API.delete("api/sessions/delete", { data: sessionIds })
+            .then(() => {
+                window.alert("Deleted " + sessionIds.length + " sessions!");
+            })
+            .catch((err) => {
+                window.alert("Could not delete sessions: " + err);
+            })
+            .finally(() => {
+                this.fetchSessionData(this.state.classId);
+            });
+    };
+
     render = () => {
+        const classId = this.state.classId;
         const classOptions = this.state.classes.map((row, index) => {
             return (
                 <option value={row.classId} key={index}>
@@ -112,7 +127,9 @@ export class SessionPage extends React.Component {
                 );
             });
         } else {
-            sessionsList = <div>No sessions for this class</div>;
+            sessionsList = (
+                <div className="no-list">No sessions for this class</div>
+            );
         }
 
         return (
@@ -125,18 +142,22 @@ export class SessionPage extends React.Component {
                     <h2>Select Class</h2>
                     <select
                         id="dropdown"
-                        value={this.state.classId}
+                        value={classId}
                         onChange={(e) => this.onChangeSelect(e)}>
                         {classOptions}
                     </select>
                 </section>
-                <SessionAdd
-                    classId={this.state.classId}
-                    addSessions={this.addSessions}
-                />
+                <SessionAdd classId={classId} addSessions={this.addSessions} />
                 <div id="sessions-list">
-                    <h3>Sessions for '{this.state.classId}'</h3>
+                    <h3>Sessions for '{classId}'</h3>
                     {sessionsList}
+                    {this.state.sessions.length > 0 && (
+                        <button
+                            className="delete"
+                            onClick={this.deleteSessions}>
+                            Delete all sessions for this class '{classId}'
+                        </button>
+                    )}
                 </div>
             </div>
         );
