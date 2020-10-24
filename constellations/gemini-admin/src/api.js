@@ -2,10 +2,7 @@
 import axios from "axios";
 import moment from "moment";
 
-var BASE_HOST =
-    process.env.NODE_ENV == "production"
-        ? "http://ec2-3-80-123-134.compute-1.amazonaws.com:8001"
-        : "http://localhost:8001";
+const BASE_HOST = process.env.MATHNAV_ORION_HOST;
 
 export default axios.create({
     baseURL: BASE_HOST,
