@@ -127,7 +127,9 @@ export class SessionPage extends React.Component {
                 );
             });
         } else {
-            sessionsList = <div>No sessions for this class</div>;
+            sessionsList = (
+                <div className="no-list">No sessions for this class</div>
+            );
         }
 
         return (
