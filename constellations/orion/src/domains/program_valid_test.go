@@ -59,7 +59,6 @@ func TestValidProgramId(t *testing.T) {
 }
 
 func TestValidProgramTitle(t *testing.T) {
-	// Checks for valid names
 	program := domains.Program{
 		ProgramId:   "ok",
 		Title:       "AP Calculus BC",
@@ -97,28 +96,13 @@ func TestValidProgramTitle(t *testing.T) {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	// Checks for invalid names
-	program.Title = "Test_"
+	// Checks for invalid title
+	program.Title = "test_"
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
 
 	program.Title = ""
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Title = "Test )("
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Title = "40 @40"
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Title = "A0 ^40"
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}

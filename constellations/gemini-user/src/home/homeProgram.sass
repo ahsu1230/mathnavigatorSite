@@ -20,16 +20,16 @@
         width: 30%
         box-sizing: border-box
         text-align: center
-        box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
+        background-color: $colorWhite
+        box-shadow: 0px 0px 12px 4px $colorBlackAlphaLight
 
         @media screen and (max-width: $containerWidthPxMonitor)
             width: 100%
             max-width: $spacing64x
             margin: 0 auto $spacing4x
-            padding: 0 0 $spacing4x
+            padding: $spacing4x 0 $spacing8x
             box-shadow: unset
             border-radius: 0
-            border-bottom: 1px solid $colorGrayLight
 
             &:last-child
                 margin-bottom: 0
@@ -62,6 +62,14 @@
             display: block
             margin: 0 auto
             border-radius: 8px
+            background-color: $colorTurquoiseLight
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                margin-top: $spacing4x
+
+        a
+            text-decoration: none
+            
     
     .link-bar
         display: block
@@ -69,10 +77,10 @@
         border-radius: 8px
         margin: $spacing8x 0
         text-align: center
-        line-height: $lineHeight0
-        font-size: $fontSize0
+        line-height: $lineHeight1
+        font-size: $fontSize1
         color: $colorTurquoise
-        background: #05657122
+        background: rgba($colorTurquoiseDark, 0.3)
 
         &:hover
             background: #05657133

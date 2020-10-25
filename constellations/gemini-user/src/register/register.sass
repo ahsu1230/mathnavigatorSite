@@ -46,7 +46,7 @@
 
         button.submit
             width: 100%
-            border-radius: 8px    
+            border-radius: 8px
 
 #view-register #form-container
     display: flex
@@ -91,13 +91,13 @@
             border-radius: 50%
             box-sizing: border-box
             text-align: center
-            background-color: $colorGrayMed
+            background-color: $colorGrayText
             color: $colorWhite
 
         h2
-            line-height: $lineHeight1
-            font-size: $fontSize1
-            color: $colorGrayMed
+            line-height: $lineHeight2
+            font-size: $fontSize2
+            color: $colorGrayText
 
         img
             width: 18px
@@ -114,8 +114,8 @@
         border: 1px solid $colorTurquoiseLight
         border-radius: 4px
 
-        &:hover
-        &:active
+        &:hover,
+        &:active,
         &:focus
             box-shadow: 0 0 0 2px $colorTurquoiseLight inset
             outline: none
@@ -125,35 +125,35 @@
         padding: $spacing2x
         box-sizing: border-box
         border-radius: 8px
-        background-color: $colorTurquoiseDarkAlpha
+        background-color: rgba($colorTurquoiseDark, 0.2)
 
 #view-register #form-container section.class,
 #view-register #form-container section.afh
     h3
         margin: $spacing2x 0 0
+        line-height: $lineHeight2
+        font-size: $fontSize2
+        font-weight: $fontWeightBold
+        color: $colorBlack
+    h4
         line-height: $lineHeight1
         font-size: $fontSize1
-        font-weight: 500
-        color: $colorTurquoiseDark
-    h4
-        line-height: $lineHeight0
-        font-size: $fontSize0
-        font-weight: 400
-        color: $colorGrayMed
+        font-weight: $fontWeightBold
+        color: $colorGrayText
 
     p
         margin: $spacing1x 0
 
     .loc, .class-times
         margin-top: $spacing1x
-        line-height: $lineHeight0
-        font-size: $fontSize0
+        line-height: $lineHeight1
+        font-size: $fontSize1
 
 #view-register #form-container section.register-form
     p.instructions
         line-height: 18px
-        font-size: 14px
-        color: $colorGrayMed
+        font-size: $fontSize0
+        color: $colorGrayText
 
     .names
         display: flex
@@ -173,16 +173,16 @@
 
     .register-input.email input
         width: $spacing32x
-    
+
     .register-input.phone input
         width: $spacing24x
-    
+
     .register-input.school input
         width: $spacing32x
 
     .register-input.grade input
         width: $spacing6x
-    
+
     .register-input.grad-year input
         width: $spacing8x
 

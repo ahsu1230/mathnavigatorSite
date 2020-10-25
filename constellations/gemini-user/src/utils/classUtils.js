@@ -42,8 +42,8 @@ export const displayTimeStringOneLine = (classObj) => {
     const times = timesStr
         .split(",")
         .map((str) => str.trim())
-        .join(" & ");
-    return <div className="class-times line">{times}</div>;
+        .map((str) => <div className="class-times line">{str}</div>);
+    return times;
 };
 
 export const displayFeaturedString = (program) => {

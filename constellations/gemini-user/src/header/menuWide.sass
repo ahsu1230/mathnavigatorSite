@@ -13,7 +13,7 @@
     bottom: $spacing1x
     right: unset
     transform: translate(-50%, 0)
-    width: 450px /* Not sure why this is needed */
+    width: 364px /* Not sure why this is needed */
 
   @media screen and (max-width: $media2)
     display: none
@@ -31,7 +31,7 @@
       color: $colorTurquoise
 
     @media screen and (max-width: $media1)
-      font-size: 14px
+      font-size: $fontSize0
 
 .header-menu-wide .menu-link-container
   display: inline-block
@@ -52,7 +52,7 @@
     transform: translateX(-50%)
     border-radius: 8px
     background-color: $colorWhite
-    box-shadow: 4px 4px 16px 4px rgba(0,0,0, 0.2)
+    box-shadow: 4px 4px 16px 4px $colorBlackAlphaLight
     overflow: hidden
 
     & li
@@ -60,7 +60,7 @@
       margin: 0 !important
 
       &:hover
-        background-color: $colorWhiteLighter
+        background-color: $colorWhiteOff
 
       & a
         display: block
@@ -68,7 +68,7 @@
         padding: $spacing1x $spacing2x
         box-sizing: border-box
         text-align: center
-        font-size: 14px
+        font-size: $fontSize0
 
         &:hover
           text-decoration: underline

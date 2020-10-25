@@ -55,8 +55,8 @@ export class ProgramsPage extends React.Component {
                     semester. Some programs will have multiple classes available
                     to accomodate different schedules. Programs are recurring
                     and will usually be offered again in the following semester,
-                    so if you miss the enrollment period for a course, make sure
-                    to enroll next enrollment period!
+                    so if you miss the enrollment period this time, make sure to
+                    enroll next period!
                 </p>
                 {semesterSections}
             </div>

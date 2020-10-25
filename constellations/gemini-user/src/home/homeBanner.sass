@@ -52,15 +52,18 @@
 
         &.enroll
           margin-bottom: $spacing4x
+          background-color: $colorTurquoiseLight
+          color: $colorWhite
+
         &.browse
           border: 1px solid $colorWhite
-          color: $colorWhite
           background-color: transparent
+          color: $colorWhite
 
           &:hover
-            background-color: $colorWhite
-            color: $colorTurquoise
-
+            border: 1px solid $colorTurquoiseLight
+            background-color: $colorTurquoiseLight
+            color: $colorWhite
 
 @media screen and (max-width: $containerWidthPxLaptop)
   #home-banner-container #banner-content
@@ -68,10 +71,10 @@
     width: 100%
 
     h1
-      font-size: $fontSize1
+      font-size: $fontSize2
       margin-bottom: $spacing4x
     p
-      font-size: $fontSize0
+      font-size: $fontSize1
       margin: $spacing1x 0
 
     .texts

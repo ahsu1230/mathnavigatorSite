@@ -12,7 +12,8 @@
         text-align: center
         
     p
-        margin: $spacing4x 0
+        margin: $spacing4x auto
+        max-width: $spacing80x
         text-align: center
         color: $colorBlack
 
@@ -24,25 +25,26 @@
         display: flex
         flex-direction: row
         align-items: center
-        border-bottom: 1px solid $colorGrayLight
+        border-bottom: 2px solid $colorGrayLight
 
         .active
-            border-bottom: 2px solid $colorTurquoise
+            border-bottom: 2px solid $colorTurquoiseLight
 
     .tabs button 
         width: 33.333%
         height: 100%
         padding: $spacing2x
-        background-color: $colorWhite
         border-bottom: 2px solid transparent
         border-radius: 8px 8px 0 0
-        font-size: $fontSize1
+        font-size: $fontSize2
+        background-color: $colorWhiteOff
         color: $colorBlack
         cursor: pointer
         transition: 0.3s
 
         &:hover
-            background-color: $colorGrayLighter
+            filter: brightness(1.0)
+            background: rgba($colorTurquoiseDark, 0.1)
             cursor: pointer
 
         .icon-wrapper
@@ -52,7 +54,7 @@
             height: 32px
             margin-right: $spacing2x
             border-radius: 50%
-            background-color: $colorGrayMed
+            background-color: $colorGrayLight
             vertical-align: middle
 
             img
@@ -70,7 +72,7 @@
                     width: 18px
 
         &.active .icon-wrapper
-            background-color: $colorTurquoise
+            background-color: $colorTurquoiseLight
     
     .showTab 
         display: inline-block
@@ -93,20 +95,21 @@
             align-items: start
 
             a
-                color: $colorTurquoise
+                font-weight: $fontWeightBold
+                color: $colorTurquoiseLight
 
             img
                 width: $spacing1_5x
                 margin-left: $spacing1x
 
         h4
-            line-height: $lineHeight0
-            font-size: $fontSize0
-            font-weight: 400
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            font-weight: $fontWeightNormal
 
             &.title
-                font-weight: 600
-                color: $colorBlackLight
+                font-weight: $fontWeightMed
+                color: $colorGrayDark
 
             &.time
                 color: $colorBlack
@@ -114,7 +117,7 @@
 
         .notes
             margin-top: $spacing2x
-            color: $colorTurquoiseLight
+            color: $colorTurquoise
 
             b
                 vertical-align: middle
@@ -126,7 +129,7 @@
                 height: 36px
                 margin-right: $spacing1x
                 border-radius: 50%
-                background-color: $colorTurquoiseLight
+                background-color: $colorTurquoise
                 vertical-align: middle
 
                 img
@@ -142,7 +145,7 @@
             color: $colorBlack
 
         .loc
-            line-height: $lineHeight0
+            line-height: $lineHeight1
 
 @media only screen and (max-width: 700px)
     #view-afh
@@ -156,7 +159,7 @@
             margin-bottom: $spacing1x
 
         .tabs button
-            font-size: $fontSize0
+            font-size: $fontSize1
 
             .icon-wrapper
                 display: block

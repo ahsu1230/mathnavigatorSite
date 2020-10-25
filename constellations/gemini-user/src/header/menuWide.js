@@ -3,6 +3,7 @@ require("./menuWide.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { MainLinks, isPathAt } from "../utils/links.js";
+import { getCurrentPath } from "../utils/historyUtils.js";
 const classnames = require("classnames");
 
 export default class MenuWide extends React.Component {
@@ -37,8 +38,7 @@ export default class MenuWide extends React.Component {
 class MenuLink extends React.Component {
     render() {
         const link = this.props.link;
-        var currentPath = window.location.hash;
-        // var currentPath = location.pathname || ""; // Use with BrowserRouter
+        var currentPath = getCurrentPath();
         const linkClass = classnames({
             active: isPathAt(currentPath, link.url),
         });
@@ -55,8 +55,7 @@ class MenuLink extends React.Component {
 class SubMenu extends React.Component {
     render() {
         const currentLink = this.props.currentLink;
-        const currentPath = window.location.hash;
-        // var currentPath = location.pathname || ""; // Use with BrowserRouter
+        const currentPath = getCurrentPath();
         const subLinks = this.props.subLinks.map((subLink, i) => {
             var linkClass = classnames({
                 active: isPathAt(currentPath, subLink.url),

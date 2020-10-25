@@ -7,9 +7,6 @@ describe("Class Page", () => {
 
     test("renders", () => {
         expect(component.exists()).toBe(true);
-        expect(component.find("#breadcrumbs Link").text()).toBe(
-            "Program Catalog"
-        );
         expect(component.find("#class-footer Link").text()).toBe(
             "< More Programs"
         );
@@ -45,46 +42,38 @@ describe("Class Page", () => {
             state: "MD",
             zipcode: "20854",
         };
+        const sessions = [];
         component.setState({
             classObj: classObj,
             semester: semester,
             program: program,
             location: location,
+            sessions: sessions,
         });
 
-        expect(component.find("h1").text()).toBe("SAT Math Class1");
+        const breadcrumbs = component.find("ClassBreadcrumbs");
+        const programInfo = component.find("ClassProgramInfo");
+        const register = component.find("ClassRegister");
+        const classInfo = component.find("ClassInfo");
+        const schedule = component.find("ClassSchedule");
 
-        expect(component.find("Link").at(1).text()).toBe("Enroll");
+        expect(breadcrumbs.exists()).toBe(true);
+        expect(breadcrumbs.prop("program")).toEqual(program);
+        expect(breadcrumbs.prop("classObj")).toEqual(classObj);
+        expect(breadcrumbs.prop("semester")).toEqual(semester);
 
-        expect(component.find("h3").at(0).text()).toBe("Location");
-        expect(component.find("h3").at(1).text()).toBe("Times");
-        expect(component.find("h3").at(2).text()).toBe("Pricing");
+        expect(programInfo.exists()).toBe(true);
+        expect(programInfo.prop("program")).toEqual(program);
 
-        expect(component.find("#program-info h4").text()).toBe(
-            "This class is almost full! Enroll now to reserve your spot."
-        );
-        expect(component.find("#program-info p.grades").text()).toBe(
-            "Grades: 9 - 12"
-        );
-        expect(component.find("#program-info p.description").text()).toBe(
-            "SAT Math Preparation"
-        );
+        expect(register.exists()).toBe(true);
+        expect(register.prop("classObj")).toEqual(classObj);
 
-        expect(component.find("#class-location .line").at(0).text()).toBe(
-            "Winston Churchill High School"
-        );
-        expect(component.find("#class-location .line").at(1).text()).toBe(
-            "11300 Gainsborough Rd"
-        );
-        expect(component.find("#class-location .line").at(2).text()).toBe(
-            "Potomac, MD 20854"
-        );
+        expect(classInfo.exists()).toBe(true);
+        expect(classInfo.prop("classObj")).toEqual(classObj);
+        expect(classInfo.prop("location")).toEqual(location);
+        expect(classInfo.prop("sessions")).toEqual(sessions);
 
-        expect(component.find("#class-times .line").text()).toBe(
-            "Tue. 5:00pm - 7:00pm & Sat. 1:00pm - 3:00pm"
-        );
-        expect(component.find("#class-pricing p").at(0).text()).toBe(
-            "Price per session: $50.00"
-        );
+        expect(schedule.exists()).toBe(true);
+        expect(schedule.prop("sessions")).toEqual(sessions);
     });
 });

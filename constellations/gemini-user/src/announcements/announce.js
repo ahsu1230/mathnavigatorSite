@@ -37,10 +37,10 @@ export class AnnouncePage extends React.Component {
         ));
         return (
             <div id="view-announce">
-                <h1>Announcements</h1>
                 <PinnedAnnouncement
                     announcement={this.state.pinnedAnnouncement}
                 />
+                <h1>All Announcements</h1>
                 {items}
             </div>
         );

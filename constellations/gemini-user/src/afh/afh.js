@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import API from "../utils/api.js";
 import moment from "moment";
-import srcPoint from "../../assets/point_right_green.svg";
+import srcPoint from "../../assets/point_right_light_blue.svg";
 import srcNotes from "../../assets/lightbulb_white.svg";
 import srcMath from "../../assets/icon_math.svg";
 import srcWriting from "../../assets/icon_writing.svg";

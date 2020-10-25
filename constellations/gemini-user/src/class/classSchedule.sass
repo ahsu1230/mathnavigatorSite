@@ -1,10 +1,10 @@
 @import "../utils/_constants.sass"
 
 #class-session
-    
+
     h3
-        font-weight: 400
-        color: $colorGrayMed
+        font-weight: $fontWeightMed
+        color: $colorGrayText
 
         @media screen and (max-width: $containerWidthPxTablet)
             margin-top: $spacing8x
@@ -15,34 +15,34 @@
         justify-content: space-between
         padding: $spacing3x 0
         border-bottom: 1px solid $colorGrayLight
-    
+
         @media screen and (max-width: $containerWidthPxLaptop)
             display: block
             width: 100%
-        
+
     .canceled span
         color: $colorRed
-    
+
     .canceled-past span
-        color: $colorGrayLight
+        color: $colorGrayTextFaded
 
     .past span
-        color: $colorGrayLight
-    
+        color: $colorGrayTextFaded
+
     span
         @media screen and (max-width: $containerWidthPxLaptop)
             display: block
-            line-height: $lineHeight2
+            line-height: $lineHeight3
 
     .index-column
         flex: 1 1 0
 
     .date-column
         flex: 2 1 0
-    
+
     .time-column
         flex: 4 1 0
-    
+
     .canceled
         flex: $spacing10x 0 0
 

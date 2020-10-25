@@ -6,7 +6,7 @@ $cardSpacing: $spacing6x
     position: relative
     display: inline-block
     width: 240px
-    height: 324px
+    height: 240px
     margin: 0 $cardSpacing $cardSpacing 0
     box-sizing: border-box
     vertical-align: top
@@ -16,91 +16,73 @@ $cardSpacing: $spacing6x
         margin: 0 auto $cardSpacing
 
     .program-card
-        display: flex
-        flex-direction: column
-        justify-content: space-between
-        align-items: center
         position: relative
-        bottom: 0px
+        bottom: 0
         width: 100%
         height: 100%
-        border-radius: 6px
+        border-radius: 8px
+        box-sizing: border-box
         background-color: $colorWhite
-        box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
-        text-align: center
-        vertical-align: top
-        cursor: pointer
-        overflow: hidden
+        box-shadow: 0px 0px 12px 0px $colorBlackAlphaLight
         transition: all linear 0.1s
 
         &:hover
-            bottom: 4px
-            box-shadow: 0px 2px 12px 4px rgba(0, 0, 0, 0.4)
+            bottom: 8px
+            box-shadow: 24px 24px 72px 0px $colorBlackAlphaMed
+            cursor: pointer
 
-            .classes-avail
-                text-decoration: underline
-        
-        .card-top
-            position: relative
-            width: 100%
-            height: 132px
-            background-color: $colorTurquoiseDark
-            overflow: hidden
+            .footer
+                background-color: $colorTurquoiseLight
+                color: $colorWhite
 
-            img
-                width: 100%
-        
-        .card-title
-            display: flex
-            justify-content: center
-            align-items: center
+        .content
             position: absolute
-            top: 54px
-            left: 50%
-            transform: translate(-50%, 0)
-            width: 160px
-            height: 80px
-            box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2)
-            border-radius: 8px
-            background-color: $colorWhite
-
-        .card-body
+            left: 0
+            bottom: 0
             width: 100%
-            height: 144px
-            padding-top: $spacing4x
+            padding: $spacing2x
+            box-sizing: border-box
+
+            h2
+                margin: 0
+                line-height: $lineHeight2
+                font-family: $fontFamilyRoboto
+                font-size: $fontSize2
+                font-weight: $fontWeightBold
+                color: $colorBlack
 
             h3
-                margin-bottom: $spacing1x
+                margin: 0
+                font-family: $fontFamilyRoboto
+                font-size: $fontSize0
+                font-weight: $fontWeightBold
+                color: $colorGrayText
 
-            .classes-avail
-                margin-bottom: $spacing1_5x
-
-            .featured
-                display: inline-block
-                padding: 4px $spacing2x
-                border: 1px solid $colorTurquoise
-                border-radius: 8px
-                color: $colorTurquoise
-
-                img
-                    margin-right: $spacing1x
-
-                span
-                    position: relative
-                    top: 3px
-                    vertical-align: top
-        
-        .card-footer
+        .footer
             display: flex
-            flex-direction: row
             justify-content: center
             align-items: center
+            margin: $spacing1x auto 0
             width: 100%
-            padding: $spacing1_5x
-            background-color: $colorTurquoise
+            border: 1px solid $colorTurquoiseLight
+            border-radius: 8px
+            font-size: $fontSize0
+            color: $colorTurquoiseLight
+            background-color: $colorWhite
 
             img
-                position: relative
-                top: -1px
                 margin-left: $spacing1x
-                width: $spacing1_5x
+                width: 12px
+
+        .featured
+            position: relative
+            top: $spacing1x
+            left: $spacing1x
+            font-size: $fontSize0
+            color: $colorTurquoiseLight
+            
+            .container
+                display: flex
+                align-items: center
+            img
+                margin-right: $spacing1x

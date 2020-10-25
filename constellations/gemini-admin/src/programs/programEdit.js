@@ -27,7 +27,7 @@ export class ProgramEditPage extends React.Component {
             const subjects = res.data || [];
             this.setState({
                 allSubjects: subjects,
-                subject: subjects[0]
+                subject: subjects[0],
             });
         });
 
@@ -49,7 +49,11 @@ export class ProgramEditPage extends React.Component {
         }
 
         API.get("api/programs/featured").then((res) => {
-            this.setState({ allFeatured: res.data });
+            const allFeatured = res.data;
+            this.setState({
+                allFeatured: allFeatured,
+                featured: allFeatured[0],
+            });
         });
     };
 
