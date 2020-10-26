@@ -39,7 +39,7 @@ func sendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest
 }
 
 func TestGetHealth(t *testing.T) {
-	recorder := sendHttpRequest(t, http.MethodGet, "/api/health", nil)
+	recorder := sendHttpRequest(t, http.MethodGet, "/health", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 

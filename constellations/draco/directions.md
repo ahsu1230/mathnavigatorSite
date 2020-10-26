@@ -1,13 +1,27 @@
-To go to ADMIN website: <http://ec2-3-80-123-134.compute-1.amazonaws.com/>
+# Directions
 
-You may interact with this website to start adding data to the database (connected to RDS)
+# VPC + RDS
 
----
+- Create VPC
+- Create RDS (MySQL)
+- Create SecurityGroups
 
-To see what the USER site looks like:
+# Managing EC2 Instances
 
-- Traverse to constellations/gemini-user
-- Make sure npm is installed. Run `npm install -verbose`
-- Start the dev website at `npm run start:prod`. It is also connected to the RDS
+## Creating Auto-scaling Group
 
-**NOTE** Doing the above will only allow you to preview the user website. The actual user website is not available yet.
+- First decide if you want to use a **launch template** or **launch configuration**.
+A launch template is for
+A launch configuration allows you to specify what `user data` or commands to run on instance startup.
+
+- Create a Target Group.
+A target group specifies a "group" of instances / lambdas / etc. to auto-scale and check for health. Given a host & port, it will occasionally query that endpoint to check health of the instance.
+
+- Then create an Auto-Scaling Group. 
+  - Choose if you want to use a launch template or launch configuration.
+  - Choose if you would like to use a load balancer. A load balancer can be created by a Target Group OR by selecting an AWS-created Load Balancer. If you want to do it the latter way, will need to setup Certificate Manager to create Load Balancer.
+  - Select the desired capacity of your scaling group (min, max, desired).
+
+## Using CodeDeploy
+
+- Create IAM role to allow service to interact with your EC2 instance (in this case, CodeDeploy)

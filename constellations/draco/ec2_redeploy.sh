@@ -1,11 +1,8 @@
 #!/bin/bash
 
-chmod 777 ec2_redeploy.sh
-
 # cd to repository
 cd /home/ec2-user/mathnavigatorSite
 git fetch
-git checkout aws_deployment # <--- CHANGE LATER
 git pull
 
 # Rebuild user site
