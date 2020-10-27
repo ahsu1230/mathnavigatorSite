@@ -8,7 +8,7 @@ module.exports = merge(common, {
         // Add environment variables
         new webpack.DefinePlugin({
             "process.env.MATHNAV_ORION_HOST": JSON.stringify(
-                "http://ec2-3-80-123-134.compute-1.amazonaws.com:8001"
+                "http://mathnav-orion-lb-1990674869.us-east-1.elb.amazonaws.com:8001"
             ),
         }),
     ],
