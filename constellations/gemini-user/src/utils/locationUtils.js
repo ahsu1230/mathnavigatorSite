@@ -10,6 +10,9 @@ export const createLocation = (location) => {
 };
 
 export const createPhysicalLocation = (location) => {
+    const roomName = parseInt(location.room)
+        ? "Room " + location.room
+        : location.room;
     return (
         <div className="loc physical">
             <div className="line title">{location.title}</div>

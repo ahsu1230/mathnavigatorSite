@@ -83,7 +83,6 @@ export class ClassPage extends React.Component {
     };
 
     render = () => {
-        debugger;
         const classObj = this.state.classObj;
         const sessions = this.state.sessions;
 
