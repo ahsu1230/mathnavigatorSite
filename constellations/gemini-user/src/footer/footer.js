@@ -3,7 +3,7 @@ require("./footer.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { MainLinks } from "../utils/links.js";
-import headerIcon from "../../assets/navigate_turquoise.png";
+import headerIcon from "../../assets/navigate_green.svg";
 
 export default class Footer extends React.Component {
     componentDidMount() {

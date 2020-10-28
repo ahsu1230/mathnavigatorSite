@@ -3,7 +3,7 @@ require("./header.sass");
 import React from "react";
 import { MenuSlim } from "./menuSlim.js";
 import MenuWide from "./menuWide.js";
-import headerIcon from "../../assets/navigate_turquoise.png";
+import headerIcon from "../../assets/navigate_green.svg";
 
 export class Header extends React.Component {
     constructor(props) {
