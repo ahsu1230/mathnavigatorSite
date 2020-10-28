@@ -177,7 +177,7 @@ export class SessionEditPage extends React.Component {
                 </div>
 
                 <div id="cancel-toggle" className="item">
-                    <h4>Canceled</h4>
+                    <h4>Check if no class</h4>
                     <input
                         type="checkbox"
                         checked={!!this.state.canceled}

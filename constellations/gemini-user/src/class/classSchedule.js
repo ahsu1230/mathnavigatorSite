@@ -2,10 +2,18 @@
 require("./classSchedule.sass");
 import React from "react";
 import moment from "moment";
+import { convertToOrdinalSuffice } from "../utils/displayUtils.js";
 
 export class ClassSchedule extends React.Component {
     getSchedules = (sessions) => {
+        let sessionIndex = 1;
         const schedules = sessions.map((session, index) => {
+            const canceled = session.canceled;
+            if (!canceled) {
+                session.sessionIndex = sessionIndex;
+                sessionIndex++;
+            }
+
             const startTime = moment(session.startsAt);
             const endTime = moment(session.endsAt);
             const times =
@@ -13,7 +21,6 @@ export class ClassSchedule extends React.Component {
                 " - " +
                 endTime.format("h:mma");
 
-            const canceled = session.canceled;
             var state = "row";
             if (moment().isAfter(endTime))
                 state += canceled ? " canceled-past" : " past";
@@ -21,11 +28,15 @@ export class ClassSchedule extends React.Component {
 
             return (
                 <div key={index} className={state}>
-                    <span className="index-column">{index + 1}</span>
+                    <span className="index-column">
+                        {session.sessionIndex &&
+                            convertToOrdinalSuffice(session.sessionIndex)}
+                    </span>
                     <span className="date-column">{startTime.format("l")}</span>
-                    <span className="time-column">{times}</span>
-                    <span className="canceled">
-                        {canceled ? "Canceled" : ""}
+                    <span className="time-column">{!canceled && times}</span>
+                    <span className="notes">
+                        {canceled ? "No Class. " : ""}
+                        {session.notes}
                     </span>
                 </div>
             );

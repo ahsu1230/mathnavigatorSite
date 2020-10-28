@@ -17,3 +17,16 @@ export const capitalizeWord = (word) => {
     word = word || "";
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
+
+export const convertToOrdinalSuffice = (index) => {
+    const rem = index % 10;
+    if (rem == 1) {
+        return index + "st";
+    } else if (rem == 2) {
+        return index + "nd";
+    } else if (rem == 3) {
+        return index + "rd";
+    } else {
+        return index + "th";
+    }
+};
