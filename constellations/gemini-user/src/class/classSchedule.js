@@ -2,7 +2,7 @@
 require("./classSchedule.sass");
 import React from "react";
 import moment from "moment";
-import { convertToOrdinalSuffice } from "../utils/displayUtils.js";
+import { convertToOrdinal } from "../utils/displayUtils.js";
 
 export class ClassSchedule extends React.Component {
     getSchedules = (sessions) => {
