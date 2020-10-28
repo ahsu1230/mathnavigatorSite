@@ -30,7 +30,7 @@ export class ClassSchedule extends React.Component {
                 <div key={index} className={state}>
                     <span className="index-column">
                         {session.sessionIndex &&
-                            convertToOrdinalSuffice(session.sessionIndex)}
+                            convertToOrdinal(session.sessionIndex)}
                     </span>
                     <span className="date-column">{startTime.format("l")}</span>
                     <span className="time-column">{!canceled && times}</span>

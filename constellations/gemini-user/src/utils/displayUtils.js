@@ -18,7 +18,7 @@ export const capitalizeWord = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-export const convertToOrdinalSuffice = (index) => {
+export const convertToOrdinal = (index) => {
     const rem = index % 10;
     if (rem == 1) {
         return index + "st";
