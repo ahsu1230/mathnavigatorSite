@@ -95,7 +95,7 @@ export class AfhEditDateTimes extends React.Component {
                     timeConfig={{
                         from: "8:00 AM",
                         to: "11:45 PM",
-                        step: 15,
+                        step: 5,
                         unit: "minutes",
                     }}
                 />
@@ -112,7 +112,7 @@ export class AfhEditDateTimes extends React.Component {
                     timeConfig={{
                         from: "8:00 AM",
                         to: "11:45 PM",
-                        step: 15,
+                        step: 5,
                         unit: "minutes",
                     }}
                 />

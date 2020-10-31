@@ -56,6 +56,7 @@
         margin-right: $spacing4x
         border: 1px solid $colorPrimary
         border-radius: 4px
+        box-sizing: border-box
         background-color: $colorPrimary
         color: $colorWhite
 
@@ -64,13 +65,17 @@
 
         &.link-register
             display: block
-            padding: 0
+            width: $spacing40x
             margin-right: 0
             border: none
-            border-radius: 0px
-            background-color: transparent
-            color: $colorPrimary
+            font-weight: $fontWeightMed
+            color: $colorWhite
+            background-color: $colorPrimaryAccent
+            text-align: center
             cursor: pointer
+
+            @media screen and (max-width: $containerWidthPxTablet)
+                width: 100%
 
         &.link-home
             background-color: $colorWhite
@@ -79,7 +84,7 @@
             &:hover
                 background-color: $colorPrimary
                 color: $colorWhite
-        
+
         @media screen and (max-width: $containerWidthPxTablet)
             display: block
             margin: 0 0 $spacing4x 0

@@ -108,7 +108,7 @@ class AnnounceDateTimePicker extends React.Component {
                         timeConfig={{
                             from: "7:00 AM",
                             to: "11:45 PM",
-                            step: 15,
+                            step: 5,
                             unit: "minutes",
                         }}
                     />
