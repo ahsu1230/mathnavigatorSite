@@ -159,7 +159,7 @@ export class SessionAdd extends React.Component {
                                     timeConfig={{
                                         from: "8:00 AM",
                                         to: "9:00 PM",
-                                        step: 15,
+                                        step: 5,
                                         unit: "minutes",
                                     }}
                                 />
@@ -178,7 +178,7 @@ export class SessionAdd extends React.Component {
                                     timeConfig={{
                                         from: "8:00 AM",
                                         to: "11:00 PM",
-                                        step: 15,
+                                        step: 5,
                                         unit: "minutes",
                                     }}
                                 />
