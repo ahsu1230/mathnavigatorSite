@@ -3,15 +3,12 @@ require("./footer.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { MainLinks } from "../utils/links.js";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import headerIcon from "../../assets/navigate_green.svg";
 
 export default class Footer extends React.Component {
     componentDidMount() {
-        if (process.env.NODE_ENV === "production") {
-            // mixpanel.track("init");
-        } else {
-            console.log("Website loaded");
-        }
+        trackAnalytics("init");
     }
 
     render() {

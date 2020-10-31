@@ -2,9 +2,14 @@
 require("./registerSuccess.sass");
 import React from "react";
 import { Link } from "react-router-dom";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import srcStar from "../../assets/star_white.svg";
 
 export default class RegisterPage extends React.Component {
+    componentDidMount() {
+        trackAnalytics("register-success");
+    }
+
     render() {
         const wasClass = this.props.registered == "class";
 

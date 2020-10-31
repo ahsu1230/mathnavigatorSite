@@ -2,6 +2,7 @@
 require("./programs.sass");
 import React from "react";
 import API from "../utils/api.js";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import { ProgramCard } from "./programCard.js";
 
 export class ProgramsPage extends React.Component {
@@ -12,6 +13,7 @@ export class ProgramsPage extends React.Component {
     };
 
     componentDidMount = () => {
+        trackAnalytics("programs");
         API.get("api/classesbysemesters?published=true").then((res) => {
             const classesbysemesters = res.data || [];
             let semesters = [];
