@@ -1,72 +1,102 @@
 @import "../utils/constants.sass"
 
 #view-intern
-    width: 75%
-    margin-left: auto
-    margin-right: auto
+    width: $containerWidthPct
+    max-width: $containerWidthPxLaptop
+    margin: 0 auto
     font-family: $fontFamilyRoboto
 
     & h1
-        margin-top: $spacing10x
+        margin-top: $spacing8x
         margin-bottom: $spacing4x
-        color: $colorPrimary
+        text-align: center
+        font-family: $fontFamilyRoboto
+        color: $colorGrayText
 
-    & h4
-        margin-bottom: $spacing3x
-        color: $colorPrimaryAccent
-        text-align: left
+        &.title
+            color: $colorPrimary
 
-    .container-main
+    & p
+        max-width: $spacing64x
+        margin: 0 auto
+        text-align: center
+        line-height: $lineHeight1
+        font-size: $fontSize0
+
+    section.tech-stack
         display: flex
         flex-direction: row
+        flex-wrap: wrap
+        justify-content: center
         align-items: center
-        margin-bottom: $spacing4x
+
+    .img-container
+        display: flex
+        justify-content: center
+        align-items: center
+        width: $spacing16x
+        height: $spacing12x
+        margin: 0 $spacing2x $spacing4x
+        padding: $spacing2x
+        box-shadow: 0px 4px 8px 0 #{$colorGrayDark}33
+        border-radius: 8px
+        background-color: $colorWhite
+        overflow: hidden
 
         & img
-            width: $spacing16x
-            margin-right: $spacing8x
-    
-        & p
-            margin: 0
+            width: 100%
 
-    .intern-main
+    section.past-interns
         display: flex
         flex-direction: row
-        margin-bottom: $spacing3x
+        flex-wrap: wrap
+        justify-content: center
+
+    .intern-container
+        width: $spacing28x
+        padding: $spacing2x $spacing3x
+        margin: 0 $spacing2x $spacing4x
+        border-radius: 8px
+        box-shadow: 0px 4px 8px 0 #{$colorGrayDark}33
+        line-height: $lineHeight1
+        font-size: $fontSize0
+        background-color: $colorWhite
 
         .name
-            width: $spacing16x
-        .school
-            width: $spacing40x
-        .college
-            width: calc(100% - #{$spacing16x} - #{$spacing40x})
+            font-weight: $fontWeightMed
+            color: $colorGrayText
 
-    #last-paragraph
-        margin-bottom: $spacing32x
+    section.structure1
+        display: flex
+        flex-direction: column
+        justify-content: start
 
-    @media only screen and (max-width: 800px)
-        & h1, h4, p
-            text-align: center
+        .role-container
+            display: flex
+            flex-direction: row
+            justify-content: center
 
-        .container-main
-            display: inline
-            flex-direction: column
+        .role-card
+            margin: $spacing3x $spacing2x
+            padding: $spacing2x
+            border-radius: 8px
+            box-shadow: 0px 4px 8px 0 #{$colorGrayDark}33
+            background-color: $colorWhite
+
+        .container
+            display: flex
+            justify-content: space-between
             align-items: center
 
-            & img
-                display: block
-                margin: 0 auto
-                width: $spacing16x
-        
-            & p
-                margin: 5%
+        h4
+            font-size: $fontSize1
+            font-weight: $fontWeightMed
+            color: $colorGrayText
 
-        .intern-main
-            display: flex
-            flex-direction: column
-            text-align: center
-            margin-bottom: $spacing4x
-            & span
-                margin: 0
-            .name, .school, .college
-                width: auto
+        img
+            width: $spacing16x
+            margin: $spacing1x 0
+
+    section#last
+        margin-top: $spacing12x
+        margin-bottom: $spacing32x
