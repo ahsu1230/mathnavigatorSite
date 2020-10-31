@@ -15,9 +15,7 @@ describe("Internship Page", () => {
         expect(component.find("h1").at(2).text()).toContain(
             "Internship Structure"
         );
-        expect(component.find("h4").text()).toContain("Past Interns:");
-        expect(component.find("h1").at(3).text()).toContain(
-            "Math Navigator Products"
-        );
+        expect(component.find("h1").at(3).text()).toContain("Past Interns:");
+        expect(component.find("InternshipCarousel").exists()).toBe(true);
     });
 });
