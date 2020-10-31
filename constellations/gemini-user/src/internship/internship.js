@@ -1,7 +1,8 @@
 "use strict";
 require("./internship.sass");
 import React from "react";
-
+import { PastInterns } from "./pastInterns.js";
+import InternshipCarousel from "./internshipCarousel.js";
 import GithubImg from "./../../assets/intern_images/github.png";
 import GolangImg from "./../../assets/intern_images/golang.png";
 import ReactImg from "./../../assets/intern_images/react.png";
@@ -9,11 +10,6 @@ import NpmImg from "./../../assets/intern_images/npm.png";
 import MySQLImg from "./../../assets/intern_images/mysql.png";
 import DockerImg from "./../../assets/intern_images/docker.jpg";
 import CircleImg from "./../../assets/intern_images/circleci.png";
-
-import DevPullRequestImg from "./../../assets/intern_images/github_pull_request.png";
-import DevSiteImg from "./../../assets/intern_images/develop_site.png";
-
-import { PastInterns } from "./pastInterns.js";
 
 export class InternshipPage extends React.Component {
     render() {
@@ -30,7 +26,7 @@ export class InternshipPage extends React.Component {
         return (
             <div id="view-intern">
                 <h1 className="title">Software Development Internship</h1>
-                <p className="intro">
+                <p className="description">
                     Math Navigator occasionally offers Software Development
                     Internship for ambitious students who would like to pursue a
                     college major or a career in software development. In this
@@ -69,7 +65,7 @@ export class InternshipPage extends React.Component {
 
                 <section className="structure1">
                     <h1>Internship Structure</h1>
-                    <p>
+                    <p className="description">
                         The internship is split into various roles. Interns can
                         choose to join the front-end team to learn website
                         development with ReactJs or join the back-end team to
@@ -97,23 +93,25 @@ export class InternshipPage extends React.Component {
                 <h1>Our Past Interns:</h1>
                 <section className="past-interns">{interns}</section>
 
-                <section>
-                    <h1>Math Navigator Products</h1>
-                    <p id="last-paragraph">Coming soon...</p>
+                <section className="carousel">
+                    <InternshipCarousel />
                 </section>
 
                 <section id="last">
-                    <p>
+                    <p className="description">
                         Internship opportunities will be announced when they are
-                        available. When they are, student candidates must first
-                        pass a series of coding assessments and interviews in
-                        order to receive a position. This interview process
-                        reflects the same process that famous technology
-                        companies like Google, Facebook, Amazon, etc. have. We
-                        encourage all students to attempt these assessments to
-                        familiarize themselves with this interview process
-                        structure if they ever want to pursue a career at any of
-                        these companies.
+                        available. Student candidates must first pass a series
+                        of coding assessments and interviews in order to receive
+                        a position. This interview process follows the similar
+                        procedures as those at well-known technology companies
+                        like Google, Facebook, Amazon, etc.
+                        <br />
+                        <br />
+                        The process is challenging, but we encourage all
+                        students to attempt these assessments to familiarize
+                        themselves with this interview process structure,
+                        especially if they ever want to pursue a career at any
+                        of these companies.
                     </p>
                 </section>
             </div>

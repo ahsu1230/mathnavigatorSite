@@ -16,7 +16,7 @@
         &.title
             color: $colorPrimary
 
-    & p
+    & p.description
         max-width: $spacing64x
         margin: 0 auto
         text-align: center
@@ -76,12 +76,20 @@
             flex-direction: row
             justify-content: center
 
+            @media screen and (max-width: $containerWidthPxMonitor)
+                flex-direction: column
+                justify-content: start
+                align-items: center 
+
         .role-card
             margin: $spacing3x $spacing2x
             padding: $spacing2x
             border-radius: 8px
             box-shadow: 0px 4px 8px 0 #{$colorGrayDark}33
             background-color: $colorWhite
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                margin: $spacing2x 0
 
         .container
             display: flex
@@ -95,7 +103,10 @@
 
         img
             width: $spacing16x
-            margin: $spacing1x 0
+            margin: $spacing1x
+
+    section.carousel
+        margin-top: $spacing12x
 
     section#last
         margin-top: $spacing12x
