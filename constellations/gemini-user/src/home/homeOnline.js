@@ -1,7 +1,8 @@
 "use strict";
 require("./homeOnline.sass");
 import React from "react";
-import srcZoomClassroom from "../../assets/zoom_classroom.jpg";
+const srcZoomClassroom =
+    "http://d2dwqi4dzedhxu.cloudfront.net/images/zoom_classroom.jpg";
 
 export default class HomeSectionOnline extends React.Component {
     render() {
