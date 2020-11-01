@@ -64,7 +64,7 @@ export class SessionPage extends React.Component {
                 startsAt: session.startsAt.toJSON(),
                 endsAt: session.endsAt.toJSON(),
                 canceled: false,
-                notes: "",
+                notes: session.notes,
             });
         });
 
@@ -113,7 +113,7 @@ export class SessionPage extends React.Component {
                 return (
                     <RowCardBasic
                         key={index}
-                        title={startsAt.format("l")}
+                        title={startsAt.format("dddd, MMMM Do YYYY (l)")}
                         editUrl={
                             "/sessions/" +
                             session.classId +
@@ -169,7 +169,7 @@ function generateFields(session) {
     const endTime = moment(session.endsAt).format("h:mm a");
     let status;
     if (session.canceled) {
-        status = "Canceled";
+        status = "No Class";
     } else if (moment().isBefore(session.startsAt)) {
         status = "Scheduled";
     } else if (moment().isBetween(session.startsAt, session.endsAt)) {

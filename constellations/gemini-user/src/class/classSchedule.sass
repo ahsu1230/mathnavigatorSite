@@ -1,8 +1,10 @@
 @import "../utils/_constants.sass"
 
 #class-session
+    margin-top: $spacing8x
 
     h3
+        font-size: $fontSize1
         font-weight: $fontWeightMed
         color: $colorGrayText
 
@@ -23,9 +25,7 @@
     .canceled span
         color: $colorRed
 
-    .canceled-past span
-        color: $colorGrayTextFaded
-
+    .canceled-past span,
     .past span
         color: $colorGrayTextFaded
 
@@ -43,8 +43,8 @@
     .time-column
         flex: 4 1 0
 
-    .canceled
-        flex: $spacing10x 0 0
+    .notes
+        flex: 4 0 0
 
 #class-questions
     margin-top: $spacing8x

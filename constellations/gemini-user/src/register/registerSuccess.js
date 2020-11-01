@@ -2,9 +2,10 @@
 require("./registerSuccess.sass");
 import React from "react";
 import { Link } from "react-router-dom";
+import RegisterPayment from "./registerPayment.js";
 import srcStar from "../../assets/star_white.svg";
 
-export default class RegisterPage extends React.Component {
+export default class RegisterSuccessPage extends React.Component {
     render() {
         const wasClass = this.props.registered == "class";
 
@@ -48,7 +49,9 @@ export default class RegisterPage extends React.Component {
             );
             linkRestart = (
                 <Link to="/register" className="link-register">
-                    Register for another Ask-for-Help session
+                    Register for another
+                    <br />
+                    Ask-for-Help session
                 </Link>
             );
         }
@@ -62,7 +65,7 @@ export default class RegisterPage extends React.Component {
                     <h1>Success! We have received your request!</h1>
                 </div>
                 {instructions}
-                {/* For class, payment information... */}
+                {wasClass && <RegisterPayment />}
                 <div>
                     {linkRestart}
                     <Link to="/" className="link-home">

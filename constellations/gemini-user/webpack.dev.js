@@ -8,6 +8,7 @@ module.exports = merge(common, {
         host: "localhost",
         port: 9000,
         contentBase: "./",
+        historyApiFallback: true,
     },
     plugins: [
         new webpack.DefinePlugin({

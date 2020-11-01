@@ -150,7 +150,7 @@ export class SessionEditPage extends React.Component {
                             timeConfig={{
                                 from: "8:00 AM",
                                 to: "9:00 PM",
-                                step: 15,
+                                step: 5,
                                 unit: "minutes",
                             }}
                         />
@@ -169,7 +169,7 @@ export class SessionEditPage extends React.Component {
                             timeConfig={{
                                 from: "8:00 AM",
                                 to: "11:00 PM",
-                                step: 15,
+                                step: 5,
                                 unit: "minutes",
                             }}
                         />
@@ -177,7 +177,7 @@ export class SessionEditPage extends React.Component {
                 </div>
 
                 <div id="cancel-toggle" className="item">
-                    <h4>Canceled</h4>
+                    <h4>Check if no class</h4>
                     <input
                         type="checkbox"
                         checked={!!this.state.canceled}

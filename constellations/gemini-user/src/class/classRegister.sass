@@ -5,19 +5,22 @@
     flex-direction: column
     justify-content: start
     align-items: center
-    padding: $spacing4x
+    padding: $spacing4x $spacing6x
     box-sizing: border-box
     border-bottom: 1px solid $colorGrayLight
     border-radius: 16px
-    background: rgba($colorTurquoiseLight, 0.3)
+    background-color: $colorPrimary
+    color: $colorWhite
 
     @media screen and (max-width: $containerWidthPxMonitor)
         flex-direction: column
         justify-content: start
         width: 100%
+        max-width: $spacing48x
         margin: $spacing4x 0
 
     p
+        width: $spacing32x
         margin: $spacing2x 0
         text-align: center
 
@@ -25,31 +28,24 @@
             margin: $spacing1x 0
 
     .full
+        width: $spacing32x
+        padding: $spacing1x
+        margin-bottom: 4px
+        border-radius: 8px
         text-align: center
-        color: $colorRed
+        font-weight: $fontWeightNormal
+        background-color: $colorRed
+        color: $colorWhite
         pointer-events: none
-
-        button
-            background-color: $colorGrayText
-            color: $colorBlack
-            border: 1px solid $colorGrayText
 
     button
         width: $spacing16x
         border-radius: 8px
-        border: 1px solid $colorTurquoiseLight
-        background-color: $colorTurquoiseLight
+        background-color: $colorOrange
         color: $colorWhite
 
         @media screen and (max-width: $containerWidthPxTablet)
             width: 100%
-            border: 1px solid $colorTurquoiseLight
-            background-color: transparent
-            color: $colorTurquoiseLight
-
-            &:hover
-                background-color: $colorTurquoiseLight
-                color: $colorWhite
 
     a
         @media screen and (max-width: $containerWidthPxTablet)

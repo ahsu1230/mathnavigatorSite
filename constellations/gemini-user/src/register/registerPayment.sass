@@ -1,0 +1,59 @@
+@import "../utils/_constants.sass"
+
+#view-register-success #payment
+
+    h3
+        margin: 0 0 $spacing2x
+        line-height: $lineHeight1
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize1
+        color: $colorBlack
+
+    .container
+        display: flex
+        flex-direction: row
+        margin-bottom: $spacing3x
+
+        .img-container
+            width: $spacing8x
+            margin-right: $spacing4x
+            box-sizing: border-box
+            border-radius: 8px
+            background-color: $colorWhite
+            overflow: hidden
+
+        &.paypal .img-container
+            padding: 4px
+
+        &.cash .img-container
+            width: $spacing8x
+            height: 60px
+            padding: 8px
+            background-color: $colorPrimaryLight
+
+        img
+            width: 100%
+
+        h4
+            margin: 0
+            color: $colorGrayText
+        p
+            margin: 0
+            line-height: $lineHeight0
+            font-size: $fontSize0
+            color: $colorBlack
+
+        u
+            font-weight: $fontWeightMed
+            color: $colorPrimary
+
+@media screen and (max-width: $containerWidthPxTablet)
+    #view-register-success #payment
+        .container
+            flex-direction: column
+            align-items: center
+            margin-bottom: $spacing4x
+
+            .img-container
+                margin-right: 0px
+                margin-bottom: $spacing1x

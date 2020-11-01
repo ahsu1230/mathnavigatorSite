@@ -10,7 +10,7 @@ const defaultBarStyle = {
     height: "4px",
     width: "0px",
     transition: `width 1200ms cubic-bezier(0.4, 0.6, 0.9, 0.1)`,
-    backgroundColor: "#056571",
+    backgroundColor: "#0797aa",
 };
 
 const transitionBarStyles = {

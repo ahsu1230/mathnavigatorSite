@@ -29,12 +29,12 @@
                 width: $spacing24x
                 margin-bottom: $spacing4x
                 border-radius: 8px
-                border: 1px solid $colorTurquoise
+                border: 1px solid $colorPrimary
                 background-color: $colorWhite
-                color: $colorTurquoise
+                color: $colorPrimary
 
                 &.active
-                    background-color: $colorTurquoise
+                    background-color: $colorPrimary
                     color: $colorWhite
 
     .submit-bar
@@ -47,6 +47,7 @@
         button.submit
             width: 100%
             border-radius: 8px
+            background-color: $colorPrimaryAccent
 
 #view-register #form-container
     display: flex
@@ -78,15 +79,15 @@
 
         &.active
             .step-wrapper
-                background-color: $colorTurquoiseLight
+                background-color: $colorPrimaryLight
             h2
-                color: $colorTurquoiseLight
+                color: $colorPrimaryLight
 
         .step-wrapper
             width: 28px
             height: 28px
-            padding-top: 5px
-            padding-left: 2px
+            padding-top: 4px
+            padding-left: 1px
             margin-right: $spacing1x
             border-radius: 50%
             box-sizing: border-box
@@ -111,13 +112,13 @@
     select
         margin-top: $spacing1x
         padding: 4px 8px
-        border: 1px solid $colorTurquoiseLight
+        border: 1px solid $colorPrimaryAccent
         border-radius: 4px
 
         &:hover,
         &:active,
         &:focus
-            box-shadow: 0 0 0 2px $colorTurquoiseLight inset
+            box-shadow: 0 0 0 2px $colorPrimaryAccent inset
             outline: none
 
     .selection
@@ -125,7 +126,7 @@
         padding: $spacing2x
         box-sizing: border-box
         border-radius: 8px
-        background-color: rgba($colorTurquoiseDark, 0.2)
+        background-color: rgba($colorPrimaryDark, 0.3)
 
 #view-register #form-container section.class,
 #view-register #form-container section.afh
@@ -138,8 +139,8 @@
     h4
         line-height: $lineHeight1
         font-size: $fontSize1
-        font-weight: $fontWeightBold
-        color: $colorGrayText
+        font-weight: $fontWeightMed
+        color: $colorBlack
 
     p
         margin: $spacing1x 0

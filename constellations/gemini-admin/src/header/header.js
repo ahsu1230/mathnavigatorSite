@@ -74,9 +74,8 @@ export class HeaderSection extends React.Component {
                 <div id="header-left">
                     <HeaderDropdown id={"site"} title={"Site"} />
                     <HeaderDropdown id={"accounts"} title={"Accounts"} />
-                    <HeaderLink title={"Help"} url={"/help"} />
                     <HeaderDropdown id={"emails"} title={"Emails"} />
-                    <span className="header-section">Sign Out</span>
+                    <HeaderLink title={"Help"} url={"/help"} />
                 </div>
             </div>
         );

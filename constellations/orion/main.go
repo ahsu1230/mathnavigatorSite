@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -22,13 +21,12 @@ func main() {
 	fmt.Println("Orion service starting...")
 
 	// Parse flags
-	var production bool
-	flag.BoolVar(&production, "production", false, "Production mode")
-	flag.Parse()
+	appEnv := os.Getenv("APP_ENV")
+	isProduction := appEnv == "production"
 
 	// Setup Logging
 	fmt.Println("Setting up Logger...")
-	if production {
+	if isProduction {
 		err := logger.SetupProd()
 		if err != nil {
 			fmt.Printf("Logger failed to setup! %v", err)
@@ -64,10 +62,16 @@ func main() {
 
 	// App Router
 	logger.Message("Setting up Router...")
+	if isProduction {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	engine := gin.Default()
 
 	logger.Message("Setting up Middlewares...")
 	corsOriginEnvVar := os.Getenv("CORS_ORIGIN")
+	logger.Info("CorsOriginPolicy", logger.Fields{
+		"origin": corsOriginEnvVar,
+	})
 	corsOrigins := []string{corsOriginEnvVar}
 	configCors := middlewares.CreateCorsConfig(corsOrigins)
 	engine.Use(cors.New(configCors))
