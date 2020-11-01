@@ -132,6 +132,7 @@ export class SessionEditPage extends React.Component {
                                 dateFocused: focused,
                             })
                         }
+                        isOutsideRange={() => false}
                         showDefaultInputIcon
                     />
                 </div>
