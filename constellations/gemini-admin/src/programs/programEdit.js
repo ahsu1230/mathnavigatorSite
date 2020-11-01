@@ -24,7 +24,7 @@ export class ProgramEditPage extends React.Component {
     componentDidMount = () => {
         const programId = this.props.programId;
         API.get("api/subjects").then((res) => {
-            const subjects = res.data;
+            const subjects = res.data || [];
             this.setState({
                 allSubjects: subjects,
                 subject: subjects[0],
