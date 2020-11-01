@@ -3,6 +3,7 @@ require("./afh.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import API from "../utils/api.js";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import moment from "moment";
 import srcPoint from "../../assets/point_right_light_blue.svg";
 import srcNotes from "../../assets/lightbulb_white.svg";
@@ -33,6 +34,8 @@ export class AFHPage extends React.Component {
     };
 
     componentDidMount() {
+        trackAnalytics("afh");
+
         // TODO: Query for all subjects and initialize currentSubject
         // to whichever tab/section contains valid AFHs.
         API.get("api/askforhelp/all").then((res) => {

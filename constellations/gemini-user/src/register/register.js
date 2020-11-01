@@ -4,6 +4,7 @@ import React from "react";
 import axios from "axios";
 import API from "../utils/api.js";
 import { keyBy } from "lodash";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import { parseQueryParams } from "../utils/urlUtils.js";
 import {
     generateEmailMessageForClass,
@@ -54,6 +55,24 @@ export default class RegisterPage extends React.Component {
     };
 
     componentDidMount = () => {
+        let queries = parseQueryParams(this.props.history.location.search);
+
+        let selectedFromQuery = false;
+        let selectedAfhId;
+        let selectedClassId;
+        let choice = CHOICE_NONE;
+        if (queries["afhId"]) {
+            selectedAfhId = queries["afhId"] || null;
+            choice = CHOICE_AFH;
+            selectedFromQuery = true;
+        }
+        if (queries["classId"]) {
+            selectedClassId = queries["classId"] || null;
+            choice = CHOICE_CLASS;
+            selectedFromQuery = true;
+        }
+
+        trackAnalytics("register", { choice: choice });
         this.setState({ location: this.props.history.location });
 
         const allApiCalls = [
@@ -73,25 +92,6 @@ export default class RegisterPage extends React.Component {
                     const allPrograms = responses[2].data;
                     const allSemesters = responses[3].data;
                     const allLocations = responses[4].data;
-
-                    let queries = parseQueryParams(
-                        this.props.history.location.search
-                    );
-
-                    let selectedFromQuery = false;
-                    let selectedAfhId;
-                    let selectedClassId;
-                    let choice = CHOICE_NONE;
-                    if (queries["afhId"]) {
-                        selectedAfhId = queries["afhId"] || null;
-                        choice = CHOICE_AFH;
-                        selectedFromQuery = true;
-                    }
-                    if (queries["classId"]) {
-                        selectedClassId = queries["classId"] || null;
-                        choice = CHOICE_CLASS;
-                        selectedFromQuery = true;
-                    }
 
                     this.setState({
                         choice: choice,
@@ -121,7 +121,15 @@ export default class RegisterPage extends React.Component {
         });
     };
 
+    changeChoice = (newChoice) => {
+        trackAnalytics("register", { choice: newChoice });
+        this.setState({
+            choice: newChoice,
+        });
+    };
+
     invokeEmail = () => {
+        trackAnalytics("register-submit", { choice: this.state.choice });
         const studentInfo = {
             firstName: this.state.studentFirstName,
             lastName: this.state.studentLastName,
@@ -264,9 +272,7 @@ export default class RegisterPage extends React.Component {
                                         ? " active"
                                         : "")
                                 }
-                                onClick={() =>
-                                    this.setState({ choice: CHOICE_CLASS })
-                                }>
+                                onClick={() => this.changeChoice(CHOICE_CLASS)}>
                                 Enroll into a class
                             </button>
                             <button
@@ -276,9 +282,7 @@ export default class RegisterPage extends React.Component {
                                         ? " active"
                                         : "")
                                 }
-                                onClick={() =>
-                                    this.setState({ choice: CHOICE_AFH })
-                                }>
+                                onClick={() => this.changeChoice(CHOICE_AFH)}>
                                 Ask For Help
                             </button>
                         </div>

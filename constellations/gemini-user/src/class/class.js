@@ -6,6 +6,7 @@ import axios from "axios";
 import { isEmpty } from "lodash";
 import API from "../utils/api.js";
 import { getFullTitle } from "../utils/classUtils.js";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 
 import { ClassBreadcrumbs } from "./classBreadcrumbs.js";
 import { ClassInfo } from "./classInfo.js";
@@ -27,7 +28,9 @@ export class ClassPage extends React.Component {
     };
 
     componentDidMount = () => {
-        this.fetchData(this.props.classId);
+        const classId = this.props.classId;
+        trackAnalytics("class", { key: classId });
+        this.fetchData(classId);
     };
 
     fetchData = (classId) => {

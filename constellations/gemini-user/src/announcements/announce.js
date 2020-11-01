@@ -2,6 +2,7 @@
 require("./announce.sass");
 import React from "react";
 import API from "../utils/api.js";
+import { trackAnalytics } from "../utils/analyticsUtils.js";
 import { keys, sortBy, groupBy } from "lodash";
 import moment from "moment";
 import srcPin from "../../assets/pin_green.svg";
@@ -12,7 +13,7 @@ export class AnnouncePage extends React.Component {
         announcementList: [],
     };
     componentDidMount() {
-        console.log("api attempt");
+        trackAnalytics("announcements");
         API.get("api/announcements/all").then((res) => {
             const list = res.data;
             const pinnedAnnouncement = list.find((a) => a.onHomePage);
