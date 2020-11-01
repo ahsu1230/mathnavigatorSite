@@ -39,13 +39,14 @@ func SetupProd() error {
 	log.SetLevel(log.DebugLevel)
 
 	// Log to local file
-	file, err := os.OpenFile("service.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
-	if err != nil {
-		fmt.Printf("error opening file: %v", err)
-		return err
-	}
-	log.SetOutput(file)
-	log.Println("Service log re-opened")
+	// file, err := os.OpenFile("service.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	// if err != nil {
+	// 	fmt.Printf("error opening file: %v", err)
+	// 	return err
+	// }
+	// log.SetOutput(file)
+	// log.Println("Service log re-opened")
+	log.SetOutput(os.Stderr)
 	return nil
 }
 
