@@ -48,7 +48,7 @@ services:
         redis_password: redis_password
     container_name: orion
     ports:
-      - "8001:8001" # host port 8001 links to container port 8080
+      - "8001:8001" # host port 8001 links to container port 8001
     depends_on:
       - "db-mysql"
     links:
@@ -57,14 +57,6 @@ services:
     environment:
       WAIT_HOSTS: db-mysql:3306
 
-  # Can optionally build gemini-user prod site
-  # gemini-user-prod:
-  #   build:
-  #     context: ./gemini-user
-  #   container_name: gemini-user-prod
-  #   ports:
-  #     - "80:80"
-
   aquila:
     build: 
       context: ./aquila
@@ -72,7 +64,7 @@ services:
         app_env: "develop"
     container_name: aquila
     ports:
-      - "8002:8080" # host port 8002 links to container port 8080
+      - "8002:8002" # host port 8002 links to container port 8002
     depends_on:
       - "db-mysql"
       - "orion"

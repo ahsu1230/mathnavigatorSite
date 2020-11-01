@@ -26,5 +26,5 @@ RUN chmod +x /wait
 # Run the command by default when the container starts.
 ENTRYPOINT /wait && /go/bin/aquila
 
-# Document that the container service listens on port 8080.
-EXPOSE 8080
+# Document that the container service listens on port 8002
+EXPOSE 8002
