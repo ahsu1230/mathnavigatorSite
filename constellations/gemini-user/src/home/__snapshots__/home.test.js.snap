@@ -76,7 +76,7 @@ exports[`test snapshot 1`] = `
             className="img-container"
           >
             <img
-              src="test-file-stub"
+              src="http://d2dwqi4dzedhxu.cloudfront.net/images/cb_sat.jpg"
             />
           </div>
           <h3>
@@ -101,7 +101,7 @@ exports[`test snapshot 1`] = `
             className="img-container"
           >
             <img
-              src="test-file-stub"
+              src="http://d2dwqi4dzedhxu.cloudfront.net/images/ap_calc.jpg"
             />
           </div>
           <h3>
@@ -126,7 +126,7 @@ exports[`test snapshot 1`] = `
             className="img-container"
           >
             <img
-              src="test-file-stub"
+              src="http://d2dwqi4dzedhxu.cloudfront.net/images/amc.jpg"
             />
           </div>
           <h3>
@@ -229,7 +229,7 @@ exports[`test snapshot 1`] = `
         className="content"
       >
         <img
-          src="test-file-stub"
+          src="http://d2dwqi4dzedhxu.cloudfront.net/images/zoom_classroom.jpg"
         />
         <p>
           With the impact of Covid-19 and the community mandate to practice safe social distancing, all Math Navigator courses have been moved online!

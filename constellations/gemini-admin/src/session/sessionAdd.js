@@ -122,6 +122,7 @@ export class SessionAdd extends React.Component {
                                             dateFocused: focused,
                                         })
                                     }
+                                    isOutsideRange={() => false}
                                     showDefaultInputIcon
                                 />
                             </div>
