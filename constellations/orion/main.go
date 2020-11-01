@@ -63,10 +63,10 @@ func main() {
 
 	// App Router
 	logger.Message("Setting up Router...")
-	engine := gin.Default()
 	if isProduction {
-		engine.SetMode(gin.ReleaseMode)
+		gin.SetMode(gin.ReleaseMode)
 	}
+	engine := gin.Default()
 
 	logger.Message("Setting up Middlewares...")
 	corsOriginEnvVar := os.Getenv("CORS_ORIGIN")
