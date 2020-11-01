@@ -36,7 +36,7 @@ func SetupDev() {
 func SetupProd() error {
 	log.New()
 	log.SetFormatter(&log.JSONFormatter{})
-	log.SetLevel(log.InfoLevel)
+	log.SetLevel(log.DebugLevel)
 
 	// Log to local file
 	file, err := os.OpenFile("service.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
