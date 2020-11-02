@@ -13,18 +13,18 @@ export class ClassRegister extends React.Component {
         const fullState = classObj.fullState;
         const isFull = classObj.fullState == FULL_STATE_VALUE;
 
-        let url = "/";
+        let url = "/register?classId=" + classObj.classId;
         let message = "";
 
         if (fullState == ALMOST_FULL_STATE_VALUE) {
             message =
                 "This class is almost full! Enroll now to reserve your spot.";
         } else if (fullState == FULL_STATE_VALUE) {
+            url = "/"; // Disable link!
             message =
                 "Unfortunately, this class is full. Please try registering for a different class.";
             // TODO: show other available classes in same program/semester (if any)
         } else {
-            url = "/register?classId=" + classObj.classId;
             message =
                 "If you are interested in this course, please click on Enroll.";
         }
