@@ -20,7 +20,7 @@ export class ClassRegister extends React.Component {
             message =
                 "This class is almost full! Enroll now to reserve your spot.";
         } else if (fullState == FULL_STATE_VALUE) {
-            url = "/";  // Disable link!
+            url = "/"; // Disable link!
             message =
                 "Unfortunately, this class is full. Please try registering for a different class.";
             // TODO: show other available classes in same program/semester (if any)
