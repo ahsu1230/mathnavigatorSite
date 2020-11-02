@@ -1,83 +1,169 @@
 @import "../utils/_constants.sass"
 
 #view-achieve 
-    width: $containerWidthPct
-    max-width: $containerWidthPxLaptop
-    margin: 0 auto
     padding-bottom: $spacing24x
 
-    h1
-        margin: $spacing12x 0 $spacing6x
-        text-align: center
-        font-family: $fontFamilyRockwell
-    
-    h2
-        margin-bottom: $spacing12x
-        text-align: center
-        line-height: $lineHeight2
-        font-family: $fontFamilyRoboto
-        font-size: $fontSize2
-        font-weight: $fontWeightNormal
+    #banner-container
+        position: relative
+        width: 100%
+        height: $spacing48x
 
-    h3
-        line-height: $lineHeight1
-        font-family: $fontFamilyRoboto
-        font-size: $fontSize1
-        font-weight: $fontWeightMed
+        #banner-bg-img
+            width: 100%
+            height: 100%
+            background: url('http://d2dwqi4dzedhxu.cloudfront.net/images/banner_mapmeet.jpg')
+            background-size: cover
+            background-position: center
+            background-repeat: no-repeat
+            filter: blur(2px)
+            -webkit-filter: blur(2px)
 
-    section
-        display: flex
-        flex-direction: row
-        justify-content: space-between
-        align-items: start
-        margin-bottom: $spacing6x
+        #banner-bg-overlay
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: $colorBlack
+            opacity: 0.7
 
-        @media screen and (max-width: $containerWidthPxMonitor)
-            flex-direction: column
-            justify-content: start
-            align-items: center
-            margin-bottom: $spacing4x
+        #banner-content
+            position: absolute
+            top: 45%
+            left: 50%
+            transform: translate(-50%, -50%)
+            width: $containerWidthPxLaptop
+            color: $colorWhite
+            text-align: center
 
-        &.first img
-            width: 360px
-            border-radius: 8px
+            h1
+                margin-bottom: $spacing2x
 
-        &.second
-            flex-direction: row-reverse
+    .content
+        position: relative
+        width: $containerWidthPct
+        max-width: $containerWidthPxLaptop
+        margin: $spacing4x auto $spacing16x
+        padding-bottom: $spacing4x
+
+        .timeline
+            position: absolute
+            top: 4px
+            left: $spacing4x
+            border-left: 2px solid $colorPrimary
+            height: calc(100% - 8px)
+            z-index: -1
 
             @media screen and (max-width: $containerWidthPxMonitor)
-                flex-direction: column
+                left: $spacing3x
 
-            .action-box
-                padding: $spacing4x $spacing6x $spacing8x
-                border-radius: 8px
-                background-color: $colorPrimary
-                color: $colorWhite
+        .group
+            padding-bottom: $spacing4x
 
-                &:hover
-                    filter: brightness(1.1)
+        .year-container
+            display: flex
+            justify-content: center
+            align-items: center
+            width: $spacing8x
+            height: $spacing8x
+            border-radius: 50%
+            text-align: center
+            background-color: $colorPrimary
+            font-size: $fontSize1
+            color: $colorWhite
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                width: $spacing6x
+                height: $spacing6x
+                font-size: $fontSize0
+
+        .items
+            margin: $spacing2x 0
+
+            .item
+                display: flex
+                justify-content: start
+                align-items: start
+                margin: $spacing4x 0
+                margin-left: 29px
 
                 @media screen and (max-width: $containerWidthPxMonitor)
-                    margin-bottom: $spacing4x
+                    margin-left: 21px
 
-                button
-                    display: block
-                    margin: $spacing4x auto 0
-                    border-radius: 8px
-                    box-sizing: border-box
-                    background-color: $colorOrange
-                    color: $colorWhite
+            .dot
+                position: relative
+                top: 6px
+                width: $spacing1x
+                height: $spacing1x
+                margin-right: $spacing4x
+                border-radius: 50%
+                background-color: $colorPrimary
 
-                a:hover
-                    text-decoration: none
+                @media screen and (max-width: $containerWidthPxMonitor)
+                    margin-right: $spacing2x
+
+            p
+                width: calc(100% - #{$spacing10x})
+                max-width: $spacing64x
+                margin: 0
+                line-height: $lineHeight1
+                font-size: $fontSize0
+
+        .last-item
+            position: absolute
+            bottom: 0px
+            left: 25px
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                left: 17px
+
+            .last-dot
+                width: $spacing2x
+                height: $spacing2x
+                border-radius: 50%
+                background-color: $colorPrimaryLight
+
+            .action
+                display: flex
+                flex-direction: row
+                justify-content: start
+                align-items: center
+                position: absolute
+                top: 0
+                left: calc(100% + #{$spacing4x})
+                transform: translateY(-50%)
+                padding: $spacing2x
+                border-radius: 8px
+                background-color: $colorPrimaryAccent
+                color: $colorWhite
+
+                @media screen and (max-width: $containerWidthPxMonitor)
+                    left: calc(100% + #{$spacing2x})
+
+                &:before
+                    position: absolute
+                    top: calc(50% - 2px)
+                    left: -12px
+                    content: ''
+                    width: 0px
+                    height: 0px
+                    border-top: 10px solid transparent
+                    border-bottom: 10px solid transparent
+                    border-right: 12px solid $colorPrimaryAccent
 
                 p
-                    text-align: center
+                    width: $spacing28x
+                    margin: 0
 
+                button
+                    border-radius: 8px
+                    background-color: $colorOrange
+    
     .link-bar
         display: block
         width: 100%
-        margin: $spacing12x 0
+        max-width: $containerWidthPxLaptop
+        margin: $spacing12x auto
         padding: $spacing4x
         border-radius: 8px
         box-sizing: border-box
@@ -91,70 +177,4 @@
 
         @media screen and (max-width: $containerWidthPxMonitor)
             margin: $spacing6x 0
-    
-    .achieve-card
-        width: 360px
-
-        @media screen and (max-width: $containerWidthPxMonitor)
-            margin: $spacing4x 0
-            text-align: center
-
-        ul
-            margin-top: $spacing2x  
-        li
-            margin-bottom: $spacing2x
-
-            @media screen and (max-width: $containerWidthPxMonitor)
-                margin-bottom: $spacing4x
-                padding-bottom: $spacing4x
-                border-bottom: 1px solid $colorGrayLight
-
-                &:first-child
-                    padding-top: $spacing4x
-                    border-top: 1px solid $colorGrayLight
-                
-
-        p
-            display: inline-block
-            margin: 0
-            width: calc(100% - 6px - 16px)
-            vertical-align: top
-
-        .bullet
-            display: inline-block
-            width: 6px
-            height: 6px
-            margin-right: $spacing1_5x
-            border-radius: 100%
-            background-color: $colorGrayLight
-
-            @media screen and (max-width: $containerWidthPxMonitor)
-                display: none
-
-    .grouped-cards
-
-        h3
-            margin-bottom: $spacing4x
-
-            @media screen and (max-width: $containerWidthPxMonitor)
-                text-align: center
-
-        .item-container
-            display: flex
-            flex-direction: row wrap
-            flex-wrap: wrap
-            justify-content: space-between
-
-            @media screen and (max-width: $containerWidthPxMonitor)
-                flex-direction: column
-                flex-wrap: no-wrap
-                justify-content: start
-                align-items: center
-
-        .card
-            width: 280px
-            padding: $spacing2x $spacing4x
-            margin-bottom: $spacing4x
-            border-radius: 8px
-            color: $colorWhite
-            background-color: $colorPrimary  
+            border-radius: 0
