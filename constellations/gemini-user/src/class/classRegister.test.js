@@ -19,14 +19,16 @@ describe("Class Register", () => {
     });
 
     test("renders fullState", () => {
-        expect(component.find("h4.full").exists()).toBe(false);
+        classObj.fullState = 0;
+        component.setProps({ classObj: classObj });
+        expect(component.find("h4").text()).toContain("please click on Enroll");
 
         classObj.fullState = 1;
         component.setProps({ classObj: classObj });
-        expect(component.find("h4.full").text()).toContain("almost full");
+        expect(component.find("h4").text()).toContain("almost full");
 
         classObj.fullState = 2;
         component.setProps({ classObj: classObj });
-        expect(component.find("h4.full").text()).toContain("class is full");
+        expect(component.find("h4").text()).toContain("class is full");
     });
 });
