@@ -1,7 +1,6 @@
 @import "../utils/_constants.sass"
 
-#view-achieve 
-    padding-bottom: $spacing24x
+#view-achieve
 
     #banner-container
         position: relative
@@ -43,14 +42,14 @@
         position: relative
         width: $containerWidthPct
         max-width: $containerWidthPxLaptop
-        margin: $spacing4x auto $spacing16x
+        margin: $spacing4x auto $spacing24x
         padding-bottom: $spacing4x
 
         .timeline
             position: absolute
             top: 4px
             left: $spacing4x
-            border-left: 2px solid $colorPrimary
+            border-left: 2px solid $colorPrimaryLight
             height: calc(100% - 8px)
             z-index: -1
 
@@ -68,7 +67,7 @@
             height: $spacing8x
             border-radius: 50%
             text-align: center
-            background-color: $colorPrimary
+            background-color: $colorPrimaryLight
             font-size: $fontSize1
             color: $colorWhite
 
@@ -97,7 +96,7 @@
                 height: $spacing1x
                 margin-right: $spacing4x
                 border-radius: 50%
-                background-color: $colorPrimary
+                background-color: $colorPrimaryLight
 
                 @media screen and (max-width: $containerWidthPxMonitor)
                     margin-right: $spacing2x
@@ -121,13 +120,9 @@
                 width: $spacing2x
                 height: $spacing2x
                 border-radius: 50%
-                background-color: $colorPrimaryLight
+                background-color: $colorPrimaryAccent
 
-            .action
-                display: flex
-                flex-direction: row
-                justify-content: start
-                align-items: center
+            .message-container
                 position: absolute
                 top: 0
                 left: calc(100% + #{$spacing4x})
@@ -144,37 +139,31 @@
                     position: absolute
                     top: calc(50% - 2px)
                     left: -12px
-                    content: ''
                     width: 0px
                     height: 0px
                     border-top: 10px solid transparent
                     border-bottom: 10px solid transparent
                     border-right: 12px solid $colorPrimaryAccent
+                    content: ''
 
                 p
-                    width: $spacing28x
+                    width: $spacing40x
                     margin: 0
-
-                button
-                    border-radius: 8px
-                    background-color: $colorOrange
     
-    .link-bar
+    .actions
         display: block
         width: 100%
-        max-width: $containerWidthPxLaptop
-        margin: $spacing12x auto
-        padding: $spacing4x
-        border-radius: 8px
-        box-sizing: border-box
+        height: $spacing24x
+        padding: $spacing8x 0
         text-align: center
-        line-height: $lineHeight1
-        background: rgba($colorPrimaryDark, 0.3)
-        color: $colorPrimaryDark
+        color: $colorWhite
+        background-color: $colorPrimary
+        
+        p
+            font-size: $fontSize1
+            font-weight: $fontWeightMed
 
-        &:active, &:visited
-            color: $colorPrimaryDark
-
-        @media screen and (max-width: $containerWidthPxMonitor)
-            margin: $spacing6x 0
-            border-radius: 0
+        button
+            margin: 0 $spacing2x
+            border-radius: 8px
+            background-color: $colorOrange

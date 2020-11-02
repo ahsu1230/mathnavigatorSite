@@ -55,23 +55,30 @@ export class AchievementPage extends React.Component {
 
                     <div className="last-item">
                         <div className="last-dot"></div>
-                        <div className="action">
+                        <div className="message-container">
                             <p>
-                                Join our community today
-                                <br />
-                                and achieve success!
+                                And many more! Math Navigator has been proud to
+                                serve thousands of Montgomery County students
+                                since 2004.
                             </p>
-                            <Link to="/register">
-                                <button>Enroll</button>
-                            </Link>
                         </div>
                     </div>
                 </div>
 
-                <Link to="/programs" className="link-bar">
-                    View our <b>Program Catalog</b> to find the right program
-                    for you.
-                </Link>
+                <div className="actions">
+                    <div className=""></div>
+                    <p>
+                        Join our community today!
+                        <br />
+                        Success is just around the corner!
+                    </p>
+                    <Link to="/register">
+                        <button>Enroll Now</button>
+                    </Link>
+                    <Link to="/programs">
+                        <button>View Programs</button>
+                    </Link>
+                </div>
             </div>
         );
     }
