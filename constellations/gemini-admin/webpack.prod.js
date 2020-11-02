@@ -4,6 +4,11 @@ const common = require("./webpack.common.js");
 
 module.exports = merge(common, {
     mode: "production",
+    devServer: {
+        host: "localhost",
+        port: 9001,
+        contentBase: "./",
+    },
     plugins: [
         // Add environment variables
         new webpack.DefinePlugin({
