@@ -42,7 +42,11 @@ export const displayTimeStringOneLine = (classObj) => {
     const times = timesStr
         .split(",")
         .map((str) => str.trim())
-        .map((str) => <div className="class-times line">{str}</div>);
+        .map((str, index) => (
+            <div key={index} className="class-times line">
+                {str}
+            </div>
+        ));
     return times;
 };
 
