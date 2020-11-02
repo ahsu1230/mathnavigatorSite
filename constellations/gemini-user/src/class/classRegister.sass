@@ -19,24 +19,21 @@
         max-width: $spacing48x
         margin: $spacing4x 0
 
-    p
-        width: $spacing32x
-        margin: $spacing2x 0
-        text-align: center
+    &.full
+        background-color: $colorGrayTextFaded
 
-        @media screen and (max-width: $containerWidthPxTablet)
-            margin: $spacing1x 0
+        a
+            pointer-events: none
 
-    .full
-        width: $spacing32x
-        padding: $spacing1x
-        margin-bottom: 4px
-        border-radius: 8px
+        button
+            background-color: $colorGrayText
+            color: $colorWhite
+
+    h4
+        max-width: $spacing36x
+        margin: 0 0 $spacing2x
         text-align: center
         font-weight: $fontWeightNormal
-        background-color: $colorRed
-        color: $colorWhite
-        pointer-events: none
 
     button
         width: $spacing16x
@@ -50,5 +47,5 @@
     a
         @media screen and (max-width: $containerWidthPxTablet)
             width: 100%
-            margin-top: $spacing4x
+            margin-top: $spacing2x
             margin-bottom: $spacing2x

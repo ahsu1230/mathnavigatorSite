@@ -21,10 +21,13 @@ export class ClassSchedule extends React.Component {
                 " - " +
                 endTime.format("h:mma");
 
-            var state = "row";
-            if (moment().isAfter(endTime))
+            let state = "row";
+            let now = moment();
+            if (now.isAfter(endTime)) {
                 state += canceled ? " canceled-past" : " past";
-            else state += canceled ? " canceled" : "";
+            } else {
+                state += canceled ? " canceled" : "";
+            }
 
             return (
                 <div key={index} className={state}>

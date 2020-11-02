@@ -19,7 +19,7 @@ export class SessionEditPage extends React.Component {
     state = {
         classId: this.props.classId,
         startsAt: moment(),
-        endsAt: moment(),
+        endsAt: moment().add(2, "h"),
         canceled: false,
         notes: "",
         dateFocused: false,
@@ -43,13 +43,19 @@ export class SessionEditPage extends React.Component {
     };
 
     onDateChange = (date) => {
-        let newDate = moment(this.state.startsAt)
+        let newStart = moment(this.state.startsAt)
+            .date(date.date())
+            .month(date.month())
+            .year(date.year());
+
+        let newEnd = moment(this.state.endsAt)
             .date(date.date())
             .month(date.month())
             .year(date.year());
 
         this.setState({
-            startsAt: newDate,
+            startsAt: newStart,
+            endsAt: newEnd,
         });
     };
 
