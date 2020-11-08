@@ -16,18 +16,20 @@ describe("Home Page", () => {
             "Administrator Dashboard"
         );
 
-        expect(component.find("TabButton").at(0).prop("section")).toBe(
-            TAB_CLASSES
-        );
-        expect(component.find("TabButton").at(1).prop("section")).toBe(
-            TAB_USERS
-        );
-        expect(component.find("TabButton").at(2).prop("section")).toBe(
-            TAB_REGISTRATIONS
-        );
-        expect(component.find("TabButton").at(3).prop("section")).toBe(
-            TAB_UNPAID
-        );
-        expect(component.find("TabButton").length).toBe(4);
+        expect(component.find("Tab")).toHaveLength(4);
+        expect(component.find("TabPanel")).toHaveLength(4);
+        // expect(component.find("TabButton").at(0).prop("section")).toBe(
+        //     TAB_CLASSES
+        // );
+        // expect(component.find("TabButton").at(1).prop("section")).toBe(
+        //     TAB_USERS
+        // );
+        // expect(component.find("TabButton").at(2).prop("section")).toBe(
+        //     TAB_REGISTRATIONS
+        // );
+        // expect(component.find("TabButton").at(3).prop("section")).toBe(
+        //     TAB_UNPAID
+        // );
+        // expect(component.find("TabButton").length).toBe(4);
     });
 });

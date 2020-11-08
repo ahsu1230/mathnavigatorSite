@@ -1,14 +1,10 @@
 #!/bin/bash
 
-# Rebuild :latest from DockerHub
+# Rebuild orion:latest from DockerHub
 docker pull ahsu1230/mathnavigator-orion:latest
-docker pull ahsu1230/mathnavigator-gemini-user:latest
-
-# Stop current containers
-docker stop mathnavigator-orion; docker rm mathnavigator-orion
-docker stop mathnavigator-gemini-user; docker rm mathnavigator-gemini-user
-
-# Rerun Docker commands
+docker stop mathnavigator-orion
+docker rm mathnavigator-orion
+# Must change environment variables below!
 docker run --name mathnavigator-orion -itd -p 8001:8001 \
     -e APP_ENV=production \
     -e DB_HOST="HOST" \
@@ -21,5 +17,9 @@ docker run --name mathnavigator-orion -itd -p 8001:8001 \
     -e REDIS_PASSWORD=redis_password \
     -e CORS_ORIGIN="*" \
     ahsu1230/mathnavigator-orion
+
+# Rebuild gemini-user:latest from DockerHub
+docker pull ahsu1230/mathnavigator-gemini-user:latest
+docker stop mathnavigator-gemini-user
+docker rm mathnavigator-gemini-user
 docker run --name mathnavigator-gemini-user -p 80:80 -itd ahsu1230/mathnavigator-gemini-user
-docker ps

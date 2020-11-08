@@ -3,29 +3,13 @@ require("./homeSection.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import API from "../api.js";
 import { getFullName } from "../common/userUtils.js";
 import RowCardColumns from "../common/rowCards/rowCardColumns.js";
-import { EmptyMessage } from "./home.js";
-
-const TAB_USERS = "users";
 
 export class HomeTabSectionUsers extends React.Component {
-    state = {
-        newUsers: [],
-    };
-
-    componentDidMount() {
-        API.get("api/users/new").then((res) => {
-            const users = res.data;
-            this.setState({
-                newUsers: users,
-            });
-        });
-    }
-
     render() {
-        let newUsers = this.state.newUsers.map((row, index) => {
+        const users = this.props.users || [];
+        const list = users.map((row, index) => {
             return (
                 <li key={index}>
                     <RowCardColumns
@@ -70,18 +54,17 @@ export class HomeTabSectionUsers extends React.Component {
             <div className="section-details">
                 <div className="container-class">
                     <h3 className="section-header">New Users</h3>
-                    <button className="view-details">
+                    <div>
                         <Link to={"/users"}>View All Users</Link>
-                    </button>
+                    </div>
                 </div>
-
-                <div className="class-section">
-                    <EmptyMessage
-                        section={TAB_USERS}
-                        length={this.state.newUsers.length}
-                    />
-                    <ul>{newUsers}</ul>
-                </div>
+                {list.length > 0 ? (
+                    <div className="class-section">
+                        <ul>{list}</ul>
+                    </div>
+                ) : (
+                    <p className="empty">No new users recently.</p>
+                )}
             </div>
         );
     }
