@@ -20,21 +20,24 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
-
-import { UserPage } from "./user/user.js";
-import { UserEditPage } from "./user/userEdit.js";
-import { UserClassPage } from "./user/userClass.js";
-import { UserAFHPage } from "./user/userAFH.js";
-import { AccountPage } from "./account/account.js";
-import { AccountEditPage } from "./account/accountEdit.js";
-import { TransactionEditPage } from "./account/accountTransactionEdit.js";
-
-import { HelpPage } from "./help/help.js";
 import { AskForHelpPage } from "./askForHelp/afh.js";
 import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
-import { EmailPaymentsPage } from "./emailPayment/emailPayments.js";
-import { EmailProgramsPage } from "./emailProgram/emailPrograms.js";
+// import { UserPage } from "./user/user.js";
+// import { UserEditPage } from "./user/userEdit.js";
+// import { UserClassPage } from "./user/userClass.js";
+// import { UserAFHPage } from "./user/userAFH.js";
+import { AccountSearchPage } from "./account/accountSearch.js";
+import { AccountCreatePage } from "./account/accountCreate.js";
+import { AccountViewPage } from "./account/accountView.js";
+import { UserEditPage } from "./account/tabs/userEdit.js";
+import { UserMovePage } from "./account/tabs/userMove.js";
+import { TransactionEditPage } from "./account/tabs/transactionEdit.js";
+
+import { HelpPage } from "./help/help.js";
+
+// import { EmailPaymentsPage } from "./emailPayment/emailPayments.js";
+// import { EmailProgramsPage } from "./emailProgram/emailPrograms.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -73,30 +76,51 @@ const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
-
-const User = () => <UserPage />;
-const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
-const UserAddMatch = ({ match }) => (
-    <UserEditPage accountId={match.params.accountId} />
-);
-const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
-const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
-const Account = () => <AccountPage />;
-const AccountEdit = () => <AccountEditPage />;
-const AccountTransactionEdit = () => <TransactionEditPage />;
-const AccountTransactionEditMatch = ({ match }) => (
-    <TransactionEditPage id={match.params.id} />
-);
-
-const Help = () => <HelpPage />;
 const AFH = () => <AskForHelpPage />;
 const AFHEdit = () => <AskForHelpEditPage />;
 const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
-const EmailPayments = () => <EmailPaymentsPage />;
-const EmailPrograms = () => <EmailProgramsPage />;
+// const User = () => <UserPage />;
+// const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
+// const UserAddMatch = ({ match }) => (
+//     <UserEditPage accountId={match.params.accountId} />
+// );
+// const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
+// const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
+const AccountCreate = () => <AccountCreatePage />;
+const AccountSearch = () => <AccountSearchPage />;
+const AccountView = ({ match }) => (
+    <AccountViewPage accountId={match.params.id} />
+);
+const UserAdd = ({ match }) => (
+    <UserEditPage accountId={match.params.accountId} />
+);
+const UserEdit = ({ match }) => (
+    <UserEditPage accountId={match.params.accountId} userId={match.params.id} />
+);
+const UserMove = ({ match }) => (
+    <UserMovePage accountId={match.params.accountId} userId={match.params.id} />
+);
+const TransactionAdd = ({ match }) => (
+    <TransactionEditPage accountId={match.params.accountId} />
+);
+const TransactionEdit = ({ match }) => (
+    <TransactionEditPage
+        accountId={match.params.accountId}
+        transactionId={match.params.id}
+    />
+);
+// const AccountTransactionEdit = () => <TransactionEditPage />;
+// const AccountTransactionEditMatch = ({ match }) => (
+//     <TransactionEditPage id={match.params.id} />
+// );
+
+const Help = () => <HelpPage />;
+
+// const EmailPayments = () => <EmailPaymentsPage />;
+// const EmailPrograms = () => <EmailProgramsPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -157,7 +181,11 @@ class App extends React.Component {
                     <Route path="/semesters/add" component={SemesterEdit} />
                     <Route path="/semesters" component={Semester} />
 
-                    <Route path="/users/:id/edit" component={UserEditMatch} />
+                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
+                    <Route path="/afh/add" component={AFHEdit} />
+                    <Route path="/afh" component={AFH} />
+
+                    {/* <Route path="/users/:id/edit" component={UserEditMatch} />
                     <Route
                         path="/users/:accountId/add"
                         component={UserAddMatch}
@@ -169,26 +197,45 @@ class App extends React.Component {
                     <Route
                         path="/users/:id/afh/edit"
                         component={UserAFHMatch}
-                    />
-                    <Route path="/users" component={User} />
-                    <Route
+                    /> */}
+                    {/* <Route path="/users" component={User} /> */}
+                    {/* <Route
                         path="/accounts/transaction/:id/edit"
                         component={AccountTransactionEditMatch}
                     />
                     <Route
                         path="/accounts/transaction/add"
                         component={AccountTransactionEdit}
+                    /> */}
+                    <Route path="/accounts" component={AccountSearch} />
+
+                    <Route
+                        path="/account/:accountId/user/add"
+                        component={UserAdd}
                     />
-                    <Route path="/accounts/add" component={AccountEdit} />
-                    <Route path="/accounts" component={Account} />
+                    <Route
+                        path="/account/:accountId/user/:id/edit"
+                        component={UserEdit}
+                    />
+                    <Route
+                        path="/account/:accountId/user/:id/move"
+                        component={UserMove}
+                    />
+                    <Route
+                        path="/account/:accountId/transaction/add"
+                        component={TransactionAdd}
+                    />
+                    <Route
+                        path="/account/:accountId/transaction/:id/edit"
+                        component={TransactionEdit}
+                    />
+                    <Route path="/account/create" component={AccountCreate} />
+                    <Route path="/account/:id" component={AccountView} />
 
                     <Route path="/help" component={Help} />
-                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
-                    <Route path="/afh/add" component={AFHEdit} />
-                    <Route path="/afh" component={AFH} />
 
-                    <Route path="/emailPayments" component={EmailPayments} />
-                    <Route path="/emailPrograms" component={EmailPrograms} />
+                    {/* <Route path="/emailPayments" component={EmailPayments} /> */}
+                    {/* <Route path="/emailPrograms" component={EmailPrograms} /> */}
                 </Switch>
             </div>
         );

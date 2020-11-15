@@ -1,6 +1,6 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
-import { AccountPage } from "./account.js";
+import { AccountPage } from "../account/account.js";
 
 describe("Account Page", () => {
     const component = shallow(<AccountPage />);

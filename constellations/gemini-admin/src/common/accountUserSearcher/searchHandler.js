@@ -6,6 +6,7 @@ const API_SEARCH_ACCOUNT_BY_ID = "api/accounts/account/";
 const API_SEARCH_ACCOUNT_BY_EMAIL = "api/accounts/search";
 const API_SEARCH_USER_BY_ID = "api/users/user/";
 const API_SEARCH_USER_BY_EMAIL = "api/users/search";
+const API_SEARCH_USER_GENERIC = "api/users/search";
 const API_SEARCH_USER_BY_ACCOUNT_ID = "api/users/account/";
 
 // Given an account's primary email, search for the account
@@ -57,7 +58,10 @@ function searchUserByEmail(email, onFoundUser, onFoundAccount, onError) {
             if (users.length == 1) {
                 let user = users[0];
                 onFoundUser(user);
-                handleAccountForFoundUser(user, onFoundAccount, onError);
+
+                if (onFoundAccount) {
+                    handleAccountForFoundUser(user, onFoundAccount, onError);
+                }
             } else {
                 console.log("Too many results!");
                 onError();
@@ -79,6 +83,19 @@ function searchUserById(userId, onFoundUser, onFoundAccount, onError) {
         })
         .catch((err) => {
             console.log("Error searching user " + err);
+            onError();
+        });
+}
+
+// Given a generic query, search user
+function searchUsers(query, onFoundUsers, onError) {
+    API.post(API_SEARCH_USER_GENERIC, { query: query })
+        .then((res) => {
+            const users = res.data;
+            onFoundUsers(users);
+        })
+        .catch((err) => {
+            console.log("Error searching users " + err);
             onError();
         });
 }
@@ -113,4 +130,5 @@ export default {
     searchAccountById: searchAccountById,
     searchUserByEmail: searchUserByEmail,
     searchUserById: searchUserById,
+    searchUsers: searchUsers,
 };
