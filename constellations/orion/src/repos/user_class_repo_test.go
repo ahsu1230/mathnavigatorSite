@@ -152,7 +152,7 @@ func TestInsertUserClass(t *testing.T) {
 			"abcd",
 			2,
 			1,
-			domains.USER_CLASS_ACCEPTED,
+			domains.USER_CLASS_ENROLLED,
 		).WillReturnResult(result)
 	userClass := getUserClass()
 	_, err := repo.Insert(testUtils.Context, userClass)
@@ -182,7 +182,7 @@ func TestUpdateUserClass(t *testing.T) {
 			"abcd",
 			2,
 			1,
-			domains.USER_CLASS_ACCEPTED,
+			domains.USER_CLASS_ENROLLED,
 			1,
 		).WillReturnResult(result)
 	userClasses := domains.UserClass{
@@ -193,7 +193,7 @@ func TestUpdateUserClass(t *testing.T) {
 		ClassId:   "abcd",
 		UserId:    2,
 		AccountId: 1,
-		State:     domains.USER_CLASS_ACCEPTED,
+		State:     domains.USER_CLASS_ENROLLED,
 	}
 	err := repo.Update(testUtils.Context, 1, userClasses)
 	if err != nil {
@@ -251,7 +251,7 @@ func getUserClassRows() *sqlmock.Rows {
 		"abcd",
 		2,
 		1,
-		domains.USER_CLASS_ACCEPTED,
+		domains.USER_CLASS_ENROLLED,
 	)
 }
 
@@ -264,6 +264,6 @@ func getUserClass() domains.UserClass {
 		ClassId:   "abcd",
 		UserId:    2,
 		AccountId: 1,
-		State:     domains.USER_CLASS_ACCEPTED,
+		State:     domains.USER_CLASS_ENROLLED,
 	}
 }

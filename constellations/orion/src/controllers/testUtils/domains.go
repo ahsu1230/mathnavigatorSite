@@ -110,7 +110,7 @@ func CreateMockUser(id uint, firstName, lastName, middleName, email, phone strin
 	}
 }
 
-func CreateMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClass {
+func CreateMockUserClass(id uint, userId uint, classId string, accountId uint, state string) domains.UserClass {
 	return domains.UserClass{
 		Id:        id,
 		UserId:    userId,
