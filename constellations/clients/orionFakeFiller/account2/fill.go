@@ -106,13 +106,13 @@ func Fill(afhId1, afhId2 uint) {
 		accountId,
 		userId2,
 		"ap_calculus_2021_summer_class1",
-		0,
+		"enrolled",
 	)
 	utils.CreateUserClass(
 		accountId,
 		userId2,
 		"ap_java_2021_summer_class1",
-		0,
+		"enrolled",
 	)
 
 	// For Michael
@@ -120,7 +120,7 @@ func Fill(afhId1, afhId2 uint) {
 		accountId,
 		userId3,
 		"ap_java_2021_summer_class1",
-		0,
+		"enrolled",
 	)
 
 	// Both will attend the first two AP Java AFH sessions
