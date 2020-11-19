@@ -25,14 +25,14 @@ import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
 // import { UserPage } from "./user/user.js";
 // import { UserEditPage } from "./user/userEdit.js";
-// import { UserClassPage } from "./user/userClass.js";
-// import { UserAFHPage } from "./user/userAFH.js";
 import { AccountSearchPage } from "./account/accountSearch.js";
 import { AccountCreatePage } from "./account/accountCreate.js";
 import { AccountViewPage } from "./account/accountView.js";
 import { UserEditPage } from "./account/tabs/userEdit.js";
 import { UserMovePage } from "./account/tabs/userMove.js";
 import { TransactionEditPage } from "./account/tabs/transactionEdit.js";
+import { UserClassesPage } from "./account/userClassesPage.js";
+import { UserAFHPage } from "./account/userAfhPage.js";
 
 import { HelpPage } from "./help/help.js";
 
@@ -87,8 +87,6 @@ const AFHMatch = ({ match }) => (
 // const UserAddMatch = ({ match }) => (
 //     <UserEditPage accountId={match.params.accountId} />
 // );
-// const UserClassMatch = ({ match }) => <UserClassPage id={match.params.id} />;
-// const UserAFHMatch = ({ match }) => <UserAFHPage id={match.params.id} />;
 const AccountCreate = () => <AccountCreatePage />;
 const AccountSearch = () => <AccountSearchPage />;
 const AccountView = ({ match }) => (
@@ -112,6 +110,9 @@ const TransactionEdit = ({ match }) => (
         transactionId={match.params.id}
     />
 );
+const UserClasses = () => <UserClassesPage />;
+const UserAfhs = () => <UserAFHPage />;
+
 // const AccountTransactionEdit = () => <TransactionEditPage />;
 // const AccountTransactionEditMatch = ({ match }) => (
 //     <TransactionEditPage id={match.params.id} />
@@ -231,6 +232,8 @@ class App extends React.Component {
                     />
                     <Route path="/account/create" component={AccountCreate} />
                     <Route path="/account/:id" component={AccountView} />
+                    <Route path="/users/classes" component={UserClasses} />
+                    <Route path="/users/afhs" component={UserAfhs} />
 
                     <Route path="/help" component={Help} />
 

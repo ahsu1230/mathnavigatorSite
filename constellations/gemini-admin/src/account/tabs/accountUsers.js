@@ -26,6 +26,19 @@ export default class UserInfos extends React.Component {
                     <div>Id: {userId}</div>
                     <div>Name: {getFullName(selectedUser)}</div>
                     <div>Email: {selectedUser.email}</div>
+                    <div>
+                        IsGuardian: {selectedUser.isGuardian ? "Yes" : "No"}
+                    </div>
+                    {selectedUser.phone && (
+                        <div>Phone: {selectedUser.phone}</div>
+                    )}
+                    {selectedUser.school && (
+                        <div>School: {selectedUser.school}</div>
+                    )}
+                    {selectedUser.graduationYear && (
+                        <div>GraduationYear: {selectedUser.graduationYear}</div>
+                    )}
+                    <div>Notes: {selectedUser.notes}</div>
                     <Link to={editUserUrl}>Edit User</Link>
                 </div>
 

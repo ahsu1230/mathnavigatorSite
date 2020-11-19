@@ -39,13 +39,25 @@ const LinkMap = {
         },
     ],
     accounts: [
-        // {
-        //     title: "Search Users",
-        //     url: "/users",
-        // },
+        {
+            title: "Search Users",
+            url: "/users",
+        },
         {
             title: "Search Accounts",
             url: "/accounts",
+        },
+        {
+            title: "Users By Class",
+            url: "/users/classes",
+        },
+        {
+            title: "Users By Afh",
+            url: "/users/afhs",
+        },
+        {
+            title: "Create New Account",
+            url: "/account/create",
         },
     ],
     emails: [

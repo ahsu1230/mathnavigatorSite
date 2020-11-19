@@ -112,7 +112,7 @@ export class InputSelect extends React.Component {
                 {formatDescription}
                 <div className="inputs">
                     {select}
-                    {pass ? <img src={Checkmark} /> : <span></span>}
+                    {pass && required ? <img src={Checkmark} /> : <span></span>}
                 </div>
             </div>
         );
