@@ -23,8 +23,6 @@ import { SemesterEditPage } from "./semester/semesterEdit.js";
 import { AskForHelpPage } from "./askForHelp/afh.js";
 import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
-// import { UserPage } from "./user/user.js";
-// import { UserEditPage } from "./user/userEdit.js";
 import { AccountSearchPage } from "./account/accountSearch.js";
 import { AccountCreatePage } from "./account/accountCreate.js";
 import { AccountViewPage } from "./account/accountView.js";
@@ -82,11 +80,6 @@ const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
 
-// const User = () => <UserPage />;
-// const UserEditMatch = ({ match }) => <UserEditPage id={match.params.id} />;
-// const UserAddMatch = ({ match }) => (
-//     <UserEditPage accountId={match.params.accountId} />
-// );
 const AccountCreate = () => <AccountCreatePage />;
 const AccountSearch = () => <AccountSearchPage />;
 const AccountView = ({ match }) => (
@@ -113,11 +106,6 @@ const TransactionEdit = ({ match }) => (
 const UserClasses = () => <UserClassesPage />;
 const UserAfhs = () => <UserAFHPage />;
 
-// const AccountTransactionEdit = () => <TransactionEditPage />;
-// const AccountTransactionEditMatch = ({ match }) => (
-//     <TransactionEditPage id={match.params.id} />
-// );
-
 const Help = () => <HelpPage />;
 
 // const EmailPayments = () => <EmailPaymentsPage />;
@@ -138,108 +126,88 @@ class App extends React.Component {
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route
-                        path="/programs/:programId/edit"
-                        component={ProgramEditMatch}
-                    />
-                    <Route path="/programs/add" component={ProgramEdit} />
-                    <Route path="/programs" component={Programs} />
-                    <Route
-                        path="/classes/:classId/edit"
-                        component={ClassEditMatch}
-                    />
-                    <Route path="/classes/add" component={ClassEdit} />
-                    <Route path="/classes" component={Class} />
-                    <Route
-                        path="/sessions/:classId/:id/edit"
-                        component={SessionEditMatch}
-                    />
-                    <Route path="/sessions" component={Session} />
-                    <Route
-                        path="/announcements/:announceId/edit"
-                        component={AnnounceEditMatch}
-                    />
-                    <Route path="/announcements/add" component={AnnounceEdit} />
-                    <Route path="/announcements" component={Announce} />
-                    <Route
-                        path="/achievements/:id/edit"
-                        component={AchieveEditMatch}
-                    />
-                    <Route path="/achievements/add" component={AchieveEdit} />
-                    <Route path="/achievements" component={Achieve} />
-                    <Route
-                        path="/locations/:locationId/edit"
-                        component={LocationEditMatch}
-                    />
-                    <Route path="/locations/add" component={LocationEdit} />
-                    <Route path="/locations" component={Location} />
-                    <Route
-                        path="/semesters/:semesterId/edit"
-                        component={SemesterEditMatch}
-                    />
-                    <Route path="/semesters/add" component={SemesterEdit} />
-                    <Route path="/semesters" component={Semester} />
+                <div id="app-view">
+                    <Switch>
+                        <Route path="/" exact component={Home} />
+                        <Route
+                            path="/programs/:programId/edit"
+                            component={ProgramEditMatch}
+                        />
+                        <Route path="/programs/add" component={ProgramEdit} />
+                        <Route path="/programs" component={Programs} />
+                        <Route
+                            path="/classes/:classId/edit"
+                            component={ClassEditMatch}
+                        />
+                        <Route path="/classes/add" component={ClassEdit} />
+                        <Route path="/classes" component={Class} />
+                        <Route
+                            path="/sessions/:classId/:id/edit"
+                            component={SessionEditMatch}
+                        />
+                        <Route path="/sessions" component={Session} />
+                        <Route
+                            path="/announcements/:announceId/edit"
+                            component={AnnounceEditMatch}
+                        />
+                        <Route path="/announcements/add" component={AnnounceEdit} />
+                        <Route path="/announcements" component={Announce} />
+                        <Route
+                            path="/achievements/:id/edit"
+                            component={AchieveEditMatch}
+                        />
+                        <Route path="/achievements/add" component={AchieveEdit} />
+                        <Route path="/achievements" component={Achieve} />
+                        <Route
+                            path="/locations/:locationId/edit"
+                            component={LocationEditMatch}
+                        />
+                        <Route path="/locations/add" component={LocationEdit} />
+                        <Route path="/locations" component={Location} />
+                        <Route
+                            path="/semesters/:semesterId/edit"
+                            component={SemesterEditMatch}
+                        />
+                        <Route path="/semesters/add" component={SemesterEdit} />
+                        <Route path="/semesters" component={Semester} />
 
-                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
-                    <Route path="/afh/add" component={AFHEdit} />
-                    <Route path="/afh" component={AFH} />
+                        <Route path="/afh/:afhId/edit" component={AFHMatch} />
+                        <Route path="/afh/add" component={AFHEdit} />
+                        <Route path="/afh" component={AFH} />
 
-                    {/* <Route path="/users/:id/edit" component={UserEditMatch} />
-                    <Route
-                        path="/users/:accountId/add"
-                        component={UserAddMatch}
-                    />
-                    <Route
-                        path="/users/:id/class/edit"
-                        component={UserClassMatch}
-                    />
-                    <Route
-                        path="/users/:id/afh/edit"
-                        component={UserAFHMatch}
-                    /> */}
-                    {/* <Route path="/users" component={User} /> */}
-                    {/* <Route
-                        path="/accounts/transaction/:id/edit"
-                        component={AccountTransactionEditMatch}
-                    />
-                    <Route
-                        path="/accounts/transaction/add"
-                        component={AccountTransactionEdit}
-                    /> */}
-                    <Route path="/accounts" component={AccountSearch} />
 
-                    <Route
-                        path="/account/:accountId/user/add"
-                        component={UserAdd}
-                    />
-                    <Route
-                        path="/account/:accountId/user/:id/edit"
-                        component={UserEdit}
-                    />
-                    <Route
-                        path="/account/:accountId/user/:id/move"
-                        component={UserMove}
-                    />
-                    <Route
-                        path="/account/:accountId/transaction/add"
-                        component={TransactionAdd}
-                    />
-                    <Route
-                        path="/account/:accountId/transaction/:id/edit"
-                        component={TransactionEdit}
-                    />
-                    <Route path="/account/create" component={AccountCreate} />
-                    <Route path="/account/:id" component={AccountView} />
-                    <Route path="/users/classes" component={UserClasses} />
-                    <Route path="/users/afhs" component={UserAfhs} />
+                        <Route path="/accounts" component={AccountSearch} />
+                        <Route
+                            path="/account/:accountId/user/add"
+                            component={UserAdd}
+                        />
+                        <Route
+                            path="/account/:accountId/user/:id/edit"
+                            component={UserEdit}
+                        />
+                        <Route
+                            path="/account/:accountId/user/:id/move"
+                            component={UserMove}
+                        />
+                        <Route
+                            path="/account/:accountId/transaction/add"
+                            component={TransactionAdd}
+                        />
+                        <Route
+                            path="/account/:accountId/transaction/:id/edit"
+                            component={TransactionEdit}
+                        />
+                        <Route path="/account/create" component={AccountCreate} />
+                        <Route path="/account/:id" component={AccountView} />
+                        <Route path="/users/classes" component={UserClasses} />
+                        <Route path="/users/afhs" component={UserAfhs} />
 
-                    <Route path="/help" component={Help} />
+                        <Route path="/help" component={Help} />
 
-                    {/* <Route path="/emailPayments" component={EmailPayments} /> */}
-                    {/* <Route path="/emailPrograms" component={EmailPrograms} /> */}
-                </Switch>
+                        {/* <Route path="/emailPayments" component={EmailPayments} /> */}
+                        {/* <Route path="/emailPrograms" component={EmailPrograms} /> */}
+                    </Switch>
+                </div>
             </div>
         );
     }

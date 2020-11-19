@@ -68,7 +68,7 @@ export class UserMovePage extends React.Component {
                 <h3>Selected User & Current Account</h3>
                 <p>{user.email}</p>
 
-                <h3>Select an Account</h3>
+                <h3>Select another Account</h3>
                 {/* Search and select Account */}
 
                 <h3>Are you sure you want to move this user?</h3>
