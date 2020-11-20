@@ -8,6 +8,7 @@ import classnames from "classnames";
 import API from "../../api.js";
 import RowCardBasic from "../../common/rowCards/rowCardBasic.js";
 import RowCardColumns from "../../common/rowCards/rowCardColumns.js";
+import RowCardSlim from "../../common/rowCards/rowCardSlim.js";
 import { formatCurrency } from "../../common/displayUtils.js";
 
 export default class AccountTransactions extends React.Component {
@@ -49,34 +50,20 @@ export default class AccountTransactions extends React.Component {
                     "/transaction/" +
                     transaction.id +
                     "/edit";
+                const fields = [
+                    { value: transaction.type },
+                    {
+                        value: formatCurrency(transaction.amount),
+                        highlightFn: () => transaction.amount < 0,
+                    },
+                ];
                 return (
-                    <RowCardColumns
+                    <RowCardSlim
                         key={index}
-                        title={transaction.type}
+                        inlineTitle={moment(transaction.createdAt).format("l")}
+                        fields={fields}
+                        text={transaction.notes}
                         editUrl={editUrl}
-                        fieldsList={[
-                            [
-                                {
-                                    label: "Date",
-                                    value: moment(transaction.createdAt).format(
-                                        "l"
-                                    ),
-                                },
-                            ],
-                            [
-                                {
-                                    label: "Amount",
-                                    value: formatCurrency(transaction.amount),
-                                    highlightFn: () => transaction.amount < 0,
-                                },
-                            ],
-                        ]}
-                        texts={[
-                            {
-                                label: "",
-                                value: transaction.notes,
-                            },
-                        ]}
                     />
                 );
             }
@@ -84,15 +71,20 @@ export default class AccountTransactions extends React.Component {
         const titleClasses = classnames("", { alert: totalBalance < 0 });
         return (
             <section className="account-tab transactions">
-                <h3 className={titleClasses}>
-                    Account Balance: {formatCurrency(totalBalance)}
-                </h3>
-                {transactions}
-                <Link to={addTransactionUrl}>
-                    <button className="add-transaction">
-                        Add New Transaction
-                    </button>
-                </Link>
+                <div className="top-container">
+                    <h3 className={titleClasses}>
+                        Account Balance: {formatCurrency(totalBalance)}
+                    </h3>
+                    <div>
+                        <Link to={addTransactionUrl}>
+                            <button className="add-transaction">
+                                Add New Transaction
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+
+                <div className="transaction-list">{transactions}</div>
             </section>
         );
     }
