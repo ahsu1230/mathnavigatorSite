@@ -17,7 +17,7 @@ import Checkmark from "../../../assets/checkmark_green.svg";
  * required: Whether or not the input is required (omit if false).
  * If this input is omitted, the validators prop should not be used either.
  *
- * isTextbox: If true, the input is a large textbox, otherwise it is a single line (omit if false).
+ * isTextBox: If true, the input is a large textbox, otherwise it is a single line (omit if false).
  *
  * value: This is the value of the input, e.g. this.state.programId.
  *

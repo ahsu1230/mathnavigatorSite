@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import API from "../api.js";
 import { getFullName } from "../common/userUtils.js";
 import { InputSelect } from "../common/inputs/inputSelect.js";
+import { getAfhTitle } from "../common/displayUtils.js";
 
 export class UserAFHPage extends React.Component {
     state = {
@@ -49,8 +50,7 @@ export class UserAFHPage extends React.Component {
                 moment(afh.endsAt).format("hh:mm a");
             return {
                 value: afh.id,
-                displayName:
-                    afh.id + " " + afh.title + " (" + afh.subject + ") " + time,
+                displayName: getAfhTitle(afh),
             };
         });
         const users = this.state.usersForAfh.map((userAfh, index) => (

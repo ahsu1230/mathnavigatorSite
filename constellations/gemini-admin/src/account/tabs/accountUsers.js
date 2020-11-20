@@ -1,8 +1,9 @@
 "use strict";
 import React from "react";
+require("./accountUsers.sass");
 import { Link } from "react-router-dom";
 import UserSelector from "./userSelector.js";
-import { getFullName } from "../../common/userUtils.js";
+import { UserRowCard } from "../../common/accountUserSearcher/userRowCard.js";
 
 export default class UserInfos extends React.Component {
     render() {
@@ -14,33 +15,14 @@ export default class UserInfos extends React.Component {
         const moveUserUrl =
             "/account/" + accountId + "/user/" + userId + "/move";
         return (
-            <section>
-                <h2>Users in Account</h2>
+            <section className="account-tab account-users">
+                <h3>Select a User in this Account</h3>
                 <UserSelector
                     users={this.props.users}
                     selectedUserId={userId}
                     onChange={this.props.onSwitchUser}
                 />
-
-                <div>
-                    <div>Id: {userId}</div>
-                    <div>Name: {getFullName(selectedUser)}</div>
-                    <div>Email: {selectedUser.email}</div>
-                    <div>
-                        IsGuardian: {selectedUser.isGuardian ? "Yes" : "No"}
-                    </div>
-                    {selectedUser.phone && (
-                        <div>Phone: {selectedUser.phone}</div>
-                    )}
-                    {selectedUser.school && (
-                        <div>School: {selectedUser.school}</div>
-                    )}
-                    {selectedUser.graduationYear && (
-                        <div>GraduationYear: {selectedUser.graduationYear}</div>
-                    )}
-                    <div>Notes: {selectedUser.notes}</div>
-                    <Link to={editUserUrl}>Edit User</Link>
-                </div>
+                <UserRowCard user={selectedUser} editUrl={editUserUrl} />
 
                 <div>
                     <Link to={moveUserUrl}>

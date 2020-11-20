@@ -3,17 +3,11 @@ require("../account/accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { getFullName } from "../common/userUtils.js";
+import { formatCurrency } from "../common/displayUtils.js";
 
 export class AccountInfo extends React.Component {
     state = {
         selectedUsers: [],
-    };
-
-    formatCurrency = (amount) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount);
     };
 
     onCheckUser = (e, userId) => {
@@ -103,8 +97,7 @@ export class AccountInfo extends React.Component {
                     </div>
                     <div id="transaction-footer">
                         <span>
-                            Account Balance:{" "}
-                            <b>{this.formatCurrency(balance)}</b>
+                            Account Balance: <b>{formatCurrency(balance)}</b>
                         </span>
                     </div>
                 </section>

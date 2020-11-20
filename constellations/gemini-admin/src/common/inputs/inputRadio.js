@@ -97,7 +97,11 @@ export class InputRadio extends React.Component {
                 {formatDescription}
                 <div className="inputs radios">
                     {radios}
-                    {pass ? <img src={ImgCheckmark} /> : <span></span>}
+                    {pass && required ? (
+                        <img src={ImgCheckmark} />
+                    ) : (
+                        <span></span>
+                    )}
                 </div>
             </div>
         );

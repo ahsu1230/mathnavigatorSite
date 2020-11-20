@@ -24,6 +24,7 @@ import { AskForHelpPage } from "./askForHelp/afh.js";
 import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
 import { AccountSearchPage } from "./account/accountSearch.js";
+import { UserSearchPage } from "./account/userSearch.js";
 import { AccountCreatePage } from "./account/accountCreate.js";
 import { AccountViewPage } from "./account/accountView.js";
 import { UserEditPage } from "./account/tabs/userEdit.js";
@@ -85,6 +86,7 @@ const AccountSearch = () => <AccountSearchPage />;
 const AccountView = ({ match }) => (
     <AccountViewPage accountId={match.params.id} />
 );
+const UserSearch = () => <UserSearchPage />;
 const UserAdd = ({ match }) => (
     <UserEditPage accountId={match.params.accountId} />
 );
@@ -150,13 +152,19 @@ class App extends React.Component {
                             path="/announcements/:announceId/edit"
                             component={AnnounceEditMatch}
                         />
-                        <Route path="/announcements/add" component={AnnounceEdit} />
+                        <Route
+                            path="/announcements/add"
+                            component={AnnounceEdit}
+                        />
                         <Route path="/announcements" component={Announce} />
                         <Route
                             path="/achievements/:id/edit"
                             component={AchieveEditMatch}
                         />
-                        <Route path="/achievements/add" component={AchieveEdit} />
+                        <Route
+                            path="/achievements/add"
+                            component={AchieveEdit}
+                        />
                         <Route path="/achievements" component={Achieve} />
                         <Route
                             path="/locations/:locationId/edit"
@@ -174,7 +182,6 @@ class App extends React.Component {
                         <Route path="/afh/:afhId/edit" component={AFHMatch} />
                         <Route path="/afh/add" component={AFHEdit} />
                         <Route path="/afh" component={AFH} />
-
 
                         <Route path="/accounts" component={AccountSearch} />
                         <Route
@@ -197,10 +204,15 @@ class App extends React.Component {
                             path="/account/:accountId/transaction/:id/edit"
                             component={TransactionEdit}
                         />
-                        <Route path="/account/create" component={AccountCreate} />
+                        <Route
+                            path="/account/create"
+                            component={AccountCreate}
+                        />
                         <Route path="/account/:id" component={AccountView} />
+
                         <Route path="/users/classes" component={UserClasses} />
                         <Route path="/users/afhs" component={UserAfhs} />
+                        <Route path="/users" component={UserSearch} />
 
                         <Route path="/help" component={Help} />
 

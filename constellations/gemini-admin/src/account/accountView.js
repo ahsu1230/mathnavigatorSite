@@ -85,7 +85,8 @@ export class AccountViewPage extends React.Component {
         const userMap = this.state.userMap;
         const selectedUserId = this.state.selectedUserId;
         return (
-            <main id="view-account-edit">
+            <main id="view-account">
+                <h1>Account No. {accountId}</h1>
                 <Tabs
                     onSelect={this.onSelectTab}
                     selectedIndex={this.state.tabIndex}>

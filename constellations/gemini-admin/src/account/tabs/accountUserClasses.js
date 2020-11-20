@@ -1,4 +1,5 @@
 "use strict";
+require("./accountUserClasses.sass");
 import React from "react";
 import moment from "moment";
 import { assign, keyBy } from "lodash";
@@ -76,35 +77,19 @@ export default class UserClasses extends React.Component {
         const selectedUser = this.props.selectedUser;
         const userClasses = this.state.userClasses.map((userClass, index) => {
             return (
-                <div className="user-class" key={index}>
-                    <div>{moment(userClass.createdAt).format("l")}</div>
-                    <div>{userClass.classId}</div>
-                    <InputSelect
-                        required={false}
-                        value={userClass.state}
-                        onChangeCallback={(e) =>
-                            this.onChangeUserClassState(
-                                userClass,
-                                e.target.value
-                            )
-                        }
-                        options={this.state.userClassStates.map((state) => {
-                            return {
-                                value: state,
-                                displayName: state,
-                            };
-                        })}
-                    />
-                    <button onClick={() => this.onClickDelete(userClass)}>
-                        Delete
-                    </button>
-                </div>
+                <UserClassRow
+                    key={index}
+                    userClass={userClass}
+                    userClassStates={this.state.userClassStates}
+                    onChangeUserClassState={this.onChangeUserClassState}
+                    onDelete={this.onClickDelete}
+                />
             );
         });
 
         return (
-            <section>
-                <h2>User Class Registrations</h2>
+            <section className="account-tab user-classes">
+                <h3>User Class Registrations</h3>
                 <UserSelector
                     users={this.props.users}
                     selectedUserId={selectedUser.id}
@@ -115,15 +100,55 @@ export default class UserClasses extends React.Component {
                 {userClasses.length == 0 && (
                     <p>This user has no class registrations.</p>
                 )}
-                <RegisterUserClass user={this.props.selectedUser} />
+                <RegisterUserClass
+                    user={this.props.selectedUser}
+                    onRefreshPage={this.fetchUpdate}
+                />
                 {
                     <DeleteUserClass
                         show={this.state.showDeleteModal}
                         userClass={this.state.selectedUserClass}
                         onDismissModal={this.onDismissModal}
+                        onRefreshPage={this.fetchUpdate}
                     />
                 }
             </section>
+        );
+    }
+}
+
+class UserClassRow extends React.Component {
+    render() {
+        const userClass = this.props.userClass;
+        const userClassStates = this.props.userClassStates;
+        const onChangeUserClassState = this.props.onChangeUserClassState;
+        const onDelete = this.props.onDelete;
+        return (
+            <div className="user-class">
+                <div>
+                    <h4>{userClass.classId}</h4>
+                    <p>
+                        Registered on {moment(userClass.createdAt).format("l")}
+                    </p>
+                </div>
+
+                <InputSelect
+                    required={false}
+                    value={userClass.state}
+                    onChangeCallback={(e) =>
+                        onChangeUserClassState(userClass, e.target.value)
+                    }
+                    options={userClassStates.map((state) => {
+                        return {
+                            value: state,
+                            displayName: state,
+                        };
+                    })}
+                />
+                <button className="delete" onClick={() => onDelete(userClass)}>
+                    Delete
+                </button>
+            </div>
         );
     }
 }
@@ -132,7 +157,11 @@ class DeleteUserClass extends React.Component {
     persistDelete = () => {
         const userClassId = this.props.userClass.id;
         API.delete("api/user-classes/user-class/" + userClassId)
-            .then((res) => window.alert("User-class successfully deleted!"))
+            .then((res) => {
+                window.alert("User-class successfully deleted!");
+                this.props.onRefreshPage();
+                this.props.onDismissModal();
+            })
             .catch((err) => window.alert("Error deleting User-class " + err));
     };
 
@@ -208,20 +237,24 @@ class RegisterUserClass extends React.Component {
     };
 
     onConfirm = () => {
+        const onRefreshPage = this.props.onRefreshPage;
         const userClass = {
             userId: this.props.user.id,
             accountId: this.props.user.accountId,
             classId: this.state.selectedClassId,
-            state: 0,
+            state: "enrolled",
         };
         API.post("api/user-classes/create", userClass)
-            .then(() => window.alert("User successfully registered!"))
+            .then(() => {
+                window.alert("User successfully registered!");
+                onRefreshPage();
+            })
             .catch((err) => window.alert("Error occured " + err));
     };
 
     render() {
         return (
-            <div>
+            <div className="register-user-class">
                 <button className="toggler" onClick={this.toggleShow}>
                     Register a class for user
                 </button>
@@ -234,9 +267,21 @@ class RegisterUserClass extends React.Component {
                             hasNoDefault={true}
                             options={this.state.options}
                         />
-                        <button className="confirm" onClick={this.onConfirm}>
-                            Confirm User Registration for Class
-                        </button>
+
+                        {this.state.selectedClassId && (
+                            <div>
+                                <p>
+                                    By confirming, this user will be registered
+                                    to the selected class (
+                                    {this.state.selectedClassId}).
+                                </p>
+                                <button
+                                    className="confirm"
+                                    onClick={this.onConfirm}>
+                                    Confirm User Registration for Class
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

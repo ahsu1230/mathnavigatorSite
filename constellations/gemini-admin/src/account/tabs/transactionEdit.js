@@ -85,7 +85,7 @@ export class TransactionEditPage extends React.Component {
                 />
                 <InputText
                     label="Amount"
-                    description="Enter the amount of this transaction."
+                    description="Enter the amount of this transaction. The amount MUST be negative if the transaction type is 'charge'. Otherwise, if it is a payment, the amount should be positive."
                     value={this.state.amount}
                     onChangeCallback={(e) => this.handleChange(e, "amount")}
                     required={true}
@@ -93,7 +93,7 @@ export class TransactionEditPage extends React.Component {
                 <InputText
                     label="Notes"
                     description="Enter any additional information about this transaction."
-                    isTextbox={true}
+                    isTextBox={true}
                     value={this.state.notes}
                     onChangeCallback={(e) => this.handleChange(e, "notes")}
                 />

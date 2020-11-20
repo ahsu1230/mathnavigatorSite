@@ -1,14 +1,17 @@
 "use strict";
+require("./accountInfo.sass");
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import API from "../../api.js";
 import { getFullName } from "../../common/userUtils.js";
+import { InputRadio } from "../../common/inputs/inputRadio.js";
 
 export default class AccountInfo extends React.Component {
     state = {
         account: {},
         users: [],
+        selectedPrimaryEmail: "",
     };
 
     componentDidMount() {
@@ -16,7 +19,10 @@ export default class AccountInfo extends React.Component {
         API.get("api/accounts/account/" + accountId)
             .then((res) => {
                 const account = res.data || {};
-                this.setState({ account: account });
+                this.setState({
+                    account: account,
+                    selectedPrimaryEmail: account.primaryEmail,
+                });
             })
             .catch((err) => {
                 console.log("Error searching account " + err);
@@ -32,37 +38,57 @@ export default class AccountInfo extends React.Component {
             });
     }
 
+    onChangePrimaryContact = (e) => {
+        const newPrimaryEmail = e.target.value;
+        this.setState({
+            selectedPrimaryEmail: newPrimaryEmail,
+        });
+        const account = this.state.account;
+        account.primaryEmail = newPrimaryEmail;
+        API.post("api/accounts/account/" + account.id, account)
+            .then((res) => console.log("Primary contact updated!"))
+            .catch((err) => console.log("Error updating primary contact"));
+    };
+
     render() {
         const account = this.state.account;
-        const users = this.state.users.map((user, index) => (
-            <div key={index}>
-                <div>Id: {user.id}</div>
-                <div>{getFullName(user)}</div>
-                <div>{user.email}</div>
-                <div>{user.isGuardian ? "Guardian" : "Student"}</div>
-            </div>
-        ));
+        const options = this.state.users.map((user) => {
+            return {
+                value: user.email,
+                displayName: getFullName(user) + " (" + user.email + ")",
+            };
+        });
         const addNewUserUrl = "/account/" + account.id + "/user/add";
 
         return (
-            <section>
-                <h2>Account No. {account.id}</h2>
-                <div>Primary email: {account.primaryEmail}</div>
-                <div>Created {moment(account.createdAt).format("l")}</div>
+            <section className="account-tab account-info">
+                <h3>Primary email: {account.primaryEmail}</h3>
+                <h4>
+                    Account Created: {moment(account.createdAt).format("l")}
+                </h4>
 
-                <h2>{users.length} Users found in Account</h2>
-                {users}
-                <div>
+                <InputRadio
+                    value={this.state.selectedPrimaryEmail}
+                    onChangeCallback={this.onChangePrimaryContact}
+                    description={
+                        options.length +
+                        " Users found in Account. Select one user as the Primary Contact of this account."
+                    }
+                    options={options}
+                />
+                <div className="add-user">
                     <Link to={addNewUserUrl}>
-                        <button>Add New User to Account</button>
+                        <button className="add">Add New User to Account</button>
                     </Link>
                 </div>
 
-                <div>
+                <div className="delete-account">
                     <button>Delete Account</button>
                     <p>
                         Warning: Deleting this account will delete all user
-                        information associated with account!
+                        information associated with account! This includes all
+                        emails, phone numbers, class registrations, ask-for-help
+                        registrations and transactions.
                     </p>
                 </div>
             </section>

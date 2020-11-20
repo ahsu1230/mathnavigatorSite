@@ -63,7 +63,7 @@ export default class RowCardBasic extends React.Component {
             .map((textObj, index) => {
                 return (
                     <div className="row-text-wrapper" key={index}>
-                        <span>{textObj.label}:</span>
+                        {textObj.label && <span>{textObj.label}:</span>}
                         <p>{textObj.value}</p>
                     </div>
                 );

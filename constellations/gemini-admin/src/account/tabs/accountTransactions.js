@@ -1,13 +1,19 @@
 "use strict";
 import React from "react";
-import moment from "moment";
+require("./accountTransactions.sass");
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { sortBy } from "lodash";
+import classnames from "classnames";
 import API from "../../api.js";
-import { formatCurrency } from "../../common/userUtils.js";
+import RowCardBasic from "../../common/rowCards/rowCardBasic.js";
+import RowCardColumns from "../../common/rowCards/rowCardColumns.js";
+import { formatCurrency } from "../../common/displayUtils.js";
 
 export default class AccountTransactions extends React.Component {
     state = {
         transactions: [],
+        sortedTransactions: [],
     };
 
     componentDidMount() {
@@ -15,7 +21,13 @@ export default class AccountTransactions extends React.Component {
         API.get("api/transactions/account/" + accountId)
             .then((res) => {
                 const transactions = res.data || [];
-                this.setState({ transactions: transactions });
+                this.setState({
+                    transactions: transactions,
+                    sortedTransactions: sortBy(
+                        transactions,
+                        "createdAt"
+                    ).reverse(),
+                });
             })
             .catch((err) => {
                 console.log("Error searching account " + err);
@@ -29,30 +41,57 @@ export default class AccountTransactions extends React.Component {
             (accum, curr) => accum + curr.amount,
             0
         );
-        const transactions = this.state.transactions.map((trans, index) => {
-            const editTransactionUrl =
-                "/account/" +
-                this.props.accountId +
-                "/transaction/" +
-                trans.id +
-                "/edit";
-            return (
-                <div key={index}>
-                    <div>{moment(trans.createdAt).format("l")}</div>
-                    <div>{trans.type}</div>
-                    <div>{formatCurrency(trans.amount)}</div>
-                    <div>{trans.notes}</div>
-                    <Link to={editTransactionUrl}>Edit</Link>
-                </div>
-            );
-        });
-
+        const transactions = this.state.sortedTransactions.map(
+            (transaction, index) => {
+                const editUrl =
+                    "/account/" +
+                    this.props.accountId +
+                    "/transaction/" +
+                    transaction.id +
+                    "/edit";
+                return (
+                    <RowCardColumns
+                        key={index}
+                        title={transaction.type}
+                        editUrl={editUrl}
+                        fieldsList={[
+                            [
+                                {
+                                    label: "Date",
+                                    value: moment(transaction.createdAt).format(
+                                        "l"
+                                    ),
+                                },
+                            ],
+                            [
+                                {
+                                    label: "Amount",
+                                    value: formatCurrency(transaction.amount),
+                                    highlightFn: () => transaction.amount < 0,
+                                },
+                            ],
+                        ]}
+                        texts={[
+                            {
+                                label: "",
+                                value: transaction.notes,
+                            },
+                        ]}
+                    />
+                );
+            }
+        );
+        const titleClasses = classnames("", { alert: totalBalance < 0 });
         return (
-            <section>
-                <h2>Account Balance {formatCurrency(totalBalance)}</h2>
+            <section className="account-tab transactions">
+                <h3 className={titleClasses}>
+                    Account Balance: {formatCurrency(totalBalance)}
+                </h3>
                 {transactions}
                 <Link to={addTransactionUrl}>
-                    <button>Add New Transaction</button>
+                    <button className="add-transaction">
+                        Add New Transaction
+                    </button>
                 </Link>
             </section>
         );
