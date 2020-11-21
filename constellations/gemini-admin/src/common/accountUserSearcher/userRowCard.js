@@ -8,6 +8,7 @@ import RowCardColumns from "../rowCards/rowCardColumns.js";
 export class UserRowCard extends React.Component {
     render() {
         const user = this.props.user;
+        const editTitle = this.props.editTitle;
         const editUrl = this.props.editUrl;
         const firstColumn = [
             { label: "Id", value: user.id },
@@ -33,6 +34,7 @@ export class UserRowCard extends React.Component {
                 <RowCardColumns
                     title={getFullName(user)}
                     subtitle={user.email}
+                    editTitle={editTitle}
                     editUrl={editUrl}
                     fieldsList={[firstColumn, secondColumn]}
                     texts={texts}

@@ -44,10 +44,7 @@ export default class UserClasses extends React.Component {
                 const userClassStates = res.data;
                 this.setState({
                     userClassStates: userClassStates,
-                    userClassStateMap: keyBy(
-                        userClassStates,
-                        (state) => state + "A"
-                    ),
+                    userClassStateMap: keyBy(userClassStates, (state) => state),
                 });
             })
             .catch((err) => console.log("Could not fetch states " + err));
@@ -104,14 +101,12 @@ export default class UserClasses extends React.Component {
                     user={this.props.selectedUser}
                     onRefreshPage={this.fetchUpdate}
                 />
-                {
-                    <DeleteUserClass
-                        show={this.state.showDeleteModal}
-                        userClass={this.state.selectedUserClass}
-                        onDismissModal={this.onDismissModal}
-                        onRefreshPage={this.fetchUpdate}
-                    />
-                }
+                <DeleteUserClass
+                    show={this.state.showDeleteModal}
+                    userClass={this.state.selectedUserClass}
+                    onDismissModal={this.onDismissModal}
+                    onRefreshPage={this.fetchUpdate}
+                />
             </section>
         );
     }
@@ -173,9 +168,9 @@ class DeleteUserClass extends React.Component {
         const modalContent = (
             <YesNoModal
                 text={
-                    "Are you sure you want to disassociate user " +
+                    "Are you sure you want to remove user " +
                     userId +
-                    " and class " +
+                    " from class " +
                     classId +
                     "?"
                 }
