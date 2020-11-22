@@ -84,7 +84,8 @@ class AccountInfo extends React.Component {
             <RowCardColumns
                 title={"Account No. " + account.id}
                 subtitle={account.primaryEmail}
-                editUrl={"/accounts?accountId=" + account.id}
+                editTitle="View"
+                editUrl={"/account/" + account.id + "?view=transactions"}
                 fieldsList={[this.firstColumn(), this.secondColumn()]}
             />
         );

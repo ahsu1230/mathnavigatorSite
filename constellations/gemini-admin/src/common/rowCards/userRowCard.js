@@ -2,7 +2,7 @@
 import React from "react";
 import moment from "moment";
 import { getFullName } from "../userUtils.js";
-import RowCardColumns from "../rowCards/rowCardColumns.js";
+import RowCardColumns from "./rowCardColumns.js";
 
 /**
  * A utility component to depict a User's information.

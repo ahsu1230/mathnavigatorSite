@@ -63,6 +63,7 @@ export class UserEditPage extends React.Component {
             school: this.state.school,
             graduationYear: parseInt(this.state.graduationYear),
             notes: this.state.notes,
+            isAdminCreated: true,
         };
 
         if (this.state.isEdit) {

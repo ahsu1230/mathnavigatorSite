@@ -55,6 +55,7 @@ export class AccountCreatePage extends React.Component {
             school: this.state.school,
             graduationYear: parseInt(this.state.graduationYear),
             notes: this.state.notes,
+            isAdminCreated: true,
         };
         return API.post("api/accounts/create", {
             account: account,

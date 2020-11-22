@@ -44,12 +44,34 @@ func (ur *userRepo) SearchUsers(ctx context.Context, search string) ([]domains.U
 	results := make([]domains.User, 0)
 
 	lcSearch := strings.ToLower(search)
-	query := fmt.Sprintf("SELECT * FROM users WHERE LOWER(`first_name`) "+
-		"LIKE '%%%s%%' OR "+
-		"LOWER(`middle_name`) LIKE '%%%s%%' OR "+
-		"LOWER(`last_name`) LIKE '%%%s%%' OR "+
-		"LOWER(`email`) LIKE '%%%s%%'",
-		lcSearch, lcSearch, lcSearch, lcSearch)
+	searchTerms := strings.Split(lcSearch, " ")
+	var query string
+	if len(searchTerms) == 1 {
+		// Generic one term search
+		query = fmt.Sprintf("SELECT * FROM users WHERE "+
+			"LOWER(`first_name`) LIKE '%%%s%%' OR "+
+			"LOWER(`middle_name`) LIKE '%%%s%%' OR "+
+			"LOWER(`last_name`) LIKE '%%%s%%' OR "+
+			"LOWER(`email`) LIKE '%%%s%%'",
+			lcSearch, lcSearch, lcSearch, lcSearch)
+	} else if len(searchTerms) == 2 {
+		// Two term search most likely means (firstName, lastName) search
+		query = fmt.Sprintf(
+			"SELECT * FROM users WHERE "+
+				"(LOWER(`first_name`) LIKE '%%%s%%' AND "+
+				"LOWER(`last_name`) LIKE '%%%s%%')",
+			searchTerms[0], searchTerms[1])
+	} else {
+		// Generic multi-term search
+		regexTerm := strings.Join(searchTerms, "|")
+		query = fmt.Sprintf("SELECT * FROM users WHERE "+
+			"LOWER(`first_name`) REGEXP '%s' OR "+
+			"LOWER(`middle_name`) REGEXP '%s' OR "+
+			"LOWER(`last_name`) REGEXP '%s' OR "+
+			"LOWER(`email`) REGEXP '%s'",
+			regexTerm, regexTerm, regexTerm, regexTerm)
+	}
+	utils.LogWithContext(ctx, "userRepo.SelectUsers.Query", logger.Fields{"query": query})
 
 	stmt, err := ur.db.Prepare(query)
 	if err != nil {
