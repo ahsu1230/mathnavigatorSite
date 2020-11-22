@@ -82,7 +82,7 @@ export class AccountCreatePage extends React.Component {
 
     render() {
         return (
-            <main>
+            <main id="view-create-account">
                 <EditPageWrapper
                     isEdit={false}
                     title={"Create a new Account"}

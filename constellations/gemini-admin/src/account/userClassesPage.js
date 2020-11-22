@@ -94,6 +94,7 @@ export class UserClassesPage extends React.Component {
 
         return (
             <div id="view-user-classes">
+                <p>Use this page to see all users enrolled in each class.</p>
                 <InputSelect
                     label="Select a Class"
                     value={selectedClassId}

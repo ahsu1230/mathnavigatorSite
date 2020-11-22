@@ -10,13 +10,13 @@ export default class AccountSearcher extends React.Component {
     state = {
         account: {},
         users: [],
-        show: false,
+        searched: false, // true means we have attempted a search
+        found: false, // true means the search was a success
     };
 
     onFoundAccount = (account) => {
         this.setState({
             account: account,
-            show: true,
         });
         this.props.onFoundAccount && this.props.onFoundAccount(account);
     };
@@ -24,9 +24,24 @@ export default class AccountSearcher extends React.Component {
     onFoundUsers = (users) => {
         this.setState({
             users: users,
-            show: true,
         });
         this.props.onFoundUsers && this.props.onFoundUsers(users);
+    };
+
+    onSearchSuccess = () => {
+        this.setState({
+            searched: true,
+            found: true,
+        });
+    };
+
+    onSearchFailed = () => {
+        this.setState({
+            account: {},
+            users: [],
+            searched: true,
+            found: false,
+        });
     };
 
     render() {
@@ -36,13 +51,18 @@ export default class AccountSearcher extends React.Component {
                     type="account"
                     onFoundAccount={this.onFoundAccount}
                     onFoundUsers={this.onFoundUsers}
+                    onSearchSuccess={this.onSearchSuccess}
+                    onSearchFailed={this.onSearchFailed}
                 />
 
-                {this.state.show && (
+                {this.state.searched && this.state.found && (
                     <Content
                         account={this.state.account}
                         users={this.state.users}
                     />
+                )}
+                {this.state.searched && !this.state.found && (
+                    <p>The account you're looking for does not exist.</p>
                 )}
             </div>
         );

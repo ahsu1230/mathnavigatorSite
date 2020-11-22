@@ -67,7 +67,7 @@ export class InputSelect extends React.Component {
             ));
 
             var defaultOption = this.props.hasNoDefault ? (
-                <option disabled selected value>
+                <option disabled selected value={""}>
                     -- Select an option --
                 </option>
             ) : null;

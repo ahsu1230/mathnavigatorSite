@@ -118,8 +118,13 @@ function searchUsers(query, onFoundUsers, onSuccess, onError) {
     API.post(API_SEARCH_USER_GENERIC, { query: query })
         .then((res) => {
             const users = res.data;
-            onFoundUsers(users);
-            onSuccess();
+            if (users.length == 0) {
+                console.log("No users found!");
+                onError();
+            } else {
+                onFoundUsers(users);
+                onSuccess();
+            }
         })
         .catch((err) => {
             console.log("Error searching users " + err);

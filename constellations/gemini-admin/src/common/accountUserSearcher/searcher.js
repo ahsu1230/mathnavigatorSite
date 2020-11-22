@@ -27,8 +27,6 @@ export class Searcher extends React.Component {
     state = {
         search: "",
         searchBy: this.props.type == SEARCH_TYPE_USER_LIST ? "" : SEARCH_BY_ID,
-        searched: false,
-        found: false,
     };
 
     onFoundAccount = (account) => {
@@ -50,11 +48,15 @@ export class Searcher extends React.Component {
     };
 
     onSearchSuccess = () => {
-        this.setState({ searched: true, found: true });
+        if (this.props.onSearchSuccess) {
+            this.props.onSearchSuccess();
+        }
     };
 
     onSearchFailed = () => {
-        this.setState({ searched: true, found: false });
+        if (this.props.onSearchFailed) {
+            this.props.onSearchFailed();
+        }
     };
 
     onChangeSelection = (e) => {
@@ -166,8 +168,6 @@ export class Searcher extends React.Component {
         const searchType = this.props.type;
         const title = this.getTitle();
         const placeholder = this.getPlaceholder();
-        const searched = this.state.searched;
-        const found = this.state.found;
 
         return (
             <article className="user-account-searcher">
@@ -192,17 +192,6 @@ export class Searcher extends React.Component {
                     />
                     <button onClick={this.onClickSearch}>Search</button>
                 </section>
-
-                {searchType == SEARCH_TYPE_ACCOUNT && searched && !found && (
-                    <p>The account you're looking for does not exist.</p>
-                )}
-
-                {(searchType == SEARCH_TYPE_USER ||
-                    searchType == SEARCH_TYPE_USER_LIST) &&
-                    searched &&
-                    !found && (
-                        <p>The user you're looking for does not exist.</p>
-                    )}
             </article>
         );
     }
