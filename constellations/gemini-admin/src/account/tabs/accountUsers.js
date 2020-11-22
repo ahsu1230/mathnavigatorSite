@@ -29,6 +29,15 @@ export default class UserInfos extends React.Component {
                         Move User to a different account
                     </Link>
                 </div>
+
+                <section className="delete">
+                    <button>Delete User from account</button>
+                    <p>
+                        Warning: Deleting a user will delete all user
+                        information including contacts, classes enrollments,
+                        etc.
+                    </p>
+                </section>
             </section>
         );
     }
