@@ -89,7 +89,7 @@ describe("InputSelect", () => {
 
         let options = component.find("option");
         let defaultOption = options.at(0);
-        expect(defaultOption.prop("value")).toBe(true);
+        expect(defaultOption.prop("value")).toBe("");
         expect(defaultOption.text()).toContain("Select an option");
 
         expect(options.at(1).prop("value")).toBe("option1");

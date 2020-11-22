@@ -1,5 +1,5 @@
 "use strict";
-require("../account/accountInfo.sass");
+// require("../account/accountInfo.sass");
 import React from "react";
 import { Link } from "react-router-dom";
 import { getFullName } from "../common/userUtils.js";
