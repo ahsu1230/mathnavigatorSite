@@ -67,6 +67,6 @@ func Fill() {
 		accountId,
 		userId,
 		"ap_calculus_2021_summer_class1",
-		0,
+		"trial",
 	)
 }

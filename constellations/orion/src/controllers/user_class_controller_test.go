@@ -23,7 +23,7 @@ func TestGetUsersByClassIdSuccess(t *testing.T) {
 				1,
 				"abcd",
 				1,
-				domains.USER_CLASS_ACCEPTED,
+				domains.USER_CLASS_ENROLLED,
 			),
 			testUtils.CreateMockUserClass(
 				2,
@@ -50,7 +50,7 @@ func TestGetUsersByClassIdSuccess(t *testing.T) {
 	assert.EqualValues(t, 1, userClass[0].UserId)
 	assert.EqualValues(t, "abcd", userClass[0].ClassId)
 	assert.EqualValues(t, 1, userClass[0].AccountId)
-	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
+	assert.EqualValues(t, domains.USER_CLASS_ENROLLED, userClass[0].State)
 
 	assert.EqualValues(t, 2, userClass[1].Id)
 	assert.EqualValues(t, 2, userClass[1].UserId)
@@ -69,14 +69,14 @@ func TestGetClassesByUserIdSuccess(t *testing.T) {
 				1,
 				"abcd",
 				1,
-				domains.USER_CLASS_ACCEPTED,
+				domains.USER_CLASS_ENROLLED,
 			),
 			testUtils.CreateMockUserClass(
 				2,
 				1,
 				"abce",
 				1,
-				domains.USER_CLASS_ACCEPTED,
+				domains.USER_CLASS_ENROLLED,
 			),
 		}, nil
 	}
@@ -96,13 +96,13 @@ func TestGetClassesByUserIdSuccess(t *testing.T) {
 	assert.EqualValues(t, 1, userClass[0].UserId)
 	assert.EqualValues(t, "abcd", userClass[0].ClassId)
 	assert.EqualValues(t, 1, userClass[0].AccountId)
-	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
+	assert.EqualValues(t, domains.USER_CLASS_ENROLLED, userClass[0].State)
 
 	assert.EqualValues(t, 2, userClass[1].Id)
 	assert.EqualValues(t, 1, userClass[1].UserId)
 	assert.EqualValues(t, "abce", userClass[1].ClassId)
 	assert.EqualValues(t, 1, userClass[1].AccountId)
-	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[1].State)
+	assert.EqualValues(t, domains.USER_CLASS_ENROLLED, userClass[1].State)
 
 	assert.EqualValues(t, 2, len(userClass))
 }
@@ -114,7 +114,7 @@ func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 			1,
 			"abcd",
 			1,
-			domains.USER_CLASS_ACCEPTED,
+			domains.USER_CLASS_ENROLLED,
 		)
 		return userClass, nil
 	}
@@ -133,7 +133,7 @@ func TestGetUserClassByUserAndClassSuccess(t *testing.T) {
 	assert.EqualValues(t, 1, userClass.UserId)
 	assert.EqualValues(t, "abcd", userClass.ClassId)
 	assert.EqualValues(t, 1, userClass.AccountId)
-	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass.State)
+	assert.EqualValues(t, domains.USER_CLASS_ENROLLED, userClass.State)
 
 }
 
@@ -145,7 +145,7 @@ func TestGetUsersByNew(t *testing.T) {
 				1,
 				"abcd",
 				1,
-				domains.USER_CLASS_ACCEPTED,
+				domains.USER_CLASS_ENROLLED,
 			),
 			testUtils.CreateMockUserClass(
 				2,
@@ -172,7 +172,7 @@ func TestGetUsersByNew(t *testing.T) {
 	assert.EqualValues(t, 1, userClass[0].UserId)
 	assert.EqualValues(t, "abcd", userClass[0].ClassId)
 	assert.EqualValues(t, 1, userClass[0].AccountId)
-	assert.EqualValues(t, domains.USER_CLASS_ACCEPTED, userClass[0].State)
+	assert.EqualValues(t, domains.USER_CLASS_ENROLLED, userClass[0].State)
 
 	assert.EqualValues(t, 2, userClass[1].Id)
 	assert.EqualValues(t, 2, userClass[1].UserId)
@@ -198,7 +198,7 @@ func TestCreateUserClassSuccess(t *testing.T) {
 		1,
 		"abcd",
 		1,
-		domains.USER_CLASS_ACCEPTED,
+		domains.USER_CLASS_ENROLLED,
 	)
 	body := createBodyFromUserClass(userClass)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/create", body)
@@ -243,7 +243,7 @@ func TestUpdateUserClassSuccess(t *testing.T) {
 		1,
 		"abcd",
 		1,
-		domains.USER_CLASS_ACCEPTED,
+		domains.USER_CLASS_ENROLLED,
 	)
 	body := createBodyFromUserClass(userClass)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
@@ -286,7 +286,7 @@ func TestUpdateUserClassFailure(t *testing.T) {
 		1,
 		"abcd",
 		1,
-		domains.USER_CLASS_ACCEPTED,
+		domains.USER_CLASS_ENROLLED,
 	)
 	body := createBodyFromUserClass(userClass)
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-classes/user-class/1", body)
@@ -333,7 +333,7 @@ func TestStateValuesSuccess(t *testing.T) {
 // Helper Methods
 //
 
-func createMockUserClass(id uint, userId uint, classId string, accountId uint, state uint) domains.UserClass {
+func createMockUserClass(id uint, userId uint, classId string, accountId uint, state string) domains.UserClass {
 	return domains.UserClass{
 		Id:        id,
 		UserId:    userId,

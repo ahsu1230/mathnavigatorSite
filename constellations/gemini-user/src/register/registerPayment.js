@@ -35,7 +35,7 @@ export default class RegisterPayment extends React.Component {
                         <h4>Pay with Zelle</h4>
                         <p>
                             Please send your payment to Zelle user{" "}
-                            <u>andymathnavigator@gmail.com</u>.
+                            <u>240-938-0644</u>.
                         </p>
                     </div>
                 </div>

@@ -1,0 +1,21 @@
+@import "../../_.constants.sass"
+
+.account-searcher
+    .content
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+
+        @media screen and (max-width: $screenWidthPxMonitor)
+            flex-direction: column
+            justify-content: start
+
+        .account-info
+            margin-right: $spacing4x
+
+            p
+                margin: 0
+                line-height: $lineHeight1
+
+        .users-info
+            flex-grow: 2

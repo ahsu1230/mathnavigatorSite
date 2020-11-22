@@ -144,13 +144,13 @@ func CreateUserClass(
 	accountId uint,
 	userId uint,
 	classId string,
-	userClassState int,
+	userClassState string,
 ) (uint, error) {
 	body := strings.NewReader(fmt.Sprintf(`{
 		"userId": %d,
 		"classId": "%s",
 		"accountId": %d,
-		"state": %d
+		"state": %s
 	}`,
 		userId,
 		classId,

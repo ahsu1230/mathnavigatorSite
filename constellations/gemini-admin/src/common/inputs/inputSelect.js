@@ -67,7 +67,7 @@ export class InputSelect extends React.Component {
             ));
 
             var defaultOption = this.props.hasNoDefault ? (
-                <option disabled selected value>
+                <option disabled selected value={""}>
                     -- Select an option --
                 </option>
             ) : null;
@@ -112,7 +112,7 @@ export class InputSelect extends React.Component {
                 {formatDescription}
                 <div className="inputs">
                     {select}
-                    {pass ? <img src={Checkmark} /> : <span></span>}
+                    {pass && required ? <img src={Checkmark} /> : <span></span>}
                 </div>
             </div>
         );

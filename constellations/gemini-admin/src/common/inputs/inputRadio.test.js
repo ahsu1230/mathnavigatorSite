@@ -61,6 +61,7 @@ describe("InputRadio", () => {
 
     test("render valid value", () => {
         component.setProps({
+            required: true,
             value: "option1",
             options: [
                 { value: "option1", displayName: "Option1" },

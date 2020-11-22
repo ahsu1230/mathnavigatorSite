@@ -1,0 +1,1 @@
+ALTER TABLE user_classes MODIFY state VARCHAR(100) NOT NULL;

@@ -5,37 +5,11 @@ import API from "../api.js";
 import moment from "moment";
 import { getFullName } from "../common/userUtils.js";
 import RowCardColumns from "../common/rowCards/rowCardColumns.js";
-import { EmptyMessage } from "./home.js";
-
-const TAB_REGISTRATIONS = "registrations";
 
 export class HomeTabSectionRegistrations extends React.Component {
-    state = {
-        classReg: [],
-        afhReg: [],
-    };
-
-    componentDidMount() {
-        //pending registration for classes
-        API.get("api/user-classes/new").then((res) => {
-            const userClass = res.data;
-            this.setState({
-                classReg: userClass,
-            });
-        });
-
-        //afh registration
-        API.get("api/user-afhs/new").then((res) => {
-            const userAfh = res.data;
-            this.setState({
-                afhReg: userAfh,
-            });
-        });
-    }
-
     render() {
-        const classReg = this.state.classReg || [];
-        const afhReg = this.state.afhReg || [];
+        const classReg = this.props.newUserClasses || [];
+        const afhReg = this.props.newUserAfh || [];
         const allRegistrations = classReg.concat(afhReg);
         let registrations = allRegistrations.map((row, index) => {
             return (
@@ -53,14 +27,13 @@ export class HomeTabSectionRegistrations extends React.Component {
                             Pending Registrations
                         </h3>
                     </div>
-
-                    <div className="class-section">
-                        <EmptyMessage
-                            section={TAB_REGISTRATIONS}
-                            length={registrations.length}
-                        />
-                        <ul>{registrations}</ul>
-                    </div>
+                    {registrations.length > 0 ? (
+                        <div className="class-section">
+                            <ul>{registrations}</ul>
+                        </div>
+                    ) : (
+                        <p className="empty">No new registrations recently.</p>
+                    )}
                 </div>
             </div>
         );

@@ -9,11 +9,6 @@ import (
 	"net/http"
 )
 
-type StateValues struct {
-	Name  string `json:"name"`
-	Value uint   `json:"value"`
-}
-
 func GetUsersByClassId(c *gin.Context) {
 	utils.LogControllerMethod(c, "userClassController.GetUsersByClassId")
 	// Incoming parameters
@@ -161,12 +156,5 @@ func DeleteUserClass(c *gin.Context) {
 
 func GetStateValues(c *gin.Context) {
 	utils.LogControllerMethod(c, "userClassController.GetStateValues")
-	arr := make([]StateValues, 0)
-	// create 3 stateValues variables and push them to arr
-	stateValue1 := StateValues{"pending", domains.USER_CLASS_PENDING}
-	stateValue2 := StateValues{"accepted", domains.USER_CLASS_ACCEPTED}
-	stateValue3 := StateValues{"trial", domains.USER_CLASS_TRIAL}
-
-	arr = append(arr, stateValue1, stateValue2, stateValue3)
-	c.JSON(http.StatusOK, arr)
+	c.JSON(http.StatusOK, domains.ALL_USER_CLASS_STATES)
 }
