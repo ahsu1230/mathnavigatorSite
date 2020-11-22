@@ -23,8 +23,8 @@ import { SemesterEditPage } from "./semester/semesterEdit.js";
 import { AskForHelpPage } from "./askForHelp/afh.js";
 import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
 
-import { AccountSearchPage } from "./account/accountSearch.js";
-import { UserSearchPage } from "./account/userSearch.js";
+import { AccountSearchPage } from "./account/accountSearchPage.js";
+import { UserSearchPage } from "./account/userSearchPage.js";
 import { AccountCreatePage } from "./account/accountCreate.js";
 import { AccountViewPage } from "./account/accountView.js";
 import { UserEditPage } from "./account/tabs/userEdit.js";

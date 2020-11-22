@@ -9,7 +9,7 @@ import { InputSelect } from "../common/inputs/inputSelect.js";
 import { getFullName } from "../common/userUtils.js";
 import { Modal } from "../common/modals/modal.js";
 import YesNoModal from "../common/modals/yesnoModal.js";
-import AccountUserSearcher from "../common/accountUserSearcher/accountUserSearcher.js";
+import SingleUserSearcher from "../common/accountUserSearcher/singleUserSearcher.js";
 
 export class UserClassesPage extends React.Component {
     state = {
@@ -48,7 +48,7 @@ export class UserClassesPage extends React.Component {
     };
 
     onRefreshPage = () => {
-        this.onChangeClass(this.state.selectedClassId);
+        this.onClassChange(this.state.selectedClassId);
     };
 
     onClassChange = (nextClassId) => {
@@ -291,6 +291,7 @@ class AddUserClass extends React.Component {
         const newUserClass = {
             classId: this.props.classId,
             userId: this.state.selectedUser.id,
+            accountId: this.state.selectedUser.accountId,
             state: "enrolled",
         };
         API.post("api/user-classes/create", newUserClass)
@@ -316,15 +317,14 @@ class AddUserClass extends React.Component {
 
                 {this.state.show && (
                     <div>
-                        <AccountUserSearcher
-                            type="user"
-                            onFoundUser={this.onFoundUser}
-                        />
-                        <button
-                            className="confirm"
-                            onClick={this.onClickConfirm}>
-                            Confirm enrolling user into class
-                        </button>
+                        <SingleUserSearcher onFoundUser={this.onFoundUser} />
+                        {(this.state.selectedUser || {}).id && (
+                            <button
+                                className="confirm"
+                                onClick={this.onClickConfirm}>
+                                Confirm enrolling user into class
+                            </button>
+                        )}
                     </div>
                 )}
             </div>

@@ -40,12 +40,12 @@ const LinkMap = {
     ],
     accounts: [
         {
-            title: "Search Users",
-            url: "/users",
-        },
-        {
             title: "Search Accounts",
             url: "/accounts",
+        },
+        {
+            title: "Search Users",
+            url: "/users",
         },
         {
             title: "Users By Class",
