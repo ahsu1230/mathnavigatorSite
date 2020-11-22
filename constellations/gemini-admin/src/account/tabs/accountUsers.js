@@ -3,7 +3,7 @@ import React from "react";
 require("./accountUsers.sass");
 import { Link } from "react-router-dom";
 import UserSelector from "./userSelector.js";
-import { UserRowCard } from "../../common/accountUserSearcher/userRowCard.js";
+import { UserRowCard } from "../../common/rowCards/userRowCard.js";
 
 export default class UserInfos extends React.Component {
     render() {

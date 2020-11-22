@@ -34,7 +34,11 @@ export class TransactionEditPage extends React.Component {
             );
         }
         API.get("api/transactions/types").then((res) => {
-            this.setState({ allTypes: res.data });
+            const types = res.data;
+            this.setState({
+                allTypes: types,
+                type: types[0],
+            });
         });
     };
 
@@ -45,10 +49,14 @@ export class TransactionEditPage extends React.Component {
     };
 
     onSave = () => {
+        const amount =
+            this.state.type == "charge"
+                ? -parseInt(this.state.amount)
+                : parseInt(this.state.amount);
         const transaction = {
             accountId: parseInt(this.props.accountId),
             type: this.state.type,
-            amount: parseInt(this.state.amount),
+            amount: amount,
             notes: this.state.notes,
         };
         const transactionId = this.state.transactionId;
@@ -85,7 +93,7 @@ export class TransactionEditPage extends React.Component {
                 />
                 <InputText
                     label="Amount"
-                    description="Enter the amount of this transaction. The amount MUST be negative if the transaction type is 'charge'. Otherwise, if it is a payment, the amount should be positive."
+                    description="Enter the amount of this transaction."
                     value={this.state.amount}
                     onChangeCallback={(e) => this.handleChange(e, "amount")}
                     required={true}

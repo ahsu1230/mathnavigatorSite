@@ -2,7 +2,7 @@
 require("./userSearcher.sass");
 import React from "react";
 import { Searcher } from "./searcher.js";
-import { UserRowCard } from "./userRowCard.js";
+import { UserRowCard } from "../rowCards/userRowCard.js";
 
 export default class SingleUserSearcher extends React.Component {
     state = {

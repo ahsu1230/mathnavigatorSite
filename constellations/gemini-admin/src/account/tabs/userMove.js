@@ -1,12 +1,18 @@
 "use strict";
+require("./userMove.sass");
 import React from "react";
+import { assign, isEmpty } from "lodash";
 import API from "../../api.js";
-import EditPageWrapper from "../../common/editPages/editPageWrapper.js";
+import AccountSearcher from "../../common/accountUserSearcher/accountSearcher.js";
+import { AccountRowCard } from "../../common/rowCards/accountRowCard.js";
+import { UserRowCard } from "../../common/rowCards/userRowCard.js";
+import Checkmark from "../../../assets/checkmark_green.svg";
 
 export class UserMovePage extends React.Component {
     state = {
         user: {},
-        newAccountId: 0,
+        account: {}, // current account for user
+        newAccount: {}, // proposed new account to move user to
     };
 
     componentDidMount() {
@@ -15,79 +21,104 @@ export class UserMovePage extends React.Component {
             API.get("api/users/user/" + userId).then((res) => {
                 const user = res.data;
                 this.setState({
-                    isEdit: true,
-                    userId: user.id,
-                    accountId: user.accountId,
-                    firstName: user.firstName,
-                    middleName: user.middleName || "",
-                    lastName: user.lastName,
-                    email: user.email,
-                    phone: user.phone || "",
-                    isGuardian: user.isGuardian || false,
-                    school: user.school || "",
-                    graduationYear: parseInt(user.graduationYear) || 2020,
-                    notes: user.notes || "",
+                    user: user,
+                });
+
+                const accountId = user.accountId;
+                API.get("api/accounts/account/" + accountId).then((res) => {
+                    const account = res.data;
+                    this.setState({
+                        account: account,
+                    });
                 });
             });
         }
     }
 
-    handleChange = (event, value) => {
-        this.setState({ [value]: event.target.value });
+    onChooseNewAccount = (account) => {
+        this.setState({
+            newAccount: account,
+        });
     };
 
-    onSave = () => {
-        const user = {
-            id: this.state.userId,
-            accountId: parseInt(this.props.accountId),
-            firstName: this.state.firstName,
-            middleName: this.state.middleName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            phone: this.state.phone,
-            isGuardian: this.state.isGuardian,
-            school: this.state.school,
-            graduationYear: parseInt(this.state.graduationYear),
-            notes: this.state.notes,
-        };
-
-        if (this.state.isEdit) {
-            return API.post("api/users/user/" + this.state.userId, user);
-        } else {
-            return API.post("api/users/create", user);
-        }
-    };
-
-    renderContent = () => {
-        const currentAccountId = this.props.accountId;
-        const newAccountId = this.state.newAccountId;
-        const user = this.state.user;
-
-        return (
-            <div>
-                <h3>Selected User & Current Account</h3>
-                <p>{user.email}</p>
-
-                <h3>Select another Account</h3>
-                {/* Search and select Account */}
-
-                <h3>Are you sure you want to move this user?</h3>
-            </div>
-        );
+    onConfirmSave = () => {
+        const newAccount = this.state.newAccount;
+        const user = assign(this.state.user, { accountId: newAccount.id });
+        API.post("api/users/user/" + user.id, user)
+            .then((res) => {
+                window.alert("Successfully moved user to other account!");
+                window.location.hash =
+                    "/account/" +
+                    newAccount.id +
+                    "?view=edit-users&userId=" +
+                    user.id;
+            })
+            .catch((err) => window.alert("Error moving user: " + err));
     };
 
     render() {
-        const accountId = this.props.accountId;
+        const user = this.state.user;
+        const account = this.state.account;
+        const newAccount = this.state.newAccount;
         return (
-            <main>
-                <EditPageWrapper
-                    isEdit={false}
-                    title={"Move user to another account"}
-                    content={this.renderContent()}
-                    prevPageUrl={"/account/" + accountId + "?view=edit-users"}
-                    onSave={this.onSave}
-                    entityName={"user"}
-                />
+            <main id="view-user-move">
+                <article>
+                    <h1>Move User to another Account</h1>
+                    <p>
+                        Use this page to move a user from one account to
+                        another.
+                    </p>
+                    <section>
+                        <div className="step">
+                            <h3>Step 1) Selected User and Account</h3>
+                            {!isEmpty(user) && !isEmpty(account) && (
+                                <img src={Checkmark} />
+                            )}
+                        </div>
+                        <UserRowCard user={user} />
+                        <AccountRowCard account={account} />
+                    </section>
+
+                    <section>
+                        <div className="step">
+                            <h3>Step 2) Select another Account</h3>
+                            {!isEmpty(newAccount) &&
+                                newAccount.id != account.id && (
+                                    <img src={Checkmark} />
+                                )}
+                        </div>
+                        {!isEmpty(newAccount) && newAccount.id == account.id && (
+                            <p className="error">
+                                Both selected accounts are the same!
+                                <br />
+                                Please choose a different account!
+                            </p>
+                        )}
+                        <AccountSearcher
+                            hideUsers={true}
+                            onFoundAccount={this.onChooseNewAccount}
+                        />
+                    </section>
+
+                    {!isEmpty(user) &&
+                        !isEmpty(account) &&
+                        !isEmpty(newAccount) &&
+                        newAccount.id != account.id && (
+                            <div>
+                                <h3>
+                                    Are you sure you want to move this user?
+                                </h3>
+                                <p>
+                                    Click on the "Save" button below to confirm.
+                                </p>
+                                <button
+                                    className="confirm"
+                                    onClick={this.onConfirmSave}>
+                                    Confirm move
+                                </button>
+                            </div>
+                        )}
+                </article>
             </main>
         );
     }

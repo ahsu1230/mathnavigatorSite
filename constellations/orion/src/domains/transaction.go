@@ -11,11 +11,13 @@ const (
 	PAY_CASH   = "pay_cash"
 	PAY_CHECK  = "pay_check"
 	PAY_PAYPAL = "pay_paypal"
+	PAY_VENMO  = "pay_venmo"
+	PAY_ZELLE  = "pay_zelle"
 	REFUND     = "refund"
 	CHARGE     = "charge"
 )
 
-var ALL_TRANSACTION_TYPES = []string{PAY_PAYPAL, PAY_CASH, PAY_CHECK, CHARGE, REFUND}
+var ALL_TRANSACTION_TYPES = []string{PAY_PAYPAL, PAY_VENMO, PAY_ZELLE, PAY_CASH, PAY_CHECK, CHARGE, REFUND}
 
 type Transaction struct {
 	Id        uint       `json:"id"`

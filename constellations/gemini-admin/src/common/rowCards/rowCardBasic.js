@@ -12,6 +12,7 @@ import { isNil } from "lodash";
  *
  * - title - The main title of the card (required)
  * - subtitle - The subtitle (optional) for the card
+ * - editTitle - the display name of the "Edit" link. Can be omitted.
  * - editUrl - The link url when the user clicks on "Edit". Can be omitted.
  * - fields - A list of objects. Each object contains a "label" and a "value". Example:
  * [
@@ -83,12 +84,13 @@ export default class RowCardBasic extends React.Component {
         const rowFields = this.renderFields(fields);
         const rowTexts = this.renderTexts(texts);
         const title = this.renderTitle();
+        const editTitle = this.props.editTitle || "Edit >";
 
         return (
             <div className="row-card">
                 {this.props.editUrl && (
                     <Link className="edit-url" to={this.props.editUrl}>
-                        Edit >
+                        {editTitle}
                     </Link>
                 )}
                 {title}
