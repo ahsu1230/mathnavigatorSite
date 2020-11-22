@@ -240,10 +240,12 @@ func TestGetAllTypes(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "pay_paypal", paymentTypes[0])
-	assert.EqualValues(t, "pay_cash", paymentTypes[1])
-	assert.EqualValues(t, "pay_check", paymentTypes[2])
-	assert.EqualValues(t, "charge", paymentTypes[3])
-	assert.EqualValues(t, "refund", paymentTypes[4])
+	assert.EqualValues(t, "pay_venmo", paymentTypes[1])
+	assert.EqualValues(t, "pay_zelle", paymentTypes[2])
+	assert.EqualValues(t, "pay_cash", paymentTypes[3])
+	assert.EqualValues(t, "pay_check", paymentTypes[4])
+	assert.EqualValues(t, "charge", paymentTypes[5])
+	assert.EqualValues(t, "refund", paymentTypes[6])
 
 }
 
