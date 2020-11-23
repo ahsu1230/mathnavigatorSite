@@ -1,50 +1,19 @@
 "use strict";
 require("./homeSection.sass");
 import React from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import { getFullName } from "../common/userUtils.js";
-import RowCardColumns from "../common/rowCards/rowCardColumns.js";
+import { UserRowCard } from "../common/rowCards/userRowCard.js";
 
 export class HomeTabSectionUsers extends React.Component {
     render() {
         const users = this.props.users || [];
-        const list = users.map((row, index) => {
+        const list = users.map((user, index) => {
+            const editUrl = "/account/" + user.accountId + "?view=edit-users";
             return (
                 <li key={index}>
-                    <RowCardColumns
-                        title={getFullName(row)}
-                        editUrl={"/users/" + row.id + "/edit"}
-                        fieldsList={[
-                            [
-                                {
-                                    label: "Email",
-                                    value: row.email,
-                                },
-                                {
-                                    label: "Phone",
-                                    value: row.phone,
-                                },
-                                {
-                                    label: "Created",
-                                    value: moment(row.createdAt).fromNow(),
-                                },
-                            ],
-                            [
-                                {
-                                    label: "IsGuardian",
-                                    value: row.isGuardian ? "true" : "false",
-                                },
-                                {
-                                    label: "School",
-                                    value: row.school,
-                                },
-                                {
-                                    label: "GraduationYear",
-                                    value: row.graduationYear,
-                                },
-                            ],
-                        ]}
+                    <UserRowCard
+                        user={user}
+                        editTitle={"View/Edit User"}
+                        editUrl={editUrl}
                     />
                 </li>
             );
@@ -54,9 +23,6 @@ export class HomeTabSectionUsers extends React.Component {
             <div className="section-details">
                 <div className="container-class">
                     <h3 className="section-header">New Users</h3>
-                    <div>
-                        <Link to={"/users"}>View All Users</Link>
-                    </div>
                 </div>
                 {list.length > 0 ? (
                     <div className="class-section">
