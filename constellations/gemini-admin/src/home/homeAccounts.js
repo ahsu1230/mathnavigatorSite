@@ -1,7 +1,6 @@
 "use strict";
 require("./homeSection.sass");
 import React from "react";
-import { Link } from "react-router-dom";
 import API from "../api.js";
 import moment from "moment";
 import { getFullName } from "../common/userUtils.js";
@@ -21,7 +20,6 @@ export class HomeTabSectionAccounts extends React.Component {
             <div className="section-details">
                 <div className="container-class">
                     <h3 className="section-header">Unpaid Accounts</h3>
-                    <Link to={"/accounts"}>View All Accounts</Link>
                 </div>
 
                 {accounts.length > 0 ? (

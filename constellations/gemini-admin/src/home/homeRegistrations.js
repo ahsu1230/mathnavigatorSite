@@ -116,12 +116,19 @@ class RegistrationInfo extends React.Component {
         const userName = getFullName(this.state.user);
         const userEmail = this.state.user.email;
         const classId = row.classId;
+        const editUrl =
+            "/account/" +
+            this.state.user.accountId +
+            "?view=" +
+            (classId ? "user-classes" : "user-afh");
         return (
             <RowCardColumns
                 title={userName}
                 subtitle={
                     classId ? "Registered for class" : "Registered for AFH"
                 }
+                editTitle={"View Registration"}
+                editUrl={editUrl}
                 fieldsList={[
                     [
                         {
@@ -135,6 +142,10 @@ class RegistrationInfo extends React.Component {
                         {
                             label: "Last Updated",
                             value: moment(row.updatedAt).fromNow(),
+                        },
+                        {
+                            label: "State",
+                            value: row.state,
                         },
                     ],
                     this.createSecondColumn(row),
