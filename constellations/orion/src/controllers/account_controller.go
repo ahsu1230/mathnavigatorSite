@@ -150,3 +150,22 @@ func DeleteAccount(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func FullDeleteAccount(c *gin.Context) {
+	utils.LogControllerMethod(c, "accountController.FullDeleteAccount")
+
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
+	ctx := utils.RetrieveContext(c)
+	if err := repos.AccountRepo.FullDelete(ctx, id); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}

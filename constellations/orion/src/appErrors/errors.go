@@ -147,7 +147,6 @@ func wrapDbErrorHelper(
 	originalErr error,
 	statement string,
 	v ...interface{}) error {
-
 	if originalErr == nil {
 		return nil
 	}
@@ -158,7 +157,7 @@ func wrapDbErrorHelper(
 
 	return errors.Wrapf(
 		parentError,
-		"Error (%v) %s (%s) with args (%v)",
+		"Unrecognized db error (%v) %s (%s) with args (%v)",
 		originalErr,
 		verb,
 		statement,

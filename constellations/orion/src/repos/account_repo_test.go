@@ -199,16 +199,17 @@ func TestInsertAccountAndUser(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
+			1,
 			"John",
-			"Smith",
 			domains.NewNullString(""),
+			"Smith",
 			"john_smith@example.com",
 			"555-555-0100",
 			false,
-			1,
-			domains.NewNullString(""),
+			false,
 			domains.NewNullString("schoolone"),
 			domains.NewNullUint(2004),
+			domains.NewNullString(""),
 		).WillReturnResult(result)
 	mock.ExpectCommit()
 	account := getAccount()
@@ -233,6 +234,7 @@ func TestUpdateAccount(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^UPDATE accounts SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
@@ -241,6 +243,7 @@ func TestUpdateAccount(t *testing.T) {
 			"password2",
 			1,
 		).WillReturnResult(result)
+	mock.ExpectCommit()
 	account := domains.Account{
 		Id:           1,
 		CreatedAt:    testUtils.TimeNow,
@@ -269,11 +272,89 @@ func TestDeleteAccount(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^DELETE FROM accounts WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Delete(testUtils.Context, 1)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+func TestFullDeleteAccount(t *testing.T) {
+	db, mock, repo := initAccountTest(t)
+	defer db.Close()
+
+	// Mock expected user rows for selecting all users in account
+	accountId := uint(1)
+	userId := uint(1)
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"AccountId",
+		"FirstName",
+		"MiddleName",
+		"LastName",
+		"Email",
+		"Phone",
+		"IsAdminCreated",
+		"IsGuardian",
+		"School",
+		"GraduationYear",
+		"Notes",
+	}).AddRow(
+		userId,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		accountId,
+		"John",
+		domains.NewNullString(""),
+		"Smith",
+		"john_smith@example.com",
+		domains.NewNullString("555-555-0100"),
+		false,
+		false,
+		domains.NewNullString("schoolone"),
+		domains.NewNullUint(2004),
+		domains.NewNullString(""),
+	)
+	result := sqlmock.NewResult(1, 1)
+
+	// Mock DB statements and execute
+	mock.ExpectBegin()
+	mock.ExpectPrepare("SELECT (.+) FROM users WHERE account_id=?").
+		ExpectQuery().
+		WithArgs(accountId).
+		WillReturnRows(rows)
+	mock.ExpectPrepare("^DELETE FROM user_classes WHERE user_id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM user_afhs WHERE user_id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM users WHERE id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM accounts WHERE id=?").
+		ExpectExec().
+		WithArgs(accountId).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.FullDelete(testUtils.Context, accountId)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

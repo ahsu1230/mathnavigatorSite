@@ -253,6 +253,7 @@ type mockUserRepo struct {
 	MockInsert            func(context.Context, domains.User) (uint, error)
 	MockUpdate            func(context.Context, uint, domains.User) error
 	MockDelete            func(context.Context, uint) error
+	MockFullDelete        func(context.Context, uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
@@ -282,6 +283,9 @@ func (userRepo *mockUserRepo) Update(ctx context.Context, id uint, user domains.
 }
 func (userRepo *mockUserRepo) Delete(ctx context.Context, id uint) error {
 	return userRepo.MockDelete(ctx, id)
+}
+func (userRepo *mockUserRepo) FullDelete(ctx context.Context, id uint) error {
+	return userRepo.MockFullDelete(ctx, id)
 }
 
 // Fake userRepo that implements UserRepo interface
@@ -329,6 +333,7 @@ type mockAccountRepo struct {
 	MockInsertWithUser            func(context.Context, domains.Account, domains.User) (uint, error)
 	MockUpdate                    func(context.Context, uint, domains.Account) error
 	MockDelete                    func(context.Context, uint) error
+	MockFullDelete                func(context.Context, uint) error
 }
 
 // Implement methods of UserRepo interface with mocked implementations
@@ -351,6 +356,9 @@ func (accountRepo *mockAccountRepo) Update(ctx context.Context, id uint, account
 }
 func (accountRepo *mockAccountRepo) Delete(ctx context.Context, id uint) error {
 	return accountRepo.MockDelete(ctx, id)
+}
+func (accountRepo *mockAccountRepo) FullDelete(ctx context.Context, id uint) error {
+	return accountRepo.MockFullDelete(ctx, id)
 }
 
 type mockAskForHelpRepo struct {

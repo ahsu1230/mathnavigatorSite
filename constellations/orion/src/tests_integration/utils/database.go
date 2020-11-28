@@ -72,18 +72,21 @@ func ResetTable(t *testing.T, tableName string) error {
 }
 
 func ResetAllTables(t *testing.T) {
+	ResetTable(t, domains.TABLE_USER_CLASSES)
+	ResetTable(t, domains.TABLE_USER_AFHS)
+	ResetTable(t, domains.TABLE_USERS)
+	ResetTable(t, domains.TABLE_TRANSACTIONS)
+	ResetTable(t, domains.TABLE_ACCOUNTS)
+
+	ResetTable(t, domains.TABLE_ACHIEVEMENTS)
+	ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
+
 	ResetTable(t, domains.TABLE_SESSIONS)
 	ResetTable(t, domains.TABLE_CLASSES)
+	ResetTable(t, domains.TABLE_ASKFORHELP)
 	ResetTable(t, domains.TABLE_PROGRAMS)
 	ResetTable(t, domains.TABLE_SEMESTERS)
 	ResetTable(t, domains.TABLE_LOCATIONS)
-	ResetTable(t, domains.TABLE_ACHIEVEMENTS)
-	ResetTable(t, domains.TABLE_USERS)
-	ResetTable(t, domains.TABLE_ACCOUNTS)
-	ResetTable(t, domains.TABLE_ASKFORHELP)
-	ResetTable(t, domains.TABLE_USER_CLASSES)
-	ResetTable(t, domains.TABLE_USER_AFHS)
-	ResetTable(t, domains.TABLE_TRANSACTIONS)
 }
 
 func CloseDb() {

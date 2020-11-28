@@ -232,10 +232,12 @@ func TestInsertUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^INSERT INTO user_afhs").
 		ExpectExec().
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 3, 2, 1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	userAfh := domains.UserAfh{
 		AfhId:     3,
 		UserId:    2,
@@ -259,10 +261,12 @@ func TestUpdateUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^UPDATE user_afhs SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(4, 3, 2, sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	userAfh := domains.UserAfh{
 		Id:        1,
 		AfhId:     4,
@@ -287,10 +291,12 @@ func TestDeleteUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^DELETE FROM user_afhs WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

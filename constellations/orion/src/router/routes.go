@@ -92,10 +92,11 @@ func (h *Handler) SetupApiEndpoints() {
 	{
 		apiAccounts.GET("/account/:id", controllers.GetAccountById)
 		apiAccounts.GET("/unpaid", controllers.GetNegativeBalanceAccounts)
+		apiAccounts.POST("/search", controllers.SearchAccount)
 		apiAccounts.POST("/create", controllers.CreateAccountAndUser)
 		apiAccounts.POST("/account/:id", controllers.UpdateAccount)
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
-		apiAccounts.POST("/search", controllers.SearchAccount)
+		apiAccounts.DELETE("/full/account/:id", controllers.FullDeleteAccount)
 	}
 	apiTransaction := h.Engine.Group("api/transactions")
 	{
@@ -115,6 +116,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.POST("/create", controllers.CreateUser)
 		apiUsers.POST("/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
+		apiUsers.DELETE("/full/user/:id", controllers.FullDeleteUser)
 	}
 	apiUserClasses := h.Engine.Group("api/user-classes")
 	{
