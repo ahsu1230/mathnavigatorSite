@@ -54,7 +54,7 @@ func TestSelectPublishedClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	rows := getClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NOT NULL").
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE (.+) published_at IS NOT NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
 	got, err := repo.SelectAll(testUtils.Context, true)
@@ -81,7 +81,7 @@ func TestSelectAllUnpublishedClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	rows := getClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NULL").
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE (.+) published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
 	got, err := repo.SelectAllUnpublished(testUtils.Context)
@@ -339,6 +339,27 @@ func TestDeleteClass(t *testing.T) {
 		WithArgs("program1_2020_spring_final_review").
 		WillReturnResult(result)
 	err := repo.Delete(testUtils.Context, "program1_2020_spring_final_review")
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+func TestArchiveClass(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^UPDATE classes SET deleted_at=(.+) WHERE class_id=(.+)").
+		ExpectExec().
+		WithArgs(testUtils.MockAnyTime{}, "program1_2020_spring_final_review").
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, "program1_2020_spring_final_review")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

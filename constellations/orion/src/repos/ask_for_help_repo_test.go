@@ -171,6 +171,27 @@ func TestDeleteAFH(t *testing.T) {
 	}
 }
 
+func TestArchiveAFH(t *testing.T) {
+	db, mock, repo := initAFHTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^UPDATE ask_for_help SET deleted_at=(.+) WHERE id=(.+)").
+		ExpectExec().
+		WithArgs(testUtils.MockAnyTime{}, 1).
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, 1)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
 // Helper Methods
 func getAFHRows() *sqlmock.Rows {
 	start := testUtils.TimeNow

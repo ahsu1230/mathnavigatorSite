@@ -36,6 +36,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiClasses.POST("/publish", controllers.PublishClasses)
 		apiClasses.POST("/class/:classId", controllers.UpdateClass)
 		apiClasses.DELETE("/class/:classId", controllers.DeleteClass)
+		apiClasses.DELETE("/archive/:classId", controllers.ArchiveClass)
 	}
 	apiLocations := h.Engine.Group("api/locations")
 	{
@@ -70,6 +71,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSemesters.POST("/create", controllers.CreateSemester)
 		apiSemesters.POST("/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/semester/:semesterId", controllers.DeleteSemester)
+		apiSemesters.DELETE("/archive/:semesterId", controllers.ArchiveSemester)
 	}
 	apiSessions := h.Engine.Group("api/sessions")
 	{
@@ -86,6 +88,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
+		apiAFH.DELETE("/archive/:id", controllers.ArchiveAFH)
 	}
 
 	apiAccounts := h.Engine.Group("api/accounts")

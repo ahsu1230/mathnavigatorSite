@@ -121,6 +121,28 @@ func TestDeleteAFH(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 }
 
+// Test: Create 1 AFH, Archive it, GetById()
+func TestArchiveAFH(t *testing.T) {
+	createLocations(t)
+
+	start1 := time.Now().UTC()
+	end1 := start1.Add(time.Hour * 1)
+
+	// Create
+	utils.SendCreateAskForHelp(t, true, start1, end1, "AP Calculus Help", domains.SUBJECT_MATH, "wchs", "test note")
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/askforhelp/archive/1", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/askforhelp/afh/1", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
+	utils.ResetTable(t, domains.TABLE_LOCATIONS)
+}
+
 // Helper methods
 func createLocations(t *testing.T) {
 	utils.SendCreateLocationWCHS(t)

@@ -111,3 +111,19 @@ func TestDeleteSemester(t *testing.T) {
 
 	utils.ResetTable(t, domains.TABLE_SEMESTERS)
 }
+
+// Test: Create 1 Semester, Archive it, GetBySemesterId()
+func TestArchiveSemester(t *testing.T) {
+	// Create
+	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/archive/2020_spring", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
+}

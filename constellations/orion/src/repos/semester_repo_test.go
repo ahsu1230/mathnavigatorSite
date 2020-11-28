@@ -157,6 +157,27 @@ func TestDeleteSemester(t *testing.T) {
 	}
 }
 
+func TestArchiveSemester(t *testing.T) {
+	db, mock, repo := initSemesterTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("UPDATE semesters SET deleted_at=(.+) WHERE semester_id=(.+)").
+		ExpectExec().
+		WithArgs(testUtils.MockAnyTime{}, "2020_fall").
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, "2020_fall")
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
 //
 // Helper Methods
 //

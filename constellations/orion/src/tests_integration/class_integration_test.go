@@ -233,6 +233,26 @@ func TestDeleteClass(t *testing.T) {
 	resetClassTables(t)
 }
 
+// Test: Create 1 Class, Archive it, GetByClassId()
+func TestArchiveClass(t *testing.T) {
+	// Create
+	createAllProgramsSemestersLocations(t)
+	class1 := createClass(1)
+	body1 := utils.CreateJsonBody(&class1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/archive/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetClassTables(t)
+}
+
 // Helper methods
 func createClass(id int) domains.Class {
 	switch id {

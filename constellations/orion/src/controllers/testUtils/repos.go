@@ -63,6 +63,7 @@ type mockClassRepo struct {
 	MockUpdate                       func(context.Context, string, domains.Class) error
 	MockPublish                      func(context.Context, []string) []error
 	MockDelete                       func(context.Context, string) error
+	MockArchive                      func(context.Context, string) error
 }
 
 // Implement methods of ClassRepo interface with mocked implementations
@@ -96,6 +97,9 @@ func (classRepo *mockClassRepo) Publish(ctx context.Context, classIds []string) 
 }
 func (classRepo *mockClassRepo) Delete(ctx context.Context, classId string) error {
 	return classRepo.MockDelete(ctx, classId)
+}
+func (classRepo *mockClassRepo) Archive(ctx context.Context, classId string) error {
+	return classRepo.MockArchive(ctx, classId)
 }
 
 // Fake locationRepo that implements LocationRepo interface
@@ -163,6 +167,7 @@ type mockAchieveRepo struct {
 	MockInsert                 func(context.Context, domains.Achieve) (uint, error)
 	MockUpdate                 func(context.Context, uint, domains.Achieve) error
 	MockDelete                 func(context.Context, uint) error
+	MockArchive                func(context.Context, string) error
 }
 
 // Implement methods of AchieveRepo interface with mocked implementations
@@ -194,6 +199,7 @@ type mockSemesterRepo struct {
 	MockInsert             func(context.Context, domains.Semester) (uint, error)
 	MockUpdate             func(context.Context, string, domains.Semester) error
 	MockDelete             func(context.Context, string) error
+	MockArchive            func(context.Context, string) error
 }
 
 // Implement methods of SemesterRepo interface with mocked implementations
@@ -212,6 +218,9 @@ func (semesterRepo *mockSemesterRepo) Update(ctx context.Context, semesterId str
 }
 func (semesterRepo *mockSemesterRepo) Delete(ctx context.Context, semesterId string) error {
 	return semesterRepo.MockDelete(ctx, semesterId)
+}
+func (semesterRepo *mockSemesterRepo) Archive(ctx context.Context, semesterId string) error {
+	return semesterRepo.MockArchive(ctx, semesterId)
 }
 
 // Fake sessionRepo that implements SessionRepo interface
@@ -386,6 +395,9 @@ func (askForHelpRepo *mockAskForHelpRepo) Update(ctx context.Context, id uint, a
 	return askForHelpRepo.MockUpdate(ctx, id, askForHelp)
 }
 func (askForHelpRepo mockAskForHelpRepo) Delete(ctx context.Context, id uint) error {
+	return askForHelpRepo.MockDelete(ctx, id)
+}
+func (askForHelpRepo mockAskForHelpRepo) Archive(ctx context.Context, id uint) error {
 	return askForHelpRepo.MockDelete(ctx, id)
 }
 

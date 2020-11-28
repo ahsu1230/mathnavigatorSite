@@ -105,6 +105,21 @@ func DeleteAFH(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func ArchiveAFH(c *gin.Context) {
+	utils.LogControllerMethod(c, "askForHelpController.ArchiveAFH")
+	// Incoming Parameters
+	id, _ := utils.ParseParamId(c, "id")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.AskForHelpRepo.Archive(ctx, id)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func GetAllSubjects(c *gin.Context) {
 	utils.LogControllerMethod(c, "controller.GetAllSubjects")
 	c.JSON(http.StatusOK, domains.ALL_SUBJECTS)

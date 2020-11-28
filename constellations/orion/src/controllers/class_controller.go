@@ -179,6 +179,20 @@ func DeleteClass(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func ArchiveClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.ArchiveClass")
+	classId := c.Param("classId")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Archive(ctx, classId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func GetFullStates(c *gin.Context) {
 	utils.LogControllerMethod(c, "classController.getFullStates")
 	states := []string{
