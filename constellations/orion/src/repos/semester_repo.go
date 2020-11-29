@@ -26,6 +26,7 @@ type SemesterRepoInterface interface {
 	SelectBySemesterId(context.Context, string) (domains.Semester, error)
 	Insert(context.Context, domains.Semester) (uint, error)
 	Update(context.Context, string, domains.Semester) error
+	Archive(context.Context, string) error
 	Delete(context.Context, string) error
 }
 
@@ -38,7 +39,7 @@ func (sr *semesterRepo) SelectAll(ctx context.Context) ([]domains.Semester, erro
 	utils.LogWithContext(ctx, "semesterRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Semester, 0)
 
-	query := "SELECT * FROM semesters ORDER BY year ASC, " +
+	query := "SELECT * FROM semesters WHERE deleted_at IS NULL ORDER BY year ASC, " +
 		"CASE WHEN SEASON='winter' THEN '0' " +
 		"WHEN SEASON='spring' THEN '1' " +
 		"WHEN SEASON='summer' THEN '2' " +
@@ -76,7 +77,7 @@ func (sr *semesterRepo) SelectAll(ctx context.Context) ([]domains.Semester, erro
 
 func (sr *semesterRepo) SelectBySemesterId(ctx context.Context, semesterId string) (domains.Semester, error) {
 	utils.LogWithContext(ctx, "semesterRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
-	statement := "SELECT * FROM semesters WHERE semester_id=?"
+	statement := "SELECT * FROM semesters WHERE semester_id=? AND deleted_at IS NULL"
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
 		return domains.Semester{}, appErrors.WrapDbPrepare(err, statement)
@@ -162,6 +163,23 @@ func (sr *semesterRepo) Update(ctx context.Context, semesterId string, semester 
 		return appErrors.WrapDbExec(err, statement, semester, semesterId)
 	}
 	return appErrors.ValidateDbResult(execResult, 1, "semester was not updated")
+}
+
+func (sr *semesterRepo) Archive(ctx context.Context, semesterId string) error {
+	utils.LogWithContext(ctx, "semesterRepo.Archive", logger.Fields{"semesterId": semesterId})
+	statement := "UPDATE semesters SET deleted_at=? WHERE semester_id=?"
+	stmt, err := sr.db.Prepare(statement)
+	if err != nil {
+		return appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, semesterId)
+	if err != nil {
+		return appErrors.WrapDbExec(err, statement, semesterId)
+	}
+	return appErrors.ValidateDbResult(execResult, 1, "semester was not archived")
 }
 
 func (sr *semesterRepo) Delete(ctx context.Context, semesterId string) error {

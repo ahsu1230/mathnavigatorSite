@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Announcements and GetAll()
-func TestCreateAnnouncements(t *testing.T) {
+func TestE2ECreateAnnouncements(t *testing.T) {
 	now := time.Now().UTC()
 	early := now.Add(time.Hour * 24 * -20)
 	mid := now.Add(time.Hour * 24 * -10)
@@ -48,7 +48,7 @@ func TestCreateAnnouncements(t *testing.T) {
 }
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
-func TestUpdateAnnouncement(t *testing.T) {
+func TestE2EUpdateAnnouncement(t *testing.T) {
 	// Create 1 Announcement
 	now := time.Now().UTC()
 	utils.SendCreateAnnouncement(t, true, now, "Author 1", "Message 1", true)
@@ -82,7 +82,7 @@ func TestUpdateAnnouncement(t *testing.T) {
 }
 
 // Test: Create 1 Announcement, Delete it, GetByAnnounceId()
-func TestDeleteAnnouncement(t *testing.T) {
+func TestE2EDeleteAnnouncement(t *testing.T) {
 	// Create
 	now := time.Now().UTC()
 	utils.SendCreateAnnouncement(t, true, now, "Author 1", "Message 1", true)

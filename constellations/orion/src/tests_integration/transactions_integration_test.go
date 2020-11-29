@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 3 Transactions and GetAll()
-func TestCreateTransactions(t *testing.T) {
+func TestE2ECreateTransactions(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Create Transactions
@@ -47,7 +47,7 @@ func TestCreateTransactions(t *testing.T) {
 }
 
 // Test: Create 1 Transaction, Update, Get By ID
-func TestUpdateTransaction(t *testing.T) {
+func TestE2EUpdateTransaction(t *testing.T) {
 	// Create Account
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
@@ -87,7 +87,7 @@ func TestUpdateTransaction(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
-func TestDeleteTransaction(t *testing.T) {
+func TestE2EDeleteTransaction(t *testing.T) {
 	// Create Account
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 

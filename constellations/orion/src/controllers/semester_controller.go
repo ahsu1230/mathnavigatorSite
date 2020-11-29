@@ -114,6 +114,20 @@ func DeleteSemester(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func ArchiveSemester(c *gin.Context) {
+	utils.LogControllerMethod(c, "semesterController.ArchiveSemester")
+	semesterId := c.Param("semesterId")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Archive(ctx, semesterId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func standardizeSemester(semester domains.Semester) domains.Semester {
 	season := semester.Season
 	year := semester.Year

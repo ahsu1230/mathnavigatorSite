@@ -29,7 +29,7 @@ export const generateEmailMessageForClass = (
         "<h3>Phone: " + guardianInfo.phone + "</h3>",
         "<h3>Email: " + guardianInfo.email + "</h3>",
         "<br/>",
-        "<p>Additional Info: " + guardianInfo.additionalText + "</p>",
+        "<p>Additional Info: " + guardianInfo.notes + "</p>",
         "</body>",
         "</html>",
     ].join("\n");

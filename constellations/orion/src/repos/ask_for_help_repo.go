@@ -26,6 +26,7 @@ type AskForHelpRepoInterface interface {
 	SelectById(context.Context, uint) (domains.AskForHelp, error)
 	Insert(context.Context, domains.AskForHelp) (uint, error)
 	Update(context.Context, uint, domains.AskForHelp) error
+	Archive(context.Context, uint) error
 	Delete(context.Context, uint) error
 }
 
@@ -38,7 +39,7 @@ func (ar *askForHelpRepo) SelectAll(ctx context.Context) ([]domains.AskForHelp, 
 	utils.LogWithContext(ctx, "afhRepo.SelectAll", logger.Fields{})
 	results := make([]domains.AskForHelp, 0)
 
-	statement := "SELECT * FROM ask_for_help"
+	statement := "SELECT * FROM ask_for_help WHERE deleted_at IS NULL"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -72,7 +73,7 @@ func (ar *askForHelpRepo) SelectAll(ctx context.Context) ([]domains.AskForHelp, 
 
 func (ar *askForHelpRepo) SelectById(ctx context.Context, id uint) (domains.AskForHelp, error) {
 	utils.LogWithContext(ctx, "afhRepo.SelectById", logger.Fields{"id": id})
-	statement := "SELECT * FROM ask_for_help WHERE id=?"
+	statement := "SELECT * FROM ask_for_help WHERE id=? AND deleted_at IS NULL"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
 		return domains.AskForHelp{}, appErrors.WrapDbPrepare(err, statement)
@@ -168,6 +169,23 @@ func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domain
 		return appErrors.WrapDbExec(err, statement, askForHelp)
 	}
 	return appErrors.ValidateDbResult(result, 1, "ask for help was not updated")
+}
+
+func (ar *askForHelpRepo) Archive(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "afhRepo.Archive", logger.Fields{"id": id})
+	statement := "UPDATE ask_for_help SET deleted_at=? WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
+	if err != nil {
+		return appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, id)
+	if err != nil {
+		return appErrors.WrapDbExec(err, statement, id)
+	}
+	return appErrors.ValidateDbResult(execResult, 1, "ask for help was not archived")
 }
 
 func (ar *askForHelpRepo) Delete(ctx context.Context, id uint) error {

@@ -3,9 +3,9 @@ package repos
 import (
 	"context"
 	"database/sql"
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/dbTx"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 	"time"
 )
@@ -37,218 +37,104 @@ func (ur *userClassRepo) Initialize(ctx context.Context, db *sql.DB) {
 
 func (ur *userClassRepo) SelectByClassId(ctx context.Context, classId string) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userRepo.SelectByClassId", logger.Fields{"classId": classId})
-	results := make([]domains.UserClass, 0)
 
-	statement := "SELECT * FROM user_classes WHERE class_id=?"
-	stmt, err := ur.db.Prepare(statement)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserClassByClasId()
+	userClasses, err := tx.SelectManyUserClasses(statement, classId)
 	if err != nil {
-		return nil, appErrors.WrapDbPrepare(err, statement)
+		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullString(classId))
-	if err != nil {
-		return nil, appErrors.WrapDbQuery(err, statement, classId)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userClasses domains.UserClass
-		if errScan := rows.Scan(
-			&userClasses.Id,
-			&userClasses.CreatedAt,
-			&userClasses.UpdatedAt,
-			&userClasses.DeletedAt,
-			&userClasses.ClassId,
-			&userClasses.UserId,
-			&userClasses.AccountId,
-			&userClasses.State); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, userClasses)
-	}
-	return results, nil
+	return userClasses, nil
 }
 
 func (ur *userClassRepo) SelectByUserId(ctx context.Context, userId uint) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByUserId", logger.Fields{"userId": userId})
-	results := make([]domains.UserClass, 0)
 
-	statement := "SELECT * FROM user_classes WHERE user_id=?"
-	stmt, err := ur.db.Prepare(statement)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserClassByUserId()
+	userClasses, err := tx.SelectManyUserClasses(statement, userId)
 	if err != nil {
-		return nil, appErrors.WrapDbPrepare(err, statement)
+		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullUint(userId))
-	if err != nil {
-		return nil, appErrors.WrapDbQuery(err, statement, userId)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userClasses domains.UserClass
-		if errScan := rows.Scan(
-			&userClasses.Id,
-			&userClasses.CreatedAt,
-			&userClasses.UpdatedAt,
-			&userClasses.DeletedAt,
-			&userClasses.ClassId,
-			&userClasses.UserId,
-			&userClasses.AccountId,
-			&userClasses.State); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, userClasses)
-	}
-	return results, nil
+	return userClasses, nil
 }
 
 func (ur *userClassRepo) SelectByUserAndClass(ctx context.Context, userId uint, classId string) (domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByUserAndClass", logger.Fields{
 		"userId":  userId,
-		"classId": classId})
-	statement := "SELECT * FROM user_classes WHERE user_id=? AND class_id=?"
-	stmt, err := ur.db.Prepare(statement)
-	if err != nil {
-		err = appErrors.WrapDbPrepare(err, statement)
-		return domains.UserClass{}, err
-	}
-	defer stmt.Close()
+		"classId": classId,
+	})
 
-	var userClasses domains.UserClass
-	row := stmt.QueryRow(userId, classId)
-	if err = row.Scan(
-		&userClasses.Id,
-		&userClasses.CreatedAt,
-		&userClasses.UpdatedAt,
-		&userClasses.DeletedAt,
-		&userClasses.ClassId,
-		&userClasses.UserId,
-		&userClasses.AccountId,
-		&userClasses.State); err != nil {
-		err = appErrors.WrapDbExec(err, statement, userId, classId)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserClassByBothIds()
+	userClass, err := tx.SelectOneUserClass(statement, userId, classId)
+	if err != nil {
 		return domains.UserClass{}, err
 	}
-	return userClasses, nil
+	return userClass, nil
 }
 
 func (ur *userClassRepo) SelectByNew(ctx context.Context) ([]domains.UserClass, error) {
 	utils.LogWithContext(ctx, "userClassRepo.SelectByNew", logger.Fields{})
-	results := make([]domains.UserClass, 0)
-
 	now := time.Now().UTC()
 	week := time.Hour * 24 * 7
 	lastWeek := now.Add(-week)
-	stmt, err := ur.db.Prepare("SELECT * FROM user_classes WHERE created_at>=?")
 
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectNewUserClass()
+	userClasses, err := tx.SelectManyUserClasses(statement, lastWeek)
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query(lastWeek)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userClasses domains.UserClass
-		if errScan := rows.Scan(
-			&userClasses.Id,
-			&userClasses.CreatedAt,
-			&userClasses.UpdatedAt,
-			&userClasses.DeletedAt,
-			&userClasses.ClassId,
-			&userClasses.UserId,
-			&userClasses.AccountId,
-			&userClasses.State); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, userClasses)
-	}
-	return results, nil
+	return userClasses, nil
 }
 
-func (ur *userClassRepo) Insert(ctx context.Context, userClasses domains.UserClass) (uint, error) {
-	utils.LogWithContext(ctx, "userClassRepo.Insert", logger.Fields{"userClass": userClasses})
-	statement := "INSERT INTO user_classes (" +
-		"created_at, " +
-		"updated_at, " +
-		"class_id," +
-		"user_id," +
-		"account_id," +
-		"state" +
-		") VALUES (?, ?, ?, ?, ?, ?)"
+func (ur *userClassRepo) Insert(ctx context.Context, userClass domains.UserClass) (uint, error) {
+	utils.LogWithContext(ctx, "userClassRepo.Insert", logger.Fields{"userClass": userClass})
 
-	stmt, err := ur.db.Prepare(statement)
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
-		return 0, appErrors.WrapDbPrepare(err, statement)
+		return 0, err
 	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		now,
-		userClasses.ClassId,
-		userClasses.UserId,
-		userClasses.AccountId,
-		userClasses.State,
-	)
+	userAfhId, err := tx.InsertUserClass(userClass)
 	if err != nil {
-		return 0, appErrors.WrapDbExec(err, statement, userClasses)
+		return 0, err
 	}
-
-	rowId, err := execResult.LastInsertId()
-	if err != nil {
-		return 0, appErrors.WrapSQLBadInsertResult(err)
+	if err := tx.Commit(); err != nil {
+		return 0, err
 	}
-	return uint(rowId), appErrors.ValidateDbResult(execResult, 1, "userClasses was not inserted")
+	return userAfhId, nil
 }
 
-func (ur *userClassRepo) Update(ctx context.Context, id uint, userClasses domains.UserClass) error {
-	utils.LogWithContext(ctx, "userClassRepo.Update", logger.Fields{"userClass": userClasses})
-	statement := "UPDATE user_classes SET " +
-		"updated_at=?, " +
-		"class_id=?, " +
-		"user_id=?, " +
-		"account_id=?, " +
-		"state=? " +
-		"WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userClassRepo) Update(ctx context.Context, id uint, userClass domains.UserClass) error {
+	utils.LogWithContext(ctx, "userClassRepo.Update", logger.Fields{"userClass": userClass})
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
+		return err
 	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		userClasses.ClassId,
-		userClasses.UserId,
-		userClasses.AccountId,
-		userClasses.State,
-		id)
-	if err != nil {
-		return appErrors.WrapDbExec(err, statement, userClasses, id)
+	if err := tx.UpdateUserClassById(id, userClass); err != nil {
+		return err
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not updated")
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (ur *userClassRepo) Delete(ctx context.Context, id uint) error {
 	utils.LogWithContext(ctx, "userClassRepo.Delete", logger.Fields{"id": id})
-	statement := "DELETE FROM user_classes WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
-	if err != nil {
-		return appErrors.WrapDbPrepare(err, statement)
-	}
-	defer stmt.Close()
 
-	execResult, err := stmt.Exec(id)
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
-		return appErrors.WrapDbExec(err, statement, id)
+		return err
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "userClasses was not deleted")
+	if err := tx.DeleteUserClass(id); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 // For Tests Only

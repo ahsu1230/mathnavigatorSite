@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Programs and GetAll()
-func TestCreatePrograms(t *testing.T) {
+func TestE2ECreatePrograms(t *testing.T) {
 	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 	utils.SendCreateProgram(t, true, "prog2", "Program2", 2, 3, domains.SUBJECT_MATH, "descript2", domains.FEATURED_POPULAR)
 	utils.SendCreateProgram(t, true, "prog3", "Program3", 2, 3, domains.SUBJECT_MATH, "descript3", domains.FEATURED_NONE)
@@ -38,7 +38,7 @@ func TestCreatePrograms(t *testing.T) {
 }
 
 // Test: Create 2 Programs with same programId. Then GetByProgramId()
-func TestUniqueProgramId(t *testing.T) {
+func TestE2EUniqueProgramId(t *testing.T) {
 	utils.SendCreateProgram(
 		t,
 		true,
@@ -80,7 +80,7 @@ func TestUniqueProgramId(t *testing.T) {
 }
 
 // Test: Create 1 Program, Update it, GetByProgramId()
-func TestUpdateProgram(t *testing.T) {
+func TestE2EUpdateProgram(t *testing.T) {
 	// Create 1 Program
 	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 
@@ -116,7 +116,7 @@ func TestUpdateProgram(t *testing.T) {
 }
 
 // Test: Create 1 Program, Delete it, GetByProgramId()
-func TestDeleteProgram(t *testing.T) {
+func TestE2EDeleteProgram(t *testing.T) {
 	// Create
 	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
 

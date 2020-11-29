@@ -36,6 +36,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiClasses.POST("/publish", controllers.PublishClasses)
 		apiClasses.POST("/class/:classId", controllers.UpdateClass)
 		apiClasses.DELETE("/class/:classId", controllers.DeleteClass)
+		apiClasses.DELETE("/archive/:classId", controllers.ArchiveClass)
 	}
 	apiLocations := h.Engine.Group("api/locations")
 	{
@@ -70,6 +71,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiSemesters.POST("/create", controllers.CreateSemester)
 		apiSemesters.POST("/semester/:semesterId", controllers.UpdateSemester)
 		apiSemesters.DELETE("/semester/:semesterId", controllers.DeleteSemester)
+		apiSemesters.DELETE("/archive/:semesterId", controllers.ArchiveSemester)
 	}
 	apiSessions := h.Engine.Group("api/sessions")
 	{
@@ -86,16 +88,18 @@ func (h *Handler) SetupApiEndpoints() {
 		apiAFH.POST("/create", controllers.CreateAFH)
 		apiAFH.POST("/afh/:id", controllers.UpdateAFH)
 		apiAFH.DELETE("/afh/:id", controllers.DeleteAFH)
+		apiAFH.DELETE("/archive/:id", controllers.ArchiveAFH)
 	}
 
 	apiAccounts := h.Engine.Group("api/accounts")
 	{
 		apiAccounts.GET("/account/:id", controllers.GetAccountById)
 		apiAccounts.GET("/unpaid", controllers.GetNegativeBalanceAccounts)
+		apiAccounts.POST("/search", controllers.SearchAccount)
 		apiAccounts.POST("/create", controllers.CreateAccountAndUser)
 		apiAccounts.POST("/account/:id", controllers.UpdateAccount)
 		apiAccounts.DELETE("/account/:id", controllers.DeleteAccount)
-		apiAccounts.POST("/search", controllers.SearchAccount)
+		apiAccounts.DELETE("/full/account/:id", controllers.FullDeleteAccount)
 	}
 	apiTransaction := h.Engine.Group("api/transactions")
 	{
@@ -115,6 +119,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.POST("/create", controllers.CreateUser)
 		apiUsers.POST("/user/:id", controllers.UpdateUser)
 		apiUsers.DELETE("/user/:id", controllers.DeleteUser)
+		apiUsers.DELETE("/full/user/:id", controllers.FullDeleteUser)
 	}
 	apiUserClasses := h.Engine.Group("api/user-classes")
 	{
@@ -137,4 +142,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUserAfh.POST("/user-afh/:id", controllers.UpdateUserAfh)
 		apiUserAfh.DELETE("/user-afh/:id", controllers.DeleteUserAfh)
 	}
+
+	h.Engine.POST("/api/register/afh/:afhId", controllers.RegisterAfh)
+	h.Engine.POST("/api/register/class/:classId", controllers.RegisterClass)
 }

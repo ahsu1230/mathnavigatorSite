@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Users and GetAll (new)
-func TestCreateUsers(t *testing.T) {
+func TestE2ECreateUsers(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Call Get All (new)
@@ -37,7 +37,7 @@ func TestCreateUsers(t *testing.T) {
 }
 
 // Test: Create 3 Users and search by pagination
-func TestSearchUsers(t *testing.T) {
+func TestE2ESearchUsers(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	body := strings.NewReader(`{
@@ -60,7 +60,7 @@ func TestSearchUsers(t *testing.T) {
 }
 
 // Test: Create 3 Users and GetUserByAccountId
-func TestGetUsersByAccountId(t *testing.T) {
+func TestE2EGetUsersByAccountId(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Validate results (first call)
@@ -90,7 +90,7 @@ func TestGetUsersByAccountId(t *testing.T) {
 }
 
 // Test: Create 2 Users with the same email
-func TestCreateSameEmailUsersFailure(t *testing.T) {
+func TestE2ECreateSameEmailUsersFailure(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Create account and user with same email
@@ -104,7 +104,7 @@ func TestCreateSameEmailUsersFailure(t *testing.T) {
 }
 
 // Test: Create 1 Account, 1 User, Update it, GetUserById()
-func TestUpdateUser(t *testing.T) {
+func TestE2EUpdateUser(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Update
@@ -140,7 +140,7 @@ func TestUpdateUser(t *testing.T) {
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
-func TestDeleteUser(t *testing.T) {
+func TestE2EDeleteUser(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 
 	// Delete

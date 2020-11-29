@@ -144,6 +144,7 @@ func TestInsertUserClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^INSERT INTO user_classes").
 		ExpectExec().
 		WithArgs(
@@ -154,6 +155,7 @@ func TestInsertUserClass(t *testing.T) {
 			1,
 			domains.USER_CLASS_ENROLLED,
 		).WillReturnResult(result)
+	mock.ExpectCommit()
 	userClass := getUserClass()
 	_, err := repo.Insert(testUtils.Context, userClass)
 	if err != nil {
@@ -175,6 +177,7 @@ func TestUpdateUserClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^UPDATE user_classes SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
@@ -185,6 +188,7 @@ func TestUpdateUserClass(t *testing.T) {
 			domains.USER_CLASS_ENROLLED,
 			1,
 		).WillReturnResult(result)
+	mock.ExpectCommit()
 	userClasses := domains.UserClass{
 		Id:        1,
 		CreatedAt: testUtils.TimeNow,
@@ -215,10 +219,12 @@ func TestDeleteUserClass(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^DELETE FROM user_classes WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)

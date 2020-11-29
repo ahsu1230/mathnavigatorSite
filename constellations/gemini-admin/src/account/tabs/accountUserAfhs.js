@@ -108,8 +108,8 @@ export default class UserAfhs extends React.Component {
 
 class UserAfhRow extends React.Component {
     render() {
-        const afh = this.props.afh;
-        const userAfh = this.props.userAfh;
+        const afh = this.props.afh || {};
+        const userAfh = this.props.userAfh || {};
         const onDelete = this.props.onDelete;
         return (
             <div className="user-afh">

@@ -32,6 +32,7 @@ type ClassRepoInterface interface {
 	Insert(context.Context, domains.Class) (uint, error)
 	Update(context.Context, string, domains.Class) error
 	Publish(context.Context, []string) []error
+	Archive(context.Context, string) error
 	Delete(context.Context, string) error
 }
 
@@ -47,9 +48,9 @@ func (cr *classRepo) SelectAll(ctx context.Context, publishedOnly bool) ([]domai
 
 	var query string
 	if publishedOnly {
-		query = "SELECT * FROM classes WHERE published_at IS NOT NULL"
+		query = "SELECT * FROM classes WHERE deleted_at IS NULL AND published_at IS NOT NULL"
 	} else {
-		query = "SELECT * FROM classes"
+		query = "SELECT * FROM classes WHERE deleted_at IS NULL"
 	}
 	stmt, err := cr.db.Prepare(query)
 	if err != nil {
@@ -92,7 +93,7 @@ func (cr *classRepo) SelectAllUnpublished(ctx context.Context) ([]domains.Class,
 	utils.LogWithContext(ctx, "classRepo.SelectAllUnpublished", logger.Fields{})
 	results := make([]domains.Class, 0)
 
-	statement := "SELECT * FROM classes WHERE published_at IS NULL"
+	statement := "SELECT * FROM classes WHERE deleted_at IS NULL AND published_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -132,7 +133,7 @@ func (cr *classRepo) SelectAllUnpublished(ctx context.Context) ([]domains.Class,
 
 func (cr *classRepo) SelectByClassId(ctx context.Context, classId string) (domains.Class, error) {
 	utils.LogWithContext(ctx, "classRepo.SelectByClassId", logger.Fields{"classId": classId})
-	statement := "SELECT * FROM classes WHERE class_id=?"
+	statement := "SELECT * FROM classes WHERE class_id=? AND deleted_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return domains.Class{}, appErrors.WrapDbPrepare(err, statement)
@@ -167,7 +168,7 @@ func (cr *classRepo) SelectByProgramId(ctx context.Context, programId string) ([
 	utils.LogWithContext(ctx, "classRepo.SelectByProgramId", logger.Fields{"programId": programId})
 	results := make([]domains.Class, 0)
 
-	statement := "SELECT * FROM classes WHERE program_id=?"
+	statement := "SELECT * FROM classes WHERE program_id=? AND deleted_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -209,7 +210,7 @@ func (cr *classRepo) SelectBySemesterId(ctx context.Context, semesterId string) 
 	utils.LogWithContext(ctx, "classRepo.SelectBySemesterId", logger.Fields{"semesterId": semesterId})
 	results := make([]domains.Class, 0)
 
-	statement := "SELECT * FROM classes WHERE semester_id=?"
+	statement := "SELECT * FROM classes WHERE semester_id=? AND deleted_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -253,7 +254,7 @@ func (cr *classRepo) SelectByProgramAndSemesterId(ctx context.Context, programId
 		"semesterId": semesterId})
 	results := make([]domains.Class, 0)
 
-	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=?"
+	statement := "SELECT * FROM classes WHERE program_id=? AND semester_id=? AND deleted_at IS NULL"
 	stmt, err := cr.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -422,6 +423,25 @@ func (cr *classRepo) Publish(ctx context.Context, classIds []string) []error {
 
 	invalidateClassesCache(ctx)
 	return errorList
+}
+
+func (cr *classRepo) Archive(ctx context.Context, classId string) error {
+	utils.LogWithContext(ctx, "classRepo.Archive", logger.Fields{"classId": classId})
+	statement := "UPDATE classes SET deleted_at=? WHERE class_id=?"
+	stmt, err := cr.db.Prepare(statement)
+	if err != nil {
+		return appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, classId)
+	if err != nil {
+		return appErrors.WrapDbExec(err, statement, classId)
+	}
+
+	invalidateClassesCache(ctx)
+	return appErrors.ValidateDbResult(execResult, 1, "class was not archived")
 }
 
 func (cr *classRepo) Delete(ctx context.Context, classId string) error {

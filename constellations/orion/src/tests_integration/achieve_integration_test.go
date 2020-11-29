@@ -11,7 +11,7 @@ import (
 )
 
 // Test: Create 3 Achievements and GetAll(false)
-func TestCreateAchievements(t *testing.T) {
+func TestE2ECreateAchievements(t *testing.T) {
 	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 	utils.SendCreateAchievement(t, true, 2021, "message2", 2)
 	utils.SendCreateAchievement(t, true, 2022, "message3", 3)
@@ -43,7 +43,7 @@ func TestCreateAchievements(t *testing.T) {
 }
 
 // Test: Create 4 Achievements and GetAllGroupedByYear()
-func TestGetAllAchievementsGroupedByYear(t *testing.T) {
+func TestE2EGetAllAchievementsGroupedByYear(t *testing.T) {
 	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 	utils.SendCreateAchievement(t, true, 2021, "message2", 2)
 	utils.SendCreateAchievement(t, true, 2022, "message3", 3)
@@ -76,7 +76,7 @@ func TestGetAllAchievementsGroupedByYear(t *testing.T) {
 }
 
 // Test: Create 1 Achievement, Update it, GetById()
-func TestUpdateAchievement(t *testing.T) {
+func TestE2EUpdateAchievement(t *testing.T) {
 	// Create 1 Achievement
 	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 
@@ -108,7 +108,7 @@ func TestUpdateAchievement(t *testing.T) {
 }
 
 // Test: Create 1 Achievement, Delete it, GetById()
-func TestDeleteAchievement(t *testing.T) {
+func TestE2EDeleteAchievement(t *testing.T) {
 	// Create
 	utils.SendCreateAchievement(t, true, 2020, "message1", 1)
 

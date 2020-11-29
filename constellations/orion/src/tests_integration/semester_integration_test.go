@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Semesters and GetAll(false)
-func TestCreateSemesters(t *testing.T) {
+func TestE2ECreateSemesters(t *testing.T) {
 	utils.SendCreateSemester(t, true, domains.FALL, 2019)
 	utils.SendCreateSemester(t, true, domains.WINTER, 2020)
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
@@ -42,7 +42,7 @@ func TestCreateSemesters(t *testing.T) {
 }
 
 // Test: Create 2 Semesters with same semesterId. Then GetBySemesterId()
-func TestUniqueSemesterId(t *testing.T) {
+func TestE2EUniqueSemesterId(t *testing.T) {
 	_, recorder1 := utils.SendCreateSemester(t, false, domains.SPRING, 2020)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
 	_, recorder2 := utils.SendCreateSemester(t, false, domains.SPRING, 2020) // Same semesterId
@@ -66,7 +66,7 @@ func TestUniqueSemesterId(t *testing.T) {
 }
 
 // Test: Create 1 Semester, Update it, GetBySemesterId()
-func TestUpdateSemester(t *testing.T) {
+func TestE2EUpdateSemester(t *testing.T) {
 	// Create 1 Semester
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 
@@ -97,12 +97,28 @@ func TestUpdateSemester(t *testing.T) {
 }
 
 // Test: Create 1 Semester, Delete it, GetBySemesterId()
-func TestDeleteSemester(t *testing.T) {
+func TestE2EDeleteSemester(t *testing.T) {
 	// Create
 	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/semester/2020_spring", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/semesters/semester/2020_spring", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	utils.ResetTable(t, domains.TABLE_SEMESTERS)
+}
+
+// Test: Create 1 Semester, Archive it, GetBySemesterId()
+func TestE2EArchiveSemester(t *testing.T) {
+	// Create
+	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/semesters/archive/2020_spring", nil)
 	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get

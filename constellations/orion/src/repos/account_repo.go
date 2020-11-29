@@ -3,11 +3,10 @@ package repos
 import (
 	"context"
 	"database/sql"
-	"time"
 
-	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/dbTx"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -28,6 +27,7 @@ type AccountRepoInterface interface {
 	InsertWithUser(context.Context, domains.Account, domains.User) (uint, error)
 	Update(context.Context, uint, domains.Account) error
 	Delete(context.Context, uint) error
+	FullDelete(context.Context, uint) error
 }
 
 func (acc *accountRepo) Initialize(ctx context.Context, db *sql.DB) {
@@ -37,24 +37,10 @@ func (acc *accountRepo) Initialize(ctx context.Context, db *sql.DB) {
 
 func (acc *accountRepo) SelectById(ctx context.Context, id uint) (domains.Account, error) {
 	utils.LogWithContext(ctx, "accountRepo.SelectById", logger.Fields{"id": id})
-	statement := "SELECT * FROM accounts WHERE id=?"
-	stmt, err := acc.db.Prepare(statement)
-	defer stmt.Close()
+	tx := dbTx.New(acc.db)
+	account, err := tx.SelectOneAccount(tx.CreateStmtSelectAccountById(), id)
 	if err != nil {
-		return domains.Account{}, appErrors.WrapDbPrepare(err, statement)
-	}
-
-	var account domains.Account
-	row := stmt.QueryRow(id)
-	if err = row.Scan(
-		&account.Id,
-		&account.CreatedAt,
-		&account.UpdatedAt,
-		&account.DeletedAt,
-		&account.PrimaryEmail,
-		&account.Password,
-	); err != nil {
-		return domains.Account{}, appErrors.WrapDbQuery(err, statement, id)
+		return domains.Account{}, err
 	}
 	return account, nil
 }
@@ -63,24 +49,9 @@ func (acc *accountRepo) SelectByPrimaryEmail(ctx context.Context, primaryEmail s
 	utils.LogWithContext(ctx, "accountRepo.SelectByPrimaryEmail",
 		logger.Fields{"primaryEmail": primaryEmail},
 	)
-	statement := "SELECT * FROM accounts WHERE primary_email=?"
-	stmt, err := acc.db.Prepare(statement)
-	defer stmt.Close()
+	tx := dbTx.New(acc.db)
+	account, err := tx.SelectOneAccount(tx.CreateStmtSelectAccountByEmail(), primaryEmail)
 	if err != nil {
-		return domains.Account{}, appErrors.WrapDbPrepare(err, statement)
-	}
-
-	var account domains.Account
-	row := stmt.QueryRow(primaryEmail)
-	if err = row.Scan(
-		&account.Id,
-		&account.CreatedAt,
-		&account.UpdatedAt,
-		&account.DeletedAt,
-		&account.PrimaryEmail,
-		&account.Password,
-	); err != nil {
-		err = appErrors.WrapDbQuery(err, statement, primaryEmail)
 		return domains.Account{}, err
 	}
 	return account, nil
@@ -88,35 +59,12 @@ func (acc *accountRepo) SelectByPrimaryEmail(ctx context.Context, primaryEmail s
 
 func (acc *accountRepo) SelectAllNegativeBalances(ctx context.Context) ([]domains.AccountBalance, error) {
 	utils.LogWithContext(ctx, "accountRepo.SelectAllNegativeBalances", logger.Fields{})
-	results := make([]domains.AccountBalance, 0)
-
-	statement := "SELECT accounts.*, SUM(amount) FROM accounts JOIN transactions ON accounts.id=transactions.account_id GROUP BY account_id HAVING SUM(amount) < 0"
-	stmt, err := acc.db.Prepare(statement)
+	tx := dbTx.New(acc.db)
+	accounts, err := tx.SelectManyAccountBalances(tx.CreateStmtSelectAccountByNegativeBalance())
 	if err != nil {
-		return nil, appErrors.WrapDbPrepare(err, statement)
+		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, appErrors.WrapDbQuery(err, statement)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var accountSum domains.AccountBalance
-		if errScan := rows.Scan(
-			&accountSum.Account.Id,
-			&accountSum.Account.CreatedAt,
-			&accountSum.Account.UpdatedAt,
-			&accountSum.Account.DeletedAt,
-			&accountSum.Account.PrimaryEmail,
-			&accountSum.Account.Password,
-			&accountSum.Balance); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, accountSum)
-	}
-	return results, nil
+	return accounts, nil
 }
 
 func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Account, user domains.User) (uint, error) {
@@ -124,94 +72,25 @@ func (acc *accountRepo) InsertWithUser(ctx context.Context, account domains.Acco
 		"account": account,
 		"user":    user,
 	})
-	tx, err := acc.db.Begin()
+
+	tx, err := dbTx.Begin(acc.db)
 	if err != nil {
-		return 0, appErrors.WrapDbTxBegin(err)
+		return 0, err
 	}
 
-	statement := "INSERT INTO accounts (" +
-		"created_at, " +
-		"updated_at, " +
-		"primary_email, " +
-		"password" +
-		") VALUES (?, ?, ?, ?)"
-	stmt, err := acc.db.Prepare(statement)
+	accountId, err := tx.InsertAccount(account)
 	if err != nil {
 		tx.Rollback()
-		return 0, appErrors.WrapDbPrepare(err, statement)
+		return 0, err
 	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	result1, err := stmt.Exec(
-		now,
-		now,
-		account.PrimaryEmail,
-		account.Password,
-	)
+	user.AccountId = accountId
+	_, err = tx.InsertUser(user)
 	if err != nil {
 		tx.Rollback()
-		return 0, appErrors.WrapDbExec(err, statement, account)
+		return 0, err
 	}
-	if err = appErrors.ValidateDbResult(result1, 1, "account was not inserted"); err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbExec(err, statement, account)
-	}
-
-	accountId, err := result1.LastInsertId()
-	if err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbExec(err, statement, account)
-	}
-
-	statement2 := "INSERT INTO users (" +
-		"created_at, " +
-		"updated_at, " +
-		"first_name, " +
-		"last_name," +
-		"middle_name, " +
-		"email," +
-		"phone, " +
-		"is_guardian," +
-		"account_id," +
-		"notes," +
-		"school," +
-		"graduation_year" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-	stmt2, err := acc.db.Prepare(statement2)
-	if err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbPrepare(err, statement2)
-	}
-	defer stmt2.Close()
-
-	result2, err := stmt2.Exec(
-		now,
-		now,
-		user.FirstName,
-		user.LastName,
-		user.MiddleName,
-		user.Email,
-		user.Phone,
-		user.IsGuardian,
-		accountId,
-		user.Notes,
-		user.School,
-		user.GraduationYear,
-	)
-	if err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbExec(err, statement, user)
-	}
-	if err = appErrors.ValidateDbResult(result2, 1, "user was not inserted"); err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbExec(err, statement, user)
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		tx.Rollback()
-		return 0, appErrors.WrapDbTxCommit(err)
+	if err := tx.Commit(); err != nil {
+		return 0, err
 	}
 	return uint(accountId), nil
 }
@@ -221,47 +100,78 @@ func (acc *accountRepo) Update(ctx context.Context, id uint, account domains.Acc
 		"id":      id,
 		"account": account,
 	})
-	statement := "UPDATE accounts SET " +
-		"updated_at=?, " +
-		"primary_email=?, " +
-		"password=? " +
-		"WHERE id=?"
-	stmt, err := acc.db.Prepare(statement)
-	if err != nil {
-		err = appErrors.WrapDbPrepare(err, statement)
-		return err
-	}
-	defer stmt.Close()
 
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		account.PrimaryEmail,
-		account.Password,
-		id)
+	tx, err := dbTx.Begin(acc.db)
 	if err != nil {
-		err = appErrors.WrapDbExec(err, statement, id, account)
 		return err
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "account was not updated")
+	if err := tx.UpdateAccountById(id, account); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (acc *accountRepo) Delete(ctx context.Context, id uint) error {
 	utils.LogWithContext(ctx, "accountRepo.Delete", logger.Fields{"id": id})
-	statement := "DELETE FROM accounts WHERE id=?"
-	stmt, err := acc.db.Prepare(statement)
+	tx, err := dbTx.Begin(acc.db)
 	if err != nil {
-		err = appErrors.WrapDbPrepare(err, statement)
 		return err
 	}
-	defer stmt.Close()
+	if err := tx.DeleteAccount(id); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
 
-	execResult, err := stmt.Exec(id)
+// A Delete method which cascadingly deletes
+// - Search for all users associated with account. For each user,
+// - Deletes all userClasses
+// - Deletes all userAfhs
+// - Deletes the user
+// - Finally, delete the account
+func (acc *accountRepo) FullDelete(ctx context.Context, accountId uint) error {
+	utils.LogWithContext(ctx, "accountRepo.FullDelete", logger.Fields{"id": accountId})
+	tx, err := dbTx.Begin(acc.db)
 	if err != nil {
-		err = appErrors.WrapDbExec(err, statement, id)
 		return err
 	}
-	return appErrors.ValidateDbResult(execResult, 1, "account was not deleted")
+
+	statement := tx.CreateStmtSelectUsersByAccountId()
+	users, err := tx.SelectManyUsers(statement, accountId)
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < len(users); i++ {
+		user := users[i]
+		userId := user.Id
+		if errDel := tx.DeleteUserClassByUserId(userId); errDel != nil {
+			tx.Rollback()
+			return errDel
+		}
+		if errDel := tx.DeleteUserAfhByUserId(userId); errDel != nil {
+			tx.Rollback()
+			return errDel
+		}
+		if errDel := tx.DeleteUser(userId); errDel != nil {
+			tx.Rollback()
+			return errDel
+		}
+	}
+	if err := tx.DeleteAccount(accountId); err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 // For Tests Only

@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 4 Classes and GetAll(false)
-func TestCreateClasses(t *testing.T) {
+func TestE2ECreateClasses(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -35,7 +35,7 @@ func TestCreateClasses(t *testing.T) {
 }
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
-func TestUniqueClassId(t *testing.T) {
+func TestE2EUniqueClassId(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(1)
@@ -62,7 +62,7 @@ func TestUniqueClassId(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgram()
-func TestGetClassesByProgram(t *testing.T) {
+func TestE2EGetClassesByProgram(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -84,7 +84,7 @@ func TestGetClassesByProgram(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesBySemester()
-func TestGetClassesBySemester(t *testing.T) {
+func TestE2EGetClassesBySemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -105,7 +105,7 @@ func TestGetClassesBySemester(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
-func TestGetClassesByProgramAndSemester(t *testing.T) {
+func TestE2EGetClassesByProgramAndSemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -126,7 +126,7 @@ func TestGetClassesByProgramAndSemester(t *testing.T) {
 }
 
 // Test: Create 1 Class, Update it, GetByClassId()
-func TestUpdateClass(t *testing.T) {
+func TestE2EUpdateClass(t *testing.T) {
 	// Create 1 Class
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -157,7 +157,7 @@ func TestUpdateClass(t *testing.T) {
 }
 
 // Test: Create 2 Classes and Publish 1
-func TestPublishClasses(t *testing.T) {
+func TestE2EPublishClasses(t *testing.T) {
 	// Create
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -214,7 +214,7 @@ func TestPublishClasses(t *testing.T) {
 }
 
 // Test: Create 1 Class, Delete it, GetByClassId()
-func TestDeleteClass(t *testing.T) {
+func TestE2EDeleteClass(t *testing.T) {
 	// Create
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -224,6 +224,26 @@ func TestDeleteClass(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/class/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetClassTables(t)
+}
+
+// Test: Create 1 Class, Archive it, GetByClassId()
+func TestE2EArchiveClass(t *testing.T) {
+	// Create
+	createAllProgramsSemestersLocations(t)
+	class1 := createClass(1)
+	body1 := utils.CreateJsonBody(&class1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/archive/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get

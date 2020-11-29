@@ -65,6 +65,12 @@ func Debug(message string, fields Fields) {
 		Debug(message)
 }
 
+func Warn(message string, fields Fields) {
+	log.WithFields(standardFields).
+		WithFields(fields).
+		Warn(message)
+}
+
 func Info(message string, fields Fields) {
 	log.WithFields(standardFields).
 		WithFields(fields).

@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Sessions, 2 With Same Class Id, and GetAllByClassId()
-func TestCreateSessions(t *testing.T) {
+func TestE2ECreateSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	mid := start.Add(time.Minute * 30)
@@ -47,7 +47,7 @@ func TestCreateSessions(t *testing.T) {
 }
 
 // Test: Create 1 Session, Update it, GetBySessionId()
-func TestUpdateSession(t *testing.T) {
+func TestE2EUpdateSession(t *testing.T) {
 	// Create 1 Session
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
@@ -86,7 +86,7 @@ func TestUpdateSession(t *testing.T) {
 }
 
 // Test: Create 2 Sessions, Delete them, GetBySessionId()
-func TestDeleteSessions(t *testing.T) {
+func TestE2EDeleteSessions(t *testing.T) {
 	// Create
 	start := time.Now().UTC()
 	end := start.Add(time.Hour)
