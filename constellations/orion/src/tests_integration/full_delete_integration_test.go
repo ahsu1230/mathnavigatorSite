@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
@@ -21,8 +20,8 @@ import (
 // The account is not found
 // userA and userB are not found
 func TestE2EFullDeleteAccount(t *testing.T) {
-	// Create Environment
-	createCrossEnvironment(t)
+	utils.CreateFullClassAndAfhEnvironment(t)
+
 	// accountId: 1, userId: 1
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 	// userId: 2
@@ -75,8 +74,8 @@ func TestE2EFullDeleteAccount(t *testing.T) {
 // The account is intact with userA
 // userB is not found
 func TestE2EFullDeleteUser(t *testing.T) {
-	// Create Environment
-	createCrossEnvironment(t)
+	utils.CreateFullClassAndAfhEnvironment(t)
+
 	// accountId: 1, userId: 1
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 	// userId: 2
@@ -119,44 +118,4 @@ func TestE2EFullDeleteUser(t *testing.T) {
 	assert.EqualValues(t, 0, len(userAfhs))
 
 	utils.ResetAllTables(t)
-}
-
-func createCrossEnvironment(t *testing.T) {
-	time1 := time.Now().UTC()
-	time2 := time1.Add(time.Hour * 1)
-
-	utils.SendCreateProgram(
-		t,
-		true,
-		"program1",
-		"Program1",
-		1,
-		3,
-		domains.SUBJECT_MATH,
-		"description1",
-		domains.FEATURED_NONE,
-	)
-	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
-	utils.SendCreateLocationWCHS(t)
-	utils.SendCreateClass(
-		t,
-		true,
-		"program1",
-		"2020_spring",
-		"classA",
-		"wchs",
-		"2:00pm - 3:00pm",
-		0,
-		600,
-	)
-	utils.SendCreateAskForHelp(
-		t,
-		true,
-		time1,
-		time2,
-		"AP Statistics Help",
-		domains.SUBJECT_MATH,
-		"wchs",
-		"test note 2",
-	)
 }

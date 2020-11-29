@@ -4,6 +4,7 @@ import (
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 var AccountTonyStark = domains.Account{
@@ -141,5 +142,52 @@ func SendCreateLocationZoom(t *testing.T) (uint, *httptest.ResponseRecorder) {
 		"",
 		"Link will be provided on Google Classroom",
 		true,
+	)
+}
+
+/*
+  Program: "program1"
+  Semester: "2020_spring"
+  Location: "wchs"
+  Class: "program1_2020_spring_classA"
+  Afh: 1 (?)
+*/
+func CreateFullClassAndAfhEnvironment(t *testing.T) {
+	time1 := time.Now().UTC()
+	time2 := time1.Add(time.Hour * 1)
+
+	SendCreateProgram(
+		t,
+		true,
+		"program1",
+		"Program1",
+		1,
+		3,
+		domains.SUBJECT_MATH,
+		"description1",
+		domains.FEATURED_NONE,
+	)
+	SendCreateSemester(t, true, domains.SPRING, 2020)
+	SendCreateLocationWCHS(t)
+	SendCreateClass(
+		t,
+		true,
+		"program1",
+		"2020_spring",
+		"classA",
+		"wchs",
+		"2:00pm - 3:00pm",
+		0,
+		600,
+	)
+	SendCreateAskForHelp(
+		t,
+		true,
+		time1,
+		time2,
+		"AP Statistics Help",
+		domains.SUBJECT_MATH,
+		"wchs",
+		"test note 2",
 	)
 }

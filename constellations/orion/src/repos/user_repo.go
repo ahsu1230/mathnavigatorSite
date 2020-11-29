@@ -27,6 +27,7 @@ type UserRepoInterface interface {
 	SelectAll(context.Context, string, int, int) ([]domains.User, error)
 	SelectById(context.Context, uint) (domains.User, error)
 	SelectByAccountId(context.Context, uint) ([]domains.User, error)
+	SelectByEmail(context.Context, string) (domains.User, error)
 	SelectByNew(context.Context) ([]domains.User, error)
 	Insert(context.Context, domains.User) (uint, error)
 	Update(context.Context, uint, domains.User) error
@@ -112,6 +113,16 @@ func (ur *userRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]do
 		return nil, err
 	}
 	return users, nil
+}
+
+func (ur *userRepo) SelectByEmail(ctx context.Context, email string) (domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectById", logger.Fields{"email": email})
+	tx := dbTx.New(ur.db)
+	user, err := tx.SelectOneUser(tx.CreateStmtSelectUserByEmail(), email)
+	if err != nil {
+		return domains.User{}, err
+	}
+	return user, nil
 }
 
 func (ur *userRepo) SelectByNew(ctx context.Context) ([]domains.User, error) {

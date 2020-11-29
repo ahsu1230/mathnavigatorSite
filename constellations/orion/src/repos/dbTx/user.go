@@ -52,6 +52,10 @@ func (dbTx *DbTx) CreateStmtSelectUsersByAccountId() string {
 	return "SELECT * FROM users WHERE account_id=?"
 }
 
+func (dbTx *DbTx) CreateStmtSelectUserByEmail() string {
+	return "SELECT * FROM users WHERE email=?"
+}
+
 func (dbTx *DbTx) CreateStmtSelectUsersByNew() string {
 	return "SELECT * FROM users WHERE created_at>=?"
 }
