@@ -134,6 +134,7 @@ export default class RegisterPage extends React.Component {
             firstName: this.state.studentFirstName,
             lastName: this.state.studentLastName,
             email: this.state.studentEmail,
+            isGuardian: false,
             school: this.state.studentSchool,
             grade: this.state.studentGrade,
             graduationYear: this.state.studentGraduationYear,
@@ -142,17 +143,21 @@ export default class RegisterPage extends React.Component {
             firstName: this.state.guardianFirstName,
             lastName: this.state.guardianLastName,
             email: this.state.guardianEmail,
+            isGuardian: true,
             phone: this.state.guardianPhone,
-            additionalInfo: this.state.guardianAdditionalInfo,
+            notes: this.state.guardianAdditionalInfo,
         };
 
+        let registerApiUrl = "";
         let emailMessage = "";
         if (this.state.choice == CHOICE_CLASS) {
+            const classId = this.state.selectedClassId;
             emailMessage = generateEmailMessageForClass(
-                this.state.selectedClassId,
+                classId,
                 studentInfo,
                 guardianInfo
             );
+            registerApiUrl = "/api/register/class/" + classId;
         } else if (this.state.choice == CHOICE_AFH) {
             const afhId = this.state.selectedAfhId;
             emailMessage = generateEmailMessageForAfh(
@@ -160,6 +165,7 @@ export default class RegisterPage extends React.Component {
                 this.state.afhMap[afhId],
                 studentInfo
             );
+            registerApiUrl = "/api/register/afh/" + afhId;
         } else {
             return;
         }
@@ -173,6 +179,15 @@ export default class RegisterPage extends React.Component {
                 console.log("EMAIL FAILED!");
             }
         );
+
+        console.log("Invoke register API...");
+        const registerBody = {
+            student: studentInfo,
+            guardian: guardianInfo,
+        };
+        API.post(registerApiUrl, registerBody)
+            .then((res) => console.log("Register succeeded!"))
+            .catch((err) => console.log("Register failed! " + err));
     };
 
     isClassValid = () => {

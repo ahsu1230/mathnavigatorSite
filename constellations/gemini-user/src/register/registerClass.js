@@ -7,7 +7,6 @@ import {
     displayPrice,
     displayTimeString,
 } from "../utils/classUtils.js";
-import { capitalizeWord } from "../utils/displayUtils.js";
 import { createLocation } from "../utils/locationUtils.js";
 import srcCheckmark from "../../assets/checkmark_light_blue.svg";
 

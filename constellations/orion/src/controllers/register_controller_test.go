@@ -98,11 +98,11 @@ func TestRegisterClassGuardianExists(t *testing.T) {
 
 // Test RegisterAfh
 
-func TestRegisterAfhStudentAndGuardianBothExist(t *testing.T) {
+func TestRegisterAfhStudentExists(t *testing.T) {
 	counter := newRegisterCounter()
 	studentEmail := "student@gmail.com"
 	guardianEmail := "guardian@yahoo.com"
-	mockStudentAndGuardianEmailsExist(studentEmail, true, guardianEmail, true)
+	mockStudentAndGuardianEmailsExist(studentEmail, true, guardianEmail, false)
 
 	student := createMockStudent(studentEmail)
 	guardian := createMockGuardian(guardianEmail)
@@ -116,7 +116,7 @@ func TestRegisterAfhStudentAndGuardianBothExist(t *testing.T) {
 	assert.EqualValues(t, 1, counter.numInsertUserAfh)
 }
 
-func TestRegisterAfhStudentAndGuardianBothDoNotExist(t *testing.T) {
+func TestRegisterAfhStudentDoesNotExist(t *testing.T) {
 	counter := newRegisterCounter()
 	studentEmail := "student@gmail.com"
 	guardianEmail := "guardian@yahoo.com"
@@ -129,7 +129,7 @@ func TestRegisterAfhStudentAndGuardianBothDoNotExist(t *testing.T) {
 	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 
 	assert.EqualValues(t, 1, counter.numInsertAccount)
-	assert.EqualValues(t, 2, counter.numInsertUser)
+	assert.EqualValues(t, 1, counter.numInsertUser)
 	assert.EqualValues(t, 0, counter.numInsertUserClass)
 	assert.EqualValues(t, 1, counter.numInsertUserAfh)
 }

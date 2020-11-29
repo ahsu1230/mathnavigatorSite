@@ -34,6 +34,10 @@ export class AccountViewPage extends React.Component {
     };
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
         const accountId = this.props.accountId;
         API.get("api/users/account/" + accountId)
             .then((res) => {
@@ -61,7 +65,7 @@ export class AccountViewPage extends React.Component {
                     });
                 }
             });
-    }
+    };
 
     onSelectTab = (index, lastIndex, e) => {
         if (index != lastIndex) {
@@ -107,6 +111,7 @@ export class AccountViewPage extends React.Component {
                             users={users}
                             selectedUser={userMap[selectedUserId]}
                             onSwitchUser={this.onSwitchUser}
+                            refreshAccount={this.fetchData}
                         />
                     </TabPanel>
                     <TabPanel>

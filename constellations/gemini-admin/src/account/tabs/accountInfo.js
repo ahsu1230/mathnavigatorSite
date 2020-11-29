@@ -50,6 +50,16 @@ export default class AccountInfo extends React.Component {
             .catch((err) => console.log("Error updating primary contact"));
     };
 
+    onDeleteAccount = (e) => {
+        const accountId = this.state.account.id;
+        API.delete("api/accounts/full/account/" + accountId)
+            .then((res) => {
+                window.alert("Account deleted!");
+                window.location.hash = "accounts";
+            })
+            .catch((err) => window.alert("Could not delete account " + err));
+    };
+
     render() {
         const account = this.state.account;
         const options = this.state.users.map((user) => {
@@ -83,7 +93,9 @@ export default class AccountInfo extends React.Component {
                 </div>
 
                 <div className="delete-account">
-                    <button>Delete Account</button>
+                    <button onClick={this.onDeleteAccount}>
+                        Delete Account
+                    </button>
                     <p>
                         Warning: Deleting this account will delete all user
                         information associated with account! This includes all

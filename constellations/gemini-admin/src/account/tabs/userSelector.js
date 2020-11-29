@@ -16,7 +16,7 @@ export default class UserSelector extends React.Component {
         ));
 
         return (
-            <section>
+            <section className="user-selector">
                 <p>{this.props.description}</p>
                 <select
                     value={this.props.selectedUserId}

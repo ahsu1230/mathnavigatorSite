@@ -2,10 +2,22 @@
 import React from "react";
 require("./accountUsers.sass");
 import { Link } from "react-router-dom";
+import API from "../../api.js";
 import UserSelector from "./userSelector.js";
 import { UserRowCard } from "../../common/rowCards/userRowCard.js";
 
 export default class UserInfos extends React.Component {
+    onDeleteUser = (e) => {
+        const user = this.props.selectedUser;
+        const userId = user.id;
+        API.delete("api/users/full/user/" + userId)
+            .then((res) => {
+                window.alert("User deleted!");
+                this.props.refreshAccount();
+            })
+            .catch((err) => window.alert("Could not delete account " + err));
+    };
+
     render() {
         const accountId = this.props.accountId;
         const selectedUser = this.props.selectedUser;
@@ -31,7 +43,9 @@ export default class UserInfos extends React.Component {
                 </div>
 
                 <section className="delete">
-                    <button>Delete User from account</button>
+                    <button onClick={this.onDeleteUser}>
+                        Delete User from account
+                    </button>
                     <p>
                         Warning: Deleting a user will delete all user
                         information including contacts, classes enrollments,

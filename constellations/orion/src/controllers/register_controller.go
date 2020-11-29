@@ -74,9 +74,8 @@ func RegisterAfh(c *gin.Context) {
 	}
 
 	studentJson := body.Student
-	guardianJson := body.Guardian
 	ctx := utils.RetrieveContext(c)
-	registeredUsers, err := handleRegisterUsers(ctx, studentJson, guardianJson)
+	registeredUsers, err := handleRegisterStudentOnly(ctx, studentJson)
 	if err != nil {
 		c.Error(err)
 		c.Abort()
@@ -187,6 +186,39 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 		studentId:  studentId,
 		guardianId: guardianId,
 		accountId:  accountId,
+	}
+	return result, nil
+}
+
+func handleRegisterStudentOnly(ctx context.Context, studentJson domains.User) (RegisteredUsers, error) {
+	studentEmail := studentJson.Email
+	student, errStudent := repos.UserRepo.SelectByEmail(ctx, studentEmail)
+	studentFound := errStudent == nil
+
+	var studentId uint
+	var accountId uint
+	if studentFound {
+		studentId = student.Id
+		accountId = student.AccountId
+	} else {
+		logger.Message("Student information was not found. Creating new account...")
+		account := domains.Account{
+			PrimaryEmail: studentEmail,
+			Password:     "automatic",
+		}
+		newAccountId, err := repos.AccountRepo.InsertWithUser(ctx, account, studentJson)
+		if err != nil {
+			return RegisteredUsers{}, err
+		}
+		accountId = newAccountId
+		student, errStudent = repos.UserRepo.SelectByEmail(ctx, studentEmail)
+		studentId = student.Id
+	}
+
+	// Return final results of student & guardian
+	result := RegisteredUsers{
+		studentId: studentId,
+		accountId: accountId,
 	}
 	return result, nil
 }
