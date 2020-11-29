@@ -35,6 +35,19 @@ var UserTonyStark = domains.User{
 	GraduationYear: domains.NewNullUint(0),
 }
 
+var UserPepperPotts = domains.User{
+	AccountId:      1,
+	FirstName:      "Pepper",
+	LastName:       "Potts",
+	MiddleName:     domains.NewNullString(""),
+	Email:          "pepper@stark.com",
+	Phone:          domains.NewNullString("555-555-0202"),
+	IsGuardian:     true,
+	Notes:          domains.NewNullString("Stark Industries CEO"),
+	School:         domains.NewNullString(""),
+	GraduationYear: domains.NewNullUint(0),
+}
+
 var UserMorganStark = domains.User{
 	AccountId:      1,
 	FirstName:      "Morgan",

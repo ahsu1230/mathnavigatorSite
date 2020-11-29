@@ -24,7 +24,7 @@ type RegisterRepoCount struct {
 
 // Test RegisterClass
 
-func TestRegisterClassStudentAndGuardianExist(t *testing.T) {
+func TestRegisterClassStudentAndGuardianBothExist(t *testing.T) {
 	counter := newRegisterCounter()
 	studentEmail := "student@gmail.com"
 	guardianEmail := "guardian@yahoo.com"
@@ -38,29 +38,103 @@ func TestRegisterClassStudentAndGuardianExist(t *testing.T) {
 
 	assert.EqualValues(t, 0, counter.numInsertAccount)
 	assert.EqualValues(t, 0, counter.numInsertUser)
-	assert.EqualValues(t, 0, counter.numInsertUserClass)
+	assert.EqualValues(t, 1, counter.numInsertUserClass)
 	assert.EqualValues(t, 0, counter.numInsertUserAfh)
 }
 
-// func TestRegisterClassStudentAndGuardianExistDiffAccountId(t *testing.T) {
-// }
+func TestRegisterClassStudentAndGuardianBothDoNotExist(t *testing.T) {
+	counter := newRegisterCounter()
+	studentEmail := "student@gmail.com"
+	guardianEmail := "guardian@yahoo.com"
+	mockStudentAndGuardianEmailsExist(studentEmail, false, guardianEmail, false)
 
-// func TestRegisterClassStudentAndGuardianDoNotExist(t *testing.T) {
-// }
+	student := createMockStudent(studentEmail)
+	guardian := createMockGuardian(guardianEmail)
+	body := createBodyForRegister(student, guardian)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/register/class/classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 
-// func TestRegisterClassStudentExists(t *testing.T) {
-// }
+	assert.EqualValues(t, 1, counter.numInsertAccount)
+	assert.EqualValues(t, 2, counter.numInsertUser)
+	assert.EqualValues(t, 1, counter.numInsertUserClass)
+	assert.EqualValues(t, 0, counter.numInsertUserAfh)
+}
 
-// func TestRegisterClassGuardianExists(t *testing.T) {
-// }
+func TestRegisterClassStudentExists(t *testing.T) {
+	counter := newRegisterCounter()
+	studentEmail := "student@gmail.com"
+	guardianEmail := "guardian@yahoo.com"
+	mockStudentAndGuardianEmailsExist(studentEmail, true, guardianEmail, false)
+
+	student := createMockStudent(studentEmail)
+	guardian := createMockGuardian(guardianEmail)
+	body := createBodyForRegister(student, guardian)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/register/class/classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	assert.EqualValues(t, 0, counter.numInsertAccount)
+	assert.EqualValues(t, 1, counter.numInsertUser)
+	assert.EqualValues(t, 1, counter.numInsertUserClass)
+	assert.EqualValues(t, 0, counter.numInsertUserAfh)
+}
+
+func TestRegisterClassGuardianExists(t *testing.T) {
+	counter := newRegisterCounter()
+	studentEmail := "student@gmail.com"
+	guardianEmail := "guardian@yahoo.com"
+	mockStudentAndGuardianEmailsExist(studentEmail, false, guardianEmail, true)
+
+	student := createMockStudent(studentEmail)
+	guardian := createMockGuardian(guardianEmail)
+	body := createBodyForRegister(student, guardian)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/register/class/classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	assert.EqualValues(t, 0, counter.numInsertAccount)
+	assert.EqualValues(t, 1, counter.numInsertUser)
+	assert.EqualValues(t, 1, counter.numInsertUserClass)
+	assert.EqualValues(t, 0, counter.numInsertUserAfh)
+}
 
 // Test RegisterAfh
 
-// func TestRegisterAfhStudentAndGuardianExist(t *testing.T) {
-// }
+func TestRegisterAfhStudentAndGuardianBothExist(t *testing.T) {
+	counter := newRegisterCounter()
+	studentEmail := "student@gmail.com"
+	guardianEmail := "guardian@yahoo.com"
+	mockStudentAndGuardianEmailsExist(studentEmail, true, guardianEmail, true)
 
-// func TestRegisterAfhStudentAndGuardianDoNotExist(t *testing.T) {
-// }
+	student := createMockStudent(studentEmail)
+	guardian := createMockGuardian(guardianEmail)
+	body := createBodyForRegister(student, guardian)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/register/afh/1", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	assert.EqualValues(t, 0, counter.numInsertAccount)
+	assert.EqualValues(t, 0, counter.numInsertUser)
+	assert.EqualValues(t, 0, counter.numInsertUserClass)
+	assert.EqualValues(t, 1, counter.numInsertUserAfh)
+}
+
+func TestRegisterAfhStudentAndGuardianBothDoNotExist(t *testing.T) {
+	counter := newRegisterCounter()
+	studentEmail := "student@gmail.com"
+	guardianEmail := "guardian@yahoo.com"
+	mockStudentAndGuardianEmailsExist(studentEmail, false, guardianEmail, false)
+
+	student := createMockStudent(studentEmail)
+	guardian := createMockGuardian(guardianEmail)
+	body := createBodyForRegister(student, guardian)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/register/afh/1", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	assert.EqualValues(t, 1, counter.numInsertAccount)
+	assert.EqualValues(t, 2, counter.numInsertUser)
+	assert.EqualValues(t, 0, counter.numInsertUserClass)
+	assert.EqualValues(t, 1, counter.numInsertUserAfh)
+}
+
+// Helper methods
 
 func mockStudentAndGuardianEmailsExist(studentEmail string, studentExists bool, guardianEmail string, guardianExists bool) {
 	testUtils.UserRepo.MockSelectByEmail = func(ctx context.Context, email string) (domains.User, error) {
@@ -75,15 +149,16 @@ func mockStudentAndGuardianEmailsExist(studentEmail string, studentExists bool, 
 	repos.UserRepo = &testUtils.UserRepo
 }
 
-func mockAccountRepoInsert(counter RegisterRepoCount) {
+func mockAccountRepoInsert(counter *RegisterRepoCount) {
 	testUtils.AccountRepo.MockInsertWithUser = func(context.Context, domains.Account, domains.User) (uint, error) {
 		counter.numInsertAccount++
+		counter.numInsertUser++
 		return 1, nil
 	}
 	repos.AccountRepo = &testUtils.AccountRepo
 }
 
-func mockUserRepoInsert(counter RegisterRepoCount) {
+func mockUserRepoInsert(counter *RegisterRepoCount) {
 	testUtils.UserRepo.MockInsert = func(context.Context, domains.User) (uint, error) {
 		counter.numInsertUser++
 		return 1, nil
@@ -91,7 +166,7 @@ func mockUserRepoInsert(counter RegisterRepoCount) {
 	repos.UserRepo = &testUtils.UserRepo
 }
 
-func mockUserClassRepoInsert(counter RegisterRepoCount) {
+func mockUserClassRepoInsert(counter *RegisterRepoCount) {
 	testUtils.UserClassRepo.MockInsert = func(context.Context, domains.UserClass) (uint, error) {
 		counter.numInsertUserClass++
 		return 1, nil
@@ -99,7 +174,7 @@ func mockUserClassRepoInsert(counter RegisterRepoCount) {
 	repos.UserClassRepo = &testUtils.UserClassRepo
 }
 
-func mockUserAfhRepoInsert(counter RegisterRepoCount) {
+func mockUserAfhRepoInsert(counter *RegisterRepoCount) {
 	testUtils.UserAfhRepo.MockInsert = func(context.Context, domains.UserAfh) (uint, error) {
 		counter.numInsertUserAfh++
 		return 1, nil
@@ -107,18 +182,18 @@ func mockUserAfhRepoInsert(counter RegisterRepoCount) {
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 }
 
-func newRegisterCounter() RegisterRepoCount {
+func newRegisterCounter() *RegisterRepoCount {
 	counter := RegisterRepoCount{
 		numInsertAccount:   0,
 		numInsertUser:      0,
 		numInsertUserClass: 0,
 		numInsertUserAfh:   0,
 	}
-	mockAccountRepoInsert(counter)
-	mockUserRepoInsert(counter)
-	mockUserClassRepoInsert(counter)
-	mockUserAfhRepoInsert(counter)
-	return counter
+	mockAccountRepoInsert(&counter)
+	mockUserRepoInsert(&counter)
+	mockUserClassRepoInsert(&counter)
+	mockUserAfhRepoInsert(&counter)
+	return &counter
 }
 
 func createMockStudent(email string) domains.User {

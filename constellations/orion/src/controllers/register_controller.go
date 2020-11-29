@@ -104,14 +104,7 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 	guardianEmail := guardianJson.Email
 
 	student, errStudent := repos.UserRepo.SelectByEmail(ctx, studentEmail)
-	if errStudent != nil {
-		return RegisteredUsers{}, errStudent
-	}
 	guardian, errGuardian := repos.UserRepo.SelectByEmail(ctx, guardianEmail)
-	if errGuardian != nil {
-		return RegisteredUsers{}, errGuardian
-	}
-
 	studentFound := errStudent == nil
 	guardianFound := errGuardian == nil
 
@@ -130,6 +123,9 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 	}
 
 	if studentFound && guardianFound {
+		logger.Info("Both User and Guardian found for registration!", logger.Fields{
+			"accountId": accountId,
+		})
 		if student.AccountId != guardian.AccountId {
 			logger.Warn("Warning: Student and Guardian have different accountIds", logger.Fields{
 				"studentAccountId":  student.AccountId,
@@ -145,21 +141,25 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 
 	// If both student & guardian emails are not found, create a new account
 	if !studentFound && !guardianFound {
-		// Create Account
+		logger.Message("Both Guardian and Student not found. Creating new account...")
 		account := domains.Account{
 			PrimaryEmail: guardian.Email,
 			Password:     "automatic",
 		}
 		newAccountId, err := repos.AccountRepo.InsertWithUser(ctx, account, guardianJson)
 		if err != nil {
-			return RegisteredUsers{}, errGuardian
+			return RegisteredUsers{}, err
 		}
 		accountId = newAccountId
+		guardianFound = true // guardian has just been created
 	}
 
 	// If guardian user does not exist,
 	// insert guardian as new user with the same accountId as the student's
 	if !guardianFound {
+		logger.Info("Creating new Guardian user for account", logger.Fields{
+			"accountId": accountId,
+		})
 		guardianJson.AccountId = accountId
 		newGuardianId, err := repos.UserRepo.Insert(ctx, guardianJson)
 		if err != nil {
@@ -171,6 +171,9 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 	// If student user does not exist,
 	// insert student as new user with the same accountId as the guardian's
 	if !studentFound {
+		logger.Info("Creating new Student user for account", logger.Fields{
+			"accountId": accountId,
+		})
 		studentJson.AccountId = accountId
 		newStudentId, err := repos.UserRepo.Insert(ctx, studentJson)
 		if err != nil {

@@ -14,15 +14,78 @@ import (
 
 func TestE2ERegisterClassStudentAndGuardianDoNotExist(t *testing.T) {
 	utils.CreateFullClassAndAfhEnvironment(t)
-	// utils.SendCreateAccountUser(t, true, AccountTonyStark, UserTonyStark)	// userId 1, accountId 1
-	// utils.SendCreateUser(t, true, UserMorganStark)							// userId 2, accountId 1
+	// No account/user to begin with
 
 	body := createBodyForRegister(utils.UserMorganStark, utils.UserTonyStark)
 	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/register/class/program1_2020_spring_classA", body)
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 
-	// Validate User & Account info is correct
+	validateAccountUsersAreCorrect(t)
+	validateUserClassIsCorrect(t)
+	utils.ResetAllTables(t)
+}
+
+func TestE2ERegisterClassStudentAndGuardianBothExist(t *testing.T) {
+	utils.CreateFullClassAndAfhEnvironment(t)
+	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark) // userId 1, accountId 1
+	utils.SendCreateUser(t, true, utils.UserMorganStark)                              // userId 2, accountId 1
+
+	body := createBodyForRegister(utils.UserMorganStark, utils.UserTonyStark)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/register/class/program1_2020_spring_classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	validateAccountUsersAreCorrect(t)
+	validateUserClassIsCorrect(t)
+	utils.ResetAllTables(t)
+}
+
+func TestE2ERegisterClassOnlyStudentExists(t *testing.T) {
+	utils.CreateFullClassAndAfhEnvironment(t)
+
+	// Create an account with guardian and student
+	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark) // userId 1, accountId 1
+	utils.SendCreateUser(t, true, utils.UserMorganStark)                              // userId 2, accountId 1
+
+	// Register using an unrecognized guardian
+	body := createBodyForRegister(utils.UserMorganStark, utils.UserPepperPotts) // userId 3, accountId 1
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/register/class/program1_2020_spring_classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	// Validate account & users are correct (3 users, all with same accountId)
 	recorder = utils.SendHttpRequest(t, http.MethodGet, "/api/users/new", nil)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, "tony@stark.com", users[0].Email)
+	assert.EqualValues(t, "morgan@stark.com", users[1].Email)
+	assert.EqualValues(t, "pepper@stark.com", users[2].Email)
+	assert.EqualValues(t, 1, users[0].AccountId)
+	assert.EqualValues(t, 1, users[1].AccountId)
+	assert.EqualValues(t, 1, users[2].AccountId)
+	assert.EqualValues(t, 3, len(users))
+	validateUserClassIsCorrect(t)
+	utils.ResetAllTables(t)
+}
+
+func TestE2ERegisterClassOnlyGuardianExists(t *testing.T) {
+	utils.CreateFullClassAndAfhEnvironment(t)
+	// Create an account with guardian and student
+	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark) // userId 1, accountId 1
+
+	// Register using an unrecorgnized student
+	body := createBodyForRegister(utils.UserMorganStark, utils.UserTonyStark)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/register/class/program1_2020_spring_classA", body)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
+
+	validateAccountUsersAreCorrect(t)
+	validateUserClassIsCorrect(t)
+	utils.ResetAllTables(t)
+}
+
+func validateAccountUsersAreCorrect(t *testing.T) {
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/users/new", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	var users []domains.User
 	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
@@ -32,9 +95,10 @@ func TestE2ERegisterClassStudentAndGuardianDoNotExist(t *testing.T) {
 	assert.EqualValues(t, "morgan@stark.com", users[1].Email)
 	assert.EqualValues(t, users[0].AccountId, users[1].AccountId)
 	assert.EqualValues(t, 2, len(users))
+}
 
-	// Validate UserClass info is correct
-	recorder = utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/2", nil)
+func validateUserClassIsCorrect(t *testing.T) {
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/user-classes/user/2", nil)
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 	var userClasses []domains.UserClass
 	if err := json.Unmarshal(recorder.Body.Bytes(), &userClasses); err != nil {
@@ -43,9 +107,7 @@ func TestE2ERegisterClassStudentAndGuardianDoNotExist(t *testing.T) {
 	assert.EqualValues(t, 2, userClasses[0].UserId)
 	assert.EqualValues(t, 1, userClasses[0].AccountId)
 	assert.EqualValues(t, "program1_2020_spring_classA", userClasses[0].ClassId)
-	assert.EqualValues(t, 2, len(userClasses))
-
-	utils.ResetAllTables(t)
+	assert.EqualValues(t, 1, len(userClasses))
 }
 
 func createBodyForRegister(student domains.User, guardian domains.User) io.Reader {
