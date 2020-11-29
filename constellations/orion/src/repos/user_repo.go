@@ -3,6 +3,7 @@ package repos
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/dbTx"
@@ -26,6 +27,7 @@ type UserRepoInterface interface {
 	SearchUsers(context.Context, string) ([]domains.User, error)
 	SelectAll(context.Context, string, int, int) ([]domains.User, error)
 	SelectById(context.Context, uint) (domains.User, error)
+	SelectByIds(context.Context, []uint) (map[uint]domains.User, error)
 	SelectByAccountId(context.Context, uint) ([]domains.User, error)
 	SelectByEmail(context.Context, string) (domains.User, error)
 	SelectByNew(context.Context) ([]domains.User, error)
@@ -103,6 +105,24 @@ func (ur *userRepo) SelectById(ctx context.Context, id uint) (domains.User, erro
 		return domains.User{}, err
 	}
 	return user, nil
+}
+
+func (ur *userRepo) SelectByIds(ctx context.Context, ids []uint) (map[uint]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectByIds", logger.Fields{"ids": ids})
+
+	inIds := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(ids)), ","), "[]")
+
+	tx := dbTx.New(ur.db)
+	users, err := tx.SelectManyUsers(tx.CreateStmtSelectUsersInIds(inIds))
+	if err != nil {
+		return nil, err
+	}
+
+	userMap := make(map[uint]domains.User)
+	for _, user := range users {
+		userMap[user.Id] = user
+	}
+	return userMap, nil
 }
 
 func (ur *userRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]domains.User, error) {

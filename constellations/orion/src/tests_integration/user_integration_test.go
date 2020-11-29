@@ -59,6 +59,38 @@ func TestE2ESearchUsers(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
 }
 
+// Test: Create 3 Users and GetUsersByIds
+func TestE2EGetUsersIds(t *testing.T) {
+	utils.CreateAllTestAccountsAndUsers(t)
+
+	// Validate results (first call)
+	body := strings.NewReader(`[1,2]`)
+	recorder := utils.SendHttpRequest(t, http.MethodPost, "/api/users/map", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var userMap1 map[uint]domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userMap1); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assertUser(t, utils.UserTonyStark, userMap1[1])
+	assertUser(t, utils.UserMorganStark, userMap1[2])
+	assert.EqualValues(t, 3, len(userMap1))
+
+	// Validate results (second call)
+	body = strings.NewReader(`[2,3]`)
+	recorder = utils.SendHttpRequest(t, http.MethodPost, "/api/users/map", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var userMap2 map[uint]domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userMap2); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assertUser(t, utils.UserMorganStark, userMap2[2])
+	assertUser(t, utils.UserPeterParker, userMap2[3])
+	assert.EqualValues(t, 2, len(userMap2))
+
+	utils.ResetTable(t, domains.TABLE_USERS)
+	utils.ResetTable(t, domains.TABLE_ACCOUNTS)
+}
+
 // Test: Create 3 Users and GetUserByAccountId
 func TestE2EGetUsersByAccountId(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)

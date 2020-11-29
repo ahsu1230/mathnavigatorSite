@@ -103,7 +103,7 @@ func TestSelectUser(t *testing.T) {
 //
 // Select Many By Account ID
 //
-func TestCreateStmtSelectUsersByAccountId(t *testing.T) {
+func TestSelectUsersByAccountId(t *testing.T) {
 	db, mock, repo := initUserTest(t)
 	defer db.Close()
 
@@ -120,6 +120,36 @@ func TestCreateStmtSelectUsersByAccountId(t *testing.T) {
 
 	// Validate results
 	want := []domains.User{getUser()}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select Many by array of Ids
+//
+func TestSelectUsersByIdsArray(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id IN (.+)").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectByIds(testUtils.Context, []uint{1})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := map[uint]domains.User{
+		1: getUser(),
+	}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)

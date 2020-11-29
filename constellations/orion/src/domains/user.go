@@ -2,6 +2,7 @@ package domains
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"regexp"
 	"time"
@@ -25,6 +26,14 @@ type User struct {
 	School         NullString   `json:"school" db:"school"`
 	GraduationYear NullUint     `json:"graduationYear" db:"graduation_year"`
 	Notes          NullString   `json:"notes"`
+}
+
+func (user *User) MarshalJSON() ([]byte, error) {
+	return json.Marshal(user)
+}
+
+func (user *User) UnmarshalJSON(b []byte) error {
+	return json.Unmarshal(b, &user)
 }
 
 // Class Methods
