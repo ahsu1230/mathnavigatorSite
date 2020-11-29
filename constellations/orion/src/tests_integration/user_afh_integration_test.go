@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 UserAfhs. Then get by userId
-func TestGetUserAfhsByUserId(t *testing.T) {
+func TestE2EGetUserAfhsByUserId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call GetUserAfhsByUserId()
@@ -33,7 +33,7 @@ func TestGetUserAfhsByUserId(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then update one. Then get by afhId
-func TestGetUserAfhsByAfhId(t *testing.T) {
+func TestE2EGetUserAfhsByAfhId(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Update
@@ -68,7 +68,7 @@ func TestGetUserAfhsByAfhId(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then delete, then get that one by userId and afhId
-func TestDeleteUserAfh(t *testing.T) {
+func TestE2EDeleteUserAfh(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Delete
@@ -83,7 +83,7 @@ func TestDeleteUserAfh(t *testing.T) {
 }
 
 // Create 3 UserAfhs. Then get one by userId and afhId
-func TestGetUserAfhsByBothIds(t *testing.T) {
+func TestE2EGetUserAfhsByBothIds(t *testing.T) {
 	createAllUserAfhs(t)
 
 	// Call get userAfh by both ids

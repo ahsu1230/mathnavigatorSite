@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create UserClass and Get by GetClassesByUserId()
-func TestCreateUserClass(t *testing.T) {
+func TestE2ECreateUserClass(t *testing.T) {
 	createAllUserClasses(t)
 	targetUserId := uint(3)
 	targetAccountId := uint(1)
@@ -44,7 +44,7 @@ func TestCreateUserClass(t *testing.T) {
 }
 
 // Test: Create UserClass and GetUserByClassId
-func TestGetUsersByClassId(t *testing.T) {
+func TestE2EGetUsersByClassId(t *testing.T) {
 	createAllUserClasses(t)
 	targetClassId := "program1_2020_spring_classA"
 	apiGetUrl := fmt.Sprintf("/api/user-classes/class/%s", targetClassId)
@@ -75,7 +75,7 @@ func TestGetUsersByClassId(t *testing.T) {
 }
 
 //Test: Create UserClass and GetUserByUserAndClass
-func TestGetUserClassByUserAndClass(t *testing.T) {
+func TestE2EGetUserClassByUserAndClass(t *testing.T) {
 	createAllUserClasses(t)
 	targetClassId := "program1_2020_spring_classA"
 	targetUserId := uint(3)
@@ -102,7 +102,7 @@ func TestGetUserClassByUserAndClass(t *testing.T) {
 }
 
 // Test: Update UserClass, GetByUserId()
-func TestUpdateUserClass(t *testing.T) {
+func TestE2EUpdateUserClass(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Update (Harry Potter will now attend classB as a trial)
@@ -132,7 +132,7 @@ func TestUpdateUserClass(t *testing.T) {
 }
 
 // Test: Create 1 User, Delete it, GetByUserId()
-func TestDeleteUserClass(t *testing.T) {
+func TestE2EDeleteUserClass(t *testing.T) {
 	createAllUserClasses(t)
 
 	// Get

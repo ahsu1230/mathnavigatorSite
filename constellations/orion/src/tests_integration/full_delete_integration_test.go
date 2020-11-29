@@ -20,7 +20,7 @@ import (
 // The class, afh, location, program, semester are still intact
 // The account is not found
 // userA and userB are not found
-func TestFullDeleteAccount(t *testing.T) {
+func TestE2EFullDeleteAccount(t *testing.T) {
 	// Create Environment
 	createCrossEnvironment(t)
 	// accountId: 1, userId: 1
@@ -74,7 +74,7 @@ func TestFullDeleteAccount(t *testing.T) {
 // The class, afh, location, program, semester are still intact
 // The account is intact with userA
 // userB is not found
-func TestFullDeleteUser(t *testing.T) {
+func TestE2EFullDeleteUser(t *testing.T) {
 	// Create Environment
 	createCrossEnvironment(t)
 	// accountId: 1, userId: 1

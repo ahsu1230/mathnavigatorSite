@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func TestMain(m *testing.M) {
+func TestE2EMain(m *testing.M) {
 	utils.SetupTestEnvironment(m)
 }

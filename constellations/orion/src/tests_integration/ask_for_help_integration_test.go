@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Ask For Helps and GetAll()
-func TestCreateAskForHelps(t *testing.T) {
+func TestE2ECreateAskForHelps(t *testing.T) {
 	createLocations(t)
 
 	start1 := time.Now().UTC()
@@ -56,7 +56,7 @@ func TestCreateAskForHelps(t *testing.T) {
 }
 
 // Test: Create 1 Ask For Help, Update, Get By ID
-func TestUpdateAFH(t *testing.T) {
+func TestE2EUpdateAFH(t *testing.T) {
 	utils.ResetTable(t, domains.TABLE_ASKFORHELP)
 	utils.ResetTable(t, domains.TABLE_LOCATIONS)
 	createLocations(t)
@@ -100,7 +100,7 @@ func TestUpdateAFH(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Delete it, GetById()
-func TestDeleteAFH(t *testing.T) {
+func TestE2EDeleteAFH(t *testing.T) {
 	createLocations(t)
 
 	start1 := time.Now().UTC()
@@ -122,7 +122,7 @@ func TestDeleteAFH(t *testing.T) {
 }
 
 // Test: Create 1 AFH, Archive it, GetById()
-func TestArchiveAFH(t *testing.T) {
+func TestE2EArchiveAFH(t *testing.T) {
 	createLocations(t)
 
 	start1 := time.Now().UTC()

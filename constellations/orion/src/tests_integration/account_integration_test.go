@@ -12,7 +12,7 @@ import (
 )
 
 // Create account with user
-func TestCreateAccountAndUserSuccess(t *testing.T) {
+func TestE2ECreateAccountAndUserSuccess(t *testing.T) {
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
 	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/accounts/account/1", nil)
@@ -29,7 +29,7 @@ func TestCreateAccountAndUserSuccess(t *testing.T) {
 }
 
 // Create 1 account then get by id
-func TestSearchAccountById(t *testing.T) {
+func TestE2ESearchAccountById(t *testing.T) {
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
 	// Retrieve account (by id)
@@ -47,7 +47,7 @@ func TestSearchAccountById(t *testing.T) {
 }
 
 // Test: Create 3 Accounts and search by pagination
-func TestSearchAccountByPrimaryEmail(t *testing.T) {
+func TestE2ESearchAccountByPrimaryEmail(t *testing.T) {
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
 	// Retrieve account (by email)
@@ -68,7 +68,7 @@ func TestSearchAccountByPrimaryEmail(t *testing.T) {
 }
 
 // Test: Create 3 Accounts and check each Account
-func TestGetAccountById(t *testing.T) {
+func TestE2EGetAccountById(t *testing.T) {
 	utils.CreateAllTestAccountsAndUsers(t)
 	var account domains.Account
 
@@ -101,7 +101,7 @@ func TestGetAccountById(t *testing.T) {
 }
 
 // Test: Create 2 accounts with the same email
-func TestCreateSameEmailAccountsFailure(t *testing.T) {
+func TestE2ECreateSameEmailAccountsFailure(t *testing.T) {
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
 	// Create account with same email
@@ -118,7 +118,7 @@ func TestCreateSameEmailAccountsFailure(t *testing.T) {
 }
 
 // Test: Create 3 Accounts, GetNegativeBalances()
-func TestGetNegativeBalanceAccounts(t *testing.T) {
+func TestE2EGetNegativeBalanceAccounts(t *testing.T) {
 	// Create 3 accounts and 5 transactions, accounts 1 and 2 are negative
 	utils.CreateAllTestAccountsAndUsers(t)
 	utils.SendCreateTransaction(t, true, 1, domains.PAY_PAYPAL, 100, "notes1")
@@ -150,7 +150,7 @@ func TestGetNegativeBalanceAccounts(t *testing.T) {
 }
 
 // Test: Create 1 Account, Update it, GetAccountById()
-func TestUpdateAccount(t *testing.T) {
+func TestE2EUpdateAccount(t *testing.T) {
 	// Create 1 Account
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 
@@ -179,7 +179,7 @@ func TestUpdateAccount(t *testing.T) {
 }
 
 // Test: Create 1 Account, Delete it, GetByAccountId()
-func TestDeleteAccount(t *testing.T) {
+func TestE2EDeleteAccount(t *testing.T) {
 	// Create
 	utils.SendCreateAccountUser(t, true, utils.AccountTonyStark, utils.UserTonyStark)
 

@@ -12,7 +12,7 @@ import (
 )
 
 // Test: Create 3 Locations and GetAll()
-func TestCreateLocations(t *testing.T) {
+func TestE2ECreateLocations(t *testing.T) {
 	utils.SendCreateLocation(t, true, "loc1", "High School C", "4040 Location Rd", "City", "MA", "77294", "Room 1", false)
 	utils.SendCreateLocation(t, true, "loc2", "High School D", "4040 Location Ave", "Dity", "MD", "77294-1243", "Room 2", false)
 	utils.SendCreateLocation(t, true, "zoom", "Zoom Conference", "", "", "", "", "", true)
@@ -44,7 +44,7 @@ func TestCreateLocations(t *testing.T) {
 }
 
 // Test: Create 2 Locations with same locationId. Then GetByLocationId()
-func TestUniqueLocationId(t *testing.T) {
+func TestE2EUniqueLocationId(t *testing.T) {
 	utils.SendCreateLocation(
 		t,
 		true,
@@ -90,7 +90,7 @@ func TestUniqueLocationId(t *testing.T) {
 }
 
 // Test: Create 1 Location, Update it, GetByLocationId()
-func TestUpdateLocation(t *testing.T) {
+func TestE2EUpdateLocation(t *testing.T) {
 	// Create 1 Location
 	utils.SendCreateLocation(
 		t,
@@ -141,7 +141,7 @@ func TestUpdateLocation(t *testing.T) {
 }
 
 // Test: Create 1 Location, Delete it, GetByLocationId()
-func TestDeleteLocation(t *testing.T) {
+func TestE2EDeleteLocation(t *testing.T) {
 	// Create
 	utils.SendCreateLocation(
 		t,
