@@ -3,13 +3,14 @@ import React from "react";
 require("./accountTransactions.sass");
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { sortBy } from "lodash";
 import classnames from "classnames";
 import API from "../../api.js";
-import RowCardBasic from "../../common/rowCards/rowCardBasic.js";
-import RowCardColumns from "../../common/rowCards/rowCardColumns.js";
 import RowCardSlim from "../../common/rowCards/rowCardSlim.js";
 import { formatCurrency } from "../../common/displayUtils.js";
+import {
+    getAccountBalance,
+    sortTransactionsLatestFirst,
+} from "../../common/transactionUtils.js";
 
 export default class AccountTransactions extends React.Component {
     state = {
@@ -24,10 +25,9 @@ export default class AccountTransactions extends React.Component {
                 const transactions = res.data || [];
                 this.setState({
                     transactions: transactions,
-                    sortedTransactions: sortBy(
-                        transactions,
-                        "createdAt"
-                    ).reverse(),
+                    sortedTransactions: sortTransactionsLatestFirst(
+                        transactions
+                    ),
                 });
             })
             .catch((err) => {
@@ -38,10 +38,7 @@ export default class AccountTransactions extends React.Component {
     render() {
         const addTransactionUrl =
             "/account/" + this.props.accountId + "/transaction/add";
-        const totalBalance = this.state.transactions.reduce(
-            (accum, curr) => accum + curr.amount,
-            0
-        );
+        const totalBalance = getAccountBalance(this.state.transactions);
         const transactions = this.state.sortedTransactions.map(
             (transaction, index) => {
                 const editUrl =
