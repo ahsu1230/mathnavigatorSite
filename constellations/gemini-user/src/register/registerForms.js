@@ -97,11 +97,10 @@ export class RegisterFormStudent extends React.Component {
                         className="grade"
                         title="Grade"
                         value={this.props.student.grade}
-                        placeholder="i.e. Alice Kim"
                         onChangeCallback={(e) =>
                             this.props.onChangeStateValue(
                                 "studentGrade",
-                                e.target.value
+                                parseInt(e.target.value)
                             )
                         }
                         validators={[
@@ -113,7 +112,7 @@ export class RegisterFormStudent extends React.Component {
                                         parseInt(grade) <= 12
                                     );
                                 },
-                                message: "You must input a valid grade.",
+                                message: "You must input a number as a grade.",
                             },
                         ]}
                     />
@@ -124,7 +123,7 @@ export class RegisterFormStudent extends React.Component {
                         onChangeCallback={(e) =>
                             this.props.onChangeStateValue(
                                 "studentGraduationYear",
-                                e.target.value
+                                parseInt(e.target.value)
                             )
                         }
                         validators={[
