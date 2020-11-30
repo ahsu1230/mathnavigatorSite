@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
@@ -55,7 +56,46 @@ func TestGetUserSuccess(t *testing.T) {
 	assert.EqualValues(t, true, user.IsGuardian)
 	assert.EqualValues(t, 0, user.AccountId)
 	assert.EqualValues(t, "notes1", user.Notes.String)
+}
 
+// TODO (aaron) TEST IGNORED - Need to fix the JSON Unmarshaling for nested structs?
+func IgnoreTestGetUsersByIds(t *testing.T) {
+	testUtils.UserRepo.MockSelectByIds = func(context.Context, []uint) (map[uint]domains.User, error) {
+		userId := uint(1)
+		userMap := map[uint]domains.User{
+			userId: testUtils.CreateMockUser(
+				userId,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				true,
+				0,
+				"notes1",
+			),
+		}
+		return userMap, nil
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create new HTTP request to endpoint
+	body := strings.NewReader(`[1]`)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/map", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	// Validate results
+	var userMap map[uint]domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userMap); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, userMap[1].Id)
+	assert.EqualValues(t, "John", userMap[1].FirstName)
+	assert.EqualValues(t, "Smith", userMap[1].LastName)
+	assert.EqualValues(t, "john_smith@example.com", userMap[1].Email)
+	_, found := userMap[2]
+	assert.EqualValues(t, false, found)
+	assert.EqualValues(t, 1, len(userMap))
 }
 
 func TestGetUsersByAccountSuccess(t *testing.T) {

@@ -48,6 +48,10 @@ func (dbTx *DbTx) CreateStmtSelectUserById() string {
 	return "SELECT * FROM users WHERE id=?"
 }
 
+func (dbTx *DbTx) CreateStmtSelectUsersInIds(ids string) string {
+	return "SELECT * FROM users WHERE id IN (" + ids + ")"
+}
+
 func (dbTx *DbTx) CreateStmtSelectUsersByAccountId() string {
 	return "SELECT * FROM users WHERE account_id=?"
 }

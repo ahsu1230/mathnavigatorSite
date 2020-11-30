@@ -115,6 +115,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiUsers.GET("/new", controllers.GetNewUsers)
 		apiUsers.GET("/account/:accountId", controllers.GetUsersByAccountId)
 		apiUsers.GET("/user/:id", controllers.GetUserById)
+		apiUsers.POST("/map", controllers.GetUsersByIds)
 		apiUsers.POST("/search", controllers.SearchUsers)
 		apiUsers.POST("/create", controllers.CreateUser)
 		apiUsers.POST("/user/:id", controllers.UpdateUser)

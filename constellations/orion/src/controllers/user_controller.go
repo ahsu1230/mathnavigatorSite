@@ -57,6 +57,27 @@ func GetUserById(c *gin.Context) {
 	c.JSON(http.StatusOK, &user)
 }
 
+func GetUsersByIds(c *gin.Context) {
+	utils.LogControllerMethod(c, "userController.GetUsersByIds")
+
+	// Parse incoming parameters as array of ids
+	var ids []uint
+	if err := c.ShouldBindJSON(&ids); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
+
+	ctx := utils.RetrieveContext(c)
+	users, err := repos.UserRepo.SelectByIds(ctx, ids)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &users)
+}
+
 func GetUsersByAccountId(c *gin.Context) {
 	utils.LogControllerMethod(c, "userController.GetUsersByAccountId")
 

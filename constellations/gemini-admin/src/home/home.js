@@ -8,6 +8,7 @@ import { HomeTabSectionClasses } from "./homeClasses.js";
 import { HomeTabSectionUsers } from "./homeUsers.js";
 import { HomeTabSectionRegistrations } from "./homeRegistrations.js";
 import { HomeTabSectionAccounts } from "./homeAccounts.js";
+import { HomeTabSectionLastPaid } from "./homeLastPaid.js";
 
 export class HomePage extends React.Component {
     state = {
@@ -75,6 +76,7 @@ export class HomePage extends React.Component {
                         <Tab>
                             Unpaid Accounts ({this.state.unpaidAccounts.length})
                         </Tab>
+                        <Tab>Last Paid By Class</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -95,6 +97,9 @@ export class HomePage extends React.Component {
                         <HomeTabSectionAccounts
                             unpaidAccounts={this.state.unpaidAccounts}
                         />
+                    </TabPanel>
+                    <TabPanel>
+                        <HomeTabSectionLastPaid />
                     </TabPanel>
                 </Tabs>
             </div>

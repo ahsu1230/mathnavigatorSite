@@ -36,11 +36,14 @@ func (transaction *Transaction) Validate() error {
 	amount := transaction.Amount
 	paymentType := transaction.Type
 
-	if paymentType != PAY_PAYPAL &&
-		paymentType != PAY_CHECK &&
-		paymentType != PAY_CASH &&
-		paymentType != CHARGE &&
-		paymentType != REFUND {
+	var validType bool
+	for _, transType := range ALL_TRANSACTION_TYPES {
+		if paymentType == transType {
+			validType = true
+		}
+	}
+
+	if !validType {
 		return fmt.Errorf(messageFmt, "Unrecognized payment type")
 	}
 
