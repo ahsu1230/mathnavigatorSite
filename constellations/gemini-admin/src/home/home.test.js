@@ -16,7 +16,7 @@ describe("Home Page", () => {
             "Administrator Dashboard"
         );
 
-        expect(component.find("Tab")).toHaveLength(4);
-        expect(component.find("TabPanel")).toHaveLength(4);
+        expect(component.find("Tab")).toHaveLength(5);
+        expect(component.find("TabPanel")).toHaveLength(5);
     });
 });
