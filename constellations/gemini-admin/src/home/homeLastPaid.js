@@ -12,6 +12,7 @@ import {
     sortTransactionsLatestFirst,
 } from "../common/transactionUtils.js";
 import { getFullName } from "../common/userUtils.js";
+import SrcArrowDown from "../../assets/triangle_down_black.svg";
 
 export class HomeTabSectionLastPaid extends React.Component {
     state = {
@@ -153,13 +154,13 @@ class UserClassRow extends React.Component {
         const balance = getAccountBalance(transactions);
         return (
             <div className="last-paid-user-row">
+                <h3>{getFullName(user)}</h3>
                 <div className="info-container">
                     <div>
-                        <h3>{getFullName(user)}</h3>
                         <div className="line">Email: {user.email}</div>
                         <div className="line">
                             Enrollment Status: {userClass.state}{" "}
-                            {moment(userClass.updatedAt).fromNow()}
+                            {moment(userClass.updatedAt).format("l")}
                         </div>
                     </div>
                     <div>
@@ -174,9 +175,15 @@ class UserClassRow extends React.Component {
                         </h4>
                         <Link to={viewAccountUrl}>View Account Details</Link>
                         <button onClick={this.toggleExpand}>
-                            {expand
-                                ? "Hide Latest Transactions"
-                                : "Show Latest Transactions"}
+                            <img
+                                src={SrcArrowDown}
+                                className={expand ? "flip" : ""}
+                            />
+                            {expand ? (
+                                <span>Collapse</span>
+                            ) : (
+                                <span>Expand</span>
+                            )}
                         </button>
                     </div>
                 </div>
@@ -203,7 +210,7 @@ class LastTransactions extends React.Component {
                     <div>
                         <h4>Last Few Transactions</h4>
                         {lastFewTransactions}
-                        <p>
+                        <p className="note">
                             To see more transactions for this account, click on
                             "View Account Details"
                         </p>

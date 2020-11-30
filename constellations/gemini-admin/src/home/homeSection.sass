@@ -24,10 +24,10 @@
         margin: $spacing2x 0
         line-height: $lineHeight1
         font-size: $fontSize1
-        color: $colorGrayText
+        color: $colorTurquoise
 
     h4
-        margin: $spacing2x 0 $spacing1x
+        margin: $spacing1x 0
 
         &.warning
             color: $colorOrange
@@ -36,20 +36,32 @@
         margin: $spacing1x 0
 
     button
-        display: block
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        width: 100%
         margin: $spacing1x 0
         padding: 0
         background: transparent
-        color: $colorTurquoise
+        color: $colorGrayDark
 
         &:hover
             text-decoration: underline
 
+        img
+            width: 20px
+            margin-right: $spacing1x
+
+            &.flip
+                transform: rotate(180deg)
+
     .transact-container
         display: flex
         justify-content: space-between
-        padding: $spacing1x 0
+        padding: $spacing2x 0
         border-bottom: 1px solid $colorGrayLight
+    p
+        margin: $spacing2x 0 $spacing1x
 
-        p
-            margin: $spacing1x 0
+        &.note
+            color: $colorGrayText
