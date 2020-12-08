@@ -3,106 +3,109 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllPrograms(c *gin.Context) {
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	programList, err := repos.ProgramRepo.SelectAll(publishedOnly)
+	utils.LogControllerMethod(c, "programController.GetAllPrograms")
+	ctx := utils.RetrieveContext(c)
+	programList, err := repos.ProgramRepo.SelectAll(ctx)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, programList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, programList)
 }
 
 func GetProgramById(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.GetProgramById")
 	// Incoming parameters
 	programId := c.Param("programId")
 
-	program, err := repos.ProgramRepo.SelectByProgramId(programId)
+	ctx := utils.RetrieveContext(c)
+	program, err := repos.ProgramRepo.SelectByProgramId(ctx, programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &program)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, &program)
 }
 
 func CreateProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.CreateProgram")
 	// Incoming JSON
 	var programJson domains.Program
-	c.BindJSON(&programJson)
-
-	if err := programJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&programJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.ProgramRepo.Insert(programJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := programJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.ProgramRepo.Insert(ctx, programJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.UpdateProgram")
 	// Incoming JSON & Parameters
 	programId := c.Param("programId")
 	var programJson domains.Program
-	c.BindJSON(&programJson)
-
-	if err := programJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&programJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.ProgramRepo.Update(programId, programJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := programJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-	return
-}
 
-func PublishPrograms(c *gin.Context) {
-	// Incoming JSON
-	var programIdsJson []string
-	c.BindJSON(&programIdsJson)
-
-	err := repos.ProgramRepo.Publish(programIdsJson)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Update(ctx, programId, programJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusOK)
 }
 
 func DeleteProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.DeleteProgram")
 	// Incoming Parameters
 	programId := c.Param("programId")
 
-	err := repos.ProgramRepo.Delete(programId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Delete(ctx, programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
+}
+
+func GetAllProgramFeatured(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.GetAllProgramFeatured")
+	c.JSON(http.StatusOK, domains.ALL_PROGRAM_FEATURED)
 }

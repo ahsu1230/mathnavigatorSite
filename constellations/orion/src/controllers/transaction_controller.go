@@ -3,88 +3,130 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllTransactions(c *gin.Context) {
-	transactionList, err := repos.TransactionRepo.SelectAll()
+func GetTransactionsByAccountId(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetTransactionsByAccountId")
+	accountId, err := utils.ParseParamId(c, "accountId")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, transactionList)
+		c.Error(appErrors.WrapParse(err, c.Param("accountId")))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	transactionList, err := repos.TransactionRepo.SelectByAccountId(ctx, accountId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &transactionList)
 }
 
 func GetTransactionById(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetTransactionById")
 	//Incoming params
-	id := ParseParamId(c)
-
-	transaction, err := repos.TransactionRepo.SelectById(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &transaction)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	transaction, err := repos.TransactionRepo.SelectById(ctx, id)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &transaction)
 }
 
 func CreateTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.CreateTransaction")
 	//JSON
 	var transactionJson domains.Transaction
-	c.BindJSON(&transactionJson)
-
-	if err := transactionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&transactionJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.TransactionRepo.Insert(transactionJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := transactionJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.TransactionRepo.Insert(ctx, transactionJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.UpdateTransaction")
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
-	var transactionJson domains.Transaction
-	c.BindJSON(&transactionJson)
-
-	if err := transactionJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
 		return
 	}
 
-	err := repos.TransactionRepo.Update(id, transactionJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	var transactionJson domains.Transaction
+	if err := c.ShouldBindJSON(&transactionJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
+
+	if err := transactionJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+
+	ctx := utils.RetrieveContext(c)
+	if err := repos.TransactionRepo.Update(ctx, id, transactionJson); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteTransaction(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.DeleteTransaction")
 	// Incoming Parameters
-	id := ParseParamId(c)
-
-	err := repos.TransactionRepo.Delete(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	if err := repos.TransactionRepo.Delete(ctx, id); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
 }
 
 func GetAllPaymentTypes(c *gin.Context) {
+	utils.LogControllerMethod(c, "transactionController.GetAllPaymentTypes")
 	c.JSON(http.StatusOK, domains.ALL_TRANSACTION_TYPES)
 }

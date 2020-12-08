@@ -1,12 +1,13 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
-	"errors"
-	"fmt"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -18,37 +19,33 @@ type sessionRepo struct {
 }
 
 type SessionRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAllByClassId(string, bool) ([]domains.Session, error)
-	SelectAllUnpublished() ([]domains.Session, error)
-	SelectBySessionId(uint) (domains.Session, error)
-	Insert([]domains.Session) error
-	Update(uint, domains.Session) error
-	Publish([]uint) error
-	Delete([]uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectAllByClassId(context.Context, string) ([]domains.Session, error)
+	SelectBySessionId(context.Context, uint) (domains.Session, error)
+	Insert(context.Context, []domains.Session) ([]uint, []error)
+	Update(context.Context, uint, domains.Session) error
+	Delete(context.Context, []uint) []error
 }
 
-func (sr *sessionRepo) Initialize(db *sql.DB) {
+func (sr *sessionRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "sessionRepo.Initialize", logger.Fields{})
 	sr.db = db
 }
 
-func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([]domains.Session, error) {
+func (sr *sessionRepo) SelectAllByClassId(ctx context.Context, classId string) ([]domains.Session, error) {
+	utils.LogWithContext(ctx, "sessionRepo.SelectAllByClassId", logger.Fields{"classId": classId})
 	results := make([]domains.Session, 0)
 
-	var statement string
-	if publishedOnly {
-		statement = "SELECT * FROM sessions WHERE class_id=? AND published_at IS NOT NULL ORDER BY starts_at ASC"
-	} else {
-		statement = "SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC"
-	}
+	statement := "SELECT * FROM sessions WHERE class_id=? ORDER BY starts_at ASC"
+
 	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query(classId)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, classId)
 	}
 	defer rows.Close()
 
@@ -59,7 +56,6 @@ func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([
 			&session.CreatedAt,
 			&session.UpdatedAt,
 			&session.DeletedAt,
-			&session.PublishedAt,
 			&session.ClassId,
 			&session.StartsAt,
 			&session.EndsAt,
@@ -73,72 +69,40 @@ func (sr *sessionRepo) SelectAllByClassId(classId string, publishedOnly bool) ([
 	return results, nil
 }
 
-func (sr *sessionRepo) SelectAllUnpublished() ([]domains.Session, error) {
-	results := make([]domains.Session, 0)
-
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE published_at IS NULL")
+func (sr *sessionRepo) SelectBySessionId(ctx context.Context, id uint) (domains.Session, error) {
+	utils.LogWithContext(ctx, "sessionRepo.SelectBySessionId", logger.Fields{"id": id})
+	statement := "SELECT * FROM sessions WHERE id=?"
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var session domains.Session
-		if errScan := rows.Scan(
-			&session.Id,
-			&session.CreatedAt,
-			&session.UpdatedAt,
-			&session.DeletedAt,
-			&session.PublishedAt,
-			&session.ClassId,
-			&session.StartsAt,
-			&session.EndsAt,
-			&session.Canceled,
-			&session.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, session)
-	}
-	return results, nil
-}
-
-func (sr *sessionRepo) SelectBySessionId(id uint) (domains.Session, error) {
-	stmt, err := sr.db.Prepare("SELECT * FROM sessions WHERE id=?")
-	if err != nil {
-		return domains.Session{}, err
+		return domains.Session{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	var session domains.Session
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&session.Id,
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.DeletedAt,
-		&session.PublishedAt,
 		&session.ClassId,
 		&session.StartsAt,
 		&session.EndsAt,
 		&session.Canceled,
-		&session.Notes)
+		&session.Notes); err != nil {
+		return domains.Session{}, appErrors.WrapDbExec(err, statement, id)
+	}
 
-	return session, errScan
+	return session, nil
 }
 
-func (sr *sessionRepo) Insert(sessions []domains.Session) error {
-	var errorString string
-
+func (sr *sessionRepo) Insert(ctx context.Context, sessions []domains.Session) ([]uint, []error) {
+	utils.LogWithContext(ctx, "sessionRepo.Insert", logger.Fields{"sessions": sessions})
 	tx, err := sr.db.Begin()
 	if err != nil {
-		return err
+		return []uint{}, []error{appErrors.WrapDbTxBegin(err)}
 	}
-	stmt, err := tx.Prepare("INSERT INTO sessions (" +
+	statement := "INSERT INTO sessions (" +
 		"created_at, " +
 		"updated_at, " +
 		"class_id, " +
@@ -146,18 +110,17 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 		"ends_at, " +
 		"canceled, " +
 		"notes" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?, ?)"
+	stmt, err := tx.Prepare(statement)
 	if err != nil {
-		return err
+		return []uint{}, []error{appErrors.WrapDbPrepare(err, statement)}
 	}
 	defer stmt.Close()
 
+	var ids []uint
+	var errorList []error
 	now := time.Now().UTC()
 	for _, session := range sessions {
-		if err := session.Validate(); err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
-			continue
-		}
 		result, err := stmt.Exec(
 			now,
 			now,
@@ -167,40 +130,44 @@ func (sr *sessionRepo) Insert(sessions []domains.Session) error {
 			session.Canceled,
 			session.Notes)
 		if err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
+			errorList = append(errorList, appErrors.WrapDbExec(err, statement, session))
 			continue
+		} else if err = appErrors.ValidateDbResult(result, 1, "session was not inserted"); err != nil {
+			errorList = append(errorList, err)
 		}
-		if err = utils.HandleSqlExecResult(result, 1, "session was not inserted"); err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(session.Id), err)
+		rowId, err := result.LastInsertId()
+		if err != nil {
+			errorList = append(errorList, appErrors.WrapSQLBadInsertResult(err))
+		} else {
+			ids = append(ids, uint(rowId))
 		}
 	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
+	if err = tx.Commit(); err != nil {
+		// TODO: Commit failed, need to rollback?
+		return []uint{}, append(errorList, appErrors.WrapDbTxCommit(err))
 	}
-	return errors.New(errorString)
+	return ids, errorList
 }
 
-func (sr *sessionRepo) Update(id uint, session domains.Session) error {
-	stmt, err := sr.db.Prepare("UPDATE sessions SET " +
+func (sr *sessionRepo) Update(ctx context.Context, id uint, session domains.Session) error {
+	utils.LogWithContext(ctx, "sessionRepo.Update", logger.Fields{"session": session})
+	statement := "UPDATE sessions SET " +
 		"updated_at=?, " +
-		"published_at=?, " +
 		"class_id=?, " +
 		"starts_at=?, " +
 		"ends_at=?, " +
 		"canceled=?, " +
 		"notes=? " +
-		"WHERE id=?")
+		"WHERE id=?"
+	stmt, err := sr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		session.PublishedAt,
 		session.ClassId,
 		session.StartsAt,
 		session.EndsAt,
@@ -208,73 +175,47 @@ func (sr *sessionRepo) Update(id uint, session domains.Session) error {
 		session.Notes,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, session, id)
 	}
 
-	return utils.HandleSqlExecResult(result, 1, "session was not updated")
+	return appErrors.ValidateDbResult(result, 1, "session was not updated")
 }
 
-func (sr *sessionRepo) Publish(ids []uint) error {
-	var errorString string
-
+func (sr *sessionRepo) Delete(ctx context.Context, ids []uint) []error {
+	utils.LogWithContext(ctx, "sessionRepo.Delete", logger.Fields{"ids": ids})
 	tx, err := sr.db.Begin()
 	if err != nil {
-		return err
+		return []error{appErrors.WrapDbTxBegin(err)}
 	}
-	stmt, err := tx.Prepare("UPDATE sessions SET published_at=? WHERE id=? AND published_at IS NULL")
+	statement := "DELETE FROM sessions WHERE id=?"
+	stmt, err := tx.Prepare(statement)
 	if err != nil {
-		return err
+		return []error{appErrors.WrapDbPrepare(err, statement)}
 	}
 	defer stmt.Close()
 
-	now := time.Now().UTC()
-	for _, id := range ids {
-		_, err := stmt.Exec(now, id)
-		if err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
-		}
-	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
-
-	if len(errorString) == 0 {
-		return nil
-	}
-	return errors.New(errorString)
-}
-
-func (sr *sessionRepo) Delete(ids []uint) error {
-	var errorString string
-
-	tx, err := sr.db.Begin()
-	if err != nil {
-		return err
-	}
-	stmt, err := tx.Prepare("DELETE FROM sessions WHERE id=?")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
+	var errorList []error
 	for _, id := range ids {
 		result, err := stmt.Exec(id)
 		if err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
+			err = appErrors.WrapDbExec(err, statement, id)
+			errorList = append(errorList, err)
 			continue
 		}
-		if err = utils.HandleSqlExecResult(result, 1, "session was not deleted"); err != nil {
-			errorString = utils.AppendError(errorString, fmt.Sprint(id), err)
+		if err = appErrors.ValidateDbResult(result, 1, "session was not deleted"); err != nil {
+			errorList = append(errorList, err)
 		}
 	}
-	errorString = utils.AppendError(errorString, "", tx.Commit())
 
-	if len(errorString) == 0 {
-		return nil
+	if err = tx.Commit(); err != nil {
+		// TODO: Commit failed, need to rollback?
+		return append(errorList, appErrors.WrapDbTxCommit(err))
 	}
-	return errors.New(errorString)
+	return errorList
 }
 
-func CreateTestSessionRepo(db *sql.DB) SessionRepoInterface {
+func CreateTestSessionRepo(ctx context.Context, db *sql.DB) SessionRepoInterface {
 	sr := &sessionRepo{}
-	sr.Initialize(db)
+	sr.Initialize(ctx, db)
 	return sr
 }

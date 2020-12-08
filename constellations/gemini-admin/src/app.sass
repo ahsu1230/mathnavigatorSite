@@ -1,0 +1,47 @@
+@import "_.constants.sass"
+
+body
+    margin: 0
+    color: $colorBlack
+    font-family: $fontFamilyRoboto
+
+#app-view
+    max-width: $spacing180x
+    width: 80%
+    margin: 0 auto
+
+p
+    line-height: $lineHeight1
+    font-size: $fontSize1
+
+button
+    padding: $spacing1x $spacing2x
+    border: none
+    border-radius: 6px
+    outline: none
+    font-size: $fontSize1
+    cursor: pointer
+
+    &:hover
+        filter: brightness(1.1)
+
+a
+    color: $colorTurquoise
+    line-height: $lineHeight1
+    font-size: $fontSize1
+    text-decoration: none
+
+    &:hover
+        text-decoration: underline
+
+textarea
+    padding: $spacing1x
+    border-radius: 6px
+    box-sizing: border-box
+    font-family: $fontFamilyRoboto
+    resize: none
+
+// https://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
+@viewport,
+@-ms-viewport
+    width: device-width

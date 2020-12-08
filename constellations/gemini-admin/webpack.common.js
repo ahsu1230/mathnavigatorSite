@@ -1,9 +1,9 @@
-var webpack = require("webpack");
+const webpack = require("webpack");
 
 module.exports = {
     entry: "./src/index.js",
     output: {
-        publicPath: "/dist",
+        publicPath: "/dist/",
         filename: "./bundle.js",
     },
     module: {
@@ -18,10 +18,6 @@ module.exports = {
             {
                 test: /\.(css)$/,
                 loader: "style-loader!css-loader",
-            },
-            {
-                test: /\.(styl)$/,
-                loader: "style-loader!css-loader!stylus-loader",
             },
             {
                 test: /\.(sass)$/,

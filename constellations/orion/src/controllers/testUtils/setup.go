@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/cache"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/router"
 	"github.com/gin-gonic/gin"
 )
@@ -17,8 +18,12 @@ var Handler router.Handler
 func init() {
 	gin.SetMode(gin.TestMode)
 	engine := gin.Default()
+	engine.NoRoute(router.NoRouteHandler())
+	engine.Use(router.AppRequestHandler())
 	Handler = router.Handler{Engine: engine}
 	Handler.SetupApiEndpoints()
+
+	cache.InitForMockTest()
 }
 
 func SendHttpRequest(t *testing.T, method, url string, body io.Reader) *httptest.ResponseRecorder {

@@ -1,0 +1,67 @@
+@import "../_.constants.sass"
+
+.section-details
+    margin-bottom: $spacing32x
+
+    ul
+        padding: 0
+        margin: $spacing2x 0
+        list-style-type: none
+
+.section-details .last-paid-user-row
+    padding-top: $spacing2x
+    padding-bottom: $spacing2x
+    border-bottom: 1px solid $colorGrayText
+
+    .info-container
+        display: flex
+        justify-content: space-between
+
+        .account-info
+            text-align: right
+
+    h3
+        margin: $spacing2x 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        color: $colorTurquoise
+
+    h4
+        margin: $spacing1x 0
+
+        &.warning
+            color: $colorOrange
+
+    .line
+        margin: $spacing1x 0
+
+    button
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        width: 100%
+        margin: $spacing1x 0
+        padding: 0
+        background: transparent
+        color: $colorGrayDark
+
+        &:hover
+            text-decoration: underline
+
+        img
+            width: 20px
+            margin-right: $spacing1x
+
+            &.flip
+                transform: rotate(180deg)
+
+    .transact-container
+        display: flex
+        justify-content: space-between
+        padding: $spacing2x 0
+        border-bottom: 1px solid $colorGrayLight
+    p
+        margin: $spacing2x 0 $spacing1x
+
+        &.note
+            color: $colorGrayText

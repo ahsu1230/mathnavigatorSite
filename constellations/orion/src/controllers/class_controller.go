@@ -3,148 +3,202 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllClasses(c *gin.Context) {
-	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
+	utils.LogControllerMethod(c, "classController.GetAllClasses")
+	publishedOnly := utils.ParseParamPublishedOnly(c)
 
-	classList, err := repos.ClassRepo.SelectAll(publishedOnly)
+	ctx := utils.RetrieveContext(c)
+	classList, err := repos.ClassRepo.SelectAll(ctx, publishedOnly)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classList)
 }
 
 func GetClassById(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "classController.GetClassById")
 	classId := c.Param("classId")
 
-	class, err := repos.ClassRepo.SelectByClassId(classId)
+	ctx := utils.RetrieveContext(c)
+	class, err := repos.ClassRepo.SelectByClassId(ctx, classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &class)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, &class)
 }
 
 func GetClassesByProgram(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "classController.GetClassesByProgram")
 	programId := c.Param("programId")
 
-	classes, err := repos.ClassRepo.SelectByProgramId(programId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectByProgramId(ctx, programId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
 }
 
 func GetClassesBySemester(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "classController.GetClassesBySemester")
 	semesterId := c.Param("semesterId")
 
-	classes, err := repos.ClassRepo.SelectBySemesterId(semesterId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectBySemesterId(ctx, semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
 }
 
 func GetClassesByProgramAndSemester(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "classController.GetClassesByProgramAndSemester")
 	programId := c.Param("programId")
 	semesterId := c.Param("semesterId")
 
-	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(programId, semesterId)
+	ctx := utils.RetrieveContext(c)
+	classes, err := repos.ClassRepo.SelectByProgramAndSemesterId(ctx, programId, semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, classes)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, classes)
+}
+
+func GetUnpublishedClasses(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.GetUnpublishedClasses")
+	ctx := utils.RetrieveContext(c)
+	classList, err := repos.ClassRepo.SelectAllUnpublished(ctx)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, classList)
 }
 
 func CreateClass(c *gin.Context) {
-	// Incoming JSON
+	utils.LogControllerMethod(c, "classController.CreateClass")
 	var classJson domains.Class
-	c.BindJSON(&classJson)
-	if err := classJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&classJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.ClassRepo.Insert(classJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := classJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.ClassRepo.Insert(ctx, classJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateClass(c *gin.Context) {
-	// Incoming JSON & Parameters
+	utils.LogControllerMethod(c, "classController.UpdateClass")
 	classId := c.Param("classId")
 	var classJson domains.Class
-	c.BindJSON(&classJson)
-
-	if err := classJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&classJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.ClassRepo.Update(classId, classJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := classJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Update(ctx, classId, classJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusOK)
 }
 
 func PublishClasses(c *gin.Context) {
-	// Incoming JSON
+	utils.LogControllerMethod(c, "classController.PublishClass")
 	var classIds []string
-	c.BindJSON(&classIds)
-
-	err := repos.ClassRepo.Publish(classIds)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := c.ShouldBindJSON(&classIds); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	errs := repos.ClassRepo.Publish(ctx, classIds)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
 }
 
 func DeleteClass(c *gin.Context) {
-	// Incoming Parameters
+	utils.LogControllerMethod(c, "classController.DeleteClass")
 	classId := c.Param("classId")
 
-	err := repos.ClassRepo.Delete(classId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Delete(ctx, classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
+}
+
+func ArchiveClass(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.ArchiveClass")
+	classId := c.Param("classId")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.ClassRepo.Archive(ctx, classId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func GetFullStates(c *gin.Context) {
+	utils.LogControllerMethod(c, "classController.getFullStates")
+	states := []string{
+		domains.NOT_FULL_DISPLAY_NAME,
+		domains.ALMOST_FULL_DISPLAY_NAME,
+		domains.FULL_DISPLAY_NAME,
+	}
+	c.JSON(http.StatusOK, states)
 }

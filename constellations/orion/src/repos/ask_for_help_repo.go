@@ -1,10 +1,13 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -18,29 +21,33 @@ type askForHelpRepo struct {
 
 // Interface to implement
 type AskForHelpRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.AskForHelp, error)
-	SelectById(uint) (domains.AskForHelp, error)
-	Insert(domains.AskForHelp) error
-	Update(uint, domains.AskForHelp) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectAll(context.Context) ([]domains.AskForHelp, error)
+	SelectById(context.Context, uint) (domains.AskForHelp, error)
+	Insert(context.Context, domains.AskForHelp) (uint, error)
+	Update(context.Context, uint, domains.AskForHelp) error
+	Archive(context.Context, uint) error
+	Delete(context.Context, uint) error
 }
 
-func (ar *askForHelpRepo) Initialize(db *sql.DB) {
+func (ar *askForHelpRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "afhRepo.Initialize", logger.Fields{})
 	ar.db = db
 }
 
-func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
+func (ar *askForHelpRepo) SelectAll(ctx context.Context) ([]domains.AskForHelp, error) {
+	utils.LogWithContext(ctx, "afhRepo.SelectAll", logger.Fields{})
 	results := make([]domains.AskForHelp, 0)
 
-	stmt, err := ar.db.Prepare("SELECT * FROM ask_for_help")
+	statement := "SELECT * FROM ask_for_help WHERE deleted_at IS NULL"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 	rows, err := stmt.Query()
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement)
 	}
 	defer rows.Close()
 
@@ -51,9 +58,9 @@ func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
 			&askForHelp.CreatedAt,
 			&askForHelp.UpdatedAt,
 			&askForHelp.DeletedAt,
+			&askForHelp.StartsAt,
+			&askForHelp.EndsAt,
 			&askForHelp.Title,
-			&askForHelp.Date,
-			&askForHelp.TimeString,
 			&askForHelp.Subject,
 			&askForHelp.LocationId,
 			&askForHelp.Notes); errScan != nil {
@@ -61,47 +68,52 @@ func (ar *askForHelpRepo) SelectAll() ([]domains.AskForHelp, error) {
 		}
 		results = append(results, askForHelp)
 	}
-
 	return results, nil
 }
 
-func (ar *askForHelpRepo) SelectById(id uint) (domains.AskForHelp, error) {
-	statement := "SELECT * FROM ask_for_help WHERE id=?"
+func (ar *askForHelpRepo) SelectById(ctx context.Context, id uint) (domains.AskForHelp, error) {
+	utils.LogWithContext(ctx, "afhRepo.SelectById", logger.Fields{"id": id})
+	statement := "SELECT * FROM ask_for_help WHERE id=? AND deleted_at IS NULL"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return domains.AskForHelp{}, err
+		return domains.AskForHelp{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	var askForHelp domains.AskForHelp
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+
+	if err = row.Scan(
 		&askForHelp.Id,
 		&askForHelp.CreatedAt,
 		&askForHelp.UpdatedAt,
 		&askForHelp.DeletedAt,
+		&askForHelp.StartsAt,
+		&askForHelp.EndsAt,
 		&askForHelp.Title,
-		&askForHelp.Date,
-		&askForHelp.TimeString,
 		&askForHelp.Subject,
 		&askForHelp.LocationId,
-		&askForHelp.Notes)
-	return askForHelp, errScan
+		&askForHelp.Notes); err != nil {
+		return domains.AskForHelp{}, appErrors.WrapDbExec(err, statement, id)
+	}
+	return askForHelp, nil
 }
 
-func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
-	stmt, err := ar.db.Prepare("INSERT INTO ask_for_help (" +
+func (ar *askForHelpRepo) Insert(ctx context.Context, askForHelp domains.AskForHelp) (uint, error) {
+	utils.LogWithContext(ctx, "afhRepo.Insert", logger.Fields{"afh": askForHelp})
+	statement := "INSERT INTO ask_for_help (" +
 		"created_at, " +
 		"updated_at, " +
+		"starts_at, " +
+		"ends_at, " +
 		"title, " +
-		"date, " +
-		"time_string, " +
 		"subject, " +
 		"location_id, " +
 		"notes" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+		") VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -109,67 +121,91 @@ func (ar *askForHelpRepo) Insert(askForHelp domains.AskForHelp) error {
 	result, err := stmt.Exec(
 		now,
 		now,
+		askForHelp.StartsAt,
+		askForHelp.EndsAt,
 		askForHelp.Title,
-		askForHelp.Date,
-		askForHelp.TimeString,
 		askForHelp.Subject,
 		askForHelp.LocationId,
 		askForHelp.Notes)
 	if err != nil {
-		return err
+		return 0, appErrors.WrapDbExec(err, statement, askForHelp)
 	}
-	return utils.HandleSqlExecResult(result, 1, "ask for help was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "ask for help was not inserted")
 }
 
-func (ar *askForHelpRepo) Update(id uint, askForHelp domains.AskForHelp) error {
-	stmt, err := ar.db.Prepare("UPDATE ask_for_help SET " +
+func (ar *askForHelpRepo) Update(ctx context.Context, id uint, askForHelp domains.AskForHelp) error {
+	utils.LogWithContext(ctx, "afhRepo.Update", logger.Fields{"afh": askForHelp})
+	statement := "UPDATE ask_for_help SET " +
 		"updated_at=?, " +
-		"id=?, " +
+		"starts_at=?, " +
+		"ends_at=?, " +
 		"title=?, " +
-		"date=?, " +
-		"time_string=?, " +
 		"subject=?, " +
 		"location_id=?, " +
 		"notes=? " +
-		"WHERE id=?")
+		"WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		askForHelp.Id,
-		askForHelp.Title,
-		askForHelp.Date,
-		askForHelp.TimeString,
-		askForHelp.Subject,
+		&askForHelp.StartsAt,
+		&askForHelp.EndsAt,
+		&askForHelp.Title,
+		&askForHelp.Subject,
 		askForHelp.LocationId,
 		askForHelp.Notes,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, askForHelp)
 	}
-	return utils.HandleSqlExecResult(result, 1, "ask for help was not updated")
+	return appErrors.ValidateDbResult(result, 1, "ask for help was not updated")
 }
 
-func (ar *askForHelpRepo) Delete(id uint) error {
+func (ar *askForHelpRepo) Archive(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "afhRepo.Archive", logger.Fields{"id": id})
+	statement := "UPDATE ask_for_help SET deleted_at=? WHERE id=?"
+	stmt, err := ar.db.Prepare(statement)
+	if err != nil {
+		return appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, id)
+	if err != nil {
+		return appErrors.WrapDbExec(err, statement, id)
+	}
+	return appErrors.ValidateDbResult(execResult, 1, "ask for help was not archived")
+}
+
+func (ar *askForHelpRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "afhRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM ask_for_help WHERE id=?"
 	stmt, err := ar.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "ask for help was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "ask for help was not deleted")
 }
-func CreateTestAFHRepo(db *sql.DB) AskForHelpRepoInterface {
+
+func CreateTestAFHRepo(ctx context.Context, db *sql.DB) AskForHelpRepoInterface {
 	ar := &askForHelpRepo{}
-	ar.Initialize(db)
+	ar.Initialize(ctx, db)
 	return ar
 }

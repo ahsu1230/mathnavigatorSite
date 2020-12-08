@@ -118,6 +118,7 @@ function filterClassObj(obj) {
     obj.isAvailable = convertStringToBool(obj.isAvailable);
     obj.times = convertStringArray(obj.times);
     obj.allYear = convertStringToBool(obj.allYear);
+    obj.fullState = convertStringToBool(obj.fullState);
     obj.filtered = true;
   }
   return obj;

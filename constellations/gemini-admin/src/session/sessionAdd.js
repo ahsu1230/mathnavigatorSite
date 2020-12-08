@@ -22,6 +22,7 @@ export class SessionAdd extends React.Component {
             numWeeks: 1,
             startsAt: today,
             endsAt: moment(today).add(2, "h"),
+            notes: "",
         };
     }
 
@@ -76,15 +77,24 @@ export class SessionAdd extends React.Component {
         });
     };
 
+    onNotesChange = (e) => {
+        this.setState({
+            notes: e.target.value,
+        });
+    };
+
     onClickAddSessions = () => {
         var sessions = [];
-        for (let i = 0; i < this.state.numWeeks; i++) {
+        const numWeeks = this.state.numWeeks;
+        const notes = this.state.notes;
+        for (let i = 0; i < numWeeks; i++) {
             let startsAt = moment(this.state.startsAt).add(i, "w");
             let endsAt = moment(this.state.endsAt).add(i, "w");
 
             sessions.push({
                 startsAt: startsAt,
                 endsAt: endsAt,
+                notes: notes,
             });
         }
         this.props.addSessions(sessions);
@@ -93,7 +103,7 @@ export class SessionAdd extends React.Component {
     render = () => {
         return (
             <section id="add-sessions">
-                <h3>Add Sessions</h3>
+                <h3>Add Sessions to selected class</h3>
 
                 <div className="container">
                     <div id="date-inputs">
@@ -112,16 +122,26 @@ export class SessionAdd extends React.Component {
                                             dateFocused: focused,
                                         })
                                     }
+                                    isOutsideRange={() => false}
                                     showDefaultInputIcon
                                 />
                             </div>
 
-                            <div className="item">
+                            <div className="item num-weeks">
                                 <h4>Repeat Every Week</h4>
                                 <input
                                     id="repeat"
                                     value={this.state.numWeeks}
                                     onChange={(e) => this.onRepeatChange(e)}
+                                />
+                            </div>
+
+                            <div className="item notes">
+                                <h4>Notes</h4>
+                                <textarea
+                                    id="notes"
+                                    value={this.state.notes}
+                                    onChange={(e) => this.onNotesChange(e)}
                                 />
                             </div>
                         </div>
@@ -140,7 +160,7 @@ export class SessionAdd extends React.Component {
                                     timeConfig={{
                                         from: "8:00 AM",
                                         to: "9:00 PM",
-                                        step: 15,
+                                        step: 5,
                                         unit: "minutes",
                                     }}
                                 />
@@ -159,7 +179,7 @@ export class SessionAdd extends React.Component {
                                     timeConfig={{
                                         from: "8:00 AM",
                                         to: "11:00 PM",
-                                        step: 15,
+                                        step: 5,
                                         unit: "minutes",
                                     }}
                                 />
@@ -167,11 +187,13 @@ export class SessionAdd extends React.Component {
                         </div>
                     </div>
 
-                    <button
-                        id="btn-add-sessions"
-                        onClick={this.onClickAddSessions}>
-                        Add Sessions
-                    </button>
+                    <div id="buttons">
+                        <button
+                            id="btn-add-sessions"
+                            onClick={this.onClickAddSessions}>
+                            Add Sessions
+                        </button>
+                    </div>
                 </div>
             </section>
         );

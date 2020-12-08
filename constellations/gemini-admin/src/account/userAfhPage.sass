@@ -1,0 +1,65 @@
+@import "../_.constants.sass"
+
+#view-user-afhs
+    padding-top: $spacing4x
+    padding-bottom: $spacing16x
+
+    .help
+        margin-bottom: $spacing4x
+
+        button.toggle
+            padding: 0
+            background-color: transparent
+            color: $colorTurquoiseLight
+            text-decoration: underline
+
+    ul li
+        line-height: $lineHeight1
+
+    .user-row
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: start
+        padding: $spacing2x $spacing2x
+        border-bottom: 1px solid $colorGrayLight
+
+        &:hover
+            background-color: $colorWhiteOff
+
+        .line
+            line-height: $lineHeight3
+
+            &.name
+                font-weight: 600
+                color: $colorGrayText
+
+        .input-wrapper
+            margin: 0 !important
+
+            select
+                margin: 0 0 $spacing1x !important
+        
+        .links a
+            display: block
+            line-height: $lineHeight3
+
+        button.remove
+            padding: 0
+            line-height: $lineHeight3
+            background-color: transparent
+            color: $colorRed
+
+            &:hover
+                text-decoration: underline
+
+    .add-user-afh
+        margin-top: $spacing8x
+
+        button.add
+            background-color: $colorTurquoiseLight
+            color: $colorWhite
+
+        button.confirm
+            background-color: $colorOrange
+            color: $colorWhite

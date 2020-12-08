@@ -1,0 +1,54 @@
+@import "../utils/_constants.sass"
+
+#view-class #breadcrumbs
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: start
+
+    a
+        color: $colorPrimaryDark
+
+    span
+        margin-left: $spacing1x
+        color: $colorGrayText
+    
+    h1
+        margin: $spacing1x 0
+        line-height: $lineHeight5
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize5
+        font-weight: $fontWeightBold
+        color: $colorBlack
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            margin-bottom: $spacing2x
+            line-height: $lineHeight3
+            font-size: $fontSize3
+    
+    .featured
+        width: $spacing28x
+        padding: $spacing2x
+        border: 1px solid $colorPrimary
+        border-radius: 8px
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            width: unset
+            padding: $spacing1x
+        
+        .header
+            display: flex
+            align-items: center
+            color: $colorPrimary  
+
+        span
+            color: $colorPrimary
+
+        p
+            margin: $spacing1x 0 0
+            font-size: 12px
+            line-height: 18px
+            color: $colorGrayText
+
+            @media screen and (max-width: $containerWidthPxTablet)
+                display: none

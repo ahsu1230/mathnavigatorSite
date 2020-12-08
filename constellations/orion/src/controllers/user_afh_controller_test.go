@@ -2,12 +2,13 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -15,17 +16,17 @@ import (
 )
 
 // Test Get UserAfh By UserId
-func TestGetUserAfhByUserId_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
+func TestGetUserAfhByUserIdSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
-			testUtils.CreateMockUserAfh(2, 3),
-			testUtils.CreateMockUserAfh(2, 4),
+			testUtils.CreateMockUserAfh(2, 3, 1),
+			testUtils.CreateMockUserAfh(2, 4, 1),
 		}, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/2", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -35,35 +36,37 @@ func TestGetUserAfhByUserId_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, 2, userAfh[0].UserId)
 	assert.EqualValues(t, 3, userAfh[0].AfhId)
+	assert.EqualValues(t, 1, userAfh[0].AccountId)
 	assert.EqualValues(t, 2, userAfh[1].UserId)
 	assert.EqualValues(t, 4, userAfh[1].AfhId)
+	assert.EqualValues(t, 1, userAfh[1].AccountId)
 }
 
-func TestGetUserAfhByUserId_Failure(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByUserId = func(userId uint) ([]domains.UserAfh, error) {
-		return []domains.UserAfh{}, errors.New("Not Found")
+func TestGetUserAfhByUserIdFailure(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByUserId = func(context.Context, uint) ([]domains.UserAfh, error) {
+		return []domains.UserAfh{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/3", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/3", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Get UserAfh By AfhId
-func TestGetUserAfhByAfhId_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
+func TestGetUserAfhByAfhIdSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByAfhId = func(context.Context, uint) ([]domains.UserAfh, error) {
 		return []domains.UserAfh{
-			testUtils.CreateMockUserAfh(2, 4),
-			testUtils.CreateMockUserAfh(3, 4),
+			testUtils.CreateMockUserAfh(2, 4, 1),
+			testUtils.CreateMockUserAfh(3, 4, 1),
 		}, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/afh/4", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/afh/4", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -73,33 +76,35 @@ func TestGetUserAfhByAfhId_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, 2, userAfh[0].UserId)
 	assert.EqualValues(t, 4, userAfh[0].AfhId)
+	assert.EqualValues(t, 1, userAfh[0].AccountId)
 	assert.EqualValues(t, 3, userAfh[1].UserId)
 	assert.EqualValues(t, 4, userAfh[1].AfhId)
+	assert.EqualValues(t, 1, userAfh[1].AccountId)
 }
 
-func TestGetUserAfhByAfhId_Failure(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByAfhId = func(afhId uint) ([]domains.UserAfh, error) {
-		return []domains.UserAfh{}, errors.New("Not Found")
+func TestGetUserAfhByAfhIdFailure(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByAfhId = func(context.Context, uint) ([]domains.UserAfh, error) {
+		return []domains.UserAfh{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/afh/5", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/afh/5", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Get UserAfh by UserId and AfhId
-func TestGetUserAfhByBothIds_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockSelectByBothIds = func(userId, afhId uint) (domains.UserAfh, error) {
-		userAfh := testUtils.CreateMockUserAfh(2, 3)
+func TestGetUserAfhByBothIdsSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByBothIds = func(context.Context, uint, uint) (domains.UserAfh, error) {
+		userAfh := testUtils.CreateMockUserAfh(2, 3, 1)
 		return userAfh, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/userafhs/users/2/afh/3", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/users/2/afh/3", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -109,17 +114,43 @@ func TestGetUserAfhByBothIds_Success(t *testing.T) {
 	}
 }
 
-// Test Create
-func TestCreateUserAfh_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockInsert = func(userAfh domains.UserAfh) error {
-		return nil
+func TestGetUserAfhByNew(t *testing.T) {
+	testUtils.UserAfhRepo.MockSelectByNew = func(context.Context) ([]domains.UserAfh, error) {
+		return []domains.UserAfh{
+			testUtils.CreateMockUserAfh(2, 3, 1),
+			testUtils.CreateMockUserAfh(2, 4, 1),
+		}, nil
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	userAfh := testUtils.CreateMockUserAfh(2, 3)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/user-afhs/new", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var userAfh []domains.UserAfh
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userAfh); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 2, userAfh[0].UserId)
+	assert.EqualValues(t, 3, userAfh[0].AfhId)
+	assert.EqualValues(t, 1, userAfh[0].AccountId)
+	assert.EqualValues(t, 2, userAfh[1].UserId)
+	assert.EqualValues(t, 4, userAfh[1].AfhId)
+	assert.EqualValues(t, 1, userAfh[1].AccountId)
+}
+
+// Test Create
+func TestCreateUserAfhSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockInsert = func(context.Context, domains.UserAfh) (uint, error) {
+		return 42, nil
+	}
+	repos.UserAfhRepo = &testUtils.UserAfhRepo
+
+	// Create new HTTP request to endpoint
+	userAfh := testUtils.CreateMockUserAfh(2, 3, 1)
 	body := createBodyFromUserAfh(userAfh)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/create", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/create", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -134,59 +165,59 @@ func createBodyFromUserAfh(userAfh domains.UserAfh) io.Reader {
 }
 
 // Test Update
-func TestUpdateUserAfh_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
+func TestUpdateUserAfhSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockUpdate = func(context.Context, uint, domains.UserAfh) error {
 		return nil // Successful update
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	userAfh := testUtils.CreateMockUserAfh(2, 3)
+	userAfh := testUtils.CreateMockUserAfh(2, 3, 1)
 	body := createBodyFromUserAfh(userAfh)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/userafh/1", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/user-afh/1", body)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUserAfh_Failure(t *testing.T) {
-	testUtils.UserAfhRepo.MockUpdate = func(id uint, userAfh domains.UserAfh) error {
-		return errors.New("not found")
+func TestUpdateUserAfhFailure(t *testing.T) {
+	testUtils.UserAfhRepo.MockUpdate = func(context.Context, uint, domains.UserAfh) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	userAfh := testUtils.CreateMockUserAfh(2, 3)
+	userAfh := testUtils.CreateMockUserAfh(2, 3, 1)
 	body := createBodyFromUserAfh(userAfh)
-	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/userafhs/userafh/2", body)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/user-afhs/user-afh/2", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Delete
-func TestDeleteUserAfh_Success(t *testing.T) {
-	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
+func TestDeleteUserAfhSuccess(t *testing.T) {
+	testUtils.UserAfhRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/userafhs/userafh/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-afhs/user-afh/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
-func TestDeleteUserAfh_Failure(t *testing.T) {
-	testUtils.UserAfhRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+func TestDeleteUserAfhFailure(t *testing.T) {
+	testUtils.UserAfhRepo.MockDelete = func(context.Context, uint) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserAfhRepo = &testUtils.UserAfhRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/userafhs/userafh/1", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/user-afhs/user-afh/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }

@@ -34,10 +34,10 @@ exports[`test snapshot 1`] = `
       </li>
       <li>
         <a
-          href="#/contact"
+          href="#/register"
           onClick={[Function]}
         >
-          Contact
+          Register
         </a>
       </li>
     </ul>
@@ -63,6 +63,14 @@ exports[`test snapshot 1`] = `
         Program sessions are held off-school hours at local public schools.
         <br />
         Math Navigator is not affiliated with those schools.
+      </p>
+      <p>
+        For any questions, please email us at
+         
+        <u>
+          andymathnavigator@gmail.com
+        </u>
+        .
       </p>
     </div>
   </div>

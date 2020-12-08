@@ -1,0 +1,33 @@
+@import "../../_.constants.sass"
+
+.edit-page-wrapper
+    width: 100%
+    margin: $spacing4x 0
+
+    h1
+        line-height: $lineHeight4
+        font-size: $fontSize4
+
+    .btn-footer
+        display: flex
+        justify-content: space-between
+        margin-top: $spacing4x
+        padding-top: $spacing4x
+        border-top: 1px solid $colorGrayLight
+
+        button.delete
+            padding: 0
+            background-color: transparent
+            color: $colorRed
+            
+            &:hover
+                text-decoration: underline
+
+        button.cancel
+            margin-right: $spacing2x    
+            background-color: $colorGrayText
+            color: $colorWhite
+        
+        button.save
+            background-color: $colorTurquoise
+            color: $colorWhite

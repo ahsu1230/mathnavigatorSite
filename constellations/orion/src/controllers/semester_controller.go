@@ -1,104 +1,137 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllSemesters(c *gin.Context) {
-	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
+func GetAllSeasons(c *gin.Context) {
+	utils.LogControllerMethod(c, "semesterController.GetAllSeasons")
+	c.JSON(http.StatusOK, domains.ALL_SEASONS)
+}
 
-	semesterList, err := repos.SemesterRepo.SelectAll(publishedOnly)
+func GetAllSemesters(c *gin.Context) {
+	utils.LogControllerMethod(c, "semesterController.GetAllSemesters")
+	ctx := utils.RetrieveContext(c)
+	semesterList, err := repos.SemesterRepo.SelectAll(ctx)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, semesterList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, semesterList)
 }
 
 func GetSemesterById(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "semesterController.GetSemesterById")
 	semesterId := c.Param("semesterId")
 
-	semester, err := repos.SemesterRepo.SelectBySemesterId(semesterId)
+	ctx := utils.RetrieveContext(c)
+	semester, err := repos.SemesterRepo.SelectBySemesterId(ctx, semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &semester)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &semester)
 }
 
 func CreateSemester(c *gin.Context) {
-	// Incoming JSON
+	utils.LogControllerMethod(c, "semesterController.CreateSemester")
 	var semesterJson domains.Semester
-	c.BindJSON(&semesterJson)
-
-	if err := semesterJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&semesterJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.SemesterRepo.Insert(semesterJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	// When creating, only need season & year
+	// All other fields will be determined for you
+	semesterJson = standardizeSemester(semesterJson)
+	if err := semesterJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.SemesterRepo.Insert(ctx, semesterJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateSemester(c *gin.Context) {
-	// Incoming JSON & Parameters
+	utils.LogControllerMethod(c, "semesterController.UpdateSemester")
 	semesterId := c.Param("semesterId")
 	var semesterJson domains.Semester
-	c.BindJSON(&semesterJson)
-
-	if err := semesterJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&semesterJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.SemesterRepo.Update(semesterId, semesterJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	// When updating, only need season & year
+	// All other fields will be determined for you
+	semesterJson = standardizeSemester(semesterJson)
+	if err := semesterJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-}
 
-func PublishSemesters(c *gin.Context) {
-	// Incoming JSON
-	var semesterIds []string
-	c.BindJSON(&semesterIds)
-
-	err := repos.SemesterRepo.Publish(semesterIds)
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Update(ctx, semesterId, semesterJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteSemester(c *gin.Context) {
-	// Incoming Parameters
+	utils.LogControllerMethod(c, "semesterController.DeleteSemester")
 	semesterId := c.Param("semesterId")
 
-	err := repos.SemesterRepo.Delete(semesterId)
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Delete(ctx, semesterId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.Status(http.StatusNoContent)
+}
+
+func ArchiveSemester(c *gin.Context) {
+	utils.LogControllerMethod(c, "semesterController.ArchiveSemester")
+	semesterId := c.Param("semesterId")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.SemesterRepo.Archive(ctx, semesterId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func standardizeSemester(semester domains.Semester) domains.Semester {
+	season := semester.Season
+	year := semester.Year
+	semester.SemesterId = fmt.Sprintf("%d_%s", year, season)
+	semester.Title = strings.Title(fmt.Sprintf("%s %d", season, year))
+	return semester
 }

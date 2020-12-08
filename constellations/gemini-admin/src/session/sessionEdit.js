@@ -3,9 +3,8 @@ require("./sessionEdit.sass");
 import React from "react";
 import moment from "moment";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputText } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
 
 // React DatePicker
 import "react-dates/initialize";
@@ -20,7 +19,7 @@ export class SessionEditPage extends React.Component {
     state = {
         classId: this.props.classId,
         startsAt: moment(),
-        endsAt: moment(),
+        endsAt: moment().add(2, "h"),
         canceled: false,
         notes: "",
         dateFocused: false,
@@ -44,13 +43,19 @@ export class SessionEditPage extends React.Component {
     };
 
     onDateChange = (date) => {
-        let newDate = moment(this.state.startsAt)
+        let newStart = moment(this.state.startsAt)
+            .date(date.date())
+            .month(date.month())
+            .year(date.year());
+
+        let newEnd = moment(this.state.endsAt)
             .date(date.date())
             .month(date.month())
             .year(date.year());
 
         this.setState({
-            startsAt: newDate,
+            startsAt: newStart,
+            endsAt: newEnd,
         });
     };
 
@@ -100,15 +105,7 @@ export class SessionEditPage extends React.Component {
         });
     };
 
-    onClickCancel = () => {
-        window.location.hash = "sessions";
-    };
-
-    onClickDelete = () => {
-        this.setState({ showDeleteModal: true });
-    };
-
-    onClickSave = () => {
+    onSave = () => {
         let session = {
             classId: this.state.classId,
             startsAt: this.state.startsAt.toJSON(),
@@ -117,76 +114,18 @@ export class SessionEditPage extends React.Component {
             notes: this.state.notes,
         };
 
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save session: " + err.response.data);
-
-        API.post("api/sessions/session/" + this.props.id, session)
-            .then(() => successCallback())
-            .catch((err) => failCallback(err));
+        return API.post("api/sessions/session/" + this.props.id, session);
     };
 
-    onSaved = () => {
-        this.onDismissModal();
-        window.location.hash = "sessions";
-    };
-
-    onDeleted = () => {
-        API.delete("api/sessions/delete", { data: [parseInt(this.props.id)] })
-            .then(() => {
-                window.location.hash = "sessions";
-            })
-            .catch((err) => {
-                alert("Could not delete session: " + err.response.data);
-            })
-            .finally(() => this.onDismissModal());
-    };
-
-    onDismissModal = () => {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
+    onDelete = () => {
+        return API.delete("api/sessions/delete", {
+            data: [parseInt(this.props.id)],
         });
     };
 
-    render = () => {
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onDeleted}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Session information saved!"}
-                    onOkay={this.onSaved}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
-
+    renderContent = () => {
         return (
-            <div id="view-session-edit">
-                {modalDiv}
-                <h2>Edit Session</h2>
-
+            <div>
                 <div className="item">
                     <h4>Choose a Day</h4>
                     <SingleDatePicker
@@ -199,6 +138,7 @@ export class SessionEditPage extends React.Component {
                                 dateFocused: focused,
                             })
                         }
+                        isOutsideRange={() => false}
                         showDefaultInputIcon
                     />
                 </div>
@@ -217,7 +157,7 @@ export class SessionEditPage extends React.Component {
                             timeConfig={{
                                 from: "8:00 AM",
                                 to: "9:00 PM",
-                                step: 15,
+                                step: 5,
                                 unit: "minutes",
                             }}
                         />
@@ -236,7 +176,7 @@ export class SessionEditPage extends React.Component {
                             timeConfig={{
                                 from: "8:00 AM",
                                 to: "11:00 PM",
-                                step: 15,
+                                step: 5,
                                 unit: "minutes",
                             }}
                         />
@@ -244,7 +184,7 @@ export class SessionEditPage extends React.Component {
                 </div>
 
                 <div id="cancel-toggle" className="item">
-                    <h4>Canceled</h4>
+                    <h4>Check if no class</h4>
                     <input
                         type="checkbox"
                         checked={!!this.state.canceled}
@@ -252,23 +192,37 @@ export class SessionEditPage extends React.Component {
                     />
                 </div>
 
-                <h4>Notes</h4>
-                <input
+                <InputText
+                    label="Notes"
+                    description="You may enter any additional information about this session here"
+                    isTextBox={true}
                     value={this.state.notes}
-                    onChange={(e) => this.onNotesChange(e)}
+                    onChangeCallback={(e) => this.onNotesChange(e)}
                 />
+            </div>
+        );
+    };
 
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    <button className="btn-delete" onClick={this.onClickDelete}>
-                        Delete
-                    </button>
-                </div>
+    render = () => {
+        const sessionId = this.props.id;
+        const classId = this.state.classId;
+        const content = this.renderContent();
+        return (
+            <div id="view-session-edit">
+                <EditPageWrapper
+                    isEdit={true}
+                    title={
+                        "Edit session " +
+                        this.state.sessionId +
+                        " for " +
+                        classId
+                    }
+                    content={content}
+                    prevPageUrl={"sessions"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityName={"session"}
+                />
             </div>
         );
     };

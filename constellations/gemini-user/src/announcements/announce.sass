@@ -1,32 +1,85 @@
 @import "../utils/_constants.sass"
-$media1: $mediaWidth3
-$media2: $mediaWidth1
+
+$media1: $containerWidthPxMonitor
+$media2: $containerWidthPxTablet
 
 #view-announce
-  h1
-    width: 100%
-    margin: $spacing12x 0px $spacing6x
-    text-align: center
-    color: $colorTurquoise
-  
-  h2
-    width: $mediaWidth1
-    margin: 0px auto $spacing4x
-    padding-bottom: $spacing3x
-    border-bottom: 1px solid
-    color: $colorTurquoiseDark
-    font-weight: bold
+    width: $containerWidthPct
+    max-width: $containerWidthPxTablet
+    margin: 0 auto
+    padding: $spacing8x 0 $spacing24x
+    
+    h1
+        width: 100%
+        margin-bottom: $spacing8x
+        text-align: center
+        color: $colorBlack
 
-    @media screen and (max-width: $media1)
-      width: 80%
-    @media screen and (max-width: $media2)
-      width: 90%
+    .announcement-card
+        margin-bottom: $spacing8x
 
-  p
-    width: $mediaWidth1
-    margin: $spacing3x auto $spacing4x
+        &:last-child
+            margin-bottom: 0
+            
+            .bar
+                border-bottom: none
 
-    @media screen and (max-width: $media1)
-      width: 80%
-    @media screen and (max-width: $media2)
-      width: 90%
+        .bar
+            width: 60%
+            margin: 0 auto
+            padding-bottom: $spacing8x
+            border-bottom: 1px solid $colorGrayLight
+        
+    h2
+        margin: 0px auto $spacing4x
+        line-height: $lineHeight2
+        font-size: $fontSize2
+        color: $colorPrimaryDark        
+
+        @media screen and (max-width: $media1)
+            text-align: center
+
+    li
+        margin-bottom: $spacing6x
+
+        &:last-child
+            margin-bottom: 0px
+
+    p
+        margin: 0 auto $spacing2x
+
+        @media screen and (max-width: $media1)
+            text-align: center
+
+        &.posted-by
+            color: $colorGrayText
+
+    .announcement-card.pinned
+        margin-bottom: $spacing8x
+        padding: $spacing4x
+        border: 2px solid $colorPrimary
+        border-radius: 8px
+
+        h2
+            margin-bottom: $spacing2x
+            color: $colorBlack
+
+        .pinned-header
+            display: flex
+            flex-direction: row
+            justify-content: start
+            align-items: center
+            margin-bottom: $spacing2x
+
+            img
+                margin-right: $spacing2x
+
+            @media screen and (max-width: $media1)
+                justify-content: center
+
+                img
+                    margin-right: $spacing1x
+
+            h2
+                margin: 0
+                color: $colorPrimary

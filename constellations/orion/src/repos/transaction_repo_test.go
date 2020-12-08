@@ -16,19 +16,22 @@ func initTransactionTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.Transact
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestTransactionRepo(db)
+	repo := repos.CreateTestTransactionRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
-// Test Select All
-func TestSelectAllTransactions(t *testing.T) {
+// Test Select By Account Id
+func TestSelectByAccountId(t *testing.T) {
 	db, mock, repo := initTransactionTest(t)
 	defer db.Close()
 
 	// Mock DB statements and execute
 	rows := getTransactionRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM transactions").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	mock.ExpectPrepare("^SELECT (.+) FROM transactions WHERE account_id=?").
+		ExpectQuery().
+		WithArgs(1).
+		WillReturnRows(rows)
+	got, err := repo.SelectByAccountId(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -54,7 +57,7 @@ func TestSelectTransaction(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -81,18 +84,18 @@ func TestInsertTransaction(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
-			100,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note1"),
 			1,
+			domains.PAY_PAYPAL,
+			100,
+			domains.NewNullString("note1"),
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
-		Amount:       100,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note1"),
-		AccountId:    1,
+		AccountId: 1,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    100,
+		Notes:     domains.NewNullString("note1"),
 	}
-	err := repo.Insert(transaction)
+	_, err := repo.Insert(testUtils.Context, transaction)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -114,19 +117,19 @@ func TestUpdateTransaction(t *testing.T) {
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			101,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note2"),
 			2,
+			domains.PAY_PAYPAL,
+			101,
+			domains.NewNullString("note2"),
 			1,
 		).WillReturnResult(result)
 	transaction := domains.Transaction{
-		Amount:       101,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note2"),
-		AccountId:    2,
+		AccountId: 2,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    101,
+		Notes:     domains.NewNullString("note2"),
 	}
-	err := repo.Update(1, transaction)
+	err := repo.Update(testUtils.Context, 1, transaction)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -149,7 +152,7 @@ func TestDeleteTransaction(t *testing.T) {
 		WithArgs(1).
 		WillReturnResult(result)
 
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -165,32 +168,32 @@ func getTransactionRows() *sqlmock.Rows {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
-		"Amount",
-		"PaymentType",
-		"PaymentNotes",
 		"AccountId",
+		"Type",
+		"Amount",
+		"Notes",
 	}).
 		AddRow(
 			1,
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			domains.NullTime{},
-			100,
-			domains.PAY_PAYPAL,
-			domains.NewNullString("note1"),
 			1,
+			domains.PAY_PAYPAL,
+			100,
+			domains.NewNullString("note1"),
 		)
 }
 
 func getTransaction() domains.Transaction {
 	return domains.Transaction{
-		Id:           1,
-		CreatedAt:    testUtils.TimeNow,
-		UpdatedAt:    testUtils.TimeNow,
-		DeletedAt:    domains.NullTime{},
-		Amount:       100,
-		PaymentType:  domains.PAY_PAYPAL,
-		PaymentNotes: domains.NewNullString("note1"),
-		AccountId:    1,
+		Id:        1,
+		CreatedAt: testUtils.TimeNow,
+		UpdatedAt: testUtils.TimeNow,
+		DeletedAt: domains.NullTime{},
+		AccountId: 1,
+		Type:      domains.PAY_PAYPAL,
+		Amount:    100,
+		Notes:     domains.NewNullString("note1"),
 	}
 }

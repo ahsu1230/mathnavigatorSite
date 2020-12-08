@@ -9,6 +9,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initAnnounceTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AnnounceRepoInterface) {
@@ -16,7 +17,7 @@ func initAnnounceTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AnnounceRep
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAnnounceRepo(db)
+	repo := repos.CreateTestAnnounceRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -44,7 +45,7 @@ func TestSelectAllAnnouncements(t *testing.T) {
 	mock.ExpectPrepare("^SELECT (.+) FROM announcements").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -103,7 +104,7 @@ func TestSelectAnnouncement(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAnnounceId(1)
+	got, err := repo.SelectByAnnounceId(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -147,7 +148,7 @@ func TestInsertAnnouncement(t *testing.T) {
 		Message:    "Valid Message",
 		OnHomePage: false,
 	}
-	err := repo.Insert(announce)
+	_, err := repo.Insert(testUtils.Context, announce)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -178,7 +179,7 @@ func TestUpdateAnnouncement(t *testing.T) {
 		Message:    "Valid Message",
 		OnHomePage: false,
 	}
-	err := repo.Update(1, announce)
+	err := repo.Update(testUtils.Context, 1, announce)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -202,7 +203,7 @@ func TestDeleteAnnouncement(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

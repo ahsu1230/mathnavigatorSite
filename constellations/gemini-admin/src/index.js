@@ -1,5 +1,5 @@
 "use strict";
-require("./app.styl");
+require("./app.sass");
 import React from "react";
 import ReactDOM from "react-dom";
 import { withRouter } from "react-router";
@@ -20,9 +20,23 @@ import { LocationPage } from "./location/location.js";
 import { LocationEditPage } from "./location/locationEdit.js";
 import { SemesterPage } from "./semester/semester.js";
 import { SemesterEditPage } from "./semester/semesterEdit.js";
+import { AskForHelpPage } from "./askForHelp/afh.js";
+import { AskForHelpEditPage } from "./askForHelp/afhEdit.js";
+
+import { AccountSearchPage } from "./account/accountSearchPage.js";
+import { UserSearchPage } from "./account/userSearchPage.js";
+import { AccountCreatePage } from "./account/accountCreate.js";
+import { AccountViewPage } from "./account/accountView.js";
+import { UserEditPage } from "./account/tabs/userEdit.js";
+import { UserMovePage } from "./account/tabs/userMove.js";
+import { TransactionEditPage } from "./account/tabs/transactionEdit.js";
+import { UserClassesPage } from "./account/userClassesPage.js";
+import { UserAFHPage } from "./account/userAfhPage.js";
+
 import { HelpPage } from "./help/help.js";
-import { AskForHelpPage } from "./ask_for_help/afh.js";
-import { AskForHelpEditPage } from "./ask_for_help/afhEdit.js";
+
+// import { EmailPaymentsPage } from "./emailPayment/emailPayments.js";
+// import { EmailProgramsPage } from "./emailProgram/emailPrograms.js";
 
 const Header = () => <HeaderSection />;
 const Home = () => <HomePage />;
@@ -61,12 +75,43 @@ const SemesterEdit = () => <SemesterEditPage />;
 const SemesterEditMatch = ({ match }) => (
     <SemesterEditPage semesterId={match.params.semesterId} />
 );
-const Help = () => <HelpPage />;
 const AFH = () => <AskForHelpPage />;
 const AFHEdit = () => <AskForHelpEditPage />;
 const AFHMatch = ({ match }) => (
     <AskForHelpEditPage afhId={match.params.afhId} />
 );
+
+const AccountCreate = () => <AccountCreatePage />;
+const AccountSearch = () => <AccountSearchPage />;
+const AccountView = ({ match }) => (
+    <AccountViewPage accountId={match.params.id} />
+);
+const UserSearch = () => <UserSearchPage />;
+const UserAdd = ({ match }) => (
+    <UserEditPage accountId={match.params.accountId} />
+);
+const UserEdit = ({ match }) => (
+    <UserEditPage accountId={match.params.accountId} userId={match.params.id} />
+);
+const UserMove = ({ match }) => (
+    <UserMovePage accountId={match.params.accountId} userId={match.params.id} />
+);
+const TransactionAdd = ({ match }) => (
+    <TransactionEditPage accountId={match.params.accountId} />
+);
+const TransactionEdit = ({ match }) => (
+    <TransactionEditPage
+        accountId={match.params.accountId}
+        transactionId={match.params.id}
+    />
+);
+const UserClasses = () => <UserClassesPage />;
+const UserAfhs = () => <UserAFHPage />;
+
+const Help = () => <HelpPage />;
+
+// const EmailPayments = () => <EmailPaymentsPage />;
+// const EmailPrograms = () => <EmailProgramsPage />;
 
 class AppContainer extends React.Component {
     render() {
@@ -83,54 +128,98 @@ class App extends React.Component {
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route
-                        path="/programs/:programId/edit"
-                        component={ProgramEditMatch}
-                    />
-                    <Route path="/programs/add" component={ProgramEdit} />
-                    <Route path="/programs" component={Programs} />
-                    <Route
-                        path="/classes/:classId/edit"
-                        component={ClassEditMatch}
-                    />
-                    <Route path="/classes/add" component={ClassEdit} />
-                    <Route path="/classes" component={Class} />
-                    <Route
-                        path="/sessions/:classId/:id/edit"
-                        component={SessionEditMatch}
-                    />
-                    <Route path="/sessions" component={Session} />
-                    <Route
-                        path="/announcements/:announceId/edit"
-                        component={AnnounceEditMatch}
-                    />
-                    <Route path="/announcements/add" component={AnnounceEdit} />
-                    <Route path="/announcements" component={Announce} />
-                    <Route
-                        path="/achievements/:Id/edit"
-                        component={AchieveEditMatch}
-                    />
-                    <Route path="/achievements/add" component={AchieveEdit} />
-                    <Route path="/achievements" component={Achieve} />
-                    <Route
-                        path="/locations/:locationId/edit"
-                        component={LocationEditMatch}
-                    />
-                    <Route path="/locations/add" component={LocationEdit} />
-                    <Route path="/locations" component={Location} />
-                    <Route
-                        path="/semesters/:semesterId/edit"
-                        component={SemesterEditMatch}
-                    />
-                    <Route path="/semesters/add" component={SemesterEdit} />
-                    <Route path="/semesters" component={Semester} />
-                    <Route path="/help" component={Help} />
-                    <Route path="/afh/:afhId/edit" component={AFHMatch} />
-                    <Route path="/afh/add" component={AFHEdit} />
-                    <Route path="/afh" component={AFH} />
-                </Switch>
+                <div id="app-view">
+                    <Switch>
+                        <Route path="/" exact component={Home} />
+                        <Route
+                            path="/programs/:programId/edit"
+                            component={ProgramEditMatch}
+                        />
+                        <Route path="/programs/add" component={ProgramEdit} />
+                        <Route path="/programs" component={Programs} />
+                        <Route
+                            path="/classes/:classId/edit"
+                            component={ClassEditMatch}
+                        />
+                        <Route path="/classes/add" component={ClassEdit} />
+                        <Route path="/classes" component={Class} />
+                        <Route
+                            path="/sessions/:classId/:id/edit"
+                            component={SessionEditMatch}
+                        />
+                        <Route path="/sessions" component={Session} />
+                        <Route
+                            path="/announcements/:announceId/edit"
+                            component={AnnounceEditMatch}
+                        />
+                        <Route
+                            path="/announcements/add"
+                            component={AnnounceEdit}
+                        />
+                        <Route path="/announcements" component={Announce} />
+                        <Route
+                            path="/achievements/:id/edit"
+                            component={AchieveEditMatch}
+                        />
+                        <Route
+                            path="/achievements/add"
+                            component={AchieveEdit}
+                        />
+                        <Route path="/achievements" component={Achieve} />
+                        <Route
+                            path="/locations/:locationId/edit"
+                            component={LocationEditMatch}
+                        />
+                        <Route path="/locations/add" component={LocationEdit} />
+                        <Route path="/locations" component={Location} />
+                        <Route
+                            path="/semesters/:semesterId/edit"
+                            component={SemesterEditMatch}
+                        />
+                        <Route path="/semesters/add" component={SemesterEdit} />
+                        <Route path="/semesters" component={Semester} />
+
+                        <Route path="/afh/:afhId/edit" component={AFHMatch} />
+                        <Route path="/afh/add" component={AFHEdit} />
+                        <Route path="/afh" component={AFH} />
+
+                        <Route path="/accounts" component={AccountSearch} />
+                        <Route
+                            path="/account/:accountId/user/add"
+                            component={UserAdd}
+                        />
+                        <Route
+                            path="/account/:accountId/user/:id/edit"
+                            component={UserEdit}
+                        />
+                        <Route
+                            path="/account/:accountId/user/:id/move"
+                            component={UserMove}
+                        />
+                        <Route
+                            path="/account/:accountId/transaction/add"
+                            component={TransactionAdd}
+                        />
+                        <Route
+                            path="/account/:accountId/transaction/:id/edit"
+                            component={TransactionEdit}
+                        />
+                        <Route
+                            path="/account/create"
+                            component={AccountCreate}
+                        />
+                        <Route path="/account/:id" component={AccountView} />
+
+                        <Route path="/users/classes" component={UserClasses} />
+                        <Route path="/users/afhs" component={UserAfhs} />
+                        <Route path="/users" component={UserSearch} />
+
+                        <Route path="/help" component={Help} />
+
+                        {/* <Route path="/emailPayments" component={EmailPayments} /> */}
+                        {/* <Route path="/emailPrograms" component={EmailPrograms} /> */}
+                    </Switch>
+                </div>
             </div>
         );
     }

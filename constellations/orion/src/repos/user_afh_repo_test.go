@@ -8,6 +8,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
 )
 
 func initUserAfhTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserAfhRepoInterface) {
@@ -15,7 +16,7 @@ func initUserAfhTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserAfhRepoI
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserAfhRepo(db)
+	repo := repos.CreateTestUserAfhRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -25,13 +26,28 @@ func TestSelectByUserId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "UserId", "AfhId"}).
-		AddRow(1, 2, 3)
-	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE user_id=?").
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"AfhId",
+		"UserId",
+		"AccountId",
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+		1,
+	)
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE user_id=?").
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByUserId(2)
+	got, err := repo.SelectByUserId(testUtils.Context, 2)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -39,9 +55,13 @@ func TestSelectByUserId(t *testing.T) {
 	// Validate results
 	want := []domains.UserAfh{
 		{
-			Id:     1,
-			UserId: 2,
-			AfhId:  3,
+			Id:        1,
+			CreatedAt: testUtils.TimeNow,
+			UpdatedAt: testUtils.TimeNow,
+			DeletedAt: sql.NullTime{},
+			AfhId:     2,
+			UserId:    3,
+			AccountId: 1,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -58,13 +78,28 @@ func TestSelectByAfhId(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "UserId", "AfhId"}).
-		AddRow(1, 2, 3)
-	mock.ExpectPrepare("^SELECT (.+) FROM user_afh WHERE afh_id=?").
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"AfhId",
+		"UserId",
+		"AccountId",
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+		1,
+	)
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE afh_id=?").
 		ExpectQuery().
 		WithArgs(3).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAfhId(3)
+	got, err := repo.SelectByAfhId(testUtils.Context, 3)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -72,9 +107,13 @@ func TestSelectByAfhId(t *testing.T) {
 	// Validate results
 	want := []domains.UserAfh{
 		{
-			Id:     1,
-			UserId: 2,
-			AfhId:  3,
+			Id:        1,
+			CreatedAt: testUtils.TimeNow,
+			UpdatedAt: testUtils.TimeNow,
+			DeletedAt: sql.NullTime{},
+			AfhId:     2,
+			UserId:    3,
+			AccountId: 1,
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -91,22 +130,92 @@ func TestSelectByBothIds(t *testing.T) {
 	defer db.Close()
 
 	// Mock DB statements and execute
-	rows := sqlmock.NewRows([]string{"Id", "UserId", "AfhId"}).
-		AddRow(1, 2, 3)
-	mock.ExpectPrepare(`^SELECT (.+) FROM user_afh WHERE user_id=\? AND afh_id=?`).
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"AfhId",
+		"UserId",
+		"AccountId",
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+		1,
+	)
+	mock.ExpectPrepare(`^SELECT (.+) FROM user_afhs WHERE user_id=\? AND afh_id=?`).
 		ExpectQuery().
 		WithArgs(2, 3).
 		WillReturnRows(rows)
-	got, err := repo.SelectByBothIds(2, 3)
+	got, err := repo.SelectByBothIds(testUtils.Context, 2, 3)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
 
 	// Validate results
 	want := domains.UserAfh{
-		Id:     1,
-		UserId: 2,
-		AfhId:  3,
+		Id:        1,
+		CreatedAt: testUtils.TimeNow,
+		UpdatedAt: testUtils.TimeNow,
+		DeletedAt: sql.NullTime{},
+		AfhId:     2,
+		UserId:    3,
+		AccountId: 1,
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+// Select by new
+func TestSelectByNew(t *testing.T) {
+	db, mock, repo := initUserAfhTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := sqlmock.NewRows([]string{
+		"Id",
+		"CreatedAt",
+		"UpdatedAt",
+		"DeletedAt",
+		"AfhId",
+		"UserId",
+		"AccountId",
+	}).AddRow(
+		1,
+		testUtils.TimeNow,
+		testUtils.TimeNow,
+		sql.NullTime{},
+		2,
+		3,
+		1,
+	)
+	mock.ExpectPrepare("^SELECT (.+) FROM user_afhs WHERE created_at>=*").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectByNew(testUtils.Context)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.UserAfh{
+		{
+			Id:        1,
+			CreatedAt: testUtils.TimeNow,
+			UpdatedAt: testUtils.TimeNow,
+			DeletedAt: sql.NullTime{},
+			AfhId:     2,
+			UserId:    3,
+			AccountId: 1,
+		},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Values not equal: got = %v, want = %v", got, want)
@@ -123,15 +232,18 @@ func TestInsertUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^INSERT INTO user_afh").
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^INSERT INTO user_afhs").
 		ExpectExec().
-		WithArgs(2, 3).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), 3, 2, 1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	userAfh := domains.UserAfh{
-		UserId: 2,
-		AfhId:  3,
+		AfhId:     3,
+		UserId:    2,
+		AccountId: 1,
 	}
-	err := repo.Insert(userAfh)
+	_, err := repo.Insert(testUtils.Context, userAfh)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -149,16 +261,19 @@ func TestUpdateUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^UPDATE user_afh SET (.*) WHERE id=?").
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^UPDATE user_afhs SET (.*) WHERE id=?").
 		ExpectExec().
-		WithArgs(3, 3, 1).
+		WithArgs(4, 3, 2, sqlmock.AnyArg(), 1).
 		WillReturnResult(result)
+	mock.ExpectCommit()
 	userAfh := domains.UserAfh{
-		Id:     1,
-		UserId: 3,
-		AfhId:  3,
+		Id:        1,
+		AfhId:     4,
+		UserId:    3,
+		AccountId: 2,
 	}
-	err := repo.Update(1, userAfh)
+	err := repo.Update(testUtils.Context, 1, userAfh)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -176,11 +291,13 @@ func TestDeleteUserAfh(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
-	mock.ExpectPrepare("^DELETE FROM user_afh WHERE id=?").
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^DELETE FROM user_afhs WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	mock.ExpectCommit()
+	err := repo.Delete(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}

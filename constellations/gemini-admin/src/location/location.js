@@ -2,135 +2,78 @@
 require("./location.sass");
 import React from "react";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import AllPageHeader from "../common/allPages/allPageHeader.js";
+import RowCardBasic from "../common/rowCards/rowCardBasic.js";
 
+const PAGE_DESCRIPTION = `
+    Locations are typically physical addresses that are often used to host Math Navigator class sessions.
+    Address1 consists of the Street # and Street name.
+    Address2 consists of the City, State and Zipcode.
+    Address3 is usually for a room number (i.e. Room #110, Basement, Gymnasium).
+    All locations should have a title to display to the user.
+    A location can also be online (i.e. Zoom meeting or Google Meets video conference). If this is the case,
+    the location will not have Addresses 1 & 2.
+    The full location is typically displayed in the user website's Class page.
+`;
 export class LocationPage extends React.Component {
     state = {
         list: [],
-        numUnpublished: 0,
-        numSelected: 0,
     };
-
     componentDidMount() {
         API.get("api/locations/all").then((res) => {
             const locations = res.data;
             this.setState({ list: locations });
         });
     }
-
-    onCheckRow() {
-        const elements = document.getElementsByName("unpublished") || [];
-        let numChecked = 0;
-        for (let i = 0; i < elements.length; i++) {
-            if (elements[i].checked) {
-                numChecked++;
-            }
-        }
-        this.setState({ numSelected: numChecked });
-    }
-
-    onClickSelectAll() {
-        var items = document.getElementsByName("unpublished");
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].type == "checkbox") {
-                items[i].checked = true;
-            }
-        }
-        this.setState({ numSelected: items.length });
-    }
-
-    onClickPublish() {
-        console.log("clicked publish");
-    }
-
     render() {
-        const location = this.state.list.map((location, index) => {
+        const cards = this.state.list.map((location, index) => {
+            const fields = generateFields(location);
             return (
-                <LocationRow
+                <RowCardBasic
                     key={index}
-                    location={location}
-                    onCheckRow={this.onCheckRow}
+                    title={location.title}
+                    subtitle={location.locationId}
+                    editUrl={"/locations/" + location.locationId + "/edit"}
+                    fields={fields}
                 />
             );
         });
-        const numLocations = location.length;
+
+        const numLocations = cards.length;
         return (
             <div id="view-location">
-                <div>
-                    <h1>All Locations ({numLocations})</h1>
-                    <p>
-                        You have {this.state.numUnpublished} unpublished items.{" "}
-                        <br />
-                        You have selected {this.state.numSelected} items to
-                        publish.
-                    </p>
-                </div>
-                <ul id="list-heading">
-                    <button
-                        className="li-small"
-                        onClick={this.onClickSelectAll}>
-                        Select All
-                    </button>
-                    <li className="li-med">Location ID</li>
-                    <li className="li-large">Address</li>
-                    <li className="li-large">Room</li>
-                </ul>
-                <ul>{location}</ul>
-                <div id="list-buttons">
-                    <button>
-                        <Link to={"/locations/add"} id="add-location">
-                            Add Location
-                        </Link>
-                    </button>
-                    <button id="publish" onClick={this.onClickPublish}>
-                        Publish
-                    </button>
-                </div>
+                <AllPageHeader
+                    title={"All Locations (" + numLocations + ")"}
+                    addUrl={"/locations/add"}
+                    addButtonTitle={"Add Location"}
+                    description={PAGE_DESCRIPTION}
+                />
+
+                <div className="cards-wrapper">{cards}</div>
             </div>
         );
     }
 }
 
-class LocationRow extends React.Component {
-    renderCheckbox(isUnpublished) {
-        let checkbox = <div> </div>;
-        if (isUnpublished) {
-            return (checkbox = (
-                <input
-                    className="li-small"
-                    type="checkbox"
-                    name="unpublished"
-                    onClick={this.props.onCheckRow}
-                />
-            ));
-        } else {
-            return (checkbox = <div className="li-small"></div>);
-        }
-    }
-
-    render() {
-        const locationId = this.props.location.locationId;
-        const address1 = this.props.location.street;
-        const address2 =
-            this.props.location.city +
-            ", " +
-            this.props.location.state +
-            " " +
-            this.props.location.zipcode;
-        const room = this.props.location.room;
-        const url = "/locations/" + locationId + "/edit";
-        let checkbox = this.renderCheckbox(true);
-        return (
-            <ul id="location-row">
-                {checkbox}
-                <li className="li-med">{locationId}</li>
-                <li className="li-large">
-                    <div> {address1} </div>
-                    <div> {address2} </div>
-                </li>
-                <li className="li-small">{room}</li>
-                <Link to={url}>Edit</Link>
-            </ul>
-        );
-    }
+function generateFields(location) {
+    return [
+        {
+            label: "IsOnline",
+            value: "" + (location.isOnline || false),
+            highlightFn: () => location.isOnline,
+        },
+        {
+            label: "Address1",
+            value: location.street,
+        },
+        {
+            label: "Address2",
+            value:
+                location.city + ", " + location.state + " " + location.zipcode,
+        },
+        {
+            label: "Address3",
+            value: location.room,
+        },
+    ];
 }

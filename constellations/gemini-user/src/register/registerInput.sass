@@ -1,0 +1,43 @@
+@import "../utils/_constants.sass"
+    
+.register-input
+    margin-bottom: $spacing2x
+
+    h3
+        margin: $spacing1x 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: $fontWeightNormal
+        color: $colorGrayText
+
+    h4
+        margin: $spacing1x 0
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: $fontWeightNormal
+        color: $colorRed
+
+    p
+        margin: $spacing1x 0 !important
+        font-size: $fontSize0
+        line-height: 18px
+
+    input
+        padding: $spacing1x $spacing2x
+        border: 1px solid $colorPrimary
+        border-radius: 4px
+
+        &:hover, &:active
+            border: 1px solid $colorPrimaryAccent
+            box-shadow: 0 0 0 2px $colorPrimaryAccent inset
+
+    textarea
+        width: 100%
+        height: $spacing16x
+        padding: $spacing2x
+        border-radius: 4px
+        box-sizing: border-box
+        line-height: $lineHeight1
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize1
+        resize: none

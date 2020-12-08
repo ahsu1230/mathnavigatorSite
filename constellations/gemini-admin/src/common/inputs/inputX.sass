@@ -1,0 +1,68 @@
+@import "../../_.constants.sass"
+
+.input-wrapper
+    margin: $spacing4x 0 !important
+
+    h2.input-label
+        margin-top: 0 !important
+        margin-bottom: $spacing1x !important
+        color: $colorGrayText
+        line-height: $lineHeight2
+        font-size: $fontSize2
+
+    h4
+        margin: 0 !important
+        line-height: $lineHeight1
+        font-size: $fontSize1
+
+    .inputs
+        display: flex
+        align-items: center
+
+        &.radios
+            display: block
+
+        input, select
+            width: 100%
+            height: $spacing4x
+            margin: $spacing1x $spacing2x $spacing1x 0
+            padding: 0 $spacing2x
+            outline: none
+            border-radius: $spacing1x
+            border: 1px solid $colorGrayLight
+            line-height: $lineHeight1
+            font-size: $fontSize1
+
+        .input-radio-wrapper
+            input
+                display: inline-block
+                width: unset !important
+                margin: 0 $spacing1x 0 0 !important
+                vertical-align: middle
+
+        textarea
+            width: 100%
+            height: $spacing12x
+            margin: $spacing1x $spacing2x $spacing2x 0
+            border: 1px solid $colorGrayLight
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            
+        select
+            width: auto
+        
+        .select-error
+            margin: $spacing1x 0
+
+        .blue
+            border: 1px solid $colorTurquoiseLight
+
+        img
+            width: $spacing3x
+            height: auto
+
+    .red
+        color: $colorRed
+
+    .hidden
+        display: none

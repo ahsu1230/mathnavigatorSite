@@ -1,17 +1,27 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
 
 var TABLE_CLASSES = "classes"
 
+const (
+	NOT_FULL    = 0
+	ALMOST_FULL = 1
+	FULL        = 2
+
+	NOT_FULL_DISPLAY_NAME    = "Not full"
+	ALMOST_FULL_DISPLAY_NAME = "Almost full"
+	FULL_DISPLAY_NAME        = "Full"
+)
+
 type Class struct {
 	Id              uint       `json:"id"`
-	CreatedAt       time.Time  `json:"-" db:"created_at"`
-	UpdatedAt       time.Time  `json:"-" db:"updated_at"`
+	CreatedAt       time.Time  `json:"createdAt" db:"created_at"`
+	UpdatedAt       time.Time  `json:"updatedAt" db:"updated_at"`
 	DeletedAt       NullTime   `json:"-" db:"deleted_at"`
 	PublishedAt     NullTime   `json:"publishedAt" db:"published_at"`
 	ProgramId       string     `json:"programId" db:"program_id"`
@@ -19,53 +29,45 @@ type Class struct {
 	ClassKey        NullString `json:"classKey" db:"class_key"`
 	ClassId         string     `json:"classId" db:"class_id"`
 	LocationId      string     `json:"locationId" db:"location_id"`
-	Times           string     `json:"times"`
-	StartDate       time.Time  `json:"startDate" db:"start_date"`
-	EndDate         time.Time  `json:"endDate" db:"end_date"`
+	TimesStr        string     `json:"timesStr" db:"times_str"`
 	GoogleClassCode NullString `json:"googleClassCode" db:"google_class_code"`
-	FullState       int        `json:"fullState" db:"full_state"`
+	FullState       uint       `json:"fullState" db:"full_state"`
 	PricePerSession NullUint   `json:"pricePerSession" db:"price_per_session"`
-	PriceLump       NullUint   `json:"priceLump" db:"price_lump"`
+	PriceLumpSum    NullUint   `json:"priceLumpSum" db:"price_lump_sum"`
 	PaymentNotes    NullString `json:"paymentNotes" db:"payment_notes"`
 }
 
 // Class Methods
 
 func (class *Class) Validate() error {
+	messageFmt := "Invalid Class: %s"
+
 	// Retrieves the inputted values
 	classKey := class.ClassKey
-	times := class.Times
-	startDate := class.StartDate
-	endDate := class.EndDate
+	times := class.TimesStr
 	pricePerSession := class.PricePerSession
-	priceLump := class.PriceLump
+	priceLump := class.PriceLumpSum
 
 	// Class Key validation
 	if classKey.Valid {
-		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches || len(classKey.String) > 64 {
-			return errors.New("invalid class key")
+		if matches, _ := regexp.MatchString(REGEX_GENERIC_ID, classKey.String); !matches {
+			return fmt.Errorf(messageFmt, "Invalid Class Key")
 		}
 	}
 
 	// Times validation
-	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches || len(times) > 64 {
-		return errors.New("invalid times")
+	if matches, _ := regexp.MatchString(REGEX_NUMBER, times); !matches {
+		return fmt.Errorf(messageFmt, "Invalid Time Format")
 	}
 
-	// Start Date validation
-	if startDate.Year() < 2000 {
-		return errors.New("invalid start date")
+	// Price validation
+	if priceLump.Valid == pricePerSession.Valid {
+		return fmt.Errorf(messageFmt, "Only One Price Can Be Defined")
 	}
 
-	// End Date validation
-	if !endDate.After(startDate) {
-		return errors.New("invalid end date")
-	}
-
-	//Price validation
-	//Both valid
-	if priceLump.Valid && pricePerSession.Valid {
-		return errors.New("invalid price: both valid")
+	// Full state validation
+	if class.FullState >= 3 || class.FullState < 0 {
+		return fmt.Errorf(messageFmt, "Invalid full state")
 	}
 
 	return nil

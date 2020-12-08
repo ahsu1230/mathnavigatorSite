@@ -1,0 +1,78 @@
+@import "../utils/_constants.sass"
+
+#view-programs .program-modal
+    width: $spacing64x
+    padding: $spacing1x $spacing6x $spacing2x
+    border-radius: 8px
+    box-shadow: 8px 16px 32px 0px #{$colorBlack}66
+    background-color: $colorWhite
+
+    @media screen and (max-width: $containerWidthPxTablet)
+        width: 100%
+        box-sizing: border-box
+    
+    h1
+        margin: 0
+        padding-top: $spacing4x
+        color: $colorBlack
+        line-height: $lineHeight2
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize2
+        font-weight: $fontWeightNormal
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            text-align: center
+
+    h4
+        margin: 0
+        margin-top: 4px
+        padding-bottom: $spacing3x
+        border-bottom: 1px solid $colorBlack
+        line-height: $lineHeight0
+        font-size: $fontSize0
+        font-weight: $fontWeightNormal
+        color: $colorGrayText
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            text-align: center
+
+    ul
+        margin-bottom: $spacing4x
+        padding: 0
+
+        &.use-scrollbar
+            max-height: $spacing8x
+            padding-right: $spacing2x
+            overflow-y: scroll
+
+    li
+        display: flex
+        justify-content: space-between
+        align-items: start
+        padding: $spacing3x 0
+        border-bottom: 1px solid $colorGrayLight
+        list-style: none
+        line-height: $lineHeight1
+        font-family: $fontFamilyRoboto
+        font-size: $fontSize1
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            flex-flow: column nowrap
+            align-items: center
+            margin-bottom: 0
+            padding: $spacing2x 0
+            line-height: $lineHeight2
+            text-align: center
+
+    .name
+        font-weight: $fontWeightMed
+        color: $colorBlack
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            width: 100%
+
+    a
+        color: $colorPrimary
+    
+    .full, .full-state
+        color: $colorRed

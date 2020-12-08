@@ -1,0 +1,51 @@
+@import "../utils/_constants.sass"
+
+#view-class #register
+    display: flex
+    flex-direction: column
+    justify-content: start
+    align-items: center
+    padding: $spacing4x $spacing6x
+    box-sizing: border-box
+    border-bottom: 1px solid $colorGrayLight
+    border-radius: 16px
+    background-color: $colorPrimary
+    color: $colorWhite
+
+    @media screen and (max-width: $containerWidthPxMonitor)
+        flex-direction: column
+        justify-content: start
+        width: 100%
+        max-width: $spacing48x
+        margin: $spacing4x 0
+
+    &.full
+        background-color: $colorGrayTextFaded
+
+        a
+            pointer-events: none
+
+        button
+            background-color: $colorGrayText
+            color: $colorWhite
+
+    h4
+        max-width: $spacing36x
+        margin: 0 0 $spacing2x
+        text-align: center
+        font-weight: $fontWeightNormal
+
+    button
+        width: $spacing16x
+        border-radius: 8px
+        background-color: $colorOrange
+        color: $colorWhite
+
+        @media screen and (max-width: $containerWidthPxTablet)
+            width: 100%
+
+    a
+        @media screen and (max-width: $containerWidthPxTablet)
+            width: 100%
+            margin-top: $spacing2x
+            margin-bottom: $spacing2x

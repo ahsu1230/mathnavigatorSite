@@ -1,0 +1,54 @@
+@import "../utils/_constants.sass"
+
+#view-class #class-info
+    display: flex
+    flex-direction: row
+    margin: $spacing4x 0
+
+    @media screen and (max-width: $containerWidthPxMonitor)
+        flex-direction: column
+        justify-content: start
+        margin-top: 0
+
+    .block
+        flex: 1
+
+    h3
+        margin: 0
+        margin-bottom: $spacing1x
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        font-weight: $fontWeightMed
+        color: $colorGrayText
+
+        @media screen and (max-width: $containerWidthPxMonitor)
+            margin-top: $spacing4x
+
+        &.location, &.times
+            margin-top: 0
+            margin-bottom: 4px
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                margin-top: $spacing4x
+    
+    .location .title,
+    .class-times .line,
+    .class-price p:first-child
+        font-size: $fontSize0
+        font-weight: $fontWeightMed
+        color: $colorBlack
+
+    .class-times .sessions,
+    .class-price p:last-child
+        margin-top: $spacing1x
+
+    p, .line
+        margin: 0
+        line-height: $lineHeight0
+        font-size: $fontSize0
+
+    .disclaimer
+        margin-top: $spacing1x
+        line-height: 20px
+        font-size: $fontSize0
+        color: $colorGrayText

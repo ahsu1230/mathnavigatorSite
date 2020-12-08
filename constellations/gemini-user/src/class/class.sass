@@ -1,0 +1,24 @@
+@import "../utils/_constants.sass"
+
+#view-class
+    width: $containerWidthPct
+    max-width: $containerWidthPxFull
+    margin: 0 auto
+    padding: $spacing8x 0
+
+    article.intro
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: start
+
+        @media screen and (max-width: $containerWidthPxMonitor)
+            flex-direction: column
+            justify-content: start
+            align-items: start 
+
+    #class-footer
+        margin-top: $spacing16x
+
+        u
+            color: $colorPrimaryAccent

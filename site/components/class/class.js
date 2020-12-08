@@ -144,6 +144,15 @@ export class ClassContent extends React.Component {
         classObj.pricePerSession, sessions, classObj.paymentNotes);
     const schedules = generateSchedules(sessions, classObj.allYear, classObj.times);
 
+    const isFull = !!classObj.fullState;
+    const fullMessage = isFull ? (
+      <p class="warning">
+        This class is full at the moment. You will not be able to register for this class.
+        Please visit a different class to check its availability.
+      </p>
+    ) : <span></span>;
+    const contactLink = "/contact" + (isFull ? "" : "?interest=" + classKey);
+
 		return (
       <div id="view-class">
         {announce}
@@ -153,6 +162,8 @@ export class ClassContent extends React.Component {
           </h1>
 
           <div id="class-info-container">
+            {fullMessage}
+            
             <div className="class-info-1">
               Grades: {programObj.grade1} - {programObj.grade2}<br/>
               {prereqsLine}
@@ -160,7 +171,7 @@ export class ClassContent extends React.Component {
             </div>
 
             <div className="class-info-2">
-              <Link to={"/contact?interest=" + classKey}>
+              <Link to={contactLink}>
                 <button>Register</button>
               </Link>
               <b>Location</b>
@@ -178,7 +189,7 @@ export class ClassContent extends React.Component {
           </div>
 
           <div id="view-questions">
-            Questions? <Link to={"/contact?interest=" + classKey}>Contact Us</Link>
+            Questions? <Link to={contactLink}>Contact Us</Link>
           </div>
           <Link to="/programs">
             <button className="inverted">&#60; More Programs</button>

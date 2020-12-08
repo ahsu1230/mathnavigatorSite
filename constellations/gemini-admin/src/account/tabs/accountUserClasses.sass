@@ -1,0 +1,43 @@
+@import "../../_.constants.sass"
+
+.account-tab.user-classes
+    max-width: $spacing100x
+
+    .user-selector
+        margin-bottom: $spacing2x
+
+    .user-class
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        margin-bottom: $spacing2x
+        padding: $spacing2x 0
+        border-bottom: 1px solid $colorGrayLight
+        
+
+        h4,p
+            margin: 0
+            line-height: $lineHeight2
+
+        h4
+            color: $colorTurquoise
+
+        .input-wrapper
+            margin: 0 !important
+
+    button.delete
+        padding: 0px
+        background-color: transparent
+        color: $colorTurquoise
+    
+    .register-user-class
+        margin-top: $spacing8x
+        
+        button.toggler
+            background-color: $colorTurquoiseLight
+            color: $colorWhite
+
+        button.confirm
+            background-color: $colorOrange
+            color: $colorWhite

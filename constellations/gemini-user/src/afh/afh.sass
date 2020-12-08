@@ -1,0 +1,187 @@
+@import "../utils/constants.sass"
+
+#view-afh
+    width: 70%
+    max-width: $spacing96x
+    margin: 0 auto $spacing24x
+    padding: $spacing6x 0
+    font-family: $fontFamilyRoboto
+
+    &  h1
+        margin: $spacing6x 0
+        text-align: center
+        
+    p
+        margin: $spacing4x auto
+        max-width: $spacing80x
+        text-align: center
+        color: $colorBlack
+
+        &.directions
+            margin-bottom: $spacing8x
+            color: $colorGrayText
+
+    .tabs 
+        display: flex
+        flex-direction: row
+        align-items: center
+        border-bottom: 2px solid $colorGrayLight
+
+        .active
+            border-bottom: 2px solid $colorPrimary
+
+    .tabs button 
+        width: 33.333%
+        height: 100%
+        padding: $spacing2x
+        border-bottom: 2px solid transparent
+        border-radius: 8px 8px 0 0
+        font-size: $fontSize2
+        background-color: $colorWhiteOff
+        color: $colorBlack
+        cursor: pointer
+        transition: 0.3s
+
+        &:hover
+            filter: brightness(1.0)
+            background: rgba($colorPrimaryDark, 0.1)
+            cursor: pointer
+
+        .icon-wrapper
+            display: inline-block
+            position: relative
+            width: 32px
+            height: 32px
+            margin-right: $spacing2x
+            border-radius: 50%
+            background-color: $colorGrayLight
+            vertical-align: middle
+
+            img
+                position: absolute
+                top: 50%
+                left: 50%
+                transform: translate(-50%, -50%)
+                width: 16px
+
+                &.math
+                    top: calc(50% - 1px)
+                    width: 14px
+
+                &.programming
+                    width: 18px
+
+        &.active .icon-wrapper
+            background-color: $colorPrimary
+    
+    .showTab 
+        display: inline-block
+        width: 100%
+        padding: $spacing4x 0
+        border: none
+
+    .hide
+        display: none
+
+    .afh-row
+        margin-bottom: $spacing4x
+        padding-bottom: $spacing4x
+        border-bottom: 1px solid $colorGrayLight
+
+        .row-header
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: start
+
+            a
+                font-weight: $fontWeightMed
+                color: $colorPrimaryLight
+
+            img
+                width: $spacing1_5x
+                margin-left: $spacing1x
+
+        h4
+            line-height: $lineHeight1
+            font-size: $fontSize1
+            font-weight: $fontWeightNormal
+
+            &.title
+                font-weight: $fontWeightMed
+                color: $colorGrayText
+
+            &.time
+                color: $colorBlack
+
+
+        .notes
+            margin-top: $spacing2x
+            color: $colorPrimaryLight
+
+            b
+                vertical-align: middle
+
+            .icon-wrapper
+                display: inline-block
+                position: relative
+                width: 36px
+                height: 36px
+                margin-right: $spacing1x
+                border-radius: 50%
+                background-color: $colorPrimaryLight
+                vertical-align: middle
+
+                img
+                    position: absolute
+                    top: 50%
+                    left: 50%
+                    transform: translate(-50%, -50%)
+                    width: 22px
+
+        p
+            margin: $spacing1x 0
+            text-align: left
+            color: $colorBlack
+
+        .loc
+            line-height: $lineHeight1
+
+@media only screen and (max-width: 700px)
+    #view-afh
+        width: 90%
+
+        & h1, p
+            text-align: center
+
+        .loc
+            margin-top: $spacing2x
+            margin-bottom: $spacing1x
+
+        .tabs button
+            font-size: $fontSize1
+
+            .icon-wrapper
+                display: block
+                margin: 0 auto $spacing1x
+
+        .afh-row
+            text-align: center
+
+            .row-header
+                flex-direction: column
+                justify-content: start
+                align-items: center
+
+                .link-wrapper
+                    margin: $spacing2x 0
+                    padding: $spacing1x $spacing2x
+                    border: 1px solid $colorPrimary
+                    border-radius: 8px
+
+            p
+                text-align: center
+
+            .notes .icon-wrapper
+                display: none
+                    

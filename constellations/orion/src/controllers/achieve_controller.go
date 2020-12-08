@@ -3,111 +3,116 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllAchievements(c *gin.Context) {
-	// Incoming optional parameter
-	publishedOnly := ParseParamPublishedOnly(c)
-
-	achieveList, err := repos.AchieveRepo.SelectAll(publishedOnly)
+	utils.LogControllerMethod(c, "achieveController.GetAllAchievements")
+	ctx := utils.RetrieveContext(c)
+	achieveList, err := repos.AchieveRepo.SelectAll(ctx)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, achieveList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, achieveList)
 }
 
 func GetAchievementById(c *gin.Context) {
+	utils.LogControllerMethod(c, "achieveController.GetAchievementById")
 	// Incoming parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 
-	achieve, err := repos.AchieveRepo.SelectById(id)
+	ctx := utils.RetrieveContext(c)
+	achieve, err := repos.AchieveRepo.SelectById(ctx, id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &achieve)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, &achieve)
 }
 
 func GetAllAchievementsGroupedByYear(c *gin.Context) {
-	achieveYearGroup, err := repos.AchieveRepo.SelectAllGroupedByYear()
+	utils.LogControllerMethod(c, "achieveController.GetAllAchievementsGroupedByYear")
+	ctx := utils.RetrieveContext(c)
+	achieveYearGroup, err := repos.AchieveRepo.SelectAllGroupedByYear(ctx)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, achieveYearGroup)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.JSON(http.StatusOK, achieveYearGroup)
 }
 
 func CreateAchievement(c *gin.Context) {
+	utils.LogControllerMethod(c, "achieveController.CreateAchievement")
 	// Incoming JSON
 	var achieveJson domains.Achieve
-	c.BindJSON(&achieveJson)
-
-	if err := achieveJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&achieveJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.AchieveRepo.Insert(achieveJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := achieveJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	id, err := repos.AchieveRepo.Insert(ctx, achieveJson)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func UpdateAchievement(c *gin.Context) {
+	utils.LogControllerMethod(c, "achieveController.UpdateAchievement")
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 	var achieveJson domains.Achieve
-	c.BindJSON(&achieveJson)
-
-	if err := achieveJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&achieveJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
 
-	err := repos.AchieveRepo.Update(id, achieveJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := achieveJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
 	}
-}
 
-func PublishAchievements(c *gin.Context) {
-	// Incoming JSON
-	var ids []uint
-	c.BindJSON(&ids)
-
-	err := repos.AchieveRepo.Publish(ids)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AchieveRepo.Update(ctx, id, achieveJson)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteAchievement(c *gin.Context) {
+	utils.LogControllerMethod(c, "achieveController.DeleteAchievement")
 	// Incoming Parameters
-	id := ParseParamId(c)
+	id, _ := utils.ParseParamId(c, "id")
 
-	err := repos.AchieveRepo.Delete(id)
+	ctx := utils.RetrieveContext(c)
+	err := repos.AchieveRepo.Delete(ctx, id)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
+	c.Status(http.StatusNoContent)
 }

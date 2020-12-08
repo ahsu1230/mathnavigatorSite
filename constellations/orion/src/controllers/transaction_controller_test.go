@@ -2,8 +2,10 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-	"errors"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
@@ -14,8 +16,8 @@ import (
 )
 
 // Test Get All
-func TestGetAllTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectAll = func() ([]domains.Transaction, error) {
+func TestGetTransactionsByAccountIdSuccess(t *testing.T) {
+	testUtils.TransactionRepo.MockSelectByAccountId = func(context.Context, uint) ([]domains.Transaction, error) {
 		return []domains.Transaction{
 			testUtils.CreateMockTransaction(
 				1,
@@ -29,14 +31,14 @@ func TestGetAllTransaction_Success(t *testing.T) {
 				200,
 				domains.PAY_PAYPAL,
 				"notes2",
-				2,
+				1,
 			),
 		}, nil
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
 	// Create new HTTP request to endpoint
-	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/all", nil)
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/account/1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -47,20 +49,21 @@ func TestGetAllTransaction_Success(t *testing.T) {
 
 	assert.EqualValues(t, 1, transactions[0].Id)
 	assert.EqualValues(t, 100, transactions[0].Amount)
-	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].PaymentType)
-	assert.EqualValues(t, "notes1", transactions[0].PaymentNotes.String)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[0].Type)
+	assert.EqualValues(t, "notes1", transactions[0].Notes.String)
 	assert.EqualValues(t, 1, transactions[0].AccountId)
+
 	assert.EqualValues(t, 2, transactions[1].Id)
 	assert.EqualValues(t, 200, transactions[1].Amount)
-	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[1].PaymentType)
-	assert.EqualValues(t, "notes2", transactions[1].PaymentNotes.String)
-	assert.EqualValues(t, 2, transactions[1].AccountId)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transactions[1].Type)
+	assert.EqualValues(t, "notes2", transactions[1].Notes.String)
+	assert.EqualValues(t, 1, transactions[1].AccountId)
 
 }
 
 // Test Get Transaction
-func TestGetTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
+func TestGetTransactionSuccess(t *testing.T) {
+	testUtils.TransactionRepo.MockSelectById = func(context.Context, uint) (domains.Transaction, error) {
 		transaction := testUtils.CreateMockTransaction(
 			1,
 			100,
@@ -82,14 +85,14 @@ func TestGetTransaction_Success(t *testing.T) {
 	}
 	assert.EqualValues(t, 1, transaction.Id)
 	assert.EqualValues(t, 100, transaction.Amount)
-	assert.EqualValues(t, domains.PAY_PAYPAL, transaction.PaymentType)
-	assert.EqualValues(t, "notes1", transaction.PaymentNotes.String)
+	assert.EqualValues(t, domains.PAY_PAYPAL, transaction.Type)
+	assert.EqualValues(t, "notes1", transaction.Notes.String)
 	assert.EqualValues(t, 1, transaction.AccountId)
 }
 
-func TestGetTransaction_Failure(t *testing.T) {
-	testUtils.TransactionRepo.MockSelectById = func(id uint) (domains.Transaction, error) {
-		return domains.Transaction{}, errors.New("not found")
+func TestGetTransactionFailure(t *testing.T) {
+	testUtils.TransactionRepo.MockSelectById = func(context.Context, uint) (domains.Transaction, error) {
+		return domains.Transaction{}, appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -101,8 +104,8 @@ func TestGetTransaction_Failure(t *testing.T) {
 }
 
 // Test Create
-func TestCreateTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
+func TestCreateTransactionSuccess(t *testing.T) {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
 		return nil
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -121,7 +124,7 @@ func TestCreateTransaction_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateTransaction_Failure(t *testing.T) {
+func TestCreateTransactionFailure(t *testing.T) {
 	// no mock needed
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -140,8 +143,8 @@ func TestCreateTransaction_Failure(t *testing.T) {
 }
 
 // Test Update
-func TestUpdateTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
+func TestUpdateTransactionSuccess(t *testing.T) {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
 		return nil // Successful update
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -160,7 +163,7 @@ func TestUpdateTransaction_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateTransaction_Invalid(t *testing.T) {
+func TestUpdateTransactionInvalid(t *testing.T) {
 	// no mock needed
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -178,9 +181,9 @@ func TestUpdateTransaction_Invalid(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestUpdateTransaction_Failure(t *testing.T) {
-	testUtils.TransactionRepo.MockUpdate = func(id uint, transaction domains.Transaction) error {
-		return errors.New("not found")
+func TestUpdateTransactionFailure(t *testing.T) {
+	testUtils.TransactionRepo.MockUpdate = func(context.Context, uint, domains.Transaction) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -195,12 +198,12 @@ func TestUpdateTransaction_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/transactions/transaction/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 // Test Delete
-func TestDeleteTransaction_Success(t *testing.T) {
-	testUtils.TransactionRepo.MockDelete = func(id uint) error {
+func TestDeleteTransactionSuccess(t *testing.T) {
+	testUtils.TransactionRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
@@ -209,12 +212,12 @@ func TestDeleteTransaction_Success(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
-func TestDeleteTransaction_Failure(t *testing.T) {
-	testUtils.TransactionRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+func TestDeleteTransactionFailure(t *testing.T) {
+	testUtils.TransactionRepo.MockDelete = func(context.Context, uint) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.TransactionRepo = &testUtils.TransactionRepo
 
@@ -222,10 +225,10 @@ func TestDeleteTransaction_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/transactions/transaction/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
-func TestGetAllPaymentTypes(t *testing.T) {
+func TestGetAllTypes(t *testing.T) {
 	// Create new HTTP request to endpoint
 	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/transactions/types", nil)
 
@@ -237,10 +240,12 @@ func TestGetAllPaymentTypes(t *testing.T) {
 		t.Errorf("unexpected error: %v\n", err)
 	}
 	assert.EqualValues(t, "pay_paypal", paymentTypes[0])
-	assert.EqualValues(t, "pay_cash", paymentTypes[1])
-	assert.EqualValues(t, "pay_check", paymentTypes[2])
-	assert.EqualValues(t, "charge", paymentTypes[3])
-	assert.EqualValues(t, "refund", paymentTypes[4])
+	assert.EqualValues(t, "pay_venmo", paymentTypes[1])
+	assert.EqualValues(t, "pay_zelle", paymentTypes[2])
+	assert.EqualValues(t, "pay_cash", paymentTypes[3])
+	assert.EqualValues(t, "pay_check", paymentTypes[4])
+	assert.EqualValues(t, "charge", paymentTypes[5])
+	assert.EqualValues(t, "refund", paymentTypes[6])
 
 }
 

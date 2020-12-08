@@ -3,59 +3,85 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllSessionsByClassId(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.GetAllSessionsByClassId")
 	classId := c.Param("classId")
-	publishedOnly := ParseParamPublishedOnly(c)
 
-	sessionList, err := repos.SessionRepo.SelectAllByClassId(classId, publishedOnly)
+	ctx := utils.RetrieveContext(c)
+	sessionList, err := repos.SessionRepo.SelectAllByClassId(ctx, classId)
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, sessionList)
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
+	c.JSON(http.StatusOK, sessionList)
 }
 
 func GetSessionById(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.GetSessionById")
 	// Incoming parameters
-	id := ParseParamId(c)
-
-	session, err := repos.SessionRepo.SelectBySessionId(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &session)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	session, err := repos.SessionRepo.SelectBySessionId(ctx, id)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &session)
 }
 
 func CreateSessions(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.CreateSession")
 	// Incoming JSON
 	var sessionsJson []domains.Session
-	c.BindJSON(&sessionsJson)
-
-	err := repos.SessionRepo.Insert(sessionsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := c.ShouldBindJSON(&sessionsJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	ids, errs := repos.SessionRepo.Insert(ctx, sessionsJson)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"ids": ids})
 }
 
 func UpdateSession(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.UpdateSession")
 	// Incoming JSON & Parameters
-	id := ParseParamId(c)
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
 	var sessionJson domains.Session
-	c.BindJSON(&sessionJson)
+	if err := c.ShouldBindJSON(&sessionJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
 
 	if err := sessionJson.Validate(); err != nil {
 		c.Error(err)
@@ -63,42 +89,33 @@ func UpdateSession(c *gin.Context) {
 		return
 	}
 
-	err := repos.SessionRepo.Update(id, sessionJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	ctx := utils.RetrieveContext(c)
+	if err := repos.SessionRepo.Update(ctx, id, sessionJson); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
 	}
-	return
-}
-
-func PublishSessions(c *gin.Context) {
-	// Incoming JSON
-	var idsJson []uint
-	c.BindJSON(&idsJson)
-
-	err := repos.SessionRepo.Publish(idsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
-	}
-	return
+	c.Status(http.StatusOK)
 }
 
 func DeleteSessions(c *gin.Context) {
+	utils.LogControllerMethod(c, "sessionController.DeleteSessions")
 	// Incoming Parameters
 	var idsJson []uint
-	c.BindJSON(&idsJson)
-
-	err := repos.SessionRepo.Delete(idsJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	if err := c.ShouldBindJSON(&idsJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
-	return
+
+	ctx := utils.RetrieveContext(c)
+	errs := repos.SessionRepo.Delete(ctx, idsJson)
+	if len(errs) > 0 {
+		for _, err := range errs {
+			c.Error(err)
+		}
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
 }

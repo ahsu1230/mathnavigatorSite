@@ -2,13 +2,12 @@ package repos_test
 
 import (
 	"database/sql"
-	"reflect"
-	"testing"
-
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/testUtils"
+	"reflect"
+	"testing"
 )
 
 func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterface) {
@@ -16,7 +15,7 @@ func initUserTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.UserRepoInterfa
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestUserRepo(db)
+	repo := repos.CreateTestUserRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -30,7 +29,7 @@ func TestSelectAllUsers(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getUserRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM users").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll("", 100, 0)
+	got, err := repo.SelectAll(testUtils.Context, "", 100, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -57,7 +56,7 @@ func TestSearchUsers(t *testing.T) {
 	mock.ExpectPrepare(`^SELECT (.+) FROM users WHERE (.+) LIMIT (.+) OFFSET (.+)`).
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll("Smith", 2, 0)
+	got, err := repo.SelectAll(testUtils.Context, "Smith", 2, 0)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -85,7 +84,7 @@ func TestSelectUser(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -114,7 +113,65 @@ func TestSelectUsersByAccountId(t *testing.T) {
 		ExpectQuery().
 		WithArgs(2).
 		WillReturnRows(rows)
-	got, err := repo.SelectByAccountId(2)
+	got, err := repo.SelectByAccountId(testUtils.Context, 2)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := []domains.User{getUser()}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select Many by array of Ids
+//
+func TestSelectUsersByIdsArray(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE id IN (.+)").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectByIds(testUtils.Context, []uint{1})
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	want := map[uint]domains.User{
+		1: getUser(),
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Values not equal: got = %v, want = %v", got, want)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+//
+// Select New
+//
+func TestSelectNewUsers(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	rows := getUserRows()
+	mock.ExpectPrepare("^SELECT (.+) FROM users WHERE created_at>=*").
+		ExpectQuery().
+		WillReturnRows(rows)
+	got, err := repo.SelectByNew(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -139,22 +196,27 @@ func TestInsertUser(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^INSERT INTO users").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
+			2,
 			"John",
-			"Smith",
 			domains.NewNullString(""),
+			"Smith",
 			"john_smith@example.com",
 			"555-555-0100",
 			false,
-			2,
+			false,
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
 			domains.NewNullString(""),
 		).WillReturnResult(result)
+	mock.ExpectCommit()
 	user := getUser()
-	err := repo.Insert(user)
+	_, err := repo.Insert(testUtils.Context, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -174,35 +236,43 @@ func TestUpdateUser(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^UPDATE users SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
+			1,
 			"Bob",
-			"Joe",
 			domains.NewNullString("Oliver"),
+			"Joe",
 			"bob_joe@example.com",
-			"555-555-0199",
+			domains.NewNullString("555-555-0199"),
+			false,
 			true,
-			0,
+			domains.NewNullString("schoolone"),
+			domains.NewNullUint(2004),
 			domains.NewNullString("notes"),
 			1,
 		).WillReturnResult(result)
+	mock.ExpectCommit()
 	user := domains.User{
-		Id:         1,
-		CreatedAt:  testUtils.TimeNow,
-		UpdatedAt:  testUtils.TimeNow,
-		DeletedAt:  sql.NullTime{},
-		FirstName:  "Bob",
-		LastName:   "Joe",
-		MiddleName: domains.NewNullString("Oliver"),
-		Email:      "bob_joe@example.com",
-		Phone:      "555-555-0199",
-		IsGuardian: true,
-		AccountId:  0,
-		Notes:      domains.NewNullString("notes"),
+		Id:             1,
+		CreatedAt:      testUtils.TimeNow,
+		UpdatedAt:      testUtils.TimeNow,
+		DeletedAt:      sql.NullTime{},
+		AccountId:      1,
+		FirstName:      "Bob",
+		MiddleName:     domains.NewNullString("Oliver"),
+		LastName:       "Joe",
+		Email:          "bob_joe@example.com",
+		Phone:          domains.NewNullString("555-555-0199"),
+		IsAdminCreated: false,
+		IsGuardian:     true,
+		School:         domains.NewNullString("schoolone"),
+		GraduationYear: domains.NewNullUint(2004),
+		Notes:          domains.NewNullString("notes"),
 	}
-	err := repo.Update(1, user)
+	err := repo.Update(testUtils.Context, 1, user)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -222,11 +292,45 @@ func TestDeleteUser(t *testing.T) {
 
 	// Mock DB statements and execute
 	result := sqlmock.NewResult(1, 1)
+	mock.ExpectBegin()
 	mock.ExpectPrepare("^DELETE FROM users WHERE id=?").
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	mock.ExpectCommit()
+	err := repo.Delete(testUtils.Context, 1)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+func TestFullDeleteUser(t *testing.T) {
+	db, mock, repo := initUserTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	userId := uint(42)
+	mock.ExpectBegin()
+	mock.ExpectPrepare("^DELETE FROM user_classes WHERE user_id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM user_afhs WHERE user_id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectPrepare("^DELETE FROM users WHERE id=?").
+		ExpectExec().
+		WithArgs(userId).
+		WillReturnResult(result)
+	mock.ExpectCommit()
+	err := repo.FullDelete(testUtils.Context, userId)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -246,43 +350,52 @@ func getUserRows() *sqlmock.Rows {
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"AccountId",
 		"FirstName",
-		"LastName",
 		"MiddleName",
+		"LastName",
 		"Email",
 		"Phone",
+		"IsAdminCreated",
 		"IsGuardian",
-		"AccountId",
+		"School",
+		"GraduationYear",
 		"Notes",
 	}).AddRow(
 		1,
 		testUtils.TimeNow,
 		testUtils.TimeNow,
 		sql.NullTime{},
-		"John",
-		"Smith",
-		domains.NewNullString(""),
-		"john_smith@example.com",
-		"555-555-0100",
-		false,
 		2,
+		"John",
+		domains.NewNullString(""),
+		"Smith",
+		"john_smith@example.com",
+		domains.NewNullString("555-555-0100"),
+		false,
+		false,
+		domains.NewNullString("schoolone"),
+		domains.NewNullUint(2004),
 		domains.NewNullString(""),
 	)
 }
 
 func getUser() domains.User {
 	return domains.User{
-		Id:         1,
-		CreatedAt:  testUtils.TimeNow,
-		UpdatedAt:  testUtils.TimeNow,
-		DeletedAt:  sql.NullTime{},
-		FirstName:  "John",
-		LastName:   "Smith",
-		MiddleName: domains.NewNullString(""),
-		Email:      "john_smith@example.com",
-		Phone:      "555-555-0100",
-		IsGuardian: false,
-		AccountId:  2,
-		Notes:      domains.NewNullString(""),
+		Id:             1,
+		CreatedAt:      testUtils.TimeNow,
+		UpdatedAt:      testUtils.TimeNow,
+		DeletedAt:      sql.NullTime{},
+		AccountId:      2,
+		FirstName:      "John",
+		MiddleName:     domains.NewNullString(""),
+		LastName:       "Smith",
+		Email:          "john_smith@example.com",
+		Phone:          domains.NewNullString("555-555-0100"),
+		IsAdminCreated: false,
+		IsGuardian:     false,
+		School:         domains.NewNullString("schoolone"),
+		GraduationYear: domains.NewNullUint(2004),
+		Notes:          domains.NewNullString(""),
 	}
 }

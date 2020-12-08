@@ -2,12 +2,14 @@ package controllers_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/testUtils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
@@ -18,8 +20,8 @@ import (
 //
 // Test Get User
 //
-func TestGetUser_Success(t *testing.T) {
-	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
+func TestGetUserSuccess(t *testing.T) {
+	testUtils.UserRepo.MockSelectById = func(context.Context, uint) (domains.User, error) {
 		user := testUtils.CreateMockUser(
 			1,
 			"John",
@@ -50,15 +52,54 @@ func TestGetUser_Success(t *testing.T) {
 	assert.EqualValues(t, "Smith", user.LastName)
 	assert.EqualValues(t, "", user.MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", user.Email)
-	assert.EqualValues(t, "555-555-0199", user.Phone)
+	assert.EqualValues(t, "555-555-0199", user.Phone.String)
 	assert.EqualValues(t, true, user.IsGuardian)
 	assert.EqualValues(t, 0, user.AccountId)
 	assert.EqualValues(t, "notes1", user.Notes.String)
-
 }
 
-func TestGetUsersByAccount_Success(t *testing.T) {
-	testUtils.UserRepo.MockSelectByAccountId = func(accountId uint) ([]domains.User, error) {
+// TODO (aaron) TEST IGNORED - Need to fix the JSON Unmarshaling for nested structs?
+func IgnoreTestGetUsersByIds(t *testing.T) {
+	testUtils.UserRepo.MockSelectByIds = func(context.Context, []uint) (map[uint]domains.User, error) {
+		userId := uint(1)
+		userMap := map[uint]domains.User{
+			userId: testUtils.CreateMockUser(
+				userId,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				true,
+				0,
+				"notes1",
+			),
+		}
+		return userMap, nil
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create new HTTP request to endpoint
+	body := strings.NewReader(`[1]`)
+	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/map", body)
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+	// Validate results
+	var userMap map[uint]domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &userMap); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 1, userMap[1].Id)
+	assert.EqualValues(t, "John", userMap[1].FirstName)
+	assert.EqualValues(t, "Smith", userMap[1].LastName)
+	assert.EqualValues(t, "john_smith@example.com", userMap[1].Email)
+	_, found := userMap[2]
+	assert.EqualValues(t, false, found)
+	assert.EqualValues(t, 1, len(userMap))
+}
+
+func TestGetUsersByAccountSuccess(t *testing.T) {
+	testUtils.UserRepo.MockSelectByAccountId = func(context.Context, uint) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -101,7 +142,7 @@ func TestGetUsersByAccount_Success(t *testing.T) {
 	assert.EqualValues(t, "Smith", users[0].LastName)
 	assert.EqualValues(t, "", users[0].MiddleName.String)
 	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
-	assert.EqualValues(t, "555-555-0199", users[0].Phone)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone.String)
 	assert.EqualValues(t, false, users[0].IsGuardian)
 	assert.EqualValues(t, 2, users[0].AccountId)
 	assert.EqualValues(t, "notes1", users[0].Notes.String)
@@ -111,7 +152,7 @@ func TestGetUsersByAccount_Success(t *testing.T) {
 	assert.EqualValues(t, "Joe", users[1].LastName)
 	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
 	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
-	assert.EqualValues(t, "555-555-0199", users[1].Phone)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone.String)
 	assert.EqualValues(t, false, users[1].IsGuardian)
 	assert.EqualValues(t, 2, users[1].AccountId)
 	assert.EqualValues(t, "notes2", users[1].Notes.String)
@@ -119,9 +160,9 @@ func TestGetUsersByAccount_Success(t *testing.T) {
 	assert.EqualValues(t, 2, len(users))
 }
 
-func TestGetUser_Failure(t *testing.T) {
-	testUtils.UserRepo.MockSelectById = func(id uint) (domains.User, error) {
-		return domains.User{}, errors.New("not found")
+func TestGetUserFailure(t *testing.T) {
+	testUtils.UserRepo.MockSelectById = func(context.Context, uint) (domains.User, error) {
+		return domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -133,11 +174,76 @@ func TestGetUser_Failure(t *testing.T) {
 }
 
 //
+// Test Get New
+//
+func TestGetNewUsers(t *testing.T) {
+	testUtils.UserRepo.MockSelectByNew = func(context.Context) ([]domains.User, error) {
+		return []domains.User{
+			testUtils.CreateMockUser(
+				1,
+				"John",
+				"Smith",
+				"",
+				"john_smith@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes1",
+			),
+			testUtils.CreateMockUser(
+				2,
+				"Bob",
+				"Joe",
+				"Middle",
+				"bob_joe@example.com",
+				"555-555-0199",
+				false,
+				2,
+				"notes2",
+			),
+		}, nil
+	}
+	repos.UserRepo = &testUtils.UserRepo
+
+	// Create new HTTP request to endpoint
+	recorder := testUtils.SendHttpRequest(t, http.MethodGet, "/api/users/new", nil)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	var users []domains.User
+	if err := json.Unmarshal(recorder.Body.Bytes(), &users); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+
+	assert.EqualValues(t, 1, users[0].Id)
+	assert.EqualValues(t, "John", users[0].FirstName)
+	assert.EqualValues(t, "Smith", users[0].LastName)
+	assert.EqualValues(t, "", users[0].MiddleName.String)
+	assert.EqualValues(t, "john_smith@example.com", users[0].Email)
+	assert.EqualValues(t, "555-555-0199", users[0].Phone.String)
+	assert.EqualValues(t, false, users[0].IsGuardian)
+	assert.EqualValues(t, 2, users[0].AccountId)
+	assert.EqualValues(t, "notes1", users[0].Notes.String)
+
+	assert.EqualValues(t, 2, users[1].Id)
+	assert.EqualValues(t, "Bob", users[1].FirstName)
+	assert.EqualValues(t, "Joe", users[1].LastName)
+	assert.EqualValues(t, "Middle", users[1].MiddleName.String)
+	assert.EqualValues(t, "bob_joe@example.com", users[1].Email)
+	assert.EqualValues(t, "555-555-0199", users[1].Phone.String)
+	assert.EqualValues(t, false, users[1].IsGuardian)
+	assert.EqualValues(t, 2, users[1].AccountId)
+	assert.EqualValues(t, "notes2", users[1].Notes.String)
+
+	assert.EqualValues(t, 2, len(users))
+}
+
+//
 // Test Create
 //
-func TestCreateUser_Success(t *testing.T) {
-	testUtils.UserRepo.MockInsert = func(user domains.User) error {
-		return nil
+func TestCreateUserSuccess(t *testing.T) {
+	testUtils.UserRepo.MockInsert = func(context.Context, domains.User) (uint, error) {
+		return 42, nil
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -160,7 +266,7 @@ func TestCreateUser_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestCreateUser_Failure(t *testing.T) {
+func TestCreateUserFailure(t *testing.T) {
 	// no mock needed
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -183,8 +289,8 @@ func TestCreateUser_Failure(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestSearchUsers_Success(t *testing.T) {
-	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
+func TestSearchUsersSuccess(t *testing.T) {
+	testUtils.UserRepo.MockSearchUsers = func(context.Context, string) ([]domains.User, error) {
 		return []domains.User{
 			testUtils.CreateMockUser(
 				1,
@@ -280,9 +386,9 @@ func TestSearchUsers_Success(t *testing.T) {
 
 }
 
-func TestSearchUsers_Failure(t *testing.T) {
-	testUtils.UserRepo.MockSearchUsers = func(search string) ([]domains.User, error) {
-		return []domains.User{}, errors.New("not found")
+func TestSearchUsersFailure(t *testing.T) {
+	testUtils.UserRepo.MockSearchUsers = func(context.Context, string) ([]domains.User, error) {
+		return []domains.User{}, appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -296,8 +402,8 @@ func TestSearchUsers_Failure(t *testing.T) {
 //
 // Test Update
 //
-func TestUpdateUser_Success(t *testing.T) {
-	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
+func TestUpdateUserSuccess(t *testing.T) {
+	testUtils.UserRepo.MockUpdate = func(context.Context, uint, domains.User) error {
 		return nil // Successful update
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -321,7 +427,7 @@ func TestUpdateUser_Success(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 }
 
-func TestUpdateUser_Invalid(t *testing.T) {
+func TestUpdateUserInvalid(t *testing.T) {
 	// no mock needed
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -344,9 +450,9 @@ func TestUpdateUser_Invalid(t *testing.T) {
 	assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestUpdateUser_Failure(t *testing.T) {
-	testUtils.UserRepo.MockUpdate = func(id uint, user domains.User) error {
-		return errors.New("not found")
+func TestUpdateUserFailure(t *testing.T) {
+	testUtils.UserRepo.MockUpdate = func(context.Context, uint, domains.User) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -366,14 +472,14 @@ func TestUpdateUser_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodPost, "/api/users/user/1", body)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
 // Test Delete
 //
-func TestDeleteUser_Success(t *testing.T) {
-	testUtils.UserRepo.MockDelete = func(id uint) error {
+func TestDeleteUserSuccess(t *testing.T) {
+	testUtils.UserRepo.MockDelete = func(context.Context, uint) error {
 		return nil // Return no error, successful delete!
 	}
 	repos.UserRepo = &testUtils.UserRepo
@@ -382,12 +488,12 @@ func TestDeleteUser_Success(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder.Code)
 }
 
-func TestDeleteUser_Failure(t *testing.T) {
-	testUtils.UserRepo.MockDelete = func(id uint) error {
-		return errors.New("not found")
+func TestDeleteUserFailure(t *testing.T) {
+	testUtils.UserRepo.MockDelete = func(context.Context, uint) error {
+		return appErrors.MockDbNoRowsError()
 	}
 	repos.UserRepo = &testUtils.UserRepo
 
@@ -395,7 +501,7 @@ func TestDeleteUser_Failure(t *testing.T) {
 	recorder := testUtils.SendHttpRequest(t, http.MethodDelete, "/api/users/user/1", nil)
 
 	// Validate results
-	assert.EqualValues(t, http.StatusInternalServerError, recorder.Code)
+	assert.EqualValues(t, http.StatusNotFound, recorder.Code)
 }
 
 //
@@ -409,7 +515,7 @@ func createMockUser(id uint, firstName, lastName, middleName, email, phone strin
 		LastName:   lastName,
 		MiddleName: domains.NewNullString(middleName),
 		Email:      email,
-		Phone:      phone,
+		Phone:      domains.NewNullString(phone),
 		IsGuardian: isGuardian,
 		AccountId:  accountId,
 		Notes:      domains.NewNullString(notes),

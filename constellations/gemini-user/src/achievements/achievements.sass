@@ -1,59 +1,171 @@
-#view-achieve h1
-    color: red
+@import "../utils/_constants.sass"
 
+#view-achieve
 
-.achieve-card
-    margin-bottom: 96px
+    #banner-container
+        position: relative
+        width: 100%
+        height: $spacing48x
+
+        #banner-bg-img
+            width: 100%
+            height: 100%
+            background: url('http://d2dwqi4dzedhxu.cloudfront.net/images/banner_mapmeet.jpg')
+            background-size: cover
+            background-position: center
+            background-repeat: no-repeat
+            filter: blur(2px)
+            -webkit-filter: blur(2px)
+
+        #banner-bg-overlay
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: $colorBlack
+            opacity: 0.7
+
+        #banner-content
+            position: absolute
+            top: 45%
+            left: 50%
+            transform: translate(-50%, -50%)
+            width: $containerWidthPxLaptop
+            color: $colorWhite
+            text-align: center
+
+            h1
+                margin-bottom: $spacing2x
+
+    .content
+        position: relative
+        width: $containerWidthPct
+        max-width: $containerWidthPxLaptop
+        margin: $spacing4x auto $spacing24x
+        padding-bottom: $spacing4x
+
+        .timeline
+            position: absolute
+            top: 4px
+            left: $spacing4x
+            border-left: 2px solid $colorPrimaryLight
+            height: calc(100% - 8px)
+            z-index: -1
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                left: $spacing3x
+
+        .group
+            padding-bottom: $spacing4x
+
+        .year-container
+            display: flex
+            justify-content: center
+            align-items: center
+            width: $spacing8x
+            height: $spacing8x
+            border-radius: 50%
+            text-align: center
+            background-color: $colorPrimaryLight
+            font-size: $fontSize1
+            color: $colorWhite
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                width: $spacing6x
+                height: $spacing6x
+                font-size: $fontSize0
+
+        .items
+            margin: $spacing2x 0
+
+            .item
+                display: flex
+                justify-content: start
+                align-items: start
+                margin: $spacing4x 0
+                margin-left: 29px
+
+                @media screen and (max-width: $containerWidthPxMonitor)
+                    margin-left: 21px
+
+            .dot
+                position: relative
+                top: 6px
+                width: $spacing1x
+                height: $spacing1x
+                margin-right: $spacing4x
+                border-radius: 50%
+                background-color: $colorPrimaryLight
+
+                @media screen and (max-width: $containerWidthPxMonitor)
+                    margin-right: $spacing2x
+
+            p
+                width: calc(100% - #{$spacing10x})
+                max-width: $spacing64x
+                margin: 0
+                line-height: $lineHeight1
+                font-size: $fontSize0
+
+        .last-item
+            position: absolute
+            bottom: 0px
+            left: 25px
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                left: 17px
+
+            .last-dot
+                width: $spacing2x
+                height: $spacing2x
+                border-radius: 50%
+                background-color: $colorPrimaryAccent
+
+            .message-container
+                position: absolute
+                top: 0
+                left: calc(100% + #{$spacing4x})
+                transform: translateY(-50%)
+                padding: $spacing2x
+                border-radius: 8px
+                background-color: $colorPrimaryAccent
+                color: $colorWhite
+
+                @media screen and (max-width: $containerWidthPxMonitor)
+                    left: calc(100% + #{$spacing2x})
+
+                &:before
+                    position: absolute
+                    top: calc(50% - 2px)
+                    left: -12px
+                    width: 0px
+                    height: 0px
+                    border-top: 10px solid transparent
+                    border-bottom: 10px solid transparent
+                    border-right: 12px solid $colorPrimaryAccent
+                    content: ''
+
+                p
+                    width: $spacing40x
+                    margin: 0
     
-    & h2
-        border-bottom: 1px solid #222
-        color: #056571
-        line-height: 30px
-        font-size: 18px
-
-    & li
-        display: flex
-        flex-direction: row
-        align-items: center
-        min-height: 96px
-        border-bottom: 1px solid #b8b8b8
-        line-height: 24px
-        font-size: 16px
+    .actions
+        display: block
+        width: 100%
+        height: $spacing24x
+        padding: $spacing8x 0
+        text-align: center
+        color: $colorWhite
+        background-color: $colorPrimary
         
-        & .bullet
-            display: inline
-            min-width: 6px
-            min-height: 6px
-            border-radius: 100%
-            background-color: #b8b8b8
-            
-        & p
-            margin: 16px 0 16px 32px
-            overflow-wrap: anywhere
-            word-wrap: break-word
+        p
+            font-size: $fontSize1
+            font-weight: $fontWeightMed
 
-    & li:last-child
-        border: none
-    
-    & a
-        float: right
-        margin-top: 16px
-        line-height: 24px
-        font-size: 16px
-    
-#view-achievements-container
-    width: 80%
-    max-width: 512px
-    margin: 0 auto 128px
-    
-    & h1
-        margin-top: 96px
-        line-height: 28px
-        text-align: center
-    
-    & .subheaders
-        margin: 32px 0 96px
-        color: #222
-        line-height: 26px
-        font-size: 18px
-        text-align: center
+        button
+            width: $spacing24x
+            margin: 0 $spacing2x
+            border-radius: 8px
+            box-sizing: border-box
+            background-color: $colorOrange

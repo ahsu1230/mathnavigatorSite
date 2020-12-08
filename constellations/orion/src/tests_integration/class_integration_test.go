@@ -5,20 +5,14 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/tests_integration/utils"
 	"github.com/stretchr/testify/assert"
 )
 
-var now = time.Date(2020, 3, 1, 0, 0, 0, 0, time.UTC)
-var later1 = now.Add(time.Hour * 24 * 30)
-var later2 = now.Add(time.Hour * 24 * 31)
-var later3 = now.Add(time.Hour * 24 * 60)
-
 // Test: Create 4 Classes and GetAll(false)
-func Test_CreateClasses(t *testing.T) {
+func TestE2ECreateClasses(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
@@ -41,7 +35,7 @@ func Test_CreateClasses(t *testing.T) {
 }
 
 // Test: Create 2 Classes with same classId. Then GetByClassId()
-func Test_UniqueClassId(t *testing.T) {
+func TestE2EUniqueClassId(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
 	class2 := createClass(1)
@@ -50,9 +44,9 @@ func Test_UniqueClassId(t *testing.T) {
 	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body2)
 	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusInternalServerError, recorder2.Code)
+	assert.EqualValues(t, http.StatusBadRequest, recorder2.Code)
 	errBody := recorder2.Body.String()
-	assert.Contains(t, errBody, "Duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
+	assert.Contains(t, errBody, "duplicate entry", fmt.Sprintf("Expected error does not match. Got: %s", errBody))
 
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
 	assert.EqualValues(t, http.StatusOK, recorder3.Code)
@@ -68,12 +62,12 @@ func Test_UniqueClassId(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgram()
-func Test_GetClassesByProgram(t *testing.T) {
+func TestE2EGetClassesByProgram(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesByProgram()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -90,12 +84,12 @@ func Test_GetClassesByProgram(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesBySemester()
-func Test_GetClassesBySemester(t *testing.T) {
+func TestE2EGetClassesBySemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesBySemester()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/semester/2020_summer", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/semester/2020_summer", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -111,12 +105,12 @@ func Test_GetClassesBySemester(t *testing.T) {
 }
 
 // Test: Create 4 Classes and GetClassesByProgramAndSemester()
-func Test_GetClassesByProgramAndSemester(t *testing.T) {
+func TestE2EGetClassesByProgramAndSemester(t *testing.T) {
 	createAllProgramsSemestersLocations(t)
 	createAllClasses(t)
 
 	// Call GetClassesByProgramAndSemester()
-	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/classes/program/program1/semester/2020_spring", nil)
+	recorder := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/program/program1/semester/2020_spring", nil)
 
 	// Validate results
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
@@ -132,7 +126,7 @@ func Test_GetClassesByProgramAndSemester(t *testing.T) {
 }
 
 // Test: Create 1 Class, Update it, GetByClassId()
-func Test_UpdateClass(t *testing.T) {
+func TestE2EUpdateClass(t *testing.T) {
 	// Create 1 Class
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -162,8 +156,65 @@ func Test_UpdateClass(t *testing.T) {
 	resetClassTables(t)
 }
 
+// Test: Create 2 Classes and Publish 1
+func TestE2EPublishClasses(t *testing.T) {
+	// Create
+	createAllProgramsSemestersLocations(t)
+	class1 := createClass(1)
+	class2 := createClass(2)
+	body1 := utils.CreateJsonBody(&class1)
+	body2 := utils.CreateJsonBody(&class2)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body2)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+
+	// Get All Published
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
+	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+
+	// Validate results
+	var classes1 []domains.Class
+	if err := json.Unmarshal(recorder3.Body.Bytes(), &classes1); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assert.EqualValues(t, 0, len(classes1))
+
+	// Publish
+	classIds := []string{"program1_2020_spring_class2"}
+	body3 := utils.CreateJsonBody(&classIds)
+	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/publish", body3)
+	assert.EqualValues(t, http.StatusNoContent, recorder4.Code)
+
+	// Get All Published
+	recorder5 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/all?published=true", nil)
+	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+
+	// Validate results
+	var classes2 []domains.Class
+	if err := json.Unmarshal(recorder5.Body.Bytes(), &classes2); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assertClass(t, 2, classes2[0])
+	assert.EqualValues(t, 1, len(classes2))
+
+	// Get All Unpublished
+	recorder6 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/unpublished", nil)
+	assert.EqualValues(t, http.StatusOK, recorder6.Code)
+
+	// Validate results
+	var unpublishedClasses []domains.Class
+	if err := json.Unmarshal(recorder6.Body.Bytes(), &unpublishedClasses); err != nil {
+		t.Errorf("unexpected error: %v\n", err)
+	}
+	assertClass(t, 1, unpublishedClasses[0])
+	assert.EqualValues(t, 1, len(unpublishedClasses))
+
+	resetClassTables(t)
+}
+
 // Test: Create 1 Class, Delete it, GetByClassId()
-func Test_DeleteClass(t *testing.T) {
+func TestE2EDeleteClass(t *testing.T) {
 	// Create
 	createAllProgramsSemestersLocations(t)
 	class1 := createClass(1)
@@ -173,7 +224,27 @@ func Test_DeleteClass(t *testing.T) {
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/class/program1_2020_spring_class1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	resetClassTables(t)
+}
+
+// Test: Create 1 Class, Archive it, GetByClassId()
+func TestE2EArchiveClass(t *testing.T) {
+	// Create
+	createAllProgramsSemestersLocations(t)
+	class1 := createClass(1)
+	body1 := utils.CreateJsonBody(&class1)
+	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/classes/create", body1)
+	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/classes/archive/program1_2020_spring_class1", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/classes/class/program1_2020_spring_class1", nil)
@@ -191,14 +262,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_spring",
 			ClassKey:        domains.NewNullString("class1"),
 			ClassId:         "program1_2020_spring_class1",
-			LocationId:      "churchill",
-			Times:           "3 pm - 5 pm",
-			StartDate:       now,
-			EndDate:         later1,
+			LocationId:      "wchs",
+			TimesStr:        "3 pm - 5 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd34"),
 			FullState:       0,
 			PricePerSession: domains.NewNullUint(0),
-			PriceLump:       domains.NewNullUint(10),
+			PriceLumpSum:    domains.NewNullUint(10),
 			PaymentNotes:    domains.NewNullString(""),
 		}
 	case 2:
@@ -207,14 +276,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_spring",
 			ClassKey:        domains.NewNullString("class2"),
 			ClassId:         "program1_2020_spring_class2",
-			LocationId:      "churchill",
-			Times:           "5 pm - 7 pm",
-			StartDate:       now,
-			EndDate:         later1,
+			LocationId:      "wchs",
+			TimesStr:        "5 pm - 7 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd35"),
 			FullState:       1,
 			PricePerSession: domains.NewNullUint(10),
-			PriceLump:       domains.NewNullUint(0),
+			PriceLumpSum:    domains.NewNullUint(0),
 			PaymentNotes:    domains.NewNullString("notes2"),
 		}
 	case 3:
@@ -223,14 +290,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_summer",
 			ClassKey:        domains.NewNullString("final_review"),
 			ClassId:         "program1_2020_summer_final_review",
-			LocationId:      "churchill",
-			Times:           "5 pm - 8 pm",
-			StartDate:       later1,
-			EndDate:         later2,
+			LocationId:      "wchs",
+			TimesStr:        "5 pm - 8 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd36"),
 			FullState:       2,
 			PricePerSession: domains.NewNullUint(0),
-			PriceLump:       domains.NewNullUint(20),
+			PriceLumpSum:    domains.NewNullUint(20),
 			PaymentNotes:    domains.NewNullString("notes3"),
 		}
 	case 4:
@@ -239,14 +304,12 @@ func createClass(id int) domains.Class {
 			SemesterId:      "2020_summer",
 			ClassKey:        domains.NewNullString(""),
 			ClassId:         "program2_2020_summer",
-			LocationId:      "churchill",
-			Times:           "4 pm - 6 pm",
-			StartDate:       later2,
-			EndDate:         later3,
+			LocationId:      "wchs",
+			TimesStr:        "4 pm - 6 pm",
 			GoogleClassCode: domains.NewNullString("ab12cd37"),
 			FullState:       0,
 			PricePerSession: domains.NewNullUint(20),
-			PriceLump:       domains.NewNullUint(0),
+			PriceLumpSum:    domains.NewNullUint(0),
 			PaymentNotes:    domains.NewNullString("notes4"),
 		}
 	default:
@@ -264,29 +327,11 @@ func createAllClasses(t *testing.T) {
 }
 
 func createAllProgramsSemestersLocations(t *testing.T) {
-	program1 := createProgram("program1", "Program1", 1, 3, "description1", 0)
-	program2 := createProgram("program2", "Program2", 6, 8, "description2", 1)
-	semester1 := createSemester("2020_spring", "Spring 2020")
-	semester2 := createSemester("2020_summer", "Summer 2020")
-	location1 := createLocation("churchill", "11300 Gainsborough Road", "Potomac", "MD", "20854", "Room 100")
-
-	body1 := utils.CreateJsonBody(&program1)
-	body2 := utils.CreateJsonBody(&program2)
-	body3 := utils.CreateJsonBody(&semester1)
-	body4 := utils.CreateJsonBody(&semester2)
-	body5 := utils.CreateJsonBody(&location1)
-
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/programs/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body3)
-	recorder4 := utils.SendHttpRequest(t, http.MethodPost, "/api/semesters/create", body4)
-	recorder5 := utils.SendHttpRequest(t, http.MethodPost, "/api/locations/create", body5)
-
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
-	assert.EqualValues(t, http.StatusOK, recorder4.Code)
-	assert.EqualValues(t, http.StatusOK, recorder5.Code)
+	utils.SendCreateProgram(t, true, "program1", "Program1", 1, 3, domains.SUBJECT_MATH, "description1", domains.FEATURED_NONE)
+	utils.SendCreateProgram(t, true, "program2", "Program2", 6, 8, domains.SUBJECT_MATH, "description2", domains.FEATURED_POPULAR)
+	utils.SendCreateSemester(t, true, domains.SPRING, 2020)
+	utils.SendCreateSemester(t, true, domains.SUMMER, 2020)
+	utils.SendCreateLocationWCHS(t)
 }
 
 func assertClass(t *testing.T, id int, class domains.Class) {
@@ -296,56 +341,48 @@ func assertClass(t *testing.T, id int, class domains.Class) {
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class1", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class1", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "3 pm - 5 pm", class.Times)
-		assert.EqualValues(t, now, class.StartDate)
-		assert.EqualValues(t, later1, class.EndDate)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "3 pm - 5 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd34", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
-		assert.EqualValues(t, 10, class.PriceLump.Uint)
+		assert.EqualValues(t, 10, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "", class.PaymentNotes.String)
 	case 2:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_spring", class.SemesterId)
 		assert.EqualValues(t, "class2", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_spring_class2", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "5 pm - 7 pm", class.Times)
-		assert.EqualValues(t, now, class.StartDate)
-		assert.EqualValues(t, later1, class.EndDate)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "5 pm - 7 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd35", class.GoogleClassCode.String)
 		assert.EqualValues(t, 1, class.FullState)
 		assert.EqualValues(t, 10, class.PricePerSession.Uint)
-		assert.EqualValues(t, 0, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes2", class.PaymentNotes.String)
 	case 3:
 		assert.EqualValues(t, "program1", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "final_review", class.ClassKey.String)
 		assert.EqualValues(t, "program1_2020_summer_final_review", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "5 pm - 8 pm", class.Times)
-		assert.EqualValues(t, later1, class.StartDate)
-		assert.EqualValues(t, later2, class.EndDate)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "5 pm - 8 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd36", class.GoogleClassCode.String)
 		assert.EqualValues(t, 2, class.FullState)
 		assert.EqualValues(t, 0, class.PricePerSession.Uint)
-		assert.EqualValues(t, 20, class.PriceLump.Uint)
+		assert.EqualValues(t, 20, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes3", class.PaymentNotes.String)
 	case 4:
 		assert.EqualValues(t, "program2", class.ProgramId)
 		assert.EqualValues(t, "2020_summer", class.SemesterId)
 		assert.EqualValues(t, "", class.ClassKey.String)
 		assert.EqualValues(t, "program2_2020_summer", class.ClassId)
-		assert.EqualValues(t, "churchill", class.LocationId)
-		assert.EqualValues(t, "4 pm - 6 pm", class.Times)
-		assert.EqualValues(t, later2, class.StartDate)
-		assert.EqualValues(t, later3, class.EndDate)
+		assert.EqualValues(t, "wchs", class.LocationId)
+		assert.EqualValues(t, "4 pm - 6 pm", class.TimesStr)
 		assert.EqualValues(t, "ab12cd37", class.GoogleClassCode.String)
 		assert.EqualValues(t, 0, class.FullState)
 		assert.EqualValues(t, 20, class.PricePerSession.Uint)
-		assert.EqualValues(t, 0, class.PriceLump.Uint)
+		assert.EqualValues(t, 0, class.PriceLumpSum.Uint)
 		assert.EqualValues(t, "notes4", class.PaymentNotes.String)
 	}
 }

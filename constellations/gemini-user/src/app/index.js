@@ -2,49 +2,45 @@
 require("./base.sass");
 import React from "react";
 import ReactDOM from "react-dom";
-import { withRouter, hashHistory } from "react-router";
+import { withRouter } from "react-router";
 import {
-    HashRouter as Router,
-    // By switching back to HashRouter, we lose functionality (scrollMemory)
+    Router,
+    // BrowserRouter as Router, // By switching back to HashRouter, we lose functionality (scrollMemory)
     Route,
     Switch,
 } from "react-router-dom";
-import { history } from "./history.js";
-// import { createPageTitle, getNavByUrl } from '../constants.js';
 import ScrollMemory from "react-router-scroll-memory"; // Requires BrowserRouter
+import { getLinkByUrl } from "../utils/links.js";
 
 import { AchievementPage } from "../achievements/achievements.js";
-import { InternshipPage } from "../internship/internship.js";
-// import { AFHPage } from '../afh/afh.js';
+import { AFHPage } from "../afh/afh.js";
 import { AnnouncePage } from "../announcements/announce.js";
-// import { ClassPage } from '../class/class.js';
-// import { ContactPage } from '../contact/contact.js';
-// import { ErrorPage } from '../errorPage/error.js';
-import Footer from "../footer/footer.js";
+import { ClassPage } from "../class/class.js";
 import { Header as HeaderComponent } from "../header/header.js";
 import { HomePage } from "../home/home.js";
-// import { ProgramsPage } from '../programs/programs.js';
-// import { StudentProjectsPage } from '../student/studentProjects.js';
-// import { StudentWebDevPage } from '../student/studentWebDev.js';
+import { InternshipPage } from "../internship/internship.js";
+import { ProgramsPage } from "../programs/programs.js";
+import RegisterPage from "../register/register.js";
+import RegisterSuccessPage from "../register/registerSuccess.js";
+import Footer from "../footer/footer.js";
+import { history } from "../utils/historyUtils.js";
 
 const Achievements = () => <AchievementPage />;
-const Internship = () => <InternshipPage />;
+const AFH = () => <AFHPage />;
 const Announce = () => <AnnouncePage />;
-// const ClassPageWithSlug = ({match}) => <ClassPage slug={match.params.slug}/>;
-// const Contact = () => <ContactPageRouter/>;
-// const ContactPageRouter = withRouter(ContactPage);
+const Class = (props) => <ClassPage classId={props.match.params.classId} />;
 const Header = withRouter(HeaderComponent);
 const Home = () => <HomePage />;
-// const Programs = () => <ProgramsPage/>;
-// const StudentWebDev = () => <StudentWebDevPage/>;
-// const StudentProjects = () => <StudentProjectsPage/>;
-// const AFH = () => <AFHPage/>;
-// const Error = () => <ErrorPage/>;
+const Internship = () => <InternshipPage />;
+const Programs = () => <ProgramsPage />;
+const Register = withRouter(RegisterPage);
+const RegisterSuccessAfh = () => <RegisterSuccessPage registered="afh" />;
+const RegisterSuccessClass = () => <RegisterSuccessPage registered="class" />;
 
 class AppContainer extends React.Component {
     render() {
         return (
-            <Router>
+            <Router history={history}>
                 <ScrollMemory />
                 <AppWithRouter />
             </Router>
@@ -53,15 +49,16 @@ class AppContainer extends React.Component {
 }
 
 class App extends React.Component {
-    // componentDidMount() {
-    //     this.props.history.listen((location, action) => {
-    //         var nav = getNavByUrl(location.pathname);
-    //         if (nav) {
-    //             document.title = createPageTitle(nav.name);
-    //         }
-    //         // if not in Nav, component must set it's own title!
-    //     });
-    // }
+    componentDidMount() {
+        this.props.history.listen((location, action) => {
+            let nav = getLinkByUrl(location.pathname);
+            if (nav) {
+                document.title = nav.name;
+            } else {
+                document.title = "Math Navigator";
+            }
+        });
+    }
 
     render() {
         return (
@@ -69,21 +66,24 @@ class App extends React.Component {
                 <Header />
                 <Switch>
                     <Route path="/" exact component={Home} />
-
                     <Route path="/announcements" component={Announce} />
-                    {/* <Route path="/programs" component={Programs}/>
-          <Route path="/contact" component={Contact}/>
-          <Route path="/class/:slug" component={ClassPageWithSlug}/>
-        <Route path="/ask-for-help" component={AFH}/> */}
+                    <Route path="/ask-for-help" component={AFH} />
+                    <Route path="/class/:classId" render={Class} />
+                    <Route path="/internship" component={Internship} />
+                    <Route path="/programs" component={Programs} />
+                    <Route path="/register" component={Register} />
+                    <Route
+                        path="/register-success/afh"
+                        component={RegisterSuccessAfh}
+                    />
+                    <Route
+                        path="/register-success/class"
+                        component={RegisterSuccessClass}
+                    />
                     <Route
                         path="/student-achievements"
                         component={Achievements}
                     />
-
-                    <Route path="/internship" component={Internship} />
-                    {/* <Route path="/student-webdev" component={StudentWebDev}/>
-          <Route path="/student-projects" component={StudentProjects}/>
-          <Route path="/" component={Error}/> */}
                 </Switch>
                 <Footer />
             </div>

@@ -4,67 +4,78 @@
     position: fixed
     bottom: $spacing4x
     left: $spacing4x
-    transform: translate(-10%, 10%) scale(0.7)
-    width: $propUnit12x
-    padding: $spacing2x $spacing4x
-    box-sizing: border-box
+    transform: translate(-20%, 20%) scale(0.7)
+    width: $spacing48x
+    background-color: $colorWhite
+    border-radius: 12px 12px 12px 0px
+    box-shadow: 8px 8px 16px 0px #{$colorBlack}66
+    overflow: hidden
     visibility: hidden
-    z-index: 10
-    background-color: $colorYellow
     opacity: 0.0
     transition: all linear 0.15s
+
+    @media screen and (max-width: $containerWidthPxTablet)
+        transform: translate(0, 20%)
+        border-radius: 0px
 
     &.show
         transform: translate(0, 0) scale(1.0)
         visibility: visible
         opacity: 1.0
 
-    @media screen and (max-width: $mediaWidth1)
+    @media screen and (max-width: $containerWidthPxTablet)
         bottom: 0
         left: 0
         width: 100%
 
-    & button
-        position: absolute
-        top: $spacing2x
-        right: $spacing2x
-        background-color: $colorYellow
-        line-height: 0
-        padding: 0
+    .header-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        background-color: $colorPrimaryAccent
+        color: $colorWhite
 
-        &:hover
-            filter: none
+        h3
+            padding: $spacing1x 0 $spacing1x $spacing2x
+            line-height: $lineHeight2
+            font-size: $fontSize2
+            font-weight: $fontWeightNormal
+            color: $colorWhite
 
-        & img
-            width: 24px
-            height: 24px
+        button.close-x
+            width: 32px
+            height: 32px
+            padding: 0
+            margin-right: $spacing1x
+            background-color: transparent
 
-    & h3
-        margin: $spacing1x 0
-        line-height: $lineHeight0
-        font-size: $fontSize0
-        font-weight: bold
+            &:hover
+                .img-container
+                    background-color: $colorPrimary
+                img
+                    transform: scale(1.1)
 
-    & .text-container
-        position: relative
+            .img-container
+                width: 100%
+                height: 100%
+                padding: 6px
+                border-radius: 50%
+                box-sizing: border-box
 
-    & p
-        margin: 0
-        line-height: $lineHeight0
-        font-size: $fontSize0
+            img
+                width: 100%
+                height: 100%
 
-    & a
-        display: block
+    .text-container
+        padding: 0 $spacing2x
+        line-height: $lineHeight1
+        font-size: $fontSize1
+
+    a
         float: right
-        margin: $spacing2x 0
-
-
-#fake-announce
-    position: fixed
-    top: 0
-    right: 0
-    z-index: 10
-    width: $propUnit12x
-    padding: $spacing2x $spacing4x
-    box-sizing: border-box
-    background-color: $colorYellow
+        padding-right: $spacing2x
+        padding-bottom: $spacing2x
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        color: $colorPrimary

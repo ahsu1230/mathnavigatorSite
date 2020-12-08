@@ -2,106 +2,106 @@
 require("./home.sass");
 import React from "react";
 import API from "../api.js";
-import { Link } from "react-router-dom";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import { HomeTabSectionClasses } from "./homeClasses.js";
+import { HomeTabSectionUsers } from "./homeUsers.js";
+import { HomeTabSectionRegistrations } from "./homeRegistrations.js";
+import { HomeTabSectionAccounts } from "./homeAccounts.js";
+import { HomeTabSectionLastPaid } from "./homeLastPaid.js";
 
 export class HomePage extends React.Component {
     state = {
-        classes: [],
+        unpublishedClasses: [],
+        newUsers: [],
+        newUserClasses: [],
+        newUserAfh: [],
+        unpaidAccounts: [],
     };
 
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    fetchData = () => {
-        API.get("api/unpublished").then((res) => {
-            const unpublishedList = res.data;
+    componentDidMount = () => {
+        API.get("api/classes/unpublished").then((res) => {
+            const unpublishedList = res.data || [];
             this.setState({
-                classes: unpublishedList.classes,
+                unpublishedClasses: unpublishedList,
+            });
+        });
+
+        API.get("api/users/new").then((res) => {
+            const users = res.data;
+            this.setState({
+                newUsers: users,
+            });
+        });
+
+        API.get("api/user-classes/new").then((res) => {
+            const userClass = res.data;
+            this.setState({
+                newUserClasses: userClass,
+            });
+        });
+
+        API.get("api/user-afhs/new").then((res) => {
+            const userAfh = res.data;
+            this.setState({
+                newUserAfh: userAfh,
+            });
+        });
+
+        API.get("api/accounts/unpaid").then((res) => {
+            const accounts = res.data;
+            this.setState({
+                unpaidAccounts: accounts,
             });
         });
     };
 
     render() {
-        let unpublishedClasses = this.state.classes.map((row, index) => {
-            return <li key={index}> {row.classId} </li>;
-        });
-
         return (
             <div id="view-home">
                 <h1>Administrator Dashboard</h1>
+                <Tabs>
+                    <TabList>
+                        <Tab>New Users ({this.state.newUsers.length})</Tab>
+                        <Tab>
+                            New Registrations (
+                            {this.state.newUserClasses.length +
+                                this.state.newUserAfh.length}
+                            )
+                        </Tab>
+                        <Tab>
+                            Unpublished Classes (
+                            {this.state.unpublishedClasses.length})
+                        </Tab>
+                        <Tab>
+                            Unpaid Accounts ({this.state.unpaidAccounts.length})
+                        </Tab>
+                        <Tab>Last Paid By Class</Tab>
+                    </TabList>
 
-                <div className="section">
-                    <div className="container-class">
-                        <h3 className="section-header">Unpublished Classes</h3>{" "}
-                        <button id="publish">
-                            <Link to={"/classes"}>View Details to Publish</Link>
-                        </button>
-                    </div>
-
-                    <div className="class-section">
-                        <div className="list-header">Class ID</div>
-                        <ul>{unpublishedClasses}</ul>
-                    </div>
-                </div>
-
-                <div className="section">
-                    <h3 className="section-header">New Users</h3>
-                    <div className="container-user">
-                        <p>
-                            Lorem ipsum dolor sit amet, vim ei tota dicant
-                            interpretaris, sea consulatu scripserit ei, pri eu
-                            accumsan contentiones. Usu ei iriure deleniti. Cum
-                            ut periculis laboramus referrentur. Vis ea laoreet
-                            imperdiet deterruisset, probo pertinax iudicabit qui
-                            ea. Duo liber quodsi contentiones ne, vel ei movet
-                            conceptam, id his quod iriure feugiat. Qui ex vide
-                            labitur volumus. His cu fugit adolescens
-                            voluptatibus, et per torquatos interesset. Iusto
-                            deleniti invenire id cum. Te saepe alterum
-                            appellantur pro, in est errem dicant suscipit,
-                            oblique argumentum sed et. Quo cu partem inermis,
-                            vix et minimum vivendum, ut illud delectus eos. Mei
-                            te alia justo, per amet nemore quodsi cu, mel
-                            eruditi copiosae contentiones cu. Sed ea quando
-                            mediocrem, soleat dolorum no ius. Eu electram
-                            iracundia mnesarchum his, eum ut hinc latine. Est
-                            simul definiebas ut, debitis invenire eu usu. Eu
-                            eros appetere mel, nullam delenit tincidunt duo at.
-                            Eos option appetere torquatos in, cu debitis
-                            singulis principes usu.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="section">
-                    <h3 className="section-header">New Registrations</h3>
-                    <div className="container-registration">
-                        <p>
-                            Lorem ipsum dolor sit amet, vim ei tota dicant
-                            interpretaris, sea consulatu scripserit ei, pri eu
-                            accumsan contentiones. Usu ei iriure deleniti. Cum
-                            ut periculis laboramus referrentur. Vis ea laoreet
-                            imperdiet deterruisset, probo pertinax iudicabit qui
-                            ea. Duo liber quodsi contentiones ne, vel ei movet
-                            conceptam, id his quod iriure feugiat. Qui ex vide
-                            labitur volumus. His cu fugit adolescens
-                            voluptatibus, et per torquatos interesset. Iusto
-                            deleniti invenire id cum. Te saepe alterum
-                            appellantur pro, in est errem dicant suscipit,
-                            oblique argumentum sed et. Quo cu partem inermis,
-                            vix et minimum vivendum, ut illud delectus eos. Mei
-                            te alia justo, per amet nemore quodsi cu, mel
-                            eruditi copiosae contentiones cu. Sed ea quando
-                            mediocrem, soleat dolorum no ius. Eu electram
-                            iracundia mnesarchum his, eum ut hinc latine. Est
-                            simul definiebas ut, debitis invenire eu usu. Eu
-                            eros appetere mel, nullam delenit tincidunt duo at.
-                            Eos option appetere torquatos in, cu debitis
-                            singulis principes usu.
-                        </p>
-                    </div>
-                </div>
+                    <TabPanel>
+                        <HomeTabSectionUsers users={this.state.newUsers} />
+                    </TabPanel>
+                    <TabPanel>
+                        <HomeTabSectionRegistrations
+                            newUserClasses={this.state.newUserClasses}
+                            newUserAfh={this.state.newUserAfh}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <HomeTabSectionClasses
+                            unpublishedClasses={this.state.unpublishedClasses}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <HomeTabSectionAccounts
+                            unpaidAccounts={this.state.unpaidAccounts}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <HomeTabSectionLastPaid />
+                    </TabPanel>
+                </Tabs>
             </div>
         );
     }

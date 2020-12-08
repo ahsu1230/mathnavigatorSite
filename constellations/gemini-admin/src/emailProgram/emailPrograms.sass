@@ -1,0 +1,61 @@
+@import "../_.constants.sass"
+
+#view-program-emails
+    width: 100%
+    padding: $spacing1x $spacing8x $spacing4x
+    box-sizing: border-box
+
+    h1
+        margin: $spacing4x 0
+        line-height: $lineHeight4
+        color: $colorTurquoise
+        font-size: $fontSize5
+
+    h2
+        margin: $spacing3x 0
+        line-height: $lineHeight2
+        font-weight: bold
+        font-size: $fontSize2
+
+    .class
+        margin-top: 10px
+
+        .classId
+            margin-left: 5px
+
+    #userRows
+        height: 200px
+        max-height: 400px
+        overflow-y: scroll
+        border: 1px solid $colorBlack
+    
+    .row
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin: 12px 0px
+
+    .column
+        flex: 2 1 0
+
+    .email-template
+        margin-top: 50px
+        padding-top: $spacing5x
+        border-top: 2px solid $colorGrayText
+
+    #template-title
+        color: $colorTurquoise
+        font-weight: bold
+        font-size: $fontSize4
+
+    h3
+        margin: $spacing3x 0
+        line-height: $lineHeight2
+        font-size: $fontSize2
+
+    .generated-email
+        width: 100%
+        border: 1px solid $colorBlack
+
+        p
+            padding-left: 10px

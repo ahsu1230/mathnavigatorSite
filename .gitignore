@@ -10,3 +10,9 @@
 **/*.iml
 **/*.project
 **/*.DS_Store
+
+constellations/orion/**/*.log
+constellations/clients/golangTestRenderer/index.html
+
+**/*.pem
+id_rsa_*

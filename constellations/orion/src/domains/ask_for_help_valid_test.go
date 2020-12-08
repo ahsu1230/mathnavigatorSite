@@ -1,7 +1,6 @@
 package domains_test
 
 import (
-	"strings"
 	"testing"
 	"time"
 
@@ -10,13 +9,15 @@ import (
 
 func TestValidAFHTitle(t *testing.T) {
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
+
 	askForHelp := domains.AskForHelp{
 		Id:         1,
 		Title:      "AP Calculus Help",
-		Date:       date1,
-		TimeString: "3:00 - 5:00 PM",
-		Subject:    "AP Calculus",
+		StartsAt:   start,
+		EndsAt:     end,
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 	}
 	if err := askForHelp.Validate(); err != nil {
@@ -28,7 +29,7 @@ func TestValidAFHTitle(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid title")
 	}
 
-	askForHelp.Title = "Too long: " + strings.Repeat("A", 256)
+	askForHelp.Title = "ap calc help"
 	if err := askForHelp.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid title")
 	}
@@ -36,17 +37,16 @@ func TestValidAFHTitle(t *testing.T) {
 
 func TestValidAFHSubject(t *testing.T) {
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
 	askForHelp := domains.AskForHelp{
 		Id:         1,
 		Title:      "AP Calculus Help",
-		Date:       date1,
-		TimeString: "3:00 - 5:00 PM",
-		Subject:    "AP Calculus",
+		StartsAt:   start,
+		EndsAt:     end,
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 	}
-
-	askForHelp.Subject = "AP Calculus 2"
 	if err := askForHelp.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -56,8 +56,30 @@ func TestValidAFHSubject(t *testing.T) {
 		t.Error("Check was incorrect, got: nil, expected: invalid subject")
 	}
 
-	askForHelp.Subject = "Too long: " + strings.Repeat("A", 128)
+	askForHelp.Subject = "history" // not a valid subject
 	if err := askForHelp.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid subject")
+	}
+}
+
+func TestValidAFHTimes(t *testing.T) {
+	now := time.Now().UTC()
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
+	askForHelp := domains.AskForHelp{
+		Id:         1,
+		Title:      "AP Calculus Help",
+		StartsAt:   start,
+		EndsAt:     end,
+		Subject:    domains.SUBJECT_MATH,
+		LocationId: "wchs",
+	}
+	if err := askForHelp.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	askForHelp.EndsAt = start.Add(time.Hour * -1)
+	if err := askForHelp.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid start/end times")
 	}
 }

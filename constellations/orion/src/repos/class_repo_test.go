@@ -16,7 +16,7 @@ func initClassTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.ClassRepoInter
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestClassRepo(db)
+	repo := repos.CreateTestClassRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -30,7 +30,7 @@ func TestSelectAllClasses(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getClassRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM classes").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll(false)
+	got, err := repo.SelectAll(testUtils.Context, false)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -54,10 +54,10 @@ func TestSelectPublishedClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	rows := getClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NOT NULL").
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE (.+) published_at IS NOT NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAll(true)
+	got, err := repo.SelectAll(testUtils.Context, true)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -81,10 +81,10 @@ func TestSelectAllUnpublishedClasses(t *testing.T) {
 
 	// Mock DB statements and execute
 	rows := getClassRows()
-	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE published_at IS NULL").
+	mock.ExpectPrepare("^SELECT (.+) FROM classes WHERE (.+) published_at IS NULL").
 		ExpectQuery().
 		WillReturnRows(rows)
-	got, err := repo.SelectAllUnpublished()
+	got, err := repo.SelectAllUnpublished(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -112,7 +112,7 @@ func TestSelectClass(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1_2020_spring_final_review").
 		WillReturnRows(rows)
-	got, err := repo.SelectByClassId("program1_2020_spring_final_review") // Correct classId
+	got, err := repo.SelectByClassId(testUtils.Context, "program1_2020_spring_final_review") // Correct classId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -140,7 +140,7 @@ func TestSelectClassesByProgramId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1").
 		WillReturnRows(rows)
-	got, err := repo.SelectByProgramId("program1") // Correct programId
+	got, err := repo.SelectByProgramId(testUtils.Context, "program1") // Correct programId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -168,7 +168,7 @@ func TestSelectClassesBySemesterId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("2020_spring").
 		WillReturnRows(rows)
-	got, err := repo.SelectBySemesterId("2020_spring") // Correct semesterId
+	got, err := repo.SelectBySemesterId(testUtils.Context, "2020_spring") // Correct semesterId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -196,7 +196,7 @@ func TestSelectClassesByProgramIdAndSemesterId(t *testing.T) {
 		ExpectQuery().
 		WithArgs("program1", "2020_spring").
 		WillReturnRows(rows)
-	got, err := repo.SelectByProgramAndSemesterId("program1", "2020_spring") // Correct programId and semesterId
+	got, err := repo.SelectByProgramAndSemesterId(testUtils.Context, "program1", "2020_spring") // Correct programId and semesterId
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -231,8 +231,6 @@ func TestInsertClass(t *testing.T) {
 			"program1_2020_spring_final_review",
 			"churchill",
 			"3 pm - 5 pm",
-			testUtils.TimeNow,
-			testUtils.TimeLater,
 			domains.NewNullString("ab12cd34"),
 			0,
 			domains.NewNullUint(50),
@@ -240,7 +238,7 @@ func TestInsertClass(t *testing.T) {
 			domains.NewNullString("notes1"),
 		).WillReturnResult(result)
 	class := getClass()
-	err := repo.Insert(class)
+	_, err := repo.Insert(testUtils.Context, class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -270,8 +268,6 @@ func TestUpdateClass(t *testing.T) {
 			"program2_2020_summer",
 			"churchill",
 			"5 pm - 7 pm",
-			testUtils.TimeNow,
-			testUtils.TimeLater,
 			"ab12cd34",
 			0,
 			50,
@@ -285,16 +281,14 @@ func TestUpdateClass(t *testing.T) {
 		ClassKey:        domains.NewNullString(""),
 		ClassId:         "program2_2020_summer",
 		LocationId:      "churchill",
-		Times:           "5 pm - 7 pm",
-		StartDate:       testUtils.TimeNow,
-		EndDate:         testUtils.TimeLater,
+		TimesStr:        "5 pm - 7 pm",
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
 		FullState:       0,
 		PricePerSession: domains.NewNullUint(50),
-		PriceLump:       domains.NewNullUint(100),
+		PriceLumpSum:    domains.NewNullUint(100),
 		PaymentNotes:    domains.NewNullString("notes1"),
 	}
-	err := repo.Update("program1_2020_spring_final_review", class)
+	err := repo.Update(testUtils.Context, "program1_2020_spring_final_review", class)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -320,7 +314,7 @@ func TestPublishClasses(t *testing.T) {
 		WithArgs(sqlmock.AnyArg(), "program1_2020_spring_final_review").
 		WillReturnResult(result)
 	mock.ExpectCommit()
-	err := repo.Publish([]string{"program1_2020_spring_final_review"})
+	err := repo.Publish(testUtils.Context, []string{"program1_2020_spring_final_review"})
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -344,7 +338,28 @@ func TestDeleteClass(t *testing.T) {
 		ExpectExec().
 		WithArgs("program1_2020_spring_final_review").
 		WillReturnResult(result)
-	err := repo.Delete("program1_2020_spring_final_review")
+	err := repo.Delete(testUtils.Context, "program1_2020_spring_final_review")
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+func TestArchiveClass(t *testing.T) {
+	db, mock, repo := initClassTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^UPDATE classes SET deleted_at=(.+) WHERE class_id=(.+)").
+		ExpectExec().
+		WithArgs(testUtils.MockAnyTime{}, "program1_2020_spring_final_review").
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, "program1_2020_spring_final_review")
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -370,13 +385,11 @@ func getClassRows() *sqlmock.Rows {
 		"ClassKey",
 		"ClassId",
 		"locationId",
-		"Times",
-		"StartDate",
-		"EndDate",
+		"TimesStr",
 		"GoogleClassCode",
 		"FullState",
 		"PricePerSession",
-		"PriceLump",
+		"PriceLumpSum",
 		"PaymentNotes",
 	}).AddRow(
 		1,
@@ -390,8 +403,6 @@ func getClassRows() *sqlmock.Rows {
 		"program1_2020_spring_final_review",
 		"churchill",
 		"3 pm - 5 pm",
-		testUtils.TimeNow,
-		testUtils.TimeLater,
 		"ab12cd34",
 		0,
 		50,
@@ -412,13 +423,11 @@ func getClass() domains.Class {
 		ClassKey:        domains.NewNullString("final_review"),
 		ClassId:         "program1_2020_spring_final_review",
 		LocationId:      "churchill",
-		Times:           "3 pm - 5 pm",
-		StartDate:       testUtils.TimeNow,
-		EndDate:         testUtils.TimeLater,
+		TimesStr:        "3 pm - 5 pm",
 		GoogleClassCode: domains.NewNullString("ab12cd34"),
 		FullState:       0,
 		PricePerSession: domains.NewNullUint(50),
-		PriceLump:       domains.NewNullUint(100),
+		PriceLumpSum:    domains.NewNullUint(100),
 		PaymentNotes:    domains.NewNullString("notes1"),
 	}
 }

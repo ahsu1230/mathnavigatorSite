@@ -1,9 +1,13 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
+	"time"
 
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/dbTx"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -17,152 +21,122 @@ type userAfhRepo struct {
 
 // Interface to implement
 type UserAfhRepoInterface interface {
-	Initialize(db *sql.DB)
-	Insert(domains.UserAfh) error
-	SelectByUserId(uint) ([]domains.UserAfh, error)
-	SelectByAfhId(uint) ([]domains.UserAfh, error)
-	SelectByBothIds(uint, uint) (domains.UserAfh, error)
-	Update(uint, domains.UserAfh) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectByUserId(context.Context, uint) ([]domains.UserAfh, error)
+	SelectByAfhId(context.Context, uint) ([]domains.UserAfh, error)
+	SelectByBothIds(context.Context, uint, uint) (domains.UserAfh, error)
+	SelectByNew(context.Context) ([]domains.UserAfh, error)
+	Insert(context.Context, domains.UserAfh) (uint, error)
+	Update(context.Context, uint, domains.UserAfh) error
+	Delete(context.Context, uint) error
 }
 
-func (ur *userAfhRepo) Initialize(db *sql.DB) {
+func (ur *userAfhRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "userAfhRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
-func (ur *userAfhRepo) Insert(userAfh domains.UserAfh) error {
-	statement := "INSERT INTO user_afh (" +
-		"user_id, " +
-		"afh_id " +
-		") VALUES (?, ?)"
+func (ur *userAfhRepo) SelectByUserId(ctx context.Context, userId uint) ([]domains.UserAfh, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.SelectByUserId", logger.Fields{"userId": userId})
 
-	stmt, err := ur.db.Prepare(statement)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserAfhByUserId()
+	userAfhs, err := tx.SelectManyUserAfhs(statement, userId)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer stmt.Close()
-
-	execResult, err := stmt.Exec(
-		userAfh.UserId,
-		userAfh.AfhId)
-	if err != nil {
-		return err
-	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not inserted")
+	return userAfhs, nil
 }
 
-func (ur *userAfhRepo) SelectByUserId(userId uint) ([]domains.UserAfh, error) {
-	results := make([]domains.UserAfh, 0)
+func (ur *userAfhRepo) SelectByAfhId(ctx context.Context, afhId uint) ([]domains.UserAfh, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.SelectByAfhId", logger.Fields{"afhId": afhId})
 
-	statement := "SELECT * FROM user_afh WHERE user_id=?"
-	stmt, err := ur.db.Prepare(statement)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserAfhByAfhId()
+	userAfhs, err := tx.SelectManyUserAfhs(statement, afhId)
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query(userId)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userAfh domains.UserAfh
-		if errScan := rows.Scan(
-			&userAfh.Id,
-			&userAfh.UserId,
-			&userAfh.AfhId); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, userAfh)
-	}
-	return results, nil
+	return userAfhs, nil
 }
 
-func (ur *userAfhRepo) SelectByAfhId(afhId uint) ([]domains.UserAfh, error) {
-	results := make([]domains.UserAfh, 0)
+func (ur *userAfhRepo) SelectByBothIds(ctx context.Context, userId, afhId uint) (domains.UserAfh, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.SelectByBothIds", logger.Fields{"userId": userId, "afhId": afhId})
 
-	statement := "SELECT * FROM user_afh WHERE afh_id=?"
-	stmt, err := ur.db.Prepare(statement)
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	rows, err := stmt.Query(afhId)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userAfh domains.UserAfh
-		if errScan := rows.Scan(
-			&userAfh.Id,
-			&userAfh.UserId,
-			&userAfh.AfhId); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, userAfh)
-	}
-	return results, nil
-}
-
-func (ur *userAfhRepo) SelectByBothIds(userId, afhId uint) (domains.UserAfh, error) {
-	statement := "SELECT * FROM user_afh WHERE user_id=? AND afh_id=?"
-	stmt, err := ur.db.Prepare(statement)
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectUserAfhByBothIds()
+	userAfh, err := tx.SelectOneUserAfh(statement, userId, afhId)
 	if err != nil {
 		return domains.UserAfh{}, err
 	}
-	defer stmt.Close()
+	return userAfh, nil
+}
+func (ur *userAfhRepo) SelectByNew(ctx context.Context) ([]domains.UserAfh, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.SelectByNew", logger.Fields{})
 
-	var userAfh domains.UserAfh
-	row := stmt.QueryRow(userId, afhId)
-	errScan := row.Scan(
-		&userAfh.Id,
-		&userAfh.UserId,
-		&userAfh.AfhId)
-	return userAfh, errScan
+	now := time.Now().UTC()
+	week := time.Hour * 24 * 7
+	lastWeek := now.Add(-week)
+
+	tx := dbTx.New(ur.db)
+	statement := tx.CreateStmtSelectNewUserAfh()
+	userAfhs, err := tx.SelectManyUserAfhs(statement, lastWeek)
+	if err != nil {
+		return nil, err
+	}
+	return userAfhs, nil
 }
 
-func (ur *userAfhRepo) Update(id uint, userAfh domains.UserAfh) error {
-	statement := "UPDATE user_afh SET " +
-		"user_id=?, " +
-		"afh_id=? " +
-		"WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userAfhRepo) Insert(ctx context.Context, userAfh domains.UserAfh) (uint, error) {
+	utils.LogWithContext(ctx, "userAfhRepo.Insert", logger.Fields{"userAfh": userAfh})
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	defer stmt.Close()
-
-	execResult, err := stmt.Exec(
-		userAfh.UserId,
-		userAfh.AfhId,
-		id)
+	userAfhId, err := tx.InsertUserAfh(userAfh)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not updated")
+	if err := tx.Commit(); err != nil {
+		return 0, err
+	}
+	return userAfhId, nil
 }
 
-func (ur *userAfhRepo) Delete(id uint) error {
-	statement := "DELETE FROM user_afh WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userAfhRepo) Update(ctx context.Context, id uint, userAfh domains.UserAfh) error {
+	utils.LogWithContext(ctx, "userAfhRepo.Update", logger.Fields{"userAfh": userAfh})
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
 		return err
 	}
-	defer stmt.Close()
+	if err := tx.UpdateUserAfhById(id, userAfh); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
 
-	execResult, err := stmt.Exec(id)
+func (ur *userAfhRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "userAfhRepo.Delete", logger.Fields{"id": id})
+
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "userAfh was not deleted")
+	if err := tx.DeleteUserAfh(id); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 // For Tests Only
-func CreateTestUserAfhRepo(db *sql.DB) UserAfhRepoInterface {
+func CreateTestUserAfhRepo(ctx context.Context, db *sql.DB) UserAfhRepoInterface {
 	ur := &userAfhRepo{}
-	ur.Initialize(db)
+	ur.Initialize(ctx, db)
 	return ur
 }

@@ -1,10 +1,13 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"time"
 
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
 )
 
@@ -18,29 +21,32 @@ type transactionRepo struct {
 
 //Interface to implement
 type TransactionRepoInterface interface {
-	Initialize(db *sql.DB)
-	SelectAll() ([]domains.Transaction, error)
-	SelectById(uint) (domains.Transaction, error)
-	Insert(domains.Transaction) error
-	Update(uint, domains.Transaction) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SelectByAccountId(context.Context, uint) ([]domains.Transaction, error)
+	SelectById(context.Context, uint) (domains.Transaction, error)
+	Insert(context.Context, domains.Transaction) (uint, error)
+	Update(context.Context, uint, domains.Transaction) error
+	Delete(context.Context, uint) error
 }
 
-func (tr *transactionRepo) Initialize(db *sql.DB) {
+func (tr *transactionRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "transactionRepo.Initialize", logger.Fields{})
 	tr.db = db
 }
 
-func (tr *transactionRepo) SelectAll() ([]domains.Transaction, error) {
+func (tr *transactionRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]domains.Transaction, error) {
+	utils.LogWithContext(ctx, "transactionRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
 	results := make([]domains.Transaction, 0)
 
-	stmt, err := tr.db.Prepare("SELECT * FROM transactions")
+	statement := "SELECT * FROM transactions WHERE account_id=?"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(domains.NewNullUint(accountId))
 	if err != nil {
-		return nil, err
+		return nil, appErrors.WrapDbQuery(err, statement, accountId)
 	}
 	defer rows.Close()
 
@@ -51,10 +57,11 @@ func (tr *transactionRepo) SelectAll() ([]domains.Transaction, error) {
 			&transaction.CreatedAt,
 			&transaction.UpdatedAt,
 			&transaction.DeletedAt,
+			&transaction.AccountId,
+			&transaction.Type,
 			&transaction.Amount,
-			&transaction.PaymentType,
-			&transaction.PaymentNotes,
-			&transaction.AccountId); errScan != nil {
+			&transaction.Notes,
+		); errScan != nil {
 			return results, errScan
 		}
 		results = append(results, transaction)
@@ -63,39 +70,45 @@ func (tr *transactionRepo) SelectAll() ([]domains.Transaction, error) {
 	return results, nil
 }
 
-func (tr *transactionRepo) SelectById(id uint) (domains.Transaction, error) {
+func (tr *transactionRepo) SelectById(ctx context.Context, id uint) (domains.Transaction, error) {
+	utils.LogWithContext(ctx, "transactionRepo.SelectById", logger.Fields{"id": id})
 	statement := "SELECT * FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return domains.Transaction{}, err
+		return domains.Transaction{}, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	var transaction domains.Transaction
 	row := stmt.QueryRow(id)
-	errScan := row.Scan(
+	if err = row.Scan(
 		&transaction.Id,
 		&transaction.CreatedAt,
 		&transaction.UpdatedAt,
 		&transaction.DeletedAt,
+		&transaction.AccountId,
+		&transaction.Type,
 		&transaction.Amount,
-		&transaction.PaymentType,
-		&transaction.PaymentNotes,
-		&transaction.AccountId)
-	return transaction, errScan
+		&transaction.Notes,
+	); err != nil {
+		return domains.Transaction{}, appErrors.WrapDbExec(err, statement, id)
+	}
+	return transaction, nil
 }
 
-func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
-	stmt, err := tr.db.Prepare("INSERT INTO transactions (" +
+func (tr *transactionRepo) Insert(ctx context.Context, transaction domains.Transaction) (uint, error) {
+	utils.LogWithContext(ctx, "transactionRepo.Insert", logger.Fields{"transaction": transaction})
+	statement := "INSERT INTO transactions (" +
 		"created_at, " +
 		"updated_at, " +
+		"account_id, " +
+		"type, " +
 		"amount, " +
-		"payment_type, " +
-		"payment_notes, " +
-		"account_id " +
-		") VALUES (?, ?, ?, ?, ?, ?)")
+		"notes" +
+		") VALUES (?, ?, ?, ?, ?, ?)"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return 0, appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
@@ -103,60 +116,69 @@ func (tr *transactionRepo) Insert(transaction domains.Transaction) error {
 	result, err := stmt.Exec(
 		now,
 		now,
+		transaction.AccountId,
+		transaction.Type,
 		transaction.Amount,
-		transaction.PaymentType,
-		transaction.PaymentNotes,
-		transaction.AccountId)
+		transaction.Notes,
+	)
 	if err != nil {
-		return err
+		return 0, appErrors.WrapDbExec(err, statement, transaction)
 	}
-	return utils.HandleSqlExecResult(result, 1, "transaction was not inserted")
+
+	rowId, err := result.LastInsertId()
+	if err != nil {
+		return 0, appErrors.WrapSQLBadInsertResult(err)
+	}
+	return uint(rowId), appErrors.ValidateDbResult(result, 1, "transaction was not inserted")
 }
 
-func (tr *transactionRepo) Update(id uint, transaction domains.Transaction) error {
-	stmt, err := tr.db.Prepare("UPDATE transactions SET " +
+func (tr *transactionRepo) Update(ctx context.Context, id uint, transaction domains.Transaction) error {
+	utils.LogWithContext(ctx, "transactionRepo.Update", logger.Fields{"transaction": transaction})
+	statement := "UPDATE transactions SET " +
 		"updated_at=?, " +
+		"account_id=?, " +
+		"type=?, " +
 		"amount=?, " +
-		"payment_type=?, " +
-		"payment_notes=?, " +
-		"account_id=? " +
-		"WHERE id=?")
+		"notes=? " +
+		"WHERE id=?"
+	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	now := time.Now().UTC()
 	result, err := stmt.Exec(
 		now,
-		transaction.Amount,
-		transaction.PaymentType,
-		transaction.PaymentNotes,
 		transaction.AccountId,
+		transaction.Type,
+		transaction.Amount,
+		transaction.Notes,
 		id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, transaction, id)
 	}
-	return utils.HandleSqlExecResult(result, 1, "transaction was not updated")
+	return appErrors.ValidateDbResult(result, 1, "transaction was not updated")
 }
 
-func (tr *transactionRepo) Delete(id uint) error {
+func (tr *transactionRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "transactionRepo.Delete", logger.Fields{"id": id})
 	statement := "DELETE FROM transactions WHERE id=?"
 	stmt, err := tr.db.Prepare(statement)
 	if err != nil {
-		return err
+		return appErrors.WrapDbPrepare(err, statement)
 	}
 	defer stmt.Close()
 
 	execResult, err := stmt.Exec(id)
 	if err != nil {
-		return err
+		return appErrors.WrapDbExec(err, statement, id)
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "transaction was not deleted")
+	return appErrors.ValidateDbResult(execResult, 1, "transaction was not deleted")
 }
 
-func CreateTestTransactionRepo(db *sql.DB) TransactionRepoInterface {
+func CreateTestTransactionRepo(ctx context.Context, db *sql.DB) TransactionRepoInterface {
 	tr := &transactionRepo{}
-	tr.Initialize(db)
+	tr.Initialize(ctx, db)
 	return tr
 }

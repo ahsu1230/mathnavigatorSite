@@ -1,144 +1,119 @@
 "use strict";
 require("./internship.sass");
 import React from "react";
-
-import DockerImg from "./../../assets/docker.jpg";
-import GoLangImg from "./../../assets/golang.png";
-import CircleImg from "./../../assets/circleci.png";
-import MySQLImg from "./../../assets/mysql.png";
-import ReactImg from "./../../assets/reactjs.png";
+import { PastInterns } from "./pastInterns.js";
+import InternshipCarousel from "./internshipCarousel.js";
+import GithubImg from "./../../assets/intern_images/github.png";
+import GolangImg from "./../../assets/intern_images/golang.png";
+import ReactImg from "./../../assets/intern_images/react.png";
+import NpmImg from "./../../assets/intern_images/npm.png";
+import MySQLImg from "./../../assets/intern_images/mysql.png";
+import DockerImg from "./../../assets/intern_images/docker.jpg";
+import CircleImg from "./../../assets/intern_images/circleci.png";
 
 export class InternshipPage extends React.Component {
     render() {
+        const interns = PastInterns.map((intern, index) => {
+            return (
+                <div className="intern-container" key={index}>
+                    <div className="name">{intern.name}</div>
+                    <div className="school">{intern.school}</div>
+                    <div className="college">{intern.college}</div>
+                </div>
+            );
+        });
+
         return (
             <div id="view-intern">
-                <h1>Software Development Internship</h1>
-                <p>
+                <h1 className="title">Software Development Internship</h1>
+                <p className="description">
                     Math Navigator occasionally offers Software Development
                     Internship for ambitious students who would like to pursue a
                     college major or a career in software development. In this
                     internship opportunity, students will learn the fundamentals
                     of modern technologies commonly used across
-                    engineering-focused companies. And with these skills,
-                    students help create this site that you are currently using!
+                    engineering-focused companies. And using these skills,
+                    students help create this very site you are using!
                 </p>
+
                 <h1>Technology Stack</h1>
+                <section className="tech-stack">
+                    <div className="img-container github">
+                        <img src={GithubImg} />
+                    </div>
 
-                <div class="container-main">
-                    <img src={ReactImg} />
-                    <p>
-                        ReactJs, created by Facebook, is a popular web framework
-                        that helps web developers build powerful single page web
-                        applications
+                    <div className="img-container react">
+                        <img src={ReactImg} />
+                    </div>
+
+                    <div className="img-container golang">
+                        <img src={GolangImg} />
+                    </div>
+
+                    <div className="img-container mysql">
+                        <img src={MySQLImg} />
+                    </div>
+
+                    <div className="img-container docker">
+                        <img src={DockerImg} />
+                    </div>
+
+                    <div className="img-container circleci">
+                        <img src={CircleImg} />
+                    </div>
+                </section>
+
+                <section className="structure1">
+                    <h1>Internship Structure</h1>
+                    <p className="description">
+                        The internship is split into various roles. Interns can
+                        choose to join the front-end team to learn website
+                        development with ReactJs or join the back-end team to
+                        learn data management with Golang and MySQL. There are a
+                        few students who have done internships for both teams!
                     </p>
-                </div>
+                    <div className="role-container">
+                        <div className="role-card">
+                            <h4>Front-end Developer Intern</h4>
+                            <div className="container">
+                                <img src={NpmImg} className="npm" />
+                                <img src={ReactImg} className="react" />
+                            </div>
+                        </div>
+                        <div className="role-card">
+                            <h4>Back-end Developer Intern</h4>
+                            <div className="container">
+                                <img src={GolangImg} className="golang" />
+                                <img src={MySQLImg} className="mysql" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                <div class="container-main">
-                    <img src={GoLangImg} />
-                    <p>
-                        Golang, created by Google, is an open source programming
-                        language that makes it easy to build simple, efficient
-                        and reliable software.
+                <h1>Our Past Interns:</h1>
+                <section className="past-interns">{interns}</section>
+
+                <section className="carousel">
+                    <InternshipCarousel />
+                </section>
+
+                <section id="last">
+                    <p className="description">
+                        Internship opportunities will be announced when they are
+                        available. Student candidates must first pass a series
+                        of coding assessments and interviews in order to receive
+                        a position. This interview process follows the similar
+                        procedures as those at well-known technology companies
+                        like Google, Facebook, Amazon, etc.
+                        <br />
+                        <br />
+                        The process is challenging, but we encourage all
+                        students to attempt these assessments to familiarize
+                        themselves with this interview process structure,
+                        especially if they ever want to pursue a career at any
+                        of these companies.
                     </p>
-                </div>
-
-                <div class="container-main">
-                    <img src={MySQLImg} />
-                    <p>
-                        MySQL, developed by Oracle, is the most popular
-                        relational (SQL) database management system and widely
-                        used to store application data.
-                    </p>
-                </div>
-
-                <div class="container-main">
-                    <img src={DockerImg} />
-                    <p>
-                        Docker is the leading containerization platform that
-                        helps software developers build applications and
-                        efficiently deliver software.
-                    </p>
-                </div>
-
-                <div class="container-main">
-                    <img src={CircleImg} />
-                    <p>
-                        CircleCI is a modern continuous integration platform
-                        that helps software developers easily test and deploy
-                        code.
-                    </p>
-                </div>
-
-                <h1>Internship Structure</h1>
-                <p>
-                    The internship is split into various roles. Interns can
-                    choose to join the front-end team to learn website
-                    development with ReactJs or join the back-end team to learn
-                    data management with Golang and MySQL. There are a few
-                    students who have done internships for both teams!
-                </p>
-
-                <h4>Past Interns:</h4>
-                <div class="intern-main">
-                    <p class="name">Cathy Y.</p>{" "}
-                    <p class="school">Richard Montgomery HS 2020</p>
-                    <p>Massachusetts Institute of Technology (MIT)</p>
-                </div>
-                <div class="intern-main">
-                    <p class="name">Tony W.</p>{" "}
-                    <p class="school">Richard Montgomery HS 2021</p>
-                    <p />
-                </div>
-                <div class="intern-main">
-                    <p class="name">Jessica Y.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2020</p>
-                    <p>University of Maryland</p>
-                </div>
-                <div class="intern-main">
-                    <p class="name">Max Z.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2021</p>
-                    <p />
-                </div>
-                <div class="intern-main">
-                    <p class="name">Chujia G.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2022</p>
-                    <p />
-                </div>
-                <div class="intern-main">
-                    <p class="name">Frederick Z.</p>{" "}
-                    <p class="school">Montgomery Blair HS 2023</p>
-                    <p />
-                </div>
-                <div class="intern-main">
-                    <p class="name">Austin H.</p>{" "}
-                    <p class="school">Winston Churchill HS 2017</p>
-                    <p>Carnegie Mellon University</p>
-                </div>
-                <div class="intern-main">
-                    <p class="name">Serena X.</p>{" "}
-                    <p class="school">Winston Churchill HS 2020</p>
-                    <p>University of Pennsylvania</p>
-                </div>
-                <div class="intern-main">
-                    <p class="name">Daniel L.</p>{" "}
-                    <p class="school">Winston Churchill HS 2021</p>
-                    <p />
-                </div>
-
-                <p>
-                    Internship opportunities will be announced when they are
-                    available. When they are, student candidates must first pass
-                    a series of coding assessments and interviews in order to
-                    receive a position. This interview process reflects the same
-                    process that famous technology companies like Google,
-                    Facebook, Amazon, etc. have. We encourage all students to
-                    attempt these assessments to familiarize themselves with
-                    this interview process structure if they ever want to pursue
-                    a career at any of these companies.
-                </p>
-
-                <h1>Math Navigator Products</h1>
-                <p id="last-paragraph">Coming soon...</p>
+                </section>
             </div>
         );
     }

@@ -1,10 +1,14 @@
 package repos
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/logger"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/dbTx"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos/utils"
+
 	"strings"
 	"time"
 )
@@ -19,267 +23,222 @@ type userRepo struct {
 
 // Interface to implement
 type UserRepoInterface interface {
-	Initialize(db *sql.DB)
-	SearchUsers(string) ([]domains.User, error)
-	SelectAll(string, int, int) ([]domains.User, error)
-	SelectById(uint) (domains.User, error)
-	SelectByAccountId(uint) ([]domains.User, error)
-	Insert(domains.User) error
-	Update(uint, domains.User) error
-	Delete(uint) error
+	Initialize(context.Context, *sql.DB)
+	SearchUsers(context.Context, string) ([]domains.User, error)
+	SelectAll(context.Context, string, int, int) ([]domains.User, error)
+	SelectById(context.Context, uint) (domains.User, error)
+	SelectByIds(context.Context, []uint) (map[uint]domains.User, error)
+	SelectByAccountId(context.Context, uint) ([]domains.User, error)
+	SelectByEmail(context.Context, string) (domains.User, error)
+	SelectByNew(context.Context) ([]domains.User, error)
+	Insert(context.Context, domains.User) (uint, error)
+	Update(context.Context, uint, domains.User) error
+	Delete(context.Context, uint) error
+	FullDelete(context.Context, uint) error
 }
 
-func (ur *userRepo) Initialize(db *sql.DB) {
+func (ur *userRepo) Initialize(ctx context.Context, db *sql.DB) {
+	utils.LogWithContext(ctx, "userRepo.Initialize", logger.Fields{})
 	ur.db = db
 }
 
-//TODO
+func (ur *userRepo) SearchUsers(ctx context.Context, search string) ([]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectUsers", logger.Fields{"search": search})
 
-func (ur *userRepo) SearchUsers(search string) ([]domains.User, error) {
-	results := make([]domains.User, 0)
+	tx := dbTx.New(ur.db)
 
+	var query string
 	lcSearch := strings.ToLower(search)
-	query := fmt.Sprintf("SELECT * FROM users WHERE LOWER(`first_name`) LIKE '%%%s%%' OR LOWER(`middle_name`) LIKE '%%%s%%' OR LOWER(`last_name`) LIKE '%%%s%%' OR LOWER(`email`) LIKE '%%%s%%'", lcSearch, lcSearch, lcSearch, lcSearch)
+	searchTerms := strings.Split(lcSearch, " ")
+	if len(searchTerms) == 1 {
+		// Generic one term search
+		query = tx.CreateStmtSelectUserSearchOneTerm(searchTerms[0])
+	} else if len(searchTerms) == 2 {
+		// Two term search most likely means (firstName, lastName) search
+		query = tx.CreateStmtSelectUserSearchTwoTerms(searchTerms)
+	} else {
+		// Generic multi-term search
+		regexTerm := strings.Join(searchTerms, "|")
+		query = tx.CreateStmtSelectUserSearchThreeTerms(regexTerm)
 
-	stmt, err := ur.db.Prepare(query)
+	}
+	utils.LogWithContext(ctx, "userRepo.SelectUsers.Query", logger.Fields{"query": query})
+
+	users, err := tx.SelectManyUsers(query)
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
-
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var user domains.User
-		if errScan := rows.Scan(
-			&user.Id,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-			&user.DeletedAt,
-			&user.FirstName,
-			&user.LastName,
-			&user.MiddleName,
-			&user.Email,
-			&user.Phone,
-			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, user)
-	}
-
-	return results, nil
+	return users, nil
 }
 
-func (ur *userRepo) SelectAll(search string, pageSize, offset int) ([]domains.User, error) {
-	results := make([]domains.User, 0)
+func (ur *userRepo) SelectAll(ctx context.Context, search string, pageSize, offset int) ([]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectAll", logger.Fields{
+		"search":   search,
+		"pageSize": pageSize,
+		"offset":   offset,
+	})
 
+	tx := dbTx.New(ur.db)
 	getAll := len(search) == 0
 	var query string
+	var args []interface{}
 	if getAll {
-		query = "SELECT * FROM users LIMIT ? OFFSET ?"
+		query = tx.CreateStmtSelectUsersAllWithLimitOffset()
+		args = []interface{}{pageSize, offset}
 	} else {
-		query = "SELECT * FROM users WHERE ? IN (first_name,last_name,middle_name) LIMIT ? OFFSET ?"
+		query = tx.CreateStmtSelectUserNamesWithLimitOffset()
+		args = []interface{}{search, pageSize, offset}
 	}
-	stmt, err := ur.db.Prepare(query)
+
+	users, err := tx.SelectManyUsers(query, args...)
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
-
-	var rows *sql.Rows
-	if getAll {
-		rows, err = stmt.Query(pageSize, offset)
-	} else {
-		rows, err = stmt.Query(search, pageSize, offset)
-	}
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var user domains.User
-		if errScan := rows.Scan(
-			&user.Id,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-			&user.DeletedAt,
-			&user.FirstName,
-			&user.LastName,
-			&user.MiddleName,
-			&user.Email,
-			&user.Phone,
-			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, user)
-	}
-	return results, nil
+	return users, nil
 }
 
-func (ur *userRepo) SelectById(id uint) (domains.User, error) {
-	statement := "SELECT * FROM users WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userRepo) SelectById(ctx context.Context, id uint) (domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectById", logger.Fields{"id": id})
+	tx := dbTx.New(ur.db)
+	user, err := tx.SelectOneUser(tx.CreateStmtSelectUserById(), id)
 	if err != nil {
 		return domains.User{}, err
 	}
-	defer stmt.Close()
-
-	var user domains.User
-	row := stmt.QueryRow(id)
-	errScan := row.Scan(
-		&user.Id,
-		&user.CreatedAt,
-		&user.UpdatedAt,
-		&user.DeletedAt,
-		&user.FirstName,
-		&user.LastName,
-		&user.MiddleName,
-		&user.Email,
-		&user.Phone,
-		&user.IsGuardian,
-		&user.AccountId,
-		&user.Notes)
-	return user, errScan
+	return user, nil
 }
 
-func (ur *userRepo) SelectByAccountId(accountId uint) ([]domains.User, error) {
-	results := make([]domains.User, 0)
+func (ur *userRepo) SelectByIds(ctx context.Context, ids []uint) (map[uint]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectByIds", logger.Fields{"ids": ids})
 
-	stmt, err := ur.db.Prepare("SELECT * FROM users WHERE account_id=?")
+	inIds := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(ids)), ","), "[]")
+
+	tx := dbTx.New(ur.db)
+	users, err := tx.SelectManyUsers(tx.CreateStmtSelectUsersInIds(inIds))
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
-	rows, err := stmt.Query(domains.NewNullUint(accountId))
+
+	userMap := make(map[uint]domains.User)
+	for _, user := range users {
+		userMap[user.Id] = user
+	}
+	return userMap, nil
+}
+
+func (ur *userRepo) SelectByAccountId(ctx context.Context, accountId uint) ([]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectByAccountId", logger.Fields{"accountId": accountId})
+	tx := dbTx.New(ur.db)
+	users, err := tx.SelectManyUsers(tx.CreateStmtSelectUsersByAccountId(), domains.NewNullUint(accountId))
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var user domains.User
-		if errScan := rows.Scan(
-			&user.Id,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-			&user.DeletedAt,
-			&user.FirstName,
-			&user.LastName,
-			&user.MiddleName,
-			&user.Email,
-			&user.Phone,
-			&user.IsGuardian,
-			&user.AccountId,
-			&user.Notes); errScan != nil {
-			return results, errScan
-		}
-		results = append(results, user)
-	}
-	return results, nil
+	return users, nil
 }
 
-func (ur *userRepo) Insert(user domains.User) error {
-	statement := "INSERT INTO users (" +
-		"created_at, " +
-		"updated_at, " +
-		"first_name, " +
-		"last_name," +
-		"middle_name, " +
-		"email," +
-		"phone, " +
-		"is_guardian," +
-		"account_id," +
-		"notes" +
-		") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userRepo) SelectByEmail(ctx context.Context, email string) (domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectById", logger.Fields{"email": email})
+	tx := dbTx.New(ur.db)
+	user, err := tx.SelectOneUser(tx.CreateStmtSelectUserByEmail(), email)
 	if err != nil {
-		return err
+		return domains.User{}, err
 	}
-	defer stmt.Close()
+	return user, nil
+}
 
+func (ur *userRepo) SelectByNew(ctx context.Context) ([]domains.User, error) {
+	utils.LogWithContext(ctx, "userRepo.SelectByNew", logger.Fields{})
 	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		now,
-		user.FirstName,
-		user.LastName,
-		user.MiddleName,
-		user.Email,
-		user.Phone,
-		user.IsGuardian,
-		user.AccountId,
-		user.Notes,
-	)
+	week := time.Hour * 24 * 7
+	lastWeek := now.Add(-week)
+
+	tx := dbTx.New(ur.db)
+	users, err := tx.SelectManyUsers(tx.CreateStmtSelectUsersByNew(), lastWeek)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not inserted")
+	return users, nil
 }
 
-func (ur *userRepo) Update(id uint, user domains.User) error {
-	statement := "UPDATE users SET " +
-		"updated_at=?, " +
-		"first_name=?, " +
-		"last_name=?, " +
-		"middle_name=?, " +
-		"email=?, " +
-		"phone=?, " +
-		"is_guardian=?, " +
-		"account_id=?, " +
-		"notes=? " +
-		"WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
+func (ur *userRepo) Insert(ctx context.Context, user domains.User) (uint, error) {
+	utils.LogWithContext(ctx, "userRepo.Insert", logger.Fields{"user": user})
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	defer stmt.Close()
-
-	now := time.Now().UTC()
-	execResult, err := stmt.Exec(
-		now,
-		user.FirstName,
-		user.LastName,
-		user.MiddleName,
-		user.Email,
-		user.Phone,
-		user.IsGuardian,
-		user.AccountId,
-		user.Notes,
-		id)
+	userId, err := tx.InsertUser(user)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not updated")
+	if err = tx.Commit(); err != nil {
+		return 0, err
+	}
+	return userId, nil
 }
 
-func (ur *userRepo) Delete(id uint) error {
-	statement := "DELETE FROM users WHERE id=?"
-	stmt, err := ur.db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
+func (ur *userRepo) Update(ctx context.Context, id uint, user domains.User) error {
+	utils.LogWithContext(ctx, "userRepo.Update", logger.Fields{"id": id, "user": user})
 
-	execResult, err := stmt.Exec(id)
+	tx, err := dbTx.Begin(ur.db)
 	if err != nil {
 		return err
 	}
-	return utils.HandleSqlExecResult(execResult, 1, "user was not deleted")
+	if err := tx.UpdateUserById(id, user); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (ur *userRepo) Delete(ctx context.Context, id uint) error {
+	utils.LogWithContext(ctx, "userRepo.Delete", logger.Fields{"id": id})
+
+	tx, err := dbTx.Begin(ur.db)
+	if err != nil {
+		return err
+	}
+	if err := tx.DeleteUser(id); err != nil {
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// A Delete method which cascadingly deletes
+// - Deletes all userClasses
+// - Deletes all userAfhs
+// - Deletes the user
+func (ur *userRepo) FullDelete(ctx context.Context, userId uint) error {
+	utils.LogWithContext(ctx, "userRepo.Delete", logger.Fields{"id": userId})
+
+	tx, err := dbTx.Begin(ur.db)
+	if err != nil {
+		return err
+	}
+	if errDel := tx.DeleteUserClassByUserId(userId); errDel != nil {
+		tx.Rollback()
+		return errDel
+	}
+	if errDel := tx.DeleteUserAfhByUserId(userId); errDel != nil {
+		tx.Rollback()
+		return errDel
+	}
+	if errDel := tx.DeleteUser(userId); errDel != nil {
+		tx.Rollback()
+		return errDel
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 // For Tests Only
-func CreateTestUserRepo(db *sql.DB) UserRepoInterface {
+func CreateTestUserRepo(ctx context.Context, db *sql.DB) UserRepoInterface {
 	ur := &userRepo{}
-	ur.Initialize(db)
+	ur.Initialize(ctx, db)
 	return ur
 }

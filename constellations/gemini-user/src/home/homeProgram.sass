@@ -1,0 +1,87 @@
+@import "../utils/_constants.sass"
+
+// Home Section - Programs
+#view-home .section.programs
+
+    .card-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+
+        @media screen and (max-width: $containerWidthPxMonitor)
+            flex-direction: column
+            justify-content: start
+
+    .card
+        padding: $spacing4x
+        border-radius: 8px
+        flex-basis: auto
+        overflow: hidden
+        width: 30%
+        box-sizing: border-box
+        text-align: center
+        background-color: $colorWhite
+        box-shadow: 0px 0px 12px 4px #{$colorBlack}33
+
+        @media screen and (max-width: $containerWidthPxMonitor)
+            width: 100%
+            max-width: $spacing64x
+            margin: 0 auto $spacing4x
+            padding: $spacing4x 0 $spacing8x
+            box-shadow: unset
+            border-radius: 0
+
+            &:last-child
+                margin-bottom: 0
+
+        .img-container
+            position: relative
+            height: $spacing16x
+
+            img
+                position: relative
+                top: 50%
+                transform: translateY(-50%)
+                width: 100%
+                max-width: $spacing16x
+
+        h3
+            margin: $spacing2x 0
+            color: $colorBlack
+        p
+            margin: $spacing2x 0
+            min-height: $spacing16x
+            color: $colorBlack
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                min-height: unset
+                max-width: $spacing48x
+                margin: $spacing2x auto
+
+        button
+            display: block
+            margin: 0 auto
+            border-radius: 8px
+            background-color: $colorPrimaryAccent
+
+            @media screen and (max-width: $containerWidthPxMonitor)
+                margin-top: $spacing4x
+
+        a
+            text-decoration: none
+            
+    
+    .link-bar
+        display: block
+        padding: $spacing4x
+        border-radius: 8px
+        margin: $spacing8x 0
+        text-align: center
+        line-height: $lineHeight1
+        font-size: $fontSize1
+        color: $colorPrimaryDark
+        background: rgba($colorPrimaryDark, 0.4)
+
+        &:hover
+            background: rgba($colorPrimaryDark, 0.3)
+            

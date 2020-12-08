@@ -9,7 +9,14 @@ import (
 
 func TestValidProgramId(t *testing.T) {
 	// Checks for valid program IDs
-	program := domains.Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
+	program := domains.Program{
+		ProgramId:   "test_program",
+		Title:       "Test Program",
+		Grade1:      1,
+		Grade2:      12,
+		Subject:     domains.SUBJECT_MATH,
+		Description: "Description",
+	}
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -51,65 +58,51 @@ func TestValidProgramId(t *testing.T) {
 	}
 }
 
-func TestValidProgramName(t *testing.T) {
-	// Checks for valid names
-	program := domains.Program{ProgramId: "ok", Name: "AP Calculus BC", Grade1: 1, Grade2: 12, Description: "ok"}
+func TestValidProgramTitle(t *testing.T) {
+	program := domains.Program{
+		ProgramId:   "ok",
+		Title:       "AP Calculus BC",
+		Grade1:      1,
+		Grade2:      12,
+		Subject:     domains.SUBJECT_MATH,
+		Description: "ok",
+	}
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	program.Name = "AP Language & Composition (#2)"
+	program.Title = "AP Language & Composition (#2)"
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	program.Name = "SAT-Prep & Learning_Test (This works)"
+	program.Title = "SAT-Prep & Learning_Test (This works)"
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	program.Name = "Cooking 101"
+	program.Title = "Cooking 101"
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	program.Name = "100 Ways To Become A Millionaire"
+	program.Title = "100 Ways To Become A Millionaire"
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	program.Name = "Mommy & me"
+	program.Title = "Mommy & me"
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
 
-	// Checks for invalid names
-	program.Name = "Test__"
+	// Checks for invalid title
+	program.Title = "test_"
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
 
-	program.Name = ""
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Name = "Test )("
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Name = "40 @40"
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Name = "A0 ^40"
-	if err := program.Validate(); err == nil {
-		t.Error("Check was incorrect, got: nil, expected: invalid program name")
-	}
-
-	program.Name = "Too long: " + strings.Repeat("A", 255)
+	program.Title = ""
 	if err := program.Validate(); err == nil {
 		t.Error("Check was incorrect, got: nil, expected: invalid program name")
 	}
@@ -117,7 +110,14 @@ func TestValidProgramName(t *testing.T) {
 
 func TestValidGrades(t *testing.T) {
 	// Checks for valid grades
-	program := domains.Program{ProgramId: "test_program", Name: "Test Program", Grade1: 1, Grade2: 12, Description: "Description"}
+	program := domains.Program{
+		ProgramId:   "test_program",
+		Title:       "Test Program",
+		Grade1:      1,
+		Grade2:      12,
+		Subject:     domains.SUBJECT_MATH,
+		Description: "Description",
+	}
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}
@@ -154,9 +154,40 @@ func TestValidGrades(t *testing.T) {
 	}
 }
 
+func TestValidProgramSubject(t *testing.T) {
+	program := domains.Program{
+		ProgramId:   "test_program",
+		Title:       "Test Program",
+		Grade1:      1,
+		Grade2:      12,
+		Subject:     domains.SUBJECT_MATH,
+		Description: "Description",
+	}
+	if err := program.Validate(); err != nil {
+		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
+	}
+
+	program.Subject = ""
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid subject")
+	}
+
+	program.Subject = "history" // not a valid subject
+	if err := program.Validate(); err == nil {
+		t.Error("Check was incorrect, got: nil, expected: invalid subject")
+	}
+}
+
 func TestValidDescription(t *testing.T) {
 	// Checks for valid descriptions
-	program := domains.Program{ProgramId: "ok", Name: "Calculus BC", Grade1: 1, Grade2: 12, Description: "This is a description"}
+	program := domains.Program{
+		ProgramId:   "ok",
+		Title:       "Calculus BC",
+		Grade1:      1,
+		Grade2:      12,
+		Subject:     domains.SUBJECT_MATH,
+		Description: "This is a description",
+	}
 	if err := program.Validate(); err != nil {
 		t.Errorf("Check was incorrect, got: %s, expected: nil", err.Error())
 	}

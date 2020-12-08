@@ -12,22 +12,14 @@ import (
 )
 
 // Test: Create 3 Announcements and GetAll()
-func Test_CreateAnnouncements(t *testing.T) {
-	early := time.Unix(0, 0)
-	mid := time.Unix(55, 123)
+func TestE2ECreateAnnouncements(t *testing.T) {
 	now := time.Now().UTC()
-	announce1 := createAnnouncement(early, "Author 1", "Message 1", false)
-	announce2 := createAnnouncement(mid, "Author 2", "Message 2", true)
-	announce3 := createAnnouncement(now, "Author 3", "Message 3", false)
-	body1 := utils.CreateJsonBody(&announce1)
-	body2 := utils.CreateJsonBody(&announce2)
-	body3 := utils.CreateJsonBody(&announce3)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
-	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body2)
-	recorder3 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body3)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
-	assert.EqualValues(t, http.StatusOK, recorder3.Code)
+	early := now.Add(time.Hour * 24 * -20)
+	mid := now.Add(time.Hour * 24 * -10)
+
+	utils.SendCreateAnnouncement(t, true, early, "Author 1", "Message 1", false)
+	utils.SendCreateAnnouncement(t, true, mid, "Author 2", "Message 2", true)
+	utils.SendCreateAnnouncement(t, true, now, "Author 3", "Message 3", false)
 
 	// Call Get All!
 	recorder4 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/all", nil)
@@ -56,16 +48,18 @@ func Test_CreateAnnouncements(t *testing.T) {
 }
 
 // Test: Create 1 Announcement, Update it, GetByAnnounceId()
-func Test_UpdateAnnouncement(t *testing.T) {
+func TestE2EUpdateAnnouncement(t *testing.T) {
 	// Create 1 Announcement
 	now := time.Now().UTC()
-	announce1 := createAnnouncement(now, "Author 1", "Message 1", false)
-	body1 := utils.CreateJsonBody(&announce1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAnnouncement(t, true, now, "Author 1", "Message 1", true)
 
 	// Update
-	updatedAnnounce := createAnnouncement(now, "Author 2", "Message 2", true)
+	updatedAnnounce := domains.Announce{
+		PostedAt:   now,
+		Author:     "Author 2",
+		Message:    "Message 2",
+		OnHomePage: false,
+	}
 	updatedBody := utils.CreateJsonBody(&updatedAnnounce)
 	recorder2 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/announcement/1", updatedBody)
 	assert.EqualValues(t, http.StatusOK, recorder2.Code)
@@ -82,37 +76,24 @@ func Test_UpdateAnnouncement(t *testing.T) {
 	assert.EqualValues(t, 1, announce.Id)
 	assert.EqualValues(t, "Author 2", announce.Author)
 	assert.EqualValues(t, "Message 2", announce.Message)
-	assert.EqualValues(t, true, announce.OnHomePage)
+	assert.EqualValues(t, false, announce.OnHomePage)
 
 	utils.ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
 }
 
 // Test: Create 1 Announcement, Delete it, GetByAnnounceId()
-func Test_DeleteAnnouncement(t *testing.T) {
+func TestE2EDeleteAnnouncement(t *testing.T) {
 	// Create
 	now := time.Now().UTC()
-	announce1 := createAnnouncement(now, "Author 1", "Message 1", true)
-	body1 := utils.CreateJsonBody(&announce1)
-	recorder1 := utils.SendHttpRequest(t, http.MethodPost, "/api/announcements/create", body1)
-	assert.EqualValues(t, http.StatusOK, recorder1.Code)
+	utils.SendCreateAnnouncement(t, true, now, "Author 1", "Message 1", true)
 
 	// Delete
 	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/announcements/announcement/1", nil)
-	assert.EqualValues(t, http.StatusOK, recorder2.Code)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
 
 	// Get
 	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/announcements/announcement/1", nil)
 	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
 
 	utils.ResetTable(t, domains.TABLE_ANNOUNCEMENTS)
-}
-
-// Helper methods
-func createAnnouncement(postedAt time.Time, author string, message string, onHomePage bool) domains.Announce {
-	return domains.Announce{
-		PostedAt:   postedAt,
-		Author:     author,
-		Message:    message,
-		OnHomePage: onHomePage,
-	}
 }

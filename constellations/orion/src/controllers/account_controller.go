@@ -3,9 +3,12 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/appErrors"
+	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/controllers/utils"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/domains"
 	"github.com/ahsu1230/mathnavigatorSite/constellations/orion/src/repos"
-	"github.com/gin-gonic/gin"
 )
 
 type AccountSearchBody struct {
@@ -13,83 +16,156 @@ type AccountSearchBody struct {
 }
 
 func GetAccountById(c *gin.Context) {
-	// Incoming parameters
-	id := ParseParamId(c)
+	utils.LogControllerMethod(c, "accountController.GetAccountById")
 
-	account, err := repos.AccountRepo.SelectById(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &account)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	account, err := repos.AccountRepo.SelectById(ctx, id)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &account)
 }
 
 func SearchAccount(c *gin.Context) {
-	// Incoming parameters
+	utils.LogControllerMethod(c, "accountController.SearchAccount")
+
 	var body AccountSearchBody
-	c.BindJSON(&body)
-	primaryEmail := body.PrimaryEmail
-
-	account, err := repos.AccountRepo.SelectByPrimaryEmail(primaryEmail)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, &account)
-	}
-}
-
-func CreateAccount(c *gin.Context) {
-	// Incoming JSON
-	var accountJson domains.Account
-	c.BindJSON(&accountJson)
-
-	if err := accountJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
 		return
 	}
+	primaryEmail := body.PrimaryEmail
 
-	err := repos.AccountRepo.Insert(accountJson)
+	ctx := utils.RetrieveContext(c)
+	account, err := repos.AccountRepo.SelectByPrimaryEmail(ctx, primaryEmail)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, &account)
+}
+
+func GetNegativeBalanceAccounts(c *gin.Context) {
+	ctx := utils.RetrieveContext(c)
+	accountSum, err := repos.AccountRepo.SelectAllNegativeBalances(ctx)
 	if err != nil {
 		c.Error(err)
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, accountSum)
 	}
+}
+
+func CreateAccountAndUser(c *gin.Context) {
+	utils.LogControllerMethod(c, "accountController.CreateAccount")
+
+	// Incoming JSON
+	var accountUser domains.AccountUser
+	if err := c.ShouldBindJSON(&accountUser); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
+	}
+	account := accountUser.Account
+	user := accountUser.User
+
+	if err := account.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+	if err := user.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+	ctx := utils.RetrieveContext(c)
+	accountId, err := repos.AccountRepo.InsertWithUser(ctx, account, user)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"accountId": accountId})
 }
 
 func UpdateAccount(c *gin.Context) {
-	// Incoming JSON & Parameters
-	id := ParseParamId(c)
-	var accountJson domains.Account
-	c.BindJSON(&accountJson)
+	utils.LogControllerMethod(c, "accountController.UpdateAccount")
 
-	if err := accountJson.Validate(); err != nil {
-		c.Error(err)
-		c.String(http.StatusBadRequest, err.Error())
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
 		return
 	}
 
-	err := repos.AccountRepo.Update(id, accountJson)
-	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+	var accountJson domains.Account
+	if err = c.ShouldBindJSON(&accountJson); err != nil {
+		c.Error(appErrors.WrapBindJSON(err, c.Request))
+		c.Abort()
+		return
 	}
+
+	if err = accountJson.Validate(); err != nil {
+		c.Error(appErrors.WrapInvalidDomain(err.Error()))
+		c.Abort()
+		return
+	}
+
+	ctx := utils.RetrieveContext(c)
+	if err = repos.AccountRepo.Update(ctx, id, accountJson); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusOK)
 }
 
 func DeleteAccount(c *gin.Context) {
-	// Incoming Parameters
-	id := ParseParamId(c)
+	utils.LogControllerMethod(c, "accountController.DeleteAccount")
 
-	err := repos.AccountRepo.Delete(id)
+	id, err := utils.ParseParamId(c, "id")
 	if err != nil {
-		c.Error(err)
-		c.String(http.StatusInternalServerError, err.Error())
-	} else {
-		c.Status(http.StatusOK)
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
 	}
+
+	ctx := utils.RetrieveContext(c)
+	if err := repos.AccountRepo.Delete(ctx, id); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func FullDeleteAccount(c *gin.Context) {
+	utils.LogControllerMethod(c, "accountController.FullDeleteAccount")
+
+	id, err := utils.ParseParamId(c, "id")
+	if err != nil {
+		c.Error(appErrors.WrapParse(err, c.Param("id")))
+		c.Abort()
+		return
+	}
+
+	ctx := utils.RetrieveContext(c)
+	if err := repos.AccountRepo.FullDelete(ctx, id); err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
 }

@@ -17,7 +17,7 @@ func initAFHTest(t *testing.T) (*sql.DB, sqlmock.Sqlmock, repos.AskForHelpRepoIn
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	repo := repos.CreateTestAFHRepo(db)
+	repo := repos.CreateTestAFHRepo(testUtils.Context, db)
 	return db, mock, repo
 }
 
@@ -29,7 +29,7 @@ func TestSelectAllAFH(t *testing.T) {
 	// Mock DB statements and execute
 	rows := getAFHRows()
 	mock.ExpectPrepare("^SELECT (.+) FROM ask_for_help").ExpectQuery().WillReturnRows(rows)
-	got, err := repo.SelectAll()
+	got, err := repo.SelectAll(testUtils.Context)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -55,7 +55,7 @@ func TestSelectAFH(t *testing.T) {
 		ExpectQuery().
 		WithArgs(1).
 		WillReturnRows(rows)
-	got, err := repo.SelectById(1)
+	got, err := repo.SelectById(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -76,29 +76,30 @@ func TestInsertAFH(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^INSERT INTO ask_for_help").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
+			start,
+			end,
 			"AP Calculus Help",
-			date1,
-			"2:00-4:00 PM",
-			"AP Calculus",
+			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
 		).WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
 		Title:      "AP Calculus Help",
-		Date:       date1,
-		TimeString: "2:00-4:00 PM",
-		Subject:    "AP Calculus",
+		StartsAt:   start,
+		EndsAt:     end,
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}
-	err := repo.Insert(askForHelp)
+	_, err := repo.Insert(testUtils.Context, askForHelp)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -115,31 +116,30 @@ func TestUpdateAFH(t *testing.T) {
 
 	// Mock DB statements and execute
 	now := time.Now().UTC()
-	var date1 = now.Add(time.Hour * 24 * 30)
+	start := now.Add(time.Hour * 24 * 30)
+	end := start.Add(time.Hour * 1)
 	result := sqlmock.NewResult(1, 1)
 	mock.ExpectPrepare("^UPDATE ask_for_help SET (.*) WHERE id=?").
 		ExpectExec().
 		WithArgs(
 			sqlmock.AnyArg(),
-			2,
+			start,
+			end,
 			"AP Stat Help",
-			date1,
-			"2:00-4:00PM",
-			"AP Stat",
+			domains.SUBJECT_MATH,
 			"room12",
 			domains.NewNullString("test note"),
 			1).
 		WillReturnResult(result)
 	askForHelp := domains.AskForHelp{
-		Id:         2,
+		StartsAt:   start,
+		EndsAt:     end,
 		Title:      "AP Stat Help",
-		Date:       date1,
-		TimeString: "2:00-4:00PM",
-		Subject:    "AP Stat",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "room12",
 		Notes:      domains.NewNullString("test note"),
 	}
-	err := repo.Update(1, askForHelp)
+	err := repo.Update(testUtils.Context, 1, askForHelp)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -160,7 +160,28 @@ func TestDeleteAFH(t *testing.T) {
 		ExpectExec().
 		WithArgs(1).
 		WillReturnResult(result)
-	err := repo.Delete(1)
+	err := repo.Delete(testUtils.Context, 1)
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}
+
+func TestArchiveAFH(t *testing.T) {
+	db, mock, repo := initAFHTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("^UPDATE ask_for_help SET deleted_at=(.+) WHERE id=(.+)").
+		ExpectExec().
+		WithArgs(testUtils.MockAnyTime{}, 1).
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, 1)
 	if err != nil {
 		t.Errorf("Unexpected error %v", err)
 	}
@@ -173,14 +194,16 @@ func TestDeleteAFH(t *testing.T) {
 
 // Helper Methods
 func getAFHRows() *sqlmock.Rows {
+	start := testUtils.TimeNow
+	end := start.Add(time.Hour * 1)
 	return sqlmock.NewRows([]string{
 		"Id",
 		"CreatedAt",
 		"UpdatedAt",
 		"DeletedAt",
+		"StartsAt",
+		"EndsAt",
 		"Title",
-		"Date",
-		"TimeString",
 		"Subject",
 		"LocationId",
 		"Notes",
@@ -190,25 +213,27 @@ func getAFHRows() *sqlmock.Rows {
 			testUtils.TimeNow,
 			testUtils.TimeNow,
 			domains.NullTime{},
+			start,
+			end,
 			"AP Calculus Help",
-			testUtils.TimeNow,
-			"3:00-5:00PM",
-			"AP Calculus",
+			domains.SUBJECT_MATH,
 			"wchs",
 			domains.NewNullString("test note"),
 		)
 }
 
 func getAskForHelp() domains.AskForHelp {
+	start := testUtils.TimeNow
+	end := start.Add(time.Hour * 1)
 	return domains.AskForHelp{
 		Id:         1,
 		CreatedAt:  testUtils.TimeNow,
 		UpdatedAt:  testUtils.TimeNow,
 		DeletedAt:  domains.NullTime{},
+		StartsAt:   start,
+		EndsAt:     end,
 		Title:      "AP Calculus Help",
-		Date:       testUtils.TimeNow,
-		TimeString: "3:00-5:00PM",
-		Subject:    "AP Calculus",
+		Subject:    domains.SUBJECT_MATH,
 		LocationId: "wchs",
 		Notes:      domains.NewNullString("test note"),
 	}

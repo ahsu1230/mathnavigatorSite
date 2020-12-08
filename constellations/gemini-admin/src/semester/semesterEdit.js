@@ -1,174 +1,143 @@
 "use strict";
 require("./semesterEdit.sass");
 import React from "react";
-import { Link } from "react-router-dom";
 import API from "../api.js";
-import { Modal } from "../modals/modal.js";
-import { OkayModal } from "../modals/okayModal.js";
-import { YesNoModal } from "../modals/yesnoModal.js";
+import { InputSelect } from "../common/inputs/inputSelect.js";
+import { InputText, emptyValidator } from "../common/inputs/inputText.js";
+import EditPageWrapper from "../common/editPages/editPageWrapper.js";
+
+const ALL_SEASONS = ["winter", "spring", "summer", "fall"];
 
 export class SemesterEditPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            oldSemesterId: "",
-            inputSemesterId: "",
-            inputTitle: "",
-            isEdit: false,
-        };
+    state = {
+        inputSeason: ALL_SEASONS[0],
+        inputYear: 2020,
+        oldSemesterId: "",
+        semesterId: "",
+        title: "",
+        isEdit: false,
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-
-        this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-
-        this.onConfirmDelete = this.onConfirmDelete.bind(this);
-        this.onSavedOk = this.onSavedOk.bind(this);
-        this.onDismissModal = this.onDismissModal.bind(this);
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         const semesterId = this.props.semesterId;
         if (semesterId) {
             API.get("api/semesters/semester/" + semesterId).then((res) => {
                 const semester = res.data;
                 this.setState({
+                    inputSeason: semester.season,
+                    inputYear: semester.year,
                     oldSemesterId: semester.semesterId,
-                    inputSemesterId: semester.semesterId,
-                    inputTitle: semester.title,
+                    semesterId: semester.semesterId,
+                    title: semester.title,
                     isEdit: true,
-                    showDeleteModal: false,
-                    showSaveModal: false,
                 });
             });
         }
-    }
+    };
 
-    handleChange(event, value) {
+    handleChange = (event, value) => {
         this.setState({ [value]: event.target.value });
-    }
+    };
 
-    onClickSave() {
-        let semester = {
-            semesterId: this.state.inputSemesterId,
-            title: this.state.inputTitle,
+    onSave = () => {
+        const semester = {
+            season: this.state.inputSeason,
+            year: parseInt(this.state.inputYear),
+            // Only send season & year to API.
+            // Backend will automatically generate semesterId + title
         };
 
-        let successCallback = () => this.setState({ showSaveModal: true });
-        let failCallback = (err) =>
-            alert("Could not save semester: " + err.response.data);
         if (this.state.isEdit) {
-            API.post(
-                "api/semesters/semester/" + this.state.oldSemesterId,
+            return API.post(
+                "api/semesters/semester/" + this.props.semesterId,
                 semester
-            )
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            );
         } else {
-            API.post("api/semesters/create", semester)
-                .then((res) => successCallback())
-                .catch((err) => failCallback(err));
+            return API.post("api/semesters/create", semester);
         }
-    }
+    };
 
-    onClickCancel() {
-        window.location.hash = "semesters";
-    }
-
-    onClickDelete() {
-        this.setState({ showDeleteModal: true });
-    }
-
-    onConfirmDelete() {
+    onDelete = () => {
         const semesterId = this.props.semesterId;
-        API.delete("api/semesters/semester/" + semesterId).then((res) => {
-            window.location.hash = "semesters";
-        });
-    }
+        return API.delete("api/semesters/semester/" + semesterId);
+    };
 
-    onSavedOk() {
-        this.onDismissModal();
-        window.location.hash = "semesters";
-    }
-
-    onDismissModal() {
-        this.setState({
-            showDeleteModal: false,
-            showSaveModal: false,
-        });
-    }
-
-    render() {
-        const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
-        let deleteButton = <div></div>;
-        if (this.state.isEdit) {
-            deleteButton = (
-                <button className="btn-delete" onClick={this.onClickDelete}>
-                    Delete
-                </button>
-            );
-        }
-
-        let modalDiv;
-        let modalContent;
-        let showModal;
-        if (this.state.showDeleteModal) {
-            showModal = this.state.showDeleteModal;
-            modalContent = (
-                <YesNoModal
-                    text={"Are you sure you want to delete?"}
-                    onAccept={this.onConfirmDelete}
-                    onReject={this.onDismissModal}
-                />
-            );
-        }
-        if (this.state.showSaveModal) {
-            showModal = this.state.showSaveModal;
-            modalContent = (
-                <OkayModal
-                    text={"Semester information saved!"}
-                    onOkay={this.onSavedOk}
-                />
-            );
-        }
-        if (modalContent) {
-            modalDiv = (
-                <Modal
-                    content={modalContent}
-                    show={showModal}
-                    onDismiss={this.onDismissModal}
-                />
-            );
-        }
+    renderContent = () => {
+        const season = this.state.inputSeason;
+        const year = this.state.inputYear;
+        const semesterId = formSemesterId(season, year);
+        const title = formSemesterTitle(season, year);
 
         return (
-            <div id="view-semester-edit">
-                {modalDiv}
-                <h2>{title}</h2>
-
-                <h4>Semester ID</h4>
-                <input
-                    value={this.state.inputSemesterId}
-                    onChange={(e) => this.handleChange(e, "inputSemesterId")}
+            <div>
+                <InputSelect
+                    label="Season"
+                    description="Select which season this semester is in."
+                    required={true}
+                    value={season}
+                    onChangeCallback={(e) =>
+                        this.handleChange(e, "inputSeason")
+                    }
+                    options={ALL_SEASONS.map((season) => {
+                        return {
+                            value: season,
+                            displayName: season,
+                        };
+                    })}
                 />
 
-                <h4>Title</h4>
-                <input
-                    value={this.state.inputTitle}
-                    onChange={(e) => this.handleChange(e, "inputTitle")}
+                <InputText
+                    label="Year"
+                    description="Input the year of this semester"
+                    required={true}
+                    value={year}
+                    onChangeCallback={(e) => this.handleChange(e, "inputYear")}
+                    validators={[
+                        emptyValidator("year"),
+                        {
+                            validate: (year) =>
+                                parseInt(year) >= 2000 && parseInt(year) < 2100,
+                            message: "Must be a valid year!",
+                        },
+                    ]}
                 />
-
-                <div className="buttons">
-                    <button className="btn-save" onClick={this.onClickSave}>
-                        Save
-                    </button>
-                    <button className="btn-cancel" onClick={this.onClickCancel}>
-                        Cancel
-                    </button>
-                    {deleteButton}
+                <div className="semester-line">
+                    SemesterId: <span>{semesterId}</span>
+                </div>
+                <div className="semester-line">
+                    Semester Title: <span>{title}</span>
                 </div>
             </div>
         );
-    }
+    };
+
+    render = () => {
+        const title = this.state.isEdit ? "Edit Semester" : "Add Semester";
+        const content = this.renderContent();
+
+        return (
+            <div id="view-semester-edit">
+                <EditPageWrapper
+                    isEdit={this.state.isEdit}
+                    title={title}
+                    content={content}
+                    prevPageUrl={"semesters"}
+                    onDelete={this.onDelete}
+                    onSave={this.onSave}
+                    entityId={this.state.semesterId}
+                    entityName={"semester"}
+                />
+            </div>
+        );
+    };
+}
+
+function formSemesterId(season, year) {
+    return year + "_" + season;
+}
+
+function formSemesterTitle(season, year) {
+    return (
+        season.substring(0, 1).toUpperCase() + season.substring(1) + " " + year
+    );
 }
