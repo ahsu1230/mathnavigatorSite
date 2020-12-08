@@ -11,6 +11,7 @@ type ProgramFromFile struct {
 	Title       string `json:"title"`
 	Grade1      uint   `json:"grade1"`
 	Grade2      uint   `json:"grade2"`
+	Subject     string `json:"subject"`
 	Description string `json:"description"`
 }
 
@@ -21,6 +22,7 @@ type Program struct {
 	Name        string `json:"name"`
 	Grade1      uint   `json:"grade1"`
 	Grade2      uint   `json:"grade2"`
+	Subject     string `json:"subject"`
 	Description string `json:"description"`
 }
 
@@ -53,6 +55,7 @@ func convert(oldProgram ProgramFromFile) Program {
 		oldProgram.Title,
 		oldProgram.Grade1,
 		oldProgram.Grade2,
+		oldProgram.Subject,
 		oldProgram.Description,
 	}
 }
