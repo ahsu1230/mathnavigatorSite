@@ -142,7 +142,7 @@ func handleRegisterUsers(ctx context.Context, studentJson domains.User, guardian
 	if !studentFound && !guardianFound {
 		logger.Message("Both Guardian and Student not found. Creating new account...")
 		account := domains.Account{
-			PrimaryEmail: guardian.Email,
+			PrimaryEmail: guardianEmail,
 			Password:     "automatic",
 		}
 		newAccountId, err := repos.AccountRepo.InsertWithUser(ctx, account, guardianJson)
