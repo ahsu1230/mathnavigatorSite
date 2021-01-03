@@ -59,7 +59,8 @@ export class SemesterEditPage extends React.Component {
 
     onDelete = () => {
         const semesterId = this.props.semesterId;
-        return API.delete("api/semesters/semester/" + semesterId);
+        // return API.delete("api/semesters/semester/" + semesterId);   // hard-delete
+        return API.delete("api/semesters/archive/" + semesterId);       // soft-delete
     };
 
     renderContent = () => {
