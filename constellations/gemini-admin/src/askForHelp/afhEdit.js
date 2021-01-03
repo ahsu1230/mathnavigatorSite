@@ -82,7 +82,7 @@ export class AskForHelpEditPage extends React.Component {
     onDelete = () => {
         const afhId = this.state.afhId;
         // return API.delete("api/askforhelp/afh/" + afhId);    // hard-delete
-        return API.delete("api/askforhelp/archive/" + afhId);   // soft-delete
+        return API.delete("api/askforhelp/archive/" + afhId); // soft-delete
     };
 
     onStartsAtChange = (moment) => {

@@ -160,7 +160,7 @@ export class ClassEditPage extends React.Component {
     onDelete = () => {
         const classId = this.createClassId();
         // return API.delete("api/classes/class/" + classId);   // hard-delete
-        return API.delete("api/classes/archive/" + classId);    // soft-delete
+        return API.delete("api/classes/archive/" + classId); // soft-delete
     };
 
     renderClassInformation = () => {
