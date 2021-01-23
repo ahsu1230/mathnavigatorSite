@@ -2,6 +2,8 @@
 require("./programModal.sass");
 import React from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import API from "../utils/api.js";
 import { capitalizeWord } from "../utils/displayUtils.js";
 import { displayTimeString } from "../utils/classUtils.js";
 
@@ -30,6 +32,20 @@ export class ProgramModal extends React.Component {
 }
 
 class ProgramClass extends React.Component {
+    state = {
+        firstSession: {},
+    };
+
+    componentDidMount() {
+        const classId = this.props.classObj.classId;
+        API.get("api/sessions/class/" + classId).then((res) => {
+            const sessions = res.data || [];
+            this.setState({
+                firstSession: sessions[0] || {},
+            });
+        });
+    }
+
     render = () => {
         const classObj = this.props.classObj;
         const classTitle = capitalizeWord(classObj.classKey);
@@ -41,6 +57,10 @@ class ProgramClass extends React.Component {
             fullStateStr = "(" + this.props.fullStates[fullState] + ")";
         }
 
+        const startsOnDate = this.state.firstSession.startsAt
+            ? moment(this.state.firstSession.startsAt).format("l")
+            : undefined;
+
         return (
             <li>
                 <div>
@@ -49,7 +69,10 @@ class ProgramClass extends React.Component {
                     </div>
                     <div className="full-state">{fullStateStr}</div>
                 </div>
-                <div>{displayTimeString(classObj)}</div>
+                <div>
+                    {startsOnDate && <div>Starts on: {startsOnDate}</div>}
+                    {displayTimeString(classObj)}
+                </div>
                 <Link to={url}>{"Details >"}</Link>
             </li>
         );

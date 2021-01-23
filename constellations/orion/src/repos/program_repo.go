@@ -26,6 +26,7 @@ type ProgramRepoInterface interface {
 	SelectByProgramId(context.Context, string) (domains.Program, error)
 	Insert(context.Context, domains.Program) (uint, error)
 	Update(context.Context, string, domains.Program) error
+	Archive(context.Context, string) error
 	Delete(context.Context, string) error
 }
 
@@ -38,7 +39,7 @@ func (pr *programRepo) SelectAll(ctx context.Context) ([]domains.Program, error)
 	utils.LogWithContext(ctx, "programRepo.SelectAll", logger.Fields{})
 	results := make([]domains.Program, 0)
 
-	statement := "SELECT * FROM programs"
+	statement := "SELECT * FROM programs WHERE deleted_at IS NULL"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return nil, appErrors.WrapDbPrepare(err, statement)
@@ -73,7 +74,7 @@ func (pr *programRepo) SelectAll(ctx context.Context) ([]domains.Program, error)
 
 func (pr *programRepo) SelectByProgramId(ctx context.Context, programId string) (domains.Program, error) {
 	utils.LogWithContext(ctx, "programRepo.SelectByProgramId", logger.Fields{"programId": programId})
-	statement := "SELECT * FROM programs WHERE program_id=?"
+	statement := "SELECT * FROM programs WHERE program_id=? AND deleted_at IS NULL"
 	stmt, err := pr.db.Prepare(statement)
 	if err != nil {
 		return domains.Program{}, appErrors.WrapDbPrepare(err, statement)
@@ -174,6 +175,23 @@ func (pr *programRepo) Update(ctx context.Context, programId string, program dom
 		return appErrors.WrapDbExec(err, statement, program, programId)
 	}
 	return appErrors.ValidateDbResult(execResult, 1, "program was not updated")
+}
+
+func (pr *programRepo) Archive(ctx context.Context, programId string) error {
+	utils.LogWithContext(ctx, "programRepo.Archive", logger.Fields{"programId": programId})
+	statement := "UPDATE programs SET deleted_at=? WHERE program_id=?"
+	stmt, err := pr.db.Prepare(statement)
+	if err != nil {
+		return appErrors.WrapDbPrepare(err, statement)
+	}
+	defer stmt.Close()
+
+	now := time.Now().UTC()
+	execResult, err := stmt.Exec(now, programId)
+	if err != nil {
+		return appErrors.WrapDbExec(err, statement, programId)
+	}
+	return appErrors.ValidateDbResult(execResult, 1, "program was not deleted")
 }
 
 func (pr *programRepo) Delete(ctx context.Context, programId string) error {

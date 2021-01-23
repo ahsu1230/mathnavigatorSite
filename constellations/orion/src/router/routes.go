@@ -22,6 +22,7 @@ func (h *Handler) SetupApiEndpoints() {
 		apiPrograms.POST("/create", controllers.CreateProgram)
 		apiPrograms.POST("/program/:programId", controllers.UpdateProgram)
 		apiPrograms.DELETE("/program/:programId", controllers.DeleteProgram)
+		apiPrograms.DELETE("/archive/:programId", controllers.ArchiveProgram)
 	}
 	apiClasses := h.Engine.Group("api/classes")
 	{

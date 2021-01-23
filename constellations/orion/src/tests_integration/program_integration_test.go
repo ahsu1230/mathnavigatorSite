@@ -130,3 +130,19 @@ func TestE2EDeleteProgram(t *testing.T) {
 
 	utils.ResetTable(t, domains.TABLE_PROGRAMS)
 }
+
+// Test: Create 1 Program, Archive it, GetByProgramId()
+func TestE2EArchiveProgram(t *testing.T) {
+	// Create
+	utils.SendCreateProgram(t, true, "prog1", "Program1", 2, 3, domains.SUBJECT_MATH, "descript1", domains.FEATURED_NONE)
+
+	// Archive
+	recorder2 := utils.SendHttpRequest(t, http.MethodDelete, "/api/programs/archive/prog1", nil)
+	assert.EqualValues(t, http.StatusNoContent, recorder2.Code)
+
+	// Get
+	recorder3 := utils.SendHttpRequest(t, http.MethodGet, "/api/programs/program/prog1", nil)
+	assert.EqualValues(t, http.StatusNotFound, recorder3.Code)
+
+	utils.ResetTable(t, domains.TABLE_PROGRAMS)
+}

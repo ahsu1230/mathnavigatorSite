@@ -63,7 +63,8 @@ export class ProgramEditPage extends React.Component {
 
     onDelete = () => {
         const programId = this.props.programId;
-        return API.delete("api/programs/program/" + programId);
+        // return API.delete("api/programs/program/" + programId);
+        return API.delete("api/programs/archive/" + programId);
     };
 
     onSave = () => {
