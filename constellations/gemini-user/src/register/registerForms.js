@@ -108,7 +108,7 @@ export class RegisterFormStudent extends React.Component {
                                 validate: () => {
                                     const grade = this.props.student.grade;
                                     return (
-                                        parseInt(grade) >= 6 &&
+                                        parseInt(grade) >= 1 &&
                                         parseInt(grade) <= 12
                                     );
                                 },
