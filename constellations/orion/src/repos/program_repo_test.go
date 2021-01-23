@@ -261,3 +261,27 @@ func TestDeleteProgram(t *testing.T) {
 		t.Errorf("Unfulfilled expectations: %s", err)
 	}
 }
+
+//
+// Archive
+//
+func TestArchiveProgram(t *testing.T) {
+	db, mock, repo := initProgramTest(t)
+	defer db.Close()
+
+	// Mock DB statements and execute
+	result := sqlmock.NewResult(1, 1)
+	mock.ExpectPrepare("UPDATE programs SET deleted_at=(.+) WHERE program_id=(.+)").
+		ExpectExec().
+		WithArgs(sqlmock.AnyArg(), "prog1").
+		WillReturnResult(result)
+	err := repo.Archive(testUtils.Context, "prog1")
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	// Validate results
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Unfulfilled expectations: %s", err)
+	}
+}

@@ -105,6 +105,21 @@ func DeleteProgram(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func ArchiveProgram(c *gin.Context) {
+	utils.LogControllerMethod(c, "programController.ArchiveProgram")
+	// Incoming Parameters
+	programId := c.Param("programId")
+
+	ctx := utils.RetrieveContext(c)
+	err := repos.ProgramRepo.Archive(ctx, programId)
+	if err != nil {
+		c.Error(appErrors.WrapRepo(err))
+		c.Abort()
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func GetAllProgramFeatured(c *gin.Context) {
 	utils.LogControllerMethod(c, "programController.GetAllProgramFeatured")
 	c.JSON(http.StatusOK, domains.ALL_PROGRAM_FEATURED)

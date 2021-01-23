@@ -29,6 +29,7 @@ type mockProgramRepo struct {
 	MockSelectByProgramId func(context.Context, string) (domains.Program, error)
 	MockInsert            func(context.Context, domains.Program) (uint, error)
 	MockUpdate            func(context.Context, string, domains.Program) error
+	MockArchive           func(context.Context, string) error
 	MockDelete            func(context.Context, string) error
 }
 
@@ -45,6 +46,9 @@ func (programRepo *mockProgramRepo) Insert(ctx context.Context, program domains.
 }
 func (programRepo *mockProgramRepo) Update(ctx context.Context, programId string, program domains.Program) error {
 	return programRepo.MockUpdate(ctx, programId, program)
+}
+func (programRepo *mockProgramRepo) Archive(ctx context.Context, programId string) error {
+	return programRepo.MockArchive(ctx, programId)
 }
 func (programRepo *mockProgramRepo) Delete(ctx context.Context, programId string) error {
 	return programRepo.MockDelete(ctx, programId)
