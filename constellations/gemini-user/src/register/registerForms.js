@@ -2,7 +2,12 @@
 require("./register.sass");
 import React from "react";
 import RegisterInput from "./registerInput.js";
-import { validateEmail, validatePhone } from "../utils/validators.js";
+import {
+    validateEmail,
+    validatePhone,
+    validateGrade,
+    validateGradYear,
+} from "../utils/validators.js";
 import srcCheckmark from "../../assets/checkmark_light_blue.svg";
 
 export class RegisterFormStudent extends React.Component {
@@ -100,19 +105,17 @@ export class RegisterFormStudent extends React.Component {
                         onChangeCallback={(e) =>
                             this.props.onChangeStateValue(
                                 "studentGrade",
-                                parseInt(e.target.value)
+                                parseInt(e.target.value) || 0
                             )
                         }
                         validators={[
                             {
                                 validate: () => {
-                                    const grade = this.props.student.grade;
-                                    return (
-                                        parseInt(grade) >= 1 &&
-                                        parseInt(grade) <= 12
-                                    );
+                                    const grade =
+                                        parseInt(this.props.student.grade) || 0;
+                                    return validateGrade(grade);
                                 },
-                                message: "You must input a number as a grade.",
+                                message: "You must input a valid grade number.",
                             },
                         ]}
                     />
@@ -123,18 +126,17 @@ export class RegisterFormStudent extends React.Component {
                         onChangeCallback={(e) =>
                             this.props.onChangeStateValue(
                                 "studentGraduationYear",
-                                parseInt(e.target.value)
+                                parseInt(e.target.value) || 0
                             )
                         }
                         validators={[
                             {
                                 validate: () => {
-                                    const gradYear = this.props.student
-                                        .graduationYear;
-                                    return (
-                                        parseInt(gradYear) >= 2000 &&
-                                        parseInt(gradYear) <= 2030
-                                    );
+                                    const gradYear =
+                                        parseInt(
+                                            this.props.student.graduationYear
+                                        ) || 0;
+                                    return validateGradYear(gradYear);
                                 },
                                 message:
                                     "You must input a valid graduation year.",
