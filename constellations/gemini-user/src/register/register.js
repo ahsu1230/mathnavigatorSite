@@ -16,7 +16,12 @@ import RegisterSticky from "./registerSticky.js";
 import RegisterSelectClass from "./registerClass.js";
 import RegisterSelectAfh from "./registerAfh.js";
 import { RegisterFormStudent, RegisterFormGuardian } from "./registerForms.js";
-import { validateEmail, validatePhone } from "../utils/validators.js";
+import {
+    validateEmail,
+    validatePhone,
+    validateGrade,
+    validateGradYear,
+} from "../utils/validators.js";
 import { isFullClass } from "../utils/classUtils.js";
 import { changePage } from "../utils/historyUtils.js";
 
@@ -205,10 +210,8 @@ export default class RegisterPage extends React.Component {
             this.state.studentLastName &&
             validateEmail(this.state.studentEmail) &&
             this.state.studentSchool &&
-            this.state.studentGraduationYear > 2019 &&
-            this.state.studentGraduationYear < 2030 &&
-            this.state.studentGrade > 5 &&
-            this.state.studentGrade < 13
+            validateGradYear(this.state.studentGraduationYear) &&
+            validateGrade(this.state.studentGrade)
         );
     };
 

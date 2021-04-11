@@ -17,3 +17,11 @@ export const validatePhone = (phone) => {
         ) >= 10
     );
 };
+
+export const validateGrade = (grade) => {
+    return grade >= 1 && grade <= 12;
+};
+
+export const validateGradYear = (gradYear) => {
+    return gradYear >= 2018 && gradYear <= 2050;
+};
